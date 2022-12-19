@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 
 const retryFailedStep = require('../../../lib/plugin/retryFailedStep');
 const within = require('../../../lib/within');
@@ -54,7 +54,7 @@ describe('retryFailedStep', () => {
     }
 
     // expects to retry only once
-    counter.should.equal(2);
+    expect(counter).toEqual(2);
   });
 
   it('should not retry steps with wait*', async () => {
@@ -75,7 +75,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    expect(counter).to.equal(1);
+    expect(counter).toEqual(1);
     // expects to retry only once
   });
 
@@ -97,7 +97,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    expect(counter).to.equal(1);
+    expect(counter).toEqual(1);
     // expects to retry only once
   });
 
@@ -119,7 +119,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    expect(counter).to.equal(1);
+    expect(counter).toEqual(1);
     // expects to retry only once
   });
 
@@ -141,7 +141,7 @@ describe('retryFailedStep', () => {
       recorder.catchWithoutStop((err) => err);
     }
 
-    expect(counter).to.equal(1);
+    expect(counter).toEqual(1);
     // expects to retry only once
   });
 
@@ -164,7 +164,7 @@ describe('retryFailedStep', () => {
     }
 
     // expects to retry only once
-    expect(counter).to.equal(2);
+    expect(counter).toEqual(2);
   });
 
   it('should not turn around the chain of retries', () => {
@@ -179,7 +179,7 @@ describe('retryFailedStep', () => {
     }, undefined, undefined, true);
 
     recorder.add(() => {
-      initalIndex.should.equal(getRetryIndex());
+      expect(initalIndex).toEqual(getRetryIndex());
     }, undefined, undefined, true);
     return recorder.promise();
   });

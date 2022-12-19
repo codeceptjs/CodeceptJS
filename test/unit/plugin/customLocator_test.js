@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const customLocatorPlugin = require('../../../lib/plugin/customLocator');
 const Locator = require('../../../lib/locator');
 
@@ -14,9 +14,9 @@ describe('customLocator', () => {
       showActual: true,
     });
     const l = new Locator('$user-id');
-    expect(l.isXPath()).to.be.true;
-    expect(l.toXPath()).to.eql('.//*[@data-qa=\'user-id\']');
-    expect(l.toString()).to.eql('.//*[@data-qa=\'user-id\']');
+    expect(l.isXPath()).toBeTruthy();
+    expect(l.toXPath()).toEqual('.//*[@data-qa=\'user-id\']');
+    expect(l.toString()).toEqual('.//*[@data-qa=\'user-id\']');
   });
 
   it('add a custom locator by = -> data-test-id', () => {
@@ -26,9 +26,9 @@ describe('customLocator', () => {
       showActual: false,
     });
     const l = new Locator('=no-user');
-    expect(l.isXPath()).to.be.true;
-    expect(l.toXPath()).to.eql('.//*[@data-test-id=\'no-user\']');
-    expect(l.toString()).to.eql('=no-user');
+    expect(l.isXPath()).toBeTruthy();
+    expect(l.toXPath()).toEqual('.//*[@data-test-id=\'no-user\']');
+    expect(l.toString()).toEqual('=no-user');
   });
 
   it('add a custom locator with multple char prefix = -> data-test-id', () => {
@@ -38,9 +38,9 @@ describe('customLocator', () => {
       showActual: false,
     });
     const l = new Locator('test=no-user');
-    expect(l.isXPath()).to.be.true;
-    expect(l.toXPath()).to.eql('.//*[@data-test-id=\'no-user\']');
-    expect(l.toString()).to.eql('test=no-user');
+    expect(l.isXPath()).toBeTruthy();
+    expect(l.toXPath()).toEqual('.//*[@data-test-id=\'no-user\']');
+    expect(l.toString()).toEqual('test=no-user');
   });
 
   it('add a custom locator with CSS', () => {
@@ -50,8 +50,8 @@ describe('customLocator', () => {
       strategy: 'css',
     });
     const l = new Locator('$user');
-    expect(l.isCSS()).to.be.true;
-    expect(l.simplify()).to.eql('[data-test=user]');
+    expect(l.isCSS()).toBeTruthy();
+    expect(l.simplify()).toEqual('[data-test=user]');
   });
 
   it('add a custom locator with array $ -> data-qa, data-qa-id', () => {
@@ -61,9 +61,9 @@ describe('customLocator', () => {
       showActual: true,
     });
     const l = new Locator('$user-id');
-    expect(l.isXPath()).to.be.true;
-    expect(l.toXPath()).to.eql('.//*[@data-qa=\'user-id\' or @data-qa-id=\'user-id\']');
-    expect(l.toString()).to.eql('.//*[@data-qa=\'user-id\' or @data-qa-id=\'user-id\']');
+    expect(l.isXPath()).toBeTruthy();
+    expect(l.toXPath()).toEqual('.//*[@data-qa=\'user-id\' or @data-qa-id=\'user-id\']');
+    expect(l.toString()).toEqual('.//*[@data-qa=\'user-id\' or @data-qa-id=\'user-id\']');
   });
 
   it('add a custom locator array with CSS', () => {
@@ -73,8 +73,8 @@ describe('customLocator', () => {
       strategy: 'css',
     });
     const l = new Locator('$user');
-    expect(l.isCSS()).to.be.true;
-    expect(l.simplify()).to.eql('[data-test=user],[data-test-id=user]');
+    expect(l.isCSS()).toBeTruthy();
+    expect(l.simplify()).toEqual('[data-test=user],[data-test-id=user]');
   });
 
   it('should return initial locator value when it does not start with specified prefix', () => {
@@ -83,6 +83,6 @@ describe('customLocator', () => {
       attribute: 'data-test',
     });
     const l = new Locator('=user');
-    expect(l.simplify()).to.eql('=user');
+    expect(l.simplify()).toEqual('=user');
   });
 });

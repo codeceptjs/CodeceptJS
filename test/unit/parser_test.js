@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const parser = require('../../lib/parser');
 
 /* eslint-disable no-unused-vars */
@@ -27,24 +27,24 @@ describe('parser', () => {
 
   describe('#getParamsToString', () => {
     it('should get params for normal function', () => {
-      expect(parser.getParamsToString(obj.method1)).to.eql('locator, sec');
+      expect(parser.getParamsToString(obj.method1)).toEqual('locator, sec');
     });
 
     it('should get params for async function', () => {
-      expect(parser.getParamsToString(obj.method4)).to.eql('locator, context');
+      expect(parser.getParamsToString(obj.method4)).toEqual('locator, context');
     });
     fixturesDestructuredArgs.forEach(arg => {
       it(`should get params for anonymous function with destructured args | ${arg}`, () => {
-        expect(parser.getParams(arg)).to.eql(['locator', 'sec']);
+        expect(parser.getParams(arg)).toEqual(['locator', 'sec']);
       });
     });
 
     it('should get params for anonymous function with destructured args', () => {
-      expect(parser.getParams(({ locator, sec }, { first, second }) => {})).to.eql(['locator', 'sec', 'first', 'second']);
+      expect(parser.getParams(({ locator, sec }, { first, second }) => {})).toEqual(['locator', 'sec', 'first', 'second']);
     });
 
     it('should get params for class method with destructured args', () => {
-      expect(parser.getParams(obj.method5)).to.eql(['locator', 'sec']);
+      expect(parser.getParams(obj.method5)).toEqual(['locator', 'sec']);
     });
   });
 });

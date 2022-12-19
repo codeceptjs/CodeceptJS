@@ -54,15 +54,15 @@ describe('ApiDataFactory', function () {
     it('should create a new post', async () => {
       await I.have('post');
       const resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(2);
+      resp.data.length.toEqual(2);
     });
 
     it('should create a new post with predefined field', async () => {
       await I.have('post', { author: 'Tapac' });
       let resp = await I.restHelper.sendGetRequest('/posts/1');
-      resp.data.author.should.eql('davert');
+      resp.data.author.toEqual('davert');
       resp = await I.restHelper.sendGetRequest('/posts/2');
-      resp.data.author.should.eql('Tapac');
+      resp.data.author.toEqual('Tapac');
     });
 
     it('should obtain id by function', async () => {
@@ -78,7 +78,7 @@ describe('ApiDataFactory', function () {
         },
       });
       const id = await I.have('post');
-      id.should.eql('someId');
+      id.toEqual('someId');
     });
 
     it('should update request with onRequest', async () => {
@@ -93,7 +93,7 @@ describe('ApiDataFactory', function () {
         },
       });
       const post = await I.have('post');
-      post.author.should.eql('Vasya');
+      post.author.toEqual('Vasya');
     });
 
     it('can use functions to set factories', async () => {
@@ -108,7 +108,7 @@ describe('ApiDataFactory', function () {
         },
       });
       const post = await I.have('post');
-      post.author.should.eql('Yorik');
+      post.author.toEqual('Yorik');
     });
 
     it('should cleanup created data', async () => {
@@ -116,27 +116,27 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts');
       for (const post of resp.data) {
         if (post.author === 'Tapac') {
-          post.author.should.eql('Tapac');
+          post.author.toEqual('Tapac');
         }
       }
       await I._after();
       resp = await I.restHelper.sendGetRequest('/posts/2');
       resp.data.should.be.empty;
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(1);
+      resp.data.length.toEqual(1);
     });
 
     it('should create multiple posts and cleanup after', async () => {
       let resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(1);
+      resp.data.length.toEqual(1);
       await I.haveMultiple('post', 3);
       await new Promise(done => setTimeout(done, 500));
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(4);
+      resp.data.length.toEqual(4);
       await I._after();
       await new Promise(done => setTimeout(done, 500));
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(1);
+      resp.data.length.toEqual(1);
     });
 
     it('should create with different api', async () => {
@@ -153,9 +153,9 @@ describe('ApiDataFactory', function () {
       });
       await I.have('post');
       let resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(1);
+      resp.data.length.toEqual(1);
       resp = await I.restHelper.sendGetRequest('/comments');
-      resp.data.length.should.eql(1);
+      resp.data.length.toEqual(1);
     });
 
     it('should not remove records if cleanup:false', async () => {
@@ -171,11 +171,11 @@ describe('ApiDataFactory', function () {
       });
       await I.have('post');
       let resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(2);
+      resp.data.length.toEqual(2);
       await I._after();
       await new Promise(done => setTimeout(done, 500));
       resp = await I.restHelper.sendGetRequest('/posts');
-      resp.data.length.should.eql(2);
+      resp.data.length.toEqual(2);
     });
 
     it('should send default headers', async () => {
@@ -196,7 +196,7 @@ describe('ApiDataFactory', function () {
       const resp = await I.have('post');
       resp.should.have.property('authorization');
       resp.should.have.property('auth');
-      resp.auth.should.eql('111');
+      resp.auth.toEqual('111');
     });
   });
 });

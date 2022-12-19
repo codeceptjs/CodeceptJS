@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const { Parser } = require('gherkin');
 const Config = require('../../lib/config');
 const {
@@ -66,9 +66,9 @@ describe('BDD', () => {
     // console.log('Feature', ast.feature);
     // console.log('Scenario', ast.feature.children);
     // console.log('Steps', ast.feature.children[0].steps[0]);
-    expect(ast.feature).is.ok;
-    expect(ast.feature.children).is.ok;
-    expect(ast.feature.children[0].steps).is.ok;
+    expect(ast.feature).toBeTruthy();
+    expect(ast.feature.children).toBeTruthy();
+    expect(ast.feature.children[0].steps).toBeTruthy();
   });
 
   it('should load step definitions', () => {
@@ -76,10 +76,10 @@ describe('BDD', () => {
     When('I fly over ocean', () => 2);
     And(/^I fly over land$/i, () => 3);
     Then(/I see (.*?)/, () => 4);
-    expect(1).is.equal(matchStep('I am a bird')());
-    expect(3).is.equal(matchStep('I Fly oVer Land')());
-    expect(4).is.equal(matchStep('I see ocean')());
-    expect(4).is.equal(matchStep('I see world')());
+    expect(1).toEqual(matchStep('I am a bird')());
+    expect(3).toEqual(matchStep('I Fly oVer Land')());
+    expect(4).toEqual(matchStep('I see ocean')());
+    expect(4).toEqual(matchStep('I see world')());
   });
 
   it('should fail on duplicate step definitions with option', () => {
@@ -96,7 +96,7 @@ describe('BDD', () => {
     } catch (err) {
       error = err;
     } finally {
-      expect(!!error).is.true;
+      expect(!!error).toBeTruthy();
     }
   });
 
@@ -106,8 +106,8 @@ describe('BDD', () => {
     When('I go to checkout process', () => sum += 10);
     const suite = run(text);
     suite.tests[0].fn(() => {});
-    expect(suite.tests[0].tags).is.ok;
-    expect('@super').is.equal(suite.tests[0].tags[0]);
+    expect(suite.tests[0].tags).toBeTruthy();
+    expect('@super').toEqual(suite.tests[0].tags[0]);
   });
 
   it('should load step definitions', (done) => {
@@ -115,10 +115,10 @@ describe('BDD', () => {
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
     const suite = run(text);
-    expect('checkout process').is.equal(suite.title);
+    expect('checkout process').toEqual(suite.title);
     suite.tests[0].fn(() => {
-      expect(suite.tests[0].steps).is.ok;
-      expect(1610).is.equal(sum);
+      expect(suite.tests[0].steps).toBeTruthy();
+      expect(1610).toEqual(sum);
       done();
     });
   });
@@ -126,15 +126,15 @@ describe('BDD', () => {
   it('should allow failed steps', async () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
-    When('I go to checkout process', () => expect(false).is.true);
+    When('I go to checkout process', () => expect(false).toBeTruthy());
     const suite = run(text);
-    expect('checkout process').is.equal(suite.title);
+    expect('checkout process').toEqual(suite.title);
     try {
       await checkTestForErrors(suite.tests[0]);
       return Promise.reject((new Error('Test should have thrown with failed step, but did not')));
     } catch (err) {
       const errored = !!err;
-      expect(errored).is.true;
+      expect(errored).toBeTruthy();
     }
   });
 
@@ -143,13 +143,13 @@ describe('BDD', () => {
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => { throw new Error('errored step'); });
     const suite = run(text);
-    expect('checkout process').is.equal(suite.title);
+    expect('checkout process').toEqual(suite.title);
     try {
       await checkTestForErrors(suite.tests[0]);
       return Promise.reject((new Error('Test should have thrown with error, but did not')));
     } catch (err) {
       const errored = !!err;
-      expect(errored).is.true;
+      expect(errored).toBeTruthy();
     }
   });
 
@@ -158,13 +158,13 @@ describe('BDD', () => {
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => Promise.reject(new Error('step failed')));
     const suite = run(text);
-    expect('checkout process').is.equal(suite.title);
+    expect('checkout process').toEqual(suite.title);
     try {
       await checkTestForErrors(suite.tests[0]);
       return Promise.reject((new Error('Test should have thrown with error, but did not')));
     } catch (err) {
       const errored = !!err;
-      expect(errored).is.true;
+      expect(errored).toBeTruthy();
     }
   });
 
@@ -178,10 +178,10 @@ describe('BDD', () => {
       });
     });
     const suite = run(text);
-    expect('checkout process').is.equal(suite.title);
+    expect('checkout process').toEqual(suite.title);
     suite.tests[0].fn(() => {
-      expect(suite.tests[0].steps).is.ok;
-      expect(1610).is.equal(sum);
+      expect(suite.tests[0].steps).toBeTruthy();
+      expect(1610).toEqual(sum);
       done();
     });
   });
@@ -235,7 +235,7 @@ describe('BDD', () => {
   it('should match step with params', () => {
     Given('I am a {word}', param => param);
     const fn = matchStep('I am a bird');
-    expect('bird').is.equal(fn.params[0]);
+    expect('bird').toEqual(fn.params[0]);
   });
 
   it('should produce step events', (done) => {
@@ -252,7 +252,7 @@ describe('BDD', () => {
 
     const suite = run(text);
     suite.tests[0].fn(() => {
-      listeners.should.eql(2);
+      expect(listeners).toEqual(2);
       done();
     });
   });
@@ -264,13 +264,13 @@ describe('BDD', () => {
     Given('I have ${int} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
     Given('I have also ${float} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
     fn = matchStep('I am a bird');
-    expect('bird').is.equal(fn(fn.params));
+    expect('bird').toEqual(fn(fn.params));
     fn = matchStep('I have 2 wings and 2 eyes');
-    expect(4).is.equal(fn(fn.params));
+    expect(4).toEqual(fn(fn.params));
     fn = matchStep('I have $500 in my pocket');
-    expect(500).is.equal(fn(fn.params));
+    expect(500).toEqual(fn(fn.params));
     fn = matchStep('I have also $500.30 in my pocket');
-    expect(500.30).is.equal(fn(fn.params));
+    expect(500.30).toEqual(fn(fn.params));
   });
 
   it('should attach before hook for Background', () => {
@@ -290,7 +290,7 @@ describe('BDD', () => {
     const done = () => { };
     suite._beforeEach.forEach(hook => hook.run(done));
     suite.tests[0].fn(done);
-    expect(2).is.equal(sum);
+    expect(2).toEqual(sum);
   });
 
   it('should execute scenario outlines', (done) => {
@@ -328,18 +328,18 @@ describe('BDD', () => {
 
     const suite = run(text);
 
-    expect(suite.tests[0].tags).is.ok;
-    expect(['@awesome', '@cool', '@super']).is.deep.equal(suite.tests[0].tags);
-    expect(['@awesome', '@cool', '@super', '@exampleTag1', '@exampleTag2']).is.deep.equal(suite.tests[1].tags);
+    expect(suite.tests[0].tags).toBeTruthy();
+    expect(['@awesome', '@cool', '@super']).toEqual(suite.tests[0].tags);
+    expect(['@awesome', '@cool', '@super', '@exampleTag1', '@exampleTag2']).toEqual(suite.tests[1].tags);
 
-    expect(2).is.equal(suite.tests.length);
+    expect(2).toEqual(suite.tests.length);
     suite.tests[0].fn(() => {
-      expect(9).is.equal(cart);
-      expect(9).is.equal(sum);
+      expect(9).toEqual(cart);
+      expect(9).toEqual(sum);
 
       suite.tests[1].fn(() => {
-        expect(18).is.equal(cart);
-        expect(18).is.equal(sum);
+        expect(18).toEqual(cart);
+        expect(18).toEqual(sum);
         done();
       });
     });
@@ -380,8 +380,8 @@ describe('BDD', () => {
       ['cookies', '12'],
     ];
     suite.tests[0].fn(() => {
-      expect(givenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
-      expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
+      expect(givenParsedRows.rawData).toEqual(expectedParsedDataTable);
+      expect(thenParsedRows.rawData).toEqual(expectedParsedDataTable);
       done();
     });
   });
@@ -395,7 +395,7 @@ describe('BDD', () => {
     defineParameterType(colorType);
     Given('I have a {color} label', (color) => color);
     const fn = matchStep('I have a red label');
-    expect('red').is.equal(fn.params[0].name);
+    expect('red').toEqual(fn.params[0].name);
     done();
   });
 
@@ -409,7 +409,7 @@ describe('BDD', () => {
     Given('I have a {async_color} label', (color) => color);
     const fn = matchStep('I have a blue label');
     const color = await fn.params[0];
-    expect('blue').is.equal(color.name);
+    expect('blue').toEqual(color.name);
     await Promise.resolve();
   });
 });

@@ -13,7 +13,7 @@ describe('Failure in before', function () {
       stdout.should.include('S Third test will be skipped @grep');
       stdout.should.include('S Fourth test will be skipped');
       stdout.should.include('1 passed, 1 failed, 2 skipped');
-      err.code.should.eql(1);
+      err.code.toEqual(1);
       done();
     });
   });
@@ -23,14 +23,14 @@ describe('Failure in before', function () {
       stdout.should.include('✔ First test will be passed');
       stdout.should.include('S Third test will be skipped @grep');
       stdout.should.include('1 passed, 1 failed, 1 skipped');
-      err.code.should.eql(1);
+      err.code.toEqual(1);
       done();
     });
   });
 
   it('should trigger skipped events', (done) => {
     exec(`DEBUG=codeceptjs:* ${codecept_run} --verbose`, (err, stdout, stderr) => {
-      err.code.should.eql(1);
+      err.code.toEqual(1);
       stderr.should.include('Emitted | test.skipped');
       done();
     });

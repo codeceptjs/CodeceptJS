@@ -38,8 +38,8 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
   ]);
 
   // Assert that screenshots of same page in same session are equal
-  assert.equal(default1Digest, default2Digest);
-  assert.equal(john1Digest, john2Digest);
+  assert.toEqual(default1Digest, default2Digest);
+  assert.toEqual(john1Digest, john2Digest);
 
   // Assert that screenshots of different pages in different sessions are not equal
   assert.notEqual(default1Digest, john1Digest);
@@ -94,7 +94,7 @@ Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Pla
   ]);
 
   // Assert that screenshots of same page in same session are equal
-  assert.equal(original, failed);
+  assert.toEqual(original, failed);
 });
 
 Scenario('should throw exception and close correctly @WebDriverIO @Protractor @Puppeteer @Playwright', ({ I }) => {
@@ -160,7 +160,7 @@ Scenario('change page emulation @Playwright', async ({ I }) => {
   }, async () => {
     I.amOnPage('/');
     const width = await I.executeScript('window.innerWidth');
-    assert.equal(width, 300);
+    assert.toEqual(width, 300);
   });
 });
 

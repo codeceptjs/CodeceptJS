@@ -12,7 +12,7 @@ Scenario('flaky step @test1', async ({ I }) => {
     tries++;
     return tries < 4;
   });
-  assert.equal(tries, 4);
+  assert.toEqual(tries, 4);
 });
 
 Scenario('flaky step passed globally @test2', ({ I }) => {

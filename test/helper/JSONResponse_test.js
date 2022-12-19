@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const joi = require('joi');
 const JSONResponse = require('../../lib/helper/JSONResponse');
 const Container = require('../../lib/container');
@@ -66,7 +66,7 @@ describe('JSONResponse', () => {
 
     it('should throw error on invalid code', () => {
       restHelper.config.onResponse({ status: 504 });
-      expect(() => I.seeResponseCodeIs(200)).to.throw('Response code');
+      expect(() => I.seeResponseCodeIs(200)).toThrow('Response code');
     });
   });
 
@@ -83,7 +83,7 @@ describe('JSONResponse', () => {
           { id: 1, author: 'davert' },
         ],
       });
-      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('expected { …(2) } to deeply match { Object (posts) }');
+      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).toThrow('expected { …(2) } to deeply match { Object (posts) }');
     });
 
     it('should check for json inclusion - returned Array', () => {
@@ -99,7 +99,7 @@ describe('JSONResponse', () => {
           { id: 1, author: 'davert' },
         ],
       });
-      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('No elements in array matched {"posts":[{"id":2,"author":"boss"}]}');
+      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).toThrow('No elements in array matched {"posts":[{"id":2,"author":"boss"}]}');
     });
 
     it('should check for json inclusion - returned Array of 2 items', () => {
@@ -147,10 +147,10 @@ describe('JSONResponse', () => {
     it('should check for json by callback', () => {
       restHelper.config.onResponse({ data });
       const fn = ({ expect, data }) => {
-        expect(data).to.have.keys(['posts', 'user']);
+        expect(data).toHaveProperty(['posts', 'user']);
       };
       I.seeResponseValidByCallback(fn);
-      expect(fn.toString()).to.include('expect(data).to.have');
+      expect(fn.toString()).toContain('expect(data).to.have');
     });
 
     it('should check for json by joi schema', () => {

@@ -22,7 +22,7 @@ describe('CodeceptJS within', function () {
       const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
       testStatus = withoutGeneratorList.pop();
       testStatus.should.include('OK');
-      withoutGeneratorList.should.eql([
+      withoutGeneratorList.toEqual([
         'I small promise ',
         'I small  Promise was finished ',
         'I  Hey!  I am within  Begin.  I get blabla ',
@@ -42,7 +42,7 @@ describe('CodeceptJS within', function () {
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
       testStatus = withGeneratorList.pop();
       testStatus.should.include('OK');
-      withGeneratorList.should.eql([
+      withGeneratorList.toEqual([
         'I small promise ',
         'I small  Promise was finished ',
         'I small yield ',
@@ -67,7 +67,7 @@ describe('CodeceptJS within', function () {
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');
       testStatus = withGeneratorList.pop();
       testStatus.should.include('OK');
-      withGeneratorList.should.eql([
+      withGeneratorList.toEqual([
         'I small promise ',
         'I small  Promise was finished ',
         'I small yield ',

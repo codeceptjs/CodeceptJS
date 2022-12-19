@@ -50,7 +50,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   it('should fail with code 1 when test failed and async bootstrap/teardown function with args', (done) => {
     exec(config_run_override('bootstrap.async.conf.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err);
-      assert.equal(err.code, 1);
+      assert.toEqual(err.code, 1);
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('✖ check current dir @slow @important');
@@ -62,7 +62,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   it('should fail with code 1 when test failed and async bootstrap/teardown function without args', (done) => {
     exec(config_run_override('bootstrap.async.conf.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err);
-      assert.equal(err.code, 1);
+      assert.toEqual(err.code, 1);
       stdout.should.include('Filesystem'); // feature
       stdout.should.include('I am bootstrap');
       stdout.should.include('✖ check current dir @slow @important');
@@ -75,7 +75,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   it('should fail with code 1 when async bootstrap failed and not call teardown', (done) => {
     exec(codecept_run_config('without.args.failed.bootstrap.async.func.js'), (err, stdout) => {
       assert(err);
-      assert.equal(err.code, 1);
+      assert.toEqual(err.code, 1);
       stdout.should.include('Error from async bootstrap');
       stdout.should.not.include('✔ check current dir @slow @important in 2ms');
       stdout.should.not.include('I am teardown');

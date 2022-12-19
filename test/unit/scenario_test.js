@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const sinon = require('sinon');
 
 const scenario = require('../../lib/scenario');
@@ -25,7 +25,7 @@ describe('Scenario', () => {
 
   it('should wrap test function', () => {
     scenario.test(test).fn(() => {});
-    expect(fn.called).is.ok;
+    expect(fn.called).toBeTruthy();
   });
 
   it('should work with async func', () => {
@@ -41,7 +41,7 @@ describe('Scenario', () => {
 
     scenario.setup();
     scenario.test(test).fn(() => null);
-    recorder.add('validation', () => expect(counter).to.eq(4));
+    recorder.add('validation', () => expect(counter).toEqual(4));
     return recorder.promise();
   });
 
@@ -58,14 +58,14 @@ describe('Scenario', () => {
 
     it('should fire events', () => {
       scenario.test(test).fn(() => null);
-      expect(started.called).is.ok;
+      expect(started.called).toBeTruthy();
       scenario.teardown();
       scenario.suiteTeardown();
       return recorder.promise()
-        .then(() => expect(beforeSuite.called).is.ok)
-        .then(() => expect(afterSuite.called).is.ok)
-        .then(() => expect(before.called).is.ok)
-        .then(() => expect(after.called).is.ok);
+        .then(() => expect(beforeSuite.called).toBeTruthy())
+        .then(() => expect(afterSuite.called).toBeTruthy())
+        .then(() => expect(before.called).toBeTruthy())
+        .then(() => expect(after.called).toBeTruthy());
     });
 
     it('should fire failed event on error', () => {
@@ -76,7 +76,7 @@ describe('Scenario', () => {
       };
       scenario.test(test).fn(() => {});
       return recorder.promise()
-        .then(() => expect(failed.called).is.ok)
+        .then(() => expect(failed.called).toBeTruthy())
         .catch(() => null);
     });
 
@@ -86,7 +86,7 @@ describe('Scenario', () => {
       };
       scenario.test(test).fn(() => {});
       return recorder.promise()
-        .then(() => expect(failed.called).is.ok)
+        .then(() => expect(failed.called).toBeTruthy())
         .catch(() => null);
     });
   });

@@ -49,7 +49,7 @@ describe('CodeceptJS Runner', () => {
       stdout.should.include('Not-A-Filesystem');
       stdout.should.include('file is not in dir');
       stdout.should.include('FAILURES');
-      err.code.should.eql(1);
+      err.code.toEqual(1);
       done();
     });
 
@@ -181,9 +181,9 @@ describe('CodeceptJS Runner', () => {
 
       const uniqueLines = lines.filter((v, i, a) => a.indexOf(v) === i);
 
-      expect(uniqueLines.length).to.eql(lines.length, `No duplicates in output +${lines} \n\n -${uniqueLines}`);
+      expect(uniqueLines.length).toEqual(lines.length, `No duplicates in output +${lines} \n\n -${uniqueLines}`);
 
-      expect(lines).to.include.members([
+      expect(lines).toContain.members([
         'Helper: I\'m initialized',
         'Helper: I\'m simple BeforeSuite hook',
         'Test: I\'m simple BeforeSuite hook',
@@ -213,7 +213,7 @@ describe('CodeceptJS Runner', () => {
     exec(codecept_run_config('codecept.testhooks.different.order.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
-      expect(lines).to.include.members([
+      expect(lines).toContain.members([
         'Helper: I\'m simple BeforeSuite hook',
         'Test: I\'m async/await BeforeSuite hook',
         'Helper: I\'m simple Before hook',
@@ -232,7 +232,7 @@ describe('CodeceptJS Runner', () => {
   it('should run different types of scenario', (done) => {
     exec(codecept_run_config('codecept.testscenario.json'), (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
-      expect(lines).to.include.members([
+      expect(lines).toContain.members([
         'Test scenario types --',
         'It\'s usual test',
         'Test: I\'m async/await test',
@@ -315,7 +315,7 @@ describe('Codeceptjs Events', () => {
         .filter(text => text.startsWith('Event:'))
         .map(text => text.replace(/^Event:/i, ''));
 
-      expect(eventMessages).to.deep.equal([
+      expect(eventMessages).toEqual([
         event.all.before,
         event.suite.before,
         event.test.before,
@@ -338,7 +338,7 @@ describe('Codeceptjs Events', () => {
         .filter(text => text.startsWith('Event:'))
         .map(text => text.replace(/^Event:/i, ''));
 
-      expect(eventMessages).to.deep.equal([
+      expect(eventMessages).toEqual([
         event.all.before,
         event.suite.before,
 

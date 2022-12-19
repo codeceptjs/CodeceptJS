@@ -204,7 +204,7 @@ Feature('CodeceptJS Demonstration');
 Scenario('test page title', async ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   const title = await I.grabTitle();
-  assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
+  assert.toEqual(title, 'Example application with SimpleForm and Twitter Bootstrap');
 });
 ```
 

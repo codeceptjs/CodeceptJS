@@ -19,7 +19,7 @@ class User extends Helper {
       const cookies = res.value;
       for (const k in cookies) {
         if (cookies[k].name !== 'logged_in') continue;
-        assert.equal(cookies[k].value, 'yes');
+        assert.toEqual(cookies[k].value, 'yes');
         return;
       }
       assert.fail(cookies, 'logged_in', 'Auth cookie not set');

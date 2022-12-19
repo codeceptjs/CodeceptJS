@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 
 const config = require('../../lib/config');
 
@@ -9,12 +9,12 @@ describe('Config', () => {
     const cfg = config.create({
       output: './report',
     });
-    expect(cfg).to.contain.keys(['helpers', 'plugins', 'include']);
-    expect(config.get()).to.eql(cfg);
-    expect(cfg.output).to.eql('./report');
-    expect(config.get('output')).to.eql('./report');
-    expect(config.get('output', './other')).to.eql('./report');
-    expect(config.get('tests', '**_test.js')).to.eql('**_test.js');
+    expect(cfg).toHaveProperty('helpers', 'plugins', 'include');
+    expect(config.get()).toEqual(cfg);
+    expect(cfg.output).toEqual('./report');
+    expect(config.get('output')).toEqual('./report');
+    expect(config.get('output', './other')).toEqual('./report');
+    expect(config.get('tests', '**_test.js')).toEqual('**_test.js');
   });
 
   it('should be completely reset', () => {
@@ -30,17 +30,17 @@ describe('Config', () => {
     config.append({
       output: './other',
     });
-    expect(config.get('helpers').Puppeteer.show).to.eql(true);
+    expect(config.get('helpers').Puppeteer.show).toEqual(true);
     config.reset();
-    expect(config.get().output).to.not.eql('./other');
-    expect(config.get()).to.not.contain.key('tests');
-    expect(config.get('helpers')).to.not.contain.key('Puppeteer');
+    expect(config.get().output).not.toEqual('./other');
+    expect(config.get()).not.toHaveProperty('tests');
+    expect(config.get('helpers')).not.toHaveProperty('Puppeteer');
     config.create({
       helpers: {
         Puppeteer: {},
       },
     });
-    expect(config.get('helpers').Puppeteer.show).to.not.eql(true);
+    expect(config.get('helpers').Puppeteer.show).not.toEqual(true);
   });
 
   it('can be updated', () => {
@@ -48,7 +48,7 @@ describe('Config', () => {
     config.append({
       output: './other',
     });
-    expect(config.get('output')).to.eql('./other');
+    expect(config.get('output')).toEqual('./other');
   });
 
   it('should use config hooks to enhance configs', () => {
@@ -58,7 +58,7 @@ describe('Config', () => {
     const cfg = config.create({
       additionalValue: false,
     });
-    expect(cfg).to.contain.key('additionalValue');
-    expect(cfg.additionalValue).to.eql(true);
+    expect(cfg).toHaveProperty('additionalValue');
+    expect(cfg.additionalValue).toEqual(true);
   });
 });

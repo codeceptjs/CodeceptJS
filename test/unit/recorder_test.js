@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 
 const recorder = require('../../lib/recorder');
 
@@ -6,7 +6,7 @@ describe('Recorder', () => {
   beforeEach(() => recorder.start());
 
   it('should create a promise', () => {
-    expect(recorder.promise()).to.be.instanceof(Promise);
+    expect(recorder.promise()).toBeInstanceOf(Promise);
   });
 
   it('should execute error handler on error', (done) => {
@@ -27,7 +27,7 @@ describe('Recorder', () => {
       recorder.add(() => recorder.session.restore());
       recorder.add(() => order += 'b');
       return recorder.promise()
-        .then(() => expect(order).is.equal('acdb'));
+        .then(() => expect(order).toEqual('acdb'));
     });
   });
 
@@ -36,7 +36,7 @@ describe('Recorder', () => {
       let counter = 0;
       recorder.add(() => counter++);
       recorder.add(() => counter++);
-      recorder.add(() => expect(counter).eql(2));
+      recorder.add(() => expect(counter).toEqual(2));
       return recorder.promise();
     });
 
@@ -46,7 +46,7 @@ describe('Recorder', () => {
       recorder.stop();
       recorder.add(() => counter++);
       return recorder.promise()
-        .then(() => expect(counter).eql(1));
+        .then(() => expect(counter).toEqual(1));
     });
   });
 

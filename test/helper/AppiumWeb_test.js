@@ -131,19 +131,19 @@ describe('Appium Web', function () {
     it('should grab text from page', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       const val = await I.grabTextFrom('p.jumbotron');
-      val.should.be.equal('Welcome to event app');
+      val.should.be.toEqual('Welcome to event app');
     });
 
     it('should grab value from field', async () => {
       await I.amOnPage('/angular-demo-app/#/options');
       const val = await I.grabValueFrom('#ssh');
-      val.should.be.equal('PUBLIC-SSH-KEY');
+      val.should.be.toEqual('PUBLIC-SSH-KEY');
     });
 
     it('should grab attribute from element', async () => {
       await I.amOnPage('/angular-demo-app/#/info');
       const val = await I.grabAttributeFrom('a.btn', 'ng-href');
-      val.should.be.equal('#/');
+      val.should.be.toEqual('#/');
     });
   });
 

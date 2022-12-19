@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const path = require('path');
 const semver = require('semver');
 const { Workers, event, recorder } = require('../../lib/index');
@@ -28,9 +28,9 @@ describe('Workers', () => {
     });
 
     workers.on(event.all.result, (status) => {
-      expect(status).equal(false);
-      expect(passedCount).equal(5);
-      expect(failedCount).equal(3);
+      expect(status).toEqual(false);
+      expect(passedCount).toEqual(5);
+      expect(failedCount).toEqual(3);
       done();
     });
   });
@@ -68,8 +68,8 @@ describe('Workers', () => {
     workers.run();
 
     workers.on(event.all.result, (status) => {
-      expect(workers.getWorkers().length).equal(2);
-      expect(status).equal(true);
+      expect(workers.getWorkers().length).toEqual(2);
+      expect(status).toEqual(true);
       done();
     });
   });
@@ -107,9 +107,9 @@ describe('Workers', () => {
     });
 
     workers.on(event.all.result, (status) => {
-      expect(status).equal(false);
-      expect(passedCount).equal(4);
-      expect(failedCount).equal(1);
+      expect(status).toEqual(false);
+      expect(passedCount).toEqual(4);
+      expect(failedCount).toEqual(1);
       done();
     });
   });
@@ -148,8 +148,8 @@ describe('Workers', () => {
     workers.run();
 
     workers.on(event.all.result, (status) => {
-      expect(workers.getWorkers().length).equal(2);
-      expect(status).equal(true);
+      expect(workers.getWorkers().length).toEqual(2);
+      expect(status).toEqual(true);
       done();
     });
   });
@@ -185,8 +185,8 @@ describe('Workers', () => {
     workers.run();
 
     workers.on(event.all.result, (status) => {
-      expect(workers.getWorkers().length).equal(2);
-      expect(status).equal(true);
+      expect(workers.getWorkers().length).toEqual(2);
+      expect(status).toEqual(true);
       done();
     });
   });
@@ -216,7 +216,7 @@ describe('Workers', () => {
     recorder.add(() => share({ fromMain: true }));
 
     workers.on(event.all.result, (status) => {
-      expect(status).equal(true);
+      expect(status).toEqual(true);
       done();
     });
   });
@@ -247,9 +247,9 @@ describe('Workers', () => {
     });
 
     workers.on(event.all.result, () => {
-      expect(messages.length).equal(2);
-      expect(messages[0]).equal('message 1');
-      expect(messages[1]).equal('message 2');
+      expect(messages.length).toEqual(2);
+      expect(messages[0]).toEqual('message 1');
+      expect(messages[1]).toEqual('message 2');
       done();
     });
   });

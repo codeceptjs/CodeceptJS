@@ -48,7 +48,7 @@ describe('Definitions', function () {
           { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
         ]);
         const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure();
-        codeceptjs.type.should.equal('typeof CodeceptJS.index');
+        codeceptjs.type.toEqual('typeof CodeceptJS.index');
         done();
       });
     });
@@ -224,7 +224,7 @@ chai.use((chai, utils) => {
   utils.addProperty(chai.Assertion.prototype, 'valid', function () {
     /** @type {import('ts-morph').Project} */
     const project = utils.flag(this, 'object');
-    new chai.Assertion(project).to.be.instanceof(Project);
+    new chai.Assertion(project).toBeInstanceOf(Project);
 
     let diagnostics = project.getPreEmitDiagnostics();
     diagnostics = diagnostics.filter((diagnostic) => {

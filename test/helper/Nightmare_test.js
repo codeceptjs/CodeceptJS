@@ -44,19 +44,19 @@ describe('Nightmare', function () {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
       const url = await browser.url();
-      url.should.eql(`${siteUrl}/`);
+      url.toEqual(`${siteUrl}/`);
     });
 
     it('should open any page of configured site', async () => {
       await I.amOnPage('/info');
       const url = await browser.url();
-      url.should.eql(`${siteUrl}/info`);
+      url.toEqual(`${siteUrl}/info`);
     });
 
     it('should open absolute url', async () => {
       await I.amOnPage(siteUrl);
       const url = await browser.url();
-      url.should.eql(`${siteUrl}/`);
+      url.toEqual(`${siteUrl}/`);
     });
 
     it('should open same page twice without error', async () => {
@@ -140,7 +140,7 @@ describe('Nightmare', function () {
         }).then((attributeValue) => {
           // get attribute value and back to server side
           // execute an assertion
-          assert.equal(attributeValue, 'test');
+          assert.toEqual(attributeValue, 'test');
         }));
     });
   });
@@ -162,11 +162,11 @@ describe('Nightmare', function () {
     it('should refresh the current page', async () => {
       await I.amOnPage(siteUrl);
       const url = await browser.url();
-      assert.equal(`${siteUrl}/`, url);
+      assert.toEqual(`${siteUrl}/`, url);
       await I.refreshPage();
       const nextUrl = await browser.url();
       // reloaded the page, check the url is the same
-      assert.equal(url, nextUrl);
+      assert.toEqual(url, nextUrl);
     });
   });
 

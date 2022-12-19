@@ -45,7 +45,7 @@ describe('GraphQL', () => {
     it('should send a query: read', async () => {
       const resp = await I.sendQuery('{ user(id: 0) { id name email }}');
       const { user } = resp.data.data;
-      user.should.eql({
+      user.toEqual({
         id: '0',
         name: 'john doe',
         email: 'johnd@mutex.com',
@@ -75,7 +75,7 @@ describe('GraphQL', () => {
       };
       const resp = await I.sendMutation(mutation, variables);
       const { createUser } = resp.data.data;
-      createUser.should.eql({
+      createUser.toEqual({
         id: '111',
         name: 'Sourab',
         email: 'sourab@mail.com',
@@ -94,7 +94,7 @@ describe('GraphQL', () => {
       };
       const resp = await I.sendMutation(mutation, variables);
       const { deleteUser } = resp.data.data;
-      deleteUser.should.eql('111');
+      deleteUser.toEqual('111');
     });
   });
 

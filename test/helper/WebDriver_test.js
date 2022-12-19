@@ -60,7 +60,7 @@ describe('WebDriver', function () {
   describe('customLocatorStrategies', () => {
     it('should locate through custom selector', async () => {
       const el = await this.wdBrowser.custom$('customSelector', '.test');
-      expect(el.elementId).to.equal('.test-foobar');
+      expect(el.elementId).toEqual('.test-foobar');
     });
 
     it('should include the custom strategy', async () => {
@@ -75,7 +75,7 @@ describe('WebDriver', function () {
       try {
         await wd.waitForEnabled({ madeUpSelector: '#text' }, 2);
       } catch (e) {
-        expect(e.message).to.include('Please define "customLocatorStrategies"');
+        expect(e.message).toContain('Please define "customLocatorStrategies"');
       }
     });
   });
@@ -84,19 +84,19 @@ describe('WebDriver', function () {
     it('should open main page of configured site', async () => {
       await wd.amOnPage('/');
       const url = await wd.grabCurrentUrl();
-      url.should.eql(`${siteUrl}/`);
+      url.toEqual(`${siteUrl}/`);
     });
 
     it('should open any page of configured site', async () => {
       await wd.amOnPage('/info');
       const url = await wd.grabCurrentUrl();
-      url.should.eql(`${siteUrl}/info`);
+      url.toEqual(`${siteUrl}/info`);
     });
 
     it('should open absolute url', async () => {
       await wd.amOnPage(siteUrl);
       const url = await wd.grabCurrentUrl();
-      url.should.eql(`${siteUrl}/`);
+      url.toEqual(`${siteUrl}/`);
     });
   });
 
@@ -128,7 +128,7 @@ describe('WebDriver', function () {
         await wd.seeInField('#empty_input', 'Ayayay');
       } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
-        e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
+        e.inspect().should.be.toEqual('expected fields by #empty_input to include "Ayayay"');
       }
     });
 
@@ -389,7 +389,7 @@ describe('WebDriver', function () {
         await wd.seeTitleEquals('TestEd Beta 2.0');
         await wd.seeTitleEquals('TestEd Beta 2.');
       } catch (e) {
-        assert.equal(e.message, 'expected web page title to be TestEd Beta 2., but found TestEd Beta 2.0');
+        assert.toEqual(e.message, 'expected web page title to be TestEd Beta 2., but found TestEd Beta 2.0');
       }
     });
   });
@@ -401,10 +401,10 @@ describe('WebDriver', function () {
 
       try {
         await wd.seeTextEquals('Welcome to test app', 'h1');
-        assert.equal(true, false, 'Throw an error because it should not get this far!');
+        assert.toEqual(true, false, 'Throw an error because it should not get this far!');
       } catch (e) {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
+        e.message.should.be.toEqual('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
         // e.should.be.instanceOf(AssertionFailedError);
       }
     });
@@ -417,7 +417,7 @@ describe('WebDriver', function () {
         await wd.seeTextEquals('This is not empty', '.logo');
       } catch (e) {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('expected element .logo "This is not empty" to equal ""');
+        e.message.should.be.toEqual('expected element .logo "This is not empty" to equal ""');
       }
     });
   });
@@ -593,19 +593,19 @@ describe('WebDriver', function () {
     it('should only have 1 tab open when the browser starts and navigates to the first page', async () => {
       await wd.amOnPage('/');
       const numPages = await wd.grabNumberOfOpenTabs();
-      assert.equal(numPages, 1);
+      assert.toEqual(numPages, 1);
     });
 
     it('should switch to next tab', async () => {
       wd.amOnPage('/info');
       const numPages = await wd.grabNumberOfOpenTabs();
-      assert.equal(numPages, 1);
+      assert.toEqual(numPages, 1);
 
       await wd.click('New tab');
       await wd.switchToNextTab();
       await wd.waitInUrl('/login');
       const numPagesAfter = await wd.grabNumberOfOpenTabs();
-      assert.equal(numPagesAfter, 2);
+      assert.toEqual(numPagesAfter, 2);
     });
 
     it('should assert when there is no ability to switch to next tab', () => {
@@ -613,9 +613,9 @@ describe('WebDriver', function () {
         .then(() => wd.click('More info'))
         .then(() => wd.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
         .then(() => wd.switchToNextTab(2))
-        .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+        .then(() => assert.toEqual(true, false, 'Throw an error if it gets this far (which it should not)!'))
         .catch((e) => {
-          assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
+          assert.toEqual(e.message, 'There is no ability to switch to next tab with offset 2');
         });
     });
 
@@ -625,7 +625,7 @@ describe('WebDriver', function () {
         .then(() => wd.switchToNextTab())
         .then(() => wd.seeInCurrentUrl('/login'))
         .then(() => wd.grabNumberOfOpenTabs())
-        .then(numPages => assert.equal(numPages, 2))
+        .then(numPages => assert.toEqual(numPages, 2))
         .then(() => wd.closeCurrentTab())
         .then(() => wd.seeInCurrentUrl('/info'))
         .then(() => wd.grabNumberOfOpenTabs());
@@ -649,7 +649,7 @@ describe('WebDriver', function () {
         .then(() => wd.openNewTab())
         .then(() => wd.waitInUrl('about:blank'))
         .then(() => wd.grabNumberOfOpenTabs())
-        .then(numPages => assert.equal(numPages, 2));
+        .then(numPages => assert.toEqual(numPages, 2));
     });
 
     it('should switch to previous tab', () => {
@@ -667,7 +667,7 @@ describe('WebDriver', function () {
         .then(() => wd.switchToPreviousTab(2))
         .then(() => wd.waitInUrl('/info'))
         .catch((e) => {
-          assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
+          assert.toEqual(e.message, 'There is no ability to switch to previous tab with offset 2');
         });
     });
   });
@@ -698,13 +698,13 @@ describe('WebDriver', function () {
       return wd.amOnPage('/form/popup')
         .then(() => wd.click('Alert'))
         .then(() => wd.grabPopupText())
-        .then(text => assert.equal(text, 'Really?'));
+        .then(text => assert.toEqual(text, 'Really?'));
     });
 
     it('should return null if no popup is visible (do not throw an error)', () => {
       return wd.amOnPage('/form/popup')
         .then(() => wd.grabPopupText())
-        .then(text => assert.equal(text, null));
+        .then(text => assert.toEqual(text, null));
     });
   });
 
@@ -713,7 +713,7 @@ describe('WebDriver', function () {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .catch((e) => {
-          e.message.should.be.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec');
+          e.message.should.be.toEqual('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec');
         });
     });
 
@@ -721,7 +721,7 @@ describe('WebDriver', function () {
       return wd.amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.1))
         .catch((e) => {
-          e.message.should.be.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec');
+          e.message.should.be.toEqual('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec');
         });
     });
   });
@@ -747,7 +747,7 @@ describe('WebDriver', function () {
         await wd.switchTo('#invalidIframeSelector');
       } catch (e) {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
+        e.message.should.be.toEqual('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
       }
     });
 
@@ -869,7 +869,7 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_clickable');
       await wd.dontSee('Hello world');
       const res = await wd.grabAttributeFrom('#click', 'id');
-      assert.equal(res, 'click');
+      assert.toEqual(res, 'click');
     });
   });
 
@@ -877,13 +877,13 @@ describe('WebDriver', function () {
     it('should locate a button to click', async () => {
       await wd.amOnPage('/form/checkbox');
       const res = await wd._locateClickable('Submit');
-      res.length.should.be.equal(1);
+      res.length.should.be.toEqual(1);
     });
 
     it('should not locate a non-existing checkbox', async () => {
       await wd.amOnPage('/form/checkbox');
       const res = await wd._locateClickable('I disagree');
-      res.length.should.be.equal(0);
+      res.length.should.be.toEqual(0);
     });
   });
 
@@ -891,13 +891,13 @@ describe('WebDriver', function () {
     it('should locate a checkbox', async () => {
       await wd.amOnPage('/form/checkbox');
       const res = await wd._locateCheckable('I Agree');
-      res.length.should.be.equal(1);
+      res.length.should.be.toEqual(1);
     });
 
     it('should not locate a non-existing checkbox', async () => {
       await wd.amOnPage('/form/checkbox');
       const res = await wd._locateCheckable('I disagree');
-      res.length.should.be.equal(0);
+      res.length.should.be.toEqual(0);
     });
   });
 
@@ -905,13 +905,13 @@ describe('WebDriver', function () {
     it('should locate a field', async () => {
       await wd.amOnPage('/form/field');
       const res = await wd._locateFields('Name');
-      res.length.should.be.equal(1);
+      res.length.should.be.toEqual(1);
     });
 
     it('should not locate a non-existing field', async () => {
       await wd.amOnPage('/form/field');
       const res = await wd._locateFields('Mother-in-law');
-      res.length.should.be.equal(0);
+      res.length.should.be.toEqual(0);
     });
   });
 
@@ -925,7 +925,7 @@ describe('WebDriver', function () {
       console.log('lololo', logs);
 
       const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
-      assert.equal(matchingLogs.length, 1);
+      assert.toEqual(matchingLogs.length, 1);
     });
 
     it('should grab browser logs across pages', async () => {
@@ -942,7 +942,7 @@ describe('WebDriver', function () {
       const logs = await wd.grabBrowserLogs();
 
       const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
-      assert.equal(matchingLogs.length, 2);
+      assert.toEqual(matchingLogs.length, 2);
     });
   });
 
@@ -1044,33 +1044,33 @@ describe('WebDriver', function () {
       const urlBeforePopup = await wd.grabCurrentUrl();
 
       const allHandlesBeforePopup = await wd.grabAllWindowHandles();
-      allHandlesBeforePopup.length.should.eql(1);
+      allHandlesBeforePopup.length.toEqual(1);
 
       await wd.executeScript(() => {
         window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400');
       });
 
       const allHandlesAfterPopup = await wd.grabAllWindowHandles();
-      allHandlesAfterPopup.length.should.eql(2);
+      allHandlesAfterPopup.length.toEqual(2);
 
       await wd.switchToWindow(allHandlesAfterPopup[1]);
       const urlAfterPopup = await wd.grabCurrentUrl();
-      urlAfterPopup.should.eql('https://www.w3schools.com/');
+      urlAfterPopup.toEqual('https://www.w3schools.com/');
 
-      handleBeforePopup.should.eql(allHandlesAfterPopup[0]);
+      handleBeforePopup.toEqual(allHandlesAfterPopup[0]);
       await wd.switchToWindow(handleBeforePopup);
       const currentURL = await wd.grabCurrentUrl();
-      currentURL.should.eql(urlBeforePopup);
+      currentURL.toEqual(urlBeforePopup);
 
       await wd.switchToWindow(allHandlesAfterPopup[1]);
       const urlAfterSwitchBack = await wd.grabCurrentUrl();
-      urlAfterSwitchBack.should.eql('https://www.w3schools.com/');
+      urlAfterSwitchBack.toEqual('https://www.w3schools.com/');
       await wd.closeCurrentTab();
 
       const allHandlesAfterPopupClosed = await wd.grabAllWindowHandles();
-      allHandlesAfterPopupClosed.length.should.eql(1);
+      allHandlesAfterPopupClosed.length.toEqual(1);
       const currentWindowHandle = await wd.grabCurrentWindowHandle();
-      currentWindowHandle.should.eql(handleBeforePopup);
+      currentWindowHandle.toEqual(handleBeforePopup);
     });
   });
 
@@ -1154,8 +1154,8 @@ describe('WebDriver', function () {
     it('should set the geoLocation', async () => {
       await wd.setGeoLocation(37.4043, -122.0748);
       const geoLocation = await wd.grabGeoLocation();
-      assert.equal(geoLocation.latitude, 37.4043, 'The latitude is not properly set');
-      assert.equal(geoLocation.longitude, -122.0748, 'The longitude is not properly set');
+      assert.toEqual(geoLocation.latitude, 37.4043, 'The latitude is not properly set');
+      assert.toEqual(geoLocation.longitude, -122.0748, 'The longitude is not properly set');
     });
   });
 
@@ -1186,9 +1186,9 @@ describe('WebDriver', function () {
     it('should scroll element into viewport', async () => {
       await wd.amOnPage('/form/scroll_into_view');
       const element = await wd.browser.$('#notInViewportByDefault');
-      expect(await element.isDisplayedInViewport()).to.be.false;
+      expect(await element.isDisplayedInViewport()).toBeFalsy();
       await wd.scrollIntoView('#notInViewportByDefault');
-      expect(await element.isDisplayedInViewport()).to.be.true;
+      expect(await element.isDisplayedInViewport()).toBeTruthy();
     });
   });
 
@@ -1198,7 +1198,7 @@ describe('WebDriver', function () {
       const title = await wd.useWebDriverTo('test', async ({ browser }) => {
         return browser.getTitle();
       });
-      assert.equal('TestEd Beta 2.0', title);
+      assert.toEqual('TestEd Beta 2.0', title);
     });
   });
 });

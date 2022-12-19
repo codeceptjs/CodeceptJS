@@ -6,6 +6,6 @@ module.exports = {
     console.log('secondPageMethod');
   },
   async assertLocator() {
-    await assert.equal(this.locator, 'body');
+    await assert.toEqual(this.locator, 'body');
   },
 };

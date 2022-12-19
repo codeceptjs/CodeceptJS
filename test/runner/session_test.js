@@ -21,7 +21,7 @@ describe('CodeceptJS session', function () {
       list.pop();
       testStatus = list.pop();
       testStatus.should.include('OK');
-      list.should.eql([
+      list.toEqual([
         'I do "writing"',
         'davert: I do "reading"',
         'I do "playing"',
@@ -45,7 +45,7 @@ describe('CodeceptJS session', function () {
       testStatus = list.pop();
       testStatus.should.include('OK');
 
-      list.should.eql([
+      list.toEqual([
         'I do "writing"',
         'I do "playing"',
         'john: I do "crying"',

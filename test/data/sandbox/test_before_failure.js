@@ -5,7 +5,7 @@ Feature('Before Test');
 let val = 0;
 
 Before(() => {
-  assert.equal(val, 0);
+  assert.toEqual(val, 0);
   val++;
 });
 

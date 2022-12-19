@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const retryTo = require('../../../lib/plugin/retryTo')();
 const recorder = require('../../../lib/recorder');
 
@@ -10,7 +10,7 @@ describe('retryTo plugin', () => {
   it('should execute command on success', async () => {
     let counter = 0;
     await retryTo(() => recorder.add(() => counter++), 5);
-    expect(counter).is.equal(1);
+    expect(counter).toEqual(1);
     return recorder.promise();
   });
 
@@ -25,9 +25,9 @@ describe('retryTo plugin', () => {
       await recorder.promise();
     } catch (err) {
       errorCaught = true;
-      expect(err.message).to.eql('Ups');
+      expect(err.message).toEqual('Ups');
     }
-    expect(counter).to.equal(5);
-    expect(errorCaught).is.true;
+    expect(counter).toEqual(5);
+    expect(errorCaught).toBeTruthy();
   });
 });

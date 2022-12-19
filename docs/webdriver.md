@@ -472,7 +472,7 @@ Scenario('should open main page of configured site, open a popup, switch to main
     const handleBeforePopup = await I.grabCurrentWindowHandle();
     const urlBeforePopup = await I.grabCurrentUrl();
     const allHandlesBeforePopup = await I.grabAllWindowHandles();
-    assert.equal(allHandlesBeforePopup.length, 1, 'Single Window');
+    assert.toEqual(allHandlesBeforePopup.length, 1, 'Single Window');
 
     await I.executeScript(() => {
         window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400');

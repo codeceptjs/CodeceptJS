@@ -89,14 +89,14 @@ describe('GraphQLDataFactory', function () {
       await I.mutateData('createUser');
       const resp = await I.graphqlHelper.sendQuery('query { users { id name } }');
       const { users } = resp.data.data;
-      users.length.should.eql(2);
+      users.length.toEqual(2);
     });
 
     it('should create a new user with predefined field', async () => {
       const user = await I.mutateData('createUser', { name: 'radhey' });
 
-      user.name.should.eql('radhey');
-      user.id.should.eql('1');
+      user.name.toEqual('radhey');
+      user.id.toEqual('1');
     });
 
     it('should update request with onRequest', async () => {
@@ -121,29 +121,29 @@ describe('GraphQLDataFactory', function () {
         },
       });
       const user = await I.mutateData('createUser');
-      user.name.should.eql('Dante');
+      user.name.toEqual('Dante');
     });
 
     it('should cleanup created data', async () => {
       const user = await I.mutateData('createUser', { name: 'Dante' });
-      user.name.should.eql('Dante');
-      user.id.should.eql('1');
+      user.name.toEqual('Dante');
+      user.id.toEqual('1');
       await I._after();
       const resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      resp.data.data.users.length.should.eql(1);
+      resp.data.data.users.length.toEqual(1);
     });
 
     it('should create multiple users and cleanup after', async () => {
       let resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      resp.data.data.users.length.should.eql(1);
+      resp.data.data.users.length.toEqual(1);
 
       await I.mutateMultiple('createUser', 3);
       resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      resp.data.data.users.length.should.eql(4);
+      resp.data.data.users.length.toEqual(4);
 
       await I._after();
       resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      resp.data.data.users.length.should.eql(1);
+      resp.data.data.users.length.toEqual(1);
     });
 
     it('should not remove records if cleanup:false', async () => {
@@ -165,10 +165,10 @@ describe('GraphQLDataFactory', function () {
       });
       await I.mutateData('createUser');
       let resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      resp.data.data.users.length.should.eql(2);
+      resp.data.data.users.length.toEqual(2);
       await I._after();
       resp = await I.graphqlHelper.sendQuery('query { users { id } }');
-      resp.data.data.users.length.should.eql(2);
+      resp.data.data.users.length.toEqual(2);
     });
   });
 });

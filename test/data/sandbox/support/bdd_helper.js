@@ -14,11 +14,11 @@ class CheckoutHelper extends Helper {
   }
 
   seeNum(num) {
-    assert.equal(num, this.num);
+    assert.toEqual(num, this.num);
   }
 
   seeSum(sum) {
-    assert.equal(sum, this.sum);
+    assert.toEqual(sum, this.sum);
   }
 
   haveDiscountForPrice(price, discount) {

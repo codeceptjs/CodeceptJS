@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { expect } = require('chai');
+const expect = require('expect');
 const path = require('path');
 
 const Appium = require('../../lib/helper/Appium');
@@ -61,26 +61,26 @@ describe('Appium', function () {
 
         it('should grab current context', async () => {
           const val = await app.grabContext();
-          assert.equal(val, 'NATIVE_APP');
+          assert.toEqual(val, 'NATIVE_APP');
         });
 
         it('should grab current activity of app', async () => {
           const val = await app.grabCurrentActivity();
-          assert.equal(val, '.HomeScreenActivity');
+          assert.toEqual(val, '.HomeScreenActivity');
         });
 
         it('should grab network connection settings', async () => {
           await app.setNetworkConnection(4);
           const val = await app.grabNetworkConnection();
-          assert.equal(val.value, 4);
-          assert.equal(val.inAirplaneMode, false);
-          assert.equal(val.hasWifi, false);
-          assert.equal(val.hasData, true);
+          assert.toEqual(val.value, 4);
+          assert.toEqual(val.inAirplaneMode, false);
+          assert.toEqual(val.hasWifi, false);
+          assert.toEqual(val.hasData, true);
         });
 
         it('should grab orientation', async () => {
           const val = await app.grabOrientation();
-          assert.equal(val, 'PORTRAIT');
+          assert.toEqual(val, 'PORTRAIT');
         });
 
         it('should grab custom settings', async () => {
@@ -100,7 +100,7 @@ describe('Appium', function () {
 
     it('should return true if app is installed @quick', async () => {
       const status = await app.checkIfAppIsInstalled('io.selendroid.testapp');
-      expect(status).to.be.true;
+      expect(status).toBeTruthy();
     });
 
     it('should assert when app is/is not installed', async () => {
@@ -174,7 +174,7 @@ describe('Appium', function () {
       await app.click('~buttonStartWebviewCD');
       await app._switchToContext('WEBVIEW_io.selendroid.testapp');
       const val = await app.grabContext();
-      return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+      return assert.toEqual(val, 'WEBVIEW_io.selendroid.testapp');
     });
 
     it('should switch to native and web contexts @quick', async () => {
@@ -183,19 +183,19 @@ describe('Appium', function () {
       await app.see('WebView location');
       await app.switchToWeb();
       let val = await app.grabContext();
-      assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
+      assert.toEqual(val, 'WEBVIEW_io.selendroid.testapp');
       await app.see('Prefered Car');
       assert.ok(app.isWeb);
       await app.switchToNative();
       val = await app.grabContext();
-      assert.equal(val, 'NATIVE_APP');
+      assert.toEqual(val, 'NATIVE_APP');
       return assert.ok(!app.isWeb);
     });
 
     it('should switch activity', async () => {
       await app.startActivity('io.selendroid.testapp', '.RegisterUserActivity');
       const val = await app.grabCurrentActivity();
-      assert.equal(val, '.RegisterUserActivity');
+      assert.toEqual(val, '.RegisterUserActivity');
     });
   });
 
@@ -203,7 +203,7 @@ describe('Appium', function () {
     it('should set Network Connection (airplane mode on)', async () => {
       await app.setNetworkConnection(1);
       const val = await app.grabNetworkConnection();
-      return assert.equal(val.value, 1);
+      return assert.toEqual(val.value, 1);
     });
 
     it('should set custom settings', async () => {
@@ -261,7 +261,7 @@ describe('Appium', function () {
       await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.tap('~buttonStartWebviewCD');
       const val = await app.grabCurrentActivity();
-      assert.equal(val, '.WebViewActivity');
+      assert.toEqual(val, '.WebViewActivity');
     });
 
     it('should react on swipe action', async () => {
@@ -277,7 +277,7 @@ describe('Appium', function () {
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vx = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-      assert.equal(type, 'FLICK');
+      assert.toEqual(type, 'FLICK');
       assert.ok(vx.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
       assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
@@ -294,7 +294,7 @@ describe('Appium', function () {
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-      assert.equal(type, 'FLICK');
+      assert.toEqual(type, 'FLICK');
       assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
@@ -310,7 +310,7 @@ describe('Appium', function () {
         120, 100,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
-      assert.equal(type, 'FLICK');
+      assert.toEqual(type, 'FLICK');
     });
 
     it('should react on swipeUp action', async () => {
@@ -325,7 +325,7 @@ describe('Appium', function () {
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-      assert.equal(type, 'FLICK');
+      assert.toEqual(type, 'FLICK');
       assert.ok(vy.match(/vy: -\d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
@@ -341,7 +341,7 @@ describe('Appium', function () {
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
-      assert.equal(type, 'FLICK');
+      assert.toEqual(type, 'FLICK');
       assert.ok(vy.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
     });
 
@@ -357,7 +357,7 @@ describe('Appium', function () {
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
-      assert.equal(type, 'FLICK');
+      assert.toEqual(type, 'FLICK');
       assert.ok(vy.match(/vx: -\d\d000\.0 pps/), 'to be like 21000.0 pps');
     });
 
@@ -370,7 +370,7 @@ describe('Appium', function () {
         },
       }, { action: 'release' }]);
       const val = await app.grabCurrentActivity();
-      assert.equal(val, '.HomeScreenActivity');
+      assert.toEqual(val, '.HomeScreenActivity');
     });
 
     it('should assert when you dont scroll the document anymore', async () => {
@@ -407,7 +407,7 @@ describe('Appium', function () {
         await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-        assert.equal(type, 'FLICK');
+        assert.toEqual(type, 'FLICK');
         expect(parseInt(vy.split(' ')[1], 10)).to.be.below(1006);
       });
 
@@ -421,7 +421,7 @@ describe('Appium', function () {
         await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-        assert.equal(type, 'FLICK');
+        assert.toEqual(type, 'FLICK');
         expect(parseInt(vy.split(' ')[1], 10)).to.be.above(-300);
       });
 
@@ -434,7 +434,7 @@ describe('Appium', function () {
         await app.swipeLeft("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-        assert.equal(type, 'FLICK');
+        assert.toEqual(type, 'FLICK');
         expect(vy.split(' ')[1]).to.be.below(730);
       });
 
@@ -447,7 +447,7 @@ describe('Appium', function () {
         await app.swipeRight("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
-        assert.equal(type, 'FLICK');
+        assert.toEqual(type, 'FLICK');
         expect(vy.split(' ')[1]).to.be.above(278);
       });
     });
@@ -510,7 +510,7 @@ describe('Appium', function () {
         await app.waitForText('Nothing here', 1, '~buttonTestCD');
       } catch (e) {
         e.should.be.instanceOf(AssertionFailedError);
-        e.inspect().should.be.equal('expected element ~buttonTestCD to include "Nothing here"');
+        e.inspect().should.be.toEqual('expected element ~buttonTestCD to include "Nothing here"');
       }
     });
   });
@@ -615,13 +615,13 @@ describe('Appium', function () {
     it('should grab text from page', async () => {
       await app.resetApp();
       const val = await app.grabTextFrom('//android.widget.Button[@content-desc="buttonTestCD"]');
-      assert.equal(val, 'EN Button');
+      assert.toEqual(val, 'EN Button');
     });
 
     it('should grab attribute from element', async () => {
       await app.resetApp();
       const val = await app.grabAttributeFrom('//android.widget.Button[@content-desc="buttonTestCD"]', 'resourceId');
-      assert.equal(val, 'io.selendroid.testapp:id/buttonTest');
+      assert.toEqual(val, 'io.selendroid.testapp:id/buttonTest');
     });
 
     it('should be able to grab elements', async () => {
@@ -679,7 +679,7 @@ describe('Appium', function () {
         platform = 'android7';
       });
 
-      assert.equal('android', platform);
+      assert.toEqual('android', platform);
     });
 
     it('should execute only on Android >= 5.0 @quick', () => {

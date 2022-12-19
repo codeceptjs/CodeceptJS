@@ -172,7 +172,7 @@ describe('CodeceptJS Interface', () => {
       ];
 
       lines.filter(l => beforeStep.indexOf(l) > -1)
-        .should.eql(beforeStep, 'check step hooks execution order');
+        .toEqual(beforeStep, 'check step hooks execution order');
 
       // steps order
       const step = [
@@ -182,7 +182,7 @@ describe('CodeceptJS Interface', () => {
       ];
 
       lines.filter(l => step.indexOf(l) > -1)
-        .should.eql(step, 'check steps execution order');
+        .toEqual(step, 'check steps execution order');
 
       expect(err).toBeFalsy();
       done();

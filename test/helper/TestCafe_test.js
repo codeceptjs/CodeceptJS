@@ -50,18 +50,18 @@ describe('TestCafe', function () {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
       const url = await I.grabCurrentUrl();
-      await url.should.eql(`${siteUrl}/`);
+      await url.toEqual(`${siteUrl}/`);
     });
     it('should open any page of configured site', async () => {
       await I.amOnPage('/info');
       const url = await I.grabCurrentUrl();
-      return url.should.eql(`${siteUrl}/info`);
+      return url.toEqual(`${siteUrl}/info`);
     });
 
     it('should open absolute url', async () => {
       await I.amOnPage(siteUrl);
       const url = await I.grabCurrentUrl();
-      return url.should.eql(`${siteUrl}/`);
+      return url.toEqual(`${siteUrl}/`);
     });
   });
 
@@ -85,7 +85,7 @@ describe('TestCafe', function () {
       const title = await I.useTestCafeTo('test', async ({ t }) => {
         return t.eval(() => document.title, { boundTestRun: null });
       });
-      assert.equal('TestEd Beta 2.0', title);
+      assert.toEqual('TestEd Beta 2.0', title);
     });
   });
 });

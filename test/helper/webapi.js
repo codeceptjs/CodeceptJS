@@ -63,7 +63,7 @@ module.exports.tests = function () {
     it('should grab browser url', async () => {
       await I.amOnPage('/info');
       const url = await I.grabCurrentUrl();
-      assert.equal(url, `${siteUrl}/info`);
+      assert.toEqual(url, `${siteUrl}/info`);
     });
   });
 
@@ -76,7 +76,7 @@ module.exports.tests = function () {
         await I.waitInUrl('/info');
         await I.waitInUrl('/info2', 0.1);
       } catch (e) {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
+        assert.toEqual(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
       }
     });
 
@@ -89,7 +89,7 @@ module.exports.tests = function () {
         await I.waitUrlEquals(`${siteUrl}/info`);
         await I.waitUrlEquals('/info2', 0.1);
       } catch (e) {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+        assert.toEqual(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
       }
     });
   });
@@ -160,7 +160,7 @@ module.exports.tests = function () {
     it('should grab number of visible elements for given locator', async () => {
       await I.amOnPage('/info');
       const num = await I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a');
-      assert.equal(num, 3);
+      assert.toEqual(num, 3);
     });
 
     it('should support locators like {xpath:"//div"}', async () => {
@@ -168,25 +168,25 @@ module.exports.tests = function () {
       const num = await I.grabNumberOfVisibleElements({
         xpath: '//div[@id = "grab-multiple"]//a',
       });
-      assert.equal(num, 3);
+      assert.toEqual(num, 3);
     });
 
     it('should grab number of visible elements for given css locator', async () => {
       await I.amOnPage('/info');
       const num = await I.grabNumberOfVisibleElements('[id=grab-multiple] a');
-      assert.equal(num, 3);
+      assert.toEqual(num, 3);
     });
 
     it('should return 0 for non-existing elements', async () => {
       await I.amOnPage('/info');
       const num = await I.grabNumberOfVisibleElements('button[type=submit]');
-      assert.equal(num, 0);
+      assert.toEqual(num, 0);
     });
 
     it('should honor visibility hidden style', async () => {
       await I.amOnPage('/info');
       const num = await I.grabNumberOfVisibleElements('.issue2928');
-      assert.equal(num, 1);
+      assert.toEqual(num, 1);
     });
   });
 
@@ -222,7 +222,7 @@ module.exports.tests = function () {
     it('should click by name', async () => {
       await I.amOnPage('/form/button');
       await I.click('btn0');
-      assert.equal(formContents('text'), 'val');
+      assert.toEqual(formContents('text'), 'val');
     });
 
     it('should click on context', async () => {
@@ -343,7 +343,7 @@ module.exports.tests = function () {
       await I.checkOption('#checkin');
       await I.click('Submit');
       await I.wait(1);
-      assert.equal(formContents('terms'), 'agree');
+      assert.toEqual(formContents('terms'), 'agree');
     });
 
     it('should check option by strict locator', async () => {
@@ -352,21 +352,21 @@ module.exports.tests = function () {
         id: 'checkin',
       });
       await I.click('Submit');
-      assert.equal(formContents('terms'), 'agree');
+      assert.toEqual(formContents('terms'), 'agree');
     });
 
     it('should check option by name', async () => {
       await I.amOnPage('/form/checkbox');
       await I.checkOption('terms');
       await I.click('Submit');
-      assert.equal(formContents('terms'), 'agree');
+      assert.toEqual(formContents('terms'), 'agree');
     });
 
     it('should check option by label', async () => {
       await I.amOnPage('/form/checkbox');
       await I.checkOption('I Agree');
       await I.click('Submit');
-      assert.equal(formContents('terms'), 'agree');
+      assert.toEqual(formContents('terms'), 'agree');
     });
 
     // TODO Having problems with functional style selectors in testcafe
@@ -379,7 +379,7 @@ module.exports.tests = function () {
       await I.amOnPage('/form/example1');
       await I.checkOption('Remember me next time', '.rememberMe');
       await I.click('Login');
-      assert.equal(formContents('LoginForm').rememberMe, 1);
+      assert.toEqual(formContents('LoginForm').rememberMe, 1);
     });
   });
 
@@ -396,35 +396,35 @@ module.exports.tests = function () {
       await I.amOnPage('/form/select');
       await I.selectOption('form select[name=age]', 'adult');
       await I.click('Submit');
-      assert.equal(formContents('age'), 'adult');
+      assert.toEqual(formContents('age'), 'adult');
     });
 
     it('should select option by name', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('age', 'adult');
       await I.click('Submit');
-      assert.equal(formContents('age'), 'adult');
+      assert.toEqual(formContents('age'), 'adult');
     });
 
     it('should select option by label', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('Select your age', 'dead');
       await I.click('Submit');
-      assert.equal(formContents('age'), 'dead');
+      assert.toEqual(formContents('age'), 'dead');
     });
 
     it('should select option by label and option text', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('Select your age', '21-60');
       await I.click('Submit');
-      assert.equal(formContents('age'), 'adult');
+      assert.toEqual(formContents('age'), 'adult');
     });
 
     it('should select option by label and option text - with an onchange callback', async () => {
       await I.amOnPage('/form/select_onchange');
       await I.selectOption('Select a value', 'Option 2');
       await I.click('Submit');
-      assert.equal(formContents('select'), 'option2');
+      assert.toEqual(formContents('select'), 'option2');
     });
 
     // Could not get multiselect to work with testcafe
@@ -450,7 +450,7 @@ module.exports.tests = function () {
     it('should return value from sync script', async () => {
       await I.amOnPage('/');
       const val = await I.executeScript(a => a + 5, 5);
-      assert.equal(val, 10);
+      assert.toEqual(val, 10);
     });
 
     it('should return value from sync script in iframe', async function () {
@@ -460,7 +460,7 @@ module.exports.tests = function () {
       await I.amOnPage('/iframe');
       await I.switchTo('iframe');
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
-      assert.equal(val, 'Information');
+      assert.toEqual(val, 'Information');
     });
 
     it('should execute async script', async function () {
@@ -474,7 +474,7 @@ module.exports.tests = function () {
           done(5);
         }, 100);
       }, 'Timeout');
-      assert.equal(val, 5);
+      assert.toEqual(val, 5);
       await I.see('Timeout', 'a');
     });
   });
@@ -484,21 +484,21 @@ module.exports.tests = function () {
       await I.amOnPage('/form/field');
       await I.fillField('Name', 'Nothing special');
       await I.click('Submit');
-      assert.equal(formContents('name'), 'Nothing special');
+      assert.toEqual(formContents('name'), 'Nothing special');
     });
 
     it('should fill input fields with secrets', async () => {
       await I.amOnPage('/form/field');
       await I.fillField('Name', secret('Something special'));
       await I.click('Submit');
-      assert.equal(formContents('name'), 'Something special');
+      assert.toEqual(formContents('name'), 'Something special');
     });
 
     it('should fill field by css', async () => {
       await I.amOnPage('/form/field');
       await I.fillField('#name', 'Nothing special');
       await I.click('Submit');
-      assert.equal(formContents('name'), 'Nothing special');
+      assert.toEqual(formContents('name'), 'Nothing special');
     });
 
     it('should fill field by strict locator', async () => {
@@ -507,7 +507,7 @@ module.exports.tests = function () {
         id: 'name',
       }, 'Nothing special');
       await I.click('Submit');
-      assert.equal(formContents('name'), 'Nothing special');
+      assert.toEqual(formContents('name'), 'Nothing special');
     });
 
     it('should fill field by name', async () => {
@@ -515,22 +515,22 @@ module.exports.tests = function () {
       await I.fillField('LoginForm[username]', 'davert');
       await I.fillField('LoginForm[password]', '123456');
       await I.click('Login');
-      assert.equal(formContents('LoginForm').username, 'davert');
-      assert.equal(formContents('LoginForm').password, '123456');
+      assert.toEqual(formContents('LoginForm').username, 'davert');
+      assert.toEqual(formContents('LoginForm').password, '123456');
     });
 
     it('should fill textarea by css', async () => {
       await I.amOnPage('/form/textarea');
       await I.fillField('textarea', 'Nothing special');
       await I.click('Submit');
-      assert.equal(formContents('description'), 'Nothing special');
+      assert.toEqual(formContents('description'), 'Nothing special');
     });
 
     it('should fill textarea by label', async () => {
       await I.amOnPage('/form/textarea');
       await I.fillField('Description', 'Nothing special');
       await I.click('Submit');
-      assert.equal(formContents('description'), 'Nothing special');
+      assert.toEqual(formContents('description'), 'Nothing special');
     });
 
     it('should fill input by aria-label and aria-labelledby', async () => {
@@ -538,8 +538,8 @@ module.exports.tests = function () {
       await I.fillField('My Address', 'Home Sweet Home');
       await I.fillField('Phone', '123456');
       await I.click('Submit');
-      assert.equal(formContents('my-form-phone'), '123456');
-      assert.equal(formContents('my-form-address'), 'Home Sweet Home');
+      assert.toEqual(formContents('my-form-phone'), '123456');
+      assert.toEqual(formContents('my-form-address'), 'Home Sweet Home');
     });
 
     it('should fill textarea by overwritting the existing value', async () => {
@@ -547,14 +547,14 @@ module.exports.tests = function () {
       await I.fillField('Description', 'Nothing special');
       await I.fillField('Description', 'Some other text');
       await I.click('Submit');
-      assert.equal(formContents('description'), 'Some other text');
+      assert.toEqual(formContents('description'), 'Some other text');
     });
 
     it('should append field value', async () => {
       await I.amOnPage('/form/field');
       await I.appendField('Name', '_AND_NEW');
       await I.click('Submit');
-      assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
+      assert.toEqual(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
 
     it('should not fill invisible fields', async () => {
@@ -577,14 +577,14 @@ module.exports.tests = function () {
       await I.amOnPage('/form/example1');
       await I.clearField('LoginForm[username]');
       await I.click('Login');
-      assert.equal(formContents('LoginForm').username, '');
+      assert.toEqual(formContents('LoginForm').username, '');
     });
 
     it('should clear field by locator', async () => {
       await I.amOnPage('/form/example1');
       await I.clearField('#LoginForm_username');
       await I.click('Login');
-      assert.equal(formContents('LoginForm').username, '');
+      assert.toEqual(formContents('LoginForm').username, '');
     });
   });
 
@@ -668,13 +668,13 @@ module.exports.tests = function () {
     it('should grab multiple texts from page', async () => {
       await I.amOnPage('/info');
       let vals = await I.grabTextFromAll('#grab-multiple a');
-      assert.equal(vals[0], 'First');
-      assert.equal(vals[1], 'Second');
-      assert.equal(vals[2], 'Third');
+      assert.toEqual(vals[0], 'First');
+      assert.toEqual(vals[1], 'Second');
+      assert.toEqual(vals[2], 'Third');
 
       await I.amOnPage('/info');
       vals = await I.grabTextFromAll('#invalid-id a');
-      assert.equal(vals.length, 0);
+      assert.toEqual(vals.length, 0);
     });
 
     it('should grab multiple html from page', async function () {
@@ -682,13 +682,13 @@ module.exports.tests = function () {
 
       await I.amOnPage('/info');
       let vals = await I.grabHTMLFromAll('#grab-multiple a');
-      assert.equal(vals[0], 'First');
-      assert.equal(vals[1], 'Second');
-      assert.equal(vals[2], 'Third');
+      assert.toEqual(vals[0], 'First');
+      assert.toEqual(vals[1], 'Second');
+      assert.toEqual(vals[2], 'Third');
 
       await I.amOnPage('/info');
       vals = await I.grabHTMLFromAll('#invalid-id a');
-      assert.equal(vals.length, 0);
+      assert.toEqual(vals.length, 0);
     });
 
     it('should grab multiple attribute from element', async () => {
@@ -696,8 +696,8 @@ module.exports.tests = function () {
       const vals = await I.grabAttributeFromAll({
         css: 'input',
       }, 'name');
-      assert.equal(vals[0], 'text');
-      assert.equal(vals[1], 'empty_input');
+      assert.toEqual(vals[0], 'text');
+      assert.toEqual(vals[1], 'empty_input');
     });
 
     it('Should return empty array if no attribute found', async () => {
@@ -705,23 +705,23 @@ module.exports.tests = function () {
       const vals = await I.grabAttributeFromAll({
         css: 'div',
       }, 'test');
-      assert.equal(vals.length, 0);
+      assert.toEqual(vals.length, 0);
     });
 
     it('should grab values if multiple field matches', async () => {
       await I.amOnPage('/form/hidden');
       let vals = await I.grabValueFromAll('//form/input');
-      assert.equal(vals[0], 'kill_people');
-      assert.equal(vals[1], 'Submit');
+      assert.toEqual(vals[0], 'kill_people');
+      assert.toEqual(vals[1], 'Submit');
 
       vals = await I.grabValueFromAll("//form/input[@name='action']");
-      assert.equal(vals[0], 'kill_people');
+      assert.toEqual(vals[0], 'kill_people');
     });
 
     it('Should return empty array if no value found', async () => {
       await I.amOnPage('/');
       const vals = await I.grabValueFromAll('//form/input');
-      assert.equal(vals.length, 0);
+      assert.toEqual(vals.length, 0);
     });
   });
 
@@ -729,10 +729,10 @@ module.exports.tests = function () {
     it('should grab text from page', async () => {
       await I.amOnPage('/');
       let val = await I.grabTextFrom('h1');
-      assert.equal(val, 'Welcome to test app!');
+      assert.toEqual(val, 'Welcome to test app!');
 
       val = await I.grabTextFrom('//h1');
-      assert.equal(val, 'Welcome to test app!');
+      assert.toEqual(val, 'Welcome to test app!');
     });
 
     it('should grab html from page', async function () {
@@ -740,7 +740,7 @@ module.exports.tests = function () {
 
       await I.amOnPage('/info');
       const val = await I.grabHTMLFrom('#grab-multiple');
-      assert.equal(`
+      assert.toEqual(`
     <a id="first-link">First</a>
     <a id="second-link">Second</a>
     <a id="third-link">Third</a>
@@ -750,15 +750,15 @@ module.exports.tests = function () {
     it('should grab value from field', async () => {
       await I.amOnPage('/form/hidden');
       let val = await I.grabValueFrom('#action');
-      assert.equal(val, 'kill_people');
+      assert.toEqual(val, 'kill_people');
       val = await I.grabValueFrom("//form/input[@name='action']");
-      assert.equal(val, 'kill_people');
+      assert.toEqual(val, 'kill_people');
       await I.amOnPage('/form/textarea');
       val = await I.grabValueFrom('#description');
-      assert.equal(val, 'sunrise');
+      assert.toEqual(val, 'sunrise');
       await I.amOnPage('/form/select');
       val = await I.grabValueFrom('#age');
-      assert.equal(val, 'oldfag');
+      assert.toEqual(val, 'oldfag');
     });
 
     it('should grab attribute from element', async () => {
@@ -766,7 +766,7 @@ module.exports.tests = function () {
       const val = await I.grabAttributeFrom({
         css: 'form',
       }, 'method');
-      assert.equal(val, 'get');
+      assert.toEqual(val, 'get');
     });
 
     it('should grab custom attribute from element', async () => {
@@ -774,7 +774,7 @@ module.exports.tests = function () {
       const val = await I.grabAttributeFrom({
         css: '.navbar-toggle',
       }, 'data-toggle');
-      assert.equal(val, 'collapse');
+      assert.toEqual(val, 'collapse');
     });
   });
 
@@ -794,7 +794,7 @@ module.exports.tests = function () {
 
       await I.amOnPage('/');
       const val = await I.grabTitle();
-      assert.equal(val, 'TestEd Beta 2.0');
+      assert.toEqual(val, 'TestEd Beta 2.0');
     });
   });
 
@@ -805,8 +805,8 @@ module.exports.tests = function () {
       await I.click('Submit');
       await I.see('Thank you');
       formContents().files.should.have.key('avatar');
-      formContents().files.avatar.name.should.eql('avatar.jpg');
-      formContents().files.avatar.type.should.eql('image/jpeg');
+      formContents().files.avatar.name.toEqual('avatar.jpg');
+      formContents().files.avatar.type.toEqual('image/jpeg');
     });
 
     it('should upload file located by label', async () => {
@@ -817,8 +817,8 @@ module.exports.tests = function () {
       await I.click('Submit');
       await I.see('Thank you');
       formContents().files.should.have.key('avatar');
-      formContents().files.avatar.name.should.eql('avatar.jpg');
-      formContents().files.avatar.type.should.eql('image/jpeg');
+      formContents().files.avatar.name.toEqual('avatar.jpg');
+      formContents().files.avatar.type.toEqual('image/jpeg');
     });
   });
 
@@ -854,7 +854,7 @@ module.exports.tests = function () {
       await I.dontSeeCookie('auuth');
 
       const cookie = await I.grabCookie('auth');
-      assert.equal(cookie.value, '123456');
+      assert.toEqual(cookie.value, '123456');
 
       await I.clearCookie('auth');
       await I.dontSeeCookie('auth');
@@ -874,7 +874,7 @@ module.exports.tests = function () {
       });
 
       const cookies = await I.grabCookie();
-      assert.equal(cookies.length, 2);
+      assert.toEqual(cookies.length, 2);
       assert(cookies[0].name);
       assert(cookies[0].value);
     });
@@ -1171,10 +1171,10 @@ module.exports.tests = function () {
       await I.see('Hasło');
 
       const label = await I.grabTextFrom('label');
-      assert.equal(label, 'Hasło');
+      assert.toEqual(label, 'Hasło');
 
       const input = await I.grabValueFrom('input');
-      assert.equal(input, '12345');
+      assert.toEqual(input, '12345');
     });
 
     it('within should respect context in see', async function () {
@@ -1239,7 +1239,7 @@ module.exports.tests = function () {
 
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
-      assert.equal(afterScrollX, x);
+      assert.toEqual(afterScrollX, x);
     });
 
     it('should scroll to an element', async () => {
@@ -1258,8 +1258,8 @@ module.exports.tests = function () {
       await I.scrollTo(50, 70);
 
       const { x: afterScrollX, y: afterScrollY } = await I.grabPageScrollPosition();
-      assert.equal(afterScrollX, 50);
-      assert.equal(afterScrollY, 70);
+      assert.toEqual(afterScrollX, 50);
+      assert.toEqual(afterScrollY, 70);
     });
 
     it('should scroll to bottom of page', async () => {
@@ -1282,7 +1282,7 @@ module.exports.tests = function () {
 
       const { y: afterScrollY } = await I.grabPageScrollPosition();
       assert.notEqual(afterScrollY, y);
-      assert.equal(afterScrollY, 0);
+      assert.toEqual(afterScrollY, 0);
     });
   });
 
@@ -1292,7 +1292,7 @@ module.exports.tests = function () {
 
       await I.amOnPage('/form/doubleclick');
       const css = await I.grabCssPropertyFrom('#block', 'height');
-      assert.equal(css, '100px');
+      assert.toEqual(css, '100px');
     });
 
     it('should grab camelcased css properies', async () => {
@@ -1300,7 +1300,7 @@ module.exports.tests = function () {
 
       await I.amOnPage('/form/doubleclick');
       const css = await I.grabCssPropertyFrom('#block', 'user-select');
-      assert.equal(css, 'text');
+      assert.toEqual(css, 'text');
     });
 
     it('should grab multiple values if more than one matching element found', async () => {
@@ -1309,8 +1309,8 @@ module.exports.tests = function () {
 
       await I.amOnPage('/info');
       const css = await I.grabCssPropertyFromAll('.span', 'height');
-      assert.equal(css[0], '12px');
-      assert.equal(css[1], '15px');
+      assert.toEqual(css[0], '12px');
+      assert.toEqual(css[1], '15px');
     });
   });
 

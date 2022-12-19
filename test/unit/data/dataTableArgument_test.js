@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const { it } = require('mocha');
 const DataTableArgument = require('../../../lib/data/dataTableArgument');
 
@@ -70,21 +70,21 @@ describe('DataTableArgument', () => {
     const dta = new DataTableArgument(gherkinDataTable);
     const raw = dta.raw();
     const expectedRaw = [['John', 'Doe'], ['Chuck', 'Norris']];
-    expect(raw).to.deep.equal(expectedRaw);
+    expect(raw).toEqual(expectedRaw);
   });
 
   it('should return a 2D array containing each row without the header (first one)', () => {
     const dta = new DataTableArgument(gherkinDataTableWithHeader);
     const rows = dta.rows();
     const expectedRows = [['Chuck', 'Norris']];
-    expect(rows).to.deep.equal(expectedRows);
+    expect(rows).toEqual(expectedRows);
   });
 
   it('should return an of object where properties is the header', () => {
     const dta = new DataTableArgument(gherkinDataTableWithHeader);
     const rows = dta.hashes();
     const expectedRows = [{ firstName: 'Chuck', lastName: 'Norris' }];
-    expect(rows).to.deep.equal(expectedRows);
+    expect(rows).toEqual(expectedRows);
   });
 
   it('transpose should transpose the gherkin data table', () => {
@@ -92,13 +92,13 @@ describe('DataTableArgument', () => {
     dta.transpose();
     const raw = dta.raw();
     const expectedRaw = [['John', 'Chuck'], ['Doe', 'Norris']];
-    expect(raw).to.deep.equal(expectedRaw);
+    expect(raw).toEqual(expectedRaw);
   });
 
   it('rowsHash returns an object where the keys are the first column', () => {
     const dta = new DataTableArgument(gherkinDataTableWithColumnHeader);
     const rawHash = dta.rowsHash();
     const expectedRaw = { firstName: 'Chuck', lastName: 'Norris' };
-    expect(rawHash).to.deep.equal(expectedRaw);
+    expect(rawHash).toEqual(expectedRaw);
   });
 });

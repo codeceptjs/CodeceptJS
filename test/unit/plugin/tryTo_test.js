@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const expect = require('expect');
 const tryTo = require('../../../lib/plugin/tryTo')();
 const recorder = require('../../../lib/recorder');
 
@@ -9,7 +9,7 @@ describe('tryTo plugin', () => {
 
   it('should execute command on success', async () => {
     const ok = await tryTo(() => recorder.add(() => 5));
-    expect(true).is.equal(ok);
+    expect(true).toEqual(ok);
     return recorder.promise();
   });
 
@@ -17,7 +17,7 @@ describe('tryTo plugin', () => {
     const notOk = await tryTo(() => recorder.add(() => {
       throw new Error('Ups');
     }));
-    expect(false).is.equal(notOk);
+    expect(false).toEqual(notOk);
     return recorder.promise();
   });
 });

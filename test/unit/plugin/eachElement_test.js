@@ -1,5 +1,5 @@
 const path = require('path');
-const { expect } = require('chai');
+const expect = require('expect');
 const container = require('../../../lib/container');
 const eachElement = require('../../../lib/plugin/eachElement')();
 const recorder = require('../../../lib/recorder');
@@ -24,11 +24,11 @@ describe('eachElement plugin', () => {
   it('should iterate for each elements', async () => {
     let counter = 0;
     await eachElement('some action', 'some locator', async (el) => {
-      expect(el).is.not.null;
+      expect(el).toBeDefined();
       counter++;
     });
     await recorder.promise();
-    expect(counter).to.equal(2);
+    expect(counter).toEqual(2);
   });
 
   it('should not allow non async function', async () => {
@@ -38,8 +38,8 @@ describe('eachElement plugin', () => {
       await recorder.promise();
     } catch (err) {
       errorCaught = true;
-      expect(err.message).to.include('Async');
+      expect(err.message).toContain('Async');
     }
-    expect(errorCaught).is.true;
+    expect(errorCaught).toBeTruthy();
   });
 });

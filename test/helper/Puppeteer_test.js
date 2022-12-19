@@ -118,18 +118,18 @@ describe('Puppeteer', function () {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
       const url = await page.url();
-      await url.should.eql(`${siteUrl}/`);
+      await url.toEqual(`${siteUrl}/`);
     });
     it('should open any page of configured site', async () => {
       await I.amOnPage('/info');
       const url = await page.url();
-      return url.should.eql(`${siteUrl}/info`);
+      return url.toEqual(`${siteUrl}/info`);
     });
 
     it('should open absolute url', async () => {
       await I.amOnPage(siteUrl);
       const url = await page.url();
-      return url.should.eql(`${siteUrl}/`);
+      return url.toEqual(`${siteUrl}/`);
     });
 
     it('should be unauthenticated ', async () => {
@@ -222,27 +222,27 @@ describe('Puppeteer', function () {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
       .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1)));
+      .then(numPages => assert.toEqual(numPages, 1)));
 
     it('should switch to next tab', () => I.amOnPage('/info')
       .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1))
+      .then(numPages => assert.toEqual(numPages, 1))
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
       .then(() => I.wait(2))
       .then(() => I.seeCurrentUrlEquals('/login'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 2)));
+      .then(numPages => assert.toEqual(numPages, 2)));
 
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
       .then(() => I.click('More info'))
       .then(() => I.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
       .then(() => I.switchToNextTab(2))
       .then(() => I.wait(2))
-      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+      .then(() => assert.toEqual(true, false, 'Throw an error if it gets this far (which it should not)!'))
       .catch((e) => {
-        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
+        assert.toEqual(e.message, 'There is no ability to switch to next tab with offset 2');
       }));
 
     it('should close current tab', () => I.amOnPage('/info')
@@ -251,12 +251,12 @@ describe('Puppeteer', function () {
       .then(() => I.wait(2))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 2))
+      .then(numPages => assert.toEqual(numPages, 2))
       .then(() => I.closeCurrentTab())
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/info'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1)));
+      .then(numPages => assert.toEqual(numPages, 1)));
 
     it('should close other tabs', () => I.amOnPage('/')
       .then(() => I.openNewTab())
@@ -271,14 +271,14 @@ describe('Puppeteer', function () {
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1)));
+      .then(numPages => assert.toEqual(numPages, 1)));
 
     it('should open new tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 2)));
+      .then(numPages => assert.toEqual(numPages, 2)));
 
     it('should switch to previous tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
@@ -296,7 +296,7 @@ describe('Puppeteer', function () {
       .then(() => I.wait(2))
       .then(() => I.waitInUrl('/info'))
       .catch((e) => {
-        assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
+        assert.toEqual(e.message, 'There is no ability to switch to previous tab with offset 2');
       }));
   });
 
@@ -328,11 +328,11 @@ describe('Puppeteer', function () {
       .then(() => I.amCancellingPopups())
       .then(() => I.click('Alert'))
       .then(() => I.grabPopupText())
-      .then(text => assert.equal(text, 'Really?')));
+      .then(text => assert.toEqual(text, 'Really?')));
 
     it('should return null if no popup is visible (do not throw an error)', () => I.amOnPage('/form/popup')
       .then(() => I.grabPopupText())
-      .then(text => assert.equal(text, null)));
+      .then(text => assert.toEqual(text, null)));
   });
 
   describe('#seeNumberOfElements', () => {
@@ -350,14 +350,14 @@ describe('Puppeteer', function () {
       .then(() => I.switchTo('#invalidIframeSelector'))
       .catch((e) => {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
+        e.message.should.be.toEqual('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
       }));
 
     it('should return error if iframe selector is not iframe', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('h1'))
       .catch((e) => {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
+        e.message.should.be.toEqual('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
       }));
 
     it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
@@ -382,10 +382,10 @@ describe('Puppeteer', function () {
     it('should check that title is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
       .then(() => I.seeTitleEquals('TestEd Beta 2.'))
-      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
+      .then(() => assert.toEqual(true, false, 'Throw an error because it should not get this far!'))
       .catch((e) => {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."');
+        e.message.should.be.toEqual('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."');
       }));
   });
 
@@ -393,10 +393,10 @@ describe('Puppeteer', function () {
     it('should check text is equal to provided one', () => I.amOnPage('/')
       .then(() => I.seeTextEquals('Welcome to test app!', 'h1'))
       .then(() => I.seeTextEquals('Welcome to test app', 'h1'))
-      .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
+      .then(() => assert.toEqual(true, false, 'Throw an error because it should not get this far!'))
       .catch((e) => {
         e.should.be.instanceOf(Error);
-        e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
+        e.message.should.be.toEqual('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
       }));
   });
 
@@ -404,12 +404,12 @@ describe('Puppeteer', function () {
     it('should locate a button to click', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateClickable('Submit'))
       .then((res) => {
-        res.length.should.be.equal(1);
+        res.length.should.be.toEqual(1);
       }));
 
     it('should not locate a non-existing checkbox using _locateClickable', () => I.amOnPage('/form/checkbox')
       .then(() => I._locateClickable('I disagree'))
-      .then(res => res.length.should.be.equal(0)));
+      .then(res => res.length.should.be.toEqual(0)));
   });
 
   describe('#_locateCheckable', () => {
@@ -421,11 +421,11 @@ describe('Puppeteer', function () {
   describe('#_locateFields', () => {
     it('should locate a field', () => I.amOnPage('/form/field')
       .then(() => I._locateFields('Name'))
-      .then(res => res.length.should.be.equal(1)));
+      .then(res => res.length.should.be.toEqual(1)));
 
     it('should not locate a non-existing field', () => I.amOnPage('/form/field')
       .then(() => I._locateFields('Mother-in-law'))
-      .then(res => res.length.should.be.equal(0)));
+      .then(res => res.length.should.be.toEqual(0)));
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -433,7 +433,7 @@ describe('Puppeteer', function () {
       .then(() => I.seeInField('#empty_input', 'Ayayay'))
       .catch((e) => {
         e.should.be.instanceOf(AssertionFailedError);
-        e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
+        e.inspect().should.be.toEqual('expected fields by #empty_input to include "Ayayay"');
       }));
 
     it('should check values in checkboxes', async () => {
@@ -696,20 +696,20 @@ describe('Puppeteer', function () {
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('//title'))
-      .then(html => assert.equal(html, 'TestEd Beta 2.0')));
+      .then(html => assert.toEqual(html, 'TestEd Beta 2.0')));
 
     it('should grab inner html from an element using id query', () => I.amOnPage('/')
       .then(() => I.grabHTMLFrom('#area1'))
-      .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
+      .then(html => assert.toEqual(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
 
     it('should grab inner html from multiple elements', () => I.amOnPage('/')
       .then(() => I.grabHTMLFromAll('//a'))
-      .then(html => assert.equal(html.length, 5)));
+      .then(html => assert.toEqual(html.length, 5)));
 
     it('should grab inner html from within an iframe', () => I.amOnPage('/iframe')
       .then(() => I.switchTo({ frame: 'iframe' }))
       .then(() => I.grabHTMLFrom('#new-tab'))
-      .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
+      .then(html => assert.toEqual(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
@@ -720,7 +720,7 @@ describe('Puppeteer', function () {
       .then(() => I.grabBrowserLogs())
       .then((logs) => {
         const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
-        assert.equal(matchingLogs.length, 1);
+        assert.toEqual(matchingLogs.length, 1);
       }));
 
     it('should grab browser logs across pages', () => I.amOnPage('/')
@@ -736,7 +736,7 @@ describe('Puppeteer', function () {
       .then(() => I.grabBrowserLogs())
       .then((logs) => {
         const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
-        assert.equal(matchingLogs.length, 2);
+        assert.toEqual(matchingLogs.length, 2);
       }));
   });
 
@@ -927,7 +927,7 @@ describe('Puppeteer', function () {
       const title = await I.usePuppeteerTo('test', async ({ page }) => {
         return page.title();
       });
-      assert.equal('TestEd Beta 2.0', title);
+      assert.toEqual('TestEd Beta 2.0', title);
     });
   });
 });
@@ -998,30 +998,30 @@ describe('Puppeteer (remote browser)', function () {
 
     xit('should clear any prior existing pages on remote browser', async () => {
       const remotePages = await remoteBrowser.pages();
-      assert.equal(remotePages.length, 1);
+      assert.toEqual(remotePages.length, 1);
       for (let p = 1; p < 5; p++) {
         await remoteBrowser.newPage();
       }
       const existingPages = await remoteBrowser.pages();
-      assert.equal(existingPages.length, 5);
+      assert.toEqual(existingPages.length, 5);
 
       await I._startBrowser();
       // Session was cleared
       let currentPages = await remoteBrowser.pages();
-      assert.equal(currentPages.length, 1);
+      assert.toEqual(currentPages.length, 1);
 
       let numPages = await I.grabNumberOfOpenTabs();
-      assert.equal(numPages, 1);
+      assert.toEqual(numPages, 1);
 
       await I.openNewTab();
 
       numPages = await I.grabNumberOfOpenTabs();
-      assert.equal(numPages, 2);
+      assert.toEqual(numPages, 2);
 
       await I._stopBrowser();
 
       currentPages = await remoteBrowser.pages();
-      assert.equal(currentPages.length, 0);
+      assert.toEqual(currentPages.length, 0);
     });
   });
 });

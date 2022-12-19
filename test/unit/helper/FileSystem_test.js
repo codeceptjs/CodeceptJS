@@ -1,5 +1,5 @@
 const path = require('path');
-const { expect } = require('chai');
+const expect = require('expect');
 
 const FileSystem = require('../../../lib/helper/FileSystem');
 
@@ -18,19 +18,19 @@ describe('FileSystem', () => {
   });
 
   it('should be initialized before tests', () => {
-    expect(fs.dir).to.eql(global.codecept_dir);
+    expect(fs.dir).toEqual(global.codecept_dir);
   });
 
   it('should open dirs', () => {
     fs.amInPath('data');
-    expect(fs.dir).to.eql(path.join(global.codecept_dir, '/data'));
+    expect(fs.dir).toEqual(path.join(global.codecept_dir, '/data'));
   });
 
   it('should see file', () => {
     fs.seeFile('data/fs_sample.txt');
     fs.amInPath('data');
     fs.seeFile('fs_sample.txt');
-    expect(fs.grabFileNames()).to.include('fs_sample.txt');
+    expect(fs.grabFileNames()).toContain('fs_sample.txt');
     fs.seeFileNameMatching('sample');
   });
 
