@@ -91,7 +91,7 @@ describe('Container', () => {
       });
     });
 
-    it.only('should return all helpers with no args', () => expect(container.helpers()).toHaveProperty('helper1', 'helper2'));
+    it('should return all helpers with no args', () => expect(container.helpers()).toHaveProperty('helper1', 'helper2'));
 
     it('should return helper by name', () => {
       expect(container.helpers('helper1')).toBeTruthy();
