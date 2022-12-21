@@ -2,6 +2,8 @@
 
 Thanks for getting here. If you have a good will to improve CodeceptJS we are always glad to help. Ask questions, raise issues, ping in Twitter.
 
+Go over the steps in [this](https://github.com/firstcontributions/first-contributions) guide as first contributions
+
 To start you need:
 
 1.  Fork the repo.
