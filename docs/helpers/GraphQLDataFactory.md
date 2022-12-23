@@ -53,8 +53,8 @@ See the example for Users factories:
 ```js
 // tests/factories/users.js
 
-const Factory = require('rosie').Factory;
-const faker = require('@faker-js/faker');
+const { Factory } = require('rosie').Factory;
+const { faker } = require('@faker-js/faker');
 
 // Used with a constructor function passed to Factory, so that the final build
 // object matches the necessary pattern to be sent as the variables object.
