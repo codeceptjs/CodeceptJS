@@ -45,6 +45,11 @@ describe('CodeceptJS Allure Plugin', function () {
           expect(nestedMetaStep.name[0]).toEqual('I am in path "."');
           expect(testCase.steps[0].step[0].steps.length).toEqual(1);
 
+          expect(testCase.labels[0].label).toEqual([
+            { $: { name: 'language', value: 'javascript' } },
+            { $: { name: 'framework', value: 'codeceptjs' } },
+          ]);
+
           const secondMetaStep = testCase.steps[0].step[1];
           expect(secondMetaStep.name[0]).toEqual('I see file "allure.conf.js"');
         });
