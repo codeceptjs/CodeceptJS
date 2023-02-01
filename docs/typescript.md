@@ -41,7 +41,7 @@ Then select TypeScript as the first question:
 
 Then a config file and new tests will be created in TypeScript format.
 
-If a config file is set in TypeScript format (`codecept.conf.ts`) package `node-ts` will be used to run tests. 
+If a config file is set in TypeScript format (`codecept.conf.ts`) package `ts-node` will be used to run tests. 
 
 ## Promise-Based Typings
 
