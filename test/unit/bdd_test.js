@@ -8,12 +8,19 @@ const {
   Then,
   matchStep,
   clearSteps,
+  defineParameterType,
 } = require('../../lib/interfaces/bdd');
 const run = require('../../lib/interfaces/gherkin');
 const recorder = require('../../lib/recorder');
 const container = require('../../lib/container');
 const actor = require('../../lib/actor');
 const event = require('../../lib/event');
+
+class Color {
+  constructor(name) {
+    this.name = name;
+  }
+}
 
 const text = `
   Feature: checkout process
@@ -377,5 +384,32 @@ describe('BDD', () => {
       expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
       done();
     });
+  });
+
+  it('should match step with custom parameter type', (done) => {
+    const colorType = {
+      name: 'color',
+      regexp: /red|blue|yellow/,
+      transformer: (s) => new Color(s),
+    };
+    defineParameterType(colorType);
+    Given('I have a {color} label', (color) => color);
+    const fn = matchStep('I have a red label');
+    expect('red').is.equal(fn.params[0].name);
+    done();
+  });
+
+  it('should match step with async custom parameter type transformation', async () => {
+    const colorType = {
+      name: 'async_color',
+      regexp: /red|blue|yellow/,
+      transformer: async (s) => new Color(s),
+    };
+    defineParameterType(colorType);
+    Given('I have a {async_color} label', (color) => color);
+    const fn = matchStep('I have a blue label');
+    const color = await fn.params[0];
+    expect('blue').is.equal(color.name);
+    await Promise.resolve();
   });
 });

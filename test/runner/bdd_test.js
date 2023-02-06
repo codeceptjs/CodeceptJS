@@ -13,7 +13,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature files', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Checkout process'); // feature
       stdout.should.include('-- before checkout --');
       stdout.should.include('-- after checkout --');
@@ -30,7 +30,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should print substeps in debug mode', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --debug --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --debug --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Checkout process'); // feature
       // stdout.should.include('In order to buy products'); // test name
       stdout.should.include('Given I have product with $600 price');
@@ -47,7 +47,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should print events in nodejs debug mode', (done) => {
-    exec(`DEBUG=codeceptjs:* ${config_run_config('codecept.bdd.json')} --grep "Checkout products" --verbose`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`DEBUG=codeceptjs:* ${config_run_config('codecept.bdd.js')} --grep "Checkout products" --verbose`, (err, stdout, stderr) => { //eslint-disable-line
       stderr.should.include('Emitted | step.start (I add product "Harry Potter", 5)');
       stdout.should.include('name            | category        | price');
       stdout.should.include('Harry Potter    | Books           | 5');
@@ -59,7 +59,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should obfuscate secret substeps in debug mode', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --debug --grep "Secrets"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --debug --grep "Secrets"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I login'); // feature
       stdout.should.not.include('password');
       assert(!err);
@@ -68,7 +68,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature with examples files', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout examples"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout examples"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(' order discount {"price":"10","total":"10.0"}');
       stdout.should.include(' Given I have product with price 10$ in my cart');
 
@@ -89,7 +89,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature with table and examples files', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Include Examples in dataTtable placeholder"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Include Examples in dataTtable placeholder"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('name            | Nuclear Bomb ');
       stdout.should.include('price           | 20 ');
       stdout.should.include('name            | iPhone 5 ');
@@ -100,7 +100,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature with tables', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I have products in my cart');
       stdout.should.include('name');
       stdout.should.include('Harry Potter');
@@ -113,7 +113,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature with long strings', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --steps --grep "Checkout string"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout string"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I have product described as');
       stdout.should.include('The goal of the product description is to provide the customer with enough information to compel them to want to buy the product immediately.');
       stdout.should.include('Then my order amount is $582');
@@ -123,7 +123,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature by file name', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --steps features/tables.feature', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --steps features/tables.feature', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Checkout product');
       stdout.should.include('checkout 3 products');
       stdout.should.not.include('Checkout string');
@@ -136,7 +136,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature by scenario name', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --grep "checkout 3 products" --steps', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --grep "checkout 3 products" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Checkout product');
       stdout.should.include('checkout 3 products');
       stdout.should.not.include('Checkout string');
@@ -149,7 +149,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature by tag name', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --grep "@important" --steps', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --grep "@important" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('I have product with $600 price in my cart');
       stdout.should.not.include('Checkout string');
       stdout.should.not.include('describe product');
@@ -161,7 +161,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run scenario by tag name', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --grep "@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --grep "@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('I have product with $600 price in my cart');
       stdout.should.not.include('Checkout string');
       stdout.should.not.include('describe product');
@@ -173,7 +173,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run scenario outline by tag', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --grep "@user" --steps', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --grep "@user" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.not.include('0 passed');
       stdout.should.include('I have product with price 10$');
       assert(!err);
@@ -182,7 +182,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run scenario and scenario outline by tags', (done) => {
-    exec(config_run_config('codecept.bdd.json') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.not.include('0 passed');
       stdout.should.include('I have product with price 10$');
       stdout.should.include('I have product with $600 price in my cart');
@@ -193,7 +193,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should show all available steps', (done) => {
-    exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Gherkin');
       stdout.should.include('/I have product with \\$(\\d+) price/');
       stdout.should.include('step_definitions/my_steps.js:3:1');
@@ -206,7 +206,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should generate snippets for missing steps', (done) => {
-    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(`Given('I open a browser on a site', () => {
   // From "support/dummy.feature" {"line":4,"column":5}
   throw new Error('Not implemented yet');
@@ -277,7 +277,7 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
   });
 
   it('should not generate duplicated steps', (done) => {
-    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.json`, (err, stdout, stderr) => { //eslint-disable-line
+    exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.duplicate.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
       assert(!err);
       done();

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const path = require('path');
 
 const Appium = require('../../lib/helper/Appium');
@@ -7,25 +7,29 @@ const AssertionFailedError = require('../../lib/assert/error');
 const fileExists = require('../../lib/utils').fileExists;
 
 let app;
-const apk_path = 'https://github.com/Codeception/CodeceptJS/raw/Appium/test/data/mobile/selendroid-test-app-0.17.0.apk';
+const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk';
+const smallWait = 3;
 
 describe('Appium', function () {
   // this.retries(1);
   this.timeout(0);
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data');
     app = new Appium({
       app: apk_path,
       desiredCapabilities: {
-        appiumVersion: '1.9.1',
+        appiumVersion: '1.20.1',
         browserName: '',
         recordVideo: 'false',
         recordScreenshots: 'false',
         platformName: 'Android',
         platformVersion: '6.0',
         deviceName: 'Android Emulator',
+        androidInstallTimeout: 90000,
+        appWaitDuration: 300000,
       },
+      restart: true,
       protocol: 'http',
       host: 'ondemand.saucelabs.com',
       port: 80,
@@ -34,22 +38,22 @@ describe('Appium', function () {
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     });
-    return app._beforeSuite();
-  });
-
-  beforeEach(async () => {
+    await app._beforeSuite();
     app.isWeb = false;
     await app._before();
-    // await app.installApp(apk_path);
   });
 
-  afterEach(() => app._after());
+  after(async () => {
+    await app._after();
+  });
 
   describe('app installation : #seeAppIsInstalled, #installApp, #removeApp, #seeAppIsNotInstalled', () => {
     describe(
       '#grabAllContexts, #grabContext, #grabCurrentActivity, #grabNetworkConnection, #grabOrientation, #grabSettings',
       () => {
         it('should grab all available contexts for screen', async () => {
+          await app.resetApp();
+          await app.waitForElement('~buttonStartWebviewCD', smallWait);
           await app.click('~buttonStartWebviewCD');
           const val = await app.grabAllContexts();
           assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp']);
@@ -92,6 +96,11 @@ describe('Appium', function () {
       await app.seeAppIsNotInstalled('io.selendroid.testapp');
       await app.installApp(apk_path);
       await app.seeAppIsInstalled('io.selendroid.testapp');
+    });
+
+    it('should return true if app is installed @quick', async () => {
+      const status = await app.checkIfAppIsInstalled('io.selendroid.testapp');
+      expect(status).to.be.true;
     });
 
     it('should assert when app is/is not installed', async () => {
@@ -150,6 +159,8 @@ describe('Appium', function () {
     });
 
     it('should set device orientation', async () => {
+      await app.resetApp();
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
       await app.setOrientation('LANDSCAPE');
       await app.seeOrientationIs('LANDSCAPE');
@@ -158,6 +169,8 @@ describe('Appium', function () {
 
   describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
     it('should switch context', async () => {
+      await app.resetApp();
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
       await app._switchToContext('WEBVIEW_io.selendroid.testapp');
       const val = await app.grabContext();
@@ -165,6 +178,7 @@ describe('Appium', function () {
     });
 
     it('should switch to native and web contexts @quick', async () => {
+      await app.resetApp();
       await app.click('~buttonStartWebviewCD');
       await app.see('WebView location');
       await app.switchToWeb();
@@ -201,6 +215,7 @@ describe('Appium', function () {
 
   describe('#hideDeviceKeyboard', () => {
     it('should hide device Keyboard @quick', async () => {
+      await app.resetApp();
       await app.click('~startUserRegistrationCD');
       try {
         await app.click('//android.widget.CheckBox');
@@ -242,6 +257,8 @@ describe('Appium', function () {
 
   describe('#makeTouchAction', () => {
     it('should react on touch actions', async () => {
+      await app.resetApp();
+      await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.tap('~buttonStartWebviewCD');
       const val = await app.grabCurrentActivity();
       assert.equal(val, '.WebViewActivity');
@@ -282,6 +299,7 @@ describe('Appium', function () {
     });
 
     it('run simplified swipeDown @quick', async () => {
+      await app.resetApp();
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
         'Gesture Type', 10,
@@ -289,7 +307,7 @@ describe('Appium', function () {
       );
       await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        1200, 1000,
+        120, 100,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       assert.equal(type, 'FLICK');
@@ -356,6 +374,8 @@ describe('Appium', function () {
     });
 
     it('should assert when you dont scroll the document anymore', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       try {
         await app.swipeTo(
@@ -368,6 +388,8 @@ describe('Appium', function () {
     });
 
     it('should react on swipeTo action', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.swipeTo(
         '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
@@ -386,10 +408,11 @@ describe('Appium', function () {
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
         assert.equal(type, 'FLICK');
-        expect(vy.split(' ')[1]).to.be.below(1006);
+        expect(parseInt(vy.split(' ')[1], 10)).to.be.below(1006);
       });
 
       it('should react on swipeDown action @second', async () => {
+        await app.resetApp();
         await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         await app.waitForText(
           'Gesture Type', 10,
@@ -399,7 +422,7 @@ describe('Appium', function () {
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
         assert.equal(type, 'FLICK');
-        expect(vy.split(' ')[1]).to.be.above(178);
+        expect(parseInt(vy.split(' ')[1], 10)).to.be.above(-300);
       });
 
       it('should react on swipeLeft action', async () => {
@@ -440,12 +463,14 @@ describe('Appium', function () {
 
   describe('see text : #see', () => {
     it('should work inside elements @second', async () => {
+      await app.resetApp();
       await app.see('EN Button', '~buttonTestCD');
       await app.see('Hello');
       await app.dontSee('Welcome', '~buttonTestCD');
     });
 
     it('should work inside web view as normally @quick', async () => {
+      await app.resetApp();
       await app.click('~buttonStartWebviewCD');
       await app.switchToWeb();
       await app.see('Prefered Car:');
@@ -454,6 +479,8 @@ describe('Appium', function () {
 
   describe('#appendField', () => {
     it('should be able to send special keys to element @second', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.click('~email of the customer');
       await app.appendField('~email of the customer', '1');
@@ -490,13 +517,14 @@ describe('Appium', function () {
 
   describe('#seeNumberOfElements @second', () => {
     it('should return 1 as count', async () => {
+      await app.resetApp();
       await app.seeNumberOfElements('~buttonTestCD', 1);
     });
   });
 
   describe('see element : #seeElement, #dontSeeElement', () => {
     it('should check visible elements on page @quick', async () => {
-      await app.seeElement('~buttonTestCD');
+      await app.resetApp();
       await app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]');
       await app.dontSeeElement('#something-beyond');
       await app.dontSeeElement('//input[@id="something-beyond"]');
@@ -505,18 +533,22 @@ describe('Appium', function () {
 
   describe('#click @quick', () => {
     it('should click by accessibility id', async () => {
-      await app.click('~startUserRegistrationCD');
-      await app.seeElement('~label_usernameCD');
+      await app.resetApp();
+      await app.tap('~startUserRegistrationCD');
+      await app.seeElement('//android.widget.TextView[@content-desc="label_usernameCD"]');
     });
 
     it('should click by xpath', async () => {
+      await app.resetApp();
       await app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]');
-      await app.seeElement('~label_usernameCD');
+      await app.seeElement('//android.widget.TextView[@content-desc="label_usernameCD"]');
     });
   });
 
   describe('#fillField, #appendField @second', () => {
     it('should fill field by accessibility id', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('~email of the customer', 'Nothing special');
       await app.hideDeviceKeyboard('pressKey', 'Done');
@@ -532,6 +564,8 @@ describe('Appium', function () {
     });
 
     it('should fill field by xpath', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
       await app.hideDeviceKeyboard('pressKey', 'Done');
@@ -547,6 +581,8 @@ describe('Appium', function () {
     });
 
     it('should append field value @second', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('~email of the customer', 'Nothing special');
       await app.appendField('~email of the customer', 'blabla');
@@ -565,6 +601,8 @@ describe('Appium', function () {
 
   describe('#clearField', () => {
     it('should clear a given element', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.fillField('~email of the customer', 'Nothing special');
       await app.see('Nothing special', '~email of the customer');
@@ -575,19 +613,22 @@ describe('Appium', function () {
 
   describe('#grabTextFrom, #grabValueFrom, #grabAttributeFrom @quick', () => {
     it('should grab text from page', async () => {
-      const val = await app.grabTextFrom('~buttonTestCD');
+      await app.resetApp();
+      const val = await app.grabTextFrom('//android.widget.Button[@content-desc="buttonTestCD"]');
       assert.equal(val, 'EN Button');
     });
 
     it('should grab attribute from element', async () => {
-      const val = await app.grabAttributeFrom('~buttonTestCD', 'resourceId');
+      await app.resetApp();
+      const val = await app.grabAttributeFrom('//android.widget.Button[@content-desc="buttonTestCD"]', 'resourceId');
       assert.equal(val, 'io.selendroid.testapp:id/buttonTest');
     });
 
     it('should be able to grab elements', async () => {
-      await app.click('~startUserRegistrationCD');
-      await app.click('~email of the customer');
-      await app.appendField('~email of the customer', '1');
+      await app.resetApp();
+      await app.tap('~startUserRegistrationCD');
+      await app.tap('~email of the customer');
+      await app.appendField('//android.widget.EditText[@content-desc="email of the customer"]', '1');
       await app.hideDeviceKeyboard('pressKey', 'Done');
       await app.swipeTo(
         '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
@@ -596,11 +637,8 @@ describe('Appium', function () {
       await app.click('//android.widget.Button');
       await app.see(
         '1',
-        '#io.selendroid.testapp:id/label_email_data',
+        '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
       );
-      const num = await app.grabNumberOfVisibleElements('#io.selendroid.testapp:id/label_email_data');
-      assert.strictEqual(1, num);
-
       const id = await app.grabNumberOfVisibleElements(
         '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]',
         'contentDescription',
@@ -623,6 +661,8 @@ describe('Appium', function () {
 
   describe('#runOnIOS, #runOnAndroid, #runInWeb', () => {
     it('should use Android locators', async () => {
+      await app.resetApp();
+      await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' });
       await app.see('Welcome to register a new User');
     });

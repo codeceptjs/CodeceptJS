@@ -14,7 +14,7 @@ describe('CodeceptJS PageObject', () => {
 
   describe('Failed PageObject', () => {
     it('should fail if page objects was failed', (done) => {
-      exec(`${config_run_config('codecept.fail_po.json')} --debug`, (err, stdout) => {
+      exec(`${config_run_config('codecept.fail_po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(lines).toEqual(
           expect.arrayContaining([
@@ -63,7 +63,7 @@ describe('CodeceptJS PageObject', () => {
     });
 
     it('should print pretty step log and pretty event log', (done) => {
-      exec(`${config_run_config('codecept.logs.json', 'Print correct arg message')} --steps`, (err, stdout) => {
+      exec(`${config_run_config('codecept.logs.js', 'Print correct arg message')} --steps`, (err, stdout) => {
         expect(stdout).toContain('I get humanize args Logs Page Value');
         expect(stdout).toContain('Start event step: I get humanize args Logs Page Valu');
         expect(stdout).toContain('OK  | 1 passed');
@@ -73,7 +73,7 @@ describe('CodeceptJS PageObject', () => {
     });
 
     it('should print pretty failed step log on stack trace', (done) => {
-      exec(`${config_run_config('codecept.logs.json', 'Error print correct arg message')} --steps`, (err, stdout) => {
+      exec(`${config_run_config('codecept.logs.js', 'Error print correct arg message')} --steps`, (err, stdout) => {
         expect(stdout).toContain('I.errorMethodHumanizeArgs(Logs Page Value)');
         expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
         expect(err).toBeTruthy();
@@ -84,7 +84,7 @@ describe('CodeceptJS PageObject', () => {
 
   describe('Show MetaSteps in Log', () => {
     it('should display meta steps and substeps', (done) => {
-      exec(`${config_run_config('codecept.po.json')} --debug`, (err, stdout) => {
+      exec(`${config_run_config('codecept.po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(lines).toEqual(
           expect.arrayContaining([
@@ -94,8 +94,8 @@ describe('CodeceptJS PageObject', () => {
             '      I see file "codecept.class.js"',
             '    MyPage: hasFile "First arg", "Second arg"',
             '      I see file "codecept.class.js"',
-            '      I see file "codecept.po.json"',
-            '    I see file "codecept.po.json"',
+            '      I see file "codecept.po.js"',
+            '    I see file "codecept.po.js"',
           ]),
         );
         expect(stdout).toContain('OK  | 1 passed');
@@ -107,7 +107,7 @@ describe('CodeceptJS PageObject', () => {
 
   describe('Inject PO in Test', () => {
     it('should work with inject() keyword', (done) => {
-      exec(`${config_run_config('codecept.inject.po.json', 'check current dir')} --debug`, (err, stdout) => {
+      exec(`${config_run_config('codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(stdout).toContain('injected');
         expect(lines).toEqual(
@@ -118,8 +118,8 @@ describe('CodeceptJS PageObject', () => {
             '      I see file "codecept.class.js"',
             '    MyPage: hasFile "uu"',
             '      I see file "codecept.class.js"',
-            '      I see file "codecept.po.json"',
-            '    I see file "codecept.po.json"',
+            '      I see file "codecept.po.js"',
+            '    I see file "codecept.po.js"',
           ]),
         );
         expect(stdout).toContain('OK  | 1 passed');
@@ -131,7 +131,7 @@ describe('CodeceptJS PageObject', () => {
 
   describe('PageObject with context', () => {
     it('should work when used "this" context on method', (done) => {
-      exec(`${config_run_config('codecept.inject.po.json', 'pageobject with context')} --debug`, (err, stdout) => {
+      exec(`${config_run_config('codecept.inject.po.js', 'pageobject with context')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(lines).toEqual(
           expect.arrayContaining([
@@ -141,8 +141,8 @@ describe('CodeceptJS PageObject', () => {
             '      I see file "codecept.class.js"',
             '    MyPage: hasFile "uu"',
             '      I see file "codecept.class.js"',
-            '      I see file "codecept.po.json"',
-            '    I see file "codecept.po.json"',
+            '      I see file "codecept.po.js"',
+            '    I see file "codecept.po.js"',
           ]),
         );
         expect(stdout).toContain('OK  | 1 passed');

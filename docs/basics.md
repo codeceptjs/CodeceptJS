@@ -23,14 +23,14 @@ The `I` object is an **actor**, an abstraction for a testing user. The `I` is a 
 
 ## Architecture
 
-CodeceptJS bypasses execution commands to helpers. Depending on the helper enabled, your tests will be executed differently. If you need cross-browser support you should choose Selenium-based WebDriver or TestCafé. If you are interested in speed - you should use Chrome-based Puppeteer.
+CodeceptJS bypasses execution commands to helpers. Depending on the helper enabled, your tests will be executed differently.
 
 The following is a diagram of the CodeceptJS architecture:
 
 ![architecture](/img/architecture.png)
 
 All helpers share the same API, so it's easy to migrate tests from one backend to another.
-However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver or Protractor, but you can do so in Puppeteer or Nightmare.
+However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver but you can do so in Playwright or Puppeteer.
 
 **Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another.
 
@@ -290,7 +290,6 @@ I.waitForElement('#agree_button', 30); // secs
 // clicks a button only when it is visible
 I.click('#agree_button');
 ```
-> ℹ See [helpers reference](/reference) for a complete list of all available commands for the helper you use.
 
 ## How It Works
 
@@ -619,6 +618,17 @@ Feature('Complex JS Stuff').retry(3);
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
+
+### Retry Run 
+
+On the highest level of the "retry pyramid" there is an option to retry a complete run multiple times.
+Even this is the slowest option of all, it can be helpful to detect flaky tests. 
+
+[`run-rerun`](https://codecept.io/commands/#run-rerun) command will restart the run multiple times to values you provide. You can set minimal and maximal number of restarts in configuration file.
+
+```
+npx codeceptjs run-rerun
+```
 
 
 ## Before

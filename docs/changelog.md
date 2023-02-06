@@ -7,6 +7,69 @@ layout: Section
 
 # Releases
 
+## 3.3.7
+
+🛩️ Features
+
+* **Promise-based typings** for TypeScript definitions in [#3465](https://github.com/codeceptjs/CodeceptJS/issues/3465) by **[nlespiaucq](https://github.com/nlespiaucq)**. If you use TypeScript or use linters [check how it may be useful to you](https://bit.ly/3XIMq6n).
+* **Translation** improved to use [custom vocabulary](https://codecept.io/translation/). 
+* **[Playwright]** Added methods in [#3398](https://github.com/codeceptjs/CodeceptJS/issues/3398) by **[mirao](https://github.com/mirao)**
+  * `restartBrowser` - to restart a browser (with different config)
+  * `_createContextPage` - to create a new browser context with a page from a helper
+* Added [Cucumber custom types](/bdd#custom-types) for BDD in [#3435](https://github.com/codeceptjs/CodeceptJS/issues/3435) by **[Likstern](https://github.com/Likstern)** 
+* Propose using JSONResponse helper when initializing project for API testing. [#3455](https://github.com/codeceptjs/CodeceptJS/issues/3455) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* When translation enabled, generate tests using localized aliases. By **[davertmik](https://github.com/davertmik)**
+* **[Appium]** Added `checkIfAppIsInstalled` in [#3507](https://github.com/codeceptjs/CodeceptJS/issues/3507) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+
+🐛 Bugfixes
+
+* Fixed [#3462](https://github.com/codeceptjs/CodeceptJS/issues/3462) `TypeError: Cannot read properties of undefined (reading 'setStatus')` by **[dwentland24](https://github.com/dwentland24)** in [#3438](https://github.com/codeceptjs/CodeceptJS/issues/3438)
+* Fixed creating steps file for TypeScript setup [#3459](https://github.com/codeceptjs/CodeceptJS/issues/3459) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* Fixed issue of after all event in `run-rerun` command after complete execution [#3464](https://github.com/codeceptjs/CodeceptJS/issues/3464) by **[jain-neeeraj](https://github.com/jain-neeeraj)** 
+* [Playwright][WebDriver][Appium] Do not change `waitForTimeout` value on validation. See [#3478](https://github.com/codeceptjs/CodeceptJS/issues/3478) by **[pmajewski24](https://github.com/pmajewski24)**. Fixes [#2589](https://github.com/codeceptjs/CodeceptJS/issues/2589)
+* [Playwright][WebDriver][Protractor][Puppeteer][TestCafe] Fixes `Element "{null: undefined}" was not found` and `element ([object Object]) still not present` messages when using object locators. See [#3501](https://github.com/codeceptjs/CodeceptJS/issues/3501) and [#3502](https://github.com/codeceptjs/CodeceptJS/issues/3502) by **[pmajewski24](https://github.com/pmajewski24)**
+* **[Playwright]** Improved file names when downloading file in [#3449](https://github.com/codeceptjs/CodeceptJS/issues/3449) by **[PeterNgTr](https://github.com/PeterNgTr)**. Fixes [#3412](https://github.com/codeceptjs/CodeceptJS/issues/3412) and [#3409](https://github.com/codeceptjs/CodeceptJS/issues/3409)
+* Add default value to `profile` env variable. See [#3443](https://github.com/codeceptjs/CodeceptJS/issues/3443) by **[dwentland24](https://github.com/dwentland24)**. Resolves [#3339](https://github.com/codeceptjs/CodeceptJS/issues/3339)
+* **[Playwright]** Using system-native path separator when saving artifacts in [#3460](https://github.com/codeceptjs/CodeceptJS/issues/3460) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* **[Playwright]** Saving videos and traces from multiple sessions in [#3505](https://github.com/codeceptjs/CodeceptJS/issues/3505) by **[davertmik](https://github.com/davertmik)**
+* **[Playwright]** Fixed `amOnPage` to navigate to `about:blank` by **[zaxoavoki](https://github.com/zaxoavoki)** in [#3470](https://github.com/codeceptjs/CodeceptJS/issues/3470) Fixes [#2311](https://github.com/codeceptjs/CodeceptJS/issues/2311)
+* Various typing improvements by **[AWolf81](https://github.com/AWolf81)** **[PeterNgTr](https://github.com/PeterNgTr)** **[mirao](https://github.com/mirao)**  
+
+📖 Documentation
+
+* Updated [Auickstart](https://codecept.io/quickstart/) with detailed explanation of questions in init
+* Added [Translation](/translations/) guide
+* Updated [TypeScript](https://bit.ly/3XIMq6n) guide for promise-based typings
+* Reordered guides list on a website
+
+## 3.3.6
+
+* [`run-rerun`](https://codecept.io/commands/#run-rerun) command was re-introduced by **[dwentland24](https://github.com/dwentland24)** in [#3436](https://github.com/codeceptjs/CodeceptJS/issues/3436). Use it to perform run multiple times and detect flaky tests
+* Enabled `retryFailedStep` by default in `@codeceptjs/configure` v 0.10. See https://github.com/codeceptjs/configure/pull/26
+* **[Playwright]** Fixed properties types "waitForNavigation" and "firefox" by **[mirao](https://github.com/mirao)** in [#3401](https://github.com/codeceptjs/CodeceptJS/issues/3401)
+* **[REST]** Changed "endpoint" to optional by **[mirao](https://github.com/mirao)** in [#3404](https://github.com/codeceptjs/CodeceptJS/issues/3404)
+* **[REST]** Use [`secret`](/secrets) for form encoded string by **[PeterNgTr](https://github.com/PeterNgTr)**:
+
+```js
+const secretData = secret('name=john&password=123456');
+const response = await I.sendPostRequest('/user', secretData);
+```
+
+* [Playwright]Fixed docs related to fixed properties types "waitForNavigation" and "firefox" by **[mirao](https://github.com/mirao)** in [#3407](https://github.com/codeceptjs/CodeceptJS/issues/3407)
+* [Playwright]Fixed parameters of startActivity() by **[mirao](https://github.com/mirao)** in [#3408](https://github.com/codeceptjs/CodeceptJS/issues/3408)
+* Move semver to prod dependencies by **[timja](https://github.com/timja)** in [#3413](https://github.com/codeceptjs/CodeceptJS/issues/3413)
+* check if browser is W3C instead of Android by **[mikk150](https://github.com/mikk150)** in [#3414](https://github.com/codeceptjs/CodeceptJS/issues/3414)
+* Pass service configs with options and caps as array for browsers… by **[07souravkunda](https://github.com/07souravkunda)** in [#3418](https://github.com/codeceptjs/CodeceptJS/issues/3418)
+* fix for type of "webdriver.port" by **[ngraf](https://github.com/ngraf)** in [#3421](https://github.com/codeceptjs/CodeceptJS/issues/3421)
+* fix for type of "webdriver.smartWait" by **[pmajewski24](https://github.com/pmajewski24)** in [#3426](https://github.com/codeceptjs/CodeceptJS/issues/3426)
+* fix(datatable): mask secret text by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3432](https://github.com/codeceptjs/CodeceptJS/issues/3432)
+* fix(playwright) - video name and missing type by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3430](https://github.com/codeceptjs/CodeceptJS/issues/3430)
+* fix for expected type of "bootstrap", "teardown", "bootstrapAll" and "teardownAll" by **[ngraf](https://github.com/ngraf)** in [#3424](https://github.com/codeceptjs/CodeceptJS/issues/3424)
+* Improve generate pageobject `gpo` command to work with TypeScript by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3411](https://github.com/codeceptjs/CodeceptJS/issues/3411)
+* Fixed dry-run to always return 0 code and exit 
+* Added minimal version notice for NodeJS >= 12
+* fix(utils): remove . of test title to avoid confusion by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3431](https://github.com/codeceptjs/CodeceptJS/issues/3431)
+
 ## 3.3.5
 
 🛩️ Features
@@ -582,7 +645,7 @@ MyPage.hasFiles('first arg', 'second arg');
 
 // OUTPUT:
 MyPage: hasFile "First arg", "Second arg"
-  I see file "codecept.json"
+  I see file "codecept.js"
   I see file "codecept.po.json"
 ```
 * Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by **[Vorobeyko](https://github.com/Vorobeyko)**.
@@ -2178,7 +2241,7 @@ module.exports = function(done) {
 ```js
 // inside codecept.conf.js
 exports.config = {
-  // contents of codecept.json
+  // contents of codecept.js
 }
 ```
 * Added `--profile` option to pass its value to `codecept.conf.js` as `process.profile` for [dynamic configuration](http://codecept.io/configuration#dynamic-configuration).

@@ -1,6 +1,6 @@
 # Secrets
 
-It is possible to mask out sensitive data when passing it to steps. This is important when filling password fields, or sending secure keys to API endpoint. 
+It is possible to **mask out sensitive data** when passing it to steps. This is important when filling password fields, or sending secure keys to API endpoint. 
 
 Wrap data in `secret` function to mask sensitive values in output and logs.
 

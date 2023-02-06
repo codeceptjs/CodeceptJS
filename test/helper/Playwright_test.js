@@ -56,6 +56,15 @@ describe('Playwright', function () {
     return I._after();
   });
 
+  describe('restart browser: #restartBrowser', () => {
+    it('should open a new tab after restart of browser', async () => {
+      await I.restartBrowser();
+      await I.wait(1);
+      const numPages = await I.grabNumberOfOpenTabs();
+      assert.equal(numPages, 1);
+    });
+  });
+
   describe('open page : #amOnPage', () => {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/');
@@ -72,6 +81,18 @@ describe('Playwright', function () {
       await I.amOnPage(siteUrl);
       const url = await page.url();
       return url.should.eql(`${siteUrl}/`);
+    });
+
+    it('should open any page of configured site without leading slash', async () => {
+      await I.amOnPage('info');
+      const url = await page.url();
+      return url.should.eql(`${siteUrl}/info`);
+    });
+
+    it('should open blank page', async () => {
+      await I.amOnPage('about:blank');
+      const url = await page.url();
+      return url.should.eql('about:blank');
     });
   });
 
@@ -772,7 +793,25 @@ describe('Playwright', function () {
     });
   });
 
-  describe('#handleDownloads', () => {
+  describe('#handleDownloads - with passed folder', () => {
+    before(() => {
+      // create download folder;
+      global.output_dir = path.join(`${__dirname}/../data/output`);
+
+      FS = new FileSystem();
+      FS._before();
+      FS.amInPath('output/downloadHere');
+    });
+
+    it('should download file', async () => {
+      await I.amOnPage('/form/download');
+      await I.handleDownloads('downloadHere/avatar.jpg');
+      await I.click('Download file');
+      await FS.waitForFile('avatar.jpg', 5);
+    });
+  });
+
+  describe('#handleDownloads - with default folder', () => {
     before(() => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -782,11 +821,11 @@ describe('Playwright', function () {
       FS.amInPath('output');
     });
 
-    it('should dowload file', async () => {
+    it('should download file', async () => {
       await I.amOnPage('/form/download');
-      await I.handleDownloads('downloads/avatar.jpg');
+      await I.handleDownloads('avatar.jpg');
       await I.click('Download file');
-      await FS.waitForFile('downloads/avatar.jpg', 5);
+      await FS.waitForFile('avatar.jpg', 5);
     });
   });
 });

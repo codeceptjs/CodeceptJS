@@ -9,7 +9,7 @@ Scenario('glob current dir', ({ I }) => {
   I.amInPath('.');
   I.say('hello world');
   I.seeThisIsWorker();
-  I.seeFile('codecept.glob.json');
+  I.seeFile('codecept.glob.js');
 });
 
 Scenario('fail a test', ({ I }) => {

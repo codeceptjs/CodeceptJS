@@ -34,7 +34,7 @@ describe('Definitions', function () {
 
   describe('Static files', () => {
     it('should have internal object that is available as variable codeceptjs', (done) => {
-      exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+      exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
         const types = typesFrom(`${codecept_dir}/steps.d.ts`);
         types.should.be.valid;
 
@@ -79,7 +79,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with correct page def', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err, stdout) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
@@ -94,7 +94,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file given a config file', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.json`, (err, stdout) => {
+    exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.js`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/../../steps.d.ts`);
       types.should.be.valid;
@@ -104,7 +104,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with support object', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
@@ -128,7 +128,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with inject which contains support objects', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
@@ -145,7 +145,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with inject which contains I object', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, (err) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, (err) => {
       assert(!err);
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
@@ -165,7 +165,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with inject which contains I object from helpers', (done) => {
-    exec(`${runner} def --config ${codecept_dir}//codecept.inject.powi.json`, () => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.powi.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
@@ -179,7 +179,7 @@ describe('Definitions', function () {
   });
 
   it('def should create definition file with callback params', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.json`, () => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
@@ -190,6 +190,30 @@ describe('Definitions', function () {
         { name: 'MyPage', type: 'MyPage' },
         { name: 'SecondPage', type: 'SecondPage' },
       ]);
+      done();
+    });
+  });
+
+  it('def should create definition file with promise-based feature', (done) => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.promise.based.js`, (err, stdout) => {
+      stdout.should.include('Definitions were generated in steps.d.ts');
+      const types = typesFrom(`${codecept_dir}/steps.d.ts`);
+      types.should.be.valid;
+
+      const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
+      const extend = getExtends(definitionFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      extend.should.containSubset([{
+        methods: [{
+          name: 'amInPath',
+          returnType: 'Promise<any>',
+          parameters: [{ name: 'openPath', type: 'string' }],
+        }, {
+          name: 'seeFile',
+          returnType: 'Promise<any>',
+          parameters: [{ name: 'name', type: 'string' }],
+        }],
+      }]);
+      assert(!err);
       done();
     });
   });

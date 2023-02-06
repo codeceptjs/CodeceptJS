@@ -61,6 +61,26 @@ describe('Container', () => {
       expect(container.translation().I).to.eql('Eu');
       expect(container.translation().value('contexts').Feature).to.eql('Funcionalidade');
     });
+
+    it('should load custom translation', () => {
+      container.create({ translation: 'my' });
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.true;
+    });
+
+    it('should load no translation', () => {
+      container.create({});
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.false;
+    });
+
+    it('should load custom translation with vocabularies', () => {
+      container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] });
+      expect(container.translation()).to.be.instanceOf(Translation);
+      expect(container.translation().loaded).to.be.true;
+      const translation = container.translation();
+      expect(translation.actionAliasFor('say')).to.eql('arr');
+    });
   });
 
   describe('#helpers', () => {
