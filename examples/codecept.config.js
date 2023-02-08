@@ -1,5 +1,6 @@
 exports.config = {
   output: './output',
+  retries: 3,
   helpers: {
     Playwright: {
       url: 'http://localhost',
@@ -14,6 +15,9 @@ exports.config = {
       show: !process.env.HEADLESS,
     },
     REST: {},
+    User: {
+      require: './user_helper.js',
+    },
   },
   include: {
     I: './custom_steps.js',
@@ -60,7 +64,7 @@ exports.config = {
     },
   },
   tests: './*_test.js',
-  timeout: 100,
+  // timeout: 100,
   multiple: {
     parallel: {
       chunks: 2,

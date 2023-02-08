@@ -1,11 +1,11 @@
-Feature('Retry hooks');
+Feature('Retry hooks', { retries: 2 });
 
 let i = 0;
 
 Before(({ I }) => {
   console.log('ok', i, new Date());
-  if (i < 3) throw new Error('not works');
   i++;
+  if (i < 3) throw new Error('not works');
 });
 
 Scenario('works', () => {
