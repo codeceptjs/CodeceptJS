@@ -1,4 +1,4 @@
-Feature('Retry hooks', { retries: 2 });
+Feature('Retry #Before hooks', { retryBefore: 2 });
 
 let i = 0;
 

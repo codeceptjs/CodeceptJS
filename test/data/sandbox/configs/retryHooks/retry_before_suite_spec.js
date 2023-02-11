@@ -1,4 +1,4 @@
-Feature('Retry #BeforeSuite helper hooks', { retryBeforeSuite: 3 }).retry(3);
+Feature('Retry #BeforeSuite helper hooks');
 
 BeforeSuite(async ({ I }) => {
   I.failIfNotWorks();

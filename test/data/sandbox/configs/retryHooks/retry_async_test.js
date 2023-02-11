@@ -1,4 +1,4 @@
-Feature('Retry async hooks', { retries: 2 });
+Feature('Retry #Async hooks', { retryBefore: 2 });
 
 let i = 0;
 

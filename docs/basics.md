@@ -345,7 +345,7 @@ If you face that error please make sure that all async functions are called with
 
 ## Running Tests
 
-To launch tests use the `run` command, and to execute tests in [multiple browsers](/advanced/#multiple-browsers-execution) or [multiple threads](/advanced/#parallel-execution) use the `run-multiple` command.
+To launch tests use the `run` command, and to execute tests in [multiple threads](/advanced/parallel) using `run-workers` command.
 
 ### Level of Detail
 
@@ -394,7 +394,7 @@ It is recommended to [filter tests by tags](/advanced/#tags).
 
 ### Parallel Run
 
-Since CodeceptJS 2.3, you can run tests in parallel by using NodeJS workers. This feature requires NodeJS >= 11.6. Use `run-workers` command with the number of workers (threads) to split tests.
+Tests can be executed in parallel mode by using [NodeJS workers](https://nodejs.org/api/worker_threads.html). Use `run-workers` command with the number of workers (threads) to split tests into different workers.
 
 ```
 npx codeceptjs run-workers 3

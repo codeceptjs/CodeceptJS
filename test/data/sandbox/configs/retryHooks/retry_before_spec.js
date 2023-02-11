@@ -1,4 +1,4 @@
-Feature('Retry #Helper hooks', { retryBefore: 2 });
+Feature('Fail #Before hook');
 
 Before(async ({ I }) => {
   I.failIfNotWorks();
