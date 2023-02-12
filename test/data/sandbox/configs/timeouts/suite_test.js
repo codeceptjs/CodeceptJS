@@ -1,10 +1,10 @@
 Feature('no timeout');
 
-Scenario('no timeout test', ({ I }) => {
+Scenario('no timeout test #first', ({ I }) => {
   I.waitForSleep(1000);
 });
 
-Scenario('timeout test in 0.5', { timeout: 0.5 }, ({ I }) => {
+Scenario('timeout test in 0.5 #second', { timeout: 0.5 }, ({ I }) => {
   I.waitForSleep(1000);
 });
 

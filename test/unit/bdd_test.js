@@ -273,7 +273,7 @@ describe('BDD', () => {
     expect(500.30).is.equal(fn(fn.params));
   });
 
-  it('should attach before hook for Background', () => {
+  it('should attach before hook for Background', (finish) => {
     const text = `
     Feature: checkout process
 
@@ -284,13 +284,19 @@ describe('BDD', () => {
         Then I am shopping
     `;
     let sum = 0;
-    Given('I am logged in as customer', () => sum++);
-    Then('I am shopping', () => sum++);
+    function incrementSum() {
+      sum++;
+    }
+    Given('I am logged in as customer', incrementSum);
+    Then('I am shopping', incrementSum);
     const suite = run(text);
-    const done = () => { };
+    const done = () => {};
+
     suite._beforeEach.forEach(hook => hook.run(done));
-    suite.tests[0].fn(done);
-    expect(2).is.equal(sum);
+    suite.tests[0].fn(() => {
+      expect(sum).is.equal(2);
+      finish();
+    });
   });
 
   it('should execute scenario outlines', (done) => {
