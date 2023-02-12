@@ -1,4 +1,4 @@
-Feature('Checkout', { beforeRetries: 3 });
+Feature('Checkout', { retryBefore: 3 });
 
 const i = 0;
 
