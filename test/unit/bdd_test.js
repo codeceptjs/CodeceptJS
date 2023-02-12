@@ -293,8 +293,9 @@ describe('BDD', () => {
     let doneNum = 0;
     const done = () => {
       doneNum++;
+      if (doneNum < 3) return;
       expect(sum).is.equal(2);
-      if (doneNum === 2) finish();
+      finish();
     };
 
     suite._beforeEach.forEach(hook => hook.run(done));
