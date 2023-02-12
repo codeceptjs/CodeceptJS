@@ -284,8 +284,11 @@ describe('BDD', () => {
         Then I am shopping
     `;
     let sum = 0;
-    Given('I am logged in as customer', () => sum++);
-    Then('I am shopping', () => sum++);
+    function incrementSum() {
+      sum++;
+    }
+    Given('I am logged in as customer', incrementSum);
+    Then('I am shopping', incrementSum);
     const suite = run(text);
     const done = () => { };
     suite._beforeEach.forEach(hook => hook.run(done));
