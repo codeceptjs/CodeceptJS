@@ -290,16 +290,13 @@ describe('BDD', () => {
     Given('I am logged in as customer', incrementSum);
     Then('I am shopping', incrementSum);
     const suite = run(text);
-    let doneNum = 0;
-    const done = () => {
-      doneNum++;
-      if (doneNum < 3) return;
-      expect(sum).is.equal(2);
-      finish();
-    };
+    const done = () => {};
 
     suite._beforeEach.forEach(hook => hook.run(done));
-    suite.tests[0].fn(done);
+    suite.tests[0].fn(() => {
+      expect(sum).is.equal(2);
+      finish();
+    });
   });
 
   it('should execute scenario outlines', (done) => {
