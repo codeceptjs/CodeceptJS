@@ -1,3 +1,7 @@
+## 3.4.0
+
+* Allure plugin moved to 
+
 ## 3.3.7
 
 🛩️ Features
