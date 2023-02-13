@@ -17,6 +17,22 @@ declare namespace CodeceptJS {
     path?: string,
   };
 
+  type RetryConfig = {
+    grep: string;
+    Feature: number;
+    Scenario: number;
+    Before: number;
+    After: number;
+    BeforeSuite: number;
+    AfterSuite: number;
+  };
+
+  type TimeoutConfig = {
+    grep: string;
+    Feature: number;
+    Scenario: number;
+  };
+
   type MainConfig = {
     /** Pattern to locate CodeceptJS tests.
      * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
@@ -172,8 +188,56 @@ declare namespace CodeceptJS {
      * ```js
      * timeout: 20,
      * ```
+     * 
+     * Can be customized to use different timeouts for a subset of tests:
+     * 
+     * ```js
+     * timeout: [
+     *    10,
+     *    {
+     *      grep: '@slow',
+     *      Scenario: 20
+     *    }
+     * ]
+     * ```
      */
-    timeout?: number;
+    timeout?: number | Array<TimeoutConfig> | TimeoutConfig;
+
+    /**
+     * Configure retry strategy for tests 
+     * 
+     * To retry all tests 3 times:
+     * 
+     * ```js
+     * retry: 3
+     * ```
+     * To retry only Before hook 3 times:
+     * 
+     * ```js
+     * retry: {
+     *    Before: 3
+     * }
+     * ```
+     * 
+     * To retry tests marked as flaky 3 times, other 1 time:
+     * 
+     * ```js
+     * retry: [
+     *   {
+     *     Scenario: 1,
+     *     Before: 1
+     *   },
+     *   {
+     *     grep: '@flaky',
+     *     Scenario: 3
+     *     Before: 3
+     *   }
+     * ]
+     * ```
+     */
+    retry?: number | Array<RetryConfig> | RetryConfig;
+
+
     /** Disable registering global functions (Before, Scenario, etc). Not recommended */
     noGlobals?: boolean;
     /**
