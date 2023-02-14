@@ -1,5 +1,7 @@
 ## 3.4.0
 
+* **Updated to latest mocha 8.2 and modern Cucumber**
+
 * Allure plugin moved to 
 
 ## 3.3.7

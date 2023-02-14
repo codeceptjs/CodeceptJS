@@ -382,7 +382,7 @@ describe('BDD', () => {
       expect(products.rows.length).to.equal(3);
       givenParsedRows = products.parse();
     });
-    Then('I should see the following products :', (products) => {
+    Then('I should see the following products dd:', (products) => {
       expect(products.rows.length).to.equal(3);
       thenParsedRows = products.parse();
     });
