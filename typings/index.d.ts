@@ -188,9 +188,9 @@ declare namespace CodeceptJS {
      * ```js
      * timeout: 20,
      * ```
-     * 
+     *
      * Can be customized to use different timeouts for a subset of tests:
-     * 
+     *
      * ```js
      * timeout: [
      *    10,
@@ -204,23 +204,24 @@ declare namespace CodeceptJS {
     timeout?: number | Array<TimeoutConfig> | TimeoutConfig;
 
     /**
-     * Configure retry strategy for tests 
-     * 
+     * Configure retry strategy for tests
+     *
      * To retry all tests 3 times:
-     * 
+     *
      * ```js
      * retry: 3
      * ```
+     *
      * To retry only Before hook 3 times:
-     * 
+     *
      * ```js
      * retry: {
      *    Before: 3
      * }
      * ```
-     * 
+     *
      * To retry tests marked as flaky 3 times, other 1 time:
-     * 
+     *
      * ```js
      * retry: [
      *   {

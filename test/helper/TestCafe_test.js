@@ -15,6 +15,7 @@ describe('TestCafe', function () {
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     global.output_dir = path.join(__dirname, '/../data/output');
+    global.codeceptjs = require('../../lib/index');
 
     I = new TestCafe({
       url: siteUrl,
