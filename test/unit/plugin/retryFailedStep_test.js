@@ -6,7 +6,6 @@ const session = require('../../../lib/session');
 const container = require('../../../lib/container');
 const event = require('../../../lib/event');
 const recorder = require('../../../lib/recorder');
-const { log } = require('console');
 
 describe('retryFailedStep', () => {
   beforeEach(() => {
@@ -51,7 +50,6 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      console.log(e);
       recorder.catchWithoutStop((err) => err);
     }
 
