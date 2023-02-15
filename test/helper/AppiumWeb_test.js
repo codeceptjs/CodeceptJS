@@ -1,4 +1,5 @@
 const Appium = require('../../lib/helper/Appium');
+global.codeceptjs = require('../../lib');
 
 let I;
 const site_url = 'http://davertmik.github.io';
