@@ -236,7 +236,9 @@ A timeout for a group of tests can be set on Feature level via options.
 Feature('flaky tests', { timeout: 30 })
 ```
 
-### Timeout Confguration <Badge text="Updated in 3.4" type="warning"/>
+### Timeout Confguration 
+
+<Badge text="Updated in 3.4" type="warning"/>
 
 Timeout rules can be set globally via config.
 

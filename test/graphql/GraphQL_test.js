@@ -4,6 +4,7 @@ const fs = require('fs');
 const TestHelper = require('../support/TestHelper');
 const GraphQL = require('../../lib/helper/GraphQL');
 const Container = require('../../lib/container');
+global.codeceptjs = require('../../lib');
 
 const graphql_url = TestHelper.graphQLServerUrl();
 

@@ -1,5 +1,12 @@
+const Gherkin = require('@cucumber/gherkin');
+const Messages = require('@cucumber/messages');
 const { expect } = require('chai');
-const { Parser } = require('gherkin');
+
+const uuidFn = Messages.IdGenerator.uuid();
+const builder = new Gherkin.AstBuilder(uuidFn);
+const matcher = new Gherkin.GherkinClassicTokenMatcher();
+
+const { log } = require('console');
 const Config = require('../../lib/config');
 const {
   Given,
@@ -60,7 +67,7 @@ describe('BDD', () => {
   });
 
   it('should parse gherkin input', () => {
-    const parser = new Parser();
+    const parser = new Gherkin.Parser(builder, matcher);
     parser.stopAtFirstError = false;
     const ast = parser.parse(text);
     // console.log('Feature', ast.feature);
@@ -68,7 +75,7 @@ describe('BDD', () => {
     // console.log('Steps', ast.feature.children[0].steps[0]);
     expect(ast.feature).is.ok;
     expect(ast.feature.children).is.ok;
-    expect(ast.feature.children[0].steps).is.ok;
+    expect(ast.feature.children[0].scenario.steps).is.ok;
   });
 
   it('should load step definitions', () => {
@@ -372,9 +379,11 @@ describe('BDD', () => {
     let thenParsedRows;
 
     Given('I have the following products :', (products) => {
+      expect(products.rows.length).to.equal(3);
       givenParsedRows = products.parse();
     });
     Then('I should see the following products :', (products) => {
+      expect(products.rows.length).to.equal(3);
       thenParsedRows = products.parse();
     });
 
@@ -385,6 +394,7 @@ describe('BDD', () => {
       ['beer', '9'],
       ['cookies', '12'],
     ];
+
     suite.tests[0].fn(() => {
       expect(givenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
       expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);

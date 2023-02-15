@@ -1,6 +1,5 @@
 exports.config = {
   output: './output',
-  retry: 3,
   helpers: {
     Playwright: {
       url: 'http://localhost',
