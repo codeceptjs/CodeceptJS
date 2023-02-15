@@ -8,6 +8,7 @@ const REST = require('../../lib/helper/REST');
 const Container = require('../../lib/container');
 
 const api_url = TestHelper.jsonServerUrl();
+global.codeceptjs = require('../../lib');
 
 let I;
 const dbFile = path.join(__dirname, '/../data/rest/db.json');

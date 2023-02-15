@@ -2,12 +2,12 @@
 
 * **Updated to latest mocha and modern Cucumber**
 * **Allure plugin moved to [@codeceptjs/allure-legacy](https://github.com/codeceptjs/allure-legacy) package**. This happened because allure-commons package v1 was not updated and caused vulnarabilities. Fixes #3422. We don't plan to maintain allure v2 plugin so it's up to community to take this initiative. Current allure plugin will print a warning message without interfering the run, so it won't accidentally fail your builds.
-* Added ability to **[retry Before](https://codecept.io/basics/#retry-before), BeforeSuite, After, AfterSuite** hooks:
+* Added ability to **[retry Before](https://codecept.io/basics/#retry-before), BeforeSuite, After, AfterSuite** hooks by @davertmik:
 ```js
 Feature('flaky Before & BeforeSuite', { retryBefore: 2, retryBeforeSuite: 3 })
 ```
 
-* **Flexible [retries configuration](https://codecept.io/basics/#retry-configuration) introduced**:
+* **Flexible [retries configuration](https://codecept.io/basics/#retry-configuration) introduced** by @davertmik:
 
 ```js
 retry: [
@@ -28,7 +28,7 @@ retry: [
   }
 ]
 ```
-* **Flexible [timeout configuration](https://codecept.io/advanced/#timeout-configuration)** introduced
+* **Flexible [timeout configuration](https://codecept.io/advanced/#timeout-configuration)** introduced by @davertmik:
 
 ```js
 timeout: [
