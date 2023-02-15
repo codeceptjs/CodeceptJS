@@ -1,11 +1,11 @@
 ---
 permalink: /tutorial
-title: CodeceptJS Testing Tutorial: Create a Complete Test Suite
+title: CoeceptJS Complete Tutorial
 ---
 
-**[CodeceptJS](https://codecept.io) is a popular open-source testing framework** for JavaScript. It is designed to simplify writing and maintain end-to-end tests for web applications, using a readable and intuitive syntax. To run tests in browser it uses **[Playwright](https://playwright.dev)** library from Microsoft.
+# Tutorial: Writing Tests for Checkout Page
 
-CodeceptJS was started in 2015 and is widely used by organizations of all sizes, from startups to large enterprises.
+**[CodeceptJS](https://codecept.io) is a popular open-source testing framework** for JavaScript. It is designed to simplify writing and maintain end-to-end tests for web applications, using a readable and intuitive syntax. To run tests in browser it uses **[Playwright](https://playwright.dev)** by default but ca execute tests via WebDriver, Puppeteer or Appium.
 
 ## Let's get CodeceptJS installed!
 
@@ -266,6 +266,6 @@ By applying more and more cases you can test a website to all behaviors.
 
 ## Summary
 
-This was a deep dive! If you think on just starting test automation, CodeceptJS is the best choice for you as it uses native language to pass commands to browser. 
+If you think on just starting test automation, CodeceptJS is the best choice for you as it uses native language to pass commands to browser. 
 
 If you already skilled in JavaScript, with CodeceptJS you can focus on business level of your test, instead of writing code for browser. This way you can keep your tests stable and maintainable.
