@@ -1,4 +1,5 @@
 const assert = require('assert');
+const { log } = require('console');
 const path = require('path');
 const exec = require('child_process').exec;
 
@@ -206,7 +207,6 @@ describe('BDD Gherkin', () => {
   });
 
   it('should generate snippets for missing steps', (done) => {
-    console.log(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.js`);
     exec(`${runner} gherkin:snippets --dry-run --config ${codecept_dir}/codecept.dummy.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include(`Given('I open a browser on a site', () => {
   // From "support/dummy.feature" {"line":4,"column":5}

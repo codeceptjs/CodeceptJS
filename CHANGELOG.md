@@ -1,8 +1,9 @@
 ## 3.4.0
 
 * **Updated to latest mocha 8.2 and modern Cucumber**
+* **Allure plugin moved to [@codeceptjs/allure-legacy](https://github.com/codeceptjs/allure-legacy) package**. This happened because allure-commons package v1 was not updated and caused vulnarabilities. Fixes #3422. We don't plan to maintain allure v2 plugin so it's up to community to take this initiative.
 
-* Allure plugin moved to 
+
 
 ## 3.3.7
 
