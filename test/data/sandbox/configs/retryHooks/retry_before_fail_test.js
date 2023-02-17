@@ -1,9 +1,9 @@
-Feature('Retry #Helper hooks', { retryBefore: 3 });
+Feature('Fail #FailBefore hook', { timeout: 10000 });
 
 Before(async ({ I }) => {
   I.failIfNotWorks();
 });
 
 Scenario('helper hook works', () => {
-  console.log('works');
+  console.log('not works');
 });

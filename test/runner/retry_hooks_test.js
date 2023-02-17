@@ -28,4 +28,14 @@ describe('CodeceptJS Retry Hooks', function () {
       });
     });
   });
+
+  it('should finish if retry has not happened', (done) => {
+    exec(config_run_config('codecept.conf.js', '#FailBefore '), (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).toContain('-- FAILURES');
+      expect(stdout).toContain('not works');
+      expect(stdout).toContain('1) Fail #FailBefore hook');
+      done();
+    });
+  });
 });
