@@ -679,6 +679,13 @@ Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
 
+## retries
+
+Bug with retryFailedStep.
+It doesn't use our custom config and doesn't change amount of retryes
+[https://github.com/codeceptjs/CodeceptJS/issues/3268][15]
+[https://github.com/codeceptjs/CodeceptJS/issues/2829][16]
+
 ## retryFailedStep
 
 Retries each failed step in a test.
@@ -846,14 +853,14 @@ Possible config options:
 
 ## selenoid
 
-[Selenoid][15] plugin automatically starts browsers and video recording.
+[Selenoid][17] plugin automatically starts browsers and video recording.
 Works with WebDriver helper.
 
 ### Prerequisite
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][16] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][18] tool from Selenoid
 
 ### Usage
 
@@ -882,7 +889,7 @@ plugins: {
   }
 ```
 
-When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][17] and start Selenoid automatically.
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][19] and start Selenoid automatically.
 It will also create `browsers.json` file required by Selenoid.
 
 In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
@@ -894,10 +901,10 @@ In automatic mode the latest version of browser will be used for tests. It is re
 While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
 This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
 
-> Use [Selenoid Configuration Manager][16] to create and start containers semi-automatically.
+> Use [Selenoid Configuration Manager][18] to create and start containers semi-automatically.
 
 1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
-    [Refer to Selenoid documentation][18] to know more about browsers.json.
+    [Refer to Selenoid documentation][20] to know more about browsers.json.
 
 _Sample browsers.json_
 
@@ -922,7 +929,7 @@ _Sample browsers.json_
 
 2.  Create Selenoid container
 
-Run the following command to create a container. To know more [refer here][19]
+Run the following command to create a container. To know more [refer here][21]
 
 ```bash
 docker create                                    \
@@ -955,7 +962,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 | enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
 | enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
 | deletePassed     | Delete video and logs of passed tests (default : true)                         |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][20] to know more   |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][22] to know more   |
 
 ### Parameters
 
@@ -963,7 +970,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ## stepByStepReport
 
-![step-by-step-report][21]
+![step-by-step-report][23]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -1144,7 +1151,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][22].
+A complete list of all available services can be found on [webdriverio website][24].
 
 #### Setup
 
@@ -1156,7 +1163,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][23].
+Install `@wdio/selenium-standalone-service` package, as [described here][25].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -1175,7 +1182,7 @@ Please note, this service can be used with Protractor helper as well!
 
 #### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][24].
+Install `@wdio/sauce-service` package, as [described here][26].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -1233,22 +1240,26 @@ In the same manner additional services from webdriverio can be installed, enable
 
 [14]: /basics/#pause
 
-[15]: https://aerokube.com/selenoid/
+[15]: https://github.com/codeceptjs/CodeceptJS/issues/3268
 
-[16]: https://aerokube.com/cm/latest/
+[16]: https://github.com/codeceptjs/CodeceptJS/issues/2829
 
-[17]: https://hub.docker.com/u/selenoid
+[17]: https://aerokube.com/selenoid/
 
-[18]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[18]: https://aerokube.com/cm/latest/
 
-[19]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[19]: https://hub.docker.com/u/selenoid
 
-[20]: https://docs.docker.com/engine/reference/commandline/create/
+[20]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[21]: https://codecept.io/img/codeceptjs-slideshow.gif
+[21]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[22]: https://webdriver.io
+[22]: https://docs.docker.com/engine/reference/commandline/create/
 
-[23]: https://webdriver.io/docs/selenium-standalone-service.html
+[23]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[24]: https://webdriver.io/docs/sauce-service.html
+[24]: https://webdriver.io
+
+[25]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[26]: https://webdriver.io/docs/sauce-service.html
