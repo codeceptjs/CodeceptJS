@@ -101,8 +101,7 @@ npx codeceptjs def .
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
 Note:
-- CodeceptJS requires Node.js version `8.9.1+` or later. 
-- To use the parallel tests execution, requiring Node.js version `11.7` or later.
+- CodeceptJS requires Node.js version `12+` or later. 
 
 ## Usage
 

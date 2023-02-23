@@ -1,3 +1,55 @@
+## 3.4.1
+
+* Updated mocha to v 10.2. Fixes #3591
+* Fixes executing a faling Before hook. Resolves #3592
+
+## 3.4.0
+
+* **Updated to latest mocha and modern Cucumber**
+* **Allure plugin moved to [@codeceptjs/allure-legacy](https://github.com/codeceptjs/allure-legacy) package**. This happened because allure-commons package v1 was not updated and caused vulnarabilities. Fixes #3422. We don't plan to maintain allure v2 plugin so it's up to community to take this initiative. Current allure plugin will print a warning message without interfering the run, so it won't accidentally fail your builds.
+* Added ability to **[retry Before](https://codecept.io/basics/#retry-before), BeforeSuite, After, AfterSuite** hooks by @davertmik:
+```js
+Feature('flaky Before & BeforeSuite', { retryBefore: 2, retryBeforeSuite: 3 })
+```
+
+* **Flexible [retries configuration](https://codecept.io/basics/#retry-configuration) introduced** by @davertmik:
+
+```js
+retry: [
+  {
+    // enable this config only for flaky tests
+    grep: '@flaky', 
+    Before: 3 // retry Before 3 times
+    Scenario: 3 // retry Scenario 3 times
+  }, 
+  {
+    // retry less when running slow tests
+    grep: '@slow' 
+    Scenario: 1
+    Before: 1
+  }, {
+    // retry all BeforeSuite 3 times
+    BeforeSuite: 3
+  }
+]
+```
+* **Flexible [timeout configuration](https://codecept.io/advanced/#timeout-configuration)** introduced by @davertmik:
+
+```js
+timeout: [
+  10, // default timeout is 10secs  
+  {   // but increase timeout for slow tests
+    grep: '@slow',
+    Feature: 50
+  },
+]
+```
+
+* JsDoc: Removed promise from `I.say`. See #3535 by @danielrentz
+* [Playwright] `handleDownloads` requires now a filename param. See #3511 by @PeterNgTr 
+* [WebDriver] Added support for v8, removed support for webdriverio v5 and lower. See #3578 by @PeterNgTr
+
+
 ## 3.3.7
 
 🛩️ Features

@@ -15,7 +15,7 @@ exports.config = {
       setTimeout(() => {
         process.stdout.write('b2');
         done();
-      }, 1000);
+      }, 100);
     });
   },
   mocha: {},

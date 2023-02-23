@@ -51,6 +51,7 @@ Type: [object][5]
 -   `video` **[boolean][26]?** enables video recording for failed tests; videos are saved into `output/videos` folder
 -   `keepVideoForPassedTests` **[boolean][26]?** save videos for passed tests; videos are saved into `output/videos` folder
 -   `trace` **[boolean][26]?** record [tracing information][35] with screenshots and snapshots.
+-   `keepTraceForPassedTests` **[boolean][26]?** save trace for passed tests.
 -   `fullPageScreenshots` **[boolean][26]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][26]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState` **[boolean][26]?** keep browser state between tests when `restart` is set to 'session'.
@@ -1138,7 +1139,7 @@ I.waitForFile('avatar.jpg', 5);
 
 #### Parameters
 
--   `fileName` **[string][8]?** set filename for downloaded file
+-   `fileName` **[string][8]** set filename for downloaded file
 
 Returns **[Promise][14]&lt;void>** 
 

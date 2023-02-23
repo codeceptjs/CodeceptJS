@@ -1,4 +1,5 @@
 const assert = require('assert');
+const { log } = require('console');
 const path = require('path');
 const exec = require('child_process').exec;
 

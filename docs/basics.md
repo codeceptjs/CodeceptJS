@@ -345,7 +345,7 @@ If you face that error please make sure that all async functions are called with
 
 ## Running Tests
 
-To launch tests use the `run` command, and to execute tests in [multiple browsers](/advanced/#multiple-browsers-execution) or [multiple threads](/advanced/#parallel-execution) use the `run-multiple` command.
+To launch tests use the `run` command, and to execute tests in [multiple threads](/advanced/parallel) using `run-workers` command.
 
 ### Level of Detail
 
@@ -394,7 +394,7 @@ It is recommended to [filter tests by tags](/advanced/#tags).
 
 ### Parallel Run
 
-Since CodeceptJS 2.3, you can run tests in parallel by using NodeJS workers. This feature requires NodeJS >= 11.6. Use `run-workers` command with the number of workers (threads) to split tests.
+Tests can be executed in parallel mode by using [NodeJS workers](https://nodejs.org/api/worker_threads.html). Use `run-workers` command with the number of workers (threads) to split tests into different workers.
 
 ```
 npx codeceptjs run-workers 3
@@ -532,13 +532,55 @@ This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
 
 To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
 
+## Before
+
+Common preparation steps like opening a web page or logging in a user, can be placed in the `Before` or `Background` hooks:
+
+```js
+Feature('CodeceptJS Demonstration');
+
+Before(({ I }) => { // or Background
+  I.amOnPage('/documentation');
+});
+
+Scenario('test some forms', ({ I }) => {
+  I.click('Create User');
+  I.see('User is valid');
+  I.dontSeeInCurrentUrl('/documentation');
+});
+
+Scenario('test title', ({ I }) => {
+  I.seeInTitle('Example application');
+});
+```
+
+Same as `Before` you can use `After` to run teardown for each scenario.
+
+## BeforeSuite
+
+If you need to run complex a setup before all tests and have to teardown this afterwards, you can use the `BeforeSuite` and `AfterSuite` functions.
+`BeforeSuite` and `AfterSuite` have access to the `I` object, but `BeforeSuite/AfterSuite` don't have any access to the browser, because it's not running at this moment.
+You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work only for the file it was declared in (so you can declare different setups for files)
+
+```js
+BeforeSuite(({ I }) => {
+  I.syncDown('testfolder');
+});
+
+AfterSuite(({ I }) => {
+  I.syncUp('testfolder');
+  I.clearDir('testfolder');
+});
+```
+
 ## Retries
 
 ### Auto Retry
 
-You can auto-retry a failed step by enabling [retryFailedStep Plugin](/plugins/#retryfailedstep).
+Each failed step is auto-retried by default via [retryFailedStep Plugin](/plugins/#retryfailedstep).
+If this is not expected, this plugin can be disabled in a config. 
 
-> **[retryFailedStep plugin](/plugins/#retryfailedstep) is enabled by default** for new setups
+> **[retryFailedStep plugin](/plugins/#retryfailedstep) is enabled by default** incide global configuration
 
 ### Retry Step
 
@@ -608,16 +650,90 @@ Scenario('Really complex', { retries: 2 },({ I }) => {});
 This scenario will be restarted two times on a failure.
 Unlike retry step, there is no `when` condition supported for retries on a scenario level.
 
+### Retry Before <Badge text="Since 3.4" type="warning"/>
+
+To retry `Before`, `BeforeSuite`, `After`, `AfterSuite` hooks, add corresponding option to a `Feature`:
+
+* `retryBefore`
+* `retryBeforeSuite`
+* `retryAfter`
+* `retryAfterSuite`
+
+For instance, to retry Before hook 3 times:
+
+```js
+Feature('this have a flaky Befure', { retryBefore: 3 })
+```
+
+Multiple options of different values can be set at the same time
+
 ### Retry Feature
 
 To set this option for all scenarios in a file, add `retry` to a feature:
 
 ```js
 Feature('Complex JS Stuff').retry(3);
+// or
+Feature('Complex JS Stuff', { retries: 3 })
 ```
 
 Every Scenario inside this feature will be rerun 3 times.
 You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
+
+### Retry Configuration <Badge text="Since 3.4" type="warning"/>
+
+It is possible to set retry rules globally via `retry` config option. The configuration is flexible and allows multiple formats.
+The simplest config would be:
+
+```js
+// inside codecept.conf.js
+retry: 3
+```
+
+This will enable Feature Retry for all executed feature, retrying failing tests 3 times.
+
+An object can be used to tune retries of a Before/After hook, Scenario or Feature
+
+```js
+// inside codecept.conf.js
+retry: {
+  Feature: ...,
+  Scenario: ...,
+  Before: ...,
+  BeforeSuite: ...,
+  After: ...,
+  AfterSuite: ..., 
+}
+```
+
+Multiple retry configs can be added via array. To use different retry configs for different subset of tests use `grep` option inside a retry config:
+
+```js
+// inside codecept.conf.js
+retry: [
+  {
+    // enable this config only for flaky tests
+    grep: '@flaky', 
+    Before: 3
+    Scenario: 3
+  }, 
+  {
+    // retry less when running slow tests
+    grep: '@slow' 
+    Scenario: 1
+    Before: 1
+  }, {
+    // retry all BeforeSuite 
+    BeforeSuite: 3
+  }
+]
+```
+
+When using `grep` with `Before`, `After`, `BeforeSuite`, `AfterSuite`, a suite title will be checked for included value. 
+
+> ℹ️ `grep` value can be string or regexp
+
+Rules are applied in the order of array element, so the last option will override a previous one. Global retries config can be overridden in a file as described previously.
 
 ### Retry Run 
 
@@ -630,47 +746,6 @@ Even this is the slowest option of all, it can be helpful to detect flaky tests.
 npx codeceptjs run-rerun
 ```
 
-
-## Before
-
-Common preparation steps like opening a web page or logging in a user, can be placed in the `Before` or `Background` hooks:
-
-```js
-Feature('CodeceptJS Demonstration');
-
-Before(({ I }) => { // or Background
-  I.amOnPage('/documentation');
-});
-
-Scenario('test some forms', ({ I }) => {
-  I.click('Create User');
-  I.see('User is valid');
-  I.dontSeeInCurrentUrl('/documentation');
-});
-
-Scenario('test title', ({ I }) => {
-  I.seeInTitle('Example application');
-});
-```
-
-Same as `Before` you can use `After` to run teardown for each scenario.
-
-## BeforeSuite
-
-If you need to run complex a setup before all tests and have to teardown this afterwards, you can use the `BeforeSuite` and `AfterSuite` functions.
-`BeforeSuite` and `AfterSuite` have access to the `I` object, but `BeforeSuite/AfterSuite` don't have any access to the browser, because it's not running at this moment.
-You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work only for the file it was declared in (so you can declare different setups for files)
-
-```js
-BeforeSuite(({ I }) => {
-  I.syncDown('testfolder');
-});
-
-AfterSuite(({ I }) => {
-  I.syncUp('testfolder');
-  I.clearDir('testfolder');
-});
-```
 
 [Here are some ideas](https://github.com/codeceptjs/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
 
