@@ -242,8 +242,6 @@ describe('Workers', () => {
   });
 
   it('should run worker with multiple config', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.multiple.js',
