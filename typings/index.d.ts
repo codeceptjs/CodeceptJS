@@ -19,19 +19,19 @@ declare namespace CodeceptJS {
 
   type RetryConfig = {
     /** Filter tests by string or regexp pattern */
-    grep: string | RegExp;
+    grep?: string | RegExp;
     /** Number of times to repeat scenarios of a Feature */
-    Feature: number;
+    Feature?: number;
     /** Number of times to repeat scenarios */
-    Scenario: number;
+    Scenario?: number;
     /** Number of times to repeat Before hook */
-    Before: number;
+    Before?: number;
     /** Number of times to repeat After hook */
-    After: number;
+    After?: number;
     /** Number of times to repeat BeforeSuite hook */
-    BeforeSuite: number;
+    BeforeSuite?: number;
     /** Number of times to repeat AfterSuite hook */
-    AfterSuite: number;
+    AfterSuite?: number;
   };
 
   type TimeoutConfig = {
@@ -392,7 +392,7 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
-    | { shadow: string }
+    | { shadow: string[] }
     | { custom: string };
 
   interface CustomLocators {}
