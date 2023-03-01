@@ -32,6 +32,62 @@ By default the tests are assigned one by one to the available workers this may l
 npx codeceptjs run-workers --suites 2
 ```
 
+## Parallel Execution by Workers on Multiple Browsers
+
+To run tests in parallel across multiple browsers, modify your `codecept.conf.js` file to configure multiple browsers on which you want to run your tests and your tests will run across multiple browsers. 
+
+Start with modifying the `codecept.conf.js` file. Add multiple key inside the config which will be used to configure multiple profiles. 
+
+```
+exports.config = {
+  helpers: {
+    WebDriver: {
+      url: 'http://localhost:3000',
+      desiredCapabilties: {}
+    }
+  },
+  multiple: {
+    profile1: {
+      browsers: [
+        {
+          browser: "firefox",
+          desiredCapabilties: {
+            // override capabilties related to firefox
+          }
+        },
+        {
+          browser: "chrome",
+          desiredCapabilties: {
+            // override capabilties related to chrome
+          }
+        }
+      ]
+    }, 
+    profile2: {
+      browsers: [
+        {
+          browser: "safari",
+          desiredCapabilties: {
+            // override capabilties related to safari
+          }
+        }
+      ]
+    }
+  }
+};
+```
+To trigger tests on all the profiles configured, you can use the following command: 
+```
+npx codeceptjs run-workers 3 all -c codecept.conf.js
+```
+This will run your tests across all browsers configured from profile1 & profile2 on 3 workers.
+
+To trigger tests on specific profile, you can use the following command: 
+```
+npx codeceptjs run-workers 2 profile1 -c codecept.conf.js
+```
+This will run your tests across 2 browsers from profile1 on 2 workers.
+
 ## Custom Parallel Execution
 
 To get a full control of parallelization create a custom execution script to match your needs.
