@@ -34,7 +34,7 @@ Helpers are classes inherited from [corresponding abstract class](https://github
 Created helper file should look like this:
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('hermiona-helper');
 
 class MyHelper extends Helper {
 
@@ -60,7 +60,7 @@ When the helper is enabled in config all methods of a helper class are available
 For instance, if we add a new method to helper class:
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('hermiona-helper');
 
 class MyHelper extends Helper {
 
@@ -233,7 +233,7 @@ With Typescript, just simply replacing `module.exports` with `export` for autoco
 In this example we take the power of Playwright to change geolocation in our tests:
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('hermiona-helper');
 
 class MyHelper extends Helper {
 
@@ -250,7 +250,7 @@ class MyHelper extends Helper {
 Next example demonstrates how to use WebDriver library to create your own test action. Method `seeAuthentication` will use `browser` instance of WebDriver to get access to cookies. Standard NodeJS assertion library will be used (you can use any).
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('hermiona-helper');
 
 // use any assertion library you like
 const assert = require('assert');
@@ -289,7 +289,7 @@ Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/b
 Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('hermiona-helper');
 const puppeteer = require('puppeteer');
 const iPhone = puppeteer.devices['iPhone 6'];
 

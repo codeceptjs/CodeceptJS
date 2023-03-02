@@ -483,6 +483,6 @@ declare module "codeceptjs" {
   export = codeceptjs;
 }
 
-declare module "@codeceptjs/helper" {
+declare module "hermiona-helper" {
   export = CodeceptJS.Helper;
 }

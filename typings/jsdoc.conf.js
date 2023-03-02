@@ -23,7 +23,7 @@ module.exports = {
       './lib/ui.js',
       './lib/within.js',
       require.resolve('@codeceptjs/detox-helper'),
-      require.resolve('@codeceptjs/helper'),
+      require.resolve('hermiona-helper'),
     ],
   },
   opts: {
