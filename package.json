@@ -1,6 +1,6 @@
 {
   "name": "hermiona",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "End 2 End Testing Framework for NodeJS, based on CodeceptJS",
   "keywords": [
     "acceptance",
