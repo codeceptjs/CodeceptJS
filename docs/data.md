@@ -317,14 +317,14 @@ Since CodeceptJS 2.3.3 there is a simple way to enable shared session for browse
 Install [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package:
 
 ```
-npm i @codeceptjs/configure --save
+npm i hermiona-configure --save
 ```
 
 Import `setSharedCookies` function and call it inside a config:
 
 ```js
 // in codecept.conf.js
-const { setSharedCookies } = require('@codeceptjs/configure');
+const { setSharedCookies } = require('hermiona-configure');
 
 // share cookies between browser helpers and REST/GraphQL
 setSharedCookies();

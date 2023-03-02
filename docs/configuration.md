@@ -116,12 +116,12 @@ codeceptjs run --config=./path/to/my/config.js
 
 > 📺 [Watch this material](https://www.youtube.com/watch?v=onBnfo_rJa4&t=4s) on YouTube
 
-[`@codeceptjs/configure` package](https://github.com/codeceptjs/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
+[`hermiona-configure` package](https://github.com/codeceptjs/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
 
 Install it and enable to easily switch to headless/window mode, change window size, etc.
 
 ```js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+const { setHeadlessWhen, setWindowSize } = require('hermiona-configure');
 
 setHeadlessWhen(process.env.CI);
 setWindowSize(1600, 1200);

@@ -116,15 +116,15 @@ CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load
 
 ### Headless Mode
 
-It is recommended to use `@codeceptjs/configure` package to easily toggle headless mode for WebDriver:
+It is recommended to use `hermiona-configure` package to easily toggle headless mode for WebDriver:
 
 ```js
 // inside codecept.conf.js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+const { setHeadlessWhen, setWindowSize } = require('hermiona-configure');
 
 setHeadlessWhen(process.env.HEADLESS); // enables headless mode when HEADLESS environment variable exists
 ```
-This requires `@codeceptjs/configure` package to be installed.
+This requires `hermiona-configure` package to be installed.
 
 Alternatively, you can enable headless mode manually via desired capabilities.
 
@@ -654,4 +654,3 @@ When a helper is created, regenerate your step definitions, so you could see tho
 ```
 npx codeceptjs def
 ```
-

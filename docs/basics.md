@@ -434,7 +434,7 @@ Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it re
 For instance, you can set the window size or toggle headless mode, no matter of which helpers are actually used.
 
 ```js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+const { setHeadlessWhen, setWindowSize } = require('hermiona-configure');
 
 // run headless when CI environment variable set
 setHeadlessWhen(process.env.CI);

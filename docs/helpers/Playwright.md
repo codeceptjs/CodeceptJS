@@ -1351,8 +1351,8 @@ First parameter can be set to `maximize`.
     Playwright does not control the window of a browser so it can't adjust its real size.
     It also can't maximize a window.Update configuration to change real window size on start:```js
     // inside codecept.conf.js
-    // @codeceptjs/configure package must be installed
-    { setWindowSize } = require('@codeceptjs/configure');
+    // hermiona-configure package must be installed
+    { setWindowSize } = require('hermiona-configure');
     ```
 
 ### restartBrowser

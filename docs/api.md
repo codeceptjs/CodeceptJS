@@ -116,10 +116,10 @@ helpers: {
 ```
 
 Or you can use the browser cookies if you are running browser session.
-In this case use `setSharedCookies()` from `@codeceptjs/configure` package:
+In this case use `setSharedCookies()` from `hermiona-configure` package:
 
 ```js
-const { setSharedCookies } = require('@codeceptjs/configure');
+const { setSharedCookies } = require('hermiona-configure');
 
 // add this before exports.config
 setSharedCookies();

@@ -54,8 +54,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@codeceptjs/configure": "^0.8.0",
-    "hermiona-helper": "^2.0.2",
+    "hermiona-configure": "^0.7.0",
+    "hermiona-helper": "^2.0.3",
     "acorn": "^7.4.1",
     "allure-js-commons": "^1.3.2",
     "arrify": "^2.0.1",
