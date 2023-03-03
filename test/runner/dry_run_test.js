@@ -2,7 +2,7 @@ const path = require('path');
 const expect = require('expect');
 const exec = require('child_process').exec;
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
+const runner = path.join(__dirname, '/../../bin/hermiona.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} dry-run`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
