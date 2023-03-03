@@ -7,7 +7,7 @@ const chai = require('chai');
 const chaiSubset = require('chai-subset');
 const { Project, StructureKind, ts } = require('ts-morph');
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
+const runner = path.join(__dirname, '/../../bin/hermiona.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions');
 const pathToRootOfProject = path.join(__dirname, '../../');
 const pathOfStaticDefinitions = path.join(pathToRootOfProject, 'typings/index.d.ts');

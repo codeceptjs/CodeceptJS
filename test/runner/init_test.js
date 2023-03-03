@@ -2,7 +2,7 @@ const { DOWN, ENTER } = require('inquirer-test');
 const run = require('inquirer-test');
 const path = require('path');
 
-const runner = path.join(__dirname, '../../bin/codecept.js');
+const runner = path.join(__dirname, '../../bin/hermiona.js');
 
 describe('Init Command', function () {
   this.timeout(20000);

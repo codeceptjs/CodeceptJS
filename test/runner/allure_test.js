@@ -7,7 +7,7 @@ const { parseString, Parser } = require('xml2js');
 const { deleteDir } = require('../../lib/utils');
 
 const parser = new Parser();
-const runner = path.join(__dirname, '/../../bin/codecept.js');
+const runner = path.join(__dirname, '/../../bin/hermiona.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/allure');
 const codecept_run = `${runner} run`;
 const codecept_workers = `${runner} run-workers 2`;
