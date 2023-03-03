@@ -1,0 +1,57 @@
+name: Publish alpha version to npmjs
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Set npm registry and _authToken
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+
+      - name: Git configuration
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Install dependencies
+        run: npm i --legacy-peer-deps
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+
+      - name: Set npm preid
+        run: npm config set preid ${{ env.GITHUB_REF_SLUG }}-${{ env.GITHUB_SHA_SHORT }}
+
+      - name: Generate typings
+        run: npm run def
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Set version
+        run: npm version prerelease
+
+      - name: Push changes to repository
+        run: git push origin && git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package on NPM 📦
+        run: npm publish
