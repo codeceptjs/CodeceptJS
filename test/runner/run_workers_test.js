@@ -18,7 +18,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should run tests in 3 workers', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 3 --debug`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('glob current dir');
       expect(stdout).toContain('From worker @1_grep print message 1');
       expect(stdout).toContain('From worker @2_grep print message 2');
@@ -35,7 +35,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should print correct FAILURES in 3 workers without --debug', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 3`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('glob current dir');
       expect(stdout).toContain('From worker @1_grep print message 1');
       expect(stdout).toContain('From worker @2_grep print message 2');
@@ -74,7 +74,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should use grep', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --grep "grep"`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).not.toContain('glob current dir');
       expect(stdout).toContain('From worker @1_grep print message 1');
       expect(stdout).toContain('From worker @2_grep print message 2');
@@ -90,7 +90,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should use suites', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --suites`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('Running tests in 2 workers'); // feature
       expect(stdout).toContain('glob current dir');
       expect(stdout).toContain('From worker @1_grep print message 1');
@@ -104,7 +104,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should show failures when suite is failing', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('Running tests in 2 workers');
       // Test Scenario wasn't executed, but we can see it in logs because Before() hook was executed
       expect(stdout).not.toContain(' should not be executed ');
@@ -124,7 +124,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should print stdout in debug mode and load bootstrap', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 1 --grep "grep" --debug`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('Running tests in 1 workers');
       expect(stdout).toContain('bootstrap b1+b2');
       expect(stdout).toContain('message 1');
@@ -138,7 +138,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should run tests with glob pattern', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run_glob('codecept.workers-glob.conf.js')} 1 --grep "grep" --debug`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('Running tests in 1 workers');
       expect(stdout).toContain('bootstrap b1+b2');
       expect(stdout).toContain('message 1');
@@ -152,7 +152,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should print empty results with incorrect glob pattern', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run_glob('codecept.workers-incorrect-glob.conf.js')} 1 --grep "grep" --debug`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('Running tests in 1 workers');
       expect(stdout).toContain('OK  | 0 passed');
       expect(err).toEqual(null);
@@ -163,7 +163,7 @@ describe('CodeceptJS Workers Runner', function () {
   it('should retry test', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     exec(`${codecept_run} 2 --grep "retry"`, (err, stdout) => {
-      expect(stdout).toContain('CodeceptJS'); // feature
+      expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('OK  | 1 passed');
       done();
     });

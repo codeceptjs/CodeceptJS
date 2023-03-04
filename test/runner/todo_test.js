@@ -4,7 +4,7 @@ const assert = require('assert');
 
 const runner = path.join(__dirname, '/../../bin/hermiona.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/todo');
-const codecept_run = `${runner} run --config ${codecept_dir}/codecept.conf.js `;
+const codecept_run = `${runner} run --config ${codecept_dir}/hermiona.conf.js `;
 
 describe('Todo', () => {
   it('should skip test with todo', (done) => {

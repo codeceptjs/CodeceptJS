@@ -15,7 +15,7 @@ describe('run-rerun command', () => {
   });
 
   it('should display count of attemps', (done) => {
-    exec(`${codecept_run_config('codecept.conf.js')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('hermiona.conf.js')} --debug`, (err, stdout) => {
       const runs = stdout.split('Run Rerun - Command --');
 
       // check first run

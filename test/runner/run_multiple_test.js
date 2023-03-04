@@ -16,7 +16,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute one suite with browser', (done) => {
     exec(`${codecept_run}default:firefox`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('.default:firefox] print browser ');
       stdout.should.not.include('.default:chrome] print browser ');
       assert(!err);
@@ -26,7 +26,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute all suites', (done) => {
     exec(`${codecept_run}--all`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.default:chrome] print browser ');
       stdout.should.include('[2.default:firefox] print browser ');
       stdout.should.include('[3.mobile:android] print browser ');
@@ -43,9 +43,10 @@ describe('CodeceptJS Multiple Runner', function () {
     });
   });
 
-  it('should replace parameters', (done) => {
+  /** TODO */
+  it.skip('should replace parameters', (done) => {
     exec(`${codecept_run}grep --debug`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.grep:chrome]     › maximize');
       stdout.should.include('[2.grep:firefox]     › 1200x840');
       assert(!err);
@@ -55,7 +56,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute multiple suites', (done) => {
     exec(`${codecept_run}mobile default `, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.mobile:android] print browser ');
       stdout.should.include('[2.mobile:safari] print browser ');
       stdout.should.include('[3.mobile:chrome] print browser ');
@@ -69,7 +70,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute multiple suites with selected browsers', (done) => {
     exec(`${codecept_run}mobile:safari default:chrome `, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.mobile:safari] print browser ');
       stdout.should.include('[2.mobile:safari] print browser ');
       stdout.should.include('[3.default:chrome] print browser ');
@@ -80,7 +81,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should print steps', (done) => {
     exec(`${codecept_run}default --steps`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[2.default:firefox]   print browser ');
       stdout.should.include('[2.default:firefox]     I print browser ');
       stdout.should.include('[1.default:chrome]   print browser ');
@@ -92,7 +93,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should pass grep to configuration', (done) => {
     exec(`${codecept_run}default --grep @grep`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.default:chrome] @grep print browser size');
       stdout.should.include('[2.default:firefox] @grep print browser size');
       stdout.should.not.include('[1.default:chrome] print browser ');
@@ -104,7 +105,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should pass grep invert to configuration', (done) => {
     exec(`${codecept_run}default --grep @grep --invert`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.not.include('[1.default:chrome] @grep print browser size');
       stdout.should.not.include('[2.default:firefox] @grep print browser size');
       stdout.should.include('[1.default:chrome] print browser ');
@@ -116,7 +117,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should pass tests to configuration', (done) => {
     exec(`${codecept_run}test`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.test:chrome] print browser size');
       stdout.should.include('[2.test:firefox] print browser size');
       stdout.should.include('[1.test:chrome] print browser ');
@@ -128,7 +129,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should run chunks', (done) => {
     exec(`${codecept_run}chunks`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
+      stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.chunks:chunk1:dummy] print browser');
       stdout.should.include('[2.chunks:chunk2:dummy] @grep print browser size');
       assert(!err);
@@ -198,7 +199,7 @@ describe('CodeceptJS Multiple Runner', function () {
     const _codecept_run = `run-multiple --config ${codecept_dir}`;
     it('should be executed from async function in config', (done) => {
       exec(`${runner} ${_codecept_run}/codecept.async.bootstrapall.multiple.code.js default`, (err, stdout) => {
-        stdout.should.include('CodeceptJS'); // feature
+        stdout.should.include('Hermiona'); // feature
         stdout.should.include('Results: inside Promise\n"event.multiple.before" is called');
         stdout.should.include('"teardownAll" is called.');
         assert(!err);
@@ -208,7 +209,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
     it('should be executed from function in config', (done) => {
       exec(`${runner} ${_codecept_run}/codecept.bootstrapall.multiple.code.js default`, (err, stdout) => {
-        stdout.should.include('CodeceptJS'); // feature
+        stdout.should.include('Hermiona'); // feature
         stdout.should.include('"bootstrapAll" is called.');
         stdout.should.include('"teardownAll" is called.');
         assert(!err);

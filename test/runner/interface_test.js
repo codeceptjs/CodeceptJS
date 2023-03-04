@@ -178,7 +178,7 @@ describe('CodeceptJS Interface', () => {
       const step = [
         'I am in path "."',
         'hello world',
-        'I see file "codecept.js"',
+        'I see file "hermiona.js"',
       ];
 
       lines.filter(l => step.indexOf(l) > -1)
