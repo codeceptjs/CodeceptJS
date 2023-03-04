@@ -61,7 +61,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const extend = getExtends(definitionFile.getNamespaceOrThrow('Hermiona').getInterfaceOrThrow('I'));
+      const extend = getExtends(definitionFile.getNamespaceOrThrow('HermionaJS').getInterfaceOrThrow('I'));
       extend.should.containSubset([{
         methods: [{
           name: 'amInPath',
@@ -249,7 +249,7 @@ function resolutionHost(moduleResolutionHost, getCompilerOptions) {
       let result;
 
       for (const typeDirectiveName of typeDirectiveNames) {
-        if (typeDirectiveName === 'codeceptjs') {
+        if (typeDirectiveName === 'hermiona') {
           result = {
             resolvedTypeReferenceDirective: {
               primary: false,

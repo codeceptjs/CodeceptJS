@@ -13,7 +13,7 @@ title: Detox
 
 **Extends Helper**
 
-This is a wrapper on top of [Detox][1] library, aimied to unify testing experience for CodeceptJS framework.
+This is a wrapper on top of [Detox][1] library, aimied to unify testing experience for HermionaJS framework.
 Detox provides a grey box testing for mobile applications, playing especially good for React Native apps.
 
 Detox plays quite differently from Appium. To establish detox testing you need to build a mobile application in a special way to inject Detox code.
@@ -25,7 +25,7 @@ Comparing to Appium, Detox runs faster and more stable but requires an additiona
 
 1.  [Install and configure Detox for iOS][2] and [Android][3]
 2.  [Build an application][4] using `detox build` command.
-3.  Install [CodeceptJS][5] and detox-helper: 
+3.  Install [HermionaJS][5] and detox-helper: 
 
 
     npm i @codeceptjs/detox-helper --save
@@ -49,7 +49,7 @@ If you completed step 1 and step 2 you should have a configuration similar this:
 
 ### Configuration
 
-Besides Detox configuration, CodeceptJS should also be configured to use Detox.
+Besides Detox configuration, HermionaJS should also be configured to use Detox.
 
 In `codecept.conf.js` enable Detox helper:
 

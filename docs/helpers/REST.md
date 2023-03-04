@@ -93,7 +93,7 @@ I.amBearerAuthenticated(secret('heregoestoken'))
 
 #### Parameters
 
--   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+-   `accessToken` **([string][3] | HermionaJS.Secret)** Bearer access token
 
 ### haveRequestHeaders
 

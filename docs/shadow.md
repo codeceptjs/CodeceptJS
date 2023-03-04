@@ -26,7 +26,7 @@ Generated HTML code may often look like this (ref: [Salesforce's Lighting Web Co
 </body>
 ```
 
-This uses custom elements, `my-app`, `recipe-hello`, `recipe-hello-binding` and `ui-input`. It's quite common that clickable elements are not actual `a` or `button` elements but custom elements. This way `I.click('Click Me!');` won't work, as well as `fillField('.input', 'value)`. Finding a correct locator for such cases turns to be almost impossible until `shadow` element support is added to CodeceptJS.
+This uses custom elements, `my-app`, `recipe-hello`, `recipe-hello-binding` and `ui-input`. It's quite common that clickable elements are not actual `a` or `button` elements but custom elements. This way `I.click('Click Me!');` won't work, as well as `fillField('.input', 'value)`. Finding a correct locator for such cases turns to be almost impossible until `shadow` element support is added to HermionaJS.
 
 ## Locate Shadow Dom
 

@@ -11,7 +11,7 @@ title: Continuous Integration
 
 Continuous Integration services allows you to delegate the control of running tests to external system.
 CodeceptJS plays well with all types of CI even when there is no documentation on this topic, it is still easy to set up with any kind of hosted or cloud CI.
-Our community prepared some valuable recipes for setting up CI systems with CodeceptJS.
+Our community prepared some valuable recipes for setting up CI systems with HermionaJS.
 
 ## Recipes
 
@@ -19,4 +19,3 @@ Our community prepared some valuable recipes for setting up CI systems with Code
 * ### [CodeceptJS GitLab Integration](https://codecept.discourse.group/t/codeceptjs-gitlab-integration/)
 * ### [CodeceptJS - Jenkins Integration](https://codecept.discourse.group/t/codeceptjs-jenkins-integration/)
 * ### [CodeceptJS Integration with TeamCity](https://codecept.discourse.group/t/codeceptjs-integration-with-teamcity/)
-

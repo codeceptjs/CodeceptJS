@@ -114,7 +114,7 @@ MisMatch Percentage Calculated is 2.85
 
 ## Using Applitools
 
-Applitools helps Test Automation engineers, DevOps, and FrontEnd Developers continuously test and validate visually perfect mobile, web, and native apps. Now it can be used with CodeceptJS.
+Applitools helps Test Automation engineers, DevOps, and FrontEnd Developers continuously test and validate visually perfect mobile, web, and native apps. Now it can be used with HermionaJS.
 
 ### Setup
 
@@ -199,4 +199,3 @@ Scenario('Check home page @test', async ({  }) => {
     await I.eyeCheck('Homepage');
 });
 ```
-

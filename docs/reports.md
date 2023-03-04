@@ -149,7 +149,7 @@ Testomat.io is commercial SaaS service that can receive run reports from local r
 
 ![](https://user-images.githubusercontent.com/220264/151728836-b52d2b2b-56e1-4640-8d3a-b39de817b1fd.png)
 
-> 😻 **Testomat.io is free** for small teams, so you can use its reporting features with CodeceptJS.
+> 😻 **Testomat.io is free** for small teams, so you can use its reporting features with HermionaJS.
 
 To receive run reports you should:
 

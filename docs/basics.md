@@ -317,7 +317,7 @@ var assert = require('assert');
 assert.equal(title, 'CodeceptJS');
 ```
 
-It is important to understand the usage of **async** functions in CodeceptJS. While non-returning actions can be called without await, if an async function uses `grab*` action it must be called with `await`:
+It is important to understand the usage of **async** functions in HermionaJS. While non-returning actions can be called without await, if an async function uses `grab*` action it must be called with `await`:
 
 ```js
 // a helper function

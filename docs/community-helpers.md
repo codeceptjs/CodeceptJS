@@ -55,4 +55,4 @@ Please **add your own** by editing this page.
 ## Other
 
 * [codeceptjs-cmdhelper](https://github.com/thiagodp/codeceptjs-cmdhelper) allows you to run commands in the terminal/console
-* [eslint-plugin-codeceptjs](https://www.npmjs.com/package/eslint-plugin-codeceptjs) Eslint rules for CodeceptJS.
+* [eslint-plugin-codeceptjs](https://www.npmjs.com/package/eslint-plugin-codeceptjs) Eslint rules for HermionaJS.
