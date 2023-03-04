@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'release/**'
 
 jobs:
   build:
@@ -47,11 +50,6 @@ jobs:
 
       - name: Set version
         run: npm version prerelease
-
-      - name: Push changes to repository
-        run: git push origin && git push --tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish package on NPM 📦
         run: npm publish
