@@ -39,16 +39,16 @@ describe('Definitions', function () {
         types.should.be.valid;
 
         const definitionsFile = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
-        const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getNamespaceOrThrow('index').getStructure();
+        const index = definitionsFile.getNamespaceOrThrow('HermionaJS').getNamespaceOrThrow('index').getStructure();
         index.statements.should.containSubset([
-          { declarations: [{ name: 'recorder', type: 'CodeceptJS.recorder' }] },
-          { declarations: [{ name: 'event', type: 'typeof CodeceptJS.event' }] },
-          { declarations: [{ name: 'output', type: 'typeof CodeceptJS.output' }] },
-          { declarations: [{ name: 'config', type: 'typeof CodeceptJS.Config' }] },
-          { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
+          { declarations: [{ name: 'recorder', type: 'HermionaJS.recorder' }] },
+          { declarations: [{ name: 'event', type: 'typeof HermionaJS.event' }] },
+          { declarations: [{ name: 'output', type: 'typeof HermionaJS.output' }] },
+          { declarations: [{ name: 'config', type: 'typeof HermionaJS.Config' }] },
+          { declarations: [{ name: 'container', type: 'typeof HermionaJS.Container' }] },
         ]);
         const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure();
-        codeceptjs.type.should.equal('typeof CodeceptJS.index');
+        codeceptjs.type.should.equal('typeof HermionaJS.index');
         done();
       });
     });
@@ -61,7 +61,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const extend = getExtends(definitionFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      const extend = getExtends(definitionFile.getNamespaceOrThrow('Hermiona').getInterfaceOrThrow('I'));
       extend.should.containSubset([{
         methods: [{
           name: 'amInPath',
@@ -115,7 +115,7 @@ describe('Definitions', function () {
         returnType: undefined,
         kind: StructureKind.Method,
       }]);
-      const I = getExtends(definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      const I = getExtends(definitionsFile.getNamespaceOrThrow('HermionaJS').getInterfaceOrThrow('I'));
       I.should.containSubset([{
         methods: [{
           name: 'openDir',
@@ -184,7 +184,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
+      const CallbackOrder = definitionsFile.getNamespaceOrThrow('HermionaJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
         { name: 'I', type: 'I' },
         { name: 'MyPage', type: 'MyPage' },
@@ -201,7 +201,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const extend = getExtends(definitionFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      const extend = getExtends(definitionFile.getNamespaceOrThrow('HermionaJS').getInterfaceOrThrow('I'));
       extend.should.containSubset([{
         methods: [{
           name: 'amInPath',

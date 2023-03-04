@@ -6,7 +6,7 @@
 /// <reference types="joi" />
 /// <reference types="playwright" />
 
-declare namespace CodeceptJS {
+declare namespace HermionaJS {
   type WithTranslation<T> = T &
     import("./utils").Translate<T, Translation.Actions>;
 
@@ -291,7 +291,7 @@ declare namespace CodeceptJS {
   }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
-    I: CodeceptJS.I;
+    I: HermionaJS.I;
   }
   namespace Translation {
     interface Actions {}
@@ -327,7 +327,7 @@ declare namespace CodeceptJS {
     | Locator
     | CustomLocators[keyof CustomLocators];
 
-  type StringOrSecret = string | CodeceptJS.Secret;
+  type StringOrSecret = string | HermionaJS.Secret;
 
   interface HookCallback {
     (args: SupportObject): void | Promise<void>;
@@ -377,45 +377,45 @@ declare const output_dir: string;
 declare function tryTo(...fn): Promise<boolean>;
 declare function retryTo(...fn): Promise<null>;
 
-declare const actor: CodeceptJS.actor;
-declare const codecept_actor: CodeceptJS.actor;
-declare const Helper: typeof CodeceptJS.Helper;
-declare const codecept_helper: typeof CodeceptJS.Helper;
-declare const pause: typeof CodeceptJS.pause;
-declare const within: typeof CodeceptJS.within;
-declare const session: typeof CodeceptJS.session;
-declare const DataTable: typeof CodeceptJS.DataTable;
-declare const DataTableArgument: typeof CodeceptJS.DataTableArgument;
-declare const codeceptjs: typeof CodeceptJS.index;
-declare const locate: typeof CodeceptJS.Locator.build;
-declare function inject(): CodeceptJS.SupportObject;
-declare function inject<T extends keyof CodeceptJS.SupportObject>(
+declare const actor: HermionaJS.actor;
+declare const codecept_actor: HermionaJS.actor;
+declare const Helper: typeof HermionaJS.Helper;
+declare const codecept_helper: typeof HermionaJS.Helper;
+declare const pause: typeof HermionaJS.pause;
+declare const within: typeof HermionaJS.within;
+declare const session: typeof HermionaJS.session;
+declare const DataTable: typeof HermionaJS.DataTable;
+declare const DataTableArgument: typeof HermionaJS.DataTableArgument;
+declare const codeceptjs: typeof HermionaJS.index;
+declare const locate: typeof HermionaJS.Locator.build;
+declare function inject(): HermionaJS.SupportObject;
+declare function inject<T extends keyof HermionaJS.SupportObject>(
   name: T
-): CodeceptJS.SupportObject[T];
-declare const secret: typeof CodeceptJS.Secret.secret;
+): HermionaJS.SupportObject[T];
+declare const secret: typeof HermionaJS.Secret.secret;
 
 // BDD
-declare const Given: typeof CodeceptJS.addStep;
-declare const When: typeof CodeceptJS.addStep;
-declare const Then: typeof CodeceptJS.addStep;
+declare const Given: typeof HermionaJS.addStep;
+declare const When: typeof HermionaJS.addStep;
+declare const Then: typeof HermionaJS.addStep;
 
-declare const Feature: typeof CodeceptJS.Feature;
-declare const Scenario: CodeceptJS.Scenario;
-declare const xScenario: CodeceptJS.IScenario;
-declare const xFeature: CodeceptJS.IFeature;
-declare function Data(data: any): CodeceptJS.IData;
-declare function xData(data: any): CodeceptJS.IData;
-declare function defineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
+declare const Feature: typeof HermionaJS.Feature;
+declare const Scenario: HermionaJS.Scenario;
+declare const xScenario: HermionaJS.IScenario;
+declare const xFeature: HermionaJS.IFeature;
+declare function Data(data: any): HermionaJS.IData;
+declare function xData(data: any): HermionaJS.IData;
+declare function defineParameterType(options: HermionaJS.IParameterTypeDefinition<any>): void
 
 // Hooks
-declare const BeforeSuite: CodeceptJS.IHook;
-declare const AfterSuite: CodeceptJS.IHook;
-declare const Background: CodeceptJS.IHook;
-declare const Before: CodeceptJS.IHook;
-declare const After: CodeceptJS.IHook;
+declare const BeforeSuite: HermionaJS.IHook;
+declare const AfterSuite: HermionaJS.IHook;
+declare const Background: HermionaJS.IHook;
+declare const Before: HermionaJS.IHook;
+declare const After: HermionaJS.IHook;
 
 interface Window {
-  codeceptjs: typeof CodeceptJS.browserCodecept;
+  codeceptjs: typeof HermionaJS.browserCodecept;
   resq: any;
 }
 
@@ -424,7 +424,7 @@ declare namespace NodeJS {
     profile: string;
   }
 
-  interface Global extends CodeceptJS.Globals {
+  interface Global extends HermionaJS.Globals {
     codecept_dir: typeof codecept_dir;
     output_dir: typeof output_dir;
 
@@ -484,5 +484,5 @@ declare module "codeceptjs" {
 }
 
 declare module "hermiona-helper" {
-  export = CodeceptJS.Helper;
+  export = HermionaJS.Helper;
 }

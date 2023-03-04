@@ -3,7 +3,7 @@ module.exports = {
     include: [
       './docs/build',
       './lib/actor.js',
-      './lib/codecept.js',
+      './lib/hermiona.js',
       './lib/config.js',
       './lib/container.js',
       './lib/data/table.js',

@@ -17,7 +17,7 @@ Scenario(
   'scenario',
   () => {} // $ExpectType () => void
 )
-const callback: CodeceptJS.HookCallback = () => {}
+const callback: HermionaJS.HookCallback = () => {}
 Scenario(
   'scenario',
   callback // $ExpectType HookCallback

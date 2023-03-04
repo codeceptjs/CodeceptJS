@@ -1,6 +1,6 @@
 export {}; // mark the file as external module to redeclare variables in the same block
 
-const wd = new CodeceptJS.WebDriver();
+const wd = new HermionaJS.WebDriver();
 
 const str = 'text';
 const num = 1;

@@ -3,7 +3,7 @@
 
 let namespaceAdded = false;
 const kinds = ['class', 'constant', 'function', 'typedef', 'interface', 'namespace'];
-const namespace = 'CodeceptJS';
+const namespace = 'HermionaJS';
 
 module.exports = {
   handlers: {
@@ -17,7 +17,7 @@ module.exports = {
       if (doclet.undocumented
         || doclet.memberof
         || !kinds.includes(doclet.kind)
-        || (doclet.kind === 'namespace' && doclet.longname === 'CodeceptJS')
+        || (doclet.kind === 'namespace' && doclet.longname === 'HermionaJS')
       ) {
         return;
       }
