@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const program = require('commander');
-const Codecept = require('../lib/codecept');
+const Codecept = require('../lib/hermiona');
 const { print, error } = require('../lib/output');
 const { printError } = require('../lib/command/utils');
 
