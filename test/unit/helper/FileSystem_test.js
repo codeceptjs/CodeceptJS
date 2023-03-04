@@ -3,7 +3,7 @@ const { expect } = require('chai');
 
 const FileSystem = require('../../../lib/helper/FileSystem');
 
-global.codeceptjs = require('../../../lib');
+global.hermiona = require('../../../lib');
 
 let fs;
 
