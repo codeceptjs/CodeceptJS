@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const recorder = codeceptjs.recorder;
+const recorder = hermiona.recorder;
 
 let tries = 0;
 
