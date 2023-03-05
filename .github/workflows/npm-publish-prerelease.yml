@@ -9,7 +9,7 @@ on:
       - "release/**"
 
 jobs:
-  publish-prerelease-version:
+  publish:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout

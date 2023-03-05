@@ -9,7 +9,7 @@ on:
       - "**"
 
 jobs:
-  run-typings-tests:
+  run-tests:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout

@@ -9,7 +9,7 @@ on:
       - "**"
 
 jobs:
-  run-unit-tests:
+  run-tests:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
