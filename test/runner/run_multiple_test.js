@@ -43,8 +43,7 @@ describe('CodeceptJS Multiple Runner', function () {
     });
   });
 
-  /** TODO */
-  it.skip('should replace parameters', (done) => {
+  it('should replace parameters', (done) => {
     exec(`${codecept_run}grep --debug`, (err, stdout) => {
       stdout.should.include('Hermiona'); // feature
       stdout.should.include('[1.grep:chrome]     › maximize');
