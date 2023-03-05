@@ -1,0 +1,43 @@
+name: Run TestCafe Tests
+
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
+jobs:
+  run-testcafe-tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+
+      - name: Install dependencies
+        run: npm i --legacy-peer-deps
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: start a server
+        run: "php -S 127.0.0.1:8000 -t test/data/app &"
+      - name: run unit tests
+        run: xvfb-run --server-args="-screen 0 1280x720x24" ./node_modules/.bin/mocha test/helper/TestCafe_test.js
