@@ -1,16 +1,16 @@
-name: Publish alpha version to npmjs
+name: Publish prerelease version to NPM
 
 on:
   push:
     branches:
-      - 'feature/**'
-      - 'bugfix/**'
-      - 'hotfix/**'
-      - 'release/**'
+      - "feature/**"
+      - "bugfix/**"
+      - "hotfix/**"
+      - "release/**"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  publish-prerelease-version:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
