@@ -1,4 +1,4 @@
-const { event, recorder } = codeceptjs;
+const { event, recorder } = hermiona;
 
 const { page } = inject();
 

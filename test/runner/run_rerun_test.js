@@ -4,7 +4,7 @@ const path = require('path');
 const exec = require('child_process').exec;
 const semver = require('semver');
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
+const runner = path.join(__dirname, '/../../bin/hermiona.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/run-rerun/');
 const codecept_run = `${runner} run-rerun`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} --grep "${grep || ''}"`;
@@ -15,7 +15,7 @@ describe('run-rerun command', () => {
   });
 
   it('should display count of attemps', (done) => {
-    exec(`${codecept_run_config('codecept.conf.js')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('hermiona.conf.js')} --debug`, (err, stdout) => {
       const runs = stdout.split('Run Rerun - Command --');
 
       // check first run

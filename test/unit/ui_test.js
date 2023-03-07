@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
 
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 const makeUI = require('../../lib/ui');
 
 describe('ui', () => {

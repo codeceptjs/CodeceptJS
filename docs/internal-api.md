@@ -5,16 +5,16 @@ title: Internal API
 
 ## Concepts
 
-In this guide we will overview the internal API of CodeceptJS.
+In this guide we will overview the internal API of HermionaJS.
 This knowledge is required for customization, writing plugins, etc.
 
-CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally. Otherwise, you can load codeceptjs API via global `codeceptjs` object:
+CodeceptJS provides an API which can be loaded via `require('hermiona')` when CodeceptJS is installed locally. Otherwise, you can load codeceptjs API via global `hermiona` object:
 
 ```js
 // via module
-const { recorder, event, output } = require('codeceptjs');
+const { recorder, event, output } = require('hermiona');
 // or using global object
-const { recorder, event, output } = codeceptjs;
+const { recorder, event, output } = hermiona;
 ```
 
 These internal objects are available:

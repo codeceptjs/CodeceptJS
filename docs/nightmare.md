@@ -17,7 +17,7 @@ It is modern Electron based testing framework which allows to execute tests in h
 This makes Nightmare very useful, much more handy than PhantomJS. Nightmare is in active development and has nice API for writing acceptance tests.
 Unfortunately, as all other JavaScript testing frameworks it has its own very custom API.
 What if you choose it for a project and suddenly you realize that you need something more powerful, like Selenium?
-Yes, that might be a problem if you are not using CodeceptJS.
+Yes, that might be a problem if you are not using HermionaJS.
 The one idea behind CodeceptJS is to unify different testing backends under one API, so you could easily write tests the same way no matter what engines you use: webdriverio, Protractor, or Nightmare.
 
 Compare a test written using Nightmare API:

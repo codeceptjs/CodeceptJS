@@ -81,7 +81,7 @@ title: Continuous Integration
 
 Continuous Integration services allows you to delegate the control of running tests to external system.
 CodeceptJS plays well with all types of CI even when there is no documentation on this topic, it is still easy to set up with any kind of hosted or cloud CI.
-Our community prepared some valuable recipes for setting up CI systems with CodeceptJS.
+Our community prepared some valuable recipes for setting up CI systems with HermionaJS.
 
 ## Recipes
 
@@ -99,7 +99,8 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     console.log('Building @codecepjs/detox helper docs');
     let helper = 'Detox';
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
-      cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+      cfg.replace(/CodeceptJS/g, 'HermionaJS');
+      cfg.replace(/HermionaJS.LocatorOrString/g, 'string | object');
       cfg.replace(/LocatorOrString/g, 'string | object');
     });
     await npx(`documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`);
@@ -110,14 +111,14 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     });
 
     replaceInFile(`node_modules/@codeceptjs/detox-helper/${helper}.js`, (cfg) => {
-      cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+      cfg.replace(/string \| object/g, 'HermionaJS.LocatorOrString');
       cfg.replace(/string \| object/g, 'LocatorOrString');
     });
 
     console.log('Building @codeceptjs/mock-request');
     helper = 'MockRequest';
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
-      cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+      cfg.replace(/HermionaJS.LocatorOrString/g, 'string | object');
       cfg.replace(/LocatorOrString/g, 'string | object');
     });
     await npx(`documentation build node_modules/@codeceptjs/mock-request/index.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`);
@@ -128,7 +129,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     });
 
     replaceInFile('node_modules/@codeceptjs/mock-request/index.js', (cfg) => {
-      cfg.replace(/string \| object/g, 'CodeceptJS.LocatorOrString');
+      cfg.replace(/string \| object/g, 'HermionaJS.LocatorOrString');
       cfg.replace(/string \| object/g, 'LocatorOrString');
     });
   },
@@ -165,11 +166,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(placeholders[i], templates[i]);
         }
         if (!forTypings) {
-          cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+          cfg.replace(/HermionaJS.LocatorOrString\?/g, '(string | object)?');
           cfg.replace(/LocatorOrString\?/g, '(string | object)?');
-          cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+          cfg.replace(/HermionaJS.LocatorOrString/g, 'string | object');
           cfg.replace(/LocatorOrString/g, 'string | object');
-          cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
+          cfg.replace(/HermionaJS.StringOrSecret/g, 'string | object');
         }
       });
     }
@@ -202,11 +203,11 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         for (const i in placeholders) {
           cfg.replace(placeholders[i], templates[i]);
         }
-        cfg.replace(/CodeceptJS.LocatorOrString\?/g, '(string | object)?');
+        cfg.replace(/HermionaJS.LocatorOrString\?/g, '(string | object)?');
         cfg.replace(/LocatorOrString\?/g, '(string | object)?');
-        cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object');
+        cfg.replace(/HermionaJS.LocatorOrString/g, 'string | object');
         cfg.replace(/LocatorOrString/g, 'string | object');
-        cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object');
+        cfg.replace(/HermionaJS.StringOrSecret/g, 'string | object');
       });
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md ${documentjsCliArgs}`);

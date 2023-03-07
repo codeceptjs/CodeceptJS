@@ -1,6 +1,6 @@
 export {}; // mark the file as external module to redeclare variables in the same block
 
-const appium = new CodeceptJS.Appium();
+const appium = new HermionaJS.Appium();
 
 const str = "text";
 const num = 1;

@@ -2,7 +2,7 @@ const path = require('path');
 const exec = require('child_process').exec;
 const expect = require('expect');
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
+const runner = path.join(__dirname, '/../../bin/hermiona.js');
 const codecept_dir = path.join(
   __dirname,
   '/../data/sandbox/configs/commentStep',
@@ -20,7 +20,7 @@ describe('CodeceptJS commentStep plugin', function () {
   });
 
   it('should print nested steps when global var comments used', done => {
-    exec(`${config_run_config('codecept.conf.js', 'global var')} --debug`, (err, stdout) => {
+    exec(`${config_run_config('hermiona.conf.js', 'global var')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(lines).toEqual(
         expect.arrayContaining([
@@ -38,7 +38,7 @@ describe('CodeceptJS commentStep plugin', function () {
   });
 
   it('should print nested steps when local var comments used', done => {
-    exec(`${config_run_config('codecept.conf.js', 'local var')} --debug`, (err, stdout) => {
+    exec(`${config_run_config('hermiona.conf.js', 'local var')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(lines).toEqual(
         expect.arrayContaining([

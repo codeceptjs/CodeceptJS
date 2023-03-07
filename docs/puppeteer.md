@@ -299,7 +299,7 @@ Start with creating an `MyPuppeteer` helper using `generate:helper` or `gh` comm
 npx codeceptjs gh
 ```
 
-Then inside a Helper you can access `Puppeteer` helper of CodeceptJS.
+Then inside a Helper you can access `Puppeteer` helper of HermionaJS.
 Let's say you want to create `I.renderPageToPdf` action. In this case you need to call `pdf` method of `page` object
 
 ```js

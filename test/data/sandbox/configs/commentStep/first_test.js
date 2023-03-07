@@ -1,4 +1,4 @@
-const given = when = then = global.codeceptjs.container.plugins('commentStep');
+const given = when = then = global.hermiona.container.plugins('commentStep');
 const { I } = inject();
 
 Feature('CommentStep');

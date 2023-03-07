@@ -76,7 +76,7 @@ Every step in this scenario requires a code which defines it.
 
 ## Gherkin
 
-Let's learn some more about Gherkin format and then we will see how to execute it with CodeceptJS. We can enable Gherkin for current project by running `gherkin:init` command on **already initialized project**:
+Let's learn some more about Gherkin format and then we will see how to execute it with HermionaJS. We can enable Gherkin for current project by running `gherkin:init` command on **already initialized project**:
 
 ```
 npx codeceptjs gherkin:init

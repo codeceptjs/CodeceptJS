@@ -120,7 +120,7 @@ This repository demonstrates usage of
 The purpose of this application is for learning the basics and how to use good practices and useful tools in automation.
 
 * Puppeteer helper
-* Working with gherkin, also it has type definitions and to be able to use them inside when, given and then make sure you add `declare function inject(): { I: CodeceptJS.I, [key: string]: any; };`in the `steps.d.ts`file 
+* Working with gherkin, also it has type definitions and to be able to use them inside when, given and then make sure you add `declare function inject(): { I: HermionaJS.I, [key: string]: any; };`in the `steps.d.ts`file 
 * Linting `airbnb-base`, `codeceptjs/codeceptjs` and full ES6 support
 
 ## [Example for using: Puppeteer, Gherkin, Allure with parallel execution](https://github.com/SchnuckySchuster/codeceptJSExample)

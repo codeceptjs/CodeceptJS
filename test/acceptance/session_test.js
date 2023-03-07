@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { event } = codeceptjs;
+const { event } = hermiona;
 
 Feature('Session');
 

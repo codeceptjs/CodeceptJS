@@ -79,7 +79,7 @@ const response = await I.sendPostRequest('/user', secretData);
 Update `codecept.conf.js` to get intellisense when writing config file:
 
 ```js
-/**@type {CodeceptJS.MainConfig}**/
+/**@type {HermionaJS.MainConfig}**/
 exports.config = {
   //...
 }
@@ -1798,8 +1798,8 @@ I.runOnAndroid(caps => caps.platformVersion >= 7, () => {
 
 ## 1.1.0
 
-Major update to CodeceptJS. **NodeJS v 8.9.1** is now minimal Node version required.
-This brings native async-await support to CodeceptJS. It is recommended to start using await for tests instead of generators:
+Major update to HermionaJS. **NodeJS v 8.9.1** is now minimal Node version required.
+This brings native async-await support to HermionaJS. It is recommended to start using await for tests instead of generators:
 
 ```js
 async () => {
@@ -2380,4 +2380,3 @@ Whenever you need to create `I` object (in page objects, custom steps, but not i
 * **[WebDriverIO]** fixed `waitForText` method by **[roadhump](https://github.com/roadhump)**. Fixes [#11](https://github.com/codeceptjs/CodeceptJS/issues/11)
 * Fixed creating output dir when it already exists on init by **[alfirin](https://github.com/alfirin)**
 * Fixed loading of custom helpers
-

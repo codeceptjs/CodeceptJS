@@ -111,10 +111,10 @@ And then run the command `npx codeceptjs def`.
 
 As result our `steps.d.ts` file will be updated like this:
 ```ts
-/// <reference types='codeceptjs' />
+/// <reference types='hermiona' />
 type CustomHelper = import('./CustomHelper');
 
-declare namespace CodeceptJS {
+declare namespace HermionaJS {
   interface SupportObject { I: I }
   interface Methods extends Puppeteer, CustomHelper {}
   interface I extends WithTranslation<Methods> {}
@@ -128,12 +128,12 @@ And now you can use autocomplete on your test.
 
 Generation types for PageObject looks like for a custom helper, but `steps.d.ts` will look like:
 ```ts
-/// <reference types='codeceptjs' />
+/// <reference types='hermiona' />
 type loginPage = typeof import('./loginPage');
 type homePage = typeof import('./homePage');
 type CustomHelper = import('./CustomHelper');
 
-declare namespace CodeceptJS {
+declare namespace HermionaJS {
   interface SupportObject { I: I, loginPage: loginPage, homePage: homePage }
   interface Methods extends Puppeteer, CustomHelper {}
   interface I extends WithTranslation<Methods> {}
@@ -156,10 +156,10 @@ I.click({ data: 'user-login' });
 In order to use the custom locator in TypeScript code, its type shape needs to be registered in the interface `CustomLocators` in your `steps.d.ts` file:
 
 ```ts
-/// <reference types='codeceptjs' />
+/// <reference types='hermiona' />
 ...
 
-declare namespace CodeceptJS {
+declare namespace HermionaJS {
   ...
 
   interface CustomLocators {
@@ -173,10 +173,10 @@ The property keys used in the `CustomLocators` interface do not matter (only the
 You can also define more complicated custom locators with multiple (also optional) properties:
 
 ```ts
-/// <reference types='codeceptjs' />
+/// <reference types='hermiona' />
 ...
 
-declare namespace CodeceptJS {
+declare namespace HermionaJS {
   ...
 
   interface CustomLocators {

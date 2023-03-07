@@ -1,13 +1,16 @@
-name: Publish alpha version to npmjs
+name: Publish prerelease version to NPM
 
 on:
   push:
     branches:
-      - 'feature/**'
+      - "feature/**"
+      - "bugfix/**"
+      - "hotfix/**"
+      - "release/**"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  publish:
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -37,7 +40,7 @@ jobs:
         uses: rlespinasse/github-slug-action@v3.x
 
       - name: Set npm preid
-        run: npm config set preid ${{ env.GITHUB_REF_SLUG }}-${{ env.GITHUB_SHA_SHORT }}
+        run: npm config set preid ${{ env.GITHUB_REF_SLUG }}
 
       - name: Generate typings
         run: npm run def
@@ -47,11 +50,6 @@ jobs:
 
       - name: Set version
         run: npm version prerelease
-
-      - name: Push changes to repository
-        run: git push origin && git push --tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish package on NPM 📦
         run: npm publish

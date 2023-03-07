@@ -547,7 +547,7 @@ Start with creating an `MyPlaywright` helper using `generate:helper` or `gh` com
 npx codeceptjs gh
 ```
 
-Then inside a Helper you can access `Playwright` helper of CodeceptJS.
+Then inside a Helper you can access `Playwright` helper of HermionaJS.
 Let's say you want to create `I.grabDimensionsOfCurrentPage` action. In this case you need to call `evaluate` method of `page` object
 
 ```js

@@ -1,6 +1,6 @@
 export {}; // mark the file as external module to redeclare variables in the same block
 
-const playwright = new CodeceptJS.PlaywrightTs();
+const playwright = new HermionaJS.PlaywrightTs();
 
 const str = 'text';
 const num = 1;

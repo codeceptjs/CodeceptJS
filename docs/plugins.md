@@ -616,7 +616,7 @@ const eachElement = codeceptjs.container.plugins('eachElement');
 ### Parameters
 
 -   `purpose` **[string][8]** 
--   `locator` **CodeceptJS.LocatorOrString** 
+-   `locator` **HermionaJS.LocatorOrString** 
 -   `fn` **[Function][9]** 
 
 Returns **([Promise][10]&lt;any> | [undefined][11])** 
