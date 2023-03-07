@@ -40,7 +40,7 @@ jobs:
         uses: rlespinasse/github-slug-action@v3.x
 
       - name: Set npm preid
-        run: npm config set preid ${{ env.GITHUB_REF_SLUG }}-${{ env.GITHUB_SHA_SHORT }}
+        run: npm config set preid ${{ env.GITHUB_REF_SLUG }}
 
       - name: Generate typings
         run: npm run def
