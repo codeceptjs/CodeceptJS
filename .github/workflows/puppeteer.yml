@@ -32,7 +32,7 @@ jobs:
           php-version: 7.4
 
       - name: Install dependencies
-        run: npm i --legacy-peer-deps
+        run: npm ci
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
 

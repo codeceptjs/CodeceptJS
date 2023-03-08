@@ -31,7 +31,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
 
       - name: Install dependencies
-        run: npm i --legacy-peer-deps
+        run: npm ci
 
       - name: Unit tests
         run: npm run test:unit
@@ -53,3 +53,8 @@ jobs:
 
       - name: Publish package on NPM 📦
         run: npm publish
+
+      - name: Push changes to repository
+        run: git push origin && git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -28,7 +28,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
 
       - name: Install dependencies
-        run: npm i --legacy-peer-deps
+        run: npm ci
 
       - name: Unit tests
         run: npm run test:unit
