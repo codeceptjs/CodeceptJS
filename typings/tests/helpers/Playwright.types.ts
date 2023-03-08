@@ -52,7 +52,7 @@ playwright.seeElement(str); // $ExpectType void
 playwright.dontSeeElement(str); // $ExpectType void
 playwright.seeElementInDOM(str); // $ExpectType void
 playwright.dontSeeElementInDOM(str); // $ExpectType void
-playwright.handleDownloads(); // $ExpectType Promise<void>
+playwright.handleDownloads(str); // $ExpectType Promise<void>
 playwright.click(str); // $ExpectType void
 playwright.click(str, str); // $ExpectType void
 playwright.click(str, null, { position }); // $ExpectType void

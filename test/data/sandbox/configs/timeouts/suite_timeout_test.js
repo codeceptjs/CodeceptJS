@@ -4,6 +4,6 @@ Scenario('no timeout', ({ I }) => {
   I.waitForSleep(3000);
 });
 
-Scenario('timeout in 1', { timeout: 1 }, ({ I }) => {
+Scenario('timeout in 1 #fourth', { timeout: 1 }, ({ I }) => {
   I.waitForSleep(3000);
 });

@@ -56,6 +56,6 @@ After((test) => {
   console.log(`-- after ${test.title} --`);
 });
 
-Fail(() => {
+Fail((test) => {
   console.log(`-- failed ${test.title} --`);
 });

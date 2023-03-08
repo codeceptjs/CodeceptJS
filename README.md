@@ -99,8 +99,7 @@ npx codeceptjs def .
 Later you can even automagically update Type Definitions to include your own custom [helpers methods](docs/helpers.md).
 
 Note:
-- CodeceptJS requires Node.js version `8.9.1+` or later. 
-- To use the parallel tests execution, requiring Node.js version `11.7` or later.
+- CodeceptJS requires Node.js version `12+` or later. 
 
 ## Usage
 
@@ -292,36 +291,36 @@ When using Typescript, replace `module.exports` with `export` for autocompletion
 Thanks all to those who are and will have contributing to this awesome project!
 
 [//]: contributor-faces
-<a href="https://github.com/DavertMik"><img src="https://avatars0.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a>
-<a href="https://github.com/PeterNgTr"><img src="https://avatars0.githubusercontent.com/u/7845001?v=4" title="PeterNgTr" width="80" height="80"></a>
-<a href="https://github.com/Vorobeyko"><img src="https://avatars3.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
-<a href="https://github.com/APshenkin"><img src="https://avatars1.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a>
-<a href="https://github.com/reubenmiller"><img src="https://avatars0.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a>
-<a href="https://github.com/fabioel"><img src="https://avatars1.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a>
-<a href="https://github.com/pablopaul"><img src="https://avatars1.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a>
-<a href="https://github.com/koushikmohan1996"><img src="https://avatars3.githubusercontent.com/u/24666922?v=4" title="koushikmohan1996" width="80" height="80"></a>
-<a href="https://github.com/Arhell"><img src="https://avatars2.githubusercontent.com/u/26163841?v=4" title="Arhell" width="80" height="80"></a>
-<a href="https://github.com/tsuemura"><img src="https://avatars1.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
-<a href="https://github.com/VikalpP"><img src="https://avatars2.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
-<a href="https://github.com/elukoyanov"><img src="https://avatars3.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
-<a href="https://github.com/MercifulCode"><img src="https://avatars2.githubusercontent.com/u/1740822?v=4" title="MercifulCode" width="80" height="80"></a>
-<a href="https://github.com/Georgegriff"><img src="https://avatars3.githubusercontent.com/u/9056958?v=4" title="Georgegriff" width="80" height="80"></a>
-<a href="https://github.com/hubidu"><img src="https://avatars2.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
-<a href="https://github.com/BorisOsipov"><img src="https://avatars0.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
-<a href="https://github.com/jploskonka"><img src="https://avatars3.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
-<a href="https://github.com/martomo"><img src="https://avatars2.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
-<a href="https://github.com/denis-sokolov"><img src="https://avatars0.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
-<a href="https://github.com/lennym"><img src="https://avatars3.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
-<a href="https://github.com/petehouston"><img src="https://avatars0.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a>
-<a href="https://github.com/Holorium"><img src="https://avatars1.githubusercontent.com/u/10815542?v=4" title="Holorium" width="80" height="80"></a>
-<a href="https://github.com/nitschSB"><img src="https://avatars0.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
-<a href="https://github.com/johnyb"><img src="https://avatars2.githubusercontent.com/u/86358?v=4" title="johnyb" width="80" height="80"></a>
-<a href="https://github.com/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" title="jamesgeorge007" width="80" height="80"></a>
-<a href="https://github.com/jinjorge"><img src="https://avatars3.githubusercontent.com/u/2208083?v=4" title="jinjorge" width="80" height="80"></a>
-<a href="https://github.com/gkushang"><img src="https://avatars1.githubusercontent.com/u/3663389?v=4" title="gkushang" width="80" height="80"></a>
-<a href="https://github.com/galkin"><img src="https://avatars3.githubusercontent.com/u/5930544?v=4" title="galkin" width="80" height="80"></a>
-<a href="https://github.com/orihomie"><img src="https://avatars2.githubusercontent.com/u/29889683?v=4" title="orihomie" width="80" height="80"></a>
-<a href="https://github.com/radhey1851"><img src="https://avatars2.githubusercontent.com/u/22446528?v=4" title="radhey1851" width="80" height="80"></a>
+<a href="https://github.com/DavertMik"><img src="https://avatars.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a>
+<a href="https://github.com/PeterNgTr"><img src="https://avatars.githubusercontent.com/u/7845001?v=4" title="PeterNgTr" width="80" height="80"></a>
+<a href="https://github.com/Vorobeyko"><img src="https://avatars.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
+<a href="https://github.com/reubenmiller"><img src="https://avatars.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a>
+<a href="https://github.com/Arhell"><img src="https://avatars.githubusercontent.com/u/26163841?v=4" title="Arhell" width="80" height="80"></a>
+<a href="https://github.com/APshenkin"><img src="https://avatars.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a>
+<a href="https://github.com/fabioel"><img src="https://avatars.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a>
+<a href="https://github.com/pablopaul"><img src="https://avatars.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a>
+<a href="https://github.com/Georgegriff"><img src="https://avatars.githubusercontent.com/u/9056958?v=4" title="Georgegriff" width="80" height="80"></a>
+<a href="https://github.com/mirao"><img src="https://avatars.githubusercontent.com/u/12584138?v=4" title="mirao" width="80" height="80"></a>
+<a href="https://github.com/KMKoushik"><img src="https://avatars.githubusercontent.com/u/24666922?v=4" title="KMKoushik" width="80" height="80"></a>
+<a href="https://github.com/nikocanvacom"><img src="https://avatars.githubusercontent.com/u/83254493?v=4" title="nikocanvacom" width="80" height="80"></a>
+<a href="https://github.com/elukoyanov"><img src="https://avatars.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
+<a href="https://github.com/gkushang"><img src="https://avatars.githubusercontent.com/u/3663389?v=4" title="gkushang" width="80" height="80"></a>
+<a href="https://github.com/tsuemura"><img src="https://avatars.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
+<a href="https://github.com/VikalpP"><img src="https://avatars.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
+<a href="https://github.com/BorisOsipov"><img src="https://avatars.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
+<a href="https://github.com/elaichenkov"><img src="https://avatars.githubusercontent.com/u/29764053?v=4" title="elaichenkov" width="80" height="80"></a>
+<a href="https://github.com/nitschSB"><img src="https://avatars.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
+<a href="https://github.com/hubidu"><img src="https://avatars.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
+<a href="https://github.com/jploskonka"><img src="https://avatars.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
+<a href="https://github.com/maojunxyz"><img src="https://avatars.githubusercontent.com/u/28778042?v=4" title="maojunxyz" width="80" height="80"></a>
+<a href="https://github.com/abhimanyupandian"><img src="https://avatars.githubusercontent.com/u/36107381?v=4" title="abhimanyupandian" width="80" height="80"></a>
+<a href="https://github.com/martomo"><img src="https://avatars.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
+<a href="https://github.com/denis-sokolov"><img src="https://avatars.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
+<a href="https://github.com/lennym"><img src="https://avatars.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
+<a href="https://github.com/petehouston"><img src="https://avatars.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a>
+<a href="https://github.com/Holorium"><img src="https://avatars.githubusercontent.com/u/10815542?v=4" title="Holorium" width="80" height="80"></a>
+<a href="https://github.com/jancorvus"><img src="https://avatars.githubusercontent.com/u/67001310?v=4" title="jancorvus" width="80" height="80"></a>
+<a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
 
 [//]: contributor-faces
 

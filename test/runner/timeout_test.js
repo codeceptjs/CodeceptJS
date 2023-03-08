@@ -65,4 +65,33 @@ describe('CodeceptJS Timeouts', function () {
       done();
     });
   });
+
+  it('should override timeout config from global object', (done) => {
+    exec(config_run_config('codecept.timeout.obj.conf.js', '#first', true), (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).toContain('Timeout 0.3s exceeded');
+      expect(err).toBeTruthy();
+      done();
+    });
+  });
+
+  it('should override timeout config from global object but respect local value', (done) => {
+    exec(config_run_config('codecept.timeout.obj.conf.js', '#second'), (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).not.toContain('Timeout 0.3s exceeded');
+      expect(stdout).toContain('Timeout 0.5s exceeded');
+      expect(err).toBeTruthy();
+      done();
+    });
+  });
+
+  it('should respect grep when overriding config from global config', (done) => {
+    exec(config_run_config('codecept.timeout.obj.conf.js', '#fourth'), (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).not.toContain('Timeout 0.3s exceeded');
+      expect(stdout).toContain('Timeout 1s exceeded');
+      expect(err).toBeTruthy();
+      done();
+    });
+  });
 });

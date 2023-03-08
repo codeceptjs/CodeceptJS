@@ -183,62 +183,6 @@ plugins: {
 [Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira.
 
 
-## Allure
-
-
-[Allure reporter](https://allure.qatools.ru/#) is a tool to store and display test reports.
-It provides nice web UI which contains all important information on test execution.
-CodeceptJS has built-in support for Allure reports. Inside reports you will have all steps, substeps and screenshots.
-
-![](https://user-images.githubusercontent.com/220264/45676511-8e052800-bb3a-11e8-8cbb-db5f73de2add.png)
-
-> ▶ Allure is a standalone tool. Please refer to [Allure documentation](https://docs.qameta.io/allure/) to learn more about using Allure reports.
-
-Allure requires **Java 8** to work. Then Allure can be installed via NPM:
-
-```
-npm install -g allure-commandline --save-dev
-```
-
-Add [Allure plugin](/plugins/#allure) in config under `plugins` section.
-
-```js
-plugins: {
-    allure: {
-  }
-}
-```
-
-Run tests with allure plugin enabled:
-
-```
-npx codeceptjs run --plugins allure
-```
-
-(optionally) To enable allure plugin permanently include `"enabled": true` into plugin config:
-
-
-```js
-"plugins": {
-    "allure": {
-      "enabled": true
-    }
-}
-```
-
-Launch Allure server and see the report like on a screenshot above:
-
-```
-allure serve output
-```
-
-Allure reporter aggregates data from other plugins like [*stepByStepReport*](/plugins/#stepByStepReport) and [*screenshotOnFail*](/plugins/#screenshotOnFail)
-
-Allure reports can also be generated for `dry-run` command. So you can get the first report with no tests actually being executed. Enable allure plugin in dry-run options, and pass `--debug` option to print all tests on screen.
-
-```
-npx codeceptjs dry-run --debug -p allure
-```
 
 ## ReportPortal
 

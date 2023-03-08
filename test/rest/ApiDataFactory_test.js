@@ -4,6 +4,7 @@ const fs = require('fs');
 require('../support/setup');
 const TestHelper = require('../support/TestHelper');
 const ApiDataFactory = require('../../lib/helper/ApiDataFactory');
+global.codeceptjs = require('../../lib');
 
 const api_url = TestHelper.jsonServerUrl();
 

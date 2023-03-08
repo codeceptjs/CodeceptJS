@@ -74,7 +74,7 @@ When a project is growing and more and more tests are required, it's time to thi
 Here is a recommended strategy what to store where:
 
 * Move site-wide actions into an **Actor** file (`custom_steps.js` file). Such actions like `login`, using site-wide common controls, like drop-downs, rich text editors, calendars.
-* Move page-based actions and selectors into **Page Object**. All acitivities made on that page can go into methods of page object. If you test Single Page Application a PageObject should represent a screen of your application.
+* Move page-based actions and selectors into **Page Object**. All activities made on that page can go into methods of page object. If you test Single Page Application a PageObject should represent a screen of your application.
 * When site-wide widgets are used, interactions with them should be placed in **Page Fragments**. This should be applied to global navigation, modals, widgets.
 * A custom action that requires some low-level driver access, should be placed into a **Helper**. For instance, database connections, complex mouse actions, email testing, filesystem, services access.
 
@@ -215,7 +215,7 @@ include: {
 * When you need to customize access to API and go beyond what ApiDataFactory provides, implement DAO:
 
 ```js
-const faker = require('@faker-js/faker');
+const { faker } = require('@faker-js/faker');
 const { I } = inject();
 const { output } = require('codeceptjs');
 

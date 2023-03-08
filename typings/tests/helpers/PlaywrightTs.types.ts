@@ -48,7 +48,7 @@ playwright.seeElement(str); // $ExpectType Promise<any>
 playwright.dontSeeElement(str); // $ExpectType Promise<any>
 playwright.seeElementInDOM(str); // $ExpectType Promise<any>
 playwright.dontSeeElementInDOM(str); // $ExpectType Promise<any>
-playwright.handleDownloads(); // $ExpectType Promise<void>
+playwright.handleDownloads(str); // $ExpectType Promise<void>
 playwright.click(str); // $ExpectType Promise<any>
 playwright.click(str, str); // $ExpectType Promise<any>
 playwright.click(str, null, { position }); // $ExpectType Promise<any>

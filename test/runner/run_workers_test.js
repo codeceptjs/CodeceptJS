@@ -17,6 +17,7 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should run tests in 3 workers', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
+    console.log(`${codecept_run} 3 --debug`);
     exec(`${codecept_run} 3 --debug`, (err, stdout) => {
       expect(stdout).toContain('Hermiona'); // feature
       expect(stdout).toContain('glob current dir');
