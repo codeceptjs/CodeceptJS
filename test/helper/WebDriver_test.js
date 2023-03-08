@@ -7,7 +7,7 @@ const TestHelper = require('../support/TestHelper');
 const WebDriver = require('../../lib/helper/WebDriver');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 
 const siteUrl = TestHelper.siteUrl();
 let wd;

@@ -6,7 +6,7 @@ const TestHelper = require('../support/TestHelper');
 const Nightmare = require('../../lib/helper/Nightmare');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 
 let I;
 let browser;

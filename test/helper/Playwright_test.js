@@ -12,7 +12,7 @@ const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 const { deleteDir } = require('../../lib/utils');
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 
 let I;
 let page;

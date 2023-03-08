@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const joi = require('joi');
 const JSONResponse = require('../../lib/helper/JSONResponse');
 const Container = require('../../lib/container');
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 
 const data = {
   posts: [

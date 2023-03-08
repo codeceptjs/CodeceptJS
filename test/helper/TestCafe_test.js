@@ -4,7 +4,7 @@ const assert = require('assert');
 const TestHelper = require('../support/TestHelper');
 const TestCafe = require('../../lib/helper/TestCafe');
 const webApiTests = require('./webapi');
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 
 let I;
 const siteUrl = TestHelper.siteUrl();
@@ -16,7 +16,7 @@ describe('TestCafe', function () {
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     global.output_dir = path.join(__dirname, '/../data/output');
-    global.codeceptjs = require('../../lib/index');
+    global.hermiona = require('../../lib/index');
 
     I = new TestCafe({
       url: siteUrl,

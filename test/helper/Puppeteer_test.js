@@ -10,7 +10,7 @@ const Puppeteer = require('../../lib/helper/Puppeteer');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
-global.codeceptjs = require('../../lib');
+global.hermiona = require('../../lib');
 
 let I;
 let browser;
