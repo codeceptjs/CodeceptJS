@@ -15,6 +15,12 @@ When executed it will be printed like this:
 ```
 I fill field "password" "*****"
 ```
+**Other Examples**
+```js
+I.fillField('password', secret('123456'));
+I.append('password', secret('123456'));
+I.type('password', secret('123456'));
+```
 
 For an object, which can be a payload to POST request, specify which fields should be masked:
 
