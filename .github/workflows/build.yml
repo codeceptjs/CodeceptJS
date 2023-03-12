@@ -1,29 +1,41 @@
 name: build
 on:
-  push:
+  pull_request:
     branches:
       - 3.x
+    types:
+      - opened
+      - synchronize
 
 jobs:
   test:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+    - run: |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
     - run: npm install
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: ls -la node_modules/tsd-jsdoc
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v3.x
+    - name: Set npm preid
+      run: npm config set preid ${{ env.GITHUB_HEAD_REF_SLUG }}
     - run: npm run def
     - run: npm run dtslint
-    - run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
     - run: npm version prerelease --preid=rc --force
+    - run: git status
+    - run: git push origin HEAD:${{ env.GITHUB_HEAD_REF_SLUG }} && git push --tags
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
