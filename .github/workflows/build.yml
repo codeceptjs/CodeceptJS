@@ -35,6 +35,7 @@ jobs:
     - run: npm run def
     - run: npm run dtslint
     - run: npm version prerelease --preid=rc --force
-    - run: git push origin
+    - run: git status
+    - run: git push origin && git push --tags
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
