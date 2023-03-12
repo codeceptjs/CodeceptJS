@@ -15,8 +15,10 @@ jobs:
         node-version: [12.x]
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
@@ -26,7 +28,10 @@ jobs:
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: ls -la node_modules/tsd-jsdoc
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v3.x
+    - name: Set npm preid
+      run: npm config set preid ${{ env.GITHUB_REF_SLUG }}
     - run: npm run def
     - run: npm run dtslint
     - run: npm version prerelease --preid=rc --force
