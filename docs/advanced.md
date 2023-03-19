@@ -186,7 +186,7 @@ You can use this options for build your own [plugins](https://codecept.io/hooks/
   });
 ```
 
-## Timeout <Badge text="Updated in 3.2" type="warning"/>
+## Timeout
 
 Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
 This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
@@ -236,38 +236,62 @@ A timeout for a group of tests can be set on Feature level via options.
 Feature('flaky tests', { timeout: 30 })
 ```
 
-### Sum Up
+### Timeout Confguration 
 
-Let's list all available timeout options.
+<Badge text="Updated in 3.4" type="warning"/>
 
-Timeouts can be set globally in config:
+Timeout rules can be set globally via config.
+
+To set a timeout for all running tests provide a **number of seconds** to `timeout` config option:
+
 
 ```js
-// in codecept.confg.js:
-{ // ...
-   timeout: 30, // limit all tests in all suites to 30 secs
-
-   plugins: {
-     stepTimeout: {
-       enabled: true,
-       timeout: 10, // limit all steps except waiters to 10 secs
-     }
-   }
-} 
-
+// inside codecept.conf.js or codecept.conf.ts
+timeout: 30, // limit all tests in all suites to 30 secs
 ```
 
-or inside a test file:
+It is possible to tune this configuration for a different groups of tests passing options as array and using `grep` option to filter tests:
 
 ```js
-// limit all tests in this suite to 10 secs
-Feature('tests with timeout', { timeout: 10 });
+// inside codecept.conf.js or codecept.conf.ts
 
-// limit this test to 20 secs
-Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {
-   // limit step to 5 seconds
-   I.limitTime(5).click('Link');
-});
+timeout: [
+  10, // default timeout is 10secs  
+
+  // but increase timeout for slow tests
+  {
+    grep: '@slow',
+    Feature: 50
+  },
+]
+```
+
+> ℹ️ `grep` value can be string or regexp
+
+It is possible to set a timeout for Scenario or Feature:
+
+```js
+// inside codecept.conf.js or codecept.conf.ts
+timeout: [
+
+  // timeout for Feature with @slow in title
+  {
+    grep: '@slow',
+    Feature: 50
+  },
+  
+  // timeout for Scenario with 'flaky0' .. `flaky1` in title
+  {
+    // regexp can be passed to grep
+    grep: /flaky[0-9]/,
+    Scenario: 10
+  },
+
+  // timeout for all suites
+  {    
+    Feature: 20
+  }
+]
 ```
 
 Global timeouts will be overridden by explicit timeouts of a test or steps.

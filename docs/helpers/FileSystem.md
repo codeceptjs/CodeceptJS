@@ -124,10 +124,10 @@ Checks that file found by `seeFile` includes a text.
 
 ### waitForFile
 
-Waits for file to be present in current directory.
+Waits for the file to be present in the current directory.
 
 ```js
-I.handleDownloads();
+I.handleDownloads('downloads/largeFilesName.txt');
 I.click('Download large File');
 I.amInPath('output/downloads');
 I.waitForFile('largeFilesName.txt', 10); // wait 10 seconds for file

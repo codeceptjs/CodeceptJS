@@ -17,6 +17,32 @@ declare namespace CodeceptJS {
     path?: string,
   };
 
+  type RetryConfig = {
+    /** Filter tests by string or regexp pattern */
+    grep?: string | RegExp;
+    /** Number of times to repeat scenarios of a Feature */
+    Feature?: number;
+    /** Number of times to repeat scenarios */
+    Scenario?: number;
+    /** Number of times to repeat Before hook */
+    Before?: number;
+    /** Number of times to repeat After hook */
+    After?: number;
+    /** Number of times to repeat BeforeSuite hook */
+    BeforeSuite?: number;
+    /** Number of times to repeat AfterSuite hook */
+    AfterSuite?: number;
+  };
+
+  type TimeoutConfig = {
+    /** Filter tests by string or regexp pattern */
+    grep: string | RegExp;
+    /** Set timeout for a scenarios of a Feature */
+    Feature: number;
+    /** Set timeout for scenarios */
+    Scenario: number;
+  };
+
   type MainConfig = {
     /** Pattern to locate CodeceptJS tests.
      * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
@@ -172,8 +198,57 @@ declare namespace CodeceptJS {
      * ```js
      * timeout: 20,
      * ```
+     *
+     * Can be customized to use different timeouts for a subset of tests:
+     *
+     * ```js
+     * timeout: [
+     *    10,
+     *    {
+     *      grep: '@slow',
+     *      Scenario: 20
+     *    }
+     * ]
+     * ```
      */
-    timeout?: number;
+    timeout?: number | Array<TimeoutConfig> | TimeoutConfig;
+
+    /**
+     * Configure retry strategy for tests
+     *
+     * To retry all tests 3 times:
+     *
+     * ```js
+     * retry: 3
+     * ```
+     *
+     * To retry only Before hook 3 times:
+     *
+     * ```js
+     * retry: {
+     *    Before: 3
+     * }
+     * ```
+     *
+     * To retry tests marked as flaky 3 times, other 1 time:
+     *
+     * ```js
+     * retry: [
+     *   {
+     *     Scenario: 1,
+     *     Before: 1
+     *   },
+     *   {
+     *     grep: '@flaky',
+     *     Scenario: 3
+     *     Before: 3
+     *   }
+     * ]
+     * ```
+     */
+    retry?: number | Array<RetryConfig> | RetryConfig;
+
+
     /** Disable registering global functions (Before, Scenario, etc). Not recommended */
     noGlobals?: boolean;
     /**
@@ -317,7 +392,7 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
-    | { shadow: string }
+    | { shadow: string[] }
     | { custom: string };
 
   interface CustomLocators {}
