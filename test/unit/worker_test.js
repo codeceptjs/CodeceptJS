@@ -1,6 +1,5 @@
 const { expect } = require('chai');
 const path = require('path');
-const semver = require('semver');
 const { Workers, event, recorder } = require('../../lib/index');
 
 describe('Workers', () => {
@@ -9,7 +8,6 @@ describe('Workers', () => {
   });
 
   it('should run simple worker', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.workers.conf.js',
@@ -18,14 +16,14 @@ describe('Workers', () => {
     let failedCount = 0;
     const workers = new Workers(2, workerConfig);
 
-    workers.run();
-
     workers.on(event.test.failed, () => {
       failedCount += 1;
     });
     workers.on(event.test.passed, () => {
       passedCount += 1;
     });
+
+    workers.run();
 
     workers.on(event.all.result, (status) => {
       expect(status).equal(false);
@@ -36,8 +34,6 @@ describe('Workers', () => {
   });
 
   it('should create worker by function', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-
     const createTestGroups = () => {
       const files = [
         [path.join(codecept_dir, '/custom-worker/base_test.worker.js')],
@@ -75,8 +71,6 @@ describe('Workers', () => {
   });
 
   it('should run worker with custom config', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -99,10 +93,10 @@ describe('Workers', () => {
 
     workers.run();
 
-    workers.on(event.test.failed, () => {
+    workers.on(event.test.failed, (test) => {
       failedCount += 1;
     });
-    workers.on(event.test.passed, () => {
+    workers.on(event.test.passed, (test) => {
       passedCount += 1;
     });
 
@@ -115,8 +109,6 @@ describe('Workers', () => {
   });
 
   it('should able to add tests to each worker', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -155,8 +147,6 @@ describe('Workers', () => {
   });
 
   it('should able to add tests to using createGroupsOfTests', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -192,8 +182,6 @@ describe('Workers', () => {
   });
 
   it('Should able to pass data from workers to main thread and vice versa', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
-
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -222,7 +210,6 @@ describe('Workers', () => {
   });
 
   it('should propagate non test events', (done) => {
-    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     const messages = [];
 
     const createTestGroups = () => {

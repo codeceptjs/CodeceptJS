@@ -41,15 +41,9 @@ Then select TypeScript as the first question:
 
 Then a config file and new tests will be created in TypeScript format.
 
-If a config file is set in TypeScript format (`codecept.conf.ts`) package `node-ts` will be used to run tests. 
+If a config file is set in TypeScript format (`codecept.conf.ts`) package `ts-node` will be used to run tests. 
 
 ## Promise-Based Typings
-
-If you plan to write tests in TypeScript you will probably want to enable "promise-based typings" as you will be asked in `init` command about it:
-
-```js
-? Would you prefer to use promise-based typings and explicitly use `await` for all I.* commands?
-```
 
 By default, CodeceptJS tests are written in synchronous mode. This is a regular CodeceptJS test:
 
@@ -82,7 +76,7 @@ Otherwise they will still return promises but it won't be relfected in type defi
 To introduce promise-based typings into a current project edit `codecept.conf.ts`:
 
 ```ts
-  fullPromiseBased: true;
+fullPromiseBased: true;
 ```
 
 and rebuild type definitions with

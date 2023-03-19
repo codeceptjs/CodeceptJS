@@ -53,8 +53,8 @@ See the example for Posts factories:
 ```js
 // tests/factories/posts.js
 
-const Factory = require('rosie').Factory;
-const faker = require('@faker-js/faker');
+const { Factory } = require('rosie');
+const { faker } = require('@faker-js/faker');
 
 module.exports = new Factory()
    // no need to set id, it will be set by REST API
@@ -228,8 +228,8 @@ I.have('user', { }, { age: 33, height: 55 })
 #### Parameters
 
 -   `factory` **any** factory to use
--   `params` **any** predefined parameters
--   `options` **any** options for programmatically generate the attributes
+-   `params` **any?** predefined parameters
+-   `options` **any?** options for programmatically generate the attributes
 
 Returns **[Promise][5]&lt;any>** 
 
@@ -252,8 +252,8 @@ I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 
 -   `factory` **any** 
 -   `times` **any** 
--   `params` **any** 
--   `options` **any** 
+-   `params` **any?** 
+-   `options` **any?** 
 
 [1]: https://github.com/rosiejs/rosie
 

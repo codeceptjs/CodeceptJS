@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { isMainThread } = require('worker_threads');
 
-const Helper = require('../../../lib/helper');
+const Helper = require('@codeceptjs/helper');
 
 class Workers extends Helper {
   seeThisIsWorker() {

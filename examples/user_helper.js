@@ -1,14 +1,18 @@
 const assert = require('assert');
-const Helper = require('../lib/helper');
 
 class User extends Helper {
-  // before/after hooks
-  _before() {
-    // remove if not used
+  _beforeSuite() {
   }
 
-  _after() {
-    // remove if not used
+  _before() {
+    this.i = 0;
+  }
+
+  failNTimes(n) {
+    this.i++;
+    // this.i++;
+    console.log(this.i, n);
+    if (this.i < n) throw new Error('ups, error');
   }
 
   // add custom methods here
