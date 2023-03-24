@@ -35,6 +35,7 @@ jobs:
     - name: npm install
       run: |
         npm install
+        npm list webdriverio
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
