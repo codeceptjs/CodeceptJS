@@ -12,7 +12,7 @@ declare namespace CodeceptJS {
 
   type Cookie = {
     name: string;
-    value: string;
+    value: string | boolean;
     domain?: string,
     path?: string,
   };
