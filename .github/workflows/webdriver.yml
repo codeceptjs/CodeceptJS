@@ -16,11 +16,11 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
 
     steps:
     - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-oxygen
@@ -31,7 +31,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.4
+        php-version: 8.0
     - name: npm install
       run: |
         npm install
