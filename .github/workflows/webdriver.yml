@@ -34,8 +34,8 @@ jobs:
         php-version: 8.0
     - name: npm install
       run: |
-        rm -r /home/runner/work/CodeceptJS/CodeceptJS/node_modules
-        npm install
+        npm ci
+        npm i webdriverio@8.6.8
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
