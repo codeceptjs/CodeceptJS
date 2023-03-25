@@ -33,9 +33,6 @@ jobs:
          node-version: '19'
          cache: 'npm'
     - run: npm i
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 8.0
