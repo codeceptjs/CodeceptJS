@@ -35,11 +35,12 @@ jobs:
     - name: install deps
       run: |
         npm i
-    - name: start server
-      run: |
-        "php -S 127.0.0.1:8000 -t test/data/app &"
-        npx mocha test/helper/WebDriver_test.js
-        "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    - name: start server
+      run: |
+        "php -S 127.0.0.1:8000 -t test/data/app &"
+    - name: run tests
+        npx mocha test/helper/WebDriver_test.js
+        "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
