@@ -32,11 +32,11 @@ jobs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 8.0
-    - name: npm install
+      run: "php -S 127.0.0.1:8000 -t test/data/app &"
+    - name: run tests
       run: |
         npm i
         npm i webdriverio@8.6.8
-        "php -S 127.0.0.1:8000 -t test/data/app &"
         npx mocha test/helper/WebDriver_test.js
         "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
       env:
