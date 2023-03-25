@@ -16,7 +16,7 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:
@@ -32,15 +32,15 @@ jobs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 8.0
-    - name: install deps
+    - name: npm install
       run: |
-        npm i
+        npm install
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - name: start server
-      run: |
-        "php -S 127.0.0.1:8000 -t test/data/app &"
-    - name: run tests
-        npx mocha test/helper/WebDriver_test.js
+    - name: start a server
+      run: "php -S 127.0.0.1:8000 -t test/data/app &"
+    - name: run unit tests
+      run: | 
+        ./node_modules/.bin/mocha test/helper/WebDriver_test.js
         "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
