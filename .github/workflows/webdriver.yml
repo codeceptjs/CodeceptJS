@@ -36,7 +36,6 @@ jobs:
     - name: run tests
       run: |
         npm i
-        npm i webdriverio@8.6.8
         npx mocha test/helper/WebDriver_test.js
         "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
       env:
