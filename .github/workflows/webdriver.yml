@@ -42,6 +42,6 @@ jobs:
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run unit tests
       run: | 
-        cat /home/runner/work/CodeceptJS/CodeceptJS/node_modules/webdriverio/package.json
-        # ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+        npm i
+        ./node_modules/.bin/mocha test/helper/WebDriver_test.js
         #"./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
