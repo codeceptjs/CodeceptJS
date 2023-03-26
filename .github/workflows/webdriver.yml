@@ -35,6 +35,5 @@ jobs:
           run: "php -S 127.0.0.1:8000 -t test/data/app &"
         - name: run unit tests
           run: |
-           npm i
            npx mocha test/helper/WebDriver_test.js
-           #"./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
+           "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
