@@ -1183,7 +1183,7 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('#scrollIntoView', () => {
+  describe.only('#scrollIntoView', () => {
     it('should scroll element into viewport', async () => {
       await wd.amOnPage('/form/scroll_into_view');
       const element = await wd.browser.$('#notInViewportByDefault');
