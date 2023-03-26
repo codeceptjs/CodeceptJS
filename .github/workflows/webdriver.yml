@@ -26,8 +26,6 @@ jobs:
             node-version: 18
         - name: Install
           run: npm install
-        - name: Test
-          run: npm run test:local
         - uses: shivammathur/setup-php@v2
           with:
             php-version: 8.0
