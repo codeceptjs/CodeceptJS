@@ -20,7 +20,7 @@ jobs:
 
     services:
       selenium:
-        image: selenium/standalone-chrome:3.141.59
+        image: selenium/standalone-chrome:109.0-chromedriver-109.0
         ports: 
           - 4444:4444
         options: --shm-size="2g"
