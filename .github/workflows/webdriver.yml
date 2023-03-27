@@ -37,7 +37,6 @@ jobs:
             npm i
         - name: run unit tests
           run: |
-           chromeDriver -v
            google-chrome --version
            npx mocha test/helper/WebDriver_test.js
            "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
