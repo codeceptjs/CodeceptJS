@@ -25,7 +25,7 @@ jobs:
           with:
             node-version: 18
         - name: start selenium
-          run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.50
+          run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.8.2-20230325
         - name: Install
           run: npm install
         - uses: shivammathur/setup-php@v2
