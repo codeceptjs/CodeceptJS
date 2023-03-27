@@ -30,7 +30,7 @@ jobs:
         - name: start a server
           run: "php -S 127.0.0.1:8000 -t test/data/app &"
         - name: start selenium
-          run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.8.2-20230325
+          run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-oxygen
         - name: Install
           run: npm install
         - name: run unit tests
