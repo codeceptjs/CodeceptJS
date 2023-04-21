@@ -493,7 +493,7 @@ I.click({css: 'nav a.login'});
 -   `locator` **([string][8] | [object][5])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][8]? | [object][5] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
--   `opts` **any?** [Additional options][10] for click available as 3rd argument.Examples:```js
+-   `options` **any?** [Additional options][10] for click available as 3rd argument.Examples:```js
     // click on element at position
     I.click('canvas', '.model', { position: { x: 20, y: 40 } })
 
@@ -2001,7 +2001,7 @@ See [Playwright's reference][31]
 
 #### Parameters
 
--   `opts` **any**  
+-   `options` **any**  
 
 ### waitForRequest
 
