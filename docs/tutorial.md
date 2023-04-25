@@ -1,6 +1,6 @@
 ---
 permalink: /tutorial
-title: CoeceptJS Complete Tutorial
+title: CodeceptJS Complete Tutorial
 ---
 
 # Tutorial: Writing Tests for Checkout Page
