@@ -34,7 +34,7 @@ jobs:
         php-version: 7.4
     - name: npm install
       run: |
-        npm install
+        npm install --legacy-peer-deps
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
