@@ -779,6 +779,20 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `value` **([string][8] | [object][5])** text value to fill.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
+### focus
+
+{{> focus }}
+Calls [focus][16] on the matching element.
+
+#### Parameters
+
+-   `locator`  
+-   `options` **any?** [Additional options][17] for available options object as 2nd argument.Examples:```js
+    I.dontSee('#add-to-cart');
+    I.focus('#product-tile')
+    I.see('#add-to-cart');
+    ``` 
+
 ### forceClick
 
 Perform an emulated click on a link or a button, given by a locator.
