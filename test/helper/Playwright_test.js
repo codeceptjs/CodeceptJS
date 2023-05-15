@@ -481,6 +481,28 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#clear', () => {
+    it('should clear input', async () => {
+      await I.amOnPage('/form/field');
+      await I.fillField('Name', 'value that is cleared using I.clear()');
+      await I.clear('Name');
+      await I.dontSeeInField('Name', 'value that is cleared using I.clear()');
+    });
+
+    it('should clear textarea', async () => {
+      await I.amOnPage('/form/textarea');
+      await I.fillField('#description', 'value that is cleared using I.clear()');
+      await I.clear('#description');
+      await I.dontSeeInField('#description', 'value that is cleared using I.clear()');
+    });
+
+    it('should clear contenteditable', async () => {
+      await I.amOnPage('/form/contenteditable');
+      await I.clear('#contenteditableDiv');
+      await I.dontSeeInField('#contenteditableDiv', 'This is editable. Click here to edit this text.');
+    });
+  });
+
   describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await I.amOnPage('/form/field');
