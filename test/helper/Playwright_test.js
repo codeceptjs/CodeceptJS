@@ -184,6 +184,33 @@ describe('Playwright', function () {
       .then(() => I.dontSee('Hovered', '#show')));
   });
 
+  describe('#focus, #blur', () => {
+    it('should focus a button, field and textarea', () => I.amOnPage('/form/focus_blur_elements')
+      .then(() => I.focus('#button'))
+      .then(() => I.see('Button is focused', '#buttonMessage'))
+      .then(() => I.focus('#field'))
+      .then(() => I.see('Button not focused', '#buttonMessage'))
+      .then(() => I.see('Input field is focused', '#fieldMessage'))
+      .then(() => I.focus('#textarea'))
+      .then(() => I.see('Button not focused', '#buttonMessage'))
+      .then(() => I.see('Input field not focused', '#fieldMessage'))
+      .then(() => I.see('Textarea is focused', '#textareaMessage')));
+
+    it('should blur focused button, field and textarea', () => I.amOnPage('/form/focus_blur_elements')
+      .then(() => I.focus('#button'))
+      .then(() => I.see('Button is focused', '#buttonMessage'))
+      .then(() => I.blur('#button'))
+      .then(() => I.see('Button not focused', '#buttonMessage'))
+      .then(() => I.focus('#field'))
+      .then(() => I.see('Input field is focused', '#fieldMessage'))
+      .then(() => I.blur('#field'))
+      .then(() => I.see('Input field not focused', '#fieldMessage'))
+      .then(() => I.focus('#textarea'))
+      .then(() => I.see('Textarea is focused', '#textareaMessage'))
+      .then(() => I.focus('#textarea'))
+      .then(() => I.see('Textarea not focused', '#textareaMessage')));
+  });
+
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
       .then(() => I.wait(1))
