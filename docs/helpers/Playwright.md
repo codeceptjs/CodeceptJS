@@ -406,6 +406,18 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 -   `pathToFile` **[string][8]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
+### blur
+
+{{> blur }}
+Remove focus from a text input
+
+#### Parameters
+
+-   `locator`  
+-   `options` **any?** [Additional options][9] for available options object as 2nd argument.Examples:```js
+    I.blur('.text-area')
+    ``` 
+
 ### cancelPopup
 
 Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
