@@ -445,6 +445,20 @@ I.checkOption('agree', '//form');
     ```> ⚠️ To avoid flakiness, option `force: true` is set by default 
 -   `options`   
 
+### clear
+
+{{> clear }}
+Clear the <input>, <textarea> or [contenteditable] .
+
+#### Parameters
+
+-   `locator`  
+-   `options` **any?** [Additional options][11] for available options object as 2nd argument.Examples:```js
+    I.clear('.text-area')
+    ``````js
+    I.clear('#submit', { force: true }) // force to bypass the [actionability](https://playwright.dev/docs/actionability) checks.
+    ``` 
+
 ### clearCookie
 
 Clears a cookie by name,
