@@ -185,30 +185,40 @@ describe('Playwright', function () {
   });
 
   describe('#focus, #blur', () => {
-    it('should focus a button, field and textarea', () => I.amOnPage('/form/focus_blur_elements')
-      .then(() => I.focus('#button'))
-      .then(() => I.see('Button is focused', '#buttonMessage'))
-      .then(() => I.focus('#field'))
-      .then(() => I.see('Button not focused', '#buttonMessage'))
-      .then(() => I.see('Input field is focused', '#fieldMessage'))
-      .then(() => I.focus('#textarea'))
-      .then(() => I.see('Button not focused', '#buttonMessage'))
-      .then(() => I.see('Input field not focused', '#fieldMessage'))
-      .then(() => I.see('Textarea is focused', '#textareaMessage')));
+    it('should focus a button, field and textarea', async () => {
+      await I.amOnPage('/form/focus_blur_elements');
 
-    it('should blur focused button, field and textarea', () => I.amOnPage('/form/focus_blur_elements')
-      .then(() => I.focus('#button'))
-      .then(() => I.see('Button is focused', '#buttonMessage'))
-      .then(() => I.blur('#button'))
-      .then(() => I.see('Button not focused', '#buttonMessage'))
-      .then(() => I.focus('#field'))
-      .then(() => I.see('Input field is focused', '#fieldMessage'))
-      .then(() => I.blur('#field'))
-      .then(() => I.see('Input field not focused', '#fieldMessage'))
-      .then(() => I.focus('#textarea'))
-      .then(() => I.see('Textarea is focused', '#textareaMessage'))
-      .then(() => I.focus('#textarea'))
-      .then(() => I.see('Textarea not focused', '#textareaMessage')));
+      await I.focus('#button');
+      await I.see('Button is focused', '#buttonMessage');
+
+      await I.focus('#field');
+      await I.see('Button not focused', '#buttonMessage');
+      await I.see('Input field is focused', '#fieldMessage');
+
+      await I.focus('#textarea');
+      await I.see('Button not focused', '#buttonMessage');
+      await I.see('Input field not focused', '#fieldMessage');
+      await I.see('Textarea is focused', '#textareaMessage');
+    });
+
+    it('should blur focused button, field and textarea', async () => {
+      await I.amOnPage('/form/focus_blur_elements');
+
+      await I.focus('#button');
+      await I.see('Button is focused', '#buttonMessage');
+      await I.blur('#button');
+      await I.see('Button not focused', '#buttonMessage');
+
+      await I.focus('#field');
+      await I.see('Input field is focused', '#fieldMessage');
+      await I.blur('#field');
+      await I.see('Input field not focused', '#fieldMessage');
+
+      await I.focus('#textarea');
+      await I.see('Textarea is focused', '#textareaMessage');
+      await I.blur('#textarea');
+      await I.see('Textarea not focused', '#textareaMessage');
+    });
   });
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
