@@ -54,6 +54,8 @@ playwright.click(str, str); // $ExpectType Promise<any>
 playwright.click(str, null, { position }); // $ExpectType Promise<any>
 playwright.clickLink(); // $ExpectType Promise<any>
 playwright.forceClick(str); // $ExpectType Promise<any>
+playwright.focus(str); // $ExpectType Promise<any>
+playwright.blur(str); // $ExpectType Promise<any>
 playwright.doubleClick(str); // $ExpectType Promise<any>
 playwright.rightClick(str); // $ExpectType Promise<any>
 playwright.checkOption(str); // $ExpectType Promise<any>
@@ -66,6 +68,7 @@ playwright.pressKey(str); // $ExpectType Promise<any>
 playwright.type(str); // $ExpectType Promise<any>
 playwright.fillField(str, str); // $ExpectType Promise<any>
 playwright.clearField(str); // $ExpectType Promise<any>
+playwright.clear(str); // $ExpectType Promise<any>
 playwright.appendField(str, str); // $ExpectType Promise<any>
 playwright.seeInField(str, str); // $ExpectType Promise<any>
 playwright.dontSeeInField(str, str); // $ExpectType Promise<any>
