@@ -17,7 +17,6 @@ jobs:
   build:
 
     runs-on: ubuntu-20.04
-
     strategy:
       matrix:
         node-version: [16.x]
@@ -44,3 +43,4 @@ jobs:
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
+
