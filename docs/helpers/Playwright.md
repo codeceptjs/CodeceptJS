@@ -73,6 +73,7 @@ Type: [object][5]
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][37].
 -   `ignoreLog` **[Array][15]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][38].
 -   `ignoreHTTPSErrors` **[boolean][26]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
+-   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
 
 
 
@@ -87,7 +88,7 @@ By default, video is saved to `output/video` dir. You can customize this path by
 
 #### Trace Recording Customization
 
-Trace recording provides a complete information on test execution and includes DOM snapshots, screenshots, and network requests logged during run.
+Trace recording provides complete information on test execution and includes DOM snapshots, screenshots, and network requests logged during run.
 Traces will be saved to `output/trace`
 
 -   `trace`: enables trace recording for failed tests; trace are saved into `output/trace` folder
