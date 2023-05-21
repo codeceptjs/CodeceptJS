@@ -489,6 +489,9 @@ declare const Background: CodeceptJS.IHook;
 declare const Before: CodeceptJS.IHook;
 declare const After: CodeceptJS.IHook;
 
+// Plugins
+declare const __: any
+
 interface Window {
   codeceptjs: typeof CodeceptJS.browserCodecept;
   resq: any;
