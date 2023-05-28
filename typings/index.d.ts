@@ -68,6 +68,14 @@ declare namespace CodeceptJS {
      */
     output: string;
     /**
+     * empty output folder for next run
+     *
+     * ```js
+     * emptyOutputFolder: true
+     * ```
+     */
+    emptyOutputFolder?: boolean;
+    /**
      * Pattern to filter tests by name.
      * This option is useful if you plan to use multiple configs for different environments.
      *
