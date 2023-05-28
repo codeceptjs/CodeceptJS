@@ -240,4 +240,34 @@ describe('Workers', () => {
       done();
     });
   });
+
+  it('should run worker with multiple config', (done) => {
+    const workerConfig = {
+      by: 'test',
+      testConfig: './test/data/sandbox/codecept.multiple.js',
+      options: {},
+      selectedRuns: ['mobile'],
+    };
+
+    const workers = new Workers(2, workerConfig);
+
+    for (const worker of workers.getWorkers()) {
+      worker.addConfig({
+        helpers: {
+          FileSystem: {},
+          Workers: {
+            require: './custom_worker_helper',
+          },
+        },
+      });
+    }
+
+    workers.run();
+
+    workers.on(event.all.result, (status) => {
+      expect(workers.getWorkers().length).equal(8);
+      expect(status).equal(true);
+      done();
+    });
+  });
 });
