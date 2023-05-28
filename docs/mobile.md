@@ -45,14 +45,61 @@ To install Appium use npm:
 npm i -g appium
 ```
 
+To use Appium 2.x:
+```sh
+npm i -g appium@next
+```
+Appium 2x (still beta) reenvisions Appium as a platform where “drivers” and “plugins” can be easily created and shared independently.
+Install an Appium driver and its dependencies
+To install the Appium driver and its dependencies, we'll be using the uiautomator2 (Android), XCUITest (iOS) drivers.
+
+```
+appium driver install xcuitest
+appium driver install uiautomator2
+```
+To make sure that all the drivers are installed successfully, run the following command:
+
+```
+appium driver list
+
+tth~$appium driver list            
+✔ Listing available drivers
+- espresso@2.17.0 [installed (NPM)]
+- uiautomator2@2.12.6 [installed (NPM)]
+- xcuitest@4.19.1 [installed (NPM)]
+- mac2 [not installed]
+- safari [not installed]
+- gecko [not installed]
+- chromium [not installed]
+```
+
 Then you need to prepare application for execution.
 It should be packed into apk (for Android) or .ipa (for iOS) or zip.
 
-Next, is to launch the emulator or connect physical device.
+Next, is to launch the emulator or connect a physical device.
 Once they are prepared, launch Appium:
 
 ```sh
 appium
+```
+
+To use Appium 2.x:
+```sh
+tth~$npx appium --base-path=/wd/hub
+[Appium] Welcome to Appium v2.0.0-beta.57 (REV 3e675c32ae71dc0b00749d5d29213e2ea5b53c5b)
+[Appium] Non-default server args:
+[Appium] {
+[Appium]   basePath: '/wd/hub'
+[Appium] }
+[Appium] Attempting to load driver espresso...
+[debug] [Appium] Requiring driver at /Users/trung-thanh/Desktop/thanh-nguyen/task2/node_modules/appium-espresso-driver
+[Appium] Attempting to load driver uiautomator2...
+[debug] [Appium] Requiring driver at /Users/trung-thanh/Desktop/thanh-nguyen/task2/node_modules/appium-uiautomator2-driver
+[Appium] Appium REST http interface listener started on 0.0.0.0:4723
+[Appium] Available drivers:
+[Appium]   - espresso@2.17.0 (automationName 'Espresso')
+[Appium]   - uiautomator2@2.12.6 (automationName 'UiAutomator2')
+[Appium] No plugins have been installed. Use the "appium plugin" command to install the one(s) you want to use.
 ```
 
 To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.
@@ -60,7 +107,7 @@ To run mobile test you need either an device emulator (available with Android SD
 CodeceptJS should be installed with webdriverio support:
 
 ```bash
-npm install codeceptjs webdriverio --save
+npm install codeceptjs webdriverio@8.6.3 --save
 ```
 
 ## Configuring

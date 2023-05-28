@@ -22,15 +22,15 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.59-oxygen
-    - uses: actions/checkout@v3
+    - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.0
+    - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.4
+        php-version: 8.0
     - name: npm install
       run: |
         npm install --legacy-peer-deps
