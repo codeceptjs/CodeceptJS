@@ -12,7 +12,7 @@ declare namespace CodeceptJS {
 
   type Cookie = {
     name: string;
-    value: string;
+    value: string | boolean;
     domain?: string,
     path?: string,
   };
@@ -488,6 +488,9 @@ declare const AfterSuite: CodeceptJS.IHook;
 declare const Background: CodeceptJS.IHook;
 declare const Before: CodeceptJS.IHook;
 declare const After: CodeceptJS.IHook;
+
+// Plugins
+declare const __: any
 
 interface Window {
   codeceptjs: typeof CodeceptJS.browserCodecept;

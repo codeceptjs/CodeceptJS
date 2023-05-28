@@ -1,6 +1,6 @@
 ---
 permalink: /tutorial
-title: CoeceptJS Complete Tutorial
+title: CodeceptJS Complete Tutorial
 ---
 
 # Tutorial: Writing Tests for Checkout Page
@@ -216,7 +216,7 @@ module.exports = {
 Feels really empty. What should we do about it? Should we write more code? No, we already have it. Let's copy code blocks from a test we have it and place them under a corredponnding function names:
 
 ```js
-connst { I } = inject();
+const { I } = inject();
 
 module.exports = {
 
