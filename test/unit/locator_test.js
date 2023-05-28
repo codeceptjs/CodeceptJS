@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const Dom = require('xmldom').DOMParser;
+const { DOMParser } = require('@xmldom/xmldom');
 const xpath = require('xpath');
 
 const Locator = require('../../lib/locator');
@@ -56,7 +56,7 @@ const xml = `<body>
 
 describe('Locator', () => {
   beforeEach(() => {
-    doc = new Dom().parseFromString(xml);
+    doc = new DOMParser().parseFromString(xml, 'application/xhtml+xml');
   });
 
   describe('constructor', () => {

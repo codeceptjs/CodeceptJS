@@ -17,16 +17,16 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     - uses: shivammathur/setup-php@v2
@@ -34,7 +34,7 @@ jobs:
         php-version: 7.4
     - name: npm install
       run: |
-        npm install
+        npm install --legacy-peer-deps
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true

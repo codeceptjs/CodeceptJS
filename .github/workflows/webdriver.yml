@@ -17,7 +17,6 @@ jobs:
   build:
 
     runs-on: ubuntu-20.04
-
     strategy:
       matrix:
         node-version: [16.x]
@@ -26,7 +25,7 @@ jobs:
     - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.0
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     - uses: shivammathur/setup-php@v2
@@ -34,8 +33,7 @@ jobs:
         php-version: 8.0
     - name: npm install
       run: |
-        npm install
-        npm list webdriverio
+        npm install --legacy-peer-deps
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
@@ -45,3 +43,4 @@ jobs:
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"
+

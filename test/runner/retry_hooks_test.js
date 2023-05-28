@@ -13,7 +13,7 @@ describe('CodeceptJS Retry Hooks', function () {
     it(`run ${retryHook} config`, (done) => {
       exec(config_run_config('codecept.conf.js', retryHook), (err, stdout) => {
         debug_this_test && console.log(stdout);
-        expect(stdout).toContain('OK  | 1 passed');
+        expect(stdout).toContain('1 passed');
         done();
       });
     });
@@ -23,7 +23,7 @@ describe('CodeceptJS Retry Hooks', function () {
     it(`should ${retryHook} set hook retries from global config`, (done) => {
       exec(config_run_config('codecept.retry.obj.conf.js', retryHook), (err, stdout) => {
         debug_this_test && console.log(stdout);
-        expect(stdout).toContain('OK  | 1 passed');
+        expect(stdout).toContain('1 passed');
         done();
       });
     });
@@ -35,6 +35,22 @@ describe('CodeceptJS Retry Hooks', function () {
       expect(stdout).toContain('-- FAILURES');
       expect(stdout).toContain('not works');
       expect(stdout).toContain('1) Fail #FailBefore hook');
+      done();
+    });
+  });
+
+  it('should set global retry', (done) => {
+    exec(config_run_config('codecept.retry.global.conf.js', '#globalRetry'), (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).toContain('1 passed');
+      done();
+    });
+  });
+
+  it('should set global scenario retry', (done) => {
+    exec(config_run_config('codecept.retry.global.scenario.conf.js', '#globalScenarioRetry'), (err, stdout) => {
+      debug_this_test && console.log(stdout);
+      expect(stdout).toContain('1 passed');
       done();
     });
   });

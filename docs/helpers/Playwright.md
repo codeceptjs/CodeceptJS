@@ -40,7 +40,7 @@ Type: [object][5]
 ### Properties
 
 -   `url` **[string][8]** base url of website to be tested
--   `browser` **[string][8]?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
+-   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][26]?** show browser window.
 -   `restart` **([string][8] | [boolean][26])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][33] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
@@ -57,13 +57,13 @@ Type: [object][5]
 -   `keepBrowserState` **[boolean][26]?** keep browser state between tests when `restart` is set to 'session'.
 -   `keepCookies` **[boolean][26]?** keep cookies between tests when `restart` is set to 'session'.
 -   `waitForAction` **[number][12]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **[string][8]?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][36].
+-   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"networkidle"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][36].
 -   `pressKeyDelay` **[number][12]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][12]?** config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout` **[number][12]?** default wait* timeout in ms. Default: 1000.
 -   `basicAuth` **[object][5]?** the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `windowSize` **[string][8]?** default window size. Set a dimension like `640x480`.
--   `colorScheme` **[string][8]?** default color scheme. Possible values: `dark` | `light` | `no-preference`.
+-   `colorScheme` **(`"dark"` | `"light"` | `"no-preference"`)?** default color scheme. Possible values: `dark` | `light` | `no-preference`.
 -   `userAgent` **[string][8]?** user-agent string.
 -   `locale` **[string][8]?** locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
 -   `manualStart` **[boolean][26]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
@@ -73,6 +73,7 @@ Type: [object][5]
 -   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][37].
 -   `ignoreLog` **[Array][15]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][38].
 -   `ignoreHTTPSErrors` **[boolean][26]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
+-   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
 
 
 
@@ -87,7 +88,7 @@ By default, video is saved to `output/video` dir. You can customize this path by
 
 #### Trace Recording Customization
 
-Trace recording provides a complete information on test execution and includes DOM snapshots, screenshots, and network requests logged during run.
+Trace recording provides complete information on test execution and includes DOM snapshots, screenshots, and network requests logged during run.
 Traces will be saved to `output/trace`
 
 -   `trace`: enables trace recording for failed tests; trace are saved into `output/trace` folder
