@@ -31,8 +31,6 @@ jobs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 7.4
-    - name: playwright install
-      run: npx playwright@1.32.3 install
     - name: npm install
       run: |
         npm install --legacy-peer-deps
