@@ -72,7 +72,6 @@ playwright.pressKey(str); // $ExpectType void
 playwright.type(str); // $ExpectType void
 playwright.fillField(str, str); // $ExpectType void
 playwright.clearField(str); // $ExpectType void
-playwright.clear(str); // $ExpectType void
 playwright.appendField(str, str); // $ExpectType void
 playwright.seeInField(str, str); // $ExpectType void
 playwright.dontSeeInField(str, str); // $ExpectType void

@@ -68,7 +68,6 @@ playwright.pressKey(str); // $ExpectType Promise<any>
 playwright.type(str); // $ExpectType Promise<any>
 playwright.fillField(str, str); // $ExpectType Promise<any>
 playwright.clearField(str); // $ExpectType Promise<any>
-playwright.clear(str); // $ExpectType Promise<any>
 playwright.appendField(str, str); // $ExpectType Promise<any>
 playwright.seeInField(str, str); // $ExpectType Promise<any>
 playwright.dontSeeInField(str, str); // $ExpectType Promise<any>
