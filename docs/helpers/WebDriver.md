@@ -464,6 +464,8 @@ Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
+// typing secret
+I.appendField('password', secret('123456'));
 ```
 
 #### Parameters
@@ -1985,6 +1987,9 @@ I.type('4141555311111111', 100);
 
 // passing in an array
 I.type(['T', 'E', 'X', 'T']);
+
+// passing a secret
+I.type(secret('123456'));
 ```
 
 #### Parameters
