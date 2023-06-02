@@ -508,6 +508,14 @@ describe('Playwright', function () {
 
     it('should clear contenteditable', async () => {
       await I.amOnPage('/form/contenteditable');
+
+      const isClearMethodPresent = await I.usePlaywrightTo('test', async ({ page }) => {
+        const contenteditableDiv = await page.locator('#contenteditableDiv');
+        return typeof contenteditableDiv.clear === 'function';
+      });
+      if (!isClearMethodPresent) {
+        this.skip();
+      }
       await I.clearField('#contenteditableDiv');
       await I.dontSeeInField('#contenteditableDiv', 'This is editable. Click here to edit this text.');
     });
