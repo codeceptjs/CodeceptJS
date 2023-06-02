@@ -7,6 +7,11 @@ layout: Section
 
 # Releases
 
+## 3.4.1
+
+* Updated mocha to v 10.2. Fixes [#3591](https://github.com/codeceptjs/CodeceptJS/issues/3591)
+* Fixes executing a faling Before hook. Resolves [#3592](https://github.com/codeceptjs/CodeceptJS/issues/3592)
+
 ## 3.4.0
 
 * **Updated to latest mocha and modern Cucumber**

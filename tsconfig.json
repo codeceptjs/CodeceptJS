@@ -10,7 +10,7 @@
     "types": [
         "node"
     ],
-    "target": "es2017"
+    "target": "es2018"
   },
   "compileOnSave": true,
   "include": [
