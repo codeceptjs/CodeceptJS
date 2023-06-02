@@ -34,6 +34,7 @@ jobs:
     - name: npm install
       run: |
         npm install --legacy-peer-deps
+        npm install playwright@1.32.3
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - name: Install deps
