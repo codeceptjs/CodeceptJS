@@ -41,7 +41,8 @@ Type: [object][4]
       endpoint: 'http://site.com/api',
       prettyPrintJson: true,
       onRequest: (request) => {
-      request.headers.auth = '123';
+        request.headers.auth = '123';
+      }
     }
   }
 }
