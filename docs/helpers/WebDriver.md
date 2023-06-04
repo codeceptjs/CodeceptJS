@@ -27,7 +27,7 @@ Type: [object][16]
 ### Properties
 
 -   `url` **[string][17]** base url of website to be tested.
--   `browser` **[string][17]** browser in which to perform testing.
+-   `browser` **[string][17]** Browser in which to perform testing.
 -   `basicAuth` **[string][17]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `host` **[string][17]?** WebDriver host to connect.
 -   `port` **[number][20]?** WebDriver port to connect.
@@ -45,6 +45,7 @@ Type: [object][16]
 -   `desiredCapabilities` **[object][16]?** Selenium's [desired capabilities][6].
 -   `manualStart` **[boolean][29]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
 -   `timeouts` **[object][16]?** [WebDriver timeouts][34] defined as hash.
+-   `highlightElement` **[boolean][29]?** highlight the interacting elements
 
 
 
@@ -382,7 +383,7 @@ this.helpers['WebDriver']._locate({name: 'password'}).then //...
 
 ### _locateCheckable
 
-Find a checkbox by providing human readable text:
+Find a checkbox by providing human-readable text:
 
 ```js
 this.helpers['WebDriver']._locateCheckable('I agree with terms and conditions').then // ...
@@ -394,7 +395,7 @@ this.helpers['WebDriver']._locateCheckable('I agree with terms and conditions').
 
 ### _locateClickable
 
-Find a clickable element by providing human readable text:
+Find a clickable element by providing human-readable text:
 
 ```js
 const els = await this.helpers.WebDriver._locateClickable('Next page');
@@ -408,7 +409,7 @@ const els = await this.helpers.WebDriver._locateClickable('Next page', '.pages')
 
 ### _locateFields
 
-Find field elements by providing human readable text:
+Find field elements by providing human-readable text:
 
 ```js
 this.helpers['WebDriver']._locateFields('Your email').then // ...
@@ -464,6 +465,8 @@ Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
+// typing secret
+I.appendField('password', secret('123456'));
 ```
 
 #### Parameters
@@ -1985,6 +1988,9 @@ I.type('4141555311111111', 100);
 
 // passing in an array
 I.type(['T', 'E', 'X', 'T']);
+
+// passing a secret
+I.type(secret('123456'));
 ```
 
 #### Parameters

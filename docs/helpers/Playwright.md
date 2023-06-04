@@ -74,6 +74,7 @@ Type: [object][5]
 -   `ignoreLog` **[Array][15]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][38].
 -   `ignoreHTTPSErrors` **[boolean][26]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 -   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
+-   `highlightElement` **[boolean][26]?** highlight the interacting elements
 
 
 
@@ -378,6 +379,8 @@ Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
+// typing secret
+I.appendField('password', secret('123456'));
 ```
 
 #### Parameters
@@ -1826,6 +1829,9 @@ I.type('4141555311111111', 100);
 
 // passing in an array
 I.type(['T', 'E', 'X', 'T']);
+
+// passing a secret
+I.type(secret('123456'));
 ```
 
 #### Parameters
