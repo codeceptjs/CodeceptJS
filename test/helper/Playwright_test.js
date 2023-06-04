@@ -517,7 +517,7 @@ describe('Playwright', function () {
         this.skip();
       }
       await I.clearField('#contenteditableDiv');
-      await I.dontSeeInField('#contenteditableDiv', 'This is editable. Click here to edit this text.');
+      await I.dontSee('This is editable. Click here to edit this text.', '#contenteditableDiv');
     });
   });
 
