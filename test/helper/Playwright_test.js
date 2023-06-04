@@ -507,15 +507,14 @@ describe('Playwright', function () {
     });
 
     it('should clear contenteditable', async () => {
-      await I.amOnPage('/form/contenteditable');
-
-      const isClearMethodPresent = await I.usePlaywrightTo('test', async ({ page }) => {
-        const contenteditableDiv = await page.locator('#contenteditableDiv');
-        return typeof contenteditableDiv.clear === 'function';
+      const isClearMethodPresent = await I.usePlaywrightTo('check if new Playwright .clear() method present', async ({ page }) => {
+        return typeof page.locator().clear === 'function';
       });
       if (!isClearMethodPresent) {
         this.skip();
       }
+
+      await I.amOnPage('/form/contenteditable');
       await I.clearField('#contenteditableDiv');
       await I.dontSee('This is editable. Click here to edit this text.', '#contenteditableDiv');
     });
