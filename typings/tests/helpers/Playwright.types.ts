@@ -58,6 +58,8 @@ playwright.click(str, str); // $ExpectType void
 playwright.click(str, null, { position }); // $ExpectType void
 playwright.clickLink(); // $ExpectType void
 playwright.forceClick(str); // $ExpectType void
+playwright.focus(str); // $ExpectType void
+playwright.blur(str); // $ExpectType void
 playwright.doubleClick(str); // $ExpectType void
 playwright.rightClick(str); // $ExpectType void
 playwright.checkOption(str); // $ExpectType void
