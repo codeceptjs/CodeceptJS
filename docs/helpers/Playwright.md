@@ -413,7 +413,7 @@ Remove focus from a text input
 
 #### Parameters
 
--   `locator`  
+-   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 -   `options` **any?** [Additional options][9] for available options object as 2nd argument.Examples:```js
     I.blur('.text-area')
     ``` 
