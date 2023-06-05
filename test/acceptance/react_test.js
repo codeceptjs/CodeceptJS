@@ -1,7 +1,7 @@
 Feature('React Selectors');
 
 Scenario('props @WebDriver @Puppeteer @Playwright', ({ I }) => {
-  I.amOnPage('https://ahfarmer.github.io/calculator/');
+  I.amOnPage('https://codecept.io/test-react-calculator/');
   I.click('7');
   I.seeElement({ react: 't', props: { name: '5' } });
   I.click('button', { react: 't', props: { name: '2' } });
