@@ -15,7 +15,7 @@ describe('dry-run command', () => {
 
   it('should be executed with config path', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run_config('codecept.js')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('codecept.js')}`, (err, stdout) => {
       expect(stdout).toContain('Filesystem'); // feature
       expect(stdout).toContain('check current dir'); // test name
       expect(err).toBeFalsy();
@@ -25,7 +25,7 @@ describe('dry-run command', () => {
 
   it('should list all tests', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run_config('codecept.js')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('codecept.js')}`, (err, stdout) => {
       expect(stdout).toContain('Filesystem'); // feature
       expect(stdout).toContain('check current dir'); // test name
       expect(stdout).toContain('No tests were executed');
@@ -35,7 +35,7 @@ describe('dry-run command', () => {
   });
 
   it('should not run actual steps', (done) => {
-    exec(`${codecept_run_config('codecept.flaky.js')} --debug`, (err, stdout) => {
+    exec(`${codecept_run_config('codecept.flaky.js')}`, (err, stdout) => {
       expect(stdout).toContain('Flaky'); // feature
       expect(stdout).toContain('Not so flaky test'); // test name
       expect(stdout).toContain('Old style flaky'); // test name
