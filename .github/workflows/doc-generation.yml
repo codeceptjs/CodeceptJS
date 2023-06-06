@@ -34,13 +34,13 @@ jobs:
         run: |
           npm run update-contributor-faces
           git add README.md
-          git commit -m "DOC: Update contributor faces"
+          git commit -m "DOC: Update contributor faces" --no-verify
 
       - name: Generate and update documentation
         run: |
           npm run docs
           git add docs/**/*.md
-          git commit -m "DOC: Autogenerate and update documentation"
+          git commit -m "DOC: Autogenerate and update documentation" --no-verify
 
       - name: Push to the repo
         run: git push
