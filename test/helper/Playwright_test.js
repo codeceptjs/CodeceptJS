@@ -705,7 +705,7 @@ describe('Playwright', function () {
       }));
   });
 
-  describe.only('#dragAndDrop', () => {
+  describe('#dragAndDrop', () => {
     it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
       .then(() => I.seeElementInDOM('#draggable'))
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
