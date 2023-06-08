@@ -428,6 +428,12 @@ title: ${name}
       await exec(`git checkout -b release-${newVersion}`);
     }
   },
+
+  async getCommitLog() {
+    console.log('Gathering commits...');
+    const logs = await exec('git log --pretty=\'format:%s - by %aN\' $(git describe --abbrev=0 --tags)..HEAD');
+    console.log(logs.data.stdout);
+  },
 };
 
 async function processChangelog() {
