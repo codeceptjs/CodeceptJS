@@ -26,6 +26,7 @@ playwright.haveRequestHeaders(str); // $ExpectType void
 playwright.moveCursorTo(str, num, num); // $ExpectType void
 playwright.dragAndDrop(str); // $ExpectError
 playwright.dragAndDrop(str, str); // $ExpectType void
+playwright.dragAndDrop(str, str, { sourcePosition, targetPosition }); // $ExpectType void
 playwright.restartBrowser(); // $ExpectType void
 playwright.restartBrowser({}); // $ExpectType void
 playwright.refreshPage(); // $ExpectType void

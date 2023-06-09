@@ -24,6 +24,7 @@ playwright.haveRequestHeaders(str); // $ExpectType Promise<any>
 playwright.moveCursorTo(str, num, num); // $ExpectType Promise<any>
 playwright.dragAndDrop(str); // $ExpectError
 playwright.dragAndDrop(str, str); // $ExpectType Promise<any>
+playwright.dragAndDrop(str, str, { sourcePosition, targetPosition }); // $ExpectType Promise<any>
 playwright.refreshPage(); // $ExpectType Promise<any>
 playwright.scrollPageToTop(); // $ExpectType Promise<any>
 playwright.scrollPageToBottom(); // $ExpectType Promise<any>
