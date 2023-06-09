@@ -705,8 +705,9 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
--   `srcElement` **([string][8] | [object][5] | any)?** 
--   `destElement` **([string][8] | [object][5] | any)?** 
+-   `srcElement` **([string][8] | [object][5])** located by CSS|XPath|strict locator.
+-   `destElement` **([string][8] | [object][5])** located by CSS|XPath|strict locator.
+    ⚠️ returns a _promise_ which is synchronized internally by recorder
 -   `options` **any?** [Additional options][13] can be passed as 3rd argument.```js
     // specify coordinates for source position
     I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
