@@ -47,4 +47,4 @@ jobs:
           fi
 
       - name: Push to the repo
-        run: git push
+        run: git push --no-verify
