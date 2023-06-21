@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 3.x
-      - kobenguyent-patch-1
   # Build and push Docker images *only* for releases.
   release:
     types: [published] # , created, edited
