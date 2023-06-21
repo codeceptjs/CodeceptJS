@@ -16,10 +16,11 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Genenrate tags
-        run: |
-          TAG=$(git describe --tags --abbrev=0)
-          echo $TAG
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: latest # Optional fallback tag to use when no tag can be found
 
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
@@ -29,4 +30,4 @@ jobs:
           repository: ${{ secrets.DOCKERHUB_REPOSITORY }}
           tag_with_ref: true # Info: https://github.com/docker/build-push-action/tree/releases/v1#tag_with_ref
           tag_with_sha: true # Info: https://github.com/docker/build-push-action/tree/releases/v1#tag_with_sha
-          tags: $TAG
+          tags: ${{ steps.previoustag.outputs.tag }}
