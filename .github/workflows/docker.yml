@@ -19,7 +19,7 @@ jobs:
       - name: 'Get Previous tag'
         id: previoustag
         uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0)
+      - run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG
 
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
