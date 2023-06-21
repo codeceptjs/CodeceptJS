@@ -13,13 +13,14 @@ jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: 'Get Previous tag'
         id: previoustag
         uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG && echo "::set-env name=TAG::$TAG"
+      - run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG && echo "TAG="$TAG >> "$GITHUB_ENV"
 
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
@@ -29,4 +30,4 @@ jobs:
           repository: ${{ secrets.DOCKERHUB_REPOSITORY }}
           tag_with_ref: true # Info: https://github.com/docker/build-push-action/tree/releases/v1#tag_with_ref
           tag_with_sha: true # Info: https://github.com/docker/build-push-action/tree/releases/v1#tag_with_sha
-          tags: $ {{ TAG }}
+          tags: $ {{ env.TAG }}
