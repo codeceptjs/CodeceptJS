@@ -15,12 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
       - name: 'Get Previous tag'
         id: previoustag
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG && echo "TAG="$TAG >> "$GITHUB_ENV"
+      - name: Check out the repo with tag
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.TAG }}
 
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
