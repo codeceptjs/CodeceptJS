@@ -39,7 +39,7 @@ describe('ui', () => {
       });
     });
 
-    it('can add a timout to all scenarios', () => {
+    it('can add a timeout to all scenarios', () => {
       const dataScenarioConfig = context.Data(dataTable).Scenario('scenario', () => {});
 
       dataScenarioConfig.timeout(3);
