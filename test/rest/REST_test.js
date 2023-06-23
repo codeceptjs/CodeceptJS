@@ -1,11 +1,12 @@
 const path = require('path');
+const expect = require('expect');
 const fs = require('fs');
 const FormData = require('form-data');
-const { secret } = require('../../lib/secret');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
 const Container = require('../../lib/container');
+const Secret = require("../../lib/secret");
 
 const api_url = TestHelper.jsonServerUrl();
 global.codeceptjs = require('../../lib');
@@ -71,15 +72,15 @@ describe('REST', () => {
     });
 
     it('should send POST requests with secret', async () => {
-      const secretData = secret({ name: 'john', password: '123456' }, 'password');
+      const secretData = Secret.secret({ name: 'john', password: '123456' }, 'password');
       const response = await I.sendPostRequest('/user', secretData);
       response.data.name.should.eql('john');
-      response.data.password.should.eql('123456');
-      secretData.toString().should.include('"password":"****"');
+      expect(response.data.password).toEqual({ _secret: '123456' });
+      expect(secretData.password.getMasked()).toEqual('*****');
     });
 
     it('should send POST requests with secret form encoded is not converted to string', async () => {
-      const secretData = secret('name=john&password=123456');
+      const secretData = Secret.secret('name=john&password=123456');
       const response = await I.sendPostRequest('/user', secretData);
       response.data.name.should.eql('john');
       response.data.password.should.eql('123456');
