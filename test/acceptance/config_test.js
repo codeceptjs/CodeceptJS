@@ -32,7 +32,7 @@ Scenario('change config 5 @WebDriverIO @Puppeteer @Playwright @Protractor @Night
 
 Scenario('make API call and check response @Playwright', ({ I }) => {
   I.amOnPage('/');
-  I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+  I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/todos/1');
   I.seeResponseCodeIsSuccessful();
 });
 
