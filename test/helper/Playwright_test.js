@@ -813,9 +813,9 @@ describe('Playwright', function () {
 
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
-      const response = await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      const response = await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/todos/1');
       expect(response.status()).to.equal(200);
-      expect(await response.json()).to.include.keys(['id', 'name']);
+      expect(await response.json()).to.include.keys(['id', 'title']);
     });
 
     it('should make local API request', async () => {
