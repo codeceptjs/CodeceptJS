@@ -794,7 +794,7 @@ describe('Playwright', function () {
   describe('#mockRoute, #stopMockingRoute', () => {
     it('should mock a route', async () => {
       await I.amOnPage('/form/fetch_call');
-      await I.mockRoute('https://jsonplaceholder.typicode.com/comments/1', route => {
+      await I.mockRoute('https://reqres.in/api/comments/1', route => {
         route.fulfill({
           status: 200,
           headers: { 'Access-Control-Allow-Origin': '*' },
@@ -804,9 +804,9 @@ describe('Playwright', function () {
       });
       await I.click('GET COMMENTS');
       await I.see('this was mocked');
-      await I.stopMockingRoute('https://jsonplaceholder.typicode.com/comments/1');
+      await I.stopMockingRoute('https://reqres.in/api/comments/1');
       await I.click('GET COMMENTS');
-      await I.see('postId');
+      await I.see('data');
       await I.dontSee('this was mocked');
     });
   });
@@ -826,10 +826,10 @@ describe('Playwright', function () {
     it('should convert to axios response with onResponse hook', async () => {
       let response;
       I.config.onResponse = (resp) => response = resp;
-      await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
       expect(response).to.be.ok;
       expect(response.status).to.equal(200);
-      expect(response.data).to.include.keys(['id', 'name']);
+      expect(response.data).to.include.keys(['page', 'total']);
     });
   });
 
