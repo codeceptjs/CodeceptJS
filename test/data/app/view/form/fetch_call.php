@@ -25,7 +25,7 @@
   <script type="text/javascript">
     const tableData = data =>
       Object.entries(data).reduce(
-        (html, [key, value]) => `${html} 
+        (html, [key, value]) => `${html}
             <tr>
               <td>${key}</td>
               <td>${value}</td>
@@ -53,7 +53,7 @@
     const getPostData = () =>
       getData("https://jsonplaceholder.typicode.com/posts/1");
     const getCommentsData = () =>
-      getData("https://jsonplaceholder.typicode.com/comments/1");
+      getData("https://reqres.in/api/comments/1");
     const getUsersData = () =>
       getData("https://jsonplaceholder.typicode.com/users/1");
   </script>

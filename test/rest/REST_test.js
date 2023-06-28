@@ -144,9 +144,9 @@ describe('REST', () => {
     });
 
     it('should be able to parse JSON responses', async () => {
-      await I.sendGetRequest('https://jsonplaceholder.typicode.com/comments/1');
+      await I.sendGetRequest('https://reqres.in/api/comments/1');
       await jsonResponse.seeResponseCodeIsSuccessful();
-      await jsonResponse.seeResponseContainsKeys(['id', 'name', 'email']);
+      await jsonResponse.seeResponseContainsKeys(['data', 'support']);
     });
   });
 
