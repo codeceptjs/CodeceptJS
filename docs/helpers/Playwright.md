@@ -711,7 +711,7 @@ I.dragAndDrop('#dragHandle', '#container');
 -   `options` **any?** [Additional options][13] can be passed as 3rd argument.```js
     // specify coordinates for source position
     I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
-    ```> By default option `force: true` is set 
+    ```> When no option is set, custom drag and drop would be used, to use the dragAndDrop API from Playwright, please set options, for example `force: true`
 
 ### dragSlider
 
