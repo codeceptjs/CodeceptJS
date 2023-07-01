@@ -6,7 +6,7 @@ const FormData = require('form-data');
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
 const Container = require('../../lib/container');
-const Secret = require("../../lib/secret");
+const Secret = require('../../lib/secret');
 
 const api_url = TestHelper.jsonServerUrl();
 global.codeceptjs = require('../../lib');
