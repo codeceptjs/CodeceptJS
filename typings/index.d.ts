@@ -12,26 +12,26 @@ declare namespace CodeceptJS {
 
   type Cookie = {
     name: string;
-    value: string;
+    value: string | boolean;
     domain?: string,
     path?: string,
   };
 
   type RetryConfig = {
     /** Filter tests by string or regexp pattern */
-    grep: string | RegExp;
+    grep?: string | RegExp;
     /** Number of times to repeat scenarios of a Feature */
-    Feature: number;
+    Feature?: number;
     /** Number of times to repeat scenarios */
-    Scenario: number;
+    Scenario?: number;
     /** Number of times to repeat Before hook */
-    Before: number;
+    Before?: number;
     /** Number of times to repeat After hook */
-    After: number;
+    After?: number;
     /** Number of times to repeat BeforeSuite hook */
-    BeforeSuite: number;
+    BeforeSuite?: number;
     /** Number of times to repeat AfterSuite hook */
-    AfterSuite: number;
+    AfterSuite?: number;
   };
 
   type TimeoutConfig = {
@@ -67,6 +67,14 @@ declare namespace CodeceptJS {
      * ```
      */
     output: string;
+    /**
+     * empty output folder for next run
+     *
+     * ```js
+     * emptyOutputFolder: true
+     * ```
+     */
+    emptyOutputFolder?: boolean;
     /**
      * Pattern to filter tests by name.
      * This option is useful if you plan to use multiple configs for different environments.
@@ -392,7 +400,7 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
-    | { shadow: string }
+    | { shadow: string[] }
     | { custom: string };
 
   interface CustomLocators {}
@@ -488,6 +496,9 @@ declare const AfterSuite: CodeceptJS.IHook;
 declare const Background: CodeceptJS.IHook;
 declare const Before: CodeceptJS.IHook;
 declare const After: CodeceptJS.IHook;
+
+// Plugins
+declare const __: any
 
 interface Window {
   codeceptjs: typeof CodeceptJS.browserCodecept;

@@ -54,6 +54,8 @@ playwright.click(str, str); // $ExpectType Promise<any>
 playwright.click(str, null, { position }); // $ExpectType Promise<any>
 playwright.clickLink(); // $ExpectType Promise<any>
 playwright.forceClick(str); // $ExpectType Promise<any>
+playwright.focus(str); // $ExpectType Promise<any>
+playwright.blur(str); // $ExpectType Promise<any>
 playwright.doubleClick(str); // $ExpectType Promise<any>
 playwright.rightClick(str); // $ExpectType Promise<any>
 playwright.checkOption(str); // $ExpectType Promise<any>

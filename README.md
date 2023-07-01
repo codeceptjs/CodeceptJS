@@ -2,7 +2,7 @@
 
 
 
-[<img src="https://img.shields.io/badge/slack-@codeceptjs-purple.svg?logo=slack">](https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ) [<img src="https://img.shields.io/badge/discourse-codeceptjs-purple">](https://codecept.discourse.group) [![NPM version][npm-image]][npm-url]
+[<img src="https://img.shields.io/badge/slack-@codeceptjs-purple.svg?logo=slack">](https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ) [<img src="https://img.shields.io/badge/discourse-codeceptjs-purple">](https://codecept.discourse.group) [![NPM version][npm-image]][npm-url] [<img src="https://img.shields.io/badge/dockerhub-images-blue.svg?logo=codeceptjs">](https://hub.docker.com/r/codeceptjs/codeceptjs)
 [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md) 
 
 Build Status:
@@ -294,7 +294,7 @@ Thanks all to those who are and will have contributing to this awesome project!
 
 [//]: contributor-faces
 <a href="https://github.com/DavertMik"><img src="https://avatars.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a>
-<a href="https://github.com/PeterNgTr"><img src="https://avatars.githubusercontent.com/u/7845001?v=4" title="PeterNgTr" width="80" height="80"></a>
+<a href="https://github.com/kobenguyent"><img src="https://avatars.githubusercontent.com/u/7845001?v=4" title="kobenguyent" width="80" height="80"></a>
 <a href="https://github.com/Vorobeyko"><img src="https://avatars.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
 <a href="https://github.com/reubenmiller"><img src="https://avatars.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a>
 <a href="https://github.com/Arhell"><img src="https://avatars.githubusercontent.com/u/26163841?v=4" title="Arhell" width="80" height="80"></a>
@@ -308,6 +308,7 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/elukoyanov"><img src="https://avatars.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
 <a href="https://github.com/gkushang"><img src="https://avatars.githubusercontent.com/u/3663389?v=4" title="gkushang" width="80" height="80"></a>
 <a href="https://github.com/tsuemura"><img src="https://avatars.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
+<a href="https://github.com/EgorBodnar"><img src="https://avatars.githubusercontent.com/u/63167966?v=4" title="EgorBodnar" width="80" height="80"></a>
 <a href="https://github.com/VikalpP"><img src="https://avatars.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
 <a href="https://github.com/BorisOsipov"><img src="https://avatars.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
 <a href="https://github.com/elaichenkov"><img src="https://avatars.githubusercontent.com/u/29764053?v=4" title="elaichenkov" width="80" height="80"></a>
@@ -320,7 +321,6 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/denis-sokolov"><img src="https://avatars.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
 <a href="https://github.com/lennym"><img src="https://avatars.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
 <a href="https://github.com/petehouston"><img src="https://avatars.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a>
-<a href="https://github.com/Holorium"><img src="https://avatars.githubusercontent.com/u/10815542?v=4" title="Holorium" width="80" height="80"></a>
 <a href="https://github.com/jancorvus"><img src="https://avatars.githubusercontent.com/u/67001310?v=4" title="jancorvus" width="80" height="80"></a>
 <a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
 

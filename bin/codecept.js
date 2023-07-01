@@ -130,7 +130,7 @@ program.command('run [test]')
   .option('--child <string>', 'option for child processes')
   .action(errorHandler(require('../lib/command/run')));
 
-program.command('run-workers <workers>')
+program.command('run-workers <workers> [selectedRuns...]')
   .description('Executes tests in workers')
   .option('-c, --config [file]', 'configuration file to be used')
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')

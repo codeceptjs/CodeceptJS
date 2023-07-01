@@ -25,6 +25,7 @@ Launch the daemon: `appium`
 
 This helper should be configured in codecept.conf.ts or codecept.conf.js
 
+-   `appiumV2`: set this to true if you want to run tests with Appiumv2. See more how to setup [here][3]
 -   `app`: Application path. Local path or remote URL to an .ipa or .apk file, or a .zip containing one of these. Alias to desiredCapabilities.appPackage
 -   `host`: (default: 'localhost') Appium host
 -   `port`: (default: '4723') Appium port
@@ -98,11 +99,11 @@ helpers: {
 }
 ```
 
-Additional configuration params can be used from [https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md][3]
+Additional configuration params can be used from [https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md][4]
 
 ## Access From Helpers
 
-Receive a Appium client from a custom helper by accessing `browser` property:
+Receive Appium client from a custom helper by accessing `browser` property:
 
 ```js
 let browser = this.helpers['Appium'].browser
@@ -211,9 +212,9 @@ I.checkIfAppIsInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId` **[string][4]** String  ID of bundled app
+-   `bundleId` **[string][5]** String  ID of bundled app
 
-Returns **[Promise][5]&lt;[boolean][6]>** Appium: support only Android
+Returns **[Promise][6]&lt;[boolean][7]>** Appium: support only Android
 
 ### seeAppIsInstalled
 
@@ -225,9 +226,9 @@ I.seeAppIsInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId` **[string][4]** String  ID of bundled app
+-   `bundleId` **[string][5]** String  ID of bundled app
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### seeAppIsNotInstalled
 
@@ -239,9 +240,9 @@ I.seeAppIsNotInstalled("com.example.android.apis");
 
 #### Parameters
 
--   `bundleId` **[string][4]** String  ID of bundled app
+-   `bundleId` **[string][5]** String  ID of bundled app
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### installApp
 
@@ -253,9 +254,9 @@ I.installApp('/path/to/file.apk');
 
 #### Parameters
 
--   `path` **[string][4]** path to apk file
+-   `path` **[string][5]** path to apk file
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### removeApp
 
@@ -269,8 +270,8 @@ Appium: support only Android
 
 #### Parameters
 
--   `appId` **[string][4]** 
--   `bundleId` **[string][4]?** ID of bundle
+-   `appId` **[string][5]** 
+-   `bundleId` **[string][5]?** ID of bundle
 
 ### resetApp
 
@@ -290,9 +291,9 @@ I.seeCurrentActivityIs(".HomeScreenActivity")
 
 #### Parameters
 
--   `currentActivity` **[string][4]** 
+-   `currentActivity` **[string][5]** 
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### seeDeviceIsLocked
 
@@ -302,7 +303,7 @@ Check whether the device is locked.
 I.seeDeviceIsLocked();
 ```
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### seeDeviceIsUnlocked
 
@@ -312,7 +313,7 @@ Check whether the device is not locked.
 I.seeDeviceIsUnlocked();
 ```
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### seeOrientationIs
 
@@ -327,7 +328,7 @@ I.seeOrientationIs('LANDSCAPE')
 
 -   `orientation` **(`"LANDSCAPE"` \| `"PORTRAIT"`)** LANDSCAPE or PORTRAITAppium: support Android and iOS
 
-Returns **[Promise][5]&lt;void>** 
+Returns **[Promise][6]&lt;void>** 
 
 ### setOrientation
 
@@ -348,7 +349,7 @@ Get list of all available contexts
 
     let contexts = await I.grabAllContexts();
 
-Returns **[Promise][5]&lt;[Array][7]&lt;[string][4]>>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;[Array][8]&lt;[string][5]>>** Appium: support Android and iOS
 
 ### grabContext
 
@@ -358,7 +359,7 @@ Retrieve current context
 let context = await I.grabContext();
 ```
 
-Returns **[Promise][5]&lt;([string][4] | null)>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;([string][5] | null)>** Appium: support Android and iOS
 
 ### grabCurrentActivity
 
@@ -368,7 +369,7 @@ Get current device activity.
 let activity = await I.grabCurrentActivity();
 ```
 
-Returns **[Promise][5]&lt;[string][4]>** Appium: support only Android
+Returns **[Promise][6]&lt;[string][5]>** Appium: support only Android
 
 ### grabNetworkConnection
 
@@ -380,7 +381,7 @@ properties to the response object to allow easier assertions.
 let con = await I.grabNetworkConnection();
 ```
 
-Returns **[Promise][5]&lt;{}>** Appium: support only Android
+Returns **[Promise][6]&lt;{}>** Appium: support only Android
 
 ### grabOrientation
 
@@ -390,7 +391,7 @@ Get current orientation.
 let orientation = await I.grabOrientation();
 ```
 
-Returns **[Promise][5]&lt;[string][4]>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;[string][5]>** Appium: support Android and iOS
 
 ### grabSettings
 
@@ -400,7 +401,7 @@ Get all the currently specified settings.
 let settings = await I.grabSettings();
 ```
 
-Returns **[Promise][5]&lt;[string][4]>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;[string][5]>** Appium: support Android and iOS
 
 ### \_switchToContext
 
@@ -425,9 +426,9 @@ I.switchToWeb('WEBVIEW_io.selendroid.testapp');
 
 #### Parameters
 
--   `context` **[string][4]?** 
+-   `context` **[string][5]?** 
 
-Returns **[Promise][5]&lt;void>** 
+Returns **[Promise][6]&lt;void>** 
 
 ### switchToNative
 
@@ -445,7 +446,7 @@ I.switchToNative('SOME_OTHER_CONTEXT');
 
 -   `context` **any?**  (optional, default `null`)
 
-Returns **[Promise][5]&lt;void>** 
+Returns **[Promise][6]&lt;void>** 
 
 ### startActivity
 
@@ -459,10 +460,10 @@ Appium: support only Android
 
 #### Parameters
 
--   `appPackage` **[string][4]** 
--   `appActivity` **[string][4]** 
+-   `appPackage` **[string][5]** 
+-   `appActivity` **[string][5]** 
 
-Returns **[Promise][5]&lt;void>** 
+Returns **[Promise][6]&lt;void>** 
 
 ### setNetworkConnection
 
@@ -480,13 +481,13 @@ I.setNetworkConnection(4) // airplane mode off, wifi off, data on
 I.setNetworkConnection(6) // airplane mode off, wifi on, data on
 ```
 
-See corresponding [webdriverio reference][8].
+See corresponding [webdriverio reference][9].
 
 #### Parameters
 
 -   `value`  
 
-Returns **[Promise][5]&lt;{}>** Appium: support only Android
+Returns **[Promise][6]&lt;{}>** Appium: support only Android
 
 ### setSettings
 
@@ -498,7 +499,7 @@ I.setSettings({cyberdelia: 'open'});
 
 #### Parameters
 
--   `settings` **[object][9]** objectAppium: support Android and iOS
+-   `settings` **[object][10]** objectAppium: support Android and iOS
 
 ### hideDeviceKeyboard
 
@@ -518,12 +519,12 @@ Appium: support Android and iOS
 #### Parameters
 
 -   `strategy` **(`"tapOutside"` \| `"pressKey"`)?** Desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
--   `key` **[string][4]?** Optional key
+-   `key` **[string][5]?** Optional key
 
 ### sendDeviceKeyEvent
 
 Send a key event to the device.
-List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][10]
+List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][11]
 
 ```js
 I.sendDeviceKeyEvent(3);
@@ -531,9 +532,9 @@ I.sendDeviceKeyEvent(3);
 
 #### Parameters
 
--   `keyValue` **[number][11]** Device specific key value
+-   `keyValue` **[number][12]** Device specific key value
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### openNotifications
 
@@ -543,7 +544,7 @@ Open the notifications panel on the device.
 I.openNotifications();
 ```
 
-Returns **[Promise][5]&lt;void>** Appium: support only Android
+Returns **[Promise][6]&lt;void>** Appium: support only Android
 
 ### makeTouchAction
 
@@ -551,7 +552,7 @@ The Touch Action API provides the basis of all gestures that can be
 automated in Appium. At its core is the ability to chain together ad hoc
 individual actions, which will then be applied to an element in the
 application on the device.
-[See complete documentation][12]
+[See complete documentation][13]
 
 ```js
 I.makeTouchAction("~buttonStartWebviewCD", 'tap');
@@ -562,7 +563,7 @@ I.makeTouchAction("~buttonStartWebviewCD", 'tap');
 -   `locator`  
 -   `action`  
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### tap
 
@@ -578,7 +579,7 @@ Shortcut for `makeTouchAction`
 
 -   `locator` **any** 
 
-Returns **[Promise][5]&lt;void>** 
+Returns **[Promise][6]&lt;void>** 
 
 ### swipe
 
@@ -589,16 +590,16 @@ let locator = "#io.selendroid.testapp:id/LinearLayout1";
 I.swipe(locator, 800, 1200, 1000);
 ```
 
-[See complete reference][13]
+[See complete reference][14]
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** 
--   `xoffset` **[number][11]** 
--   `yoffset` **[number][11]** 
--   `speed` **[number][11]** (optional), 1000 by default (optional, default `1000`)
+-   `locator` **([string][5] \| [object][10])** 
+-   `xoffset` **[number][12]** 
+-   `yoffset` **[number][12]** 
+-   `speed` **[number][12]** (optional), 1000 by default (optional, default `1000`)
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### performSwipe
 
@@ -610,8 +611,8 @@ I.performSwipe({ x: 300, y: 100 }, { x: 200, y: 100 });
 
 #### Parameters
 
--   `from` **[object][9]** 
--   `to` **[object][9]** Appium: support Android and iOS
+-   `from` **[object][10]** 
+-   `to` **[object][10]** Appium: support Android and iOS
 
 ### swipeDown
 
@@ -626,11 +627,11 @@ I.swipeDown(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** 
--   `yoffset` **[number][11]?** (optional) (optional, default `1000`)
--   `speed` **[number][11]** (optional), 1000 by default (optional, default `1000`)
+-   `locator` **([string][5] \| [object][10])** 
+-   `yoffset` **[number][12]?** (optional) (optional, default `1000`)
+-   `speed` **[number][12]** (optional), 1000 by default (optional, default `1000`)
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### swipeLeft
 
@@ -645,11 +646,11 @@ I.swipeLeft(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** 
--   `xoffset` **[number][11]?** (optional) (optional, default `1000`)
--   `speed` **[number][11]** (optional), 1000 by default (optional, default `1000`)
+-   `locator` **([string][5] \| [object][10])** 
+-   `xoffset` **[number][12]?** (optional) (optional, default `1000`)
+-   `speed` **[number][12]** (optional), 1000 by default (optional, default `1000`)
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### swipeRight
 
@@ -664,11 +665,11 @@ I.swipeRight(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** 
--   `xoffset` **[number][11]?** (optional) (optional, default `1000`)
--   `speed` **[number][11]** (optional), 1000 by default (optional, default `1000`)
+-   `locator` **([string][5] \| [object][10])** 
+-   `xoffset` **[number][12]?** (optional) (optional, default `1000`)
+-   `speed` **[number][12]** (optional), 1000 by default (optional, default `1000`)
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### swipeUp
 
@@ -683,11 +684,11 @@ I.swipeUp(locator, 1200, 1000); // set offset and speed
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** 
--   `yoffset` **[number][11]?** (optional) (optional, default `1000`)
--   `speed` **[number][11]** (optional), 1000 by default (optional, default `1000`)
+-   `locator` **([string][5] \| [object][10])** 
+-   `yoffset` **[number][12]?** (optional) (optional, default `1000`)
+-   `speed` **[number][12]** (optional), 1000 by default (optional, default `1000`)
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### swipeTo
 
@@ -705,14 +706,14 @@ I.swipeTo(
 
 #### Parameters
 
--   `searchableLocator` **[string][4]** 
--   `scrollLocator` **[string][4]** 
--   `direction` **[string][4]** 
--   `timeout` **[number][11]** 
--   `offset` **[number][11]** 
--   `speed` **[number][11]** 
+-   `searchableLocator` **[string][5]** 
+-   `scrollLocator` **[string][5]** 
+-   `direction` **[string][5]** 
+-   `timeout` **[number][12]** 
+-   `offset` **[number][12]** 
+-   `speed` **[number][12]** 
 
-Returns **[Promise][5]&lt;void>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;void>** Appium: support Android and iOS
 
 ### touchPerform
 
@@ -743,7 +744,7 @@ Appium: support Android and iOS
 
 #### Parameters
 
--   `actions` **[Array][7]** Array of touch actions
+-   `actions` **[Array][8]** Array of touch actions
 
 ### pullFile
 
@@ -757,10 +758,10 @@ I.pullFile('/storage/emulated/0/DCIM/logo.png', output_dir);
 
 #### Parameters
 
--   `path` **[string][4]** 
--   `dest` **[string][4]** 
+-   `path` **[string][5]** 
+-   `dest` **[string][5]** 
 
-Returns **[Promise][5]&lt;[string][4]>** Appium: support Android and iOS
+Returns **[Promise][6]&lt;[string][5]>** Appium: support Android and iOS
 
 ### shakeDevice
 
@@ -770,7 +771,7 @@ Perform a shake action on the device.
 I.shakeDevice();
 ```
 
-Returns **[Promise][5]&lt;void>** Appium: support only iOS
+Returns **[Promise][6]&lt;void>** Appium: support only iOS
 
 ### rotate
 
@@ -780,7 +781,7 @@ Perform a rotation gesture centered on the specified element.
 I.rotate(120, 120)
 ```
 
-See corresponding [webdriverio reference][14].
+See corresponding [webdriverio reference][15].
 
 #### Parameters
 
@@ -791,20 +792,20 @@ See corresponding [webdriverio reference][14].
 -   `rotation`  
 -   `touchCount`  
 
-Returns **[Promise][5]&lt;void>** Appium: support only iOS
+Returns **[Promise][6]&lt;void>** Appium: support only iOS
 
 ### setImmediateValue
 
 Set immediate value in app.
 
-See corresponding [webdriverio reference][15].
+See corresponding [webdriverio reference][16].
 
 #### Parameters
 
 -   `id`  
 -   `value`  
 
-Returns **[Promise][5]&lt;void>** Appium: support only iOS
+Returns **[Promise][6]&lt;void>** Appium: support only iOS
 
 ### simulateTouchId
 
@@ -820,7 +821,7 @@ I.touchId(false); // simulates invalid fingerprint
 
 -   `match`  
 
-Returns **[Promise][5]&lt;void>** Appium: support only iOS
+Returns **[Promise][6]&lt;void>** Appium: support only iOS
 TODO: not tested
 
 ### closeApp
@@ -831,7 +832,7 @@ Close the given application.
 I.closeApp();
 ```
 
-Returns **[Promise][5]&lt;void>** Appium: support only iOS
+Returns **[Promise][6]&lt;void>** Appium: support only iOS
 
 ### appendField
 
@@ -840,12 +841,14 @@ Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
+// typing secret
+I.appendField('password', secret('123456'));
 ```
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** located by label|name|CSS|XPath|strict locator
--   `value` **[string][4]** text value to append.
+-   `field` **([string][5] \| [object][10])** located by label|name|CSS|XPath|strict locator
+-   `value` **[string][5]** text value to append.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### checkOption
@@ -863,8 +866,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** checkbox located by label | name | CSS | XPath | strict locator.
--   `context` **([string][4]? | [object][9])** (optional, `null` by default) element located by CSS | XPath | strict locator.
+-   `field` **([string][5] \| [object][10])** checkbox located by label | name | CSS | XPath | strict locator.
+-   `context` **([string][5]? | [object][10])** (optional, `null` by default) element located by CSS | XPath | strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `null`)
 
 ### click
@@ -893,8 +896,8 @@ I.click({css: 'nav a.login'});
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
--   `context` **([string][4]? | [object][9] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
+-   `locator` **([string][5] \| [object][10])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+-   `context` **([string][5]? | [object][10] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `null`)
 
 ### dontSeeCheckboxIsChecked
@@ -909,7 +912,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** located by label|name|CSS|XPath|strict locator.
+-   `field` **([string][5] \| [object][10])** located by label|name|CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeElement
@@ -922,7 +925,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** located by CSS|XPath|Strict locator.
+-   `locator` **([string][5] \| [object][10])** located by CSS|XPath|Strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInField
@@ -937,8 +940,8 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][4]** value to check.
+-   `field` **([string][5] \| [object][10])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][5]** value to check.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSee
@@ -953,8 +956,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
--   `text` **[string][4]** which is not present.
--   `context` **([string][4] \| [object][9])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
+-   `text` **[string][5]** which is not present.
+-   `context` **([string][5] \| [object][10])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search.
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `null`)
 
 ### fillField
@@ -975,8 +978,8 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** located by label|name|CSS|XPath|strict locator.
--   `value` **([string][4] \| [object][9])** text value to fill.
+-   `field` **([string][5] \| [object][10])** located by label|name|CSS|XPath|strict locator.
+-   `value` **([string][5] \| [object][10])** text value to fill.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### grabTextFromAll
@@ -990,9 +993,9 @@ let pins = await I.grabTextFromAll('#pin li');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][5]&lt;[Array][7]&lt;[string][4]>>** attribute value
+Returns **[Promise][6]&lt;[Array][8]&lt;[string][5]>>** attribute value
 
 ### grabTextFrom
 
@@ -1007,9 +1010,9 @@ If multiple elements found returns first element.
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][5]&lt;[string][4]>** attribute value
+Returns **[Promise][6]&lt;[string][5]>** attribute value
 
 ### grabNumberOfVisibleElements
 
@@ -1022,9 +1025,9 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** located by CSS|XPath|strict locator.
+-   `locator` **([string][5] \| [object][10])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][5]&lt;[number][11]>** number of visible elements
+Returns **[Promise][6]&lt;[number][12]>** number of visible elements
 
 ### grabAttributeFrom
 
@@ -1040,10 +1043,10 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
--   `attr` **[string][4]** attribute name.
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][5]** attribute name.
 
-Returns **[Promise][5]&lt;[string][4]>** attribute value
+Returns **[Promise][6]&lt;[string][5]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -1057,10 +1060,10 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
--   `attr` **[string][4]** attribute name.
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
+-   `attr` **[string][5]** attribute name.
 
-Returns **[Promise][5]&lt;[Array][7]&lt;[string][4]>>** attribute value
+Returns **[Promise][6]&lt;[Array][8]&lt;[string][5]>>** attribute value
 
 ### grabValueFromAll
 
@@ -1073,9 +1076,9 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** field located by label|name|CSS|XPath|strict locator.
+-   `locator` **([string][5] \| [object][10])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][5]&lt;[Array][7]&lt;[string][4]>>** attribute value
+Returns **[Promise][6]&lt;[Array][8]&lt;[string][5]>>** attribute value
 
 ### grabValueFrom
 
@@ -1089,9 +1092,9 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** field located by label|name|CSS|XPath|strict locator.
+-   `locator` **([string][5] \| [object][10])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][5]&lt;[string][4]>** attribute value
+Returns **[Promise][6]&lt;[string][5]>** attribute value
 
 ### saveScreenshot
 
@@ -1104,9 +1107,9 @@ I.saveScreenshot('debug.png');
 
 #### Parameters
 
--   `fileName` **[string][4]** file name to save.
+-   `fileName` **[string][5]** file name to save.
 
-Returns **[Promise][5]&lt;void>** 
+Returns **[Promise][6]&lt;void>** 
 
 ### scrollIntoView
 
@@ -1120,8 +1123,8 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** located by CSS|XPath|strict locator.
--   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][16].
+-   `locator` **([string][5] \| [object][10])** located by CSS|XPath|strict locator.
+-   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][17].
     ⚠️ returns a _promise_ which is synchronized internally by recorderSupported only for web testing
 
 ### seeCheckboxIsChecked
@@ -1136,7 +1139,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** located by label|name|CSS|XPath|strict locator.
+-   `field` **([string][5] \| [object][10])** located by label|name|CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeElement
@@ -1150,7 +1153,7 @@ I.seeElement('#modal');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** located by CSS|XPath|strict locator.
+-   `locator` **([string][5] \| [object][10])** located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
@@ -1167,8 +1170,8 @@ I.seeInField('#searchform input','Search');
 
 #### Parameters
 
--   `field` **([string][4] \| [object][9])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][4]** value to check.
+-   `field` **([string][5] \| [object][10])** located by label|name|CSS|XPath|strict locator.
+-   `value` **[string][5]** value to check.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### see
@@ -1184,8 +1187,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
--   `text` **[string][4]** expected on page.
--   `context` **([string][4]? | [object][9])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
+-   `text` **[string][5]** expected on page.
+-   `context` **([string][5]? | [object][10])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text.
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `null`)
 
 ### selectOption
@@ -1211,8 +1214,8 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
--   `select` **([string][4] \| [object][9])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] \| [Array][7]&lt;any>)** visible text or value of option.
+-   `select` **([string][5] \| [object][10])** field located by label|name|CSS|XPath|strict locator.
+-   `option` **([string][5] \| [Array][8]&lt;any>)** visible text or value of option.
     ⚠️ returns a _promise_ which is synchronized internally by recorderSupported only for web testing
 
 ### waitForElement
@@ -1227,8 +1230,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
--   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][12]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `null`)
 
 ### waitForVisible
@@ -1242,8 +1245,8 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
--   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `1`)
 
 ### waitForInvisible
@@ -1257,8 +1260,8 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
--   `locator` **([string][4] \| [object][9])** element located by CSS|XPath|strict locator.
--   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
+-   `locator` **([string][5] \| [object][10])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `1`)
 
 ### waitForText
@@ -1274,39 +1277,41 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
--   `text` **[string][4]** to wait for.
--   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
--   `context` **([string][4] \| [object][9])?** (optional) element located by CSS|XPath|strict locator.
+-   `text` **[string][5]** to wait for.
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
+-   `context` **([string][5] \| [object][10])?** (optional) element located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder (optional, default `null`)
 
 [1]: http://codecept.io/helpers/WebDriver/
 
 [2]: http://appium.io/
 
-[3]: https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
+[3]: https://codecept.io/mobile/#setting-up
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[4]: https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[8]: http://webdriver.io/api/mobile/setNetworkConnection.html
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[9]: http://webdriver.io/api/mobile/setNetworkConnection.html
 
-[10]: https://developer.android.com/reference/android/view/KeyEvent.html
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[11]: https://developer.android.com/reference/android/view/KeyEvent.html
 
-[12]: http://webdriver.io/api/mobile/touchAction.html
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[13]: http://webdriver.io/api/mobile/swipe.html
+[13]: http://webdriver.io/api/mobile/touchAction.html
 
-[14]: http://webdriver.io/api/mobile/rotate.html
+[14]: http://webdriver.io/api/mobile/swipe.html
 
-[15]: http://webdriver.io/api/mobile/setImmediateValue.html
+[15]: http://webdriver.io/api/mobile/rotate.html
 
-[16]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[16]: http://webdriver.io/api/mobile/setImmediateValue.html
+
+[17]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView

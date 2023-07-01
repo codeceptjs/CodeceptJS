@@ -1,5 +1,5 @@
 # Download Playwright and its dependencies
-FROM mcr.microsoft.com/playwright:bionic
+FROM mcr.microsoft.com/playwright:focal
 
 # Add our user and group first to make sure their IDs get assigned consistently,
 # regardless of whatever dependencies get added.

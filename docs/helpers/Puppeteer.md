@@ -56,6 +56,7 @@ Type: [object][4]
 -   `manualStart` **[boolean][17]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
 -   `chrome` **[object][4]?** pass additional [Puppeteer run options][22].
+-   `highlightElement` **[boolean][17]?** highlight the interacting elements
 
 
 
@@ -296,6 +297,8 @@ Field is located by name, label, CSS or XPath
 
 ```js
 I.appendField('#myTextField', 'appended');
+// typing secret
+I.appendField('password', secret('123456'));
 ```
 
 #### Parameters
@@ -1786,6 +1789,9 @@ I.type('4141555311111111', 100);
 
 // passing in an array
 I.type(['T', 'E', 'X', 'T']);
+
+// passing a secret
+I.type(secret('123456'));
 ```
 
 #### Parameters

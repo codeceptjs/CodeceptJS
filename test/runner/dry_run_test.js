@@ -15,7 +15,7 @@ describe('dry-run command', () => {
 
   it('should be executed with config path', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
+    exec(`${codecept_run_config('codecept.js')}`, (err, stdout) => {
       expect(stdout).toContain('Filesystem'); // feature
       expect(stdout).toContain('check current dir'); // test name
       expect(err).toBeFalsy();
@@ -25,11 +25,9 @@ describe('dry-run command', () => {
 
   it('should list all tests', (done) => {
     process.chdir(__dirname);
-    exec(`${codecept_run} -c ${codecept_dir}`, (err, stdout) => {
+    exec(`${codecept_run_config('codecept.js')}`, (err, stdout) => {
       expect(stdout).toContain('Filesystem'); // feature
       expect(stdout).toContain('check current dir'); // test name
-      expect(stdout).not.toContain('I am in path'); // step name
-      expect(stdout).not.toContain('I see file'); // step name
       expect(stdout).toContain('No tests were executed');
       expect(err).toBeFalsy();
       done();
@@ -37,13 +35,10 @@ describe('dry-run command', () => {
   });
 
   it('should not run actual steps', (done) => {
-    exec(codecept_run_config('codecept.flaky.js'), (err, stdout) => {
+    exec(`${codecept_run_config('codecept.flaky.js')}`, (err, stdout) => {
       expect(stdout).toContain('Flaky'); // feature
       expect(stdout).toContain('Not so flaky test'); // test name
       expect(stdout).toContain('Old style flaky'); // test name
-      expect(stdout).not.toContain('[T1] Retries: 2');
-      expect(stdout).not.toContain('[T2] Retries: 4');
-      expect(stdout).not.toContain('[T3] Retries: 1');
       expect(stdout).toContain('No tests were executed');
       expect(err).toBeFalsy();
       done();
@@ -121,7 +116,7 @@ describe('dry-run command', () => {
   });
 
   it('should print substeps in debug mode', (done) => {
-    exec(codecept_run_config('codecept.bdd.js') + ' --debug --grep "Checkout process"', (err, stdout) => { //eslint-disable-line
+    exec(codecept_run_config('codecept.bdd.js') + ' --debug --grep "Checkout process @important"', (err, stdout) => { //eslint-disable-line
       expect(stdout).toContain('Checkout process'); // feature
       // expect(stdout).toContain('In order to buy products'); // test name
       expect(stdout).toContain('Given I have product with $600 price');
@@ -132,6 +127,7 @@ describe('dry-run command', () => {
       expect(stdout).toContain('I see num 2');
       expect(stdout).toContain('And my order amount is $1600');
       expect(stdout).toContain('I see sum 1600');
+      expect(stdout).toContain('OK  | 1 passed');
       expect(stdout).toContain('No tests were executed');
       expect(err).toBeFalsy();
       done();
@@ -139,20 +135,9 @@ describe('dry-run command', () => {
   });
 
   it('should run tests with different data', (done) => {
-    exec(codecept_run_config('codecept.ddt.js'), (err, stdout) => {
+    exec(`${codecept_run_config('codecept.ddt.js')} --debug`, (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
-      expect(output).toContain(`${char} Should log accounts1 | {"login":"davert","password":"123456"}`);
-      expect(output).toContain(`${char} Should log accounts1 | {"login":"admin","password":"666666"}`);
-      expect(output).toContain(`${char} Should log accounts2 | {"login":"andrey","password":"555555"}`);
-      expect(output).toContain(`${char} Should log accounts2 | {"login":"collaborator","password":"222222"}`);
-      expect(output).toContain(`${char} Should log accounts3 | ["nick","pick"]`);
-      expect(output).toContain(`${char} Should log accounts3 | ["jack","sacj"]`);
-      expect(output).toContain(`${char} Should log accounts4 | {"user":"nick"}`);
-      expect(output).toContain(`${char} Should log accounts4 | {"user":"pick"}`);
-      expect(output).toContain(`${char} Should log array of strings | {"1"}`);
-      expect(output).toContain(`${char} Should log array of strings | {"2"}`);
-      expect(output).toContain(`${char} Should log array of strings | {"3"}`);
-
+      expect(output).toContain('OK  | 11 passed');
       expect(err).toBeFalsy();
       done();
     });

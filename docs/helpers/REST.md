@@ -41,7 +41,8 @@ Type: [object][4]
       endpoint: 'http://site.com/api',
       prettyPrintJson: true,
       onRequest: (request) => {
-      request.headers.auth = '123';
+        request.headers.auth = '123';
+      }
     }
   }
 }
@@ -114,7 +115,7 @@ I.sendDeleteRequest('/api/users/1');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
 
 Returns **[Promise][2]&lt;any>** response
 
@@ -129,7 +130,7 @@ I.sendGetRequest('/api/users.json');
 #### Parameters
 
 -   `url` **any** 
--   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
 
 Returns **[Promise][2]&lt;any>** response
 
@@ -166,8 +167,8 @@ I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
 #### Parameters
 
 -   `url` **any** 
--   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+-   `payload` **any** the payload to be sent. By default, it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
 
 Returns **[Promise][2]&lt;any>** response
 

@@ -207,16 +207,16 @@ Use pre-initialized joi instance by passing function callback:
 
 I.seeResponseMatchesJsonSchema(joi => {
   return joi.object({
-    name: joi.string();
-    id: joi.number();
+    name: joi.string(),
+    id: joi.number()
   })
 });
 
 // or pass a valid schema
-const joi = require('joi);
+const joi = require('joi');
 
 I.seeResponseMatchesJsonSchema(joi.object({
-  name: joi.string();
+  name: joi.string(),
   id: joi.number();
 });
 ```
