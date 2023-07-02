@@ -121,8 +121,8 @@ describe('HTML module', () => {
       html = fs.readFileSync(path.join(__dirname, '../data/testomat.html'), 'utf8');
       // console.log(html);
       const result = removeNonInteractiveElements(html, opts);
-
-      console.log(minifyHtml(result));
+      result.should.include('<svg class="md-icon md-icon-check-bold');
+      // console.log(minifyHtml(result));
     });
   });
 
