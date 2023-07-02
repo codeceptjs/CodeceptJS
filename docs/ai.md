@@ -5,9 +5,10 @@ title: Testing with AI 🪄
 
 CodeceptJS is the first open-source test automation framework that incorporates AI features to improve the testing experience. CodeceptJS uses OpenAI GPT to auto-heal failing tests, assist in writing tests, and more...
 
+Think of it as your testing co-pilot built into the testing framework
+
 > 🪄 **AI features for testing are experimental**. Currently AI features enabled only for web based testing with Playwright, WebDriver, etc. Those features will be improved based on user's experience.
 
-Think of it as your testing co-pilot built into the testing framework
 
 ## How AI Improves Automated Testing
 
@@ -17,9 +18,9 @@ CodeceptJS uses OpenAI API to send the prompt and share the HTML context of a pa
 
 CodeceptJS AI can do the following:
 
-* 🏋️‍♀️ **assist writing tests** in `pause()` or interative shell mode
+* 🏋️‍♀️ **assist writing tests** in `pause()` or interactive shell mode
 * 🚑 **self-heal failing tests** (can be used on CI)
-* 💬 send arbitrary prompts to OpenAI from any tested page including its HTML contents
+* 💬 send arbitrary prompts to GPT from any tested page attaching its HTML contents
 
 ### How it works
 
@@ -81,7 +82,7 @@ npx codeceptjs run --debug
 When pause mode started you can ask GPT to fill in the fields on this page. Use natural language to describe your request, and provide enough details that AI could operate with it. It is important to include at least a space char in your input, otherwise, CodeceptJS will consider the input to be JavaScript code.
 
 ```
-
+ I.fill checkout form with valid values without submitting it
 ```
 
 GPT will generate code and data and CodeceptJS will try to execute its code. If it succeeds, the code will be saved to history and you will be able to copy it to your test.
@@ -117,6 +118,7 @@ and run tests in AI mode with `OPENAI_API_KEY` provided:
 ```
 OPENAI_API_KEY=sk-******** npx codeceptjs run
 ```
+
 
 ### Arbitrary GPT Prompts
 
@@ -226,3 +228,10 @@ For instance, if you use `data-qa` attributes to specify locators and you want t
 }
 ```
 
+## Debugging
+
+To debug AI features run tests with `DEBUG="codeceptjs:ai"` flag. This will print all prompts and responses from OpenAI
+
+```
+DEBUG="codeceptjs:ai" OPENAI_API_KEY=sk-******** npx codeceptjs run
+```
