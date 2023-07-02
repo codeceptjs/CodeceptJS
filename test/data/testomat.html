@@ -1,0 +1,1854 @@
+<html lang="en" class="light"><head>
+  <meta charset="utf-8">
+
+  <!-- Uncomment to make IE8 render like IE7 -->
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=7" /> -->
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="9HwoCtbh7P3qzMGCF23RNNuo2qRagbtQACHT214lW87G9evsAX7l5V9OMu8IKUwfks/rMuHfQx2yq2RO76elbQ==">
+  <title>Tests - Testomat.io</title>
+<link rel="icon" type="image/x-icon" href="/images/logo/icons/16x16.png">
+<meta property="og:image" content="/images/logo/icons/16x16.png">
+<meta name="image" content="/images/logo/icons/16x16.png">
+
+<!-- Compressed Foundation JavaScript -->
+
+<link href="/images/logo/icons/128x128.svg" rel="apple-touch-icon" sizes="152x152">
+<link href="/images/logo/icons/128x128.svg" rel="apple-touch-icon" sizes="167x167">
+<link href="/images/logo/icons/128x128.svg" rel="apple-touch-icon" sizes="180x180">
+<link href="/images/logo/icons/128x128.svg" rel="icon" sizes="192x192">
+<link href="/images/logo/icons/128x128.png" rel="icon" sizes="128x128">
+
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+
+
+  <link integrity="" rel="stylesheet" href="https://frontend.testomat.io/assets/vendor.css">
+  <link integrity="" rel="stylesheet" href="https://frontend.testomat.io/assets/frontend.css">
+
+  <style>
+@keyframes spin{to{transform:rotate(360deg)}}.loader{animation:spin 2s infinite linear;zoom:.5;border:solid 1.5vmin transparent;border-radius:50%;border-color:#3730a3 #3730a3 transparent transparent;box-sizing:border-box;height:10vmin;left:calc(50% - 10vmin);position:fixed;top:calc(50% - 10vmin);width:10vmin;z-index:1}
+</style>
+
+
+  
+</head>
+
+<body class="ember-application hide-scrollbar" data-new-gr-c-s-check-loaded="14.1113.0" data-gr-ext-installed="">
+
+  
+
+        <script>
+      window.testomatioUser = JSON.parse('{\"data\":{\"id\":\"3\",\"type\":\"user\",\"attributes\":{\"email\":\"davert.ua@gmail.com\",\"name\":\"DavertMik\",\"joined-at\":\"2020-05-23T16:12:01.000Z\",\"logged-at\":\"2023-04-05T09:40:22.000Z\",\"is-registered\":true,\"timezone\":\"Europe/Kiev\",\"invited-by\":null,\"manager\":false,\"is-owner\":false,\"trial\":null,\"is-active\":true,\"is-readonly\":false,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcmdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--2947513f699353911c785a5efcb8af210a0b83b9/user_avatar_3.png\"}}}');
+    </script>
+
+    <script>
+      window.testomatioProject = JSON.parse('{\"data\":{\"id\":\"codeceptjs-cucumber\",\"type\":\"project\",\"attributes\":{\"title\":\"codeceptjs-cucumber\",\"framework\":\"codeceptjs\",\"lang\":\"gherkin\",\"github\":null,\"url\":\"\",\"tests-count\":10,\"created-at\":\"2021-08-14T12:58:00.293Z\",\"demo\":false,\"has-living-docs\":false,\"record-url\":\"https://beta.testomat.io/api/record\",\"api-key\":\"3qp2510b6zur\",\"avatar\":null,\"jira-count\":null,\"status\":\"active\",\"testomatio-url\":\"https://beta.testomat.io/projects/codeceptjs-cucumber\",\"branch\":null,\"jira\":null,\"company\":\"Testomat.io\",\"company-slug\":\"tetiana-khomenko-s-company\",\"subscription\":\"Enterprise\",\"features\":[\"archive\",\"clone\",\"readonly\",\"jira\",\"restore\",\"api\",\"slack_notifications\",\"jira_notifications\",\"msteams_notifications\",\"public_reports\",\"living_documentation\",\"rerun\",\"labels\",\"runs_archive\",\"analytics\",\"branches\"],\"import-progress\":null,\"environments\":[\"Windows\",\"MacOS\",\"Linux\",\"Android\",\"iOS\",\"Chrome\",\"Firefox\",\"Safari\"],\"ci-settings\":null,\"issue-settings\":null,\"runs-settings\":null,\"manual-tag-settings\":null,\"run-replies\":{\"passed\":[\"Expected behaviour\",\"Management decision\",\"Minor issue\"],\"failed\":[\"Expected error\",\"Known issue\",\"Dependent defect\"],\"skipped\":[\"Blocked\",\"Obsolete\",\"Missing implementation\",\"Unexecuted\",\"Not ready\",\"No time\"]},\"versions-max-days\":90,\"artifacts-settings\":{\"presign\":false},\"living-doc-url\":\"https://beta.testomat.io/docs/projects/codeceptjs-cucumber\"},\"relationships\":{\"templates\":{\"data\":[{\"id\":\"144832\",\"type\":\"template\"},{\"id\":\"144833\",\"type\":\"template\"}]},\"users\":{\"data\":[{\"id\":\"40\",\"type\":\"user\"},{\"id\":\"84\",\"type\":\"user\"},{\"id\":\"100\",\"type\":\"user\"},{\"id\":\"141\",\"type\":\"user\"},{\"id\":\"145\",\"type\":\"user\"},{\"id\":\"260\",\"type\":\"user\"},{\"id\":\"266\",\"type\":\"user\"},{\"id\":\"274\",\"type\":\"user\"},{\"id\":\"2\",\"type\":\"user\"},{\"id\":\"3\",\"type\":\"user\"},{\"id\":\"35\",\"type\":\"user\"},{\"id\":\"242\",\"type\":\"user\"},{\"id\":\"264\",\"type\":\"user\"},{\"id\":\"239\",\"type\":\"user\"},{\"id\":\"275\",\"type\":\"user\"}]}}},\"included\":[{\"id\":\"144832\",\"type\":\"template\",\"attributes\":{\"title\":\"Suite Template\",\"kind\":\"suite\",\"body\":\"\",\"framework\":null,\"lang\":\"gherkin\"}},{\"id\":\"144833\",\"type\":\"template\",\"attributes\":{\"title\":\"Test Template\",\"kind\":\"test\",\"body\":\"Scenario: {{ title }}\",\"framework\":null,\"lang\":\"gherkin\"}},{\"id\":\"2\",\"type\":\"user\",\"attributes\":{\"email\":\"mykhailo.poliarush@sdclabs.com\",\"name\":\"Mykhailo Poliarush\",\"joined-at\":\"2020-05-23T16:11:52.000Z\",\"logged-at\":\"2023-06-30T17:35:51.000Z\",\"is-registered\":true,\"timezone\":\"Europe/Warsaw\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbDhCIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--e2e75c6cd2756d1d4b7cb97f95774b786fb99ba0/mykhailo_poliarush_500x500-8%20green-circle.png\"}},{\"id\":\"3\",\"type\":\"user\",\"attributes\":{\"email\":\"davert.ua@gmail.com\",\"name\":\"DavertMik\",\"joined-at\":\"2020-05-23T16:12:01.000Z\",\"logged-at\":\"2023-04-05T09:40:22.000Z\",\"is-registered\":true,\"timezone\":\"Europe/Kiev\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcmdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--2947513f699353911c785a5efcb8af210a0b83b9/user_avatar_3.png\"}},{\"id\":\"35\",\"type\":\"user\",\"attributes\":{\"email\":\"khomenko.tetiana@gmail.com\",\"name\":\"Tatti\",\"joined-at\":\"2020-09-02T10:42:01.550Z\",\"logged-at\":\"2023-06-29T18:48:01.000Z\",\"is-registered\":true,\"timezone\":\"Europe/Kiev\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbUFGIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4837f9ebeebc15b56929f20a431f45c9dc5be5c4/unnamed.png\"}},{\"id\":\"40\",\"type\":\"user\",\"attributes\":{\"email\":\"k4709768@gmail.com\",\"name\":\"Kira Beta\",\"joined-at\":\"2020-09-23T20:03:21.397Z\",\"logged-at\":\"2023-06-23T05:22:33.000Z\",\"is-registered\":true,\"timezone\":\"America/Guatemala\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbklCIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--67c56356d6093279fe43540e4d66678d201c2cd5/4ec4f2d69c9bc6b152abcb420252c3a8.jpg\"}},{\"id\":\"84\",\"type\":\"user\",\"attributes\":{\"email\":\"yapet69798@godpeed.com\",\"name\":\"yapet\",\"joined-at\":\"2021-07-17T05:50:45.560Z\",\"logged-at\":\"2022-08-23T16:20:08.000Z\",\"is-registered\":true,\"timezone\":\"Atlantic/Azores\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcUFCIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--b7eb649cbf961e42f24566cbee0e9ebef3031d73/cat.png\"}},{\"id\":\"100\",\"type\":\"user\",\"attributes\":{\"email\":\"ola.sheremeta@gmail.com\",\"name\":\"Olga Sheremeta\",\"joined-at\":\"2021-08-02T13:35:14.995Z\",\"logged-at\":\"2023-05-04T14:47:37.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdW9CIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--34efffea1bd1517ff1ec3303a6de100cf109e62a/user_avatar_100.png\"}},{\"id\":\"141\",\"type\":\"user\",\"attributes\":{\"email\":\"gehov58114@tinilalo.com\",\"name\":\"gehov\",\"joined-at\":\"2021-09-17T18:31:50.000Z\",\"logged-at\":\"2022-03-24T20:22:20.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbk1DIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--03d330b6dc63647684242b1e89fe83d5b3ad7b65/user_avatar_141.png\"}},{\"id\":\"145\",\"type\":\"user\",\"attributes\":{\"email\":\"yasaj97287@u461.com\",\"name\":\"yasaj97287@u461.com\",\"joined-at\":\"2021-09-20T21:27:36.729Z\",\"logged-at\":\"2022-04-29T19:22:22.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbndDIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--209ce0d560a1ca6d95e8f6f69a7c0cb5a2b643db/user_avatar_145.png\"}},{\"id\":\"239\",\"type\":\"user\",\"attributes\":{\"email\":\"lpkldemi@gmail.com\",\"name\":\"Volodymyr Kalistratov\",\"joined-at\":\"2021-11-14T10:27:43.196Z\",\"logged-at\":\"2021-11-15T13:23:00.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbVVEIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--87513a0970eed339bd4855e58986a84bd8f9dec8/user_avatar_239.png\"}},{\"id\":\"242\",\"type\":\"user\",\"attributes\":{\"email\":\"crypedged1979@einrot.com\",\"name\":\"Cryped Ged\",\"joined-at\":\"2021-11-24T09:09:57.830Z\",\"logged-at\":\"2023-01-25T11:21:14.000Z\",\"is-registered\":true,\"timezone\":\"Asia/Baku\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbklEIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--e91a8ade55ae6334fa330152b42ed873cef8eebd/user_avatar_242.png\"}},{\"id\":\"260\",\"type\":\"user\",\"attributes\":{\"email\":\"jonnymalkow@tutanota.com\",\"name\":\"jonnymalkow\",\"joined-at\":\"2022-01-12T14:16:47.110Z\",\"logged-at\":\"2022-01-21T11:37:43.000Z\",\"is-registered\":true,\"timezone\":\"America/Caracas\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdnNFIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--37795a6f8d5f72ac6cb8a9226a20bbf54ff18f50/user_avatar_260.png\"}},{\"id\":\"264\",\"type\":\"user\",\"attributes\":{\"email\":\"vmars2323@gmail.com\",\"name\":\"littlefrontender\",\"joined-at\":\"2022-01-18T17:25:49.000Z\",\"logged-at\":\"2023-06-30T14:28:18.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBc3NLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--b8f65a4221ffe3bd8cbb6c44ee520fffd8ea416c/user_avatar_264.png\"}},{\"id\":\"266\",\"type\":\"user\",\"attributes\":{\"email\":\"mariatarasova@aol.com\",\"name\":\"mariatarasova2\",\"joined-at\":\"2022-01-19T14:31:14.393Z\",\"logged-at\":\"2022-12-13T20:25:48.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbklFIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5c49a1b46a94cbe901636335187be501f740bfe9/1280px-VAN_CAT.png\"}},{\"id\":\"274\",\"type\":\"user\",\"attributes\":{\"email\":\"porece@dayrep.com\",\"name\":\"Porece Fooo\",\"joined-at\":\"2022-02-16T14:03:14.023Z\",\"logged-at\":\"2022-02-16T14:03:24.000Z\",\"is-registered\":true,\"timezone\":\"Pacific/Apia\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdVFFIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--6c2bca500bbda173541560c22fbbfa92709a2bbe/1280px-VAN_CAT.png\"}},{\"id\":\"275\",\"type\":\"user\",\"attributes\":{\"email\":\"swex99@gmail.com\",\"name\":\"swex99\",\"joined-at\":\"2022-02-16T22:03:32.500Z\",\"logged-at\":\"2022-08-28T09:33:05.000Z\",\"is-registered\":true,\"timezone\":\"Etc/UTC\",\"invited-by\":null,\"manager\":false,\"is-owner\":null,\"trial\":null,\"is-active\":null,\"is-readonly\":null,\"avatar\":\"https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdThFIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ec3e0c3f3b7e9b6ea7ff6852aa69890811ce6e65/1620048718_27-oir_mobi-p-sobaka-s-visunutim-yazikom-zhivotnie-krasi-27.jpeg\"}}]}');
+    </script>
+
+
+    <script type="text/javascript">
+      window.testomatioHost = 'https://beta.testomat.io'
+    </script>
+
+    <div style="position: fixed; bottom: 0; right: 0; padding: 5px">
+      <b>STAGING SERVER</b>
+    </div>
+
+  <script src="https://frontend.testomat.io/assets/vendor.js"></script>
+  <script src="https://frontend.testomat.io/assets/frontend.js"></script>
+
+      <iframe src="/ember-monaco/frame.html" style="visibility: hidden; position: absolute; top: -1000px;"></iframe>
+
+
+
+
+<div id="modal-overlays"></div><div class="page-progress">
+<div class="bar" data-test-id="data-test-page-progress-bar" style="transition: opacity 400ms linear; width: 100%; opacity: 0; background: #6366F1">
+</div>
+</div>
+
+
+
+<div class="main-app">
+<nav>
+<div class="mainnav-menu mainnav-menu-not-expanded">
+  <div class="mainnav-menu-body">
+    <ul>
+      <li>
+        <div class="flex">
+          <button class="hamburger hamburger--arrowalt outline-none focus:outline-none
+              " style="line-height: 0; margin-top: 3px; margin-bottom: 3px;" type="button">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
+          </button>
+
+<!---->          </div>
+      </li>
+
+      <li>
+        <a id="ember4" class="ember-view active flex items-center" href="/projects/codeceptjs-cucumber/" aria-describedby="ember5-popper">
+          <svg class="md-icon md-icon-check-bold " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"></path>
+</svg>
+
+            
+
+<!---->
+          
+<!---->          </a>
+      </li>
+
+      <li>
+        <a id="ember6" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/runs" aria-describedby="ember7-popper">
+          <svg class="md-icon md-icon-play-circle-outline " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M10,16.5L16,12L10,7.5V16.5Z"></path>
+</svg>
+
+            
+
+<!---->
+          
+<!---->          </a>
+      </li>
+
+      <li>
+        <a id="ember8" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/plans" aria-describedby="ember9-popper">
+          <svg class="md-icon md-icon-playlist-check " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,10H2V12H14V10M14,6H2V8H14V6M2,16H10V14H2V16M21.5,11.5L23,13L16,20L11.5,15.5L13,14L16,17L21.5,11.5Z"></path>
+</svg>
+
+            
+
+<!---->
+          
+<!---->          </a>
+      </li>
+
+      <li>
+        <a id="ember10" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/steps" aria-describedby="ember11-popper">
+          <svg class="md-icon md-icon-stairs " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M15,5V9H11V13H7V17H3V20H10V16H14V12H18V8H22V5H15Z"></path>
+</svg>
+
+            
+
+<!---->
+          
+<!---->          </a>
+      </li>
+
+        
+        <li>
+          <a id="ember12" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/pulse" aria-describedby="ember13-popper">
+            <svg class="md-icon md-icon-pulse " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M3,13H5.79L10.1,4.79L11.28,13.75L14.5,9.66L17.83,13H21V15H17L14.67,12.67L9.92,18.73L8.94,11.31L7,15H3V13Z"></path>
+</svg>
+
+              
+
+<!---->
+            
+<!---->            </a>
+        </li>
+      
+
+
+        
+        <li>
+          <a id="ember14" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/imports" aria-describedby="ember15-popper">
+            <svg class="md-icon md-icon-application-import " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M1 12H10.8L8.3 9.5L9.7 8.1L14.6 13L9.7 17.9L8.3 16.5L10.8 14H1V12M21 2H3C1.9 2 1 2.9 1 4V10.1H3V6H21V20H3V16H1V20C1 21.1 1.9 22 3 22H21C22.1 22 23 21.1 23 20V4C23 2.9 22.1 2 21 2"></path>
+</svg>
+
+              
+
+<!---->
+<!---->            </a>
+        </li>
+      
+
+
+      <li>
+        <a id="ember16" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/analytics" aria-describedby="ember17-popper">
+          <svg class="md-icon md-icon-chart-box-outline " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M9 17H7V10H9V17M13 17H11V7H13V17M17 17H15V13H17V17M19 19H5V5H19V19.1M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z"></path>
+</svg>
+
+            
+
+<!---->
+          
+<!---->          </a>
+      </li>
+
+        
+        <li>
+          <a id="ember18" class="ember-view flex items-center" href="/projects/codeceptjs-cucumber/branches" aria-describedby="ember19-popper">
+            <svg class="md-icon md-icon-source-fork " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M6,2A3,3 0 0,1 9,5C9,6.28 8.19,7.38 7.06,7.81C7.15,8.27 7.39,8.83 8,9.63C9,10.92 11,12.83 12,14.17C13,12.83 15,10.92 16,9.63C16.61,8.83 16.85,8.27 16.94,7.81C15.81,7.38 15,6.28 15,5A3,3 0 0,1 18,2A3,3 0 0,1 21,5C21,6.32 20.14,7.45 18.95,7.85C18.87,8.37 18.64,9 18,9.83C17,11.17 15,13.08 14,14.38C13.39,15.17 13.15,15.73 13.06,16.19C14.19,16.62 15,17.72 15,19A3,3 0 0,1 12,22A3,3 0 0,1 9,19C9,17.72 9.81,16.62 10.94,16.19C10.85,15.73 10.61,15.17 10,14.38C9,13.08 7,11.17 6,9.83C5.36,9 5.13,8.37 5.05,7.85C3.86,7.45 3,6.32 3,5A3,3 0 0,1 6,2M6,4A1,1 0 0,0 5,5A1,1 0 0,0 6,6A1,1 0 0,0 7,5A1,1 0 0,0 6,4M18,4A1,1 0 0,0 17,5A1,1 0 0,0 18,6A1,1 0 0,0 19,5A1,1 0 0,0 18,4M12,18A1,1 0 0,0 11,19A1,1 0 0,0 12,20A1,1 0 0,0 13,19A1,1 0 0,0 12,18Z"></path>
+</svg>
+
+              
+
+<!---->
+            
+<!---->            </a>
+        </li>
+      
+
+
+        
+        <li>
+          <a href="#" class=" flex items-center outline-none focus:outline-none" aria-describedby="ember20-popper">
+            <svg class="md-icon md-icon-cog " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"></path>
+</svg>
+
+              
+
+<!---->
+<!---->            </a>
+        </li>
+      
+
+    </ul>
+  </div>
+
+  <div class="mainnav-menu-footer">
+    <ul>
+      <li>
+        <a href="#" class=" flex items-center outline-none focus:outline-none" aria-describedby="ember21-popper">
+          <svg class="md-icon md-icon-help-circle-outline " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z"></path>
+</svg>
+
+            
+
+<!---->
+<!---->          </a>
+      </li>
+
+      <li>
+        <a href="/" class="flex items-center" aria-describedby="ember22-popper">
+          <svg class="md-icon md-icon-folder-multiple " width="30" height="30" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M22,4H14L12,2H6A2,2 0 0,0 4,4V16A2,2 0 0,0 6,18H22A2,2 0 0,0 24,16V6A2,2 0 0,0 22,4M2,6H0V11H0V20A2,2 0 0,0 2,22H20V20H2V6Z"></path>
+</svg>
+
+            
+
+<!---->
+<!---->          </a>
+      </li>
+
+      <li>
+        <div class="flex items-center" aria-describedby="ember23-popper">
+          <a href="/account" class="block w-8 h-8 flex-shrink-0 ">
+            <img src="https://beta.testomat.io/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcmdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--2947513f699353911c785a5efcb8af210a0b83b9/user_avatar_3.png" alt="" class="block rounded-full">
+<!---->            </a>
+            
+
+<!---->
+<!---->          </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="subnav-menu subnav-menu-settings invisible-scrollbar
+    hidden">
+  <div class="subnav-menu-header-first">
+    <span class="text-lg font-semibold">
+      Settings
+    </span>
+  </div>
+
+  <div class="subnav-menu-list-wrapper">
+    <ul class="subnav-menu-list-default">
+      <li>
+        <a id="ember24" class="ember-view" href="/projects/codeceptjs-cucumber/settings/project">
+          Project
+        </a>
+      </li>
+      <li>
+        <a id="ember25" class="ember-view w-full h-full block" href="/projects/codeceptjs-cucumber/settings/users">
+          Users
+          <span class="badge counter">
+            15
+          </span>
+        </a>
+      </li>
+      <li>
+        <a id="ember26" class="ember-view" href="/projects/codeceptjs-cucumber/settings/labels">
+          Labels &amp; Fields
+
+<!---->          </a>
+      </li>
+
+      <li>
+        <a id="ember27" class="ember-view" href="/projects/codeceptjs-cucumber/settings/artifacts">
+          Artifacts
+        </a>
+      </li>
+      <li>
+        <a id="ember28" class="ember-view" href="/projects/codeceptjs-cucumber/settings/templates">
+          Templates
+        </a>
+      </li>
+      <li>
+        <a id="ember29" class="ember-view" href="/projects/codeceptjs-cucumber/settings/jira">
+          JIRA Integration
+        </a>
+      </li>
+      <li>
+        <a id="ember30" class="ember-view" href="/projects/codeceptjs-cucumber/settings/issue">
+          Issues Management
+
+<!---->          </a>
+      </li>
+      <li>
+        <a id="ember31" class="ember-view text-sm" href="/projects/codeceptjs-cucumber/settings/ci">
+          Continuous Integration
+
+<!---->          </a>
+      </li>
+      <li>
+        <a id="ember32" class="ember-view" href="/projects/codeceptjs-cucumber/settings/environments">
+          Environments
+        </a>
+      </li>
+      <li>
+        <a id="ember33" class="ember-view" href="/projects/codeceptjs-cucumber/settings/notifications">
+          Report Notifications
+        </a>
+      </li>
+      <li>
+        <a id="ember34" class="ember-view" href="/projects/codeceptjs-cucumber/settings/run_replies">
+          Result Messages
+        </a>
+      </li>
+      <li>
+        <a id="ember35" class="ember-view" href="/projects/codeceptjs-cucumber/settings/readme">
+          Readme
+        </a>
+      </li>
+    </ul>
+    <a href="#" class="w-full px-4 py-2 rounded-lg bg-indigo-800 hover:bg-indigo-700 dark:bg-darkOpacity-120 dark:hover:bg-darkOpacity-200">
+      Switch to Dark Mode
+    </a>
+  </div>
+</div>
+
+<div class="subnav-menu subnav-menu-help hidden">
+  <div class="subnav-menu-header-first">
+    <span class="text-lg font-semibold">
+      Help
+    </span>
+  </div>
+
+  <ul class="subnav-menu-list-default">
+    <li>
+      <a href="https://docs.testomat.io/" target="_blank">
+        Documentation
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        Live Chat
+      </a>
+    </li>
+    <li>
+      <a href="https://join.slack.com/t/testomatio/shared_invite/zt-1ac24wnao-EICi76nXmHbW3GQH4d22uA" target="_blank">
+        Slack
+      </a>
+    </li>
+    <li>
+      <a href="mailto:support@testomat.io" target="_blank">
+        Email
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/testomatio/app/issues/" target="_blank">
+        GitHub Issues
+      </a>
+    </li>
+  </ul>
+
+  <div class="subnav-menu-header-second">
+    <span class="text-lg font-semibold">
+      Social
+    </span>
+  </div>
+
+  <ul class="subnav-menu-list-icons">
+    <li>
+      <a href="https://twitter.com/testomatio" target="_blank">
+        <svg class="md-icon md-icon-twitter " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z"></path>
+</svg>
+
+      </a>
+    </li>
+    <li>
+      <a href="https://www.linkedin.com/company/testomatio" target="_blank">
+        <svg class="md-icon md-icon-linkedin " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z"></path>
+</svg>
+
+      </a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/testomatio" target="_blank">
+        <svg class="md-icon md-icon-facebook " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z"></path>
+</svg>
+
+      </a>
+    </li>
+    <li>
+      <a href="https://www.youtube.com/channel/UCjVETzkhixcVPwK7MYEb5cA" target="_blank">
+        <svg class="md-icon md-icon-youtube " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.56 21.94,11.16L22,12C22,14.19 21.84,15.8 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L12,19C7.81,19 5.2,18.84 4.17,18.56C3.27,18.31 2.69,17.73 2.44,16.83C2.31,16.36 2.22,15.73 2.16,14.93C2.09,14.13 2.06,13.44 2.06,12.84L2,12C2,9.81 2.16,8.2 2.44,7.17C2.69,6.27 3.27,5.69 4.17,5.44C4.64,5.31 5.5,5.22 6.82,5.16C8.12,5.09 9.31,5.06 10.41,5.06L12,5C16.19,5 18.8,5.16 19.83,5.44C20.73,5.69 21.31,6.27 21.56,7.17Z"></path>
+</svg>
+
+      </a>
+    </li>
+    <li>
+      <a href="https://t.me/testomatio" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50" style=" fill:#ffffff;">
+          <path d="M46.137,6.552c-0.75-0.636-1.928-0.727-3.146-0.238l-0.002,0C41.708,6.828,6.728,21.832,5.304,22.445	c-0.259,0.09-2.521,0.934-2.288,2.814c0.208,1.695,2.026,2.397,2.248,2.478l8.893,3.045c0.59,1.964,2.765,9.21,3.246,10.758	c0.3,0.965,0.789,2.233,1.646,2.494c0.752,0.29,1.5,0.025,1.984-0.355l5.437-5.043l8.777,6.845l0.209,0.125	c0.596,0.264,1.167,0.396,1.712,0.396c0.421,0,0.825-0.079,1.211-0.237c1.315-0.54,1.841-1.793,1.896-1.935l6.556-34.077	C47.231,7.933,46.675,7.007,46.137,6.552z M22,32l-3,8l-3-10l23-17L22,32z"></path>
+        </svg>
+      </a>
+    </li>
+  </ul>
+</div>
+<!----></nav>
+
+<!---->
+
+<div id="ember36" class="ember-notify-cn custom-notify ember-view"><!----></div>
+
+<!---->
+<!---->
+
+<div class="ml-20 px-6">
+  <div>
+    
+
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<div class="resizable-defender resizable-defender-first" style="width: 764.5px;"></div><div class="detail detail-view-resizable" style="width: 749.5px;"><div class="resizer"></div>
+
+<button class="second-back">
+  <svg class="md-icon md-icon-close  text-gray-500 dark:text-white" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+</svg>
+
+</button>
+<button class="back">
+  <div>
+    <svg class="md-icon md-icon-close  text-gray-500 dark:text-white" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+</svg>
+
+    <small>
+      [Esc]
+    </small>
+  </div>
+</button>
+
+<div class="detail-view-header-wrapper">
+<div class="detail-view-header">
+  <div class="detail-view-pwd flex-1">
+    
+    <div class="breadcrumbs">
+    <svg class="md-icon md-icon-sticker-check-outline " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M18.5 2H5.5C3.6 2 2 3.6 2 5.5V18.5C2 20.4 3.6 22 5.5 22H16L22 16V5.5C22 3.6 20.4 2 18.5 2M20 15H18.5C16.6 15 15 16.6 15 18.5V20H5.8C4.8 20 4 19.2 4 18.2V5.8C4 4.8 4.8 4 5.8 4H18.3C19.3 4 20.1 4.8 20.1 5.8V15M15.2 8.2L16.7 9.7L10.7 15.7L7.2 12.2L8.7 10.7L10.7 12.7L15.2 8.2Z"></path>
+</svg>
+
+
+      <a id="ember133" class="ember-view" href="/projects/codeceptjs-cucumber/suite/6bad963f">
+        
+        todomvc-tests
+      </a>
+
+      <span>
+        ›
+      </span>
+      <a id="ember134" class="ember-view" href="/projects/codeceptjs-cucumber/suite/2fb7db3a">
+        
+        features
+      </a>
+
+      <span>
+        ›
+      </span>
+
+  
+      <a id="ember135" class="ember-view" href="/projects/codeceptjs-cucumber/suite/8f25544d">
+        Persist Todos
+      </a>
+      <span>
+        ›
+      </span>
+
+      <a href="#" class="copy-id">
+
+        Test
+      
+<b class="text-sm" aria-describedby="ember136-popper">
+  
+
+<!---->
+
+  @T18ac4760
+</b>
+</a>
+
+        <div class="mr-3">
+              
+              <button class="cursor-pointer flex items-center" aria-describedby="ember137-popper">
+                <svg class="md-icon md-icon-reload-alert " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M2 12C2 17 6 21 11 21C13.4 21 15.7 20.1 17.4 18.4L15.9 16.9C14.6 18.3 12.9 19 11 19C4.8 19 1.6 11.5 6.1 7.1S18 5.8 18 12H15L19 16H19.1L23 12H20C20 7 16 3 11 3S2 7 2 12M10 15H12V17H10V15M10 7H12V13H10V7"></path>
+</svg>
+
+                
+
+<!---->
+              </button>
+            
+
+        </div>
+      <span class="inline-block
+  space-x-2 space-x-2">
+    <span class="badge automated">
+        automated
+    </span>
+
+<!---->
+<!----><!---->
+</span>
+
+        <span class="text-xs ml-2 text-gray-500">
+            
+        </span>
+    
+</div>
+  
+  </div>
+  <div class="detail-view-actions">
+    
+<!----><!---->
+      
+          <a id="ember138" class="ember-view secondary-btn
+      btn-text-and-icon
+      btn-md
+      
+      " href="/projects/codeceptjs-cucumber/test/18ac4760/edit">
+        <svg class="md-icon md-icon-pencil-outline " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"></path>
+</svg>
+
+      
+        Edit
+      
+<!---->    </a>
+
+    
+
+
+    <div>
+        
+      <div class="ember-basic-dropdown">
+      <div id="ember141" class="ember-view ember-basic-dropdown-trigger ember-basic-dropdown-trigger--in-place  extra-btn btn-only-icon btn-md" role="button" tabindex="0" data-ebd-id="ember139-trigger" aria-owns="ember-basic-dropdown-content-ember139">
+  
+      <svg class="md-icon md-icon-dots-horizontal  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"></path>
+</svg>
+
+    
+</div>
+
+      <div id="ember-basic-dropdown-content-ember139" class="ember-basic-dropdown-content-placeholder" style="display: none;"></div>
+
+  </div>
+
+
+
+    </div>
+  
+  </div>
+</div>
+</div>
+
+<div>
+<div class="mb-4 space-y-2">
+  <div class="flex items-start">
+      <div aria-describedby="ember143-popper">
+
+
+<!---->
+    <div class="ember-basic-dropdown priority-icon">
+  <div class="ember-view ember-basic-dropdown-trigger ember-basic-dropdown-trigger--in-place  ember-power-select-trigger" role="button" tabindex="0" data-ebd-id="ember144-trigger" aria-owns="ember-basic-dropdown-content-ember144">
+  
+      <span>
+  <svg class="md-icon md-icon-circle-outline  normal text-gray-700 dark:text-gray-300 mx-1" width="12" height="12" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
+</svg>
+
+
+</span>
+<span class="ember-power-select-status-icon"></span>
+
+
+</div>
+
+  <div id="ember-basic-dropdown-content-ember144" class="ember-basic-dropdown-content-placeholder" style="display: none;"></div>
+
+</div>
+
+
+</div>
+        <div class="flex-1 flex items-center">
+            <span class="cursor-pointer" aria-describedby="ember149-popper">
+  
+
+<!---->
+
+  
+            <h3>
+              Todos survive a page refresh
+            </h3>
+          
+</span>
+
+        </div>
+
+    <div class="flex items-center" style="max-width: 50%">
+<!----><!---->
+          
+              <div class="ember-basic-dropdown ml-3 assign-to
+  options-right
+  ">
+  <div class="ember-view ember-basic-dropdown-trigger ember-basic-dropdown-trigger--in-place  ember-power-select-trigger" role="button" tabindex="0" data-ebd-id="ember150-trigger" aria-owns="ember-basic-dropdown-content-ember150" aria-describedby="ember154-popper">
+  
+      <div class="mt-1 w-5 h-5 rounded-full bg-gray-500 dark:bg-darkOpacity-120 flex items-center">
+<svg class="md-icon md-icon-account-check  text-white dark:text-gray-300 mx-auto" width="15" height="15" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M21.1,12.5L22.5,13.91L15.97,20.5L12.5,17L13.9,15.59L15.97,17.67L21.1,12.5M10,17L13,20H3V18C3,15.79 6.58,14 11,14L12.89,14.11L10,17M11,4A4,4 0 0,1 15,8A4,4 0 0,1 11,12A4,4 0 0,1 7,8A4,4 0 0,1 11,4Z"></path>
+</svg>
+
+</div>
+
+
+<!---->
+<!---->
+<span class="ember-power-select-status-icon"></span>
+
+
+</div>
+
+  <div id="ember-basic-dropdown-content-ember150" class="ember-basic-dropdown-content-placeholder" style="display: none;"></div>
+
+</div>
+
+
+<!---->
+        
+
+
+<!---->      </div>
+  </div>
+
+  <div class="hidden">
+    <span class="inline-block">
+<!----><!----></span>
+  </div>
+</div>
+
+<div id="ember156" class="ember-tabs ember-view">
+  <ul role="tablist" id="ember157" class="ember-tabs__tab-list ember-view">
+<!---->          <li role="tab" data-parent-guid="ember156" aria-disabled="false" aria-selected="true" id="ember158" class="ember-tabs__tab ember-tabs__tab--selected ember-view" tabindex="0" aria-controls="ember162">
+          <svg class="md-icon md-icon-code-tags " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z"></path>
+</svg>
+
+          Scenario Code
+        </li>
+    <li role="tab" data-parent-guid="ember156" aria-disabled="false" aria-selected="false" id="ember159" class="ember-tabs__tab ember-view" aria-controls="ember163">
+      <svg class="md-icon md-icon-paperclip " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"></path>
+</svg>
+
+      Attachments
+<!---->      </li>
+      <li role="tab" data-parent-guid="ember156" aria-disabled="false" aria-selected="false" id="ember160" class="ember-tabs__tab ember-view" aria-controls="ember164">
+        <svg class="md-icon md-icon-play " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M8,5.14V19.14L19,12.14L8,5.14Z"></path>
+</svg>
+
+        Runs
+          <div class="run-statuses">
+      <svg class="md-icon md-icon-circle-medium  run-status flex-none passed" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"></path>
+</svg>
+
+
+      <svg class="md-icon md-icon-circle-medium  run-status flex-none passed" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"></path>
+</svg>
+
+
+</div>
+
+      </li>
+      <li role="tab" data-parent-guid="ember156" aria-disabled="false" aria-selected="false" id="ember161" class="ember-tabs__tab ember-view" aria-controls="ember165">
+        <svg class="md-icon md-icon-history " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3"></path>
+</svg>
+
+        History
+      </li>
+<!---->    </ul>
+<!---->        <div role="tabpanel" data-parent-guid="ember156" id="ember162" class="ember-tabs__tab-panel ember-tabs__tab-panel--selected ember-view" aria-labelledby="ember158">  
+          <div class="gherkin suite vertical transition-all duration-300 ease-linear
+              hideDescription" style="max-height: 60px">
+<div class="pre keyword-line"><span class="keyword">Feature:</span> Persist Todos</div>
+<!----><div class="pre keyword-line"><span class="keyword">Background:</span></div>
+<div class="step-line">
+  <div class="step-info select-none">Step is used in 8 tests</div>
+<!---->
+<div class="step-badge automated ">
+<span class="pre"><span class="keyword">Given</span> I have these todos on my list</span><!----></div></div>
+<div class="pre">  | name         |</div>
+<div class="pre">  | Milk         |</div>
+<div class="pre">  | Butter       |</div>
+<div class="pre">  | Bread        |</div>
+<!----></div>
+
+<!---->
+          <div class="flex items-center w-full mb-4">
+            <div class="bg-gray-300 dark:bg-gray-700 w-1/2 h-px"></div>
+            <svg class="md-icon md-icon-arrow-down-drop-circle-outline  flex-none text-gray-300 dark:text-gray-700 -mx-px cursor-pointer" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M7,10L12,15L17,10H7Z"></path>
+</svg>
+
+            <div class="bg-gray-300 dark:bg-gray-700 w-1/2 h-px"></div>
+          </div>
+        <div class="gherkin">
+<div class="pre keyword-line"><span class="keyword">Scenario:</span> Todos survive a page refresh</div>
+<div class="step-line">
+  <div class="step-info select-none">Step is used in 2 tests</div>
+<!---->
+<div class="step-badge automated ">
+<span class="pre"><span class="keyword">When</span> I mark the first one as completed</span><!----></div></div>
+<div class="step-line">
+  <div class="step-info select-none">This step is <b>unqiue</b></div>
+  <!---->
+<div class="step-badge automated ">
+<span class="pre"><span class="keyword">Then</span> I still see the same todos</span><!----></div></div>
+<!----></div>
+
+<!---->
+
+<!---->        
+</div>
+  <div role="tabpanel" data-parent-guid="ember156" id="ember163" class="ember-tabs__tab-panel ember-view mt-4" aria-labelledby="ember159"><!----></div>
+    <div role="tabpanel" data-parent-guid="ember156" id="ember164" class="ember-tabs__tab-panel ember-view" aria-labelledby="ember160"><!----></div>
+  <div role="tabpanel" data-parent-guid="ember156" id="ember165" class="ember-tabs__tab-panel ember-view" aria-labelledby="ember161"><!----></div>
+<!---->  </div>
+</div>
+
+</div>
+
+<!---->
+
+
+
+
+
+<div class="sticky-header">
+
+  <div class="flex justify-start items-center w-7/12 space-x-3">
+<!---->      <h2>
+      codeceptjs-cucumber
+    </h2>
+      <span class="ml-2 small text-sm text-gray-500 whitespace-nowrap">
+        10
+        tests
+      </span>
+
+    <div class="filterbar-v2">
+        <div class="filterbar-tags-suggestions">
+          <datalist id="tags-suggestions">
+              <option value="@bdd">
+                  2
+                  tests
+              </option>
+          </datalist>
+        </div>
+
+      <div class="filterbar-filter-btn-div">
+            <button class="secondary-btn
+    btn-only-icon
+    btn-lg
+    
+    " type="button">
+      <svg class="md-icon md-icon-filter " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"></path>
+</svg>
+
+</button>
+
+<!---->
+      </div>
+
+      
+
+
+
+<div class="filterbar-search">
+<label for="search" class="sr-only">
+  Search
+</label>
+<div class="relative">
+  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+    <svg class="md-icon md-icon-magnify  h-5 w-5 text-gray-400" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"></path>
+</svg>
+
+  </div>
+    
+<!---->        
+  <input name="search" list="tags-suggestions" placeholder="Search [Ctrl + K]" id="search" class="ember-text-field ember-view search" type="search">
+</div>
+</div>
+        
+        <span class="flex-none" aria-describedby="ember39-popper">
+<svg class="md-icon md-icon-checkbox-multiple-marked-outline  cursor-pointer dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M20,16V10H22V16A2,2 0 0,1 20,18H8C6.89,18 6,17.1 6,16V4C6,2.89 6.89,2 8,2H16V4H8V16H20M10.91,7.08L14,10.17L20.59,3.58L22,5L14,13L9.5,8.5L10.91,7.08M16,20V22H4A2,2 0 0,1 2,20V7H4V20H16Z"></path>
+</svg>
+
+
+
+<!---->
+</span>
+      
+
+    </div>
+  </div>
+
+  <div class="flex justify-end items-center space-x-3 w-5/12">
+      
+          <a id="ember40" class="ember-view primary-btn btn-text-and-icon btn-lg" href="/projects/codeceptjs-cucumber/suites/new">
+        <svg class="md-icon md-icon-plus " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
+</svg>
+
+      
+        New Suite
+      
+  </a>
+
+    
+
+
+        <a id="ember41" class="ember-view secondary-btn
+      btn-text-and-icon
+      btn-lg
+      
+      " href="/projects/codeceptjs-cucumber/readme">
+        <svg class="md-icon md-icon-book-open " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M13,12H20V13.5H13M13,9.5H20V11H13M13,14.5H20V16H13M21,4H3A2,2 0 0,0 1,6V19A2,2 0 0,0 3,21H21A2,2 0 0,0 23,19V6A2,2 0 0,0 21,4M21,19H12V6H21"></path>
+</svg>
+
+      
+      Readme
+    
+<!---->    </a>
+
+
+    <div>
+        
+      <div class="ember-basic-dropdown">
+      <div id="ember44" class="ember-view ember-basic-dropdown-trigger ember-basic-dropdown-trigger--in-place  extra-btn btn-only-icon btn-lg" role="button" tabindex="0" data-ebd-id="ember42-trigger" aria-owns="ember-basic-dropdown-content-ember42">
+  
+      <svg class="md-icon md-icon-dots-horizontal  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"></path>
+</svg>
+
+    
+</div>
+
+      <div id="ember-basic-dropdown-content-ember42" class="ember-basic-dropdown-content-placeholder" style="display: none;"></div>
+
+  </div>
+
+
+
+    </div>
+  </div>
+
+</div>
+
+<!---->
+<div class="filterbar-v2-sub-wrapper space-x-4 align-filter-center">
+<div class="filterbar-v2-sub-wrapper-filters">
+  <nav class="flex items-center space-x-4 static" style="z-index: 1" aria-label="Tabs">
+    
+    <a href="#" class="filter-tab ">
+      Manual
+
+          <small>
+            1
+          </small>
+    </a>
+
+    <a href="#" class="filter-tab ">
+      Automated
+
+          <small>
+            9
+          </small>
+    </a>
+
+    <a href="#" class="filter-tab ">
+      Out of sync
+<!---->      </a>
+
+    <a href="#" class="filter-tab ">
+      Detached
+<!---->      </a>
+
+    <div class="flex items-center">
+<!---->
+<!----></div>
+  
+  </nav>
+</div>
+
+<div class="filterbar-v2-results width-settings">
+  
+<!---->    
+</div>
+</div>
+
+<!---->
+  <!---->
+  <div class="list-groups truncate">
+  <div></div>
+
+<div class="list-group-wrapper">
+  <div class="nestedItem
+  mainNestedItem
+  
+  
+  ">
+<p class="nestedItem-title">
+<!---->
+<!---->  </p>
+
+    <div id="ember46" class="dragSortList -draggingEnabled -vertical ember-view ml-0i ml-4">  <div draggable="true" id="ember47" class="dragSortItem -isTargetNOT 0 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            a4c9823f
+            
+            ">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-down  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-file-check-outline  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M11.2,18.46L8.45,15.46L9.61,14.3L11.2,15.88L14.78,12.3L15.95,13.71L11.2,18.46Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember48" class="ember-view inline-flex items-center space-x-2 node-link a4c9823f" draggable="false" href="/projects/codeceptjs-cucumber/suite/a4c9823f">
+        <span>
+          fftgrtg
+        </span>
+
+          <small class="text-gray-500">
+<!---->              1
+            tests
+          </small>
+
+<!---->
+<!----><!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+    <div id="ember173" class="dragSortList -draggingEnabled -vertical ember-view  ml-4">  <div draggable="true" id="ember174" class="dragSortItem -isTargetNOT 0 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  sort-list-empty
+  ">
+<p class="nestedItem-title">
+    <div class="w-full h-6 flex justify-between
+        
+        ">
+      <div class="flex items-center overflow-hidden">
+<!---->
+        <span class="node-expand 0beb3b51 test a4c9823f"></span>
+
+          <span class="ml-3 mr-1">
+              <svg class="md-icon md-icon-circle-outline  dark:text-gray-300" width="12" height="12" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
+</svg>
+
+
+          </span>
+
+        <a id="ember175" class="ember-view flex items-center node-link 0beb3b51" draggable="false" href="/projects/codeceptjs-cucumber/test/0beb3b51">
+          <span class="mr-1">
+            tftyt
+          </span>
+
+<!---->          </a>
+        <div class="flex items-center space-x-2 flex-none">
+          <span class="inline-block
+  space-x-2 mb-0.5">
+    <span class="badge manual">
+        manual
+    </span>
+
+<!---->
+<!----><!---->
+</span>
+          <span class="align-middle inline-flex space-x-2">
+<!----></span>
+          <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+<!----><!----></span>
+        </div>
+
+        <!---->
+      </div>
+
+        <div class="run-statuses flex-none float-right">
+      <svg class="md-icon md-icon-circle-medium  run-status flex-none skipped" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"></path>
+</svg>
+
+
+</div>
+
+    </div>
+<!---->
+<!---->  </p>
+
+<!----></div>
+    
+
+</div>
+</div>
+
+        
+          <div class="flex mt-3 text-sm text-gray-700 dark:text-gray-300
+    ml-9 space-x-1">
+  <svg class="md-icon md-icon-plus-circle " width="12" height="12" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
+</svg>
+
+  <a class="link leading-none self-end">
+    Create
+    test
+  </a>
+</div>
+
+      
+
+
+<!----></div>
+    
+
+</div>
+<div draggable="true" id="ember49" class="dragSortItem -isTargetNOT 1 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            6bad963f
+            
+            ">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-down  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-folder  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember50" class="ember-view inline-flex items-center space-x-2 node-link 6bad963f" draggable="false" href="/projects/codeceptjs-cucumber/suite/6bad963f">
+        <span>
+          todomvc-tests
+        </span>
+
+          <small class="text-gray-500">
+<!---->              9
+            tests
+          </small>
+
+<!---->
+<!----><!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+    <div id="ember67" class="dragSortList -draggingEnabled -vertical ember-view  ml-4">  <div draggable="true" id="ember68" class="dragSortItem -isTargetNOT 0 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            2fb7db3a
+            suite
+            6bad963f">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-down  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-folder  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember69" class="ember-view inline-flex items-center space-x-2 node-link 2fb7db3a" draggable="false" href="/projects/codeceptjs-cucumber/suite/2fb7db3a">
+        <span>
+          features
+        </span>
+
+          <small class="text-gray-500">
+<!---->              9
+            tests
+          </small>
+
+<!---->
+<!----><!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+    <div id="ember115" class="dragSortList -draggingEnabled -vertical ember-view  ml-4">  <div draggable="true" id="ember116" class="dragSortItem -isTargetNOT 0 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            8f25544d
+            suite
+            2fb7db3a">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-down  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-file-check-outline  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M11.2,18.46L8.45,15.46L9.61,14.3L11.2,15.88L14.78,12.3L15.95,13.71L11.2,18.46Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember117" class="ember-view inline-flex items-center space-x-2 node-link 8f25544d" draggable="false" href="/projects/codeceptjs-cucumber/suite/8f25544d">
+        <span>
+          Persist Todos
+        </span>
+
+          <small class="text-gray-500">
+<!---->              1
+            tests
+          </small>
+
+<!---->
+          <small>
+            todomvc-tests/features/persist-todos.feature
+          </small>
+<!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+    <div id="ember176" class="dragSortList -draggingEnabled -vertical ember-view  ml-4">  <div draggable="true" id="ember177" class="dragSortItem -isTargetNOT 0 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  sort-list-empty
+  ">
+<p class="nestedItem-title">
+    <div class="w-full h-6 flex justify-between
+        bg-indigo-100 dark:bg-darkOpacity-120
+        ">
+      <div class="flex items-center overflow-hidden">
+<!---->
+        <span class="node-expand 18ac4760 test 8f25544d"></span>
+
+          <span class="ml-3 mr-1">
+              <svg class="md-icon md-icon-circle-outline  dark:text-gray-300" width="12" height="12" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
+</svg>
+
+
+          </span>
+
+        <a id="ember178" class="ember-view active flex items-center node-link 18ac4760" draggable="false" href="/projects/codeceptjs-cucumber/test/18ac4760">
+          <span class="mr-1">
+            Todos survive a page refresh
+          </span>
+
+<!---->          </a>
+        <div class="flex items-center space-x-2 flex-none">
+          <span class="inline-block
+  space-x-2 mb-0.5">
+    <span class="badge automated">
+        automated
+    </span>
+
+<!---->
+<!----><!---->
+</span>
+          <span class="align-middle inline-flex space-x-2">
+<!----></span>
+          <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+<!----><!----></span>
+        </div>
+
+        <!---->
+      </div>
+
+        <div class="run-statuses flex-none float-right">
+      <svg class="md-icon md-icon-circle-medium  run-status flex-none passed" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"></path>
+</svg>
+
+
+      <svg class="md-icon md-icon-circle-medium  run-status flex-none passed" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"></path>
+</svg>
+
+
+</div>
+
+    </div>
+<!---->
+<!---->  </p>
+
+<!----></div>
+    
+
+</div>
+</div>
+
+        
+          <div class="flex mt-3 text-sm text-gray-700 dark:text-gray-300
+    ml-9 space-x-1">
+  <svg class="md-icon md-icon-plus-circle " width="12" height="12" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
+</svg>
+
+  <a class="link leading-none self-end">
+    Create
+    test
+  </a>
+</div>
+
+      
+
+
+<!----></div>
+    
+
+</div>
+<div draggable="true" id="ember118" class="dragSortItem -isTargetNOT 1 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  sort-list-empty
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            09ccc599
+            suite
+            2fb7db3a">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-right  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-file-check-outline  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M11.2,18.46L8.45,15.46L9.61,14.3L11.2,15.88L14.78,12.3L15.95,13.71L11.2,18.46Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember119" class="ember-view inline-flex items-center space-x-2 node-link 09ccc599" draggable="false" href="/projects/codeceptjs-cucumber/suite/09ccc599">
+        <span>
+          Mark as completed
+        </span>
+
+          <small class="text-gray-500">
+<!---->              4
+            tests
+          </small>
+
+<!---->
+          <small>
+            todomvc-tests/features/mark-as-completed.feature
+          </small>
+<!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+<!----></div>
+    
+
+</div>
+<div draggable="true" id="ember120" class="dragSortItem -isTargetNOT 2 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  sort-list-empty
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            b444f1d0
+            suite
+            2fb7db3a">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-right  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-file-check-outline  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M11.2,18.46L8.45,15.46L9.61,14.3L11.2,15.88L14.78,12.3L15.95,13.71L11.2,18.46Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember121" class="ember-view inline-flex items-center space-x-2 node-link b444f1d0" draggable="false" href="/projects/codeceptjs-cucumber/suite/b444f1d0">
+        <span>
+          Edit/Delete Todos
+        </span>
+
+          <small class="text-gray-500">
+<!---->              2
+            tests
+          </small>
+
+<!---->
+          <small>
+            todomvc-tests/features/edit-todos.feature
+          </small>
+<!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+<!----></div>
+    
+
+</div>
+<div draggable="true" id="ember122" class="dragSortItem -isTargetNOT 3 ember-view">
+  
+      <div class="nestedItem
+  
+  
+  sort-list-empty
+  ">
+<p class="nestedItem-title">
+<!---->
+    <div class="flex space-x-2 overflow-hidden ">
+      <span class="node-expand inline-flex items-center">
+<!---->
+        <span class="node-expand inline-flex items-center
+            1b66424e
+            suite
+            2fb7db3a">
+          <button class="expand ">
+                <svg class="md-icon md-icon-chevron-right  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"></path>
+</svg>
+
+          </button>
+        </span>
+
+          <svg class="md-icon md-icon-file-check-outline  dark:text-gray-300" width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M11.2,18.46L8.45,15.46L9.61,14.3L11.2,15.88L14.78,12.3L15.95,13.71L11.2,18.46Z"></path>
+</svg>
+
+
+      </span>
+
+      <a id="ember123" class="ember-view inline-flex items-center space-x-2 node-link 1b66424e" draggable="false" href="/projects/codeceptjs-cucumber/suite/1b66424e">
+        <span>
+          Create Todos with BDD
+        </span>
+
+          <small class="text-gray-500">
+<!---->              2
+            tests
+          </small>
+
+<!---->
+          <small>
+            todomvc-tests/features/create-todos.feature
+          </small>
+<!---->        </a>
+
+      <div class="overflow-hidden">
+        <span class="align-middle inline-flex space-x-2 mr-1">
+<!----></span>
+        <span class="inline-block align-middle overflow-hidden whitespace-nowrap space-x-2 mb-1">
+  <!----><!---->
+<!----></span>
+      </div>
+
+      <!---->
+    </div>
+</p>
+
+<!----></div>
+    
+
+</div>
+</div>
+
+        
+          <div class="flex mt-3 text-sm text-gray-700 dark:text-gray-300
+    ml-11 space-x-2">
+  <svg class="md-icon md-icon-file-plus " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M11,15V12H9V15H6V17H9V20H11V17H14V15H11Z"></path>
+</svg>
+
+  <a class="link leading-none self-end">
+    Create
+    suite
+  </a>
+</div>
+
+      
+
+
+<!----></div>
+    
+
+</div>
+</div>
+
+        
+          <div class="flex mt-3 text-sm text-gray-700 dark:text-gray-300
+    ml-11 space-x-2">
+  <svg class="md-icon md-icon-file-plus " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M11,15V12H9V15H6V17H9V20H11V17H14V15H11Z"></path>
+</svg>
+
+  <a class="link leading-none self-end">
+    Create
+    suite
+  </a>
+</div>
+
+      
+
+
+<!----></div>
+    
+
+</div>
+</div>
+
+<!---->
+<!----></div>
+</div>
+
+<div></div>
+</div>
+
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+  <div class="py-5"></div>
+<!----><!---->
+<!---->
+<!---->
+<div class="keyboard-shortcut-icon" aria-describedby="ember51-popper">
+<svg class="md-icon md-icon-apple-keyboard-command " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M6,2A4,4 0 0,1 10,6V8H14V6A4,4 0 0,1 18,2A4,4 0 0,1 22,6A4,4 0 0,1 18,10H16V14H18A4,4 0 0,1 22,18A4,4 0 0,1 18,22A4,4 0 0,1 14,18V16H10V18A4,4 0 0,1 6,22A4,4 0 0,1 2,18A4,4 0 0,1 6,14H8V10H6A4,4 0 0,1 2,6A4,4 0 0,1 6,2M16,18A2,2 0 0,0 18,20A2,2 0 0,0 20,18A2,2 0 0,0 18,16H16V18M14,10H10V14H14V10M6,16A2,2 0 0,0 4,18A2,2 0 0,0 6,20A2,2 0 0,0 8,18V16H6M8,6A2,2 0 0,0 6,4A2,2 0 0,0 4,6A2,2 0 0,0 6,8H8V6M18,8A2,2 0 0,0 20,6A2,2 0 0,0 18,4A2,2 0 0,0 16,6V8H18Z"></path>
+</svg>
+
+
+
+<!---->
+</div>
+
+<!---->
+  </div>
+</div>
+</div>    <div id="ember5-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 108px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Tests
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember7-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 164px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Runs
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember9-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 220px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Plans
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember11-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 276px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Steps
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember13-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 332px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+                Pulse
+              
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember15-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 388px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+                Imports
+              
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember17-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 444px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Analytics
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember19-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 500px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+                Branches
+              
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember20-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 556px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+                Settings
+              
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember21-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 804px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Help
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember22-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(54px, 860px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Projects
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember23-popper" class="ember-attacher" role="tooltip" x-placement="right" style="position: absolute; visibility: hidden; display: none; transform: translate3d(56px, 916px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-shift ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+              Profile
+              
+            
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember39-popper" class="ember-attacher" role="tooltip" x-placement="top" style="position: absolute; visibility: hidden; display: none; transform: translate3d(726px, 36px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-with-arrow" style="transition-duration: 0ms; null">
+    
+  Multiselection
+
+
+      <div x-arrow="" style="left: 0px;"></div>
+<!---->    </div>
+
+  </div>
+  <div id="ember51-popper" class="ember-attacher" role="tooltip" x-placement="top" style="position: absolute; visibility: hidden; display: none; transform: translate3d(122px, 936px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip text-sm ember-attacher-hide ember-attacher-without-arrow" style="transition-duration: 0ms; null">
+    
+  <div>
+    Navigation:
+    <span>
+      <svg class="md-icon md-icon-arrow-down " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z"></path>
+</svg>
+
+      <svg class="md-icon md-icon-arrow-up " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z"></path>
+</svg>
+
+      <svg class="md-icon md-icon-arrow-right " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
+</svg>
+
+      <svg class="md-icon md-icon-arrow-left " width="20" height="20" viewBox="0 0 24 24" role="img">
+<!---->  <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path>
+</svg>
+
+      <b>
+        Enter
+      </b>
+    </span>
+  </div>
+  <div>
+    Search:
+    <span class="ml-1">
+      <b>
+        Ctrl + K
+      </b>
+    </span>
+  </div>
+  <div>
+    Change Drag And Drop Mode:
+    <span class="ml-1">
+      <b>
+        Alt
+      </b>
+    </span>
+  </div>
+
+
+<!----><!---->    </div>
+
+  </div>
+  <div id="ember136-popper" class="ember-attacher" role="tooltip" x-placement="top" style="position: absolute; visibility: hidden; display: none; transform: translate3d(552px, 36px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-with-arrow" style="transition-duration: 0ms; null">
+    
+    
+        Test
+      
+    ID
+    Copy
+  
+
+      <div x-arrow="" style="left: 0px;"></div>
+<!---->    </div>
+
+  </div>
+  <div id="ember137-popper" class="ember-attacher" role="tooltip" x-placement="top" style="position: absolute; visibility: hidden; display: none; transform: translate3d(609px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-with-arrow" style="transition-duration: 0ms; null">
+    
+                  This test may be unlinked on a title change. Click to learn how to synchronize this test by ID
+                
+
+      <div x-arrow="" style="left: 0px;"></div>
+<!---->    </div>
+
+  </div>
+  <div id="ember143-popper" class="ember-attacher" role="tooltip" x-placement="top" style="position: absolute; visibility: hidden; display: none; transform: translate3d(179px, 81px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-with-arrow" style="transition-duration: 0ms; null">
+    
+    Priority:
+    <br>
+    normal
+
+
+      <div x-arrow="" style="left: 0px;"></div>
+<!---->    </div>
+
+  </div>
+  <div id="ember149-popper" class="ember-attacher" role="tooltip" x-placement="top" style="position: absolute; visibility: hidden; display: none; transform: translate3d(321px, 81px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-with-arrow" style="transition-duration: 0ms; null">
+    
+    Use scenario or feature description to edit
+  
+
+      <div x-arrow="" style="left: 0px;"></div>
+<!---->    </div>
+
+  </div>
+  <div id="ember154-popper" class="ember-attacher" role="tooltip" x-placement="left" style="position: absolute; visibility: hidden; display: none; transform: translate3d(1281px, 95px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="ember-attacher-fade ember-attacher-popper ember-attacher-tooltip ember-attacher-hide ember-attacher-with-arrow" style="transition-duration: 0ms; null">
+    
+Assign to
+
+
+      <div x-arrow="" style="top: 0px;"></div>
+<!---->    </div>
+
+  </div>
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

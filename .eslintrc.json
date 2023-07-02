@@ -3,6 +3,9 @@
   "env": {
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },  
   "rules": {
     "func-names": 0,
     "no-use-before-define": 0,

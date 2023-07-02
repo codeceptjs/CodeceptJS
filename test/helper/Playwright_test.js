@@ -706,9 +706,14 @@ describe('Playwright', function () {
   });
 
   describe('#dragAndDrop', () => {
-    it('Drag item from source to target (no iframe) @dragNdrop', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
+    it('Drag item from source to target (no iframe) @dragNdrop - customized steps', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
       .then(() => I.seeElementInDOM('#draggable'))
       .then(() => I.dragAndDrop('#draggable', '#droppable'))
+      .then(() => I.see('Dropped')));
+
+    it('Drag item from source to target (no iframe) @dragNdrop - using Playwright API', () => I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
+      .then(() => I.seeElementInDOM('#draggable'))
+      .then(() => I.dragAndDrop('#draggable', '#droppable', { force: true }))
       .then(() => I.see('Dropped')));
 
     xit('Drag and drop from within an iframe', () => I.amOnPage('https://jqueryui.com/droppable')
@@ -794,7 +799,7 @@ describe('Playwright', function () {
   describe('#mockRoute, #stopMockingRoute', () => {
     it('should mock a route', async () => {
       await I.amOnPage('/form/fetch_call');
-      await I.mockRoute('https://jsonplaceholder.typicode.com/comments/1', route => {
+      await I.mockRoute('https://reqres.in/api/comments/1', route => {
         route.fulfill({
           status: 200,
           headers: { 'Access-Control-Allow-Origin': '*' },
@@ -804,18 +809,18 @@ describe('Playwright', function () {
       });
       await I.click('GET COMMENTS');
       await I.see('this was mocked');
-      await I.stopMockingRoute('https://jsonplaceholder.typicode.com/comments/1');
+      await I.stopMockingRoute('https://reqres.in/api/comments/1');
       await I.click('GET COMMENTS');
-      await I.see('postId');
+      await I.see('data');
       await I.dontSee('this was mocked');
     });
   });
 
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
-      const response = await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      const response = await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
       expect(response.status()).to.equal(200);
-      expect(await response.json()).to.include.keys(['id', 'name']);
+      expect(await response.json()).to.include.keys(['page']);
     });
 
     it('should make local API request', async () => {
@@ -826,10 +831,10 @@ describe('Playwright', function () {
     it('should convert to axios response with onResponse hook', async () => {
       let response;
       I.config.onResponse = (resp) => response = resp;
-      await I.makeApiRequest('get', 'https://jsonplaceholder.typicode.com/comments/1');
+      await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
       expect(response).to.be.ok;
       expect(response.status).to.equal(200);
-      expect(response.data).to.include.keys(['id', 'name']);
+      expect(response.data).to.include.keys(['page', 'total']);
     });
   });
 

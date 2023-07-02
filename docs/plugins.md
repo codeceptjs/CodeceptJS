@@ -479,6 +479,18 @@ I.click('=sign-up'); // matches => [data-qa=sign-up],[data-test=sign-up]
 
 -   `config`  
 
+## debugErrors
+
+Creates screenshot on failure. Screenshot is saved into `output` directory.
+
+Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4
+
+This plugin is **enabled by default**.
+
+### Parameters
+
+-   `config`  
+
 ## eachElement
 
 Provides `eachElement` global function to iterate over found elements to perform actions on them.
