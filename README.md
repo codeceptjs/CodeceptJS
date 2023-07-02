@@ -321,8 +321,8 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/denis-sokolov"><img src="https://avatars.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
 <a href="https://github.com/lennym"><img src="https://avatars.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
 <a href="https://github.com/petehouston"><img src="https://avatars.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a>
+<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>
 <a href="https://github.com/jancorvus"><img src="https://avatars.githubusercontent.com/u/67001310?v=4" title="jancorvus" width="80" height="80"></a>
-<a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
 
 [//]: contributor-faces
 
