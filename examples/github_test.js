@@ -5,6 +5,12 @@ Before(({ Smth }) => {
   Smth.openGitHub();
 });
 
+Scenario('Incorrect search for Codeceptjs', ({ I }) => {
+  I.fillField('.search', 'CodeceptJS');
+  I.pressKey('Enter');
+  I.see('Supercharged End 2 End Testing');
+});
+
 Scenario('Visit Home Page @retry', async ({ I }) => {
   // .retry({ retries: 3, minTimeout: 1000 })
   I.retry(2).see('GitHub');

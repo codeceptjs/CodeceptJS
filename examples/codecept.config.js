@@ -2,9 +2,10 @@ exports.config = {
   output: './output',
   helpers: {
     Playwright: {
-      url: 'http://localhost',
+      url: 'http://github.com',
       browser: 'chromium',
-      restart: 'context',
+      // restart: 'context',
+      // show: false,
       // timeout: 5000,
       windowSize: '1600x1200',
       // video: true,
@@ -51,6 +52,9 @@ exports.config = {
     stepByStepReport: {},
     autoDelay: {
       enabled: false,
+    },
+    heal: {
+      enabled: true,
     },
     retryFailedStep: {
       enabled: false,
