@@ -3,11 +3,11 @@ permalink: /ai
 title: Testing with AI 🪄 
 ---
 
-CodeceptJS is the first open-source test automation framework that incorporates AI features to improve the testing experience. CodeceptJS uses OpenAI GPT to auto-heal failing tests, assist in writing tests, and more...
+**CodeceptJS is the first open-source test automation framework with AI** features to improve the testing experience. CodeceptJS uses OpenAI GPT to auto-heal failing tests, assist in writing tests, and more...
 
 Think of it as your testing co-pilot built into the testing framework
 
-> 🪄 **AI features for testing are experimental**. Currently AI features enabled only for web based testing with Playwright, WebDriver, etc. Those features will be improved based on user's experience.
+> 🪄 **AI features for testing are experimental**. AI works only for web based testing with Playwright, WebDriver, etc. Those features will be improved based on user's experience.
 
 
 ## How AI Improves Automated Testing
