@@ -98,7 +98,7 @@ This AI copilot works best with long static forms. In the case of complex and dy
 
 Please keep in mind that GPT can't react to page changes and operates with static text only. This is why it is not ready yet to write the test completely. However, if you are new to CodeceptJS and automated testing AI copilot may help you write tests more efficiently. 
 
-> 👶 Set up AI copilot for junior test automation engineers. It may help them to get started with test automation and learn about building proper locators.
+> 👶 Eable AI copilot for junior test automation engineers. It may help them to get started with CodeceptJS and to write good semantic locators.
 
 ### Self-Healing Tests
 
