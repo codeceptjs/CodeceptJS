@@ -1,3 +1,38 @@
+## 3.5.0
+
+🛩️ Features
+
+- Improve gpo command (#3625) - by KobeNguyenT
+- Highlight the interacting elements in debug mode (#3672) - by KobeNguyenT
+- Add support for unit tests for webapi drivers (#3678) - by Egor Bodnar
+- Add support for new API in playwright (#3665) - by Egor Bodnar
+- Add empty output folder option in config (#3604) - by KobeNguyenT
+- Add support for multiple browsers in run-workers (#3606) - by Karan Shah
+- Add appium v2 support (#3622) - by KobeNguyenT
+- Add secret support to append() and type() (#3615) - by anils92
+- Add support for bypassing CSP in playwright config (#3641) - by KobeNguyenT
+- Tune workflows for continuous integration (#3656) - by KobeNguyenT
+- Add count of tests for each suite in dryRun (#3620) - by KobeNguyenT
+
+🐛 Bug Fixes
+
+- Fix unit test webapi command (#3681) - by KobeNguyenT
+- Fix self-hosted calculator app link in react-app (#3682) - by Egor Bodnar
+- Fix support for grep in dry-run (#3673) - by KobeNguyenT
+- Fix indents in sample code (#3674) - by Yasunori
+- Fix security issue with xmldom <= 0.6.0 (#3619) - by KobeNguyenT
+- Fix updating node version (#3628) - by KobeNguyenT
+- Fix typings issues (#3602) - by KobeNguyenT
+- Fixed typo in const (#3654) - by Ricardo Macias Castillo
+- Fixed typo (#3652) - by Arthur Stankevich
+- Fix typings improvements in playwright (#3650) - by KobeNguyenT
+- Fix documentation for playwright - setCookies types (#3627) - by KobeNguyenT
+- Fix typo in documentation (#3618) - by KobeNguyenT
+- Fix git commit throw: add check if nothing to commit (#3690) - by Egor Bodnar
+- Fix dry-run command logic (#3680) - by KobeNguyenT
+- Fixed creating JavaScript test using "codeceptjs gt" (#3611) - by Jaromir Obr
+
+
 ## 3.4.1
 
 * Updated mocha to v 10.2. Fixes #3591
