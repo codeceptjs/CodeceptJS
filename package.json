@@ -131,7 +131,7 @@
     "inquirer-test": "^2.0.1",
     "jsdoc": "^3.6.10",
     "jsdoc-typeof-plugin": "^1.0.0",
-    "json-server": "^0.10.1",
+    "json-server": "^0.17.3",
     "nightmare": "^3.0.2",
     "playwright": "^1.35.1",
     "puppeteer": "^10.4.0",
