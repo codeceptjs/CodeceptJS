@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.4.1",
+  "version": "3.5.0",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -52,7 +52,7 @@
     "test:unit:webbapi:webDriver": "mocha test/helper/WebDriver_test.js",
     "test:unit:webbapi:testCafe": "mocha test/helper/TestCafe_test.js",
     "def": "./runok.js def",
-    "dev:graphql": "node ./test/data/graphql/index.js",
+    "dev:graphql": "node test/data/graphql/index.js",
     "publish:site": "./runok.js publish:site",
     "update-contributor-faces": "contributor-faces .",
     "dtslint": "dtslint typings --localTs './node_modules/typescript/lib'",
@@ -112,7 +112,7 @@
     "@wdio/sauce-service": "^8.3.8",
     "@wdio/selenium-standalone-service": "^8.3.2",
     "@wdio/utils": "^8.3.0",
-    "apollo-server-express": "^3.12.0",
+    "apollo-server-express": "2.25.3",
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
     "contributor-faces": "^1.0.3",

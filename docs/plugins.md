@@ -481,15 +481,27 @@ I.click('=sign-up'); // matches => [data-qa=sign-up],[data-test=sign-up]
 
 ## debugErrors
 
-Creates screenshot on failure. Screenshot is saved into `output` directory.
+Prints errors found in HTML code after each failed test.
 
-Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4
+It scans HTML and searches for elements with error classes. 
+If an element found prints a text from it to console and adds as artifact to the test.
 
-This plugin is **enabled by default**.
+Enable this plugin in config:
+
+```js
+plugins: {
+ debugErrors: {
+  enabled: true,
+}
+```
+
+Additional config options:
+
+-   `errorClasses` - list of classes to search for errors (default: `['error', 'warning', 'alert', 'danger']`)
 
 ### Parameters
 
--   `config`  
+-   `config`   (optional, default `{}`)
 
 ## eachElement
 
@@ -593,6 +605,42 @@ Scenario Outline: ...
 ### Parameters
 
 -   `config`  
+
+## heal
+
+Self-healing tests with OpenAI. 
+
+This plugin is experimental and requires OpenAI API key.
+
+To use it you need to set OPENAI_API_KEY env variable and enable plugin inside condig.
+
+```js
+plugins: {
+  heal: {
+   enabled: true,
+  }
+}
+```
+
+More config options are available:
+
+-   `healLimit` - how many steps can be healed in a single test (default: 2)
+-   `healSteps` - which steps can be healed (default: all steps that interact with UI, see list below)
+
+Steps to heal:
+
+-   `click`
+-   `fillField`
+-   `appendField`
+-   `selectOption`
+-   `attachFile`
+-   `checkOption`
+-   `uncheckOption`
+-   `doubleClick`
+
+### Parameters
+
+-   `config`   (optional, default `{}`)
 
 ## pauseOnFail
 

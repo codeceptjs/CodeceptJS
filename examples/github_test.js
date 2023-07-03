@@ -2,7 +2,12 @@
 Feature('GitHub', { timeout: 6 });
 
 Before(({ Smth }) => {
-  Smth.openGitHub();
+  // Smth.openGitHub();
+});
+
+Scenario.only('test ai features', ({ I }) => {
+  I.amOnPage('https://getbootstrap.com/docs/5.1/examples/checkout/');
+  pause();
 });
 
 Scenario('Incorrect search for Codeceptjs', ({ I }) => {

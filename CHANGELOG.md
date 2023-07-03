@@ -1,3 +1,68 @@
+## 3.5.0
+
+🛩️ Features
+
+- **🪄 [AI Powered Test Automation](/ai)** - use OpenAI as a copilot for test automation. #3713 By @davertmik
+![](https://user-images.githubusercontent.com/220264/250418764-c382709a-3ccb-4eb5-b6bc-538f3b3b3d35.png)
+  * [AI guide](/ai) added
+  * added support for OpenAI in `pause()`
+  * added [`heal` plugin](/plugins#heal) for self-healing tests
+  * added [`OpenAI`](/helpers/openai) helper
+
+
+- [Playwright][Puppeteer][WebDriver] Highlight the interacting elements in debug mode or with `highlightElement` option set (#3672) - by @KobeNguyenT
+
+![](https://user-images.githubusercontent.com/220264/250415226-a7620418-56a4-4837-b790-b15e91e5d1f0.png)
+
+- [Playwright] Support for APIs in Playwright (#3665) - by Egor Bodnar
+  * `clearField` replaced to use new Playwright API
+  * `blur` added
+  * `focus` added
+
+- **[Added support for multiple browsers](/parallel#Parallel-Execution-by-Workers-on-Multiple-Browsers)** in `run-workers` (#3606) by @karanshah-browserstack :
+
+Multiple browsers configured as profiles:
+
+```js
+exports.config = {
+  helpers: {
+    WebDriver: {
+      url: 'http://localhost:3000',
+    }
+  },
+  multiple: {
+    profile1: {
+      browsers: [
+        {
+          browser: "firefox",
+        },
+        {
+          browser: "chrome",
+        }
+      ]
+    }, 
+```
+And executed via `run-workers` with `all` argument
+
+```
+npx codeceptjs run-workers 2 all
+```
+
+- [Appium] Add Appium v2 support (#3622) - by @KobeNguyenT
+- Improve `gpo` command to create page objects as modules or as classes (#3625) - by @KobeNguyenT
+- Added `emptyOutputFolder` config to clean up output before running tests (#3604) - by @KobeNguyenT
+- Add `secret()` function support to `append()` and `type()` (#3615) - by @anils92
+- [Playwright] Add `bypassCSP` option to helper's config (#3641) - by @KobeNguyenT
+- Print number of tests for each suite in dryRun (#3620) - by @KobeNguyenT
+
+🐛 Bug Fixes
+
+- Support `--grep` in dry-run command (#3673) - by @KobeNguyenT
+- Fix typings improvements in playwright (#3650) - by @KobeNguyenT
+- Fixed global retry #3667 by @KobeNguyenT
+- Fixed creating JavaScript test using "codeceptjs gt" (#3611) - by Jaromir Obr
+
+
 ## 3.4.1
 
 * Updated mocha to v 10.2. Fixes #3591

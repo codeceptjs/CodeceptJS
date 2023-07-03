@@ -11,6 +11,7 @@ const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],
   allowedAttrs: ['id', 'for', 'class', 'name', 'type', 'value', 'aria-labelledby', 'aria-label', 'label', 'placeholder', 'title', 'alt', 'src', 'role'],
   allowedRoles: ['button', 'checkbox', 'search', 'textbox', 'tab'],
+  textElements: ['label'],
 };
 
 describe('HTML module', () => {
@@ -100,6 +101,16 @@ describe('HTML module', () => {
       const result = removeNonInteractiveElements(html, opts);
       expect(result).to.include('Name on card');
       expect(result).to.not.include('<script');
+    });
+
+    it('should allow adding new elements', () => {
+      const html = '<div><h6>Hey</h6></div>';
+
+      const result = removeNonInteractiveElements(html, {
+        textElements: ['h6'],
+      });
+
+      expect(result).to.include('<h6>Hey</h6>');
     });
 
     it('should cut out all non-interactive elements from GitLab HTML', () => {
