@@ -96,7 +96,7 @@
     "ora-classic": "^5.4.2",
     "parse-function": "^5.6.4",
     "parse5": "^7.1.2",
-    "promise-retry": "^1.1.1",
+    "promise-retry": "^2.0.1",
     "resq": "^1.10.2",
     "sprintf-js": "^1.1.1",
     "uuid": "^9.0"
