@@ -322,9 +322,9 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/abhimanyupandian"><img src="https://avatars.githubusercontent.com/u/36107381?v=4" title="abhimanyupandian" width="80" height="80"></a>
 <a href="https://github.com/martomo"><img src="https://avatars.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
 <a href="https://github.com/denis-sokolov"><img src="https://avatars.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
+<a href="https://github.com/actions-user"><img src="https://avatars.githubusercontent.com/u/65916846?v=4" title="actions-user" width="80" height="80"></a>
 <a href="https://github.com/lennym"><img src="https://avatars.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
 <a href="https://github.com/petehouston"><img src="https://avatars.githubusercontent.com/u/9006720?v=4" title="petehouston" width="80" height="80"></a>
-<a href="https://github.com/jancorvus"><img src="https://avatars.githubusercontent.com/u/67001310?v=4" title="jancorvus" width="80" height="80"></a>
 
 [//]: contributor-faces
 
