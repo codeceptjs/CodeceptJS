@@ -17,10 +17,7 @@ const server = new ApolloServer({
   playground: true,
 });
 
-(async () => {
-  await server.start();
-  server.applyMiddleware({ app });
-})();
+server.applyMiddleware({ app });
 
 app.use(middleware);
 app.use(router);

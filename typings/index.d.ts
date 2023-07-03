@@ -350,6 +350,29 @@ declare namespace CodeceptJS {
     };
 
     /**
+     * [AI](https://codecept.io/ai/) features configuration.
+     */
+    ai?: {
+      /** OpenAI model to use */
+      model?: string,
+      /** temperature, measure of randomness. Lower is better. */
+      temperature?: number,
+      /** configuration for processing HTML for GPT */
+      html?: {
+        /** max size of HTML to be sent to OpenAI to avoid token limit */
+        maxLength?: number,
+        /** should HTML be changed by removing non-interactive elements */
+        simplify?: boolean,
+        /** should HTML be minified before sending */
+        minify?: boolean,
+        interactiveElements?: Array<string>,
+        textElements?: Array<string>,
+        allowedAttrs?: Array<string>,
+        allowedRoles?: Array<string>,
+      }
+    },
+
+    /**
      * Enable full promise-based helper methods for [TypeScript](https://codecept.io/typescript/) project.
      * If true, all helper methods are typed as asynchronous;
      * Otherwise, it remains as it works in versions prior to 3.3.6

@@ -1,1 +1,15 @@
-{"users":[{"id":0,"age":31,"name":"john doe","email":"johnd@mutex.com"}]}
+{
+  "users": [
+    {
+      "id": 0,
+      "age": 31,
+      "name": "john doe",
+      "email": "johnd@mutex.com"
+    },
+    {
+      "name": "Melanie Stark",
+      "email": "Roma_Quigley95@yahoo.com",
+      "id": 1
+    }
+  ]
+}
