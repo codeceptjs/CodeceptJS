@@ -3,14 +3,14 @@
 🛩️ Features
 
 - **🪄 [AI Powered Test Automation](/ai)** - use OpenAI as a copilot for test automation. #3713 By @davertmik
-![](https://user-images.githubusercontent.com/220264/250417960-c0857fec-a149-47cc-bc5a-1b84c2aa932f.png)
+![](https://user-images.githubusercontent.com/220264/250418764-c382709a-3ccb-4eb5-b6bc-538f3b3b3d35.png)
   * [AI guide](/ai) added
   * added support for OpenAI in `pause()`
   * added [`heal` plugin](/plugins#heal) for self-healing tests
   * added [`OpenAI`](/helpers/openai) helper
 
 
-- [Playwright][Puppeteer][WebDriver] Highlight the interacting elements in debug mode or (#3672) - by @KobeNguyenT
+- [Playwright][Puppeteer][WebDriver] Highlight the interacting elements in debug mode or with `highlightElement` option set (#3672) - by @KobeNguyenT
 
 ![](https://user-images.githubusercontent.com/220264/250415226-a7620418-56a4-4837-b790-b15e91e5d1f0.png)
 
