@@ -314,10 +314,10 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/VikalpP"><img src="https://avatars.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
 <a href="https://github.com/BorisOsipov"><img src="https://avatars.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
 <a href="https://github.com/elaichenkov"><img src="https://avatars.githubusercontent.com/u/29764053?v=4" title="elaichenkov" width="80" height="80"></a>
+<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>
 <a href="https://github.com/nitschSB"><img src="https://avatars.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
 <a href="https://github.com/hubidu"><img src="https://avatars.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
 <a href="https://github.com/jploskonka"><img src="https://avatars.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
-<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>
 <a href="https://github.com/maojunxyz"><img src="https://avatars.githubusercontent.com/u/28778042?v=4" title="maojunxyz" width="80" height="80"></a>
 <a href="https://github.com/abhimanyupandian"><img src="https://avatars.githubusercontent.com/u/36107381?v=4" title="abhimanyupandian" width="80" height="80"></a>
 <a href="https://github.com/martomo"><img src="https://avatars.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
