@@ -58,7 +58,8 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 
 
 ## Features
-
+ 
+* 🪄 **AI-powered** with GPT features to assist and heal failing tests
 * Based on [Mocha](https://mochajs.org/) testing framework.
 * Designed for scenario driven acceptance testing in BDD-style
 * Uses ES6 natively without transpiler.
@@ -66,7 +67,6 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 * Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 * Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
-* CodeceptJS is the first open-source test automation framework that incorporates [AI features](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) to improve the testing experience. CodeceptJS uses OpenAI GPT to auto-heal failing tests, assist in writing tests, and more...
 
 ## Install
 
