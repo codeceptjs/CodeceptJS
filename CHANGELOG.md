@@ -2,34 +2,64 @@
 
 🛩️ Features
 
-- Improve gpo command (#3625) - by KobeNguyenT
-- Highlight the interacting elements in debug mode (#3672) - by KobeNguyenT
-- Add support for unit tests for webapi drivers (#3678) - by Egor Bodnar
-- Add support for new API in playwright (#3665) - by Egor Bodnar
-- Add empty output folder option in config (#3604) - by KobeNguyenT
-- Add support for multiple browsers in run-workers (#3606) - by Karan Shah
-- Add appium v2 support (#3622) - by KobeNguyenT
-- Add secret support to append() and type() (#3615) - by anils92
-- Add support for bypassing CSP in playwright config (#3641) - by KobeNguyenT
-- Tune workflows for continuous integration (#3656) - by KobeNguyenT
-- Add count of tests for each suite in dryRun (#3620) - by KobeNguyenT
+- **🪄 [AI Powered Test Automation](/ai)** - use OpenAI as a copilot for test automation. #3713 By @davertmik
+![](https://user-images.githubusercontent.com/220264/250417960-c0857fec-a149-47cc-bc5a-1b84c2aa932f.png)
+  * [AI guide](/ai) added
+  * added support for OpenAI in `pause()`
+  * added [`heal` plugin](/plugins#heal) for self-healing tests
+  * added [`OpenAI`](/helpers/openai) helper
+
+
+- [Playwright][Puppeteer][WebDriver] Highlight the interacting elements in debug mode or (#3672) - by @KobeNguyenT
+
+![](https://user-images.githubusercontent.com/220264/250415226-a7620418-56a4-4837-b790-b15e91e5d1f0.png)
+
+- [Playwright] Support for APIs in Playwright (#3665) - by Egor Bodnar
+  * `clearField` replaced to use new Playwright API
+  * `blur` added
+  * `focus` added
+
+- **[Added support for multiple browsers](/parallel#Parallel-Execution-by-Workers-on-Multiple-Browsers)** in `run-workers` (#3606) by @karanshah-browserstack :
+
+Multiple browsers configured as profiles:
+
+```js
+exports.config = {
+  helpers: {
+    WebDriver: {
+      url: 'http://localhost:3000',
+    }
+  },
+  multiple: {
+    profile1: {
+      browsers: [
+        {
+          browser: "firefox",
+        },
+        {
+          browser: "chrome",
+        }
+      ]
+    }, 
+```
+And executed via `run-workers` with `all` argument
+
+```
+npx codeceptjs run-workers 2 all
+```
+
+- [Appium] Add Appium v2 support (#3622) - by @KobeNguyenT
+- Improve `gpo` command to create page objects as modules or as classes (#3625) - by @KobeNguyenT
+- Added `emptyOutputFolder` config to clean up output before running tests (#3604) - by @KobeNguyenT
+- Add `secret()` function support to `append()` and `type()` (#3615) - by @anils92
+- [Playwright] Add `bypassCSP` option to helper's config (#3641) - by @KobeNguyenT
+- Print number of tests for each suite in dryRun (#3620) - by @KobeNguyenT
 
 🐛 Bug Fixes
 
-- Fix unit test webapi command (#3681) - by KobeNguyenT
-- Fix self-hosted calculator app link in react-app (#3682) - by Egor Bodnar
-- Fix support for grep in dry-run (#3673) - by KobeNguyenT
-- Fix indents in sample code (#3674) - by Yasunori
-- Fix security issue with xmldom <= 0.6.0 (#3619) - by KobeNguyenT
-- Fix updating node version (#3628) - by KobeNguyenT
-- Fix typings issues (#3602) - by KobeNguyenT
-- Fixed typo in const (#3654) - by Ricardo Macias Castillo
-- Fixed typo (#3652) - by Arthur Stankevich
-- Fix typings improvements in playwright (#3650) - by KobeNguyenT
-- Fix documentation for playwright - setCookies types (#3627) - by KobeNguyenT
-- Fix typo in documentation (#3618) - by KobeNguyenT
-- Fix git commit throw: add check if nothing to commit (#3690) - by Egor Bodnar
-- Fix dry-run command logic (#3680) - by KobeNguyenT
+- Support `--grep` in dry-run command (#3673) - by @KobeNguyenT
+- Fix typings improvements in playwright (#3650) - by @KobeNguyenT
+- Fixed global retry #3667 by @KobeNguyenT
 - Fixed creating JavaScript test using "codeceptjs gt" (#3611) - by Jaromir Obr
 
 

@@ -78,7 +78,7 @@ Scenario.only('test ai features', ({ I }) => {
 Now run the test in debug mode:
 
 ```
-npx codeceptjs run --debug
+OPENAI_API_KEY=sk-******** npx codeceptjs run --debug
 ```
 
 When pause mode started you can ask GPT to fill in the fields on this page. Use natural language to describe your request, and provide enough details that AI could operate with it. It is important to include at least a space char in your input, otherwise, CodeceptJS will consider the input to be JavaScript code.
