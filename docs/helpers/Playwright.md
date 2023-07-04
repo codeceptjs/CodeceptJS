@@ -33,13 +33,13 @@ Using playwright-core package, will prevent the download of browser binaries and
 
 ## Configuration
 
-This helper should be configured in codecept.conf.js
+This helper should be configured in codecept.conf.(js|ts)
 
 Type: [object][5]
 
 ### Properties
 
--   `url` **[string][8]** base url of website to be tested
+-   `url` **[string][8]?** base url of website to be tested
 -   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][30]?** show browser window.
 -   `restart` **([string][8] | [boolean][30])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][37] but keeps running browser. Recommended by Playwright team to keep tests isolated.
@@ -214,6 +214,22 @@ const { devices } = require('playwright');
     colorScheme: "dark",
   }
  }
+}
+```
+
+-   #### Example #9: Launch electron test
+
+```js
+{
+ helpers: {
+    Playwright: {
+      browser: 'electron',
+      electron: {
+        executablePath: require("electron"),
+        args: [path.join('../', "main.js")],
+      },
+    }
+  },
 }
 ```
 
