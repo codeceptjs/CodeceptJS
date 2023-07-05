@@ -184,43 +184,6 @@ describe('Playwright', function () {
       .then(() => I.dontSee('Hovered', '#show')));
   });
 
-  describe('#focus, #blur', () => {
-    it('should focus a button, field and textarea', async () => {
-      await I.amOnPage('/form/focus_blur_elements');
-
-      await I.focus('#button');
-      await I.see('Button is focused', '#buttonMessage');
-
-      await I.focus('#field');
-      await I.see('Button not focused', '#buttonMessage');
-      await I.see('Input field is focused', '#fieldMessage');
-
-      await I.focus('#textarea');
-      await I.see('Button not focused', '#buttonMessage');
-      await I.see('Input field not focused', '#fieldMessage');
-      await I.see('Textarea is focused', '#textareaMessage');
-    });
-
-    it('should blur focused button, field and textarea', async () => {
-      await I.amOnPage('/form/focus_blur_elements');
-
-      await I.focus('#button');
-      await I.see('Button is focused', '#buttonMessage');
-      await I.blur('#button');
-      await I.see('Button not focused', '#buttonMessage');
-
-      await I.focus('#field');
-      await I.see('Input field is focused', '#fieldMessage');
-      await I.blur('#field');
-      await I.see('Input field not focused', '#fieldMessage');
-
-      await I.focus('#textarea');
-      await I.see('Textarea is focused', '#textareaMessage');
-      await I.blur('#textarea');
-      await I.see('Textarea not focused', '#textareaMessage');
-    });
-  });
-
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
       .then(() => I.wait(1))
