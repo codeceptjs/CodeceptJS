@@ -414,14 +414,14 @@ Calls [blur][9] on the element.
 #### Parameters
 
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** [Additional options][9] for available options object as 2nd argument.Examples:
-```js
-I.blur('.text-area')
-//element `#product-tile` is focused
-I.see('#add-to-cart-btn');
-I.blur('#product-tile')
-I.dontSee('#add-to-cart-btn');
-``` 
+-   `options` **any?** [Additional options][9] for available options object as 2nd argument.Examples:```js
+    I.blur('.text-area')
+    ``````js
+    //element `#product-tile` is focused
+    I.see('#add-to-cart-btn');
+    I.blur('#product-tile')
+    I.dontSee('#add-to-cart-btn');
+    ``` 
 
 ### cancelPopup
 
@@ -467,16 +467,16 @@ I.clearCookie('test');
 
 ### clearField
 
-Clear the `input`, `textarea` or [contenteditable] .
+Clear the <input>, <textarea> or [contenteditable] .
 
 #### Parameters
 
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** [Additional options][11] for available options object as 2nd argument.Examples:
-```js
-I.clearField('.text-area')
-I.clearField('#submit', { force: true }) // force to bypass the [actionability](https://playwright.dev/docs/actionability) checks.
-``` 
+-   `options` **any?** [Additional options][11] for available options object as 2nd argument.Examples:```js
+    I.clearField('.text-area')
+    ``````js
+    I.clearField('#submit', { force: true }) // force to bypass the [actionability](https://playwright.dev/docs/actionability) checks.
+    ``` 
 
 ### click
 
