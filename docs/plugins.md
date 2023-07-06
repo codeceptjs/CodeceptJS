@@ -483,7 +483,7 @@ I.click('=sign-up'); // matches => [data-qa=sign-up],[data-test=sign-up]
 
 Prints errors found in HTML code after each failed test.
 
-It scans HTML and searches for elements with error classes. 
+It scans HTML and searches for elements with error classes.
 If an element found prints a text from it to console and adds as artifact to the test.
 
 Enable this plugin in config:
@@ -608,11 +608,11 @@ Scenario Outline: ...
 
 ## heal
 
-Self-healing tests with OpenAI. 
+Self-healing tests with OpenAI.
 
 This plugin is experimental and requires OpenAI API key.
 
-To use it you need to set OPENAI_API_KEY env variable and enable plugin inside condig.
+To use it you need to set OPENAI_API_KEY env variable and enable plugin inside the config.
 
 ```js
 plugins: {
