@@ -1121,10 +1121,10 @@ module.exports.tests = function () {
     it('should execute within block', async () => {
       await I.amOnPage('/form/example4');
       await I.seeElement('#navbar-collapse-menu');
-      await I._withinBegin('#register');
-      await I.see('E-Mail');
-      await I.dontSee('Toggle navigation');
-      await I.dontSeeElement('#navbar-collapse-menu');
+      I._withinBegin('#register')
+        .then(() => I.see('E-Mail'))
+        .then(() => I.dontSee('Toggle navigation'))
+        .then(() => I.dontSeeElement('#navbar-collapse-menu'));
     });
 
     it('should respect form fields inside within block ', async () => {
@@ -1138,15 +1138,10 @@ module.exports.tests = function () {
       await I.seeInField('Hasło', '12345');
       await I.checkOption('terms');
       await I.seeCheckboxIsChecked('terms');
-      await I._withinBegin({ css: '.form-group' });
-      await I.see('E-Mail');
-      await I.dontSee('Hasło');
-
-      try {
-        await I.dontSeeElement('#navbar-collapse-menu');
-      } catch (err) {
-        rethrow = err;
-      }
+      I._withinBegin({ css: '.form-group' })
+        .then(() => I.see('E-Mail'))
+        .then(() => I.dontSee('Hasło'))
+        .then(() => I.dontSeeElement('#navbar-collapse-menu'));
 
       try {
         await I.dontSeeCheckboxIsChecked('terms');
@@ -1166,15 +1161,13 @@ module.exports.tests = function () {
     it('should execute within block 2', async () => {
       await I.amOnPage('/form/example4');
       await I.fillField('Hasło', '12345');
-      await I._withinBegin({ xpath: '//div[@class="form-group"][2]' });
-      await I.dontSee('E-Mail');
-      await I.see('Hasło');
-
-      const label = await I.grabTextFrom('label');
-      assert.equal(label, 'Hasło');
-
-      const input = await I.grabValueFrom('input');
-      assert.equal(input, '12345');
+      I._withinBegin({ xpath: '//div[@class="form-group"][2]' })
+        .then(() => I.dontSee('E-Mail'))
+        .then(() => I.see('Hasło'))
+        .then(() => I.grabTextFrom('label'))
+        .then((label) => assert.equal(label, 'Hasło'))
+        .then(() => I.grabValueFrom('input'))
+        .then((input) => assert.equal(input, '12345'));
     });
 
     it('within should respect context in see', async function () {
@@ -1182,19 +1175,9 @@ module.exports.tests = function () {
 
       await I.amOnPage('/form/example4');
       await I.see('Rejestracja', 'fieldset');
-      await I._withinBegin({ css: '.navbar-header' });
-
-      try {
-        await I.see('Rejestracja', '.container fieldset');
-      } catch (err) {
-        if (!err) assert.fail('seen fieldset');
-      }
-
-      try {
-        await I.see('Toggle navigation', '.container fieldset');
-      } catch (err) {
-        if (!err) assert.fail('seen fieldset');
-      }
+      I._withinBegin({ css: '.navbar-header' })
+        .then(() => I.see('Rejestracja', '.container fieldset'))
+        .then(() => I.see('Toggle navigation', '.container fieldset'));
     });
 
     it('within should respect context in see when using nested frames', async function () {
