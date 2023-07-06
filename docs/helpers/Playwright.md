@@ -283,7 +283,7 @@ const elements = await this.helpers['Playwright']._locate({name: 'password'});
 
 ### _locateCheckable
 
-Find a checkbox by providing human readable text:
+Find a checkbox by providing human-readable text:
 NOTE: Assumes the checkable element exists
 
 ```js
