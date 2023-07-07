@@ -1,11 +1,11 @@
 Feature('within', { retries: 3 });
 
-Scenario('within on form @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare ', ({ I }) => {
+Scenario('within on form @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', ({ I }) => {
   I.amOnPage('/form/bug1467');
   I.see('TEST TEST');
-  within({ css: '[name=form2]' }, () => {
-    I.checkOption('Yes');
-    I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' });
+  within({ css: '[name=form2]' }, async () => {
+    await I.checkOption('Yes');
+    await I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' });
   });
   I.seeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' });
   I.dontSeeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' });
@@ -26,10 +26,10 @@ Scenario('switch iframe manually @WebDriverIO @Puppeteer @Playwright @Protractor
 
 Scenario('within on iframe @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', ({ I }) => {
   I.amOnPage('/iframe');
-  within({ frame: 'iframe' }, () => {
-    I.fillField('rus', 'Updated');
-    I.click('Sign in!');
-    I.waitForText('Email Address');
+  within({ frame: 'iframe' }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.click('Sign in!');
+    await I.waitForText('Email Address');
   });
   I.see('Iframe test');
   I.dontSee('Email Address');
@@ -37,9 +37,9 @@ Scenario('within on iframe @WebDriverIO @Puppeteer @Playwright @Protractor @Nigh
 
 Scenario('within on iframe without iframe navigation @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', ({ I }) => {
   I.amOnPage('/iframe');
-  within({ frame: 'iframe' }, () => {
-    I.fillField('rus', 'Updated');
-    I.see('Sign in!');
+  within({ frame: 'iframe' }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.see('Sign in!');
   });
   I.see('Iframe test');
   I.dontSee('Sign in!');
@@ -47,9 +47,9 @@ Scenario('within on iframe without iframe navigation @WebDriverIO @Puppeteer @Pl
 
 Scenario('within on nested iframe without iframe navigation depth 2 @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', ({ I }) => {
   I.amOnPage('/iframe_nested');
-  within({ frame: ['[name=wrapper]', '[name=content]'] }, () => {
-    I.fillField('rus', 'Updated');
-    I.see('Sign in!');
+  within({ frame: ['[name=wrapper]', '[name=content]'] }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.see('Sign in!');
   });
   I.see('Nested Iframe test');
   I.dontSee('Sign in!');
@@ -57,10 +57,10 @@ Scenario('within on nested iframe without iframe navigation depth 2 @WebDriverIO
 
 Scenario('within on nested iframe depth 1 @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', ({ I }) => {
   I.amOnPage('/iframe');
-  within({ frame: ['[name=content]'] }, () => {
-    I.fillField('rus', 'Updated');
-    I.click('Sign in!');
-    I.waitForText('Email Address');
+  within({ frame: ['[name=content]'] }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.click('Sign in!');
+    await I.waitForText('Email Address');
   });
   I.see('Iframe test');
   I.dontSee('Email Address');
@@ -68,10 +68,10 @@ Scenario('within on nested iframe depth 1 @WebDriverIO @Puppeteer @Playwright @P
 
 Scenario('within on nested iframe depth 2 @WebDriverIO @Puppeteer @Playwright @Protractor', ({ I }) => {
   I.amOnPage('/iframe_nested');
-  within({ frame: ['[name=wrapper]', '[name=content]'] }, () => {
-    I.fillField('rus', 'Updated');
-    I.click('Sign in!');
-    I.see('Email Address');
+  within({ frame: ['[name=wrapper]', '[name=content]'] }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.click('Sign in!');
+    await I.see('Email Address');
   });
   I.see('Nested Iframe test');
   I.dontSee('Email Address');
@@ -79,10 +79,10 @@ Scenario('within on nested iframe depth 2 @WebDriverIO @Puppeteer @Playwright @P
 
 Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer @Playwright @Protractor', ({ I }) => {
   I.amOnPage('/iframe_nested');
-  within({ frame: ['#wrapperId', '[name=content]'] }, () => {
-    I.fillField('rus', 'Updated');
-    I.click('Sign in!');
-    I.see('Email Address');
+  within({ frame: ['#wrapperId', '[name=content]'] }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.click('Sign in!');
+    await I.see('Email Address');
   });
   I.see('Nested Iframe test');
   I.dontSee('Email Address');
@@ -90,10 +90,10 @@ Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDr
 
 Scenario('within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer @Playwright @Protractor', ({ I }) => {
   I.amOnPage('/iframe_nested');
-  within({ frame: ['.wrapperClass', '[name=content]'] }, () => {
-    I.fillField('rus', 'Updated');
-    I.click('Sign in!');
-    I.see('Email Address');
+  within({ frame: ['.wrapperClass', '[name=content]'] }, async () => {
+    await I.fillField('rus', 'Updated');
+    await I.click('Sign in!');
+    await I.see('Email Address');
   });
   I.see('Nested Iframe test');
   I.dontSee('Email Address');
@@ -101,7 +101,7 @@ Scenario('within on nested iframe depth 2 and mixed class and xpath selector @We
 
 Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @Playwright @Protractor @Nightmare', async ({ I }) => {
   I.amOnPage('/form/textarea');
-  within('#grab-multiple', () => {
+  within('#grab-multiple', async () => {
     return I.grabTextFrom('#first-link');
   });
 }).throws(/found/);
