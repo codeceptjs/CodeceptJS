@@ -144,6 +144,29 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
+### blur
+
+Remove focus from a text input, button, etc.
+Calls [blur][6] on the element.
+
+Examples:
+
+```js
+I.blur('.text-area')
+```
+
+```js
+//element `#product-tile` is focused
+I.see('#add-to-cart-btn');
+I.blur('#product-tile')
+I.dontSee('#add-to-cart-btn');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `options` **any?** Playwright only: [Additional options][7] for available options object as 2nd argument.
+
 ### checkOption
 
 Selects a checkbox or radio button.
@@ -395,9 +418,9 @@ let date = await I.executeScript(function(el) {
 
 #### Parameters
 
--   `fn` **([string][4] | [function][6])** function to be executed in browser context.
+-   `fn` **([string][4] | [function][8])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for it resolution.
+    ⚠️ returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for its resolution.
 
 ### fillField
 
@@ -421,6 +444,23 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `value` **([string][4] | [object][5])** text value to fill.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
+### focus
+
+Calls [focus][6] on the matching element.
+
+Examples:
+
+```js
+I.dontSee('#add-to-cart-btn');
+I.focus('#product-tile')
+I.see('#add-to-cart-bnt');
+```
+
+#### Parameters
+
+-   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `options` **any?** Playwright only: [Additional options][9] for available options object as 2nd argument.
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -436,7 +476,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][4]** attribute name.
 
-Returns **[Promise][7]&lt;[string][4]>** attribute value
+Returns **[Promise][10]&lt;[string][4]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -453,7 +493,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][4]** attribute name.
 
-Returns **[Promise][7]&lt;[string][4]>** attribute value
+Returns **[Promise][10]&lt;[string][4]>** attribute value
 
 ### grabBrowserLogs
 
@@ -479,7 +519,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][4]?** cookie name. 
 
-Returns **([Promise][7]&lt;[string][4]> | [Promise][7]&lt;[Array][8]&lt;[string][4]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][10]&lt;[string][4]> | [Promise][10]&lt;[Array][11]&lt;[string][4]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCurrentUrl
 
@@ -491,7 +531,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][7]&lt;[string][4]>** current URL
+Returns **[Promise][10]&lt;[string][4]>** current URL
 
 ### grabNumberOfVisibleElements
 
@@ -506,7 +546,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[number][9]>** number of visible elements
+Returns **[Promise][10]&lt;[number][12]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -517,7 +557,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][7]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][10]&lt;PageScrollPosition>** scroll position
 
 ### grabSource
 
@@ -528,7 +568,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][7]&lt;[string][4]>** source code
+Returns **[Promise][10]&lt;[string][4]>** source code
 
 ### grabTextFrom
 
@@ -545,7 +585,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[string][4]>** attribute value
+Returns **[Promise][10]&lt;[string][4]>** attribute value
 
 ### grabTextFromAll
 
@@ -560,7 +600,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[Array][8]&lt;[string][4]>>** attribute value
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### grabValueFrom
 
@@ -576,7 +616,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[string][4]>** attribute value
+Returns **[Promise][10]&lt;[string][4]>** attribute value
 
 ### grabValueFromAll
 
@@ -591,7 +631,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][7]&lt;[Array][8]&lt;[string][4]>>** attribute value
+Returns **[Promise][10]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### moveCursorTo
 
@@ -606,14 +646,14 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][12]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][12]** (optional, `0` by default) Y-axis offset.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### pressKey
 
 Presses a key on a focused element.
-Special keys like 'Enter', 'Control', [etc][10]
+Special keys like 'Enter', 'Control', [etc][13]
 will be replaced with corresponding unicode.
 If modifier key is used (Control, Command, Alt, Shift) in array, it will be released afterwards.
 
@@ -624,7 +664,7 @@ I.pressKey(['Control','a']);
 
 #### Parameters
 
--   `key` **([string][4] | [Array][8]&lt;[string][4]>)** key or array of keys to press.
+-   `key` **([string][4] | [Array][11]&lt;[string][4]>)** key or array of keys to press.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 
@@ -677,8 +717,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][9]** width in pixels or `maximize`.
--   `height` **[number][9]** height in pixels.
+-   `width` **[number][12]** width in pixels or `maximize`.
+-   `height` **[number][12]** height in pixels.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### rightClick
@@ -729,7 +769,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][4]** file name to save.
--   `fullPage` **[boolean][11]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` **[boolean][14]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### scrollPageToBottom
@@ -765,8 +805,8 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][9]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][9]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][12]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][12]** (optional, `0` by default) Y-axis offset.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### see
@@ -914,7 +954,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `num` **[number][9]** number of elements.
+-   `num` **[number][12]** number of elements.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeTextEquals
@@ -954,7 +994,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] | [Array][8]&lt;any>)** visible text or value of option.
+-   `option` **([string][4] | [Array][11]&lt;any>)** visible text or value of option.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### setCookie
@@ -975,7 +1015,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **(Cookie | [Array][8]&lt;Cookie>)** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][11]&lt;Cookie>)** a cookie object or array of cookie objects.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### switchTo
@@ -1013,12 +1053,12 @@ I.uncheckOption('agree', '//form');
 
 ### useTestCafeTo
 
-Use [TestCafe][12] API inside a test.
+Use [TestCafe][15] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`t`][13]) } object from TestCafe API is available.
+{ [`t`][16]) } object from TestCafe API is available.
 
 ```js
 I.useTestCafeTo('handle browser dialog', async ({ t }) {
@@ -1029,7 +1069,7 @@ I.useTestCafeTo('handle browser dialog', async ({ t }) {
 #### Parameters
 
 -   `description` **[string][4]** used to show in logs.
--   `fn` **[function][6]** async functuion that executed with TestCafe helper as argument
+-   `fn` **[function][8]** async functuion that executed with TestCafe helper as argument
 
 ### wait
 
@@ -1041,7 +1081,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][9]** number of second to wait.
+-   `sec` **[number][12]** number of second to wait.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForElement
@@ -1057,7 +1097,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][12]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForFunction
@@ -1077,9 +1117,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][4] | [function][6])** to be executed in browser context.
--   `argsOrSec` **([Array][8]&lt;any> | [number][9])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][9]?** (optional, `1` by default) time in seconds to wait
+-   `fn` **([string][4] | [function][8])** to be executed in browser context.
+-   `argsOrSec` **([Array][11]&lt;any> | [number][12])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][12]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
@@ -1094,7 +1134,7 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForText
@@ -1111,7 +1151,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][4]** to wait for.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
@@ -1127,7 +1167,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitInUrl
@@ -1141,7 +1181,7 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitNumberOfVisibleElements
@@ -1155,8 +1195,8 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `num` **[number][9]** number of elements.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `num` **[number][12]** number of elements.
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitToHide
@@ -1171,7 +1211,7 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitUrlEquals
@@ -1186,7 +1226,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][9]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ## getPageUrl
@@ -1207,18 +1247,24 @@ Client Functions
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[6]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[7]: https://playwright.dev/docs/api/class-locator#locator-blur
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[9]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[10]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: https://devexpress.github.io/testcafe/documentation/test-api/
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[13]: https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller
+[13]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
+
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[15]: https://devexpress.github.io/testcafe/documentation/test-api/
+
+[16]: https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller
