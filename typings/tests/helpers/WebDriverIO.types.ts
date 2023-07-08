@@ -8,6 +8,42 @@ const num = 1;
 wd.amOnPage(); // $ExpectError
 wd.amOnPage(''); // $ExpectType void
 
+wd.focus(); // $ExpectError
+wd.focus('div'); // $ExpectType void
+wd.focus({ css: 'div' });
+wd.focus({ xpath: '//div' });
+wd.focus({ name: 'div' });
+wd.focus({ id: 'div' });
+wd.focus({ android: 'div' });
+wd.focus({ ios: 'div' });
+wd.focus(locate('div'));
+wd.focus('div', 'body');
+wd.focus('div', locate('div'));
+wd.focus('div', { css: 'div' });
+wd.focus('div', { xpath: '//div' });
+wd.focus('div', { name: '//div' });
+wd.focus('div', { id: '//div' });
+wd.focus('div', { android: '//div' });
+wd.focus('div', { ios: '//div' });
+
+wd.blur(); // $ExpectError
+wd.blur('div'); // $ExpectType void
+wd.blur({ css: 'div' });
+wd.blur({ xpath: '//div' });
+wd.blur({ name: 'div' });
+wd.blur({ id: 'div' });
+wd.blur({ android: 'div' });
+wd.blur({ ios: 'div' });
+wd.blur(locate('div'));
+wd.blur('div', 'body');
+wd.blur('div', locate('div'));
+wd.blur('div', { css: 'div' });
+wd.blur('div', { xpath: '//div' });
+wd.blur('div', { name: '//div' });
+wd.blur('div', { id: '//div' });
+wd.blur('div', { android: '//div' });
+wd.blur('div', { ios: '//div' });
+
 wd.click(); // $ExpectError
 wd.click('div'); // $ExpectType void
 wd.click({ css: 'div' });

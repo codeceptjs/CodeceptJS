@@ -112,7 +112,7 @@ Heal actions **work only on actions like `click`, `fillField`**, etc, and won't 
 
 If Heal plugin successfully fixes the step, it will print a suggested change at the end of execution. Take it as actionable advice and use it to update the codebase. Heal plugin is supposed to be used on CI, and works automatically without human assistance.
 
-To start, enable `heal` plugin in `codecept.conf.js`` or `codecept.conf.ts`:
+To start, enable `heal` plugin in `codecept.conf.js` or `codecept.conf.ts`:
 
 ```js
 plugins: {

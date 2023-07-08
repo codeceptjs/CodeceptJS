@@ -33,34 +33,34 @@ Using playwright-core package, will prevent the download of browser binaries and
 
 ## Configuration
 
-This helper should be configured in codecept.conf.js
+This helper should be configured in codecept.conf.(js|ts)
 
 Type: [object][5]
 
 ### Properties
 
--   `url` **[string][8]** base url of website to be tested
+-   `url` **[string][8]?** base url of website to be tested
 -   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][31]?** show browser window.
 -   `restart` **([string][8] | [boolean][31])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][38] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
     -   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
--   `timeout` **[number][15]?** -   [timeout][39] in ms of all Playwright actions .
--   `disableScreenshots` **[boolean][31]?** don't save screenshot on failure.
+-   `timeout` **[number][14]?** -   [timeout][38] in ms of all Playwright actions .
+-   `disableScreenshots` **[boolean][30]?** don't save screenshot on failure.
 -   `emulate` **any?** browser in device emulation mode.
--   `video` **[boolean][31]?** enables video recording for failed tests; videos are saved into `output/videos` folder
--   `keepVideoForPassedTests` **[boolean][31]?** save videos for passed tests; videos are saved into `output/videos` folder
--   `trace` **[boolean][31]?** record [tracing information][40] with screenshots and snapshots.
--   `keepTraceForPassedTests` **[boolean][31]?** save trace for passed tests.
--   `fullPageScreenshots` **[boolean][31]?** make full page screenshots on failure.
--   `uniqueScreenshotNames` **[boolean][31]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
--   `keepBrowserState` **[boolean][31]?** keep browser state between tests when `restart` is set to 'session'.
--   `keepCookies` **[boolean][31]?** keep cookies between tests when `restart` is set to 'session'.
--   `waitForAction` **[number][15]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"networkidle"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][41].
--   `pressKeyDelay` **[number][15]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
--   `getPageTimeout` **[number][15]?** config option to set maximum navigation time in milliseconds.
--   `waitForTimeout` **[number][15]?** default wait* timeout in ms. Default: 1000.
+-   `video` **[boolean][30]?** enables video recording for failed tests; videos are saved into `output/videos` folder
+-   `keepVideoForPassedTests` **[boolean][30]?** save videos for passed tests; videos are saved into `output/videos` folder
+-   `trace` **[boolean][30]?** record [tracing information][39] with screenshots and snapshots.
+-   `keepTraceForPassedTests` **[boolean][30]?** save trace for passed tests.
+-   `fullPageScreenshots` **[boolean][30]?** make full page screenshots on failure.
+-   `uniqueScreenshotNames` **[boolean][30]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `keepBrowserState` **[boolean][30]?** keep browser state between tests when `restart` is set to 'session'.
+-   `keepCookies` **[boolean][30]?** keep cookies between tests when `restart` is set to 'session'.
+-   `waitForAction` **[number][14]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
+-   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"networkidle"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][40].
+-   `pressKeyDelay` **[number][14]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
+-   `getPageTimeout` **[number][14]?** config option to set maximum navigation time in milliseconds.
+-   `waitForTimeout` **[number][14]?** default wait* timeout in ms. Default: 1000.
 -   `basicAuth` **[object][5]?** the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `windowSize` **[string][8]?** default window size. Set a dimension like `640x480`.
 -   `colorScheme` **(`"dark"` | `"light"` | `"no-preference"`)?** default color scheme. Possible values: `dark` | `light` | `no-preference`.
@@ -214,6 +214,22 @@ const { devices } = require('playwright');
     colorScheme: "dark",
   }
  }
+}
+```
+
+-   #### Example #9: Launch electron test
+
+```js
+{
+ helpers: {
+    Playwright: {
+      browser: 'electron',
+      electron: {
+        executablePath: require("electron"),
+        args: [path.join('../', "main.js")],
+      },
+    }
+  },
 }
 ```
 
@@ -408,20 +424,26 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 
 ### blur
 
-Remove focus from a text input, button, etc
+Remove focus from a text input, button, etc.
 Calls [blur][9] on the element.
+
+Examples:
+
+```js
+I.blur('.text-area')
+```
+
+```js
+//element `#product-tile` is focused
+I.see('#add-to-cart-btn');
+I.blur('#product-tile')
+I.dontSee('#add-to-cart-btn');
+```
 
 #### Parameters
 
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** [Additional options][9] for available options object as 2nd argument.Examples:```js
-    I.blur('.text-area')
-    ``````js
-    //element `#product-tile` is focused
-    I.see('#add-to-cart-btn');
-    I.blur('#product-tile')
-    I.dontSee('#add-to-cart-btn');
-    ``` 
+-   `options` **any?** Playwright only: [Additional options][10] for available options object as 2nd argument. 
 
 ### cancelPopup
 
@@ -444,7 +466,7 @@ I.checkOption('agree', '//form');
 
 -   `field` **([string][8] | [object][5])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][8]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator.
-    ⚠️ returns a _promise_ which is synchronized internally by recorder[Additional options][10] for check available as 3rd argument.Examples:```js
+    ⚠️ returns a _promise_ which is synchronized internally by recorder[Additional options][11] for check available as 3rd argument.Examples:```js
     // click on element at position
     I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
     ```> ⚠️ To avoid flakiness, option `force: true` is set by default 
@@ -471,12 +493,12 @@ Clears the text input element: `<input>`, `<textarea>` or `[contenteditable]` .
 
 Examples:
 
-```js
-I.clearField('.text-area')
-
-// if this doesn't work use force option
-I.clearField('#submit', { force: true }) 
-```
+-   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `options` **any?** [Additional options][11] for available options object as 2nd argument.Examples:```js
+    I.clearField('.text-area')
+    ``````js
+    I.clearField('#submit', { force: true }) // force to bypass the [actionability](https://playwright.dev/docs/actionability) checks.
+    ``` 
 
 Use `force` to bypass the [actionability][11] checks.
 
@@ -790,16 +812,21 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 ### focus
 
-Calls [focus][18] on the matching element.
+Calls [focus][17] on the matching element.
 
-#### Parameters
+Examples:
 
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** [Additional options][19] for available options object as 2nd argument.Examples:```js
+-   `options` **any?** [Additional options][18] for available options object as 2nd argument.Examples:```js
     I.dontSee('#add-to-cart-btn');
     I.focus('#product-tile')
     I.see('#add-to-cart-bnt');
     ``` 
+
+#### Parameters
+
+-   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
+-   `options` **any?** Playwright only: [Additional options][18] for available options object as 2nd argument. 
 
 ### forceClick
 
@@ -865,7 +892,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][8]** attribute name.
 
-Returns **[Promise][17]&lt;[Array][20]&lt;[string][8]>>** attribute value
+Returns **[Promise][16]&lt;[Array][19]&lt;[string][8]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -879,7 +906,7 @@ console.log(JSON.stringify(errors));
 
 [Learn more about console messages][21]
 
-Returns **[Promise][17]&lt;[Array][20]&lt;any>>** 
+Returns **[Promise][16]&lt;[Array][19]&lt;any>>** 
 
 ### grabCookie
 
@@ -896,7 +923,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][8]?** cookie name. 
 
-Returns **([Promise][17]&lt;[string][8]> | [Promise][17]&lt;[Array][20]&lt;[string][8]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][16]&lt;[string][8]> | [Promise][16]&lt;[Array][19]&lt;[string][8]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -929,7 +956,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][8]** CSS property name.
 
-Returns **[Promise][17]&lt;[Array][20]&lt;[string][8]>>** CSS value
+Returns **[Promise][16]&lt;[Array][19]&lt;[string][8]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1027,7 +1054,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][8] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][17]&lt;[Array][20]&lt;[string][8]>>** HTML code for an element
+Returns **[Promise][16]&lt;[Array][19]&lt;[string][8]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1117,7 +1144,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][17]&lt;[Array][20]&lt;[string][8]>>** attribute value
+Returns **[Promise][16]&lt;[Array][19]&lt;[string][8]>>** attribute value
 
 ### grabTitle
 
@@ -1159,7 +1186,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][17]&lt;[Array][20]&lt;[string][8]>>** attribute value
+Returns **[Promise][16]&lt;[Array][19]&lt;[string][8]>>** attribute value
 
 ### handleDownloads
 
@@ -1228,8 +1255,8 @@ This method allows intercepting and mocking requests & responses. [Learn more ab
 
 #### Parameters
 
--   `url` **([string][8] | [RegExp][26])?** URL, regex or pattern for to match URL
--   `handler` **[function][16]?** a function to process reques
+-   `url` **([string][8] | [RegExp][25])?** URL, regex or pattern for to match URL
+-   `handler` **[function][15]?** a function to process reques
 
 ### moveCursorTo
 
@@ -1805,8 +1832,8 @@ If no handler is passed, all mock requests for the rote are disabled.
 
 #### Parameters
 
--   `url` **([string][8] | [RegExp][26])?** URL, regex or pattern for to match URL
--   `handler` **[function][16]?** a function to process reques
+-   `url` **([string][8] | [RegExp][25])?** URL, regex or pattern for to match URL
+-   `handler` **[function][15]?** a function to process reques
 
 ### switchTo
 
@@ -2007,9 +2034,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][8] | [function][16])** to be executed in browser context.
--   `argsOrSec` **([Array][20]&lt;any> | [number][15])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][15]?** (optional, `1` by default) time in seconds to wait
+-   `fn` **([string][8] | [function][15])** to be executed in browser context.
+-   `argsOrSec` **([Array][19]&lt;any> | [number][14])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][14]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
@@ -2110,8 +2137,8 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][15]** (optional, `1` by default) time in seconds to wait
-    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][37]. 
+-   `sec` **[number][14]** (optional, `1` by default) time in seconds to wait
+    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][36]. 
 
 ### waitInUrl
 
@@ -2188,11 +2215,11 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[9]: https://playwright.dev/docs/api/class-locator#locator-blur
+[9]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
 
-[10]: https://playwright.dev/docs/api/class-elementhandle#element-handle-check
+[10]: https://playwright.dev/docs/api/class-locator#locator-blur
 
-[11]: https://playwright.dev/docs/actionability
+[11]: https://playwright.dev/docs/api/class-locator#locator-clear
 
 [12]: https://playwright.dev/docs/api/class-locator#locator-clear
 

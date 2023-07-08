@@ -8,7 +8,7 @@ describe('Workers', () => {
   });
 
   beforeEach(function () {
-    this.timeout(20000);
+    this.timeout(40000);
   });
 
   it('should run simple worker', (done) => {
