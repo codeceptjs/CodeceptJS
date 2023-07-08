@@ -272,6 +272,6 @@ describe('Workers', () => {
       expect(workers.getWorkers().length).equal(8);
       expect(status).equal(true);
       done();
-    });
+    }).catch(done);
   });
 });
