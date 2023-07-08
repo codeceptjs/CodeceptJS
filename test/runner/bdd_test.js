@@ -1,5 +1,4 @@
 const assert = require('assert');
-const { log } = require('console');
 const path = require('path');
 const exec = require('child_process').exec;
 
@@ -192,6 +191,29 @@ describe('BDD Gherkin', () => {
       done();
     });
   });
+
+  it('should run scenario and scenario outline by tags', (done) => {
+    exec(config_run_config('codecept.bdd.js') + ' --grep "\@user|\@very" --steps', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.not.include('0 passed');
+      stdout.should.include('I have product with price 10$');
+      stdout.should.include('I have product with $600 price in my cart');
+      stdout.should.include('6 passed');
+      assert(!err);
+      done();
+    });
+  });  
+
+  it('should run not get stuck on failing step', (done) => {
+    exec(config_run_config('codecept.bdd.js') + ' --grep "@fail" --steps', (err, stdout, stderr) => { //eslint-disable-line
+      // stdout.should.include('Given I make a request (and it fails)');
+      // stdout.should.not.include('Then my test execution gets stuck');
+      stdout.should.include('1 failed');
+      stdout.should.include('[Wrapped Error]');
+      assert(err);
+      done();
+    });
+  });
+
 
   it('should show all available steps', (done) => {
     exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line
