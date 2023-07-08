@@ -612,7 +612,7 @@ Self-healing tests with OpenAI.
 
 This plugin is experimental and requires OpenAI API key.
 
-To use it you need to set OPENAI_API_KEY env variable and enable plugin inside condig.
+To use it you need to set OPENAI_API_KEY env variable and enable plugin inside the config.
 
 ```js
 plugins: {

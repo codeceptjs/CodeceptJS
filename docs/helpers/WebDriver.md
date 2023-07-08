@@ -30,22 +30,22 @@ Type: [object][16]
 -   `browser` **[string][17]** Browser in which to perform testing.
 -   `basicAuth` **[string][17]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 -   `host` **[string][17]?** WebDriver host to connect.
--   `port` **[number][20]?** WebDriver port to connect.
+-   `port` **[number][22]?** WebDriver port to connect.
 -   `protocol` **[string][17]?** protocol for WebDriver server.
 -   `path` **[string][17]?** path to WebDriver server.
--   `restart` **[boolean][29]?** restart browser between tests.
--   `smartWait` **([boolean][29] | [number][20])?** **enables [SmartWait][33]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
--   `disableScreenshots` **[boolean][29]?** don't save screenshots on failure.
--   `fullPageScreenshots` **[boolean][29]?** (optional - make full page screenshots on failure.
--   `uniqueScreenshotNames` **[boolean][29]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
--   `keepBrowserState` **[boolean][29]?** keep browser state between tests when `restart` is set to false.
--   `keepCookies` **[boolean][29]?** keep cookies between tests when `restart` set to false.
+-   `restart` **[boolean][32]?** restart browser between tests.
+-   `smartWait` **([boolean][32] | [number][22])?** **enables [SmartWait][36]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+-   `disableScreenshots` **[boolean][32]?** don't save screenshots on failure.
+-   `fullPageScreenshots` **[boolean][32]?** (optional - make full page screenshots on failure.
+-   `uniqueScreenshotNames` **[boolean][32]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `keepBrowserState` **[boolean][32]?** keep browser state between tests when `restart` is set to false.
+-   `keepCookies` **[boolean][32]?** keep cookies between tests when `restart` set to false.
 -   `windowSize` **[string][17]?** default window size. Set to `maximize` or a dimension in the format `640x480`.
--   `waitForTimeout` **[number][20]?** sets default wait time in _ms_ for all `wait*` functions.
+-   `waitForTimeout` **[number][22]?** sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities` **[object][16]?** Selenium's [desired capabilities][6].
--   `manualStart` **[boolean][29]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
--   `timeouts` **[object][16]?** [WebDriver timeouts][34] defined as hash.
--   `highlightElement` **[boolean][29]?** highlight the interacting elements
+-   `manualStart` **[boolean][32]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
+-   `timeouts` **[object][16]?** [WebDriver timeouts][37] defined as hash.
+-   `highlightElement` **[boolean][32]?** highlight the interacting elements
 
 
 
@@ -496,6 +496,29 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 -   `pathToFile` **[string][17]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
     ⚠️ returns a _promise_ which is synchronized internally by recorderAppium: not tested
 
+### blur
+
+Remove focus from a text input, button, etc.
+Calls [blur][19] on the element.
+
+Examples:
+
+```js
+I.blur('.text-area')
+```
+
+```js
+//element `#product-tile` is focused
+I.see('#add-to-cart-btn');
+I.blur('#product-tile')
+I.dontSee('#add-to-cart-btn');
+```
+
+#### Parameters
+
+-   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
+-   `options` **any?** Playwright only: [Additional options][20] for available options object as 2nd argument.
+
 ### cancelPopup
 
 Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
@@ -606,7 +629,7 @@ I.closeOtherTabs();
 
 ### defineTimeout
 
-Set [WebDriver timeouts][19] in realtime.
+Set [WebDriver timeouts][21] in realtime.
 
 Timeouts are expected to be passed as object:
 
@@ -813,7 +836,7 @@ I.dragSlider('#slider', -70);
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** located by label|name|CSS|XPath|strict locator.
--   `offsetX` **[number][20]** position to drag.
+-   `offsetX` **[number][22]** position to drag.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### executeAsyncScript
@@ -821,7 +844,7 @@ I.dragSlider('#slider', -70);
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][21].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][23].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -843,7 +866,7 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 -   `args` **...any** to be passed to function.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
--   `fn` **([string][17] | [function][22])** function to be executed in browser context.
+-   `fn` **([string][17] | [function][24])** function to be executed in browser context.
 
 ### executeScript
 
@@ -874,8 +897,8 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderWraps [execute][23] command.
--   `fn` **([string][17] | [function][22])** function to be executed in browser context.
+    ⚠️ returns a _promise_ which is synchronized internally by recorderWraps [execute][25] command.
+-   `fn` **([string][17] | [function][24])** function to be executed in browser context.
 
 ### fillField
 
@@ -903,6 +926,23 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 This action supports [React locators](https://codecept.io/react#locators)
 
     {{ custom }}
+
+### focus
+
+Calls [focus][19] on the matching element.
+
+Examples:
+
+```js
+I.dontSee('#add-to-cart-btn');
+I.focus('#product-tile')
+I.see('#add-to-cart-bnt');
+```
+
+#### Parameters
+
+-   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
+-   `options` **any?** Playwright only: [Additional options][26] for available options object as 2nd argument.
 
 ### forceClick
 
@@ -977,7 +1017,7 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
-Returns **[Promise][24]&lt;[Array][25]&lt;[string][17]>>** 
+Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** 
 
 ### grabAttributeFrom
 
@@ -994,7 +1034,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][17]** attribute name.
 
-Returns **[Promise][24]&lt;[string][17]>** attribute value
+Returns **[Promise][27]&lt;[string][17]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -1010,7 +1050,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][17]** attribute name.
 
-Returns **[Promise][24]&lt;[Array][25]&lt;[string][17]>>** attribute value
+Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -1022,7 +1062,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][24]&lt;[Array][25]&lt;[object][16]>> | [undefined][26])** all browser logs
+Returns **([Promise][27]&lt;[Array][28]&lt;[object][16]>> | [undefined][29])** all browser logs
 
 ### grabCookie
 
@@ -1039,7 +1079,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][17]?** cookie name. 
 
-Returns **([Promise][24]&lt;[string][17]> | [Promise][24]&lt;[Array][25]&lt;[string][17]>>)** attribute value
+Returns **([Promise][27]&lt;[string][17]> | [Promise][27]&lt;[Array][28]&lt;[string][17]>>)** attribute value
 
 ### grabCssPropertyFrom
 
@@ -1056,7 +1096,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][17]** CSS property name.
 
-Returns **[Promise][24]&lt;[string][17]>** CSS value
+Returns **[Promise][27]&lt;[string][17]>** CSS value
 
 ### grabCssPropertyFromAll
 
@@ -1072,7 +1112,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][17]** CSS property name.
 
-Returns **[Promise][24]&lt;[Array][25]&lt;[string][17]>>** CSS value
+Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1084,7 +1124,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][24]&lt;[string][17]>** current URL
+Returns **[Promise][27]&lt;[string][17]>** current URL
 
 ### grabCurrentWindowHandle
 
@@ -1095,7 +1135,7 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 const window = await I.grabCurrentWindowHandle();
 ```
 
-Returns **[Promise][24]&lt;[string][17]>** 
+Returns **[Promise][27]&lt;[string][17]>** 
 
 ### grabElementBoundingRect
 
@@ -1123,7 +1163,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][17]?** x, y, width or height of the given element.
 
-Returns **([Promise][24]&lt;DOMRect> | [Promise][24]&lt;[number][20]>)** Element bounding rectangle
+Returns **([Promise][27]&lt;DOMRect> | [Promise][27]&lt;[number][22]>)** Element bounding rectangle
 
 ### grabGeoLocation
 
@@ -1134,7 +1174,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let geoLocation = await I.grabGeoLocation();
 ```
 
-Returns **[Promise][24]&lt;{latitude: [number][20], longitude: [number][20], altitude: [number][20]}>** 
+Returns **[Promise][27]&lt;{latitude: [number][22], longitude: [number][22], altitude: [number][22]}>** 
 
 ### grabHTMLFrom
 
@@ -1151,7 +1191,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[string][17]>** HTML code for an element
+Returns **[Promise][27]&lt;[string][17]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -1167,7 +1207,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[Array][25]&lt;[string][17]>>** HTML code for an element
+Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1178,7 +1218,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][24]&lt;[number][20]>** number of open tabs
+Returns **[Promise][27]&lt;[number][22]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -1193,7 +1233,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[number][20]>** number of visible elements
+Returns **[Promise][27]&lt;[number][22]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -1204,7 +1244,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][24]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][27]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1214,7 +1254,7 @@ Grab the text within the popup. If no popup is visible then it will return null.
 await I.grabPopupText();
 ```
 
-Returns **[Promise][24]&lt;[string][17]>** 
+Returns **[Promise][27]&lt;[string][17]>** 
 
 ### grabSource
 
@@ -1225,7 +1265,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][24]&lt;[string][17]>** source code
+Returns **[Promise][27]&lt;[string][17]>** source code
 
 ### grabTextFrom
 
@@ -1242,7 +1282,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[string][17]>** attribute value
+Returns **[Promise][27]&lt;[string][17]>** attribute value
 
 ### grabTextFromAll
 
@@ -1257,7 +1297,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[Array][25]&lt;[string][17]>>** attribute value
+Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
 ### grabTitle
 
@@ -1268,7 +1308,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][24]&lt;[string][17]>** title
+Returns **[Promise][27]&lt;[string][17]>** title
 
 ### grabValueFrom
 
@@ -1284,7 +1324,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[string][17]>** attribute value
+Returns **[Promise][27]&lt;[string][17]>** attribute value
 
 ### grabValueFromAll
 
@@ -1299,7 +1339,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][24]&lt;[Array][25]&lt;[string][17]>>** attribute value
+Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
 ### moveCursorTo
 
@@ -1316,8 +1356,8 @@ I.moveCursorTo('#submit', 5,5);
 -   `locator` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 -   `xOffset`  
 -   `yOffset`  
--   `offsetX` **[number][20]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][20]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][22]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][22]** (optional, `0` by default) Y-axis offset.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### openNewTab
@@ -1339,7 +1379,7 @@ I.openNewTab();
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][27].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][30].
 
 ```js
 I.pressKey('Backspace');
@@ -1398,14 +1438,14 @@ Some of the supported key names are:
 
 #### Parameters
 
--   `key` **([string][17] | [Array][25]&lt;[string][17]>)** key or array of keys to press.
+-   `key` **([string][17] | [Array][28]&lt;[string][17]>)** key or array of keys to press.
     ⚠️ returns a _promise_ which is synchronized internally by recorder_Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
 
 ### pressKeyDown
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][31]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1422,7 +1462,7 @@ I.pressKeyUp('Control');
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][28]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][31]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1452,8 +1492,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][20]** width in pixels or `maximize`.
--   `height` **[number][20]** height in pixels.
+-   `width` **[number][22]** width in pixels or `maximize`.
+-   `height` **[number][22]** height in pixels.
     ⚠️ returns a _promise_ which is synchronized internally by recorderAppium: not tested in web, in apps doesn't work
 
 ### rightClick
@@ -1534,7 +1574,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][17]** file name to save.
--   `fullPage` **[boolean][29]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
+-   `fullPage` **[boolean][32]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### scrollIntoView
@@ -1550,7 +1590,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
--   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][30].
+-   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][33].
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### scrollPageToBottom
@@ -1586,8 +1626,8 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][20]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][20]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][22]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][22]** (optional, `0` by default) Y-axis offset.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### see
@@ -1793,7 +1833,7 @@ I.seeNumberOfElements('#submitBtn', 1);
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `num` **[number][20]** number of elements.
+-   `num` **[number][22]** number of elements.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 
@@ -1812,7 +1852,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `num` **[number][20]** number of elements.
+-   `num` **[number][22]** number of elements.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 
@@ -1870,7 +1910,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][17] | [Array][25]&lt;any>)** visible text or value of option.
+-   `option` **([string][17] | [Array][28]&lt;any>)** visible text or value of option.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### setCookie
@@ -1891,9 +1931,9 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **(Cookie | [Array][25]&lt;Cookie>)** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][28]&lt;Cookie>)** a cookie object or array of cookie objects.
     ⚠️ returns a _promise_ which is synchronized internally by recorderUses Selenium's JSON [cookie
-    format][31].
+    format][34].
 
 ### setGeoLocation
 
@@ -1906,9 +1946,9 @@ I.setGeoLocation(121.21, 11.56, 10);
 
 #### Parameters
 
--   `latitude` **[number][20]** to set.
--   `longitude` **[number][20]** to set
--   `altitude` **[number][20]?** (optional, null by default) to set
+-   `latitude` **[number][22]** to set.
+-   `longitude` **[number][22]** to set
+-   `altitude` **[number][22]?** (optional, null by default) to set
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### switchTo
@@ -1936,8 +1976,8 @@ I.switchToNextTab(2);
 
 #### Parameters
 
--   `num` **[number][20]?** (optional) number of tabs to switch forward, default: 1. 
--   `sec` **([number][20] | null)?** (optional) time in seconds to wait.
+-   `num` **[number][22]?** (optional) number of tabs to switch forward, default: 1. 
+-   `sec` **([number][22] | null)?** (optional) time in seconds to wait.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### switchToPreviousTab
@@ -1951,8 +1991,8 @@ I.switchToPreviousTab(2);
 
 #### Parameters
 
--   `num` **[number][20]?** (optional) number of tabs to switch backward, default: 1. 
--   `sec` **[number][20]??** (optional) time in seconds to wait.
+-   `num` **[number][22]?** (optional) number of tabs to switch backward, default: 1. 
+-   `sec` **[number][22]??** (optional) time in seconds to wait.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### switchToWindow
@@ -1977,7 +2017,7 @@ await I.switchToWindow( window );
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][27] is not an option.
+_Note:_ Should be used when [`fillField`][30] is not an option.
 
 ```js
 // passing in a string
@@ -1996,9 +2036,9 @@ I.type(secret('123456'));
 #### Parameters
 
 -   `keys`  
--   `delay` **[number][20]?** (optional) delay in ms between key presses
+-   `delay` **[number][22]?** (optional) delay in ms between key presses
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
--   `key` **([string][17] | [Array][25]&lt;[string][17]>)** or array of keys to type.
+-   `key` **([string][17] | [Array][28]&lt;[string][17]>)** or array of keys to type.
 
 ### uncheckOption
 
@@ -2021,12 +2061,12 @@ I.uncheckOption('agree', '//form');
 
 ### useWebDriverTo
 
-Use [webdriverio][32] API inside a test.
+Use [webdriverio][35] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][32]) } object from WebDriver API is available.
+{ [`browser`][35]) } object from WebDriver API is available.
 
 ```js
 I.useWebDriverTo('open multiple windows', async ({ browser }) {
@@ -2038,7 +2078,7 @@ I.useWebDriverTo('open multiple windows', async ({ browser }) {
 #### Parameters
 
 -   `description` **[string][17]** used to show in logs.
--   `fn` **[function][22]** async functuion that executed with WebDriver helper as argument
+-   `fn` **[function][24]** async functuion that executed with WebDriver helper as argument
 
 ### wait
 
@@ -2050,7 +2090,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][20]** number of second to wait.
+-   `sec` **[number][22]** number of second to wait.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForClickable
@@ -2067,7 +2107,7 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `waitTimeout`  
--   `sec` **[number][20]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForDetached
@@ -2082,7 +2122,7 @@ I.waitForDetached('#popup');
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForElement
@@ -2098,7 +2138,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `sec` **[number][20]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForEnabled
@@ -2109,7 +2149,7 @@ Element can be located by CSS or XPath.
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `sec` **[number][20]** (optional) time in seconds to wait, 1 by default.
+-   `sec` **[number][22]** (optional) time in seconds to wait, 1 by default.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForFunction
@@ -2129,9 +2169,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][17] | [function][22])** to be executed in browser context.
--   `argsOrSec` **([Array][25]&lt;any> | [number][20])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][20]?** (optional, `1` by default) time in seconds to wait
+-   `fn` **([string][17] | [function][24])** to be executed in browser context.
+-   `argsOrSec` **([Array][28]&lt;any> | [number][22])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][22]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
@@ -2146,7 +2186,7 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForText
@@ -2163,7 +2203,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][17]** to wait for.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][17] | [object][16])?** (optional) element located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
@@ -2179,7 +2219,7 @@ I.waitForValue('//input', "GoodValue");
 
 -   `field` **([string][17] | [object][16])** input field.
 -   `value` **[string][17]** expected value.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForVisible
@@ -2194,7 +2234,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitInUrl
@@ -2208,7 +2248,7 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][17]** value to check.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitNumberOfVisibleElements
@@ -2222,8 +2262,8 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `num` **[number][20]** number of elements.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `num` **[number][22]** number of elements.
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitToHide
@@ -2238,7 +2278,7 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitUrlEquals
@@ -2253,7 +2293,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][17]** value to check.
--   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][22]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 [1]: http://webdriver.io/
@@ -2292,34 +2332,40 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [18]: http://jster.net/category/windows-modals-popups
 
-[19]: https://webdriver.io/docs/timeouts.html
+[19]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
 
-[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[20]: https://playwright.dev/docs/api/class-locator#locator-blur
 
-[21]: https://vuejs.org/v2/api/#Vue-nextTick
+[21]: https://webdriver.io/docs/timeouts.html
 
-[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[23]: http://webdriver.io/api/protocol/execute.html
+[23]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[25]: http://webdriver.io/api/protocol/execute.html
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[26]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[27]: #fillfield
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[28]: #click
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[30]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[30]: #fillfield
 
-[31]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[31]: #click
 
-[32]: https://webdriver.io/docs/api.html
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[33]: http://codecept.io/acceptance/#smartwait
+[33]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[34]: http://webdriver.io/docs/timeouts.html
+[34]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+
+[35]: https://webdriver.io/docs/api.html
+
+[36]: http://codecept.io/acceptance/#smartwait
+
+[37]: http://webdriver.io/docs/timeouts.html

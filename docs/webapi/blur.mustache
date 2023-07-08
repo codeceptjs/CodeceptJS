@@ -1,0 +1,17 @@
+Remove focus from a text input, button, etc.
+Calls [blur](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus) on the element.
+
+Examples:
+
+```js
+I.blur('.text-area')
+```
+```js
+//element `#product-tile` is focused
+I.see('#add-to-cart-btn');
+I.blur('#product-tile')
+I.dontSee('#add-to-cart-btn');
+```
+
+@param {CodeceptJS.LocatorOrString} locator field located by label|name|CSS|XPath|strict locator.
+@param {any} [options] Playwright only: [Additional options](https://playwright.dev/docs/api/class-locator#locator-blur) for available options object as 2nd argument.
