@@ -24,48 +24,48 @@ Given(/I have simple product/, async () => {
 
 const sendRequest = async (requestConfig) => {
   if (!requestConfig) throw JSON.stringify({ error: 'Request config is null or undefined.' });
-  return await axios({
-      method: requestConfig.method || 'GET',
-      timeout: requestConfig.timeout || 3000,
-      ...requestConfig
+  return axios({
+    method: requestConfig.method || 'GET',
+    timeout: requestConfig.timeout || 3000,
+    ...requestConfig,
   }).catch(error => {
-      if (error.response) {
-          error = {
-              message: 'The request was made and the server responded with a status code.',
-              status: error.response.status,
-              data: error.response.data,
-              headers: error.response.headers,
-              request: error.config.data,
-              url: error.response.config.url
-          };
-      } else if (error.request) {
-          error = {
-              message: 'The request was made but no response was received.',
-              request: error.request,
-          };
-      } else {
-          error = {
-              message: `Something happened in setting up the request that triggered an Error.\n${error.message}`,
-          };
-      }
-      throw error;
+    if (error.response) {
+      error = {
+        message: 'The request was made and the server responded with a status code.',
+        status: error.response.status,
+        data: error.response.data,
+        headers: error.response.headers,
+        request: error.config.data,
+        url: error.response.config.url,
+      };
+    } else if (error.request) {
+      error = {
+        message: 'The request was made but no response was received.',
+        request: error.request,
+      };
+    } else {
+      error = {
+        message: `Something happened in setting up the request that triggered an Error.\n${error.message}`,
+      };
+    }
+    throw error;
   });
 };
 
 Given(/^I make a request \(and it fails\)$/, async () => {
   const requestPayload = {
-      method: "GET",
-      url: `https://google.com`,
-      headers: {
-          Cookie: "featureConfig=%7B%22enableCaptcha%22%3A%220%22%7D",
-          "X-Requested-With": "XMLHttpRequest",
-      },
-      timeout: 1
+    method: 'GET',
+    url: 'https://google.com',
+    headers: {
+      Cookie: 'featureConfig=%7B%22enableCaptcha%22%3A%220%22%7D',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+    timeout: 1,
   };
 
-  await sendRequest(requestPayload);
+  return sendRequest(requestPayload);
 });
 
 Then(/^my test execution gets stuck$/, async () => {
-  await I.say("Test execution never gets here...");
+  I.say('Test execution never gets here...');
 });

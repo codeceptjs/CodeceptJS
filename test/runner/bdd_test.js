@@ -201,7 +201,7 @@ describe('BDD Gherkin', () => {
       assert(!err);
       done();
     });
-  });  
+  });
 
   it('should run not get stuck on failing step', (done) => {
     exec(config_run_config('codecept.bdd.js') + ' --grep "@fail" --steps', (err, stdout, stderr) => { //eslint-disable-line
@@ -213,7 +213,6 @@ describe('BDD Gherkin', () => {
       done();
     });
   });
-
 
   it('should show all available steps', (done) => {
     exec(`${runner} gherkin:steps --config ${codecept_dir}/codecept.bdd.js`, (err, stdout, stderr) => { //eslint-disable-line

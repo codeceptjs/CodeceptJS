@@ -411,17 +411,20 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 Remove focus from a text input, button, etc
 Calls [blur][9] on the element.
 
+Examples:
+
+```js
+I.blur('.text-area');
+//element `#product-tile` is focused
+I.see('#add-to-cart-btn');
+I.blur('#product-tile')
+I.dontSee('#add-to-cart-btn');
+```
+
 #### Parameters
 
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** [Additional options][9] for available options object as 2nd argument.Examples:```js
-    I.blur('.text-area')
-    ``````js
-    //element `#product-tile` is focused
-    I.see('#add-to-cart-btn');
-    I.blur('#product-tile')
-    I.dontSee('#add-to-cart-btn');
-    ``` 
+-   `options` **any?** [Additional options][9] for available options object as 2nd argument. 
 
 ### cancelPopup
 
@@ -475,7 +478,7 @@ Examples:
 I.clearField('.text-area')
 
 // if this doesn't work use force option
-I.clearField('#submit', { force: true }) 
+I.clearField('#submit', { force: true })
 ```
 
 Use `force` to bypass the [actionability][11] checks.
