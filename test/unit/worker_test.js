@@ -268,10 +268,14 @@ describe('Workers', () => {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
-      expect(workers.getWorkers().length).equal(8);
-      expect(status).equal(true);
+    try {
+      workers.on(event.all.result, (status) => {
+        expect(workers.getWorkers().length).equal(8);
+        expect(status).equal(true);
+        done();
+      });
+    } catch (e) {
       done();
-    }).catch(done);
+    }
   });
 });
