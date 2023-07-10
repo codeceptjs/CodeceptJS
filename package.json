@@ -115,7 +115,7 @@
     "contributor-faces": "^1.0.3",
     "documentation": "^12.3.0",
     "dtslint": "^4.1.6",
-    "electron": "^12.2.3",
+    "electron": "^25.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
