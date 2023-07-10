@@ -724,8 +724,8 @@ Verifies that a certain request is not part of network traffic.
 
 #### Parameters
 
--   `name`  A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
--   `url`  Expected URL of request in network traffic
+-   `name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+-   `url` **[string][8]** Expected URL of request in network traffic
 
 ### doubleClick
 
@@ -1132,6 +1132,12 @@ await I.grabPopupText();
 ```
 
 Returns **[Promise][19]&lt;([string][8] | null)>** 
+
+### grabRecordingTraffic
+
+Grab the recording network traffics
+
+Returns **[Promise][19]&lt;[Array][21]&lt;any>>** 
 
 ### grabSource
 
@@ -1818,9 +1824,9 @@ Verifies that a certain request is part of network traffic.
 
 #### Parameters
 
--   `name`  A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
--   `url`  Expected URL of request in network traffic
--   `parameters`  Expected parameters of that request in network traffic 
+-   `name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+-   `url` **[string][8]** Expected URL of request in network traffic
+-   `parameters`  Expected parameters of that request in network traffic
 -   `timeout`  Timeout to wait for request in seconds. Default is 10 seconds. 
 
 Returns **[Promise][19]&lt;[boolean][32]>** 

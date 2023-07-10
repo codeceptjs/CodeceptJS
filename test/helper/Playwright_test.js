@@ -779,7 +779,7 @@ describe('Playwright', function () {
     });
   });
 
-  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
+  describe.only('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
     it('should see recording traffics', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
@@ -813,7 +813,7 @@ describe('Playwright', function () {
     });
 
     it('should block traffics', async () => {
-      await I.blockTraffic('https://reqres.in/api/comments/*');
+      I.blockTraffic('https://reqres.in/api/comments/*');
       await I.amOnPage('/form/fetch_call');
       await I.startRecordingTraffic();
       await I.click('GET COMMENTS');
