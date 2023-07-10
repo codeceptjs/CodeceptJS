@@ -17,7 +17,7 @@ jobs:
       - name: Check out the repo with latest code
         uses: actions/checkout@v3
       - name: Push latest to Docker Hub
-        uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
+        uses: docker/build-push-action@v4 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -36,7 +36,7 @@ jobs:
           ref: ${{ env.TAG }}
 
       - name: Push current tag to Docker Hub
-        uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
+        uses: docker/build-push-action@v4 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
