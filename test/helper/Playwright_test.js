@@ -779,7 +779,7 @@ describe('Playwright', function () {
     });
   });
 
-  describe.only('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
     it('should see recording traffics', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
