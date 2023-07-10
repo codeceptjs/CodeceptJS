@@ -16,7 +16,7 @@
 
 * Fixed Playwright docs by @Horsty80
 * Fixed ai docs by @ngraf 
-* Verious fixes by @KobeNguyenT
+* Various fixes by @KobeNguyenT
 
 ## 3.5.0
 
