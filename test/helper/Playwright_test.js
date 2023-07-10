@@ -779,6 +779,48 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
+    it('should see recording traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.seeTraffic('traffics to image', 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg');
+    });
+
+    it('should throw error when calling seeTraffic before recording traffics', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic('traffics to image', 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg');
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
+      }
+    });
+
+    it('should not see recording traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.stopRecordingTraffic();
+      await I.dontSeeTraffic('traffics to image', 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg');
+    });
+
+    it('should mock traffics', async () => {
+      await I.amOnPage('/form/fetch_call');
+      await I.mockTraffic('https://reqres.in/api/comments/1', '{"name": "this was mocked" }');
+      await I.startRecordingTraffic();
+      await I.click('GET COMMENTS');
+      await I.see('this was mocked');
+      const traffics = await I.grabRecordingTraffic();
+      expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+    });
+
+    it('should block traffics', async () => {
+      await I.blockTraffic('https://reqres.in/api/comments/*');
+      await I.amOnPage('/form/fetch_call');
+      await I.startRecordingTraffic();
+      await I.click('GET COMMENTS');
+      await I.see('Can not load data!');
+    });
+  });
+
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
       const response = await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
