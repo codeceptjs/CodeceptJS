@@ -136,8 +136,8 @@ playwright.stopMockingRoute(str); // $ExpectType Promise<any>
 playwright.startRecordingTraffic(); // $ExpectType Promise<void>
 playwright.stopRecordingTraffic(); // $ExpectType Promise<any>
 playwright.seeTraffic(); // $ExpectError
-playwright.seeTraffic('name'); // $ExpectError
-playwright.seeTraffic('name', 'url'); // $ExpectType Promise<boolean>
+playwright.seeTraffic(str); // $ExpectError
+playwright.seeTraffic(str, str); // $ExpectType Promise<boolean>
 playwright.dontSeeTraffic(); // $ExpectError
-playwright.dontSeeTraffic('name'); // $ExpectError
-playwright.dontSeeTraffic('name', 'url'); // $ExpectType Promise<any>
+playwright.dontSeeTraffic(str); // $ExpectError
+playwright.dontSeeTraffic(str, str); // $ExpectType Promise<any>
