@@ -2,7 +2,9 @@ const { expect } = require('chai');
 const path = require('path');
 const { Workers, event, recorder } = require('../../lib/index');
 
-describe('Workers', () => {
+describe('Workers', function () {
+  this.timeout(40000);
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox');
   });

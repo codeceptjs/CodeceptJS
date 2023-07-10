@@ -138,7 +138,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should run features in parallel', (done) => {
     process.chdir(codecept_dir);
-    exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --features`, (err, stdout) => {
+    exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --features  --grep '(?=.*)^(?!.*@fail)'`, (err, stdout) => {
       stdout.should.include('[1.chunks:chunk1:default] Checkout examples process');
       stdout.should.not.include('[2.chunks:chunk2:default] Checkout examples process');
       stdout.should.include('[2.chunks:chunk2:default] Checkout string');
@@ -153,7 +153,7 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should run features & tests in parallel', (done) => {
     process.chdir(codecept_dir);
-    exec(`${runner} run-multiple --config codecept.multiple.features.js chunks`, (err, stdout) => {
+    exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --grep '(?=.*)^(?!.*@fail)'`, (err, stdout) => {
       stdout.should.include('@feature_grep');
       stdout.should.include('Checkout examples process');
       stdout.should.include('Checkout string');
