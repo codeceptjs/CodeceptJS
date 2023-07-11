@@ -79,20 +79,6 @@ services:
       - ./support:/support
       - node_modules:/node_modules
 
-  test-acceptance.nightmare:
-    build: ..
-    env_file: .env
-    environment:
-      - CODECEPT_ARGS=-c codecept.Nightmare.js --grep
-    depends_on:
-      - php
-      - selenium.chrome
-    volumes:
-      - ./acceptance:/tests
-      - ./data:/data
-      - ./support:/support
-      - node_modules:/node_modules
-
   test-acceptance.puppeteer:
     build: ..
     env_file: .env
