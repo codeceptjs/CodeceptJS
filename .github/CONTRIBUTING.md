@@ -39,9 +39,9 @@ DEBUG=codeceptjs:* npx codeceptjs run
 
 ## Helpers
 
-Please keep in mind that CodeceptJS have **unified API** for Playwright, WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
+Please keep in mind that CodeceptJS have **unified API** for Playwright, WebDriverIO, Appium, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Playwright doesn't, you can implement XXX inside Playwright using the same method signature.
 
-### Updating Playwright | Puppeteer | WebDriver | Nightmare
+### Updating Playwright | Puppeteer | WebDriver
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
@@ -61,7 +61,6 @@ Execute test suite:
 ```sh
 mocha test/helper/WebDriver_test.js
 mocha test/helper/Puppeteer_test.js
-mocha test/helper/Nightmare_test.js
 ```
 
 Use `--grep` to execute tests only for changed parts.
@@ -187,12 +186,10 @@ docker-compose run --rm test-helpers test/rest
 
 #### Run acceptance tests
 
-To that we provide three separate services respectively for WebDriver, Nightmare, Puppeteer and
-Protractor tests:
+To that we provide three separate services respectively for WebDriver, Puppeteer tests:
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio
-docker-compose run --rm test-acceptance.nightmare
 docker-compose run --rm test-acceptance.puppeteer
 ```
 

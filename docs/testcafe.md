@@ -5,7 +5,7 @@ title: Testing with TestCafe
 
 # Testing with TestCafe
 
-[TestCafe](https://devexpress.github.io/testcafe/) is another alternative engine for driving browsers. It is driven by unique technology which provides fast and simple cross browser testing for desktop and mobile browsers. Unlike WebDriver or Puppeteer, TestCafe doesn't control a browser at all. It is not a browser itself, like [Nightmare](/nightmare) or Cypress. **TestCafe core is a proxy server** that runs behind the scene, and transforms all HTML and JS to include code that is needed for test automation.
+[TestCafe](https://devexpress.github.io/testcafe/) is another alternative engine for driving browsers. It is driven by unique technology which provides fast and simple cross browser testing for desktop and mobile browsers. Unlike WebDriver or Puppeteer, TestCafe doesn't control a browser at all. It is not a browser itself, like Cypress. **TestCafe core is a proxy server** that runs behind the scene, and transforms all HTML and JS to include code that is needed for test automation.
 
 ![Testcafe](/img/testcafe.png)
 

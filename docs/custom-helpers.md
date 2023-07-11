@@ -154,7 +154,7 @@ You can also pass additional config options to your helper from a config - **(pl
 ```js
 helpers: {
   // here goes standard helpers:
-  // WebDriver, Protractor, Nightmare, etc...
+  // WebDriver, Protractor, etc...
   // and their configuration
   MyHelper: {
     require: "./my_helper.js", // path to module

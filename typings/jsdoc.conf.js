@@ -9,7 +9,6 @@ module.exports = {
       './lib/data/table.js',
       './lib/data/dataTableArgument.js',
       './lib/event.js',
-      './lib/helper/clientscripts/nightmare.js',
       './lib/index.js',
       './lib/interfaces',
       './lib/locator.js',

@@ -20,10 +20,6 @@ defaults: &defaults
         working_directory: test
         when: always
     - run:
-        command: docker-compose run --rm test-acceptance.nightmare
-        working_directory: test
-        when: always
-    - run:
         command: docker-compose run --rm test-acceptance.puppeteer
         working_directory: test
         when: always

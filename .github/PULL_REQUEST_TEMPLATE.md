@@ -4,15 +4,13 @@
 
 Applicable helpers:
 
-- [ ] WebDriver
+- [ ] Playwright
 - [ ] Puppeteer
-- [ ] Nightmare
+- [ ] WebDriver
 - [ ] REST
 - [ ] FileHelper
 - [ ] Appium
-- [ ] Protractor
 - [ ] TestCafe
-- [ ] Playwright
 
 Applicable plugins:
 
