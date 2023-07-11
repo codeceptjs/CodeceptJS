@@ -1822,14 +1822,43 @@ I.seeTitleEquals('Test title.');
 
 Verifies that a certain request is part of network traffic.
 
+```js
+// checking the request url contains certain query strings
+I.amOnPage('https://openai.com/blog/chatgpt');
+await I.startRecordingTraffic();
+await I.seeTraffic({
+   name: 'sentry event',
+   url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+   parameters: {
+      width: '1919',
+      height: '1138',
+    },
+});
+```
+
+```js
+// checking the request url contains certain post data
+I.amOnPage('https://openai.com/blog/chatgpt');
+await I.startRecordingTraffic();
+await I.seeTraffic({
+   name: 'event',
+   url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+   requestPostData: {
+      st: 2,
+    },
+});
+```
+
 #### Parameters
 
--   `name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
--   `url` **[string][8]** Expected URL of request in network traffic
--   `parameters`  Expected parameters of that request in network traffic
--   `timeout`  Timeout to wait for request in seconds. Default is 10 seconds. 
+-   `opts` **[Object][5]** options when checking the traffic network.
+    -   `opts.trafficName` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    -   `opts.url` **[string][8]** Expected URL of request in network traffic
+    -   `opts.parameters` **[Object][5]?** Expected parameters of that request in network traffic
+    -   `opts.requestPostData` **[Object][5]?** Expected that request contains post data in network traffic
+    -   `opts.timeout` **[number][17]?** Timeout to wait for request in seconds. Default is 10 seconds. 
 
-Returns **[Promise][19]&lt;[boolean][32]>** 
+Returns **[Promise][19]&lt;any>** 
 
 ### selectOption
 

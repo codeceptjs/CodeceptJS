@@ -783,13 +783,13 @@ describe('Playwright', function () {
     it('should see recording traffics', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
-      await I.seeTraffic('traffics to image', 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg');
+      await I.seeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
       try {
         I.amOnPage('https://codecept.io/');
-        await I.seeTraffic('traffics to image', 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg');
+        await I.seeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
         expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
       }
@@ -799,7 +799,7 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       await I.stopRecordingTraffic();
-      await I.dontSeeTraffic('traffics to image', 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg');
+      await I.dontSeeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should mock traffics', async () => {
@@ -818,6 +818,47 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       await I.click('GET COMMENTS');
       await I.see('Can not load data!');
+    });
+
+    it('should check traffics with more advanced params', async () => {
+      I.amOnPage('https://openai.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      await I.seeTraffic({
+        name: 'sentry event',
+        url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+        parameters: {
+          width: '1919',
+          height: '1138',
+        },
+      });
+    });
+
+    it('should check traffics with more advanced post data', async () => {
+      I.amOnPage('https://openai.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      await I.seeTraffic({
+        name: 'event',
+        url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+        requestPostData: {
+          st: 2,
+        },
+      });
+    });
+
+    it('should show error when advanced post data are not matching', async () => {
+      I.amOnPage('https://openai.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      try {
+        await I.seeTraffic({
+          name: 'event',
+          url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+          requestPostData: {
+            st: 3,
+          },
+        });
+      } catch (e) {
+        expect(e.message).to.contain('actual value: "2"');
+      }
     });
   });
 
