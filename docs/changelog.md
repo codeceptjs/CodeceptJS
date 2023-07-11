@@ -7,6 +7,26 @@ layout: Section
 
 # Releases
 
+## 3.5.1
+
+🛩️ Features
+
+* [Puppeteer][WebDriver][TestCafe] Added methods by **[KobeNguyenT](https://github.com/KobeNguyenT)** in [#3737](https://github.com/codeceptjs/CodeceptJS/issues/3737) 
+  * `blur`
+  * `focus`
+* Improved BDD output to print steps without `I.` commands` by **[davertmik](https://github.com/davertmik)** [#3739](https://github.com/codeceptjs/CodeceptJS/issues/3739)
+* Improved `codecept init` setup for Electron tests by **[KobeNguyenT](https://github.com/KobeNguyenT)**. See [#3733](https://github.com/codeceptjs/CodeceptJS/issues/3733)
+
+🐛 Bug Fixes
+
+* Fixed serializing of custom errors making tests stuck. Fix [#3739](https://github.com/codeceptjs/CodeceptJS/issues/3739) by **[davertmik](https://github.com/davertmik)**.
+
+📖 Documentation
+
+* Fixed Playwright docs by **[Horsty80](https://github.com/Horsty80)**
+* Fixed ai docs by **[ngraf](https://github.com/ngraf)** 
+* Various fixes by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+
 ## 3.5.0
 
 🛩️ Features

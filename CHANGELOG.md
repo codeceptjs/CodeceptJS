@@ -1,3 +1,10 @@
+## 3.5.2
+
+🐛 Bug Fixes
+
+* [Playwright] reverted `clearField` to previous implementation
+* [OpenAI] fixed running helper in pause mode. #3755 by @KobeNguyenT
+
 ## 3.5.1
 
 🛩️ Features
