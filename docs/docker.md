@@ -56,7 +56,7 @@ services:
 
 ### Linking Containers
 
-If using the Protractor or WebDriver drivers, link the container with a Selenium Standalone docker container with an alias of `selenium`. Additionally, make sure your `codeceptjs.conf.js` contains the following to allow CodeceptJS to identify where Selenium is running.
+If using the WebDriver driver, link the container with a Selenium Standalone docker container with an alias of `selenium`. Additionally, make sure your `codeceptjs.conf.js` contains the following to allow CodeceptJS to identify where Selenium is running.
 
 ```javascript
   ...

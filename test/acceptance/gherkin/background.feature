@@ -1,4 +1,4 @@
-@Nightmare @Protractor @Puppeteer @WebDriverIO @bdd
+@Nightmare @Puppeteer @WebDriverIO @bdd
 Feature: Site test
   In order to achieve my goals
   As a persona
