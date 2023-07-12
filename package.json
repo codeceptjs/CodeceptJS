@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.5.1",
+  "version": "3.5.2",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -65,7 +65,7 @@
     "@cucumber/gherkin": "^26",
     "@cucumber/messages": "^21.0.1",
     "@xmldom/xmldom": "^0.7.9",
-    "acorn": "^7.4.1",
+    "acorn": "^8.10.0",
     "arrify": "^2.0.1",
     "axios": "^1.3.3",
     "chai": "^4.3.6",
@@ -75,7 +75,7 @@
     "cross-spawn": "^7.0.3",
     "css-to-xpath": "^0.1.0",
     "envinfo": "^7.8.1",
-    "escape-string-regexp": "^1.0.3",
+    "escape-string-regexp": "^4.0.0",
     "figures": "^3.2.0",
     "fn-args": "^4.0.0",
     "fs-extra": "^8.1.0",
@@ -115,7 +115,7 @@
     "contributor-faces": "^1.0.3",
     "documentation": "^12.3.0",
     "dtslint": "^4.1.6",
-    "electron": "^12.2.3",
+    "electron": "^25.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
@@ -146,7 +146,7 @@
     "wdio-docker-service": "^1.5.0",
     "webdriverio": "^8.3.8",
     "xml2js": "^0.6.0",
-    "xmldom": "^0.5.0",
+    "xmldom": "^0.6.0",
     "xpath": "0.0.27"
   },
   "engines": {
