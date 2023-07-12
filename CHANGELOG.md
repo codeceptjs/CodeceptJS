@@ -1,3 +1,30 @@
+## 3.5.2
+
+🐛 Bug Fixes
+
+* [Playwright] reverted `clearField` to previous implementation
+* [OpenAI] fixed running helper in pause mode. #3755 by @KobeNguyenT
+
+## 3.5.1
+
+🛩️ Features
+
+* [Puppeteer][WebDriver][TestCafe] Added methods by @KobeNguyenT in #3737 
+  * `blur`
+  * `focus`
+* Improved BDD output to print steps without `I.` commands` by @davertmik #3739
+* Improved `codecept init` setup for Electron tests by @KobeNguyenT. See #3733
+
+🐛 Bug Fixes
+
+* Fixed serializing of custom errors making tests stuck. Fix #3739 by @davertmik.
+
+📖 Documentation
+
+* Fixed Playwright docs by @Horsty80
+* Fixed ai docs by @ngraf 
+* Various fixes by @KobeNguyenT
+
 ## 3.5.0
 
 🛩️ Features

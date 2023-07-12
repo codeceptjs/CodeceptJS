@@ -1,11 +1,11 @@
 // / <reference path="./steps.d.ts" />
-Feature('GitHub', { timeout: 6 });
+Feature('GitHub');
 
-Before(({ Smth }) => {
-  // Smth.openGitHub();
+Before(({ I }) => {
+  I.amOnPage('https://github.com');
 });
 
-Scenario.only('test ai features', ({ I }) => {
+xScenario('test ai features', ({ I }) => {
   I.amOnPage('https://getbootstrap.com/docs/5.1/examples/checkout/');
   pause();
 });

@@ -58,7 +58,8 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 
 
 ## Features
-
+ 
+* 🪄 **AI-powered** with GPT features to assist and heal failing tests
 * Based on [Mocha](https://mochajs.org/) testing framework.
 * Designed for scenario driven acceptance testing in BDD-style
 * Uses ES6 natively without transpiler.
@@ -66,7 +67,6 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 * Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 * Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
-* CodeceptJS is the first open-source test automation framework that incorporates [AI features](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) to improve the testing experience. CodeceptJS uses OpenAI GPT to auto-heal failing tests, assist in writing tests, and more...
 
 ## Install
 
@@ -308,14 +308,14 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/KMKoushik"><img src="https://avatars.githubusercontent.com/u/24666922?v=4" title="KMKoushik" width="80" height="80"></a>
 <a href="https://github.com/nikocanvacom"><img src="https://avatars.githubusercontent.com/u/83254493?v=4" title="nikocanvacom" width="80" height="80"></a>
 <a href="https://github.com/elukoyanov"><img src="https://avatars.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
+<a href="https://github.com/actions-user"><img src="https://avatars.githubusercontent.com/u/65916846?v=4" title="actions-user" width="80" height="80"></a>
+<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>
 <a href="https://github.com/gkushang"><img src="https://avatars.githubusercontent.com/u/3663389?v=4" title="gkushang" width="80" height="80"></a>
 <a href="https://github.com/tsuemura"><img src="https://avatars.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
 <a href="https://github.com/EgorBodnar"><img src="https://avatars.githubusercontent.com/u/63167966?v=4" title="EgorBodnar" width="80" height="80"></a>
 <a href="https://github.com/VikalpP"><img src="https://avatars.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
-<a href="https://github.com/actions-user"><img src="https://avatars.githubusercontent.com/u/65916846?v=4" title="actions-user" width="80" height="80"></a>
 <a href="https://github.com/BorisOsipov"><img src="https://avatars.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
 <a href="https://github.com/elaichenkov"><img src="https://avatars.githubusercontent.com/u/29764053?v=4" title="elaichenkov" width="80" height="80"></a>
-<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>
 <a href="https://github.com/nitschSB"><img src="https://avatars.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
 <a href="https://github.com/hubidu"><img src="https://avatars.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
 <a href="https://github.com/jploskonka"><img src="https://avatars.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>

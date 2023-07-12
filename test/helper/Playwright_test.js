@@ -473,7 +473,7 @@ describe('Playwright', function () {
       await I.dontSeeInField('#description', 'value that is cleared using I.clearField()');
     });
 
-    it('should clear contenteditable', async () => {
+    xit('should clear contenteditable', async () => {
       const isClearMethodPresent = await I.usePlaywrightTo('check if new Playwright .clear() method present', async ({ page }) => {
         return typeof page.locator().clear === 'function';
       });
