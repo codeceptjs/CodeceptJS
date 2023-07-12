@@ -31,7 +31,6 @@ TestCafe provides cross-browser support without Selenium. TestCafe tests are fas
 ---
 
 * [Mobile Testing with Appium »](/mobile)
-* [Testing with Protractor »](/angular)
 
 :::
 

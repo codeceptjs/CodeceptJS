@@ -36,7 +36,7 @@ CodeceptJS tests are:
 
 * **Synchronous**. You don't need to care about callbacks or promises or test scenarios which are linear. But, your tests should be linear.
 * Written from **user's perspective**. Every action is a method of `I`. That makes test easy to read, write and maintain even for non-tech persons.
-* Backend **API agnostic**. We don't know which WebDriver implementation is running this test. We can easily switch from WebDriverIO to Protractor or PhantomJS.
+* Backend **API agnostic**. We don't know which WebDriver implementation is running this test.
 
 CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently, CodeceptJS has these helpers:
 
@@ -54,7 +54,7 @@ And more to come...
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, Protractor, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
 
 
 ## Features
