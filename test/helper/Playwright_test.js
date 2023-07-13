@@ -780,10 +780,13 @@ describe('Playwright', function () {
   });
 
   describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
-    it('should see recording traffics', async () => {
-      await I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    it('should throw error when calling seeTraffic before recording traffics', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ trafficName: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
+      }
     });
 
     it('should flush the network traffics', async () => {
@@ -794,13 +797,10 @@ describe('Playwright', function () {
       expect(traffics.length).to.equal(0);
     });
 
-    it('should throw error when calling seeTraffic before recording traffics', async () => {
-      try {
-        I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-      } catch (e) {
-        expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
-      }
+    it('should see recording traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should not see recording traffics', async () => {
