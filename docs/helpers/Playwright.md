@@ -720,8 +720,9 @@ Verifies that a certain request is not part of network traffic.
 
 #### Parameters
 
--   `name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
--   `url` **[string][8]** Expected URL of request in network traffic
+-   `opts` **[Object][5]** options when checking the traffic network.
+    -   `opts.name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    -   `opts.url` **[string][8]** Expected URL of request in network traffic
 
 ### doubleClick
 
@@ -1852,7 +1853,7 @@ await I.seeTraffic({
 #### Parameters
 
 -   `opts` **[Object][5]** options when checking the traffic network.
-    -   `opts.trafficName` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    -   `opts.name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
     -   `opts.url` **[string][8]** Expected URL of request in network traffic
     -   `opts.parameters` **[Object][5]?** Expected parameters of that request in network traffic
     -   `opts.requestPostData` **[Object][5]?** Expected that request contains post data in network traffic

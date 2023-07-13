@@ -141,7 +141,11 @@ playwright.startRecordingTraffic(); // $ExpectType Promise<void>
 playwright.stopRecordingTraffic(); // $ExpectType void
 playwright.seeTraffic(); // $ExpectError
 playwright.seeTraffic(str); // $ExpectError
-playwright.seeTraffic({ trafficName: str, url: str}); // $ExpectType Promise<any>
+playwright.seeTraffic({ name: str }); // $ExpectError
+playwright.seeTraffic({ url: str }); // $ExpectError
+playwright.seeTraffic({ name: str, url: str}); // $ExpectType Promise<any>
 playwright.dontSeeTraffic(); // $ExpectError
 playwright.dontSeeTraffic(str); // $ExpectError
-playwright.dontSeeTraffic(str, str); // $ExpectType void
+playwright.dontSeeTraffic({ name: str, url: str}); // $ExpectType void
+playwright.dontSeeTraffic({ name: str }); // $ExpectError
+playwright.dontSeeTraffic({ url: str }); // $ExpectError

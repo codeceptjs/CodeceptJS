@@ -783,9 +783,27 @@ describe('Playwright', function () {
     it('should throw error when calling seeTraffic before recording traffics', async () => {
       try {
         I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ trafficName: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
         expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing name', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing url', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ name: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.seeTraffic".');
       }
     });
 
@@ -808,6 +826,28 @@ describe('Playwright', function () {
       I.amOnPage('https://codecept.io/');
       await I.stopRecordingTraffic();
       await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing name', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing url', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ name: 'traffics' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.dontSeeTraffic".');
+      }
     });
 
     it('should mock traffics', async () => {
