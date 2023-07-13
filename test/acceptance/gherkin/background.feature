@@ -1,4 +1,4 @@
-@Protractor @Puppeteer @WebDriverIO @bdd
+@Puppeteer @WebDriverIO @bdd
 Feature: Site test
   In order to achieve my goals
   As a persona

@@ -262,7 +262,6 @@ module.exports.tests = function () {
 
   describe('#forceClick', () => {
     beforeEach(function () {
-      if (isHelper('Protractor')) this.skip();
       if (isHelper('TestCafe')) this.skip();
     });
 
@@ -583,9 +582,6 @@ module.exports.tests = function () {
   describe('#type', () => {
     it('should type into a field', async function () {
       if (isHelper('TestCafe')) this.skip();
-
-      if (isHelper('Protractor')) this.skip();
-
       await I.amOnPage('/form/field');
       await I.click('Name');
 
@@ -600,9 +596,6 @@ module.exports.tests = function () {
 
     it('should use delay to slow down typing', async function () {
       if (isHelper('TestCafe')) this.skip();
-
-      if (isHelper('Protractor')) this.skip();
-
       await I.amOnPage('/form/field');
       await I.fillField('Name', '');
       const time = Date.now();

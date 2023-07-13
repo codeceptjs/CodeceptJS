@@ -186,7 +186,11 @@ docker-compose run --rm test-helpers test/rest
 
 #### Run acceptance tests
 
+<<<<<<< HEAD
 To that we provide three separate services respectively for WebDriver, Puppeteer tests:
+=======
+To that we provide three separate services respectively for WebDriver, Nightmare and Puppeteer tests:
+>>>>>>> 3.x
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio

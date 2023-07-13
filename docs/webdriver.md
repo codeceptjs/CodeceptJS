@@ -21,8 +21,6 @@ Let's clarify the terms:
 
 We use [webdriverio](https://webdriver.io) library to run tests over WebDriver.
 
-> Popular tool [Protractor](/angular) also uses WebDriver for running end 2 end tests.
-
 To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
 
 Selenium WebDriver may be complicated from start, as it requires following tools to be installed and started.
