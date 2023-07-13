@@ -1,11 +1,7 @@
 # Download Playwright and its dependencies
 FROM mcr.microsoft.com/playwright:focal
 
-# Add our user and group first to make sure their IDs get assigned consistently,
-# regardless of whatever dependencies get added.
-RUN groupadd --system nightmare && useradd --system --create-home --gid nightmare nightmare
-
-# Installing the pre-required packages and libraries for electron & Nightmare
+# Installing the pre-required packages and libraries
 RUN apt-get update && \
       apt-get install -y libgtk2.0-0 libgconf-2-4 \
       libasound2 libxtst6 libxss1 libnss3 xvfb
@@ -38,7 +34,7 @@ ENV HOST=selenium
 # Run user as non privileged.
 # USER pptruser
 
-# Set the entrypoint for Nightmare
+# Set the entrypoint
 ENTRYPOINT ["/codecept/docker/entrypoint"]
 
 # Run tests

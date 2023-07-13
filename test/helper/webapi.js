@@ -69,8 +69,6 @@ module.exports.tests = function () {
 
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
-      if (isHelper('Nightmare')) return;
-
       try {
         await I.amOnPage('/info');
         await I.waitInUrl('/info');
@@ -81,8 +79,6 @@ module.exports.tests = function () {
     });
 
     it('should wait for the entire URL to match the expected', async () => {
-      if (isHelper('Nightmare')) return;
-
       try {
         await I.amOnPage('/info');
         await I.waitUrlEquals('/info');
@@ -270,7 +266,6 @@ module.exports.tests = function () {
     });
 
     it('should forceClick by inner text', async () => {
-      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('More info');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -278,7 +273,6 @@ module.exports.tests = function () {
     });
 
     it('should forceClick by css', async () => {
-      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('#link');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -286,7 +280,6 @@ module.exports.tests = function () {
     });
 
     it('should forceClick by xpath', async () => {
-      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('//a[@id="link"]');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -294,7 +287,6 @@ module.exports.tests = function () {
     });
 
     it('should forceClick on context', async () => {
-      if (isHelper('Nightmare')) return;
       await I.amOnPage('/');
       await I.forceClick('More info', 'body>p');
       if (isHelper('Puppeteer')) await I.waitForNavigation();
@@ -453,7 +445,7 @@ module.exports.tests = function () {
     });
 
     it('should return value from sync script in iframe', async function () {
-      if (isHelper('Nightmare')) return; // TODO Not yet implemented
+      // TODO Not yet implemented
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
 
       await I.amOnPage('/iframe');
@@ -590,8 +582,6 @@ module.exports.tests = function () {
   describe('#type', () => {
     it('should type into a field', async function () {
       if (isHelper('TestCafe')) this.skip();
-      if (isHelper('Nightmare')) return;
-
       await I.amOnPage('/form/field');
       await I.click('Name');
 
@@ -606,8 +596,6 @@ module.exports.tests = function () {
 
     it('should use delay to slow down typing', async function () {
       if (isHelper('TestCafe')) this.skip();
-      if (isHelper('Nightmare')) return;
-
       await I.amOnPage('/form/field');
       await I.fillField('Name', '');
       const time = Date.now();
@@ -807,8 +795,6 @@ module.exports.tests = function () {
     });
 
     it('should upload file located by label', async () => {
-      if (isHelper('Nightmare')) return;
-
       await I.amOnPage('/form/file');
       await I.attachFile('Avatar', 'app/avatar.jpg');
       await I.click('Submit');
@@ -1224,7 +1210,6 @@ module.exports.tests = function () {
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     it('should scroll inside an iframe', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/iframe');
@@ -1301,7 +1286,6 @@ module.exports.tests = function () {
     });
 
     it('should grab multiple values if more than one matching element found', async () => {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) return;
 
       await I.amOnPage('/info');
@@ -1313,7 +1297,6 @@ module.exports.tests = function () {
 
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1335,7 +1318,6 @@ module.exports.tests = function () {
     });
 
     it('should check attributes values for several elements', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1360,7 +1342,6 @@ module.exports.tests = function () {
 
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1382,7 +1363,6 @@ module.exports.tests = function () {
     });
 
     it('should check css property for several elements', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1409,7 +1389,6 @@ module.exports.tests = function () {
     });
 
     it('should normalize css color properties for given element', async function () {
-      if (isHelper('Nightmare')) return;
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/form/css_colors');
@@ -1491,7 +1470,6 @@ module.exports.tests = function () {
 
   describe('#focus, #blur', () => {
     it('should focus a button, field and textarea', async () => {
-      if (isHelper('Nightmare')) return;
       await I.amOnPage('/form/focus_blur_elements');
 
       await I.focus('#button');
@@ -1508,7 +1486,6 @@ module.exports.tests = function () {
     });
 
     it('should blur focused button, field and textarea', async () => {
-      if (isHelper('Nightmare')) return;
       await I.amOnPage('/form/focus_blur_elements');
 
       await I.focus('#button');

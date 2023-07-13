@@ -13,7 +13,7 @@ CodeceptJS runner is available inside container as `codeceptjs`.
 
 ### Locally
 
-You can execute CodeceptJS with Puppeteer or Nightmare locally with no extra configuration.
+You can execute CodeceptJS with Puppeteer locally with no extra configuration.
 
 ```sh
 docker run --net=host -v $PWD:/tests codeceptjs/codeceptjs
@@ -80,7 +80,6 @@ $ docker run -it --rm -v /<path_to_codeceptjs_test_dir>/:/tests/ --link selenium
 
 You may run use `-v $(pwd)/:tests/` if running this from the root of your CodeceptJS tests directory.
 _Note: The output of your test run will appear in your local directory if your output path is `./output` in the CodeceptJS config_
-_Note: If running with the Nightmare driver, it is not necessary to run a selenium docker container and link it. So `--link selenium-chrome:selenium` may be omitted_
 
 ### Build
 
