@@ -280,10 +280,6 @@ Usually it should be run from a custom helper after call of `_startBrowser()`
 
 -   `contextOptions` **[object][5]?** See [https://playwright.dev/docs/api/class-browser#browser-new-context][6]
 
-### _flushTraffic
-
-Resets all recorded network requests.
-
 ### _getPageUrl
 
 Gets page URL including hash.
@@ -831,6 +827,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `value` **([string][8] | [object][5])** text value to fill.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
+### flushNetworkTraffics
+
+Resets all recorded network requests.
+
 ### focus
 
 Calls [focus][10] on the matching element.
@@ -1133,7 +1133,7 @@ await I.grabPopupText();
 
 Returns **[Promise][19]&lt;([string][8] | null)>** 
 
-### grabRecordingTraffic
+### grabRecordedNetworkTraffics
 
 Grab the recording network traffics
 

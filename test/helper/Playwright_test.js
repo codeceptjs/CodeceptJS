@@ -779,17 +779,25 @@ describe('Playwright', function () {
     });
   });
 
-  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     it('should see recording traffics', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
-      await I.seeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should flush the network traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.flushNetworkTraffics();
+      const traffics = await I.grabRecordedNetworkTraffics();
+      expect(traffics.length).to.equal(0);
     });
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
       try {
         I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
         expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
       }
@@ -799,7 +807,7 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       await I.stopRecordingTraffic();
-      await I.dontSeeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should mock traffics', async () => {
@@ -808,7 +816,7 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       await I.click('GET COMMENTS');
       await I.see('this was mocked');
-      const traffics = await I.grabRecordingTraffic();
+      const traffics = await I.grabRecordedNetworkTraffics();
       expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
     });
 
