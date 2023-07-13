@@ -1152,8 +1152,6 @@ plugins: {
 }
 ```
 
-Please note, this service can be used with Protractor helper as well!
-
 #### Sauce Service
 
 Install `@wdio/sauce-service` package, as [described here][19].

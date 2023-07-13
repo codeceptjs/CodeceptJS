@@ -102,7 +102,7 @@ This way, if your tests are written with TypeScript, your IDE will be able to le
 
 ## Accessing Elements
 
-WebDriver, Puppeteer, Playwright, and Protractor drivers provide API for web elements.
+WebDriver, Puppeteer and Playwright drivers provide API for web elements.
 However, CodeceptJS do not expose them to tests by design, keeping test to be action focused.
 If you need to get access to web elements, it is recommended to implement operations for web elements in a custom helper.
 
@@ -154,7 +154,7 @@ You can also pass additional config options to your helper from a config - **(pl
 ```js
 helpers: {
   // here goes standard helpers:
-  // WebDriver, Protractor, Nightmare, etc...
+  // WebDriver, Nightmare, etc...
   // and their configuration
   MyHelper: {
     require: "./my_helper.js", // path to module

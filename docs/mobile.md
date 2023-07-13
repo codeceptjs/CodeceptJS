@@ -123,7 +123,6 @@ Select [Appium helper](https://codecept.io/helpers/Appium/) when asked.
 ```sh
 ? What helpers do you want to use?
  ◯ WebDriver
- ◯ Protractor
  ◯ Puppeteer
  ◯ Nightmare
 ❯◉ Appium
