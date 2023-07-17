@@ -122,7 +122,7 @@
     "eslint-plugin-mocha": "^6.3.0",
     "expect": "^26.6.2",
     "express": "^4.17.2",
-    "form-data": "^3.0.1",
+    "form-data": "^4.0.0",
     "graphql": "^14.6.0",
     "husky": "^8.0.1",
     "inquirer-test": "^2.0.1",
