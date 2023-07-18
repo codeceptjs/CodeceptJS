@@ -1206,7 +1206,10 @@ Returns full URL of request matching parameter "urlMatch".
 
 #### Parameters
 
--   `urlMatch`  String Regular expression string the wanted URL must match
+-   `urlMatch` **([string][8] | [RegExp][16])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:```js
+    I.grabTrafficUrl('https://api.example.com/session');
+    I.grabTrafficUrl(/session.*start/);
+    ```
 
 Returns **[Promise][20]&lt;any>** 
 
