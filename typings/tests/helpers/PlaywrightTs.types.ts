@@ -143,5 +143,6 @@ playwright.seeTraffic({ url: str }); // $ExpectError
 playwright.dontSeeTraffic(); // $ExpectError
 playwright.dontSeeTraffic(str); // $ExpectError
 playwright.dontSeeTraffic({ name: str, url: str}); // $ExpectType Promise<any>
+playwright.dontSeeTraffic({ name: str, url: /hello/}); // $ExpectType Promise<any>
 playwright.dontSeeTraffic({ name: str }); // $ExpectError
 playwright.dontSeeTraffic({ url: str }); // $ExpectError

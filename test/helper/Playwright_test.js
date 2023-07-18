@@ -824,14 +824,21 @@ describe('Playwright', function () {
     it('should not see recording traffics', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
-      await I.stopRecordingTraffic();
+      I.stopRecordingTraffic();
       await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics using regex url', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      await I.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
     });
 
     it('should throw error when calling dontSeeTraffic but missing name', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
-      await I.stopRecordingTraffic();
+      I.stopRecordingTraffic();
       try {
         await I.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
@@ -842,7 +849,7 @@ describe('Playwright', function () {
     it('should throw error when calling dontSeeTraffic but missing url', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
-      await I.stopRecordingTraffic();
+      I.stopRecordingTraffic();
       try {
         await I.dontSeeTraffic({ name: 'traffics' });
       } catch (e) {
