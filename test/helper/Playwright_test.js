@@ -779,27 +779,75 @@ describe('Playwright', function () {
     });
   });
 
-  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic', () => {
-    it('should see recording traffics', async () => {
-      await I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      await I.seeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-    });
-
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     it('should throw error when calling seeTraffic before recording traffics', async () => {
       try {
         I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
         expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
       }
+    });
+
+    it('should throw error when calling seeTraffic but missing name', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing url', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ name: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should flush the network traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.flushNetworkTraffics();
+      const traffics = await I.grabRecordedNetworkTraffics();
+      expect(traffics.length).to.equal(0);
+    });
+
+    it('should see recording traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should not see recording traffics', async () => {
       await I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       await I.stopRecordingTraffic();
-      await I.dontSeeTraffic({ name: 'traffics to image', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing name', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing url', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ name: 'traffics' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.dontSeeTraffic".');
+      }
     });
 
     it('should mock traffics', async () => {
@@ -808,7 +856,7 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       await I.click('GET COMMENTS');
       await I.see('this was mocked');
-      const traffics = await I.grabRecordingTraffic();
+      const traffics = await I.grabRecordedNetworkTraffics();
       expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
     });
 

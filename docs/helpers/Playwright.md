@@ -280,10 +280,6 @@ Usually it should be run from a custom helper after call of `_startBrowser()`
 
 -   `contextOptions` **[object][5]?** See [https://playwright.dev/docs/api/class-browser#browser-new-context][6]
 
-### _flushTraffic
-
-Resets all recorded network requests.
-
 ### _getPageUrl
 
 Gets page URL including hash.
@@ -724,8 +720,9 @@ Verifies that a certain request is not part of network traffic.
 
 #### Parameters
 
--   `name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
--   `url` **[string][8]** Expected URL of request in network traffic
+-   `opts` **[Object][5]** options when checking the traffic network.
+    -   `opts.name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    -   `opts.url` **[string][8]** Expected URL of request in network traffic
 
 ### doubleClick
 
@@ -830,6 +827,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `field` **([string][8] | [object][5])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][8] | [object][5])** text value to fill.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
+
+### flushNetworkTraffics
+
+Resets all recorded network requests.
 
 ### focus
 
@@ -1133,7 +1134,7 @@ await I.grabPopupText();
 
 Returns **[Promise][19]&lt;([string][8] | null)>** 
 
-### grabRecordingTraffic
+### grabRecordedNetworkTraffics
 
 Grab the recording network traffics
 
@@ -1852,7 +1853,7 @@ await I.seeTraffic({
 #### Parameters
 
 -   `opts` **[Object][5]** options when checking the traffic network.
-    -   `opts.trafficName` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    -   `opts.name` **[string][8]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
     -   `opts.url` **[string][8]** Expected URL of request in network traffic
     -   `opts.parameters` **[Object][5]?** Expected parameters of that request in network traffic
     -   `opts.requestPostData` **[Object][5]?** Expected that request contains post data in network traffic
