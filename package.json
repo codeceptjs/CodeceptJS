@@ -59,7 +59,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@codeceptjs/configure": "^0.8.0",
+    "@codeceptjs/configure": "^0.10.0",
     "@codeceptjs/helper": "^1.0.2",
     "@cucumber/cucumber-expressions": "^16",
     "@cucumber/gherkin": "^26",
