@@ -9,6 +9,7 @@ const recorder = require('../../../lib/recorder');
 
 describe('retryFailedStep', () => {
   beforeEach(() => {
+    recorder.retries = [];
     container.clear({
       mock: {
         _session: () => {},
