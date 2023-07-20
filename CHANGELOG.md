@@ -2,7 +2,7 @@
 
 🛩️ Features
 
-* [Playwright]: providing more steps to check the network traffics #3748 - by @ngraf @KobeNguyenT
+* [Playwright] Provide new steps to check network traffic #3748 - by @ngraf @KobeNguyenT
 
 ```js
 // recording traffics and verify the traffic
