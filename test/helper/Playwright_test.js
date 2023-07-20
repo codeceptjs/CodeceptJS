@@ -779,6 +779,144 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
+    it('should throw error when calling seeTraffic before recording traffics', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing name', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing url', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ name: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should flush the network traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.flushNetworkTraffics();
+      const traffics = await I.grabRecordedNetworkTraffics();
+      expect(traffics.length).to.equal(0);
+    });
+
+    it('should see recording traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics using regex url', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      await I.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing name', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing url', async () => {
+      await I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ name: 'traffics' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should mock traffics', async () => {
+      await I.amOnPage('/form/fetch_call');
+      await I.mockTraffic('https://reqres.in/api/comments/1', '{"name": "this was mocked" }');
+      await I.startRecordingTraffic();
+      await I.click('GET COMMENTS');
+      await I.see('this was mocked');
+      const traffics = await I.grabRecordedNetworkTraffics();
+      expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+    });
+
+    it('should block traffics', async () => {
+      I.blockTraffic('https://reqres.in/api/comments/*');
+      await I.amOnPage('/form/fetch_call');
+      await I.startRecordingTraffic();
+      await I.click('GET COMMENTS');
+      await I.see('Can not load data!');
+    });
+
+    it('should check traffics with more advanced params', async () => {
+      I.amOnPage('https://openai.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      await I.seeTraffic({
+        name: 'sentry event',
+        url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+        parameters: {
+          width: '1919',
+          height: '1138',
+        },
+      });
+    });
+
+    it('should check traffics with more advanced post data', async () => {
+      I.amOnPage('https://openai.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      await I.seeTraffic({
+        name: 'event',
+        url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+        requestPostData: {
+          st: 2,
+        },
+      });
+    });
+
+    it('should show error when advanced post data are not matching', async () => {
+      I.amOnPage('https://openai.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      try {
+        await I.seeTraffic({
+          name: 'event',
+          url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+          requestPostData: {
+            st: 3,
+          },
+        });
+      } catch (e) {
+        expect(e.message).to.contain('actual value: "2"');
+      }
+    });
+  });
+
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
       const response = await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
