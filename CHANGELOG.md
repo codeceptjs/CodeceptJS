@@ -36,7 +36,7 @@
 
 🐛 Bugfix
 
-* [retryStepPlugin] fix the retry step doesn't work when using global retry #3768 - by @KobeNguyenT
+* [retryStepPlugin] Fix retry step when using global retry #3768 - by @KobeNguyenT
 
 🗑 Deprecated
 
