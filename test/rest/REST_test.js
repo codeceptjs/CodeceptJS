@@ -1,7 +1,6 @@
 const path = require('path');
 const expect = require('expect');
 const fs = require('fs');
-const FormData = require('form-data');
 
 const TestHelper = require('../support/TestHelper');
 const REST = require('../../lib/helper/REST');
@@ -325,7 +324,7 @@ describe('REST - Form upload', () => {
       form.append('file', fs.createReadStream(testFile));
 
       try {
-        await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+        await I.sendPostRequest('upload', form);
       } catch (error) {
         error.message.should.eql('Request body larger than maxBodyLength limit');
       }
@@ -336,7 +335,7 @@ describe('REST - Form upload', () => {
       form.append('file', fs.createReadStream(testFile));
 
       try {
-        const response = await I.sendPostRequest('upload', form, { ...form.getHeaders() });
+        const response = await I.sendPostRequest('upload', form);
         response.data.should.include('File Uploaded!');
       } catch (error) {
         console.log(error.message);
