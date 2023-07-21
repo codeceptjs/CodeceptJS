@@ -133,7 +133,7 @@ playwright.grabElementBoundingRect(str); // $ExpectType Promise<number> | Promis
 playwright.mockRoute(str); // $ExpectType Promise<any>
 playwright.stopMockingRoute(str); // $ExpectType Promise<any>
 
-playwright.startRecordingTraffic(); // $ExpectType Promise<void>
+playwright.startRecordingTraffic(); // $ExpectType Promise<any>
 playwright.stopRecordingTraffic(); // $ExpectType Promise<any>
 playwright.seeTraffic(); // $ExpectError
 playwright.seeTraffic(str); // $ExpectError

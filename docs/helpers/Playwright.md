@@ -1938,14 +1938,14 @@ I.setCookie([
 
 ### startRecordingTraffic
 
-Starts recording of network traffic.
+Starts recording the network traffics.
 This also resets recorded network requests.
 
 ```js
 I.startRecordingTraffic();
 ```
 
-Returns **[Promise][20]&lt;void>** 
+Returns **void** 
 
 ### stopMockingRoute
 
