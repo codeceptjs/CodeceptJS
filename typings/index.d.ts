@@ -524,7 +524,6 @@ declare const After: CodeceptJS.IHook;
 declare const __: any
 
 interface Window {
-  codeceptjs: typeof CodeceptJS.browserCodecept;
   resq: any;
 }
 

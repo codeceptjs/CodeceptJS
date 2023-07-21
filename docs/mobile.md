@@ -124,7 +124,6 @@ Select [Appium helper](https://codecept.io/helpers/Appium/) when asked.
 ? What helpers do you want to use?
  ◯ WebDriver
  ◯ Puppeteer
- ◯ Nightmare
 ❯◉ Appium
  ◯ REST
 ```

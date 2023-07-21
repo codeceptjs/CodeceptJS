@@ -41,7 +41,6 @@ Refer to following guides to more information on:
 * [▶ Playwright](/playwright)
 * [▶ WebDriver](/webdriver)
 * [▶ Puppeteer](/puppeteer)
-* [▶ Nightmare](/nightmare)
 * [▶ TestCafe](/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
@@ -783,7 +782,7 @@ within({frame: "#editor"}, () => {
 
 > ℹ IFrames can also be accessed via `I.switchTo` command of a corresponding helper.
 
-Nested IFrames can be set by passing an array *(WebDriver, Nightmare & Puppeteer only)*:
+Nested IFrames can be set by passing an array *(WebDriver & Puppeteer only)*:
 
 ```js
 within({frame: [".content", "#editor"]}, () => {

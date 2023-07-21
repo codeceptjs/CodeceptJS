@@ -136,3 +136,17 @@ playwright.grabDataFromPerformanceTiming(); // $ExpectType Promise<any>
 playwright.grabElementBoundingRect(str); // $ExpectType Promise<number> | Promise<DOMRect>
 playwright.mockRoute(str); // $ExpectType void
 playwright.stopMockingRoute(str); // $ExpectType void
+
+playwright.startRecordingTraffic(); // $ExpectType Promise<void>
+playwright.stopRecordingTraffic(); // $ExpectType void
+playwright.seeTraffic(); // $ExpectError
+playwright.seeTraffic(str); // $ExpectError
+playwright.seeTraffic({ name: str }); // $ExpectError
+playwright.seeTraffic({ url: str }); // $ExpectError
+playwright.seeTraffic({ name: str, url: str}); // $ExpectType Promise<any>
+playwright.dontSeeTraffic(); // $ExpectError
+playwright.dontSeeTraffic(str); // $ExpectError
+playwright.dontSeeTraffic({ name: str, url: str}); // $ExpectType void
+playwright.dontSeeTraffic({ name: str, url: /hello/}); // $ExpectType void
+playwright.dontSeeTraffic({ name: str }); // $ExpectError
+playwright.dontSeeTraffic({ url: str }); // $ExpectError

@@ -23,7 +23,7 @@ API is supposed to be a stable interface and it can be used by acceptance tests.
 ## REST
 
 [REST helper](https://codecept.io/helpers/REST/) allows sending raw HTTP requests to application.
-This is a tool to make shortcuts and create your data pragmatically via API. However, it doesn't provide tools for testing APIs, so it should be paired with WebDriver helper for browser testing.
+This is a tool to make shortcuts and create your data pragmatically via API. However, it doesn't provide tools for testing APIs, so it should be paired with Playwright or WebDriver helper for browser testing.
 
 Enable REST helper in the config. It is recommended to set `endpoint`, a base URL for all API requests. If you need some authorization you can optionally set default headers too.
 
@@ -92,7 +92,11 @@ I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest
 ## GraphQL
 
 [GraphQL helper](https://codecept.io/helpers/GraphQL/) allows sending GraphQL queries and mutations to application, over Http.
+<<<<<<< HEAD
+This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver helper for browser testing.
+=======
 This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver helpers for browser testing.
+>>>>>>> 3.x
 
 Enable GraphQL helper in the config. It is recommended to set `endpoint`, the URL to which the requests go to. If you need some authorization you can optionally set default headers too.
 

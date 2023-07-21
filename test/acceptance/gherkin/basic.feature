@@ -1,4 +1,4 @@
-@Nightmare @Puppeteer @WebDriverIO @bdd
+@Puppeteer @WebDriverIO @bdd
 Feature: Business rules
   In order to achieve my goals
   As a persona
