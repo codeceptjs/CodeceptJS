@@ -808,7 +808,7 @@ describe('Playwright', function () {
     });
 
     it('should flush the network traffics', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.flushNetworkTraffics();
       const traffics = await I.grabRecordedNetworkTraffics();
@@ -816,27 +816,27 @@ describe('Playwright', function () {
     });
 
     it('should see recording traffics', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should not see recording traffics', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should not see recording traffics using regex url', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       await I.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
     });
 
     it('should throw error when calling dontSeeTraffic but missing name', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       try {
@@ -847,7 +847,7 @@ describe('Playwright', function () {
     });
 
     it('should throw error when calling dontSeeTraffic but missing url', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       try {
@@ -867,17 +867,25 @@ describe('Playwright', function () {
       expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
     });
 
-    it('should block traffics', async () => {
+    it('should block traffics using a list of urls', async () => {
+      I.blockTraffic(['https://reqres.in/api/*', 'https://reqres.in/api/comments/*']);
+      I.amOnPage('/form/fetch_call');
+      I.startRecordingTraffic();
+      I.click('GET COMMENTS');
+      I.see('Can not load data!');
+    });
+
+    it('should block traffics of a given url', async () => {
       I.blockTraffic('https://reqres.in/api/comments/*');
-      await I.amOnPage('/form/fetch_call');
-      await I.startRecordingTraffic();
-      await I.click('GET COMMENTS');
-      await I.see('Can not load data!');
+      I.amOnPage('/form/fetch_call');
+      I.startRecordingTraffic();
+      I.click('GET COMMENTS');
+      I.see('Can not load data!');
     });
 
     it('should check traffics with more advanced params', async () => {
       I.amOnPage('https://openai.com/blog/chatgpt');
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       await I.seeTraffic({
         name: 'sentry event',
         url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
@@ -890,7 +898,7 @@ describe('Playwright', function () {
 
     it('should check traffics with more advanced post data', async () => {
       I.amOnPage('https://openai.com/blog/chatgpt');
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       await I.seeTraffic({
         name: 'event',
         url: 'https://cloudflareinsights.com/cdn-cgi/rum',
@@ -902,7 +910,7 @@ describe('Playwright', function () {
 
     it('should show error when advanced post data are not matching', async () => {
       I.amOnPage('https://openai.com/blog/chatgpt');
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       try {
         await I.seeTraffic({
           name: 'event',
