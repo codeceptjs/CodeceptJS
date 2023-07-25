@@ -1148,7 +1148,14 @@ Returns **[Promise][21]&lt;([string][8] | null)>**
 
 Grab the recording network traffics
 
-Returns **[Array][9]&lt;any>** 
+```js
+const traffics = await I.grabRecordedNetworkTraffics();
+expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].response.status).to.equal(200);
+expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+```
+
+Returns **[Promise][21]&lt;[Array][9]&lt;any>>** 
 
 ### grabSource
 

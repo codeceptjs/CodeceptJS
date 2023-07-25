@@ -863,8 +863,19 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       await I.click('GET COMMENTS');
       await I.see('this was mocked');
+
+      await I.mockTraffic('https://reqres.in/api/comments/1', '{"name": "this was another mocked" }');
+      await I.click('GET COMMENTS');
+      await I.see('this was another mocked');
+
       const traffics = await I.grabRecordedNetworkTraffics();
       expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[0].response.status).to.equal(200);
+      expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+
+      expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[1].response.status).to.equal(200);
+      expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
     });
 
     it('should block traffics using a list of urls', async () => {
