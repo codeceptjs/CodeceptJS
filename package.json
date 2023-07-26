@@ -54,7 +54,7 @@
     "def": "./runok.js def",
     "dev:graphql": "node test/data/graphql/index.js",
     "publish:site": "./runok.js publish:site",
-    "update-contributor-faces": "contributor-faces .",
+    "update-contributor-faces": "./runok.js contributor:faces",
     "dtslint": "dtslint typings --localTs './node_modules/typescript/lib'",
     "prepare": "husky install"
   },
