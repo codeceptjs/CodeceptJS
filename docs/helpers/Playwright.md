@@ -313,7 +313,7 @@ this.helpers['Playwright']._locateCheckable('I agree with terms and conditions')
 
 ### _locateClickable
 
-Find a clickable element by providing human readable text:
+Find a clickable element by providing human-readable text:
 
 ```js
 this.helpers['Playwright']._locateClickable('Next page').then // ...
@@ -323,9 +323,22 @@ this.helpers['Playwright']._locateClickable('Next page').then // ...
 
 -   `locator`  
 
+### _locateElement
+
+Get the first element by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+const element = await this.helpers['Playwright']._locateElement({name: 'password'});
+```
+
+#### Parameters
+
+-   `locator`  
+
 ### _locateFields
 
-Find field elements by providing human readable text:
+Find field elements by providing human-readable text:
 
 ```js
 this.helpers['Playwright']._locateFields('Your email').then // ...
