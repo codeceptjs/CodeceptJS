@@ -63,7 +63,7 @@
     "@codeceptjs/helper": "^1.0.2",
     "@cucumber/cucumber-expressions": "^16",
     "@cucumber/gherkin": "^26",
-    "@cucumber/messages": "^21.0.1",
+    "@cucumber/messages": "^22.0.0",
     "@xmldom/xmldom": "^0.7.9",
     "acorn": "^8.10.0",
     "arrify": "^2.0.1",
