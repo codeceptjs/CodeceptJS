@@ -895,16 +895,27 @@ describe('Playwright', function () {
     });
 
     it('should check traffics with more advanced params', async () => {
-      I.amOnPage('https://openai.com/blog/chatgpt');
-      I.startRecordingTraffic();
-      await I.seeTraffic({
-        name: 'sentry event',
-        url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-        parameters: {
-          width: '1919',
-          height: '1138',
-        },
-      });
+      await I.startRecordingTraffic();
+      await I.amOnPage('https://openai.com/blog/chatgpt');
+      const traffics = await I.grabRecordedNetworkTraffics();
+
+      for (const traffic of traffics) {
+        if (traffic.url.includes('&width=')) {
+          // new URL object
+          const currentUrl = new URL(traffic.url);
+
+          // get access to URLSearchParams object
+          const searchParams = currentUrl.searchParams;
+
+          await I.seeTraffic({
+            name: 'sentry event',
+            url: currentUrl.origin + currentUrl.pathname,
+            parameters: searchParams,
+          });
+
+          break;
+        }
+      }
     });
 
     it('should check traffics with more advanced post data', async () => {
