@@ -848,6 +848,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 Resets all recorded network requests.
 
+### flushWebSocketMessages
+
+Resets all recorded WS messages.
+
 ### focus
 
 Calls [focus][10] on the matching element.
@@ -1243,6 +1247,12 @@ let inputs = await I.grabValueFromAll('//form/input');
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][20]&lt;[Array][22]&lt;[string][8]>>** attribute value
+
+### grabWebSocketMessages
+
+Grab the recording WS messages
+
+Returns **[Array][22]&lt;any>** 
 
 ### handleDownloads
 
@@ -1947,6 +1957,15 @@ I.startRecordingTraffic();
 
 Returns **[Promise][20]&lt;void>** 
 
+### startRecordingWebSocketMessages
+
+Starts recording of websocket messages.
+This also resets recorded websocket messages.
+
+```js
+await I.startRecordingWebSocketMessages();
+```
+
 ### stopMockingRoute
 
 Stops network mocking created by `mockRoute`.
@@ -1969,6 +1988,14 @@ Stops recording of network traffic. Recorded traffic is not flashed.
 
 ```js
 I.stopRecordingTraffic();
+```
+
+### stopRecordingWebSocketMessages
+
+Stops recording WS messages. Recorded WS messages is not flashed.
+
+```js
+await I.stopRecordingWebSocketMessages();
 ```
 
 ### switchTo
