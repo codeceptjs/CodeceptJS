@@ -30,9 +30,7 @@
   ],
   "main": "lib/index.js",
   "typings": "typings/index.d.ts",
-  "bin": {
-    "codeceptjs": "./bin/codecept.js"
-  },
+  "bin": "./bin/codecept.js",
   "repository": "Codeception/codeceptjs",
   "scripts": {
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
