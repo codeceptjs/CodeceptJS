@@ -781,6 +781,13 @@ module.exports.tests = function () {
       const val = await I.grabTitle();
       assert.equal(val, 'TestEd Beta 2.0');
     });
+
+    it('should check page title using regex', async () => {
+      if (isHelper('Playwright')) {
+        await I.amOnPage('/');
+        await I.seeInTitle(/Beta 2.0/);
+      }
+    });
   });
 
   describe('#attachFile', () => {

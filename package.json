@@ -64,6 +64,7 @@
     "@cucumber/cucumber-expressions": "^16",
     "@cucumber/gherkin": "^26",
     "@cucumber/messages": "^21.0.1",
+    "@playwright/test": "^1.36.2",
     "@xmldom/xmldom": "^0.7.9",
     "acorn": "^8.10.0",
     "arrify": "^2.0.1",
@@ -146,7 +147,8 @@
     "webdriverio": "^8.3.8",
     "xml2js": "^0.6.0",
     "xmldom": "^0.6.0",
-    "xpath": "0.0.27"
+    "xpath": "0.0.27",
+    "ansicolor": "^1.1.100"
   },
   "engines": {
     "node": ">=16.0",

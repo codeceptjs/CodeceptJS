@@ -1,5 +1,6 @@
 const assert = require('assert');
 const expect = require('chai').expect;
+const { strip } = require('ansicolor');
 const path = require('path');
 const fs = require('fs');
 
@@ -11,7 +12,6 @@ const Playwright = require('../../lib/helper/Playwright');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
-const { deleteDir } = require('../../lib/utils');
 global.codeceptjs = require('../../lib');
 
 let I;
@@ -257,11 +257,30 @@ describe('Playwright', function () {
       .then(() => I.wait(1))
       .then(() => I.waitInUrl('about:blank'))
       .then(() => I.switchToPreviousTab(2))
-      .then(() => I.wait(2))
-      .then(() => I.waitInUrl('/info'))
       .catch((e) => {
         assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
       }));
+  });
+
+  describe('#waitInURL', () => {
+    it('should wait for full url', () => {
+      I.amOnPage('/info')
+        .then(() => I.waitInUrl(`${siteUrl}/info`));
+    });
+
+    it('should wait for regex url', () => {
+      I.amOnPage('/info')
+        .then(() => I.waitInUrl(/.*info/));
+    });
+
+    it('should throw error when url is not matching', async () => {
+      I.amOnPage('/info');
+      await I.waitInUrl('/info123')
+        .catch((e) => {
+          expect(strip(e.message)).to.contain('Expected string: "/info123"\n'
+            + `Received string: "${siteUrl}/info"`);
+        });
+    });
   });
 
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup, #grabPopupText', () => {
