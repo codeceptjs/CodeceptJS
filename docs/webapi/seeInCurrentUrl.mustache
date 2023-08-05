@@ -2,7 +2,10 @@ Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
+
+// Playwright helper supports the Regex
+I.seeInCurrentUrl(/register/); // we are on registration page
 ```
 
-@param {string} url a fragment to check
+@param {string|RegExp} url a fragment to check
 ⚠️ returns a _promise_ which is synchronized internally by recorder

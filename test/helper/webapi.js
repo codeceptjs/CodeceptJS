@@ -48,6 +48,13 @@ module.exports.tests = function () {
       await I.dontSeeInCurrentUrl('/user');
     });
 
+    it('should check for regex url fragment', async () => {
+      if (!isHelper('Playwright')) return;
+      await I.amOnPage('/form/checkbox');
+      await I.seeInCurrentUrl(/form/);
+      await I.dontSeeInCurrentUrl('/user');
+    });
+
     it('should check for equality', async () => {
       await I.amOnPage('/info');
       await I.seeCurrentUrlEquals('/info');
