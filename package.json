@@ -147,8 +147,7 @@
     "webdriverio": "^8.3.8",
     "xml2js": "^0.6.0",
     "xmldom": "^0.6.0",
-    "xpath": "0.0.27",
-    "ansicolor": "^1.1.100"
+    "xpath": "0.0.27"
   },
   "engines": {
     "node": ">=16.0",

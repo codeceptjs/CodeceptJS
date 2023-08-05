@@ -1,6 +1,5 @@
 const assert = require('assert');
 const expect = require('chai').expect;
-const { strip } = require('ansicolor');
 const path = require('path');
 const fs = require('fs');
 
