@@ -42,22 +42,22 @@ Type: [object][5]
 -   `url` **[string][8]?** base url of website to be tested
 -   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][32]?** show browser window.
--   `restart` **([string][8] | [boolean][32])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][39] but keeps running browser. Recommended by Playwright team to keep tests isolated.
+-   `restart` **([string][8] | [boolean][32])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][40] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
     -   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
--   `timeout` **[number][18]?** -   [timeout][40] in ms of all Playwright actions .
+-   `timeout` **[number][18]?** -   [timeout][41] in ms of all Playwright actions .
 -   `disableScreenshots` **[boolean][32]?** don't save screenshot on failure.
 -   `emulate` **any?** browser in device emulation mode.
 -   `video` **[boolean][32]?** enables video recording for failed tests; videos are saved into `output/videos` folder
 -   `keepVideoForPassedTests` **[boolean][32]?** save videos for passed tests; videos are saved into `output/videos` folder
--   `trace` **[boolean][32]?** record [tracing information][41] with screenshots and snapshots.
+-   `trace` **[boolean][32]?** record [tracing information][42] with screenshots and snapshots.
 -   `keepTraceForPassedTests` **[boolean][32]?** save trace for passed tests.
 -   `fullPageScreenshots` **[boolean][32]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][32]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState` **[boolean][32]?** keep browser state between tests when `restart` is set to 'session'.
 -   `keepCookies` **[boolean][32]?** keep cookies between tests when `restart` is set to 'session'.
 -   `waitForAction` **[number][18]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"networkidle"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][42].
+-   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"commit"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `commit`. Choose one of those options is possible. See [Playwright API][38].
 -   `pressKeyDelay` **[number][18]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][18]?** config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout` **[number][18]?** default wait* timeout in ms. Default: 1000.
@@ -2192,7 +2192,7 @@ I.waitForInvisible('#popup');
 
 ### waitForNavigation
 
-Waits for navigation to finish. By default takes configured `waitForNavigation` option.
+Waits for navigation to finish. By default, it takes configured `waitForNavigation` option.
 
 See [Playwright's reference][37]
 
@@ -2246,6 +2246,17 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `context` **([string][8] | [object][5])?** (optional) element located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
+### waitForURL
+
+Waits for page navigates to a new URL or reloads. By default, it takes configured `waitForNavigation` option.
+
+See [Playwright's reference][38]
+
+#### Parameters
+
+-   `url` **([string][8] | [RegExp][16])** A glob pattern, regex pattern or predicate receiving URL to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+-   `options` **any**  
+
 ### waitForValue
 
 Waits for the specified value to be in value attribute.
@@ -2274,7 +2285,7 @@ I.waitForVisible('#popup');
 
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][18]** (optional, `1` by default) time in seconds to wait
-    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][38]. 
+    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][39]. 
 
 ### waitInUrl
 
@@ -2409,15 +2420,15 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [37]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 
-[38]: https://codecept.io/react
+[38]: https://playwright.dev/docs/api/class-page#page-wait-for-url
 
-[39]: https://playwright.dev/docs/api/class-browsercontext
+[39]: https://codecept.io/react
 
-[40]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
+[40]: https://playwright.dev/docs/api/class-browsercontext
 
-[41]: https://playwright.dev/docs/trace-viewer
+[41]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
 
-[42]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
+[42]: https://playwright.dev/docs/trace-viewer
 
 [43]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
