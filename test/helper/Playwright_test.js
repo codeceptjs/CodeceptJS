@@ -12,6 +12,7 @@ const Playwright = require('../../lib/helper/Playwright');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
+const { deleteDir } = require('../../lib/utils');
 global.codeceptjs = require('../../lib');
 
 let I;
