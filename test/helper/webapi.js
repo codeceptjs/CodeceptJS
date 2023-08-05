@@ -78,7 +78,7 @@ module.exports.tests = function () {
     });
 
     it('should wait for regex url', () => {
-      if (!isHelper('Playwright')) this.skip();
+      if (!isHelper('Playwright')) return;
       I.amOnPage('/info')
         .then(() => I.waitInUrl(/.*info/));
     });
