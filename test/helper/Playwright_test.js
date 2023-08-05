@@ -263,27 +263,6 @@ describe('Playwright', function () {
       }));
   });
 
-  describe('#waitInURL', () => {
-    it('should wait for full url', () => {
-      I.amOnPage('/info')
-        .then(() => I.waitInUrl(`${siteUrl}/info`));
-    });
-
-    it('should wait for regex url', () => {
-      I.amOnPage('/info')
-        .then(() => I.waitInUrl(/.*info/));
-    });
-
-    it('should throw error when url is not matching', async () => {
-      I.amOnPage('/info');
-      await I.waitInUrl('/info123')
-        .catch((e) => {
-          expect(strip(e.message)).to.contain('Expected string: "/info123"\n'
-            + `Received string: "${siteUrl}/info"`);
-        });
-    });
-  });
-
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup, #grabPopupText', () => {
     it('should accept popup window', () => I.amOnPage('/form/popup')
       .then(() => I.amAcceptingPopups())

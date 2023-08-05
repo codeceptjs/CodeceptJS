@@ -69,14 +69,18 @@ module.exports.tests = function () {
 
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
-      if (isHelper('Playwright')) this.skip();
       try {
         await I.amOnPage('/info');
-        await I.waitInUrl('/info');
-        await I.waitInUrl('/info2', 0.1);
+        await I.waitInUrl('/info2');
       } catch (e) {
         assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
       }
+    });
+
+    it('should wait for regex url', () => {
+      if (!isHelper('Playwright')) this.skip();
+      I.amOnPage('/info')
+        .then(() => I.waitInUrl(/.*info/));
     });
 
     it('should wait for the entire URL to match the expected', async () => {
