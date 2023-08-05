@@ -1724,11 +1724,14 @@ Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
+
+// Playwright helper supports the Regex
+I.seeInCurrentUrl(/register/); // we are on registration page
 ```
 
 #### Parameters
 
--   `url` **[string][8]** a fragment to check
+-   `url` **([string][8] | [RegExp][16])** a fragment to check
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField

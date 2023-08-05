@@ -47,7 +47,7 @@ Type: [object][4]
 -   `keepBrowserState` **[boolean][20]?** keep browser state between tests when `restart` is set to false.
 -   `keepCookies` **[boolean][20]?** keep cookies between tests when `restart` is set to false.
 -   `waitForAction` **[number][10]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **[string][6]?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][23]. Array values are accepted as well.
+-   `waitForNavigation` **[string][6]?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][24]. Array values are accepted as well.
 -   `pressKeyDelay` **[number][10]?** delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][10]?** config option to set maximum navigation time in milliseconds. If the timeout is set to 0, then timeout will be disabled.
 -   `waitForTimeout` **[number][10]?** default wait* timeout in ms.
@@ -55,7 +55,7 @@ Type: [object][4]
 -   `userAgent` **[string][6]?** user-agent string.
 -   `manualStart` **[boolean][20]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
--   `chrome` **[object][4]?** pass additional [Puppeteer run options][25].
+-   `chrome` **[object][4]?** pass additional [Puppeteer run options][26].
 -   `highlightElement` **[boolean][20]?** highlight the interacting elements. Default: false
 
 
@@ -1596,11 +1596,14 @@ Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
+
+// Playwright helper supports the Regex
+I.seeInCurrentUrl(/register/); // we are on registration page
 ```
 
 #### Parameters
 
--   `url` **[string][6]** a fragment to check
+-   `url` **([string][6] | [RegExp][21])** a fragment to check
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
@@ -1867,7 +1870,7 @@ Use Puppeteer API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][21], [`browser`][22] } from Puppeteer API are available.
+{ [`page`][22], [`browser`][23] } from Puppeteer API are available.
 
 ```js
 I.usePuppeteerTo('emulate offline mode', async ({ page }) {
@@ -1997,7 +2000,7 @@ I.waitForInvisible('#popup');
 
 Waits for navigation to finish. By default takes configured `waitForNavigation` option.
 
-See [Pupeteer's reference][23]
+See [Pupeteer's reference][24]
 
 #### Parameters
 
@@ -2077,7 +2080,7 @@ I.waitForVisible('#popup');
 
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait
-    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][24]. 
+    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][25]. 
 
 ### waitInUrl
 
@@ -2182,12 +2185,14 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[21]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
+[21]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[22]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
+[22]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
 
-[23]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
+[23]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
 
-[24]: https://codecept.io/react
+[24]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
 
-[25]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+[25]: https://codecept.io/react
+
+[26]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions

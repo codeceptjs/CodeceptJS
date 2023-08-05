@@ -904,11 +904,14 @@ Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
+
+// Playwright helper supports the Regex
+I.seeInCurrentUrl(/register/); // we are on registration page
 ```
 
 #### Parameters
 
--   `url` **[string][4]** a fragment to check
+-   `url` **([string][4] | [RegExp][15])** a fragment to check
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
@@ -1053,12 +1056,12 @@ I.uncheckOption('agree', '//form');
 
 ### useTestCafeTo
 
-Use [TestCafe][15] API inside a test.
+Use [TestCafe][16] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`t`][16]) } object from TestCafe API is available.
+{ [`t`][17]) } object from TestCafe API is available.
 
 ```js
 I.useTestCafeTo('handle browser dialog', async ({ t }) {
@@ -1265,6 +1268,8 @@ Client Functions
 
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[15]: https://devexpress.github.io/testcafe/documentation/test-api/
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[16]: https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller
+[16]: https://devexpress.github.io/testcafe/documentation/test-api/
+
+[17]: https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-controller

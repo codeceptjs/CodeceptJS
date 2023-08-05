@@ -34,7 +34,7 @@ Type: [object][16]
 -   `protocol` **[string][17]?** protocol for WebDriver server.
 -   `path` **[string][17]?** path to WebDriver server.
 -   `restart` **[boolean][32]?** restart browser between tests.
--   `smartWait` **([boolean][32] | [number][22])?** **enables [SmartWait][36]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+-   `smartWait` **([boolean][32] | [number][22])?** **enables [SmartWait][37]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 -   `disableScreenshots` **[boolean][32]?** don't save screenshots on failure.
 -   `fullPageScreenshots` **[boolean][32]?** (optional - make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][32]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
@@ -44,7 +44,7 @@ Type: [object][16]
 -   `waitForTimeout` **[number][22]?** sets default wait time in _ms_ for all `wait*` functions.
 -   `desiredCapabilities` **[object][16]?** Selenium's [desired capabilities][6].
 -   `manualStart` **[boolean][32]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
--   `timeouts` **[object][16]?** [WebDriver timeouts][37] defined as hash.
+-   `timeouts` **[object][16]?** [WebDriver timeouts][38] defined as hash.
 -   `highlightElement` **[boolean][32]?** highlight the interacting elements. Default: false
 
 
@@ -1761,11 +1761,14 @@ Checks that current url contains a provided fragment.
 
 ```js
 I.seeInCurrentUrl('/register'); // we are on registration page
+
+// Playwright helper supports the Regex
+I.seeInCurrentUrl(/register/); // we are on registration page
 ```
 
 #### Parameters
 
--   `url` **[string][17]** a fragment to check
+-   `url` **([string][17] | [RegExp][34])** a fragment to check
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInField
@@ -1933,7 +1936,7 @@ I.setCookie([
 
 -   `cookie` **(Cookie | [Array][28]&lt;Cookie>)** a cookie object or array of cookie objects.
     ⚠️ returns a _promise_ which is synchronized internally by recorderUses Selenium's JSON [cookie
-    format][34].
+    format][35].
 
 ### setGeoLocation
 
@@ -2061,12 +2064,12 @@ I.uncheckOption('agree', '//form');
 
 ### useWebDriverTo
 
-Use [webdriverio][35] API inside a test.
+Use [webdriverio][36] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][35]) } object from WebDriver API is available.
+{ [`browser`][36]) } object from WebDriver API is available.
 
 ```js
 I.useWebDriverTo('open multiple windows', async ({ browser }) {
@@ -2362,10 +2365,12 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [33]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[34]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[35]: https://webdriver.io/docs/api.html
+[35]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
 
-[36]: http://codecept.io/acceptance/#smartwait
+[36]: https://webdriver.io/docs/api.html
 
-[37]: http://webdriver.io/docs/timeouts.html
+[37]: http://codecept.io/acceptance/#smartwait
+
+[38]: http://webdriver.io/docs/timeouts.html
