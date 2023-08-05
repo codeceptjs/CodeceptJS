@@ -142,7 +142,7 @@
     "typedoc": "^0.24.8",
     "typedoc-plugin-markdown": "^3.13.4",
     "typescript": "^4.8.4",
-    "wdio-docker-service": "^1.5.0",
+    "wdio-docker-service": "^3.2.1",
     "webdriverio": "^8.3.8",
     "xml2js": "^0.6.0",
     "xmldom": "^0.6.0",
