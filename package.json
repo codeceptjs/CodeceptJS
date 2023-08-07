@@ -113,7 +113,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
     "contributor-faces": "^1.0.3",
-    "documentation": "^12.3.0",
+    "documentation": "^14.0.2",
     "dtslint": "^4.1.6",
     "electron": "^25.2.0",
     "eslint": "^8.45.0",
