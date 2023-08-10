@@ -466,6 +466,12 @@ describe('Playwright', function () {
       await I.dontSeeInField('Name', 'value that is cleared using I.clearField()');
     });
 
+    it('should clear div textarea', async () => {
+      await I.amOnPage('/form/field');
+      await I.clearField('#textarea');
+      await I.dontSeeInField('#textarea', 'I look like textarea');
+    });
+
     it('should clear textarea', async () => {
       await I.amOnPage('/form/textarea');
       await I.fillField('#description', 'value that is cleared using I.clearField()');
