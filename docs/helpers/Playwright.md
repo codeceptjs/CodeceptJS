@@ -1093,6 +1093,60 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 
 Returns **[Promise][20]&lt;[Array][22]&lt;[string][8]>>** HTML code for an element
 
+### grabMetrics
+
+Return a performance metric from the chrome cdp session.
+Note: Chrome-only
+
+Examples:
+
+```js
+const metrics = await I.grabMetrics();
+
+// returned metrics
+
+[
+  { name: 'Timestamp', value: 1584904.203473 },
+  { name: 'AudioHandlers', value: 0 },
+  { name: 'AudioWorkletProcessors', value: 0 },
+  { name: 'Documents', value: 22 },
+  { name: 'Frames', value: 10 },
+  { name: 'JSEventListeners', value: 366 },
+  { name: 'LayoutObjects', value: 1240 },
+  { name: 'MediaKeySessions', value: 0 },
+  { name: 'MediaKeys', value: 0 },
+  { name: 'Nodes', value: 4505 },
+  { name: 'Resources', value: 141 },
+  { name: 'ContextLifecycleStateObservers', value: 34 },
+  { name: 'V8PerContextDatas', value: 4 },
+  { name: 'WorkerGlobalScopes', value: 0 },
+  { name: 'UACSSResources', value: 0 },
+  { name: 'RTCPeerConnections', value: 0 },
+  { name: 'ResourceFetchers', value: 22 },
+  { name: 'AdSubframes', value: 0 },
+  { name: 'DetachedScriptStates', value: 2 },
+  { name: 'ArrayBufferContents', value: 1 },
+  { name: 'LayoutCount', value: 0 },
+  { name: 'RecalcStyleCount', value: 0 },
+  { name: 'LayoutDuration', value: 0 },
+  { name: 'RecalcStyleDuration', value: 0 },
+  { name: 'DevToolsCommandDuration', value: 0.000013 },
+  { name: 'ScriptDuration', value: 0 },
+  { name: 'V8CompileDuration', value: 0 },
+  { name: 'TaskDuration', value: 0.000014 },
+  { name: 'TaskOtherDuration', value: 0.000001 },
+  { name: 'ThreadTime', value: 0.000046 },
+  { name: 'ProcessTime', value: 0.616852 },
+  { name: 'JSHeapUsedSize', value: 19004908 },
+  { name: 'JSHeapTotalSize', value: 26820608 },
+  { name: 'FirstMeaningfulPaint', value: 0 },
+  { name: 'DomContentLoaded', value: 1584903.690491 },
+  { name: 'NavigationStart', value: 1584902.841845 }
+]
+```
+
+Returns **[Promise][20]&lt;[Array][22]&lt;[Object][5]>>** 
+
 ### grabNumberOfOpenTabs
 
 Grab number of open tabs.

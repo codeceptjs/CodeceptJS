@@ -1319,6 +1319,48 @@ describe('Playwright - Electron', () => {
   });
 });
 
+describe('Playwright - Performance Metrics', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(`${__dirname}/../data/output`);
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+      trace: true,
+      video: true,
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    deleteDir(path.join(global.output_dir, 'video'));
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('grabs performance metrics', async () => {
+    await I.amOnPage('https://codecept.io');
+    const metrics = await I.grabMetrics();
+    console.log(metrics);
+    expect(metrics.length).to.greaterThan(0);
+    expect(metrics[0].name).to.equal('Timestamp');
+  });
+});
+
 describe('Playwright - Video & Trace', () => {
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
