@@ -111,7 +111,12 @@ describe('Steps', () => {
 
       it('should correct print step info for simple PageObject', () => {
         const metaStep = new MetaStep('MyPage', 'clickByName');
-        expect(metaStep.toString()).to.include('MyPage: I click by name');
+        expect(metaStep.toString()).to.include('On MyPage: I click by name');
+      });
+
+      it('should correct print step info for custom step', () => {
+        const metaStep = new MetaStep('I', 'clickByName');
+        expect(metaStep.toString()).to.include('I click by name');
       });
 
       it('should correct print step with args', () => {
@@ -120,7 +125,7 @@ describe('Steps', () => {
         const msg2 = 'second message';
         const fn = (msg) => `result from callback = ${msg}`;
         metaStep.run.bind(metaStep, fn)(msg, msg2);
-        expect(metaStep.toString()).eql(`MyPage: I click by name "${msg}", "${msg2}"`);
+        expect(metaStep.toString()).eql(`On MyPage: I click by name "${msg}", "${msg2}"`);
       });
     });
 
