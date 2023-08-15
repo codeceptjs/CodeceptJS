@@ -5,7 +5,7 @@
   },
   "parserOptions": {
     "ecmaVersion": 2020
-  },  
+  },
   "rules": {
     "func-names": 0,
     "no-use-before-define": 0,
@@ -41,6 +41,7 @@
     "no-await-in-loop": 0,
     "arrow-body-style": 0,
     "no-loop-func": 0,
-    "arrow-parens": 0
+    "arrow-parens": 0,
+    "default-param-last": 0
   }
 }

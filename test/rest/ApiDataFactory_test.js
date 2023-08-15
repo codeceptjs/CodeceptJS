@@ -131,11 +131,15 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts');
       resp.data.length.should.eql(1);
       await I.haveMultiple('post', 3);
-      await new Promise(done => setTimeout(done, 500));
+      await new Promise(done => {
+        setTimeout(done, 500);
+      });
       resp = await I.restHelper.sendGetRequest('/posts');
       resp.data.length.should.eql(4);
       await I._after();
-      await new Promise(done => setTimeout(done, 500));
+      await new Promise(done => {
+        setTimeout(done, 500);
+      });
       resp = await I.restHelper.sendGetRequest('/posts');
       resp.data.length.should.eql(1);
     });
@@ -174,7 +178,9 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts');
       resp.data.length.should.eql(2);
       await I._after();
-      await new Promise(done => setTimeout(done, 500));
+      await new Promise(done => {
+        setTimeout(done, 500);
+      });
       resp = await I.restHelper.sendGetRequest('/posts');
       resp.data.length.should.eql(2);
     });
