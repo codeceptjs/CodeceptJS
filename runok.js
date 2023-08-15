@@ -223,7 +223,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
       });
 
       replaceInFile(helperMarkDownFile(name), (cfg) => {
-        const regex = new RegExp(/## config((.|\n)*)\[1\]/m);
+        const regex = /## config((.|\n)*)\[1\]/m;
         const fullText = fs.readFileSync(helperMarkDownFile(name)).toString();
         const text = fullText.match(regex);
         if (!text) return;
