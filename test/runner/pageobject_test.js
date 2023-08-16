@@ -36,9 +36,9 @@ describe('CodeceptJS PageObject', () => {
     it('should inject page objects by class', (done) => {
       exec(`${config_run_config('codecept.class.js', '@ClassPageObject')} --debug`, (err, stdout) => {
         expect(stdout).not.toContain('classpage.type is not a function');
-        expect(stdout).toContain('classpage: type "Class Page Type"');
+        expect(stdout).toContain('On classpage: type "Class Page Type"');
         expect(stdout).toContain('I print message "Class Page Type"');
-        expect(stdout).toContain('classpage: purgeDomains');
+        expect(stdout).toContain('On classpage: purge domains');
         expect(stdout).toContain('I print message "purgeDomains"');
         expect(stdout).toContain('Class Page Type');
         expect(stdout).toContain('OK  | 1 passed');
@@ -50,10 +50,10 @@ describe('CodeceptJS PageObject', () => {
     it('should inject page objects by class which nested base clas', (done) => {
       exec(`${config_run_config('codecept.class.js', '@NestedClassPageObject')} --debug`, (err, stdout) => {
         expect(stdout).not.toContain('classnestedpage.type is not a function');
-        expect(stdout).toContain('classnestedpage: type "Nested Class Page Type"');
+        expect(stdout).toContain('On classnestedpage: type "Nested Class Page Type"');
         expect(stdout).toContain('user => User1');
         expect(stdout).toContain('I print message "Nested Class Page Type"');
-        expect(stdout).toContain('classnestedpage: purgeDomains');
+        expect(stdout).toContain('On classnestedpage: purge domains');
         expect(stdout).toContain('I print message "purgeDomains"');
         expect(stdout).toContain('Nested Class Page Type');
         expect(stdout).toContain('OK  | 1 passed');
@@ -89,10 +89,10 @@ describe('CodeceptJS PageObject', () => {
         expect(lines).toEqual(
           expect.arrayContaining([
             '  check current dir',
-            '    I: openDir "aaa"',
+            '    I open dir "aaa"',
             '      I am in path "."',
             '      I see file "codecept.class.js"',
-            '    MyPage: hasFile "First arg", "Second arg"',
+            '    On MyPage: has file "First arg", "Second arg"',
             '      I see file "codecept.class.js"',
             '      I see file "codecept.po.js"',
             '    I see file "codecept.po.js"',
@@ -113,10 +113,10 @@ describe('CodeceptJS PageObject', () => {
         expect(lines).toEqual(
           expect.arrayContaining([
             '  check current dir',
-            '    I: openDir "aaa"',
+            '    I open dir "aaa"',
             '      I am in path "."',
             '      I see file "codecept.class.js"',
-            '    MyPage: hasFile "uu"',
+            '    On MyPage: has file "uu"',
             '      I see file "codecept.class.js"',
             '      I see file "codecept.po.js"',
             '    I see file "codecept.po.js"',
@@ -136,10 +136,10 @@ describe('CodeceptJS PageObject', () => {
         expect(lines).toEqual(
           expect.arrayContaining([
             '  pageobject with context',
-            '    I: openDir "aaa"',
+            '    I open dir "aaa"',
             '      I am in path "."',
             '      I see file "codecept.class.js"',
-            '    MyPage: hasFile "uu"',
+            '    On MyPage: has file "uu"',
             '      I see file "codecept.class.js"',
             '      I see file "codecept.po.js"',
             '    I see file "codecept.po.js"',

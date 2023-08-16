@@ -81,10 +81,10 @@ describe('dry-run command', () => {
       expect(lines).toEqual(
         expect.arrayContaining([
           '  check current dir',
-          '    I: openDir "aaa"',
+          '    I open dir "aaa"',
           '      I am in path "."',
           '      I see file "codecept.class.js"',
-          '    MyPage: hasFile "First arg", "Second arg"',
+          '    On MyPage: has file "First arg", "Second arg"',
           '      I see file "codecept.class.js"',
           '      I see file "codecept.po.js"',
           '    I see file "codecept.po.js"',
@@ -150,10 +150,10 @@ describe('dry-run command', () => {
       expect(lines).toEqual(
         expect.arrayContaining([
           '  check current dir',
-          '    I: openDir "aaa"',
+          '    I open dir "aaa"',
           '      I am in path "."',
           '      I see file "codecept.class.js"',
-          '    MyPage: hasFile "uu"',
+          '    On MyPage: has file "uu"',
           '      I see file "codecept.class.js"',
           '      I see file "codecept.po.js"',
           '    I see file "codecept.po.js"',
