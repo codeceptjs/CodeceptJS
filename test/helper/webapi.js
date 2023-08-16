@@ -115,7 +115,7 @@ module.exports.tests = function () {
     });
 
     it('should verify text with &nbsp', async () => {
-      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('TestCafe')) return;
       await I.amOnPage('/');
       await I.see('With special space chars');
     });
