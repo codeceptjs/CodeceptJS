@@ -3,6 +3,7 @@
 <body>
 
 <h1>Welcome&nbsp;to test app!</h1>
+<h2>With&nbsp;special&nbsp;space chars</h1>
 
 <div class="notice" qa-id = "test"><?php if (isset($notice)) echo $notice; ?></div>
 
