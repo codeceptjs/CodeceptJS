@@ -8,6 +8,7 @@ const {
     git, copy, exec, replaceInFile, npmRun, npx, writeToFile,
   }, runok,
 } = require('runok');
+const contributors = require('contributor-faces');
 
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`;
@@ -222,7 +223,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
       });
 
       replaceInFile(helperMarkDownFile(name), (cfg) => {
-        const regex = new RegExp(/## config((.|\n)*)\[1\]/m);
+        const regex = /## config((.|\n)*)\[1\]/m;
         const fullText = fs.readFileSync(helperMarkDownFile(name)).toString();
         const text = fullText.match(regex);
         if (!text) return;
@@ -433,6 +434,15 @@ title: ${name}
     console.log('Gathering commits...');
     const logs = await exec('git log --pretty=\'format:%s - by %aN\' $(git describe --abbrev=0 --tags)..HEAD');
     console.log(logs.data.stdout);
+  },
+
+  async contributorFaces() {
+    // update contributors list in readme
+    await contributors.update(null, { exclude: 'actions-user' });
+    let readmeContent = fs.readFileSync('README.md');
+    readmeContent = readmeContent.toString()
+      .replace('<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>\n', '');
+    fs.writeFileSync('./README.md', readmeContent);
   },
 };
 

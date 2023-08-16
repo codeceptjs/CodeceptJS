@@ -10,7 +10,9 @@ class Retry extends Helper {
   }
 
   asyncStep() {
-    return new Promise(resolve => setTimeout(resolve, 500));
+    return new Promise(resolve => {
+      setTimeout(resolve, 500);
+    });
   }
 }
 

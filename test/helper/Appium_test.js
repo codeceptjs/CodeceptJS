@@ -268,12 +268,15 @@ describe('Appium', function () {
     it('should react on swipe action', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
-        'Gesture Type', 10,
+        'Gesture Type',
+        10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       await app.swipe(
-        "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800,
-        1200, 1000,
+        "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
+        800,
+        1200,
+        1000,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vx = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
@@ -286,12 +289,14 @@ describe('Appium', function () {
     it('should react on swipeDown action', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
-        'Gesture Type', 10,
+        'Gesture Type',
+        10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        1200, 1000,
+        1200,
+        1000,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
@@ -303,12 +308,14 @@ describe('Appium', function () {
       await app.resetApp();
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
-        'Gesture Type', 10,
+        'Gesture Type',
+        10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       await app.swipeDown(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        120, 100,
+        120,
+        100,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       assert.equal(type, 'FLICK');
@@ -317,11 +324,13 @@ describe('Appium', function () {
     it('should react on swipeUp action', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
-        'Gesture Type', 10,
+        'Gesture Type',
+        10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       await app.swipeUp(
-        "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200,
+        "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
+        1200,
         1000,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
@@ -333,12 +342,14 @@ describe('Appium', function () {
     it('should react on swipeRight action', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
-        'Gesture Type', 10,
+        'Gesture Type',
+        10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       await app.swipeRight(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        800, 1000,
+        800,
+        1000,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
@@ -349,12 +360,14 @@ describe('Appium', function () {
     it('should react on swipeLeft action', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
-        'Gesture Type', 10,
+        'Gesture Type',
+        10,
         "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
       );
       await app.swipeLeft(
         "//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']",
-        800, 1000,
+        800,
+        1000,
       );
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
@@ -380,8 +393,12 @@ describe('Appium', function () {
       await app.click('~startUserRegistrationCD');
       try {
         await app.swipeTo(
-          '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up',
-          30, 100, 500,
+          '//android.widget.CheckBox',
+          '//android.widget.ScrollView/android.widget.LinearLayout',
+          'up',
+          30,
+          100,
+          500,
         );
       } catch (e) {
         e.message.should.include('Scroll to the end and element android.widget.CheckBox was not found');
@@ -393,8 +410,12 @@ describe('Appium', function () {
       await app.waitForElement('~startUserRegistrationCD', smallWait);
       await app.click('~startUserRegistrationCD');
       await app.swipeTo(
-        '//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-        100, 700,
+        '//android.widget.CheckBox',
+        '//android.widget.ScrollView/android.widget.LinearLayout',
+        'up',
+        30,
+        100,
+        700,
       );
     });
 
@@ -402,7 +423,8 @@ describe('Appium', function () {
       it('should react on swipeUp action @second', async () => {
         await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         await app.waitForText(
-          'Gesture Type', 10,
+          'Gesture Type',
+          10,
           "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
         );
         await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
@@ -416,7 +438,8 @@ describe('Appium', function () {
         await app.resetApp();
         await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         await app.waitForText(
-          'Gesture Type', 10,
+          'Gesture Type',
+          10,
           "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
         );
         await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
@@ -429,7 +452,8 @@ describe('Appium', function () {
       it('should react on swipeLeft action', async () => {
         await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         await app.waitForText(
-          'Gesture Type', 10,
+          'Gesture Type',
+          10,
           "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
         );
         await app.swipeLeft("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
@@ -442,7 +466,8 @@ describe('Appium', function () {
       it('should react on swipeRight action', async () => {
         await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
         await app.waitForText(
-          'Gesture Type', 10,
+          'Gesture Type',
+          10,
           "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']",
         );
         await app.swipeRight("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']");
@@ -487,8 +512,12 @@ describe('Appium', function () {
       await app.appendField('~email of the customer', '1');
       await app.hideDeviceKeyboard('pressKey', 'Done');
       await app.swipeTo(
-        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-        100, 700,
+        '//android.widget.Button',
+        '//android.widget.ScrollView/android.widget.LinearLayout',
+        'up',
+        30,
+        100,
+        700,
       );
       await app.click('//android.widget.Button');
       await app.see(
@@ -554,8 +583,12 @@ describe('Appium', function () {
       await app.fillField('~email of the customer', 'Nothing special');
       await app.hideDeviceKeyboard('pressKey', 'Done');
       await app.swipeTo(
-        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-        100, 700,
+        '//android.widget.Button',
+        '//android.widget.ScrollView/android.widget.LinearLayout',
+        'up',
+        30,
+        100,
+        700,
       );
       await app.click('//android.widget.Button');
       await app.see(
@@ -571,8 +604,12 @@ describe('Appium', function () {
       await app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special');
       await app.hideDeviceKeyboard('pressKey', 'Done');
       await app.swipeTo(
-        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-        100, 700,
+        '//android.widget.Button',
+        '//android.widget.ScrollView/android.widget.LinearLayout',
+        'up',
+        30,
+        100,
+        700,
       );
       await app.click('//android.widget.Button');
       await app.see(
@@ -589,8 +626,12 @@ describe('Appium', function () {
       await app.appendField('~email of the customer', 'blabla');
       await app.hideDeviceKeyboard('pressKey', 'Done');
       await app.swipeTo(
-        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-        100, 700,
+        '//android.widget.Button',
+        '//android.widget.ScrollView/android.widget.LinearLayout',
+        'up',
+        30,
+        100,
+        700,
       );
       await app.click('//android.widget.Button');
       await app.see(
@@ -632,8 +673,12 @@ describe('Appium', function () {
       await app.appendField('//android.widget.EditText[@content-desc="email of the customer"]', '1');
       await app.hideDeviceKeyboard('pressKey', 'Done');
       await app.swipeTo(
-        '//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30,
-        100, 700,
+        '//android.widget.Button',
+        '//android.widget.ScrollView/android.widget.LinearLayout',
+        'up',
+        30,
+        100,
+        700,
       );
       await app.click('//android.widget.Button');
       await app.see(
