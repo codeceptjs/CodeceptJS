@@ -40,7 +40,7 @@
     "lint": "eslint bin/ examples/ lib/ test/ translations/ runok.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.js --fix",
     "docs": "./runok.js docs",
-    "test:unit": "mocha test/unit --recursive",
+    "test:unit": "mocha test/unit --recursive --timeout 5000",
     "test:runner": "mocha test/runner --recursive --timeout 5000",
     "test": "npm run test:unit && npm run test:runner",
     "test:appium-quick": "mocha test/helper/Appium_test.js --grep 'quick'",

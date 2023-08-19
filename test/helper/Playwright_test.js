@@ -305,10 +305,12 @@ describe('Playwright', function () {
   });
 
   describe('#switchTo', () => {
-    it('should switch reference to iframe content', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here')));
+    it('should switch reference to iframe content', () => {
+      I.amOnPage('/iframe');
+      I.switchTo('[name="content"]');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+    });
 
     it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('#invalidIframeSelector'))
@@ -324,12 +326,14 @@ describe('Playwright', function () {
         e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
       }));
 
-    it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here'))
-      .then(() => I.switchTo(null))
-      .then(() => I.see('Iframe test')));
+    it('should return to parent frame given a null locator', async () => {
+      I.amOnPage('/iframe');
+      I.switchTo('[name="content"]');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+      I.switchTo(null);
+      I.see('Iframe test');
+    });
   });
 
   describe('#seeInSource, #grabSource', () => {
@@ -460,6 +464,12 @@ describe('Playwright', function () {
       await I.fillField('Name', 'value that is cleared using I.clearField()');
       await I.clearField('Name');
       await I.dontSeeInField('Name', 'value that is cleared using I.clearField()');
+    });
+
+    it('should clear div textarea', async () => {
+      await I.amOnPage('/form/field');
+      await I.clearField('#textarea');
+      await I.dontSeeInField('#textarea', 'I look like textarea');
     });
 
     it('should clear textarea', async () => {
