@@ -938,6 +938,47 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
+    it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
+      try {
+        I.amOnPage('https://websocketstest.com/');
+        I.waitForText('Work for You!');
+        I.grabWebSocketMessages();
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.grabWebSocketMessages", but "I.startRecordingWebSocketMessages" was never called before.');
+      }
+    });
+
+    it('should flush the WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      I.flushNetworkTraffics();
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(0);
+    });
+
+    it('should see recording WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.greaterThan(0);
+    });
+
+    it('should not see recording WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      await I.stopRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const afterWsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(afterWsMessages.length);
+    });
+  });
+
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
       const response = await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
