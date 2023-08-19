@@ -136,4 +136,58 @@ describe('GraphQL', () => {
       });
     });
   });
+
+  describe('headers', () => {
+    it('should set headers for all requests multiple times', async () => {
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-first' });
+      I.haveRequestHeaders({ 'XY1-Test': 'xy1-second' });
+      I.haveRequestHeaders({ 'XY2-Test': 'xy2' });
+
+      const response = await I.sendQuery('{ user(id: 0) { id name email }}');
+
+      response.config.headers.should.have.property('XY1-Test');
+      response.config.headers['XY1-Test'].should.eql('xy1-second');
+
+      response.config.headers.should.have.property('XY2-Test');
+      response.config.headers['XY2-Test'].should.eql('xy2');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should override the header set for all requests', async () => {
+      I.haveRequestHeaders({ 'XY-Test': 'first' });
+
+      const response = await I.sendQuery('{ user(id: 0) { id name email }}');
+
+      response.config.headers.should.have.property('XY-Test');
+      response.config.headers['XY-Test'].should.eql('first');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should set Bearer authorization', async () => {
+      I.amBearerAuthenticated('token');
+      const response = await I.sendQuery('{ user(id: 0) { id name email }}');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+
+    it('should set Bearer authorization multiple times', async () => {
+      I.amBearerAuthenticated('token1');
+      I.amBearerAuthenticated('token2');
+      const response = await I.sendQuery('{ user(id: 0) { id name email }}');
+
+      response.config.headers.should.have.property('Authorization');
+      response.config.headers.Authorization.should.eql('Bearer token2');
+
+      response.config.headers.should.have.property('X-Test');
+      response.config.headers['X-Test'].should.eql('test');
+    });
+  });
 });

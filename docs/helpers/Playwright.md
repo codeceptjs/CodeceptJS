@@ -74,7 +74,7 @@ Type: [object][5]
 -   `ignoreLog` **[Array][22]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][44].
 -   `ignoreHTTPSErrors` **[boolean][32]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 -   `bypassCSP` **[boolean][32]?** bypass Content Security Policy or CSP
--   `highlightElement` **[boolean][32]?** highlight the interacting elements
+-   `highlightElement` **[boolean][32]?** highlight the interacting elements. Default: false
 
 
 
@@ -299,7 +299,7 @@ const elements = await this.helpers['Playwright']._locate({name: 'password'});
 
 ### _locateCheckable
 
-Find a checkbox by providing human readable text:
+Find a checkbox by providing human-readable text:
 NOTE: Assumes the checkable element exists
 
 ```js
@@ -313,7 +313,7 @@ this.helpers['Playwright']._locateCheckable('I agree with terms and conditions')
 
 ### _locateClickable
 
-Find a clickable element by providing human readable text:
+Find a clickable element by providing human-readable text:
 
 ```js
 this.helpers['Playwright']._locateClickable('Next page').then // ...
@@ -323,9 +323,22 @@ this.helpers['Playwright']._locateClickable('Next page').then // ...
 
 -   `locator`  
 
+### _locateElement
+
+Get the first element by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+const element = await this.helpers['Playwright']._locateElement({name: 'password'});
+```
+
+#### Parameters
+
+-   `locator`  
+
 ### _locateFields
 
-Find field elements by providing human readable text:
+Find field elements by providing human-readable text:
 
 ```js
 this.helpers['Playwright']._locateFields('Your email').then // ...
