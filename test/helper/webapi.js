@@ -113,6 +113,12 @@ module.exports.tests = function () {
       await I.see("Don't do that at home!", 'h3');
       await I.see('Текст', 'p');
     });
+
+    it('should verify text with &nbsp', async () => {
+      if (isHelper('TestCafe') || isHelper('WebDriver')) return;
+      await I.amOnPage('/');
+      await I.see('With special space chars');
+    });
   });
 
   describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
