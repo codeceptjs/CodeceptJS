@@ -1063,6 +1063,22 @@ describe('Playwright', function () {
       await FS.waitForFile('avatar.jpg', 5);
     });
   });
+
+  describe('#waitForURL', () => {
+    it('should wait for URL', () => {
+      I.amOnPage('/');
+      I.click('More info');
+      I.waitForURL('/info');
+      I.see('Information');
+    });
+
+    it('should wait for regex URL', () => {
+      I.amOnPage('/');
+      I.click('More info');
+      I.waitForURL(/info/);
+      I.see('Information');
+    });
+  });
 });
 
 let remoteBrowser;
