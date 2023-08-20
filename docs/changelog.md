@@ -7,6 +7,57 @@ layout: Section
 
 # Releases
 
+## 3.5.3
+
+🛩️ Features
+
+* **[Playwright]** Provide new steps to check network traffic [#3748](https://github.com/codeceptjs/CodeceptJS/issues/3748) - by **[ngraf](https://github.com/ngraf)** **[KobeNguyenT](https://github.com/KobeNguyenT)**
+
+```js
+// recording traffics and verify the traffic
+  await I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+```
+
+```js
+// block the traffic
+  I.blockTraffic('https://reqres.in/api/comments/*');
+  await I.amOnPage('/form/fetch_call');
+  await I.startRecordingTraffic();
+  await I.click('GET COMMENTS');
+  await I.see('Can not load data!');
+```
+
+```js
+// check the traffic with advanced params
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  await I.startRecordingTraffic();
+  await I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
+```
+
+🐛 Bugfix
+
+* **[retryStepPlugin]** Fix retry step when using global retry [#3768](https://github.com/codeceptjs/CodeceptJS/issues/3768) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+
+🗑 Deprecated
+
+* Nightmare and Protractor helpers have been deprecated
+
+## 3.5.2
+
+🐛 Bug Fixes
+
+* **[Playwright]** reverted `clearField` to previous implementation
+* **[OpenAI]** fixed running helper in pause mode. [#3755](https://github.com/codeceptjs/CodeceptJS/issues/3755) by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+
 ## 3.5.1
 
 🛩️ Features
