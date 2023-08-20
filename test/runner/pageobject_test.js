@@ -26,7 +26,7 @@ describe('CodeceptJS PageObject', () => {
           ]),
         );
         expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
-        expect(err).toBeTruthy();
+        expect(err).to.be.ok;
         done();
       });
     });
@@ -76,7 +76,7 @@ describe('CodeceptJS PageObject', () => {
       exec(`${config_run_config('codecept.logs.js', 'Error print correct arg message')} --steps`, (err, stdout) => {
         expect(stdout).toContain('I.errorMethodHumanizeArgs(Logs Page Value)');
         expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
-        expect(err).toBeTruthy();
+        expect(err).to.be.ok;
         done();
       });
     });

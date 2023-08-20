@@ -14,7 +14,7 @@ describe('CodeceptJS Timeouts', function () {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('Timeout 2s exceeded');
       expect(stdout).toContain('Timeout 1s exceeded');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -43,7 +43,7 @@ describe('CodeceptJS Timeouts', function () {
     exec(config_run_config('codecept.timeout.conf.js', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('Timeout 0.1');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -52,7 +52,7 @@ describe('CodeceptJS Timeouts', function () {
     exec(config_run_config('codecept.conf.js', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('was interrupted on step timeout 100ms');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -61,7 +61,7 @@ describe('CodeceptJS Timeouts', function () {
     exec(config_run_config('codecept.timeout.conf.js', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('was interrupted on step timeout 100ms');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -70,7 +70,7 @@ describe('CodeceptJS Timeouts', function () {
     exec(config_run_config('codecept.timeout.obj.conf.js', '#first', true), (err, stdout) => {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('Timeout 0.3s exceeded');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -80,7 +80,7 @@ describe('CodeceptJS Timeouts', function () {
       debug_this_test && console.log(stdout);
       expect(stdout).not.toContain('Timeout 0.3s exceeded');
       expect(stdout).toContain('Timeout 0.5s exceeded');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -90,7 +90,7 @@ describe('CodeceptJS Timeouts', function () {
       debug_this_test && console.log(stdout);
       expect(stdout).not.toContain('Timeout 0.3s exceeded');
       expect(stdout).toContain('Timeout 1s exceeded');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });

@@ -15,7 +15,7 @@ describe('CodeceptJS Steps', function () {
       expect(stdout).toContain('Action exceededByTimeout: 1500 was interrupted on step timeout 1000ms');
       expect(stdout).toContain('0 passed, 1 failed');
       expect(stdout).toContain('- I.exceededByTimeout(1500)');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -35,7 +35,7 @@ describe('CodeceptJS Steps', function () {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('Action waitTadShorter: 750 was interrupted on step timeout 500ms');
       expect(stdout).toContain('0 passed, 1 failed');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });

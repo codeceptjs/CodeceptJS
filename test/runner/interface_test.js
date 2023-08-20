@@ -38,7 +38,7 @@ describe('CodeceptJS Interface', () => {
     exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout) => {
       expect(stdout).toContain('Retry'); // feature
       expect(stdout).toContain('Retries: 1'); // test name
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -57,7 +57,7 @@ describe('CodeceptJS Interface', () => {
       expect(stdout).toContain('Retry'); // feature
       expect(stdout).not.toContain('Retries: 5');
       expect(stdout).toContain('Retries: 1');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });
@@ -67,7 +67,7 @@ describe('CodeceptJS Interface', () => {
       expect(stdout).toContain('Retry'); // feature
       expect(stdout).not.toContain('Retries: 5');
       expect(stdout).toContain('Retries: 1');
-      expect(err).toBeTruthy();
+      expect(err).to.be.ok;
       done();
     });
   });

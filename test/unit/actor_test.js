@@ -36,7 +36,7 @@ describe('Actor', () => {
 
   it('should init actor on store', () => {
     const store = require('../../lib/store');
-    expect(store.actor).toBeTruthy();
+    expect(store.actor).to.be.ok;
   });
 
   it('should collect pageobject methods in actor', () => {
@@ -97,8 +97,8 @@ describe('Actor', () => {
     event.dispatcher.addListener(event.step.after, () => listeners++);
     event.dispatcher.addListener(event.step.passed, (step) => {
       listeners++;
-      expect(step.endTime).toBeTruthy();
-      expect(step.startTime).toBeTruthy();
+      expect(step.endTime).to.be.ok;
+      expect(step.startTime).to.be.ok;
     });
 
     return I.hello().then(() => {
@@ -150,8 +150,8 @@ describe('Actor', () => {
     event.dispatcher.addListener(event.step.after, () => listeners++);
     event.dispatcher.addListener(event.step.failed, (step) => {
       listeners++;
-      expect(step.endTime).toBeTruthy();
-      expect(step.startTime).toBeTruthy();
+      expect(step.endTime).to.be.ok;
+      expect(step.startTime).to.be.ok;
     });
 
     return I.die()
