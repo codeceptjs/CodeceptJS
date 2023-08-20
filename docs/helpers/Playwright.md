@@ -42,7 +42,7 @@ Type: [object][5]
 -   `url` **[string][8]?** base url of website to be tested
 -   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][32]?** show browser window.
--   `restart` **([string][8] | [boolean][32])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][39] but keeps running browser. Recommended by Playwright team to keep tests isolated.
+-   `restart` **([string][8] | [boolean][32])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][40] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
     -   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
 -   `timeout` **[number][19]?** -   [timeout][40] in ms of all Playwright actions .
@@ -50,7 +50,7 @@ Type: [object][5]
 -   `emulate` **any?** browser in device emulation mode.
 -   `video` **[boolean][32]?** enables video recording for failed tests; videos are saved into `output/videos` folder
 -   `keepVideoForPassedTests` **[boolean][32]?** save videos for passed tests; videos are saved into `output/videos` folder
--   `trace` **[boolean][32]?** record [tracing information][41] with screenshots and snapshots.
+-   `trace` **[boolean][32]?** record [tracing information][42] with screenshots and snapshots.
 -   `keepTraceForPassedTests` **[boolean][32]?** save trace for passed tests.
 -   `fullPageScreenshots` **[boolean][32]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][32]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
@@ -299,7 +299,7 @@ const elements = await this.helpers['Playwright']._locate({name: 'password'});
 
 ### _locateCheckable
 
-Find a checkbox by providing human readable text:
+Find a checkbox by providing human-readable text:
 NOTE: Assumes the checkable element exists
 
 ```js
@@ -313,7 +313,7 @@ this.helpers['Playwright']._locateCheckable('I agree with terms and conditions')
 
 ### _locateClickable
 
-Find a clickable element by providing human readable text:
+Find a clickable element by providing human-readable text:
 
 ```js
 this.helpers['Playwright']._locateClickable('Next page').then // ...
@@ -323,9 +323,22 @@ this.helpers['Playwright']._locateClickable('Next page').then // ...
 
 -   `locator`  
 
+### _locateElement
+
+Get the first element by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+const element = await this.helpers['Playwright']._locateElement({name: 'password'});
+```
+
+#### Parameters
+
+-   `locator`  
+
 ### _locateFields
 
-Find field elements by providing human readable text:
+Find field elements by providing human-readable text:
 
 ```js
 this.helpers['Playwright']._locateFields('Your email').then // ...
@@ -852,6 +865,10 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 Resets all recorded network requests.
 
+### flushWebSocketMessages
+
+Resets all recorded WS messages.
+
 ### focus
 
 Calls [focus][12] on the matching element.
@@ -1254,6 +1271,12 @@ let inputs = await I.grabValueFromAll('//form/input');
 -   `locator` **([string][8] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][21]&lt;[Array][9]&lt;[string][8]>>** attribute value
+
+### grabWebSocketMessages
+
+Grab the recording WS messages
+
+Returns **[Array][22]&lt;any>** 
 
 ### handleDownloads
 
@@ -1958,6 +1981,15 @@ I.startRecordingTraffic();
 
 Returns **void** 
 
+### startRecordingWebSocketMessages
+
+Starts recording of websocket messages.
+This also resets recorded websocket messages.
+
+```js
+await I.startRecordingWebSocketMessages();
+```
+
 ### stopMockingRoute
 
 Stops network mocking created by `mockRoute`.
@@ -1980,6 +2012,14 @@ Stops recording of network traffic. Recorded traffic is not flashed.
 
 ```js
 I.stopRecordingTraffic();
+```
+
+### stopRecordingWebSocketMessages
+
+Stops recording WS messages. Recorded WS messages is not flashed.
+
+```js
+await I.stopRecordingWebSocketMessages();
 ```
 
 ### switchTo
@@ -2203,7 +2243,7 @@ I.waitForInvisible('#popup');
 
 ### waitForNavigation
 
-Waits for navigation to finish. By default takes configured `waitForNavigation` option.
+Waits for navigation to finish. By default, it takes configured `waitForNavigation` option.
 
 See [Playwright's reference][37]
 
@@ -2257,6 +2297,17 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `context` **([string][8] | [object][5])?** (optional) element located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
+### waitForURL
+
+Waits for page navigates to a new URL or reloads. By default, it takes configured `waitForNavigation` option.
+
+See [Playwright's reference][38]
+
+#### Parameters
+
+-   `url` **([string][8] | [RegExp][16])** A glob pattern, regex pattern or predicate receiving URL to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+-   `options` **any**  
+
 ### waitForValue
 
 Waits for the specified value to be in value attribute.
@@ -2286,6 +2337,7 @@ I.waitForVisible('#popup');
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][19]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][38]. 
+
 
 ### waitInUrl
 
@@ -2420,15 +2472,15 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [37]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 
-[38]: https://codecept.io/react
+[38]: https://playwright.dev/docs/api/class-page#page-wait-for-url
 
-[39]: https://playwright.dev/docs/api/class-browsercontext
+[39]: https://codecept.io/react
 
-[40]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
+[40]: https://playwright.dev/docs/api/class-browsercontext
 
-[41]: https://playwright.dev/docs/trace-viewer
+[41]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
 
-[42]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
+[42]: https://playwright.dev/docs/trace-viewer
 
 [43]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 

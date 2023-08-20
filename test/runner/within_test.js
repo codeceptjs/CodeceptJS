@@ -24,12 +24,12 @@ describe('CodeceptJS within', function () {
       testStatus.should.include('OK');
       withoutGeneratorList.should.eql([
         'I small promise ',
-        'I small  Promise was finished ',
-        'I  Hey!  I am within  Begin.  I get blabla ',
-        'Within "blabla" ',
+        'I small promise was finished ',
+        'I hey! i am within begin. i get blabla ',
+        'Within "blabla" ""',
         'I small promise ',
-        'I small  Promise was finished ',
-        'I oh!  I am within end( ',
+        'I small promise was finished ',
+        'I oh! i am within end( ',
       ], 'check steps execution order');
       done();
     });
@@ -44,16 +44,16 @@ describe('CodeceptJS within', function () {
       testStatus.should.include('OK');
       withGeneratorList.should.eql([
         'I small promise ',
-        'I small  Promise was finished ',
+        'I small promise was finished ',
         'I small yield ',
         'I am small yield string await',
-        'I  Hey!  I am within  Begin.  I get blabla ',
-        'Within "blabla" ',
+        'I hey! i am within begin. i get blabla ',
+        'Within "blabla" ""',
         'I small yield ',
         'I am small yield string await',
         'I small promise ',
-        'I small  Promise was finished ',
-        'I oh!  I am within end( ',
+        'I small promise was finished ',
+        'I oh! i am within end( ',
       ], 'check steps execution order');
 
       done();
@@ -69,16 +69,16 @@ describe('CodeceptJS within', function () {
       testStatus.should.include('OK');
       withGeneratorList.should.eql([
         'I small promise ',
-        'I small  Promise was finished ',
+        'I small promise was finished ',
         'I small yield ',
         'I am small yield string await',
-        'I  Hey!  I am within  Begin.  I get blabla ',
-        'Within "blabla" ',
+        'I hey! i am within begin. i get blabla ',
+        'Within "blabla" ""',
         'I small promise ',
-        'I small  Promise was finished ',
+        'I small promise was finished ',
         'I small yield ',
         'I am small yield string await',
-        'I oh!  I am within end( ',
+        'I oh! i am within end( ',
       ], 'check steps execution order');
 
       done();

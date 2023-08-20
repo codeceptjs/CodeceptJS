@@ -305,10 +305,12 @@ describe('Playwright', function () {
   });
 
   describe('#switchTo', () => {
-    it('should switch reference to iframe content', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here')));
+    it('should switch reference to iframe content', () => {
+      I.amOnPage('/iframe');
+      I.switchTo('[name="content"]');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+    });
 
     it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('#invalidIframeSelector'))
@@ -324,12 +326,14 @@ describe('Playwright', function () {
         e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
       }));
 
-    it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here'))
-      .then(() => I.switchTo(null))
-      .then(() => I.see('Iframe test')));
+    it('should return to parent frame given a null locator', async () => {
+      I.amOnPage('/iframe');
+      I.switchTo('[name="content"]');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+      I.switchTo(null);
+      I.see('Iframe test');
+    });
   });
 
   describe('#seeInSource, #grabSource', () => {
@@ -460,6 +464,12 @@ describe('Playwright', function () {
       await I.fillField('Name', 'value that is cleared using I.clearField()');
       await I.clearField('Name');
       await I.dontSeeInField('Name', 'value that is cleared using I.clearField()');
+    });
+
+    it('should clear div textarea', async () => {
+      await I.amOnPage('/form/field');
+      await I.clearField('#textarea');
+      await I.dontSeeInField('#textarea', 'I look like textarea');
     });
 
     it('should clear textarea', async () => {
@@ -947,6 +957,47 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
+    it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
+      try {
+        I.amOnPage('https://websocketstest.com/');
+        I.waitForText('Work for You!');
+        I.grabWebSocketMessages();
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.grabWebSocketMessages", but "I.startRecordingWebSocketMessages" was never called before.');
+      }
+    });
+
+    it('should flush the WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      I.flushNetworkTraffics();
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(0);
+    });
+
+    it('should see recording WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.greaterThan(0);
+    });
+
+    it('should not see recording WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      await I.stopRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const afterWsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(afterWsMessages.length);
+    });
+  });
+
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
       const response = await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
@@ -1029,6 +1080,22 @@ describe('Playwright', function () {
       await I.handleDownloads('avatar.jpg');
       await I.click('Download file');
       await FS.waitForFile('avatar.jpg', 5);
+    });
+  });
+
+  describe('#waitForURL', () => {
+    it('should wait for URL', () => {
+      I.amOnPage('/');
+      I.click('More info');
+      I.waitForURL('/info');
+      I.see('Information');
+    });
+
+    it('should wait for regex URL', () => {
+      I.amOnPage('/');
+      I.click('More info');
+      I.waitForURL(/info/);
+      I.see('Information');
     });
   });
 });
