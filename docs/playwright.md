@@ -272,6 +272,29 @@ exports.config = {
 }
 ```
 
+Sometimes, the Electron app is built with [electron-forge](https://www.electronforge.io/), then configuring may a bit different.
+
+- First, you should run your electron-forge command to build and pack your app.
+- Then, you would find `index.js` file inside `.webpack/main/index.js`
+
+`codecept.conf.js` - CodeceptJS configuration file
+```js
+const path = require("path");
+
+exports.config = {
+  helpers: {
+    Playwright: {
+      browser: "electron",
+      electron: {
+        executablePath: require("electron"),
+        args: [path.join(__dirname, ".webpack/main/index.js")],
+      },
+    },
+  },
+  // rest of config
+}
+```
+
 ### Headless Mode
 
 With Electron, headless mode must be set when creating the window. Therefore, CodeceptJS's `show` configuration parameter will not work. However, you can set it in the `main.js` file as shown below:

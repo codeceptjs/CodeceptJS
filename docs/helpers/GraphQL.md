@@ -68,6 +68,27 @@ Prepares request for axios call
 
 Returns **[object][2]** graphQLRequest
 
+### amBearerAuthenticated
+
+Adds a header for Bearer authentication
+
+```js
+// we use secret function to hide token from logs
+I.amBearerAuthenticated(secret('heregoestoken'))
+```
+
+#### Parameters
+
+-   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+
+### haveRequestHeaders
+
+Sets request headers for all requests of this test
+
+#### Parameters
+
+-   `headers` **[object][2]** headers list
+
 ### sendMutation
 
 Send query to GraphQL endpoint over http

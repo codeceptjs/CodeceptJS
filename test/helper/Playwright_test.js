@@ -305,10 +305,12 @@ describe('Playwright', function () {
   });
 
   describe('#switchTo', () => {
-    it('should switch reference to iframe content', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here')));
+    it('should switch reference to iframe content', () => {
+      I.amOnPage('/iframe');
+      I.switchTo('[name="content"]');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+    });
 
     it('should return error if iframe selector is invalid', () => I.amOnPage('/iframe')
       .then(() => I.switchTo('#invalidIframeSelector'))
@@ -324,12 +326,14 @@ describe('Playwright', function () {
         e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
       }));
 
-    it('should return to parent frame given a null locator', () => I.amOnPage('/iframe')
-      .then(() => I.switchTo('[name="content"]'))
-      .then(() => I.see('Information'))
-      .then(() => I.see('Lots of valuable data here'))
-      .then(() => I.switchTo(null))
-      .then(() => I.see('Iframe test')));
+    it('should return to parent frame given a null locator', async () => {
+      I.amOnPage('/iframe');
+      I.switchTo('[name="content"]');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+      I.switchTo(null);
+      I.see('Iframe test');
+    });
   });
 
   describe('#seeInSource, #grabSource', () => {
@@ -460,6 +464,12 @@ describe('Playwright', function () {
       await I.fillField('Name', 'value that is cleared using I.clearField()');
       await I.clearField('Name');
       await I.dontSeeInField('Name', 'value that is cleared using I.clearField()');
+    });
+
+    it('should clear div textarea', async () => {
+      await I.amOnPage('/form/field');
+      await I.clearField('#textarea');
+      await I.dontSeeInField('#textarea', 'I look like textarea');
     });
 
     it('should clear textarea', async () => {
@@ -808,7 +818,7 @@ describe('Playwright', function () {
     });
 
     it('should flush the network traffics', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.flushNetworkTraffics();
       const traffics = await I.grabRecordedNetworkTraffics();
@@ -816,27 +826,27 @@ describe('Playwright', function () {
     });
 
     it('should see recording traffics', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should not see recording traffics', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
     });
 
     it('should not see recording traffics using regex url', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       await I.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
     });
 
     it('should throw error when calling dontSeeTraffic but missing name', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       try {
@@ -847,7 +857,7 @@ describe('Playwright', function () {
     });
 
     it('should throw error when calling dontSeeTraffic but missing url', async () => {
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       I.amOnPage('https://codecept.io/');
       I.stopRecordingTraffic();
       try {
@@ -863,16 +873,35 @@ describe('Playwright', function () {
       await I.startRecordingTraffic();
       await I.click('GET COMMENTS');
       await I.see('this was mocked');
+
+      await I.mockTraffic('https://reqres.in/api/comments/1', '{"name": "this was another mocked" }');
+      await I.click('GET COMMENTS');
+      await I.see('this was another mocked');
+
       const traffics = await I.grabRecordedNetworkTraffics();
       expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[0].response.status).to.equal(200);
+      expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+
+      expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[1].response.status).to.equal(200);
+      expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
     });
 
-    it('should block traffics', async () => {
+    it('should block traffics using a list of urls', async () => {
+      I.blockTraffic(['https://reqres.in/api/*', 'https://reqres.in/api/comments/*']);
+      I.amOnPage('/form/fetch_call');
+      I.startRecordingTraffic();
+      I.click('GET COMMENTS');
+      I.see('Can not load data!');
+    });
+
+    it('should block traffics of a given url', async () => {
       I.blockTraffic('https://reqres.in/api/comments/*');
-      await I.amOnPage('/form/fetch_call');
-      await I.startRecordingTraffic();
-      await I.click('GET COMMENTS');
-      await I.see('Can not load data!');
+      I.amOnPage('/form/fetch_call');
+      I.startRecordingTraffic();
+      I.click('GET COMMENTS');
+      I.see('Can not load data!');
     });
 
     it('should check traffics with more advanced params', async () => {
@@ -901,7 +930,7 @@ describe('Playwright', function () {
 
     it('should check traffics with more advanced post data', async () => {
       I.amOnPage('https://openai.com/blog/chatgpt');
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       await I.seeTraffic({
         name: 'event',
         url: 'https://cloudflareinsights.com/cdn-cgi/rum',
@@ -913,7 +942,7 @@ describe('Playwright', function () {
 
     it('should show error when advanced post data are not matching', async () => {
       I.amOnPage('https://openai.com/blog/chatgpt');
-      await I.startRecordingTraffic();
+      I.startRecordingTraffic();
       try {
         await I.seeTraffic({
           name: 'event',
@@ -925,6 +954,47 @@ describe('Playwright', function () {
       } catch (e) {
         expect(e.message).to.contain('actual value: "2"');
       }
+    });
+  });
+
+  describe('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
+    it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
+      try {
+        I.amOnPage('https://websocketstest.com/');
+        I.waitForText('Work for You!');
+        I.grabWebSocketMessages();
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.grabWebSocketMessages", but "I.startRecordingWebSocketMessages" was never called before.');
+      }
+    });
+
+    it('should flush the WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      I.flushNetworkTraffics();
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(0);
+    });
+
+    it('should see recording WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.greaterThan(0);
+    });
+
+    it('should not see recording WS messages', async () => {
+      await I.startRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      await I.stopRecordingWebSocketMessages();
+      await I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const afterWsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(afterWsMessages.length);
     });
   });
 
@@ -1010,6 +1080,22 @@ describe('Playwright', function () {
       await I.handleDownloads('avatar.jpg');
       await I.click('Download file');
       await FS.waitForFile('avatar.jpg', 5);
+    });
+  });
+
+  describe('#waitForURL', () => {
+    it('should wait for URL', () => {
+      I.amOnPage('/');
+      I.click('More info');
+      I.waitForURL('/info');
+      I.see('Information');
+    });
+
+    it('should wait for regex URL', () => {
+      I.amOnPage('/');
+      I.click('More info');
+      I.waitForURL(/info/);
+      I.see('Information');
     });
   });
 });
