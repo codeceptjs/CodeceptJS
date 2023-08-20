@@ -16,7 +16,7 @@ describe('CodeceptJS PageObject', () => {
     it('should fail if page objects was failed', (done) => {
       exec(`${config_run_config('codecept.fail_po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
-        expect(lines).toEqual(
+        expect(lines).to.equal(
           expect.arrayContaining([
             expect.stringContaining('File notexistfile.js not found in'),
             expect.stringContaining('-- FAILURES'),
@@ -86,7 +86,7 @@ describe('CodeceptJS PageObject', () => {
     it('should display meta steps and substeps', (done) => {
       exec(`${config_run_config('codecept.po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
-        expect(lines).toEqual(
+        expect(lines).to.equal(
           expect.arrayContaining([
             '  check current dir',
             '    I open dir "aaa"',
@@ -110,7 +110,7 @@ describe('CodeceptJS PageObject', () => {
       exec(`${config_run_config('codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(stdout).toContain('injected');
-        expect(lines).toEqual(
+        expect(lines).to.equal(
           expect.arrayContaining([
             '  check current dir',
             '    I open dir "aaa"',
@@ -133,7 +133,7 @@ describe('CodeceptJS PageObject', () => {
     it('should work when used "this" context on method', (done) => {
       exec(`${config_run_config('codecept.inject.po.js', 'pageobject with context')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
-        expect(lines).toEqual(
+        expect(lines).to.equal(
           expect.arrayContaining([
             '  pageobject with context',
             '    I open dir "aaa"',

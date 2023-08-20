@@ -49,7 +49,7 @@ describe('dry-run command', () => {
     exec(`${codecept_run_config('codecept.testhooks.json')} --debug`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
-      expect(lines).not.toEqual(
+      expect(lines).not.to.equal(
         expect.arrayContaining([
           'Helper: I\'m initialized',
           'Helper: I\'m simple BeforeSuite hook',
@@ -59,7 +59,7 @@ describe('dry-run command', () => {
         ]),
       );
 
-      expect(lines).toEqual(
+      expect(lines).to.equal(
         expect.arrayContaining([
           'Test: I\'m simple BeforeSuite hook',
           'Test: I\'m simple Before hook',
@@ -78,7 +78,7 @@ describe('dry-run command', () => {
   it('should display meta steps and substeps', (done) => {
     exec(`${codecept_run_config('configs/pageObjects/codecept.po.js')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
-      expect(lines).toEqual(
+      expect(lines).to.equal(
         expect.arrayContaining([
           '  check current dir',
           '    I open dir "aaa"',
@@ -147,7 +147,7 @@ describe('dry-run command', () => {
     exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(stdout).toContain('injected');
-      expect(lines).toEqual(
+      expect(lines).to.equal(
         expect.arrayContaining([
           '  check current dir',
           '    I open dir "aaa"',

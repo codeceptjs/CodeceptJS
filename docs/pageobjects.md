@@ -176,13 +176,13 @@ class AttachFile {
   async hasFileSize(fileSizeText) {
     await I.waitForElement(this.fileSize)
     const size = await I.grabTextFrom(this.fileSize)
-    expect(size).toEqual(fileSizeText)
+    expect(size).to.equal(fileSizeText)
   }
 
   async hasFileSizeInPosition(fileNameText, position) {
     await I.waitNumberOfVisibleElements(this.fileName, position)
     const text = await I.grabTextFrom(this.fileName)
-    expect(text[position - 1]).toEqual(fileNameText)
+    expect(text[position - 1]).to.equal(fileNameText)
   }
 }
 

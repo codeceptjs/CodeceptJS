@@ -43,8 +43,8 @@ describe('Actor', () => {
     const poI = actor({
       customStep: () => {},
     });
-    expect(poI).toHaveProperty('customStep');
-    expect(I).toHaveProperty('customStep');
+    expect(poI).to.have.property('customStep');
+    expect(I).to.have.property('customStep');
   });
 
   it('should correct run step from Helper inside PageObject', () => {
@@ -55,18 +55,18 @@ describe('Actor', () => {
     });
     recorder.start();
     const promise = I.customStep();
-    return promise.then(val => expect(val).toEqual('hello world'));
+    return promise.then(val => expect(val).to.equal('hello world'));
   });
 
   it('should init pageobject methods as metastep', () => {
     actor({
       customStep: () => 3,
     });
-    expect(I.customStep()).toEqual(3);
+    expect(I.customStep()).to.equal(3);
   });
 
   it('should correct add translation for step from Helper', () => {
-    expect(I).toHaveProperty('привет');
+    expect(I).to.have.property('привет');
   });
 
   it('should correct add translation for step from PageObject', () => {
@@ -74,20 +74,20 @@ describe('Actor', () => {
     actor({
       customStep: () => 3,
     });
-    expect(I).toHaveProperty('кастомный_шаг');
+    expect(I).to.have.property('кастомный_шаг');
   });
 
   it('should take all methods from helpers and built in', () => {
     ['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach(key => {
-      expect(I).toHaveProperty(key);
+      expect(I).to.have.property(key);
     });
   });
 
   it('should return promise', () => {
     recorder.start();
     const promise = I.hello();
-    expect(promise).toBeInstanceOf(Promise);
-    return promise.then(val => expect(val).toEqual('hello world'));
+    expect(promise).to.be.an.instanceof(Promise);
+    return promise.then(val => expect(val).to.equal('hello world'));
   });
 
   it('should produce step events', () => {
@@ -102,7 +102,7 @@ describe('Actor', () => {
     });
 
     return I.hello().then(() => {
-      expect(listeners).toEqual(3);
+      expect(listeners).to.equal(3);
     });
   });
 
@@ -158,7 +158,7 @@ describe('Actor', () => {
       .then(() => listeners = 0)
       .catch(() => null)
       .then(() => {
-        expect(listeners).toEqual(3);
+        expect(listeners).to.equal(3);
       });
   });
 });

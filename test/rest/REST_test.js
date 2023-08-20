@@ -74,8 +74,8 @@ describe('REST', () => {
       const secretData = Secret.secret({ name: 'john', password: '123456' }, 'password');
       const response = await I.sendPostRequest('/user', secretData);
       response.data.name.should.eql('john');
-      expect(response.data.password).toEqual({ _secret: '123456' });
-      expect(secretData.password.getMasked()).toEqual('*****');
+      expect(response.data.password).to.equal({ _secret: '123456' });
+      expect(secretData.password.getMasked()).to.equal('*****');
     });
 
     it('should send POST requests with secret form encoded is not converted to string', async () => {

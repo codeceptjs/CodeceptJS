@@ -22,7 +22,7 @@ describe('CodeceptJS commentStep plugin', function () {
   it('should print nested steps when global var comments used', done => {
     exec(`${config_run_config('codecept.conf.js', 'global var')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
-      expect(lines).toEqual(
+      expect(lines).to.equal(
         expect.arrayContaining([
           expect.stringContaining('Prepare user base:'),
           expect.stringContaining('I print "other thins"'),
@@ -40,7 +40,7 @@ describe('CodeceptJS commentStep plugin', function () {
   it('should print nested steps when local var comments used', done => {
     exec(`${config_run_config('codecept.conf.js', 'local var')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
-      expect(lines).toEqual(
+      expect(lines).to.equal(
         expect.arrayContaining([
           expect.stringContaining('Prepare project:'),
           expect.stringContaining('I print "other thins"'),
