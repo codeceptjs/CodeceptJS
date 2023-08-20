@@ -45,7 +45,7 @@ Type: [object][5]
 -   `restart` **([string][8] | [boolean][32])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][40] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
     -   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
--   `timeout` **[number][19]?** -   [timeout][40] in ms of all Playwright actions .
+-   `timeout` **[number][19]?** -   [timeout][41] in ms of all Playwright actions .
 -   `disableScreenshots` **[boolean][32]?** don't save screenshot on failure.
 -   `emulate` **any?** browser in device emulation mode.
 -   `video` **[boolean][32]?** enables video recording for failed tests; videos are saved into `output/videos` folder
@@ -57,7 +57,7 @@ Type: [object][5]
 -   `keepBrowserState` **[boolean][32]?** keep browser state between tests when `restart` is set to 'session'.
 -   `keepCookies` **[boolean][32]?** keep cookies between tests when `restart` is set to 'session'.
 -   `waitForAction` **[number][19]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"networkidle"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle`. Choose one of those options is possible. See [Playwright API][42].
+-   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"commit"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `commit`. Choose one of those options is possible. See [Playwright API][38].
 -   `pressKeyDelay` **[number][19]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][19]?** config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout` **[number][19]?** default wait* timeout in ms. Default: 1000.
@@ -1276,7 +1276,7 @@ Returns **[Promise][21]&lt;[Array][9]&lt;[string][8]>>** attribute value
 
 Grab the recording WS messages
 
-Returns **[Array][22]&lt;any>** 
+Returns **[Array][9]&lt;any>** 
 
 ### handleDownloads
 
@@ -2305,7 +2305,7 @@ See [Playwright's reference][38]
 
 #### Parameters
 
--   `url` **([string][8] | [RegExp][16])** A glob pattern, regex pattern or predicate receiving URL to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+-   `url` **([string][8] | [RegExp][10])** A glob pattern, regex pattern or predicate receiving URL to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
 -   `options` **any**  
 
 ### waitForValue
@@ -2336,8 +2336,7 @@ I.waitForVisible('#popup');
 
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][19]** (optional, `1` by default) time in seconds to wait
-    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][38]. 
-
+    ⚠️ returns a _promise_ which is synchronized internally by recorderThis method accepts [React selectors][39]. 
 
 ### waitInUrl
 
