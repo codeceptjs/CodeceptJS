@@ -16,7 +16,7 @@ jobs:
           days-before-issue-close: 365
           stale-issue-label: "stale"
           stale-issue-message: "This issue is stale because it has been open for 90 days with no activity."
-          close-issue-message: "Please reopen and send PR ro fix it, as looks like our team could not fix it on our own"
+          close-issue-message: "Please reopen and send PR to fix it, as looks like our team could not fix it on our own"
           days-before-pr-stale: -1
           days-before-pr-close: -1
           repo-token: ${{ secrets.GITHUB_TOKEN }}
