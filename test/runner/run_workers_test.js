@@ -1,4 +1,4 @@
-const expect = require('expect');
+const { expect } = require('expect');
 const path = require('path');
 const exec = require('child_process').exec;
 const semver = require('semver');
