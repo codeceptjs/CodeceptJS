@@ -1,5 +1,5 @@
 const path = require('path');
-const expect = require('expect');
+const { expect } = require('chai');
 const fs = require('fs');
 
 const TestHelper = require('../support/TestHelper');

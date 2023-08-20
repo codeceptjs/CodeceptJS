@@ -1,4 +1,4 @@
-const expect = require('expect');
+const { expect } = require('chai');
 const exec = require('child_process').exec;
 const { codecept_dir, codecept_run } = require('./consts');
 

@@ -1,5 +1,5 @@
 const path = require('path');
-const expect = require('expect');
+const { expect } = require('chai');
 
 const actor = require('../../lib/actor');
 const container = require('../../lib/container');
