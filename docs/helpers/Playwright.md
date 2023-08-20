@@ -1166,7 +1166,7 @@ const metrics = await I.grabMetrics();
 ]
 ```
 
-Returns **[Promise][20]&lt;[Array][22]&lt;[Object][5]>>** 
+Returns **[Promise][21]&lt;[Array][9]&lt;[Object][5]>>** 
 
 ### grabNumberOfOpenTabs
 
