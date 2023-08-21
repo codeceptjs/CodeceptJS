@@ -103,7 +103,7 @@
     "@codeceptjs/mock-request": "^0.3.1",
     "@faker-js/faker": "^7.6.0",
     "@pollyjs/adapter-puppeteer": "^6.0.5",
-    "@pollyjs/core": "^5.1.0",
+    "@pollyjs/core": "^6.0.6",
     "@types/inquirer": "^9.0.3",
     "@types/node": "^20.4.4",
     "@wdio/sauce-service": "^8.3.8",
