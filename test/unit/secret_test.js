@@ -1,4 +1,4 @@
-const expect = require('expect');
+const { expect } = require('expect');
 const Secret = require('../../lib/secret');
 
 describe('Secret tests', () => {

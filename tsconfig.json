@@ -1,23 +1,26 @@
 {
+  "ts-node": {
+    "files": true
+  },
   "compilerOptions": {
+    "target": "es2018",
+    "lib": ["es2018", "DOM"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "types": ["node"],
+    "declaration": true,
+    "skipLibCheck": true,
     "allowJs": true,
     "checkJs": true,
-    "module": "commonjs",
     "noImplicitAny": false,
     "noImplicitThis": false,
     "noEmit": true,
-    "strictNullChecks": true,
-    "types": [
-        "node"
-    ],
-    "target": "es2018"
+    "strictNullChecks": true
   },
+  "exclude": ["node_modules", "typings/tests"],
   "compileOnSave": true,
   "include": [
     "lib",
     "typings"
-  ],
-  "exclude": [
-    "typings/tests"
   ]
 }
