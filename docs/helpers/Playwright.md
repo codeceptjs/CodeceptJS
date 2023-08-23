@@ -165,6 +165,7 @@ Traces will be saved to `output/trace`
      url: "http://localhost",
      show: true // headless mode not supported for extensions
      chromium: {
+       // Note: due to this would launch persistent context, so to avoid the error when running tests with run-workers a timestamp would be appended to the defined folder name. For instance: playwright-tmp_1692715649511
        userDataDir: '/tmp/playwright-tmp', // necessary to launch the browser in normal mode instead of incognito,
        args: [
           `--disable-extensions-except=${pathToExtension}`,
