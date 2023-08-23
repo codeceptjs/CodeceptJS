@@ -3,6 +3,7 @@
 🐛 Bug Fixes:
  * [Playwright] When passing `userDataDir`, it throws error after test execution (#3814) - by @KobeNguyenT
  * [CodeceptJS-CLI] Improve command to generate types (#3788) - by @KobeNguyenT
+ * Heal plugin fix (#3820) - by @davert
  * Fix for error in using `all` with `run-workers` (#3805) - by @KobeNguyenT
 ```js
   helpers: {
