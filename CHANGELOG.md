@@ -1,3 +1,160 @@
+## 3.5.4
+
+🐛 Bug Fixes:
+ * [Playwright] When passing `userDataDir`, it throws error after test execution (#3814) - by @KobeNguyenT
+ * [CodeceptJS-CLI] Improve command to generate types (#3788) - by @KobeNguyenT
+ * Fix for error in using `all` with `run-workers` (#3805) - by @KobeNguyenT
+```js
+  helpers: {
+    Playwright: {
+      url: 'https://github.com',
+      show: false,
+      browser: 'chromium',
+      waitForNavigation: 'load',
+      waitForTimeout: 30_000,
+      trace: true,
+      keepTraceForPassedTests: true
+    },
+  },
+  multiple: {
+    profile1: {
+      browsers: [
+        {
+          browser: "chromium",
+        }
+      ]
+    },
+  },
+```
+ * Highlight elements issues (#3779) (#3778) - by @philkas
+ * Support `&nbsp` symbol in `I.see` method (#3815) - by @KobeNguyenT
+
+```js
+// HTML code uses &nbsp; instead of space
+<div class="dJHe_" style="color: rgb(255, 255, 255);">My&nbsp;Text!</div>
+
+I.see("My Text!") // this test would work with both &nbsp; and space
+```
+
+📖 Documentation
+ * Improve the configuration of electron testing when the app is build with electron-forge (#3802) - by @KobeNguyenT
+
+```js
+const path = require("path");
+
+exports.config = {
+  helpers: {
+    Playwright: {
+      browser: "electron",
+      electron: {
+        executablePath: require("electron"),
+        args: [path.join(__dirname, ".webpack/main/index.js")],
+      },
+    },
+  },
+  // rest of config
+}
+```
+
+🛩️ Features
+
+#### [Playwright] new features and improvements
+ * Parse the response in recording network steps (#3771) - by @KobeNguyenT
+
+```js
+      const traffics = await I.grabRecordedNetworkTraffics();
+      expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[0].response.status).to.equal(200);
+      expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+
+      expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[1].response.status).to.equal(200);
+      expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
+```
+ * Grab metrics (#3809) - by @KobeNguyenT
+
+```js
+const metrics = await I.grabMetrics();
+
+// returned metrics
+
+[
+  { name: 'Timestamp', value: 1584904.203473 },
+  { name: 'AudioHandlers', value: 0 },
+  { name: 'AudioWorkletProcessors', value: 0 },
+  { name: 'Documents', value: 22 },
+  { name: 'Frames', value: 10 },
+  { name: 'JSEventListeners', value: 366 },
+  { name: 'LayoutObjects', value: 1240 },
+  { name: 'MediaKeySessions', value: 0 },
+  { name: 'MediaKeys', value: 0 },
+  { name: 'Nodes', value: 4505 },
+  { name: 'Resources', value: 141 },
+  { name: 'ContextLifecycleStateObservers', value: 34 },
+  { name: 'V8PerContextDatas', value: 4 },
+  { name: 'WorkerGlobalScopes', value: 0 },
+  { name: 'UACSSResources', value: 0 },
+  { name: 'RTCPeerConnections', value: 0 },
+  { name: 'ResourceFetchers', value: 22 },
+  { name: 'AdSubframes', value: 0 },
+  { name: 'DetachedScriptStates', value: 2 },
+  { name: 'ArrayBufferContents', value: 1 },
+  { name: 'LayoutCount', value: 0 },
+  { name: 'RecalcStyleCount', value: 0 },
+  { name: 'LayoutDuration', value: 0 },
+  { name: 'RecalcStyleDuration', value: 0 },
+  { name: 'DevToolsCommandDuration', value: 0.000013 },
+  { name: 'ScriptDuration', value: 0 },
+  { name: 'V8CompileDuration', value: 0 },
+  { name: 'TaskDuration', value: 0.000014 },
+  { name: 'TaskOtherDuration', value: 0.000001 },
+  { name: 'ThreadTime', value: 0.000046 },
+  { name: 'ProcessTime', value: 0.616852 },
+  { name: 'JSHeapUsedSize', value: 19004908 },
+  { name: 'JSHeapTotalSize', value: 26820608 },
+  { name: 'FirstMeaningfulPaint', value: 0 },
+  { name: 'DomContentLoaded', value: 1584903.690491 },
+  { name: 'NavigationStart', value: 1584902.841845 }
+]
+```
+
+* Grab WebSocket (WS) messages (#3789) - by @KobeNguyenT
+  * `flushWebSocketMessages`
+  * `grabWebSocketMessages`
+  * `startRecordingWebSocketMessages`
+  * `stopRecordingWebSocketMessages`
+
+```js
+await I.startRecordingWebSocketMessages();
+I.amOnPage('https://websocketstest.com/');
+I.waitForText('Work for You!');
+I.flushNetworkTraffics();
+const wsMessages = I.grabWebSocketMessages();
+expect(wsMessages.length).to.equal(0);
+```
+
+```js
+await I.startRecordingWebSocketMessages();
+await I.amOnPage('https://websocketstest.com/');
+I.waitForText('Work for You!');
+const wsMessages = I.grabWebSocketMessages();
+expect(wsMessages.length).to.greaterThan(0);
+```
+
+```js
+await I.startRecordingWebSocketMessages();
+await I.amOnPage('https://websocketstest.com/');
+I.waitForText('Work for You!');
+const wsMessages = I.grabWebSocketMessages();
+await I.stopRecordingWebSocketMessages();
+await I.amOnPage('https://websocketstest.com/');
+I.waitForText('Work for You!');
+const afterWsMessages = I.grabWebSocketMessages();
+expect(wsMessages.length).to.equal(afterWsMessages.length);
+```
+
+* Move from `ElementHandle` to `Locator`. This change is quite major, but it happened under hood, so should not affect your code.  (#3738) - by @KobeNguyenT
+
 ## 3.5.3
 
 🛩️ Features
