@@ -795,7 +795,7 @@ describe('Playwright', function () {
         I.amOnPage('https://codecept.io/');
         await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
-        expect(e.message).to.equal('Failure in test automation. You use "I.seeInTraffic", but "I.startRecordingTraffic" was never called before.');
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeTraffic", but "I.startRecordingTraffic" was never called before.');
       }
     });
 
