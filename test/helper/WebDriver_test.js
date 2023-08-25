@@ -7,6 +7,7 @@ const TestHelper = require('../support/TestHelper');
 const WebDriver = require('../../lib/helper/WebDriver');
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
+const Secret = require('../../lib/secret');
 global.codeceptjs = require('../../lib');
 
 const siteUrl = TestHelper.siteUrl();
@@ -141,6 +142,16 @@ describe('WebDriver', function () {
       await wd.seeInField('checkbox[]', 'see test two');
       await wd.dontSeeInField('checkbox[]', 'not seen three');
       await wd.seeInField('checkbox[]', 'see test three');
+    });
+
+    it('should check values are the secret type in checkboxes', async () => {
+      await wd.amOnPage('/form/field_values');
+      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen one'));
+      await wd.seeInField('checkbox[]', Secret.secret('see test one'));
+      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen two'));
+      await wd.seeInField('checkbox[]', Secret.secret('see test two'));
+      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen three'));
+      await wd.seeInField('checkbox[]', Secret.secret('see test three'));
     });
 
     it('should check values with boolean', async () => {

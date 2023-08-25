@@ -589,7 +589,7 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 #### Parameters
 
 -   `field` **([string][6] | [object][4])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][6]** value to check.
+-   `value` **([string][6] | [object][4])** value to check.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### dontSeeInSource
@@ -1618,7 +1618,7 @@ I.seeInField('#searchform input','Search');
 #### Parameters
 
 -   `field` **([string][6] | [object][4])** located by label|name|CSS|XPath|strict locator.
--   `value` **[string][6]** value to check.
+-   `value` **([string][6] | [object][4])** value to check.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeInPopup
