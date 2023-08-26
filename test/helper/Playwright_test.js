@@ -12,6 +12,7 @@ const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 const { deleteDir } = require('../../lib/utils');
+const Secret = require('../../lib/secret');
 global.codeceptjs = require('../../lib');
 
 let I;
@@ -412,6 +413,16 @@ describe('Playwright', function () {
       await I.seeInField('checkbox[]', 'see test two');
       await I.dontSeeInField('checkbox[]', 'not seen three');
       await I.seeInField('checkbox[]', 'see test three');
+    });
+
+    it('should check values are the secret type in checkboxes', async () => {
+      await I.amOnPage('/form/field_values');
+      await I.dontSeeInField('checkbox[]', Secret.secret('not seen one'));
+      await I.seeInField('checkbox[]', Secret.secret('see test one'));
+      await I.dontSeeInField('checkbox[]', Secret.secret('not seen two'));
+      await I.seeInField('checkbox[]', Secret.secret('see test two'));
+      await I.dontSeeInField('checkbox[]', Secret.secret('not seen three'));
+      await I.seeInField('checkbox[]', Secret.secret('see test three'));
     });
 
     it('should check values with boolean', async () => {
