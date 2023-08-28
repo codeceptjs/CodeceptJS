@@ -1,13 +1,13 @@
 version: 2
 
 defaults: &defaults
-executors:
-  machine_executor_amd64:
-    machine:
-      image: ubuntu-2204:2022.04.2
-    environment:
-      architecture: "amd64"
-      platform: "linux/amd64"
+  executors:
+    machine_executor_amd64:
+      machine:
+        image: ubuntu-2204:2022.04.2
+      environment:
+        architecture: "amd64"
+        platform: "linux/amd64"
   steps:
     - setup_remote_docker:
         version: 20.10.14
