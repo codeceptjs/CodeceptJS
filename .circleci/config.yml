@@ -5,6 +5,9 @@ defaults: &defaults
     image: ubuntu-2204:2022.10.1
     docker_layer_caching: false
   steps:
+    - setup_remote_docker:
+        version: 20.10.14
+        docker_layer_caching: true
     - checkout
     - run: .circleci/build.sh
     - run:
