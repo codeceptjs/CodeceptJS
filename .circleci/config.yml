@@ -1,9 +1,13 @@
 version: 2
 
 defaults: &defaults
-  machine:
-    image: ubuntu-2204:2022.10.1
-    docker_layer_caching: false
+executors:
+  machine_executor_amd64:
+    machine:
+      image: ubuntu-2204:2022.04.2
+    environment:
+      architecture: "amd64"
+      platform: "linux/amd64"
   steps:
     - setup_remote_docker:
         version: 20.10.14
