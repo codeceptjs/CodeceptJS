@@ -64,7 +64,7 @@
     "@cucumber/cucumber-expressions": "^16",
     "@cucumber/gherkin": "^26",
     "@cucumber/messages": "^22.0.0",
-    "@xmldom/xmldom": "^0.7.9",
+    "@xmldom/xmldom": "^0.8.10",
     "acorn": "^8.10.0",
     "arrify": "^2.0.1",
     "axios": "^1.3.3",
