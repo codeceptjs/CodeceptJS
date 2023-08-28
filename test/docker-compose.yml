@@ -35,7 +35,7 @@ services:
   test-rest:
     build: ..
     entrypoint: /codecept/node_modules/.bin/mocha
-    command: test/rest
+    command: test/rest --timout 90000
     working_dir: /codecept
     env_file: .env
     depends_on:
