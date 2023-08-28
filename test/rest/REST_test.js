@@ -2,12 +2,12 @@ const path = require('path');
 const { expect } = require('expect');
 const fs = require('fs');
 
-const TestHelper = require('../support/TestHelper');
+const { GenericContainer, Network } = require('testcontainers');
 const REST = require('../../lib/helper/REST');
 const Container = require('../../lib/container');
 const Secret = require('../../lib/secret');
 
-const api_url = TestHelper.jsonServerUrl();
+let api_url;
 global.codeceptjs = require('../../lib');
 
 let I;
@@ -27,7 +27,33 @@ const data = {
   },
 };
 
+let container;
+let network;
+
 describe('REST', () => {
+  before(async () => {
+    network = await new Network().start();
+
+    container = await new GenericContainer('codfish/json-server:0.17.3')
+      .withExposedPorts({
+        container: 80,
+        host: 9999,
+      })
+      .withName(`json-server-${Date.now().toString()}`)
+      .withNetworkMode(network.getName())
+      .withBindMounts([{
+        source: dbFile,
+        target: '/app/db.json',
+      }])
+      .start();
+
+    api_url = `http://${container.getHost()}:${container.getMappedPort(80)}`;
+  });
+
+  after(async () => {
+    await container.stop();
+  });
+
   beforeEach((done) => {
     I = new REST({
       endpoint: api_url,

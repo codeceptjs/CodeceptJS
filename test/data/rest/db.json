@@ -1,13 +1,1 @@
-{
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "davert"
-    }
-  ],
-  "user": {
-    "name": "john",
-    "password": "123456"
-  }
-}
+{"posts":[{"id":1,"title":"json-server","author":"davert"}],"user":{"name":"davert"}}
