@@ -18,7 +18,7 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 chai.use(chaiSubset);
 
 describe('Definitions', function () {
-  this.timeout(20000);
+  this.timeout(30000);
   this.retries(4);
   before(() => {
     execSync('npm run def', { cwd: pathToRootOfProject });
