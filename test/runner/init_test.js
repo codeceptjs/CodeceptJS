@@ -2,6 +2,7 @@ const { DOWN, ENTER } = require('inquirer-test');
 const run = require('inquirer-test');
 const path = require('path');
 const fs = require('fs');
+const mkdirp = require('mkdirp');
 
 const runner = path.join(__dirname, '../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init');
@@ -10,6 +11,7 @@ describe('Init Command', function () {
   this.timeout(20000);
 
   beforeEach(() => {
+    mkdirp.sync(codecept_dir);
     process.env._INIT_DRY_RUN_INSTALL = true;
   });
 
