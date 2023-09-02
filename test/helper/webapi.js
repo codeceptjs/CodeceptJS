@@ -455,7 +455,7 @@ module.exports.tests = function () {
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
 
       await I.amOnPage('/iframe');
-      await I.switchTo('iframe');
+      await I.switchTo({ css: 'iframe' });
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
       assert.equal(val, 'Information');
     });
