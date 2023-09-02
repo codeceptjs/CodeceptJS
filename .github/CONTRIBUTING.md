@@ -7,12 +7,13 @@ Go over the steps in [this](https://github.com/firstcontributions/first-contribu
 To start you need:
 
 1.  Fork and clone the repo.
-2.  Run `npm install` to install all required libraries
+2.  Run `npm install --legacy-peer-deps` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
 5.  Update documentation
-6.  Commit and Push to your fork
-7.  Make Pull Request
+6.  Run `npm run docs` if you change the documentation
+7.  Commit and Push to your fork
+8.  Make Pull Request
 
 To run codeceptjs from this repo use:
 
