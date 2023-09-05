@@ -11,11 +11,11 @@ on:
 jobs:
   build:
 
-    runs-on: macos-13
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
