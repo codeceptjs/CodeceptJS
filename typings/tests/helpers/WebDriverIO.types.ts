@@ -243,14 +243,14 @@ wd.dontSeeCurrentUrlEquals(); // $ExpectError
 wd.dontSeeCurrentUrlEquals(str); // $ExpectType void
 
 wd.executeScript(); // $ExpectError
-wd.executeScript(str); // $ExpectType void
-wd.executeScript(() => {}); // $ExpectType void
-wd.executeScript(() => {}, {}); // $ExpectType void
+wd.executeScript(str); // $ExpectType Promise<any>
+wd.executeScript(() => {}); // $ExpectType Promise<any>
+wd.executeScript(() => {}, {}); // $ExpectType Promise<any>
 
 wd.executeAsyncScript(); // $ExpectError
-wd.executeAsyncScript(str); // $ExpectType void
-wd.executeAsyncScript(() => {}); // $ExpectType void
-wd.executeAsyncScript(() => {}, {}); // $ExpectType void
+wd.executeAsyncScript(str); // $ExpectType Promise<any>
+wd.executeAsyncScript(() => {}); // $ExpectType Promise<any>
+wd.executeAsyncScript(() => {}, {}); // $ExpectType Promise<any>
 
 wd.scrollIntoView(); // $ExpectError
 wd.scrollIntoView('div'); // $ExpectError
