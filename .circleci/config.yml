@@ -4,9 +4,7 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.5
 
 defaults: &defaults
-  machine:
-    image: ubuntu-2204:2022.10.1
-    docker_layer_caching: false
+  executor: browser-tools/default
   steps:
     - checkout
     - run: .circleci/build.sh
