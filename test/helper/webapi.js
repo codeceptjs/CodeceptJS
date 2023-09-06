@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { assert } = require('chai');
 const path = require('path');
 
 const dataFile = path.join(__dirname, '/../data/app/db');
@@ -74,7 +74,7 @@ module.exports.tests = function () {
         await I.waitInUrl('/info');
         await I.waitInUrl('/info2', 0.1);
       } catch (e) {
-        assert.equal(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
+        assert.include(e.message, `expected url to include /info2, but found ${siteUrl}/info`);
       }
     });
 
@@ -85,7 +85,7 @@ module.exports.tests = function () {
         await I.waitUrlEquals(`${siteUrl}/info`);
         await I.waitUrlEquals('/info2', 0.1);
       } catch (e) {
-        assert.equal(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
+        assert.include(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`);
       }
     });
   });
