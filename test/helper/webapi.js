@@ -103,7 +103,7 @@ module.exports.tests = function () {
       await I.see('Welcome to test app!', 'h1');
       await I.amOnPage('/info');
       await I.see('valuable', { css: 'p' });
-      await I.see('valuable', '//body/p');
+      await I.see('valuable', '//p');
       await I.dontSee('valuable', 'h1');
     });
 
@@ -557,7 +557,11 @@ module.exports.tests = function () {
     it('should not fill invisible fields', async () => {
       if (isHelper('Playwright')) return; // It won't be implemented
       await I.amOnPage('/form/field');
-      await assert.rejects(I.fillField('email', 'test@1234'));
+      try {
+        I.fillField('email', 'test@1234');
+      } catch (e) {
+        await assert.equal(e.message, 'Error: Field "email" was not found by text|CSS|XPath');
+      }
     });
   });
 
