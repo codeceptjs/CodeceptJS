@@ -1,5 +1,5 @@
 # Download Playwright and its dependencies
-FROM mcr.microsoft.com/playwright:focal
+FROM mcr.microsoft.com/playwright:1.35.1
 
 # Installing the pre-required packages and libraries
 RUN apt-get update && \
