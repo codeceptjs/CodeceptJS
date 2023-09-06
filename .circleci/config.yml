@@ -10,7 +10,8 @@ defaults: &defaults
   steps:
     - checkout
     - run: .circleci/build.sh
-    - browser-tools/install-chrome
+    - browser-tools/install-browser-tools:
+        chrome-version: 116.0.5845.96
     - browser-tools/install-chromedriver
     - run:
         command: docker-compose run --rm test-rest
