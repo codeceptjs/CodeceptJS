@@ -39,7 +39,7 @@ jobs:
       - NODE_VERSION: 18.16.0
 
 workflows:
-  version: 2
+  version: 2.1
 
   test_all:
     jobs:
