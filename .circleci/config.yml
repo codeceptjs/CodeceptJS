@@ -4,12 +4,14 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.5
 
 defaults: &defaults
-  executor: browser-tools/default
+  machine:
+    image: ubuntu-2204:2022.10.1
+    docker_layer_caching: false
   steps:
     - checkout
     - run: .circleci/build.sh
-    - browser-tools/install-browser-tools:
-        chrome-version: 116.0.5845.96
+    - browser-tools/install-chrome:
+        replace-existing: true
     - browser-tools/install-chromedriver
     - run:
         command: docker-compose run --rm test-rest
@@ -39,7 +41,7 @@ jobs:
       - NODE_VERSION: 18.16.0
 
 workflows:
-  version: 2.1
+  version: 2
 
   test_all:
     jobs:
