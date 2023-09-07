@@ -14,6 +14,10 @@ defaults: &defaults
         replace-existing: true
     - browser-tools/install-chromedriver
     - run:
+        command: PUPPETEER_CACHE_DIR=$(pwd) npm install puppeteer && docker-compose run --rm test-acceptance.puppeteer
+        working_directory: test
+        when: always
+    - run:
         command: docker-compose run --rm test-rest
         working_directory: test
         when: always
@@ -23,10 +27,6 @@ defaults: &defaults
         when: always
     - run:
         command: docker-compose run --rm test-acceptance.webdriverio
-        working_directory: test
-        when: always
-    - run:
-        command: docker-compose run --rm test-acceptance.puppeteer
         working_directory: test
         when: always
     - run:

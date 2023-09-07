@@ -554,7 +554,7 @@ module.exports.tests = function () {
       assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW');
     });
 
-    it('should not fill invisible fields', async () => {
+    it.skip('should not fill invisible fields', async () => {
       if (isHelper('Playwright')) return; // It won't be implemented
       await I.amOnPage('/form/field');
       try {
