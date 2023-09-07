@@ -4,6 +4,7 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.5
 
 defaults: &defaults
+  executor: browser-tools/default
   steps:
     - checkout
     - run: .circleci/build.sh
@@ -32,7 +33,6 @@ defaults: &defaults
         when: always
 
 jobs:
-  executor: browser-tools/default
   docker:
     <<: *defaults
     environment:
