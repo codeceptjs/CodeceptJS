@@ -1211,7 +1211,7 @@ module.exports.tests = function () {
       }
     });
 
-    it('within should respect context in see when using frame with css locator', async function () {
+    it('within should respect context in see when using frame with strict locator', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       await I.amOnPage('/iframe');
