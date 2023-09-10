@@ -66,7 +66,7 @@ describe('CodeceptJS Timeouts', function () {
     });
   });
 
-  it.only('should override timeout config from global object', (done) => {
+  it('should override timeout config from global object', (done) => {
     exec(config_run_config('codecept.timeout.obj.conf.js', '#first', false), (err, stdout) => {
       debug_this_test && console.log(stdout);
       expect(stdout).toContain('Timeout 0.3s exceeded');
