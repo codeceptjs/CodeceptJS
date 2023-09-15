@@ -1,10 +1,23 @@
 # Download Playwright and its dependencies
-FROM mcr.microsoft.com/playwright:focal
+FROM mcr.microsoft.com/playwright:v1.35.1
 
 # Installing the pre-required packages and libraries
 RUN apt-get update && \
       apt-get install -y libgtk2.0-0 libgconf-2-4 \
       libasound2 libxtst6 libxss1 libnss3 xvfb
+
+# Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
+# Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
+# installs, work.
+RUN apt-get update \
+    && apt-get install -y wget gnupg \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Add pptr user.
 RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
@@ -22,6 +35,8 @@ RUN runuser -l pptruser -c 'npm install --legacy-peer-deps --loglevel=warn --pre
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
+# Install puppeteer so it's available in the container.
+RUN npm i puppeteer
 
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""

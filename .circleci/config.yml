@@ -1,4 +1,7 @@
-version: 2
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.4.5
 
 defaults: &defaults
   machine:
@@ -7,6 +10,13 @@ defaults: &defaults
   steps:
     - checkout
     - run: .circleci/build.sh
+    - browser-tools/install-chrome:
+        replace-existing: true
+    - browser-tools/install-chromedriver
+    - run:
+        command: docker-compose run --rm test-acceptance.puppeteer
+        working_directory: test
+        when: always
     - run:
         command: docker-compose run --rm test-rest
         working_directory: test
@@ -20,10 +30,6 @@ defaults: &defaults
         working_directory: test
         when: always
     - run:
-        command: docker-compose run --rm test-acceptance.puppeteer
-        working_directory: test
-        when: always
-    - run:
         command: docker-compose run --rm test-bdd.faker
         working_directory: test
         when: always
@@ -32,7 +38,7 @@ jobs:
   docker:
     <<: *defaults
     environment:
-      - NODE_VERSION: 12.8.0
+      - NODE_VERSION: 18.16.0
 
 workflows:
   version: 2
