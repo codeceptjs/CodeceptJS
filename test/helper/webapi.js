@@ -455,7 +455,7 @@ module.exports.tests = function () {
       if (isHelper('TestCafe')) this.skip(); // TODO Not yet implemented
 
       await I.amOnPage('/iframe');
-      await I.switchTo('iframe');
+      await I.switchTo({ css: 'iframe' });
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText);
       assert.equal(val, 'Information');
     });
@@ -1197,6 +1197,36 @@ module.exports.tests = function () {
         await I.dontSee('Iframe test');
       } catch (err) {
         if (!err) assert.fail('seen "Iframe test"');
+      }
+    });
+
+    it('within should respect context in see when using frame', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
+        frame: '#number-frame-1234',
+      });
+
+      try {
+        await I.see('Information');
+      } catch (err) {
+        if (!err) assert.fail('seen "Information"');
+      }
+    });
+
+    it('within should respect context in see when using frame with strict locator', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
+        frame: { css: '#number-frame-1234' },
+      });
+
+      try {
+        await I.see('Information');
+      } catch (err) {
+        if (!err) assert.fail('seen "Information"');
       }
     });
   });
