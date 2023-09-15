@@ -379,9 +379,10 @@ let val = await I.executeAsyncScript(function(url, done) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderWrapper for asynchronous [evaluate][7].
-    Unlike NightmareJS implementation calling `done` will return its first argument.
--   `fn` **([string][3] | [function][8])** function to be executed in browser context.
+-   `fn` **([string][3] | [function][7])** function to be executed in browser context.
+
+Returns **[Promise][8]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorderWrapper for asynchronous [evaluate][9].
+Unlike NightmareJS implementation calling `done` will return its first argument.
 
 ### executeScript
 
@@ -412,8 +413,9 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderWrapper for synchronous [evaluate][7]
--   `fn` **([string][3] | [function][8])** function to be executed in browser context.
+-   `fn` **([string][3] | [function][7])** function to be executed in browser context.
+
+Returns **[Promise][8]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorderWrapper for synchronous [evaluate][9]
 
 ### fillField
 
@@ -452,7 +454,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][3]** attribute name.
 
-Returns **[Promise][9]&lt;[string][3]>** attribute value
+Returns **[Promise][8]&lt;[string][3]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -468,7 +470,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][3]** attribute name.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][3]>>** attribute value
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### grabCookie
 
@@ -485,7 +487,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][3]?** cookie name. 
 
-Returns **([Promise][9]&lt;[string][3]> | [Promise][9]&lt;[Array][10]&lt;[string][3]>>)** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+Returns **([Promise][8]&lt;[string][3]> | [Promise][8]&lt;[Array][10]&lt;[string][3]>>)** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ### grabCssPropertyFrom
 
@@ -502,7 +504,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][3]** CSS property name.
 
-Returns **[Promise][9]&lt;[string][3]>** CSS value
+Returns **[Promise][8]&lt;[string][3]>** CSS value
 
 ### grabCurrentUrl
 
@@ -514,7 +516,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][9]&lt;[string][3]>** current URL
+Returns **[Promise][8]&lt;[string][3]>** current URL
 
 ### grabElementBoundingRect
 
@@ -542,7 +544,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][3]?** x, y, width or height of the given element.
 
-Returns **([Promise][9]&lt;DOMRect> | [Promise][9]&lt;[number][11]>)** Element bounding rectangle
+Returns **([Promise][8]&lt;DOMRect> | [Promise][8]&lt;[number][11]>)** Element bounding rectangle
 
 ### grabHAR
 
@@ -568,7 +570,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[string][3]>** HTML code for an element
+Returns **[Promise][8]&lt;[string][3]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -584,7 +586,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][3]>>** HTML code for an element
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** HTML code for an element
 
 ### grabNumberOfVisibleElements
 
@@ -599,7 +601,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[number][11]>** number of visible elements
+Returns **[Promise][8]&lt;[number][11]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -610,7 +612,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][9]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][8]&lt;PageScrollPosition>** scroll position
 
 ### grabTextFrom
 
@@ -627,7 +629,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[string][3]>** attribute value
+Returns **[Promise][8]&lt;[string][3]>** attribute value
 
 ### grabTextFromAll
 
@@ -642,7 +644,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][3]>>** attribute value
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### grabTitle
 
@@ -653,7 +655,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][9]&lt;[string][3]>** title
+Returns **[Promise][8]&lt;[string][3]>** title
 
 ### grabValueFrom
 
@@ -669,7 +671,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[string][3]>** attribute value
+Returns **[Promise][8]&lt;[string][3]>** attribute value
 
 ### grabValueFromAll
 
@@ -684,7 +686,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][10]&lt;[string][3]>>** attribute value
+Returns **[Promise][8]&lt;[Array][10]&lt;[string][3]>>** attribute value
 
 ### haveHeader
 
@@ -1159,7 +1161,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
--   `fn` **([string][3] | [function][8])** to be executed in browser context.
+-   `fn` **([string][3] | [function][7])** to be executed in browser context.
 -   `argsOrSec` **([Array][10]&lt;any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
 -   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
@@ -1239,11 +1241,11 @@ I.waitToHide('#popup');
 
 [6]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[7]: https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[9]: https://github.com/segmentio/nightmare#evaluatefn-arg1-arg2
 
 [10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 

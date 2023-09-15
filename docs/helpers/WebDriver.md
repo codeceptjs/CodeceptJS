@@ -865,8 +865,9 @@ let val = await I.executeAsyncScript(function(url, done) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorder
 -   `fn` **([string][17] | [function][24])** function to be executed in browser context.
+
+Returns **[Promise][25]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### executeScript
 
@@ -897,8 +898,9 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderWraps [execute][25] command.
 -   `fn` **([string][17] | [function][24])** function to be executed in browser context.
+
+Returns **[Promise][25]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorderWraps [execute][26] command.
 
 ### fillField
 
@@ -942,7 +944,7 @@ I.see('#add-to-cart-bnt');
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** Playwright only: [Additional options][26] for available options object as 2nd argument.
+-   `options` **any?** Playwright only: [Additional options][27] for available options object as 2nd argument.
 
 ### forceClick
 
@@ -1017,7 +1019,7 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
-Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** 
+Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** 
 
 ### grabAttributeFrom
 
@@ -1034,7 +1036,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][17]** attribute name.
 
-Returns **[Promise][27]&lt;[string][17]>** attribute value
+Returns **[Promise][25]&lt;[string][17]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -1050,7 +1052,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][17]** attribute name.
 
-Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** attribute value
+Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -1062,7 +1064,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][27]&lt;[Array][28]&lt;[object][16]>> | [undefined][29])** all browser logs
+Returns **([Promise][25]&lt;[Array][28]&lt;[object][16]>> | [undefined][29])** all browser logs
 
 ### grabCookie
 
@@ -1079,7 +1081,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][17]?** cookie name. 
 
-Returns **([Promise][27]&lt;[string][17]> | [Promise][27]&lt;[Array][28]&lt;[string][17]>>)** attribute value
+Returns **([Promise][25]&lt;[string][17]> | [Promise][25]&lt;[Array][28]&lt;[string][17]>>)** attribute value
 
 ### grabCssPropertyFrom
 
@@ -1096,7 +1098,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][17]** CSS property name.
 
-Returns **[Promise][27]&lt;[string][17]>** CSS value
+Returns **[Promise][25]&lt;[string][17]>** CSS value
 
 ### grabCssPropertyFromAll
 
@@ -1112,7 +1114,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][17]** CSS property name.
 
-Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** CSS value
+Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1124,7 +1126,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][27]&lt;[string][17]>** current URL
+Returns **[Promise][25]&lt;[string][17]>** current URL
 
 ### grabCurrentWindowHandle
 
@@ -1135,7 +1137,7 @@ Useful for referencing it when calling `I.switchToWindow(handle)`
 const window = await I.grabCurrentWindowHandle();
 ```
 
-Returns **[Promise][27]&lt;[string][17]>** 
+Returns **[Promise][25]&lt;[string][17]>** 
 
 ### grabElementBoundingRect
 
@@ -1163,7 +1165,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][17]?** x, y, width or height of the given element.
 
-Returns **([Promise][27]&lt;DOMRect> | [Promise][27]&lt;[number][22]>)** Element bounding rectangle
+Returns **([Promise][25]&lt;DOMRect> | [Promise][25]&lt;[number][22]>)** Element bounding rectangle
 
 ### grabGeoLocation
 
@@ -1174,7 +1176,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let geoLocation = await I.grabGeoLocation();
 ```
 
-Returns **[Promise][27]&lt;{latitude: [number][22], longitude: [number][22], altitude: [number][22]}>** 
+Returns **[Promise][25]&lt;{latitude: [number][22], longitude: [number][22], altitude: [number][22]}>** 
 
 ### grabHTMLFrom
 
@@ -1191,7 +1193,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[string][17]>** HTML code for an element
+Returns **[Promise][25]&lt;[string][17]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -1207,7 +1209,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** HTML code for an element
+Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1218,7 +1220,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][27]&lt;[number][22]>** number of open tabs
+Returns **[Promise][25]&lt;[number][22]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -1233,7 +1235,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[number][22]>** number of visible elements
+Returns **[Promise][25]&lt;[number][22]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -1244,7 +1246,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][27]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][25]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1254,7 +1256,7 @@ Grab the text within the popup. If no popup is visible then it will return null.
 await I.grabPopupText();
 ```
 
-Returns **[Promise][27]&lt;[string][17]>** 
+Returns **[Promise][25]&lt;[string][17]>** 
 
 ### grabSource
 
@@ -1265,7 +1267,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][27]&lt;[string][17]>** source code
+Returns **[Promise][25]&lt;[string][17]>** source code
 
 ### grabTextFrom
 
@@ -1282,7 +1284,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[string][17]>** attribute value
+Returns **[Promise][25]&lt;[string][17]>** attribute value
 
 ### grabTextFromAll
 
@@ -1297,7 +1299,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** attribute value
+Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
 ### grabTitle
 
@@ -1308,7 +1310,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][27]&lt;[string][17]>** title
+Returns **[Promise][25]&lt;[string][17]>** title
 
 ### grabValueFrom
 
@@ -1324,7 +1326,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[string][17]>** attribute value
+Returns **[Promise][25]&lt;[string][17]>** attribute value
 
 ### grabValueFromAll
 
@@ -1339,7 +1341,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][27]&lt;[Array][28]&lt;[string][17]>>** attribute value
+Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
 ### moveCursorTo
 
@@ -2344,11 +2346,11 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[25]: http://webdriver.io/api/protocol/execute.html
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[26]: https://playwright.dev/docs/api/class-locator#locator-focus
+[26]: http://webdriver.io/api/protocol/execute.html
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[27]: https://playwright.dev/docs/api/class-locator#locator-focus
 
 [28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 

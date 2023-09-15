@@ -530,7 +530,8 @@ let val = await I.executeAsyncScript(function(url, done) {
 
 -   `fn` **([string][9] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorder
+
+Returns **[Promise][13]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### executeScript
 
@@ -562,7 +563,8 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` **([string][9] | [function][12])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorder
+
+Returns **[Promise][13]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### fillField
 
