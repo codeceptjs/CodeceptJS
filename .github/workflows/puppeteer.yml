@@ -16,11 +16,11 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -39,6 +39,6 @@ jobs:
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run tests
-      run: "./bin/codecept.js run -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
+      run: npm i puppeteer && "./bin/codecept.js run -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js
