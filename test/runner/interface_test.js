@@ -163,7 +163,7 @@ describe('CodeceptJS Interface', () => {
   });
 
   it('should execute expected promise chain', (done) => {
-    exec(`${codecept_run} --verbose`, (err, stdout) => {
+    exec(`${codecept_run} --debug`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       // before hooks
