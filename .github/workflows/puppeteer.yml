@@ -38,6 +38,8 @@ jobs:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
+    - uses: browser-actions/setup-chrome@v1
+    - run: chrome --version
     - name: run tests
       run:  "./bin/codecept.js run -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
     - name: run unit tests
