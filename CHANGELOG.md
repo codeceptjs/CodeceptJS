@@ -65,6 +65,7 @@ within({
       bypassCSP: true
     }
 ```
+* fix: missing requests when recording network (#3834) - by @KobeNguyenT
 
 🛩️ Features and Improvements
 * Show environment info in verbose mode (#3858) - by @KobeNguyenT
@@ -135,6 +136,17 @@ CodeceptJS v3.5.4 #StandWithUkraine
 
 * some typings improvements (#3855) - by @nikzupancic
 * support the puppeteer 21.1.1 (#3856) - by @KobeNguyenT
+* fix: support secret value for some methods (#3837) - by @KobeNguyenT
+
+```
+await I.amOnPage('/form/field_values');
+await I.dontSeeInField('checkbox[]', secret('not seen one'));
+await I.seeInField('checkbox[]', secret('see test one'));
+await I.dontSeeInField('checkbox[]', secret('not seen two'));
+await I.seeInField('checkbox[]', secret('see test two'));
+await I.dontSeeInField('checkbox[]', secret('not seen three'));
+await I.seeInField('checkbox[]', secret('see test three'));
+```
 
 🛩️  **Several bugfixes and improvements for Codecept-UI**
 * Mask the secret value in UI
