@@ -136,7 +136,7 @@
     "sinon": "15.2.0",
     "sinon-chai": "3.7.0",
     "testcafe": "3.0.1",
-    "ts-morph": "3.1.3",
+    "ts-morph": "19.0.0",
     "ts-node": "10.9.1",
     "tsd-jsdoc": "2.5.0",
     "typedoc": "0.24.8",
