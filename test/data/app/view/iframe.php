@@ -7,7 +7,7 @@
 
 <h1>Iframe test</h1>
 
-<iframe name="content" src="info" />
+<iframe name="content" src="info" id="number-frame-1234"/>
 
 </body>
 </html>

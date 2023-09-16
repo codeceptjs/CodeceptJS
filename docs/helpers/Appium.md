@@ -99,6 +99,43 @@ helpers: {
 }
 ```
 
+Example Android App using Appiumv2 on BrowserStack:
+
+```js
+{
+helpers: {
+  Appium: {
+        appiumV2: true,
+        host: "hub-cloud.browserstack.com",
+        port: 4444,
+        user: process.env.BROWSERSTACK_USER,
+        key: process.env.BROWSERSTACK_KEY,
+        app: `bs://c700ce60cf1gjhgjh3ae8ed9770ghjg5a55b8e022f13c5827cg`,
+        browser: '',
+        desiredCapabilities: {
+            'appPackage': data.packageName,
+            'deviceName': process.env.DEVICE || 'Google Pixel 3',
+            'platformName': process.env.PLATFORM || 'android',
+            'platformVersion': process.env.OS_VERSION || '10.0',
+            'automationName': process.env.ENGINE || 'UIAutomator2',
+            'newCommandTimeout': 300000,
+            'androidDeviceReadyTimeout': 300000,
+            'androidInstallTimeout': 90000,
+            'appWaitDuration': 300000,
+            'autoGrantPermissions': true,
+            'gpsEnabled': true,
+            'isHeadless': false,
+            'noReset': false,
+            'noSign': true,
+            'bstack:options' : {
+                "appiumVersion" : "2.0.1",
+            },
+        }
+  }
+}
+}
+```
+
 Additional configuration params can be used from [https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md][4]
 
 ## Access From Helpers

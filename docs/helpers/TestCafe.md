@@ -420,7 +420,8 @@ let date = await I.executeScript(function(el) {
 
 -   `fn` **([string][4] | [function][8])** function to be executed in browser context.
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for its resolution.
+
+Returns **[Promise][9]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for its resolution.
 
 ### fillField
 
@@ -459,7 +460,7 @@ I.see('#add-to-cart-bnt');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** Playwright only: [Additional options][9] for available options object as 2nd argument.
+-   `options` **any?** Playwright only: [Additional options][10] for available options object as 2nd argument.
 
 ### grabAttributeFrom
 
@@ -476,7 +477,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][4]** attribute name.
 
-Returns **[Promise][10]&lt;[string][4]>** attribute value
+Returns **[Promise][9]&lt;[string][4]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -493,7 +494,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][4]** attribute name.
 
-Returns **[Promise][10]&lt;[string][4]>** attribute value
+Returns **[Promise][9]&lt;[string][4]>** attribute value
 
 ### grabBrowserLogs
 
@@ -519,7 +520,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][4]?** cookie name. 
 
-Returns **([Promise][10]&lt;[string][4]> | [Promise][10]&lt;[Array][11]&lt;[string][4]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][9]&lt;[string][4]> | [Promise][9]&lt;[Array][11]&lt;[string][4]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCurrentUrl
 
@@ -531,7 +532,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][10]&lt;[string][4]>** current URL
+Returns **[Promise][9]&lt;[string][4]>** current URL
 
 ### grabNumberOfVisibleElements
 
@@ -546,7 +547,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][10]&lt;[number][12]>** number of visible elements
+Returns **[Promise][9]&lt;[number][12]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -557,7 +558,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][10]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][9]&lt;PageScrollPosition>** scroll position
 
 ### grabSource
 
@@ -568,7 +569,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][10]&lt;[string][4]>** source code
+Returns **[Promise][9]&lt;[string][4]>** source code
 
 ### grabTextFrom
 
@@ -585,7 +586,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][10]&lt;[string][4]>** attribute value
+Returns **[Promise][9]&lt;[string][4]>** attribute value
 
 ### grabTextFromAll
 
@@ -600,7 +601,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][10]&lt;[Array][11]&lt;[string][4]>>** attribute value
+Returns **[Promise][9]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### grabValueFrom
 
@@ -616,7 +617,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][10]&lt;[string][4]>** attribute value
+Returns **[Promise][9]&lt;[string][4]>** attribute value
 
 ### grabValueFromAll
 
@@ -631,7 +632,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][10]&lt;[Array][11]&lt;[string][4]>>** attribute value
+Returns **[Promise][9]&lt;[Array][11]&lt;[string][4]>>** attribute value
 
 ### moveCursorTo
 
@@ -1253,9 +1254,9 @@ Client Functions
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[9]: https://playwright.dev/docs/api/class-locator#locator-focus
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[10]: https://playwright.dev/docs/api/class-locator#locator-focus
 
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 

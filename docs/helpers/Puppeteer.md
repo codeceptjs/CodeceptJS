@@ -712,8 +712,9 @@ let val = await I.executeAsyncScript(function(url, done) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderAsynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 -   `fn` **([string][6] | [function][12])** function to be executed in browser context.
+
+Returns **[Promise][13]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorderAsynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 
 ### executeScript
 
@@ -744,8 +745,9 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 -   `args` **...any** to be passed to function.
-    ⚠️ returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for it resolution.
 -   `fn` **([string][6] | [function][12])** function to be executed in browser context.
+
+Returns **[Promise][13]&lt;any>** script return value⚠️ returns a _promise_ which is synchronized internally by recorderIf a function returns a Promise It will wait for it resolution.
 
 ### fillField
 
@@ -788,7 +790,7 @@ I.see('#add-to-cart-bnt');
 #### Parameters
 
 -   `locator` **([string][6] | [object][4])** field located by label|name|CSS|XPath|strict locator.
--   `options` **any?** Playwright only: [Additional options][13] for available options object as 2nd argument.
+-   `options` **any?** Playwright only: [Additional options][14] for available options object as 2nd argument.
 
 ### forceClick
 
@@ -842,7 +844,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][6]** attribute name.
 
-Returns **[Promise][14]&lt;[string][6]>** attribute value
+Returns **[Promise][13]&lt;[string][6]>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -862,7 +864,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 -   `attr` **[string][6]** attribute name.
 
-Returns **[Promise][14]&lt;[Array][15]&lt;[string][6]>>** attribute value
+Returns **[Promise][13]&lt;[Array][15]&lt;[string][6]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -877,7 +879,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][14]&lt;[Array][15]&lt;any>>** 
+Returns **[Promise][13]&lt;[Array][15]&lt;any>>** 
 
 ### grabCookie
 
@@ -894,7 +896,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][6]?** cookie name. 
 
-Returns **([Promise][14]&lt;[string][6]> | [Promise][14]&lt;[Array][15]&lt;[string][6]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **([Promise][13]&lt;[string][6]> | [Promise][13]&lt;[Array][15]&lt;[string][6]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -911,7 +913,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][6]** CSS property name.
 
-Returns **[Promise][14]&lt;[string][6]>** CSS value
+Returns **[Promise][13]&lt;[string][6]>** CSS value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -931,7 +933,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 -   `cssProperty` **[string][6]** CSS property name.
 
-Returns **[Promise][14]&lt;[Array][15]&lt;[string][6]>>** CSS value
+Returns **[Promise][13]&lt;[Array][15]&lt;[string][6]>>** CSS value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -947,7 +949,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][14]&lt;[string][6]>** current URL
+Returns **[Promise][13]&lt;[string][6]>** current URL
 
 ### grabDataFromPerformanceTiming
 
@@ -972,7 +974,7 @@ let data = await I.grabDataFromPerformanceTiming();
 }
 ```
 
-Returns **[Promise][14]&lt;any>** automatically synchronized promise through #recorder
+Returns **[Promise][13]&lt;any>** automatically synchronized promise through #recorder
 
 ### grabElementBoundingRect
 
@@ -1000,7 +1002,7 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 -   `prop`  
 -   `elementSize` **[string][6]?** x, y, width or height of the given element.
 
-Returns **([Promise][14]&lt;DOMRect> | [Promise][14]&lt;[number][10]>)** Element bounding rectangle
+Returns **([Promise][13]&lt;DOMRect> | [Promise][13]&lt;[number][10]>)** Element bounding rectangle
 
 ### grabHTMLFrom
 
@@ -1017,7 +1019,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 -   `locator`  
 -   `element` **([string][6] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[string][6]>** HTML code for an element
+Returns **[Promise][13]&lt;[string][6]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -1033,7 +1035,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 -   `locator`  
 -   `element` **([string][6] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[Array][15]&lt;[string][6]>>** HTML code for an element
+Returns **[Promise][13]&lt;[Array][15]&lt;[string][6]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1044,7 +1046,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][14]&lt;[number][10]>** number of open tabs
+Returns **[Promise][13]&lt;[number][10]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -1059,7 +1061,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][6] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[number][10]>** number of visible elements
+Returns **[Promise][13]&lt;[number][10]>** number of visible elements
 
 
 
@@ -1075,7 +1077,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][14]&lt;PageScrollPosition>** scroll position
+Returns **[Promise][13]&lt;PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1085,7 +1087,7 @@ Grab the text within the popup. If no popup is visible then it will return null
 await I.grabPopupText();
 ```
 
-Returns **[Promise][14]&lt;([string][6] | null)>** 
+Returns **[Promise][13]&lt;([string][6] | null)>** 
 
 ### grabSource
 
@@ -1096,7 +1098,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][14]&lt;[string][6]>** source code
+Returns **[Promise][13]&lt;[string][6]>** source code
 
 ### grabTextFrom
 
@@ -1113,7 +1115,7 @@ If multiple elements found returns first element.
 
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[string][6]>** attribute value
+Returns **[Promise][13]&lt;[string][6]>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1132,7 +1134,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[Array][15]&lt;[string][6]>>** attribute value
+Returns **[Promise][13]&lt;[Array][15]&lt;[string][6]>>** attribute value
 
 
 This action supports [React locators](https://codecept.io/react#locators)
@@ -1147,7 +1149,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][14]&lt;[string][6]>** title
+Returns **[Promise][13]&lt;[string][6]>** title
 
 ### grabValueFrom
 
@@ -1163,7 +1165,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 -   `locator` **([string][6] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[string][6]>** attribute value
+Returns **[Promise][13]&lt;[string][6]>** attribute value
 
 ### grabValueFromAll
 
@@ -1178,7 +1180,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][6] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][14]&lt;[Array][15]&lt;[string][6]>>** attribute value
+Returns **[Promise][13]&lt;[Array][15]&lt;[string][6]>>** attribute value
 
 ### handleDownloads
 
@@ -2166,9 +2168,9 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 [12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[13]: https://playwright.dev/docs/api/class-locator#locator-focus
+[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[14]: https://playwright.dev/docs/api/class-locator#locator-focus
 
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
