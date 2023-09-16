@@ -11,7 +11,7 @@ describe('CodeceptJS Timeouts', function () {
 
   it('should stop test when timeout exceeded', (done) => {
     exec(config_run_config('codecept.conf.js', 'timed out'), (err, stdout) => {
-      debug_this_test && console.log(stdout);
+      console.log(stdout);
       expect(stdout).toContain('Timeout 2s exceeded');
       expect(stdout).toContain('Timeout 1s exceeded');
       expect(err).toBeTruthy();

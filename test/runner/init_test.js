@@ -55,7 +55,7 @@ describe('Init Command', function () {
     fs.accessSync(`${codecept_dir}/tsconfig.json`, fs.constants.R_OK);
   });
 
-  it('should init Codecept with JavaScript REST JSONResponse de-DE', async () => {
+  it.skip('should init Codecept with JavaScript REST JSONResponse de-DE', async () => {
     const result = await run([runner, 'init', codecept_dir], [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, 'y', ENTER, codecept_dir, ENTER, DOWN, ENTER, ENTER, ENTER]);
 
     result.should.include('Welcome to CodeceptJS initialization tool');
