@@ -18,7 +18,7 @@ const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 chai.use(chaiSubset);
 
 describe('Definitions', function () {
-  this.timeout(20000);
+  this.timeout(30000);
   this.retries(4);
   before(() => {
     execSync('npm run def', { cwd: pathToRootOfProject });
@@ -39,7 +39,7 @@ describe('Definitions', function () {
         types.should.be.valid;
 
         const definitionsFile = types.getSourceFileOrThrow(pathOfJSDocDefinitions);
-        const index = definitionsFile.getNamespaceOrThrow('CodeceptJS').getNamespaceOrThrow('index').getStructure();
+        const index = definitionsFile.getModule('CodeceptJS').getModule('index').getStructure();
         index.statements.should.containSubset([
           { declarations: [{ name: 'recorder', type: 'CodeceptJS.recorder' }] },
           { declarations: [{ name: 'event', type: 'typeof CodeceptJS.event' }] },
@@ -61,7 +61,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const extend = getExtends(definitionFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      const extend = getExtends(definitionFile.getModule('CodeceptJS').getInterfaceOrThrow('I'));
       extend.should.containSubset([{
         methods: [{
           name: 'amInPath',
@@ -115,7 +115,7 @@ describe('Definitions', function () {
         returnType: undefined,
         kind: StructureKind.Method,
       }]);
-      const I = getExtends(definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      const I = getExtends(definitionsFile.getModule('CodeceptJS').getInterfaceOrThrow('I'));
       I.should.containSubset([{
         methods: [{
           name: 'openDir',
@@ -184,7 +184,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionsFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const CallbackOrder = definitionsFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
+      const CallbackOrder = definitionsFile.getModule('CodeceptJS').getInterfaceOrThrow('SupportObject').getStructure();
       CallbackOrder.properties.should.containSubset([
         { name: 'I', type: 'I' },
         { name: 'MyPage', type: 'MyPage' },
@@ -201,7 +201,7 @@ describe('Definitions', function () {
       types.should.be.valid;
 
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`);
-      const extend = getExtends(definitionFile.getNamespaceOrThrow('CodeceptJS').getInterfaceOrThrow('I'));
+      const extend = getExtends(definitionFile.getModule('CodeceptJS').getInterfaceOrThrow('I'));
       extend.should.containSubset([{
         methods: [{
           name: 'amInPath',
@@ -282,7 +282,7 @@ function typesFrom(sourceFile) {
     tsConfigFilePath: path.join(pathToRootOfProject, 'tsconfig.json'),
     resolutionHost,
   });
-  project.addExistingSourceFile(sourceFile);
+  project.addSourceFileAtPath(sourceFile);
   project.resolveSourceFileDependencies();
   return project;
 }

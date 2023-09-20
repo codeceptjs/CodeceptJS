@@ -16,14 +16,14 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -33,12 +33,14 @@ jobs:
         php-version: 7.4
     - name: npm install
       run: |
-        npm install --legacy-peer-deps
+        npm install --legacy-peer-deps && npm i puppeteer
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
+    - uses: browser-actions/setup-chrome@v1
+    - run: chrome --version
     - name: run tests
-      run: "./bin/codecept.js run -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
+      run:  "./bin/codecept.js run -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js

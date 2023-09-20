@@ -1,3 +1,158 @@
+## 3.5.5
+
+🐛 Bug Fixes
+* fix(browserstack): issue with vendor prefix (#3845) - by @KobeNguyenT
+```
+export const caps = {
+    androidCaps: {
+        appiumV2: true,
+        host: "hub-cloud.browserstack.com",
+        port: 4444,
+        user: process.env.BROWSERSTACK_USER,
+        key: process.env.BROWSERSTACK_KEY,
+        'app': `bs://c700ce60cf13ae8ed97705a55b8e022f1hjhkjh3c5827c`,
+        browser: '',
+        desiredCapabilities: {
+            'appPackage': data.packageName,
+            'deviceName': process.env.DEVICE || 'Google Pixel 3',
+            'platformName': process.env.PLATFORM || 'android',
+            'platformVersion': process.env.OS_VERSION || '10.0',
+            'automationName': process.env.ENGINE || 'UIAutomator2',
+            'newCommandTimeout': 300000,
+            'androidDeviceReadyTimeout': 300000,
+            'androidInstallTimeout': 90000,
+            'appWaitDuration': 300000,
+            'autoGrantPermissions': true,
+            'gpsEnabled': true,
+            'isHeadless': false,
+            'noReset': false,
+            'noSign': true,
+            'bstack:options' : {
+                "appiumVersion" : "2.0.1",
+            },
+        }
+    },
+}
+```
+
+*  switchTo/within now supports strict locator (#3847) - by @KobeNguyenT
+
+```
+I.switchTo({ css: 'iframe[id^=number-frame]' }) // support the strict locator
+
+I.amOnPage('/iframe');
+within({
+  frame: { css: '#number-frame-1234' }, // support the strict locator
+}, () => {
+  I.fillField('user[login]', 'User');
+  I.fillField('user[email]', 'user@user.com');
+  I.fillField('user[password]', 'user@user.com');
+  I.click('button');
+});
+```
+
+* Improve the IntelliSense when using other languages  (#3848) - by @andonary
+```
+  include: {
+    Je: './steps_file.js'
+  }
+```
+
+*  bypassCSP support for Playwright helper (#3865) - by @sammeel
+```
+  helpers: {
+    Playwright: {
+      bypassCSP: true
+    }
+```
+* fix: missing requests when recording network (#3834) - by @KobeNguyenT
+
+🛩️ Features and Improvements
+* Show environment info in verbose mode (#3858) - by @KobeNguyenT
+
+```
+Environment information:-
+
+codeceptVersion:  "3.5.4"
+nodeInfo:  18.16.0
+osInfo:  macOS 13.5
+cpuInfo:  (8) arm64 Apple M1 Pro
+chromeInfo:  116.0.5845.179
+edgeInfo:  116.0.1938.69
+firefoxInfo:  Not Found
+safariInfo:  16.6
+helpers:  {
+"Playwright": {
+"url": "https://github.com",
+"show": false,
+"browser": "chromium",
+"waitForNavigation": "load",
+"waitForTimeout": 30000,
+"trace": false,
+"keepTraceForPassedTests": true
+},
+"CDPHelper": {
+"require": "./helpers/CDPHelper.ts"
+},
+"OpenAI": {
+"chunkSize": 8000
+},
+"ExpectHelper": {
+"require": "codeceptjs-expect"
+},
+"REST": {
+"endpoint": "https://reqres.in",
+"timeout": 20000
+},
+"AllureHelper": {
+"require": "./helpers/AllureHelper.ts"
+}
+}
+plugins:  {
+"screenshotOnFail": {
+"enabled": true
+},
+"tryTo": {
+"enabled": true
+},
+"retryFailedStep": {
+"enabled": true
+},
+"retryTo": {
+"enabled": true
+},
+"eachElement": {
+"enabled": true
+},
+"pauseOnFail": {}
+}
+***************************************
+If you have questions ask them in our Slack: http://bit.ly/chat-codeceptjs
+Or ask them on our discussion board: https://codecept.discourse.group/
+Please copy environment info when you report issues on GitHub: https://github.com/Codeception/CodeceptJS/issues
+***************************************
+CodeceptJS v3.5.4 #StandWithUkraine
+```
+
+* some typings improvements (#3855) - by @nikzupancic
+* support the puppeteer 21.1.1 (#3856) - by @KobeNguyenT
+* fix: support secret value for some methods (#3837) - by @KobeNguyenT
+
+```
+await I.amOnPage('/form/field_values');
+await I.dontSeeInField('checkbox[]', secret('not seen one'));
+await I.seeInField('checkbox[]', secret('see test one'));
+await I.dontSeeInField('checkbox[]', secret('not seen two'));
+await I.seeInField('checkbox[]', secret('see test two'));
+await I.dontSeeInField('checkbox[]', secret('not seen three'));
+await I.seeInField('checkbox[]', secret('see test three'));
+```
+
+🛩️  **Several bugfixes and improvements for Codecept-UI**
+* Mask the secret value in UI
+* Improve UX/UI
+* PageObjects are now showing in UI
+
 ## 3.5.4
 
 🐛 Bug Fixes:
