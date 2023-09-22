@@ -35,7 +35,7 @@ RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
 # Install puppeteer so it's available in the container.
-RUN npm i puppeteer
+RUN npm i puppeteer@21.1.1
 RUN google-chrome --version
 
 # Allow to pass argument to codecept run via env variable
