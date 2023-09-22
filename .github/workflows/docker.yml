@@ -12,7 +12,7 @@ jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Check out the repo with latest code
         uses: actions/checkout@v4

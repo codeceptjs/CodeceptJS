@@ -56,15 +56,6 @@ services:
       - ..:/codecept
       - node_modules:/codecept/node_modules
 
-  test-runner:
-    build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
-    command: test/runner
-    working_dir: /codecept
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
-
   test-acceptance.webdriverio:
     build: ..
     env_file: .env
@@ -86,6 +77,7 @@ services:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
     depends_on:
       - php
+      - puppeteer-image
     volumes:
       - ./acceptance:/tests
       - ./data:/data
@@ -152,6 +144,9 @@ services:
     volumes:
       - ..:/codecept
       - node_modules:/codecept/node_modules
+
+  puppeteer-image:
+    image: ghcr.io/puppeteer/puppeteer:21.1.1
 
 volumes:
   node_modules:
