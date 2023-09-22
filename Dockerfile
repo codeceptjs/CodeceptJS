@@ -36,6 +36,7 @@ RUN mkdir /tests
 WORKDIR /tests
 # Install puppeteer so it's available in the container.
 RUN npm i puppeteer
+RUN google-chrome --version
 
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
