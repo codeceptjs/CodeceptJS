@@ -7,7 +7,6 @@
     "lib": ["es2018", "DOM"],
     "esModuleInterop": true,
     "module": "commonjs",
-    "moduleResolution": "Node",
     "types": ["node"],
     "declaration": true,
     "skipLibCheck": true,
