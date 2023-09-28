@@ -56,7 +56,7 @@ Type: [object][4]
 -   `manualStart` **[boolean][20]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
 -   `chrome` **[object][4]?** pass additional [Puppeteer run options][25].
--   `highlightElement` **[boolean][20]?** highlight the interacting elements. Default: false
+-   `highlightElement` **[boolean][20]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 
 

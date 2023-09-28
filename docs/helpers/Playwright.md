@@ -74,7 +74,7 @@ Type: [object][5]
 -   `ignoreLog` **[Array][9]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][44].
 -   `ignoreHTTPSErrors` **[boolean][32]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 -   `bypassCSP` **[boolean][32]?** bypass Content Security Policy or CSP
--   `highlightElement` **[boolean][32]?** highlight the interacting elements. Default: false
+-   `highlightElement` **[boolean][32]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 
 
