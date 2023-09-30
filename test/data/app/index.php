@@ -39,6 +39,7 @@ $urls = array(
     '/external_url' => 'external_url',
     '/spinner' => 'spinner',
     '/iframe' => 'iframe',
+    '/iframes' => 'iframes',
     '/iframe_nested' => 'iframe_nested',
     '/dynamic' => 'dynamic',
     '/timeout' => 'timeout',
