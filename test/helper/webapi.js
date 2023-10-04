@@ -1200,31 +1200,31 @@ module.exports.tests = function () {
       }
     });
 
-    it('within should respect context in see when using frame', function () {
+    it('within should respect context in see when using frame', async function () {
       if (isHelper('TestCafe')) this.skip();
 
-      I.amOnPage('/iframe');
-      I._withinBegin({
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
         frame: '#number-frame-1234',
       });
 
       try {
-        I.see('Information');
+        await I.see('Information');
       } catch (err) {
         if (!err) assert.fail('seen "Information"');
       }
     });
 
-    it('within should respect context in see when using frame with strict locator', function () {
+    it('within should respect context in see when using frame with strict locator', async function () {
       if (isHelper('TestCafe')) this.skip();
 
-      I.amOnPage('/iframe');
-      I._withinBegin({
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
         frame: { css: '#number-frame-1234' },
       });
 
       try {
-        I.see('Information');
+        await I.see('Information');
       } catch (err) {
         if (!err) assert.fail('seen "Information"');
       }
