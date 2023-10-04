@@ -336,7 +336,7 @@ describe('Playwright', function () {
       I.see('Iframe test');
     });
 
-    it('should switch to iframe using css', async () => {
+    it('should switch to iframe using css', () => {
       I.amOnPage('/iframe');
       I.switchTo('iframe#number-frame-1234');
       I.see('Information');

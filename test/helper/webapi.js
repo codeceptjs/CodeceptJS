@@ -1173,28 +1173,28 @@ module.exports.tests = function () {
         .then(() => I.see('Toggle navigation', '.container fieldset'));
     });
 
-    it('within should respect context in see when using nested frames', function () {
+    it('within should respect context in see when using nested frames', async function () {
       if (isHelper('TestCafe')) this.skip();
 
-      I.amOnPage('/iframe_nested');
-      I._withinBegin({
+      await I.amOnPage('/iframe_nested');
+      await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
       });
 
       try {
-        I.see('Kill & Destroy');
+        await I.see('Kill & Destroy');
       } catch (err) {
         if (!err) assert.fail('seen "Kill & Destroy"');
       }
 
       try {
-        I.dontSee('Nested Iframe test');
+        await I.dontSee('Nested Iframe test');
       } catch (err) {
         if (!err) assert.fail('seen "Nested Iframe test"');
       }
 
       try {
-        I.dontSee('Iframe test');
+        await I.dontSee('Iframe test');
       } catch (err) {
         if (!err) assert.fail('seen "Iframe test"');
       }
