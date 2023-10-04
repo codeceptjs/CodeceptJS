@@ -43,4 +43,12 @@ describe('FileSystem', () => {
 for FileSystem helper
 test`);
   });
+
+  it('should write text to file', () => {
+    const outputFilePath = 'data/output/fs_output.txt';
+    const text = '123';
+    fs.writeToFile(outputFilePath, text);
+    fs.seeFile(outputFilePath);
+    fs.seeInThisFile(text);
+  });
 });

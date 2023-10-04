@@ -140,7 +140,7 @@ I.waitForFile('largeFilesName.txt', 10); // wait 10 seconds for file
 
 ### writeToFile
 
-Writes test to file
+Writes text to file
 
 #### Parameters
 
