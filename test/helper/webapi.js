@@ -1173,58 +1173,58 @@ module.exports.tests = function () {
         .then(() => I.see('Toggle navigation', '.container fieldset'));
     });
 
-    it('within should respect context in see when using nested frames', async function () {
+    it('within should respect context in see when using nested frames', function () {
       if (isHelper('TestCafe')) this.skip();
 
-      await I.amOnPage('/iframe_nested');
-      await I._withinBegin({
+      I.amOnPage('/iframe_nested');
+      I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
       });
 
       try {
-        await I.see('Kill & Destroy');
+        I.see('Kill & Destroy');
       } catch (err) {
         if (!err) assert.fail('seen "Kill & Destroy"');
       }
 
       try {
-        await I.dontSee('Nested Iframe test');
+        I.dontSee('Nested Iframe test');
       } catch (err) {
         if (!err) assert.fail('seen "Nested Iframe test"');
       }
 
       try {
-        await I.dontSee('Iframe test');
+        I.dontSee('Iframe test');
       } catch (err) {
         if (!err) assert.fail('seen "Iframe test"');
       }
     });
 
-    it('within should respect context in see when using frame', async function () {
+    it('within should respect context in see when using frame', function () {
       if (isHelper('TestCafe')) this.skip();
 
-      await I.amOnPage('/iframe');
-      await I._withinBegin({
+      I.amOnPage('/iframe');
+      I._withinBegin({
         frame: '#number-frame-1234',
       });
 
       try {
-        await I.see('Information');
+        I.see('Information');
       } catch (err) {
         if (!err) assert.fail('seen "Information"');
       }
     });
 
-    it('within should respect context in see when using frame with strict locator', async function () {
+    it('within should respect context in see when using frame with strict locator', function () {
       if (isHelper('TestCafe')) this.skip();
 
-      await I.amOnPage('/iframe');
-      await I._withinBegin({
+      I.amOnPage('/iframe');
+      I._withinBegin({
         frame: { css: '#number-frame-1234' },
       });
 
       try {
-        await I.see('Information');
+        I.see('Information');
       } catch (err) {
         if (!err) assert.fail('seen "Information"');
       }
