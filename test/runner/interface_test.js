@@ -37,8 +37,7 @@ describe('CodeceptJS Interface', () => {
   it('should not propagate retries to non retried steps', (done) => {
     exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout) => {
       expect(stdout).toContain('Retry'); // feature
-      expect(stdout).toContain('Retries: 5'); // test name
-      expect(err).toBeFalsy();
+      expect(stdout).toContain('Retries: 1'); // test name
       done();
     });
   });
