@@ -422,8 +422,24 @@ title: ${name}
 
       const newVersion = semver.inc(packageFile.version, type);
       packageFile.version = newVersion;
-      fs.writeFileSync('./package.json', JSON.stringify(packageFile, null, 2));
+      fs.writeFileSync('./package.json', (JSON.stringify(packageFile, null, 2)).replace(/(^[ \t]*\n)/gm, ''));
       console.log('Version updated', currentVersion, '=>', newVersion);
+
+      const file = 'CHANGELOG.md';
+      const changelog = fs.readFileSync(file).toString();
+
+      const _changelog = `## ${newVersion}\n
+Thanks all to those who contributed to make this release!
+
+🐛 *Bug Fixes*
+
+📖 *Documentation*
+
+🛩️ *Features*
+
+${changelog}`;
+
+      fs.writeFileSync(`./${file}`, _changelog);
 
       console.log('Creating and switching to release branch...');
       await exec(`git checkout -b release-${newVersion}`);
