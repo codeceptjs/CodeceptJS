@@ -138,7 +138,7 @@ class basic_image {
       include __DIR__ . '/view/image.php';
     }
   }
-  
+
 
 class cookies {
 
@@ -174,6 +174,13 @@ class iframe {
     public function GET()
     {
         include __DIR__.'/view/iframe.php';
+    }
+}
+
+class iframes {
+    public function GET()
+    {
+        include __DIR__.'/view/iframes.php';
     }
 }
 

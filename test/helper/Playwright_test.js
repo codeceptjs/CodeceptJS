@@ -335,6 +335,19 @@ describe('Playwright', function () {
       I.switchTo(null);
       I.see('Iframe test');
     });
+
+    it('should switch to iframe using css', () => {
+      I.amOnPage('/iframe');
+      I.switchTo('iframe#number-frame-1234');
+      I.see('Information');
+      I.see('Lots of valuable data here');
+    });
+
+    it('should switch to iframe using css when there are more than one iframes', () => {
+      I.amOnPage('/iframes');
+      I.switchTo('iframe#number-frame-1234');
+      I.see('Information');
+    });
   });
 
   describe('#seeInSource, #grabSource', () => {
