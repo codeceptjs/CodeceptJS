@@ -95,7 +95,7 @@ playwright.seeNumberOfVisibleElements(str, num); // $ExpectType void
 playwright.setCookie({ name: str, value: str}); // $ExpectType void
 playwright.seeCookie(str); // $ExpectType void
 playwright.dontSeeCookie(str); // $ExpectType void
-playwright.grabCookie(); // $ExpectType Promise<string[]> | Promise<string>
+playwright.grabCookie(); // $ExpectType any
 playwright.clearCookie(); // $ExpectType void
 playwright.executeScript(() => {}); // $ExpectType Promise<any>
 playwright.grabTextFrom(str); // $ExpectType Promise<string>
