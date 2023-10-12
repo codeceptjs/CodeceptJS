@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -29,9 +29,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
-      run: |
-        npm install --legacy-peer-deps
-      env:
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      run: npm i --legacy-peer-deps
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/Expect_test.js --timeout 5000
