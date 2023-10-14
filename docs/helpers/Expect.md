@@ -13,14 +13,14 @@ This helper allows performing assertions based on Chai.
 
 ### Examples
 
-Zero-configuration when paired with REST:
+Zero-configuration when paired with other helpers like REST, Playwright:
 
 ```js
 // inside codecept.conf.js
 {
   helpers: {
-    ExpectHelper: {
-    },
+    Playwright: {...},
+    ExpectHelper: {},
   }
 }
 ```
