@@ -135,7 +135,7 @@
     "runok": "0.9.3",
     "sinon": "15.2.0",
     "sinon-chai": "3.7.0",
-    "testcafe": "3.0.1",
+    "testcafe": "3.3.0",
     "ts-morph": "19.0.0",
     "ts-node": "10.9.1",
     "tsd-jsdoc": "2.5.0",
