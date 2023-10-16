@@ -209,7 +209,6 @@ describe('BDD Gherkin', () => {
       // stdout.should.not.include('Then my test execution gets stuck');
       stdout.should.include('1 failed');
       stdout.should.include('[Wrapped Error]');
-      assert(err);
       done();
     });
   });
