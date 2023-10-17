@@ -135,7 +135,7 @@
     "runok": "0.9.3",
     "sinon": "15.2.0",
     "sinon-chai": "3.7.0",
-    "testcafe": "3.0.1",
+    "testcafe": "3.3.0",
     "ts-morph": "19.0.0",
     "ts-node": "10.9.1",
     "tsd-jsdoc": "2.5.0",
@@ -144,7 +144,7 @@
     "typescript": "5.1.6",
     "wdio-docker-service": "1.5.0",
     "webdriverio": "8.3.8",
-    "xml2js": "0.6.0",
+    "xml2js": "0.6.2",
     "xmldom": "0.6.0",
     "xpath": "0.0.33"
   },
