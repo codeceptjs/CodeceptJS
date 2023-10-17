@@ -24,13 +24,13 @@ I.seeElement({
 });
 ```
 
-This test is easy to read and write. Also it will work both on iOS and Android devices.
+This test is easy to read and write. Also, it will work both on iOS and Android devices.
 Doesn't it sound cool?
 
 ## Setting Up
 
 Ensure that you have [CodeceptJS installed](https://codecept.io/installation/).
-You will also need to install [Appium](https://appium.io/).
+You will also need to install [Appium](https://appium.io/docs/en/2.1/).
 We suggest to use [appium-doctor](https://www.npmjs.com/package/appium-doctor) to check if your system is ready for mobile testing.
 
 ```sh
@@ -45,13 +45,12 @@ To install Appium use npm:
 npm i -g appium
 ```
 
-To use Appium 2.x:
-```sh
-npm i -g appium@next
-```
-Appium 2x (still beta) reenvisions Appium as a platform where “drivers” and “plugins” can be easily created and shared independently.
+Appium 2x reenvisions Appium as a platform where “drivers” and “plugins” can be easily created and shared independently.
+
+** Note: ** Appium v1 is no longer maintained, so it's advised to migrate to Appium v2.
+
 Install an Appium driver and its dependencies
-To install the Appium driver and its dependencies, we'll be using the uiautomator2 (Android), XCUITest (iOS) drivers.
+To install the Appium driver and its dependencies, we'll be using the `uiautomator2` (Android), `XCUITest` (iOS) drivers.
 
 ```
 appium driver install xcuitest
@@ -80,11 +79,6 @@ Next, is to launch the emulator or connect a physical device.
 Once they are prepared, launch Appium:
 
 ```sh
-appium
-```
-
-To use Appium 2.x:
-```sh
 tth~$npx appium --base-path=/wd/hub
 [Appium] Welcome to Appium v2.0.0-beta.57 (REV 3e675c32ae71dc0b00749d5d29213e2ea5b53c5b)
 [Appium] Non-default server args:
@@ -102,7 +96,9 @@ tth~$npx appium --base-path=/wd/hub
 [Appium] No plugins have been installed. Use the "appium plugin" command to install the one(s) you want to use.
 ```
 
-To run mobile test you need either an device emulator (available with Android SDK or iOS), real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.
+** Note: ** Appium v2 doesn't use the same base path as Appium v1, hence if you want to use the same base path you should pass `--base-path=/wd/hub` when launching the Appium server.
+
+To run mobile test you need either a device emulator (available with Android SDK or iOS) or real device connected for mobile testing. Alternatively, you may execute Appium with device emulator inside Docker container.
 
 CodeceptJS should be installed with webdriverio support:
 
@@ -135,7 +131,7 @@ You will also be asked for the platform and the application package.
 ```
 
 Check the newly created `codecept.conf.js` configuration file.
-You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/docs/en/writing-running-appium/caps/)
+You may want to set some additional Appium settings via [desiredCapabilities](https://appium.io/docs/en/2.1/guides/caps/)
 
 ```js
 helpers: {
@@ -147,7 +143,7 @@ helpers: {
 }
 ```
 
-Once you configured Appium, create the first test by running
+Once you configured Appium, create the first test by running:
 
 ```sh
 npx codeceptjs gt
@@ -219,7 +215,7 @@ To start writing a test it is important to understand how to locate elements for
 In both Android and iPhone elements are defined in XML format and can be searched by XPath locators.
 
 ```js
-I.seeElement('//android.widget.ScrollView/android.widget.LinearLayout')'
+I.seeElement('//android.widget.ScrollView/android.widget.LinearLayout')
 ```
 
 > Despite showing XPath in this guide we **do not recommend using XPath for testing iOS native apps. XPath runs very slow on iOS. Consider using ID or Accessibility ID locators instead.
@@ -243,7 +239,7 @@ I.seeElement('~startUserRegistrationButton');
 ```
 
 Elements can also have ids, which can be located with `#` prefix.
-On Android it it is important to keep full package name in id locator:
+On Android, it is important to keep full package name in id locator:
 
 ```js
 I.seeElement('#io.selendroid.testapp:id/inputUsername');
@@ -258,9 +254,9 @@ I.click('Click me!');
 
 Native iOS/Android locators can be used with `android=` and `ios=` prefixes. [Learn more](https://webdriver.io/guide/usage/selectors.html#Mobile-Selectors).
 
-But how to get all those locators? We recommend to use [Appium Inspector](https://github.com/appium/appium-desktop).
+But how to get all those locators? We recommend to use [Appium Inspector](https://github.com/appium/appium-inspector).
 
-For Android you can use **UI Automator Viewer** bundled with Android SDK:
+For Android, you can use **UI Automator Viewer** bundled with Android SDK:
 
 ![](https://user-images.githubusercontent.com/220264/27566310-1f631604-5aed-11e7-8b92-1ffe9e9f14f9.png)
 
@@ -284,7 +280,7 @@ Inside WebView all browser features are enabled: CSS locators, JavaScript, etc.
 To set a specific context use `{ web: 'webview.context' }` instead:
 
 ```js
-within({webview: 'MyWEBVIEW_com.my.app'}, () => );
+within({webview: 'MyWEBVIEW_com.my.app'}, () => {});
 ```
 
 Alternatively use `switchToWeb` or `switchToNative` methods to switch between contexts.
