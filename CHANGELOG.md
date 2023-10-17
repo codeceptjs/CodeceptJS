@@ -1,3 +1,66 @@
+## 3.5.6
+
+Thanks all to those who contributed to make this release!
+
+🐛 *Bug Fixes*
+* fix: switchTo/within block doesn't switch to expected iframe (#3892) - by @KobeNguyenT
+* fix: highlight element doesn't work as expected (#3896) - by @KobeNguyenT
+```
+  verbose/ highlight	TRUE	TRUE -> highlight element
+  verbose/ highlight	TRUE	FALSE -> no highlight element
+  verbose/ highlight	FALSE	TRUE -> no highlight element
+  verbose/ highlight	FALSE	FALSE -> no highlight element
+ ```
+* fix: masked value issue in data table (#3885) - by @KobeNguyenT
+```
+const accounts = new DataTable(['role', 'username', 'password']);
+accounts.add([
+  'ROLE_A',
+  process.env['FIRST_USERNAME'],
+  secret(process.env['FIRST_PASSWORD']),
+]);
+accounts.add([
+  'ROLE_B',
+  process.env['SECOND_USERNAME'],
+  secret(process.env['SECOND_PASSWORD']),
+]);
+
+Data(accounts)
+  .Scenario(
+    'ScenarioTitle',
+    ({ I, pageObject, current }) => {
+      I.say("Given I'am logged in");
+      I.amOnPage('/');
+      loginPage.**sendForm**(current.username, current.password);
+  )
+  
+  
+ // output
+ The test feature --
+  The scenario | {"username":"Username","password": ***}
+      'The real password: theLoggedPasswordInCleartext'
+      I.fillField('somePasswordLocator', '****')
+  ✔ OK in 7ms
+
+  The scenario | {"username":"theSecondUsername","password": ***}
+      'The real password: theLoggedPasswordInCleartext'
+      I.fillField('somePasswordLocator', '****')
+  ✔ OK in 1ms
+```
+
+* fix: debug info causes error (#3882) - by @KobeNguyenT
+
+📖 *Documentation*
+* fix: get rid of complaining when using session without await and returning nothing. (#3899) - by @KobeNguyenT
+* fix(FileSystem): a typo in writeToFile() (#3897) - by @mirao
+
+🛩️ *Features*
+* feat(translation): add more french keywords and fix deprecated waitForClickable (#3906) - by @andonary
+```
+- Add some french keywords for translation
+- I.waitForClickable has the same "attends" than I.wait. Using "attends" leads to use the deprecated waitForClickable. Fix it by using different words.
+```
+
 ## 3.5.5
 
 🐛 Bug Fixes
