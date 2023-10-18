@@ -1,5 +1,10 @@
 module.exports = {
   I: 'Ja',
+  contexts: {
+    Feature: 'Funkcja',
+    Scenario: 'Scenariusz',
+    ScenarioOutline: 'Szablon scenariusza',
+  },
   actions: {
     amOutsideAngularApp: 'jestem_poza_aplikacją_angular',
     amInsideAngularApp: 'jestem_w_aplikacji_angular',
