@@ -307,6 +307,12 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
   });
 
   describe('i18n', () => {
+    const codecept_dir = path.join(__dirname, '/../data/sandbox/i18n');
+    const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
+
+    before(() => {
+      process.chdir(codecept_dir);
+    });
     it('should run feature files in DE', (done) => {
       exec(config_run_config('codecept.bdd.de.js') + ' --steps --grep "@i18n"', (err, stdout, stderr) => { //eslint-disable-line
         stdout.should.include('On Angenommen: ich habe ein produkt mit einem preis von 10$ in meinem warenkorb');

@@ -4,7 +4,7 @@ Funktionalität: Checkout-Prozess
   Als Kunde
   Möchte ich in der Lage sein, mehrere Produkte zu kaufen
 
-  @i18n @fail
+  @i18n
   Szenariogrundriss: Bestellrabatt
     Angenommen ich habe ein Produkt mit einem Preis von <price>$ in meinem Warenkorb
     Und der Rabatt für Bestellungen über $20 beträgt 10 %

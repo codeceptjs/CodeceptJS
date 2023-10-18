@@ -1,10 +1,10 @@
 exports.config = {
   tests: './*_no_test.js',
   timeout: 10000,
-  output: './output',
+  output: '../output',
   helpers: {
     BDD: {
-      require: './support/bdd_helper.js',
+      require: '../support/bdd_helper.js',
     },
   },
   gherkin: {
