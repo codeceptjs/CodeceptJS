@@ -13,7 +13,7 @@ BDD was introduced by [Dan North](https://dannorth.net/introducing-bdd/). He des
 
 > outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.
 
-BDD has its own evolution from the days it was born, started by replacing "test" to "should" in unit tests, and moving towards powerful tools like Cucumber and Behat, which made user stories (human readable text) to be executed as an acceptance test.
+BDD has its own evolution from the days it was born, started by replacing "test" to "should" in unit tests, and moving towards powerful tools like Cucumber and Behat, which made user stories (human-readable text) to be executed as an acceptance test.
 
 The idea of story BDD can be narrowed to:
 
@@ -32,7 +32,7 @@ With this procedure we also ensure that everyone in a team knows what has been d
 
 ### Ubiquitous Language
 
-The ubiquitous language is always referred as *common* language. That is it's main benefit. It is not a couple of our business specification's words, and not a couple of developer's technical terms. It is a common words and terms that can be understood by people for whom we are building the software and should be understood by developers. Establishing correct communication between this two groups people is vital for building successful project that will fit the domain and fulfill all business needs.
+The ubiquitous language is always referred as *common* language. That it is the main benefit. It is not a couple of our business specification's words, and not a couple of developer's technical terms. It is a common words and terms that can be understood by people for whom we are building the software and should be understood by developers. Establishing correct communication between this two groups people is vital for building successful project that will fit the domain and fulfill all business needs.
 
 Each feature of a product should be born from a talk between
 
@@ -144,8 +144,8 @@ npx codeceptjs gherkin:snippets [--path=PATH] [--feature=PATH]
 ```
 
 This will produce code templates for all undefined steps in the .feature files.
-By default, it will scan all of the .feature files specified in the gherkin.features section of the config and produce code templates for all undefined steps. If the `--feature` option is specified, it will scan the specified .feature file(s).
-The stub definitions by default will be placed into the first file specified in the gherkin.steps section of the config. However, you may also use `--path` to specify a specific file in which to place all undefined steps. This file must exist and be in the gherkin.steps array of the config.
+By default, it will scan all of the `.feature` files specified in the `gherkin.features` section of the config and produce code templates for all undefined steps. If the `--feature` option is specified, it will scan the specified .feature file(s).
+The stub definitions by default will be placed into the first file specified in the `gherkin.steps` section of the config. However, you may also use `--path` to specify a specific file in which to place all undefined steps. This file must exist and be in the `gherkin.steps array of the config.
 Our next step will be to define those steps and transforming feature-file into a valid test.
 
 ### Step Definitions
@@ -177,7 +177,7 @@ Then('my order amount is ${int}', (sum) => { // eslint-disable-line
 });
 ```
 
-Steps can be either strings or regular expressions. Parameters from string are passed as function arguments. To define parameters in a string we use [Cucumber expressions](https://docs.cucumber.io/cucumber/cucumber-expressions/)
+Steps can be either strings or regular expressions. Parameters from string are passed as function arguments. To define parameters in a string we use [Cucumber expressions](https://github.com/cucumber/cucumber-expressions#readme)
 
 To list all defined steps run `gherkin:steps` command:
 
@@ -408,7 +408,7 @@ Tag should be placed before *Scenario:* or before *Feature:* keyword. In the las
 
 ### Custom types
 
-If you need parameter text in more advanced way and you like using [Cucumber expressions](https://docs.cucumber.io/cucumber/cucumber-expressions/) better that regular expressions, use `DefineParameterType` function. You can extend Cucumber Expressions so they automatically convert output parameters to your own types or transforms the match from the regexp.
+If you need parameter text in more advanced way, and you like using [Cucumber expressions](https://github.com/cucumber/cucumber-expressions#readme) better that regular expressions, use `DefineParameterType` function. You can extend Cucumber Expressions, so they automatically convert output parameters to your own types or transforms the match from the regexp.
 
 ```js
 DefineParameterType({
@@ -447,14 +447,17 @@ Given('I see {popup_type} popup', (popup) => {
   * `avoidDuplicateSteps` - attempts to avoid duplicate step definitions by shallow compare
 
 ```js
+...
 "gherkin": {
   "features": "./features/*.feature",
   "steps": [
     "./step_definitions/steps.js"
   ]
 }
+...
 ```
 ```js
+...
 "gherkin": {
   "features": [
       "./features/*.feature",
@@ -464,6 +467,7 @@ Given('I see {popup_type} popup', (popup) => {
     "./step_definitions/steps.js"
   ]
 }
+...
 ```
 
 ## Before
@@ -518,7 +522,7 @@ Fail((test, err) => {
 
 It is common to think that BDD scenario is equal to test. But it's actually not. Not every test should be described as a feature. Not every test is written to test real business value. For instance, regression tests or negative scenario tests are not bringing any value to business. Business analysts don't care about scenario reproducing bug #13, or what error message is displayed when user tries to enter wrong password on login screen. Writing all the tests inside a feature files creates informational overflow.
 
-In CodeceptJS you can combine tests written in Gherkin format with classical acceptance tests. This way you can keep your feature files compact with minimal set of scenarios, and write regular tests to cover all cases. Please note, feature files will be executed before tests.
+In CodeceptJS, you can combine tests written in Gherkin format with classical acceptance tests. This way you can keep your feature files compact with minimal set of scenarios, and write regular tests to cover all cases. Please note, feature files will be executed before tests.
 
 To run only features use `--features` option:
 
