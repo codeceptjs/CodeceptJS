@@ -112,6 +112,16 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should run feature with tables contain long text', (done) => {
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Given I have products in my cart');
+      stdout.should.include('name');
+      stdout.should.include('Harry Potter and the deathly hallows');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run feature with long strings', (done) => {
     exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout string"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I have product described as');
