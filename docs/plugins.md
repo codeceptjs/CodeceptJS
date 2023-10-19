@@ -89,7 +89,7 @@ Scenario('log me in', ( {I, login} ) => {
 #### How It Works
 
 1.  `restore` method is executed. It should open a page and set credentials.
-2.  `check` method is executed. It should reload a page (so cookies are applied) and check that this page belongs to logged in user.
+2.  `check` method is executed. It should reload a page (so cookies are applied) and check that this page belongs to logged-in user. When you pass the second args `session`, you could perform the validation using passed session.
 3.  If `restore` and `check` were not successful, `login` is executed
 4.  `login` should fill in login form
 5.  After successful login, `fetch` is executed to save cookies into memory or file.
@@ -228,6 +228,40 @@ autoLogin: {
       check: (I) => {
          I.amOnPage('/');
          I.see('Admin');
+      },
+    }
+  }
+}
+```
+
+```js
+Scenario('login', async ( {I, login} ) => {
+  await login('admin') // you should use `await`
+})
+```
+
+#### Tips: Using session to validate user
+
+Instead of asserting on page elements for the current user in `check`, you can use the `session` you saved in `fetch`
+
+```js
+autoLogin: {
+  enabled: true,
+  saveToFile: true,
+  inject: 'login',
+  users: {
+    admin: {
+      login: async (I) => {  // If you use async function in the autoLogin plugin
+         const phrase = await I.grabTextFrom('#phrase')
+         I.fillField('username', 'admin'),
+         I.fillField('password', 'password')
+         I.fillField('phrase', phrase)
+      },
+      check: (I, session) => {
+         // Throwing an error in `check` will make CodeceptJS perform the login step for the user
+         if (session.profile.email !== the.email.you.expect@some-mail.com) {
+              throw new Error ('Wrong user signed in');
+        }
       },
     }
   }
