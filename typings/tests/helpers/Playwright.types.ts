@@ -22,7 +22,7 @@ playwright._createContextPage(); // $ExpectType void
 playwright._createContextPage({}); // $ExpectType void
 playwright.amOnPage(str); // $ExpectType void
 playwright.resizeWindow(num, num); // $ExpectType void
-playwright.haveRequestHeaders(str); // $ExpectType void
+playwright.setPlaywrightRequestHeaders(str); // $ExpectType void
 playwright.moveCursorTo(str, num, num); // $ExpectType void
 playwright.dragAndDrop(str); // $ExpectError
 playwright.dragAndDrop(str, str); // $ExpectType void

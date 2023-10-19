@@ -20,7 +20,7 @@ playwright._getPageUrl(); // $ExpectType Promise<any>
 playwright.grabPopupText(); // $ExpectType Promise<string | null>
 playwright.amOnPage(str); // $ExpectType Promise<any>
 playwright.resizeWindow(num, num); // $ExpectType Promise<any>
-playwright.haveRequestHeaders(str); // $ExpectType Promise<any>
+playwright.setPlaywrightRequestHeaders(str); // $ExpectType Promise<any>
 playwright.moveCursorTo(str, num, num); // $ExpectType Promise<any>
 playwright.dragAndDrop(str); // $ExpectError
 playwright.dragAndDrop(str, str); // $ExpectType Promise<any>
