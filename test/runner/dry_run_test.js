@@ -174,4 +174,15 @@ describe('dry-run command', () => {
       done();
     });
   });
+
+  it('should enable customLocator plugin in dry-mode', (done) => {
+    exec(`${codecept_run_config('codecept.customLocator.js')} --verbose`, (err, stdout) => {
+      expect(stdout).toContain('Plugins: customLocator');
+      expect(stdout).toContain('I see element {xpath: .//*[@data-testid=\'COURSE\']//a}');
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(stdout).toContain('--- DRY MODE: No tests were executed ---');
+      expect(err).toBeFalsy();
+      done();
+    });
+  });
 });
