@@ -175,8 +175,19 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should enable customLocator plugin in dry-mode', (done) => {
-    exec(`${codecept_run_config('codecept.customLocator.js')} --verbose`, (err, stdout) => {
+  it('should enable all plugins in dry-mode when passing -p all', (done) => {
+    exec(`${codecept_run_config('codecept.customLocator.js')} --verbose -p all`, (err, stdout) => {
+      expect(stdout).toContain('Plugins: screenshotOnFail, customLocator');
+      expect(stdout).toContain('I see element {xpath: .//*[@data-testid=\'COURSE\']//a}');
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(stdout).toContain('--- DRY MODE: No tests were executed ---');
+      expect(err).toBeFalsy();
+      done();
+    });
+  });
+
+  it('should enable a particular plugin in dry-mode when passing it to -p', (done) => {
+    exec(`${codecept_run_config('codecept.customLocator.js')} --verbose -p customLocator`, (err, stdout) => {
       expect(stdout).toContain('Plugins: customLocator');
       expect(stdout).toContain('I see element {xpath: .//*[@data-testid=\'COURSE\']//a}');
       expect(stdout).toContain('OK  | 1 passed');
