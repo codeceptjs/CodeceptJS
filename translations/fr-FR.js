@@ -3,6 +3,7 @@ module.exports = {
   contexts: {
     Feature: 'Fonctionnalité',
     Scenario: 'Scénario',
+    ScenarioOutline: 'Plan du scénario',
     Before: 'Avant',
     After: 'Après',
     BeforeSuite: 'AvantLaSuite',
