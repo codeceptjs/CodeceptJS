@@ -1,5 +1,10 @@
 module.exports = {
   I: '私は',
+  contexts: {
+    Feature: 'フィーチャ',
+    Scenario: 'シナリオ',
+    ScenarioOutline: 'シナリオアウトライン',
+  },
   actions: {
     amOutsideAngularApp: 'Angularの外に出る',
     amInsideAngularApp: 'Angularの中に入る',

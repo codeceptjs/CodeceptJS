@@ -4,7 +4,7 @@
 
 **Extends Webdriver**
 
-Appium helper extends [Webriver][1] helper.
+Appium helper extends [Webdriver][1] helper.
  It supports all browser methods and also includes special methods for mobile apps testing.
  You can use this helper to test Web on desktop and mobile devices and mobile apps.
 
@@ -25,7 +25,7 @@ Launch the daemon: `appium`
 
 This helper should be configured in codecept.conf.ts or codecept.conf.js
 
--   `appiumV2`: set this to true if you want to run tests with Appiumv2. See more how to setup [here][3]
+-   `appiumV2`: set this to true if you want to run tests with AppiumV2. See more how to setup [here][3]
 -   `app`: Application path. Local path or remote URL to an .ipa or .apk file, or a .zip containing one of these. Alias to desiredCapabilities.appPackage
 -   `host`: (default: 'localhost') Appium host
 -   `port`: (default: '4723') Appium port
@@ -99,7 +99,7 @@ helpers: {
 }
 ```
 
-Example Android App using Appiumv2 on BrowserStack:
+Example Android App using AppiumV2 on BrowserStack:
 
 ```js
 {
@@ -136,7 +136,7 @@ helpers: {
 }
 ```
 
-Additional configuration params can be used from [https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md][4]
+Additional configuration params can be used from [https://github.com/appium/appium/blob/master/packages/appium/docs/en/guides/caps.md][4]
 
 ## Access From Helpers
 
@@ -1321,11 +1321,11 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 [1]: http://codecept.io/helpers/WebDriver/
 
-[2]: http://appium.io/
+[2]: https://appium.io/docs/en/2.1/
 
 [3]: https://codecept.io/mobile/#setting-up
 
-[4]: https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md
+[4]: https://github.com/appium/appium/blob/master/packages/appium/docs/en/guides/caps.md
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

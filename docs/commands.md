@@ -152,6 +152,18 @@ If a plugin needs to be enabled in `dry-run` mode, pass its name in `-p` option:
 npx codeceptjs dry-run --steps -p allure
 ```
 
+If some plugins need to be enabled in `dry-run` mode, pass its name in `-p` option:
+
+```
+npx codeceptjs dry-run --steps -p allure,customLocator
+```
+
+If all plugins need to be enabled in `dry-run` mode, pass its name in `-p` option:
+
+```
+npx codeceptjs dry-run --steps -p all
+```
+
 To enable bootstrap script in dry-run mode, pass in `--bootstrap` option when running with `--steps` or `--debug`
 
 ```

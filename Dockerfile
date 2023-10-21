@@ -1,5 +1,5 @@
 # Download Playwright and its dependencies
-FROM mcr.microsoft.com/playwright:v1.35.1
+FROM mcr.microsoft.com/playwright:v1.39.0
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Installing the pre-required packages and libraries

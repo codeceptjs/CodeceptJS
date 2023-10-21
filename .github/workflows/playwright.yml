@@ -36,8 +36,8 @@ jobs:
         npm install --legacy-peer-deps
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - name: Install deps
-      run: npm install playwright@1.35.1 & npx playwright install-deps
+    - name: Install browsers and deps
+      run: npx playwright install && npx playwright install-deps
     - name: start a server
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run chromium tests

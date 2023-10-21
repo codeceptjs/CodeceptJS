@@ -446,8 +446,8 @@ wd.grabCurrentUrl(); // $ExpectType Promise<string>
 wd.grabNumberOfVisibleElements(); // $ExpectError
 wd.grabNumberOfVisibleElements('div'); // $ExpectType Promise<number>
 
-wd.grabCookie(); // $ExpectType Promise<string[]> | Promise<string>
-wd.grabCookie('name'); // $ExpectType Promise<string[]> | Promise<string>
+wd.grabCookie(); // $ExpectType any
+wd.grabCookie('name'); // $ExpectType any
 
 wd.grabPopupText(); // $ExpectType Promise<string>
 

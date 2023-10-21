@@ -520,7 +520,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][4]?** cookie name. 
 
-Returns **([Promise][9]&lt;[string][4]> | [Promise][9]&lt;[Array][11]&lt;[string][4]>>)** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **any** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCurrentUrl
 
@@ -547,7 +547,7 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[number][12]>** number of visible elements
+Returns **[Promise][9]&lt;[number][11]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -601,7 +601,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][11]&lt;[string][4]>>** attribute value
+Returns **[Promise][9]&lt;[Array][12]&lt;[string][4]>>** attribute value
 
 ### grabValueFrom
 
@@ -632,7 +632,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 -   `locator` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][9]&lt;[Array][11]&lt;[string][4]>>** attribute value
+Returns **[Promise][9]&lt;[Array][12]&lt;[string][4]>>** attribute value
 
 ### moveCursorTo
 
@@ -647,8 +647,8 @@ I.moveCursorTo('#submit', 5,5);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][12]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][12]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### pressKey
@@ -665,7 +665,7 @@ I.pressKey(['Control','a']);
 
 #### Parameters
 
--   `key` **([string][4] | [Array][11]&lt;[string][4]>)** key or array of keys to press.
+-   `key` **([string][4] | [Array][12]&lt;[string][4]>)** key or array of keys to press.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 
@@ -718,8 +718,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
--   `width` **[number][12]** width in pixels or `maximize`.
--   `height` **[number][12]** height in pixels.
+-   `width` **[number][11]** width in pixels or `maximize`.
+-   `height` **[number][11]** height in pixels.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### rightClick
@@ -806,8 +806,8 @@ I.scrollTo('#submit', 5, 5);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** located by CSS|XPath|strict locator.
--   `offsetX` **[number][12]** (optional, `0` by default) X-axis offset. 
--   `offsetY` **[number][12]** (optional, `0` by default) Y-axis offset.
+-   `offsetX` **[number][11]** (optional, `0` by default) X-axis offset. 
+-   `offsetY` **[number][11]** (optional, `0` by default) Y-axis offset.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### see
@@ -955,7 +955,7 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `num` **[number][12]** number of elements.
+-   `num` **[number][11]** number of elements.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### seeTextEquals
@@ -995,7 +995,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 -   `select` **([string][4] | [object][5])** field located by label|name|CSS|XPath|strict locator.
--   `option` **([string][4] | [Array][11]&lt;any>)** visible text or value of option.
+-   `option` **([string][4] | [Array][12]&lt;any>)** visible text or value of option.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### setCookie
@@ -1016,7 +1016,7 @@ I.setCookie([
 
 #### Parameters
 
--   `cookie` **(Cookie | [Array][11]&lt;Cookie>)** a cookie object or array of cookie objects.
+-   `cookie` **(Cookie | [Array][12]&lt;Cookie>)** a cookie object or array of cookie objects.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### switchTo
@@ -1082,7 +1082,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
--   `sec` **[number][12]** number of second to wait.
+-   `sec` **[number][11]** number of second to wait.
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForElement
@@ -1098,7 +1098,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][12]?** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder
 
 ### waitForFunction
@@ -1119,8 +1119,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 -   `fn` **([string][4] | [function][8])** to be executed in browser context.
--   `argsOrSec` **([Array][11]&lt;any> | [number][12])?** (optional, `1` by default) arguments for function or seconds. 
--   `sec` **[number][12]?** (optional, `1` by default) time in seconds to wait
+-   `argsOrSec` **([Array][12]&lt;any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
+-   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForInvisible
@@ -1135,7 +1135,7 @@ I.waitForInvisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitForText
@@ -1152,7 +1152,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 -   `text` **[string][4]** to wait for.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait 
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait 
 -   `context` **([string][4] | [object][5])?** (optional) element located by CSS|XPath|strict locator.
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
@@ -1168,7 +1168,7 @@ I.waitForVisible('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitInUrl
@@ -1182,7 +1182,7 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitNumberOfVisibleElements
@@ -1196,8 +1196,8 @@ I.waitNumberOfVisibleElements('a', 3);
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `num` **[number][12]** number of elements.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
+-   `num` **[number][11]** number of elements.
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitToHide
@@ -1212,7 +1212,7 @@ I.waitToHide('#popup');
 #### Parameters
 
 -   `locator` **([string][4] | [object][5])** element located by CSS|XPath|strict locator.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ### waitUrlEquals
@@ -1227,7 +1227,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 #### Parameters
 
 -   `urlPart` **[string][4]** value to check.
--   `sec` **[number][12]** (optional, `1` by default) time in seconds to wait
+-   `sec` **[number][11]** (optional, `1` by default) time in seconds to wait
     ⚠️ returns a _promise_ which is synchronized internally by recorder 
 
 ## getPageUrl
@@ -1258,9 +1258,9 @@ Client Functions
 
 [10]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [13]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/element/:id/value
 

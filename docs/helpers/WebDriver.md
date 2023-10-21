@@ -1081,7 +1081,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][17]?** cookie name. 
 
-Returns **([Promise][25]&lt;[string][17]> | [Promise][25]&lt;[Array][28]&lt;[string][17]>>)** attribute value
+Returns **any** attribute value
 
 ### grabCssPropertyFrom
 
