@@ -130,6 +130,35 @@ describe('Playwright', function () {
     });
   });
 
+  describe('#waitForVisible #waitForInvisible - within block', () => {
+    it('should wait for visible element', async () => {
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
+        frame: '#number-frame-1234',
+      });
+
+      await I.waitForVisible('h1');
+    });
+
+    it('should wait for invisible element', async () => {
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
+        frame: '#number-frame-1234',
+      });
+
+      await I.waitForInvisible('h9');
+    });
+
+    it('should wait for element to hide', async () => {
+      await I.amOnPage('/iframe');
+      await I._withinBegin({
+        frame: '#number-frame-1234',
+      });
+
+      await I.waitToHide('h9');
+    });
+  });
+
   describe('#waitToHide', () => {
     it('should wait for hidden element', () => {
       return I.amOnPage('/form/wait_invisible')
