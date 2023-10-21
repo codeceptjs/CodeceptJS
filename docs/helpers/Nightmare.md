@@ -487,7 +487,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][3]?** cookie name. 
 
-Returns **([Promise][8]&lt;[string][3]> | [Promise][8]&lt;[Array][10]&lt;[string][3]>>)** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
+Returns **any** attribute valueCookie in JSON format. If name not passed returns all cookies for this domain.Multiple cookies can be received by passing query object `I.grabCookie({ secure: true});`. If you'd like get all cookies for all urls, use: `.grabCookie({ url: null }).`
 
 ### grabCssPropertyFrom
 
