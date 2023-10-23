@@ -61,7 +61,7 @@
   "dependencies": {
     "@codeceptjs/configure": "0.10.0",
     "@codeceptjs/helper": "2.0.1",
-    "@cucumber/cucumber-expressions": "16",
+    "@cucumber/cucumber-expressions": "17",
     "@cucumber/gherkin": "26",
     "@cucumber/messages": "22.0.0",
     "@xmldom/xmldom": "0.8.10",
