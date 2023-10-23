@@ -105,7 +105,7 @@
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "5.1.0",
     "@types/inquirer": "9.0.3",
-    "@types/node": "20.4.4",
+    "@types/node": "20.8.7",
     "@wdio/sauce-service": "8.3.8",
     "@wdio/selenium-standalone-service": "8.3.2",
     "@wdio/utils": "8.16.22",
