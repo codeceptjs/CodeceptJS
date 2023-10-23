@@ -106,7 +106,7 @@
     "@pollyjs/core": "5.1.0",
     "@types/inquirer": "9.0.3",
     "@types/node": "20.4.4",
-    "@wdio/sauce-service": "8.3.8",
+    "@wdio/sauce-service": "8.20.0",
     "@wdio/selenium-standalone-service": "8.3.2",
     "@wdio/utils": "8.16.22",
     "apollo-server-express": "2.25.3",
