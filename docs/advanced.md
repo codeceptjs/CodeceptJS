@@ -150,7 +150,7 @@ For **Visual Studio Code**, add the following configuration in launch.json:
   "request": "launch",
   "name": "codeceptjs",
   "args": ["run", "--grep", "@your_test_tag"],
-  "program": "${workspaceFolder}/node_modules/.bin/codeceptjs"
+  "program": "${workspaceFolder}/node_modules/codeceptjs/bin/codecept.js"
 }
 ```
 
