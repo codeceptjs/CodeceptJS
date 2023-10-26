@@ -9,10 +9,6 @@ describe('Workers', function () {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox');
   });
 
-  beforeEach(function () {
-    this.timeout(40000);
-  });
-
   it('should run simple worker', (done) => {
     const workerConfig = {
       by: 'test',

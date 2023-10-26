@@ -96,6 +96,32 @@ module.exports = function() {
   });
 }
 ```
+You could get test stats when running with workers
+
+```js
+const { event } = require('codeceptjs');
+
+module.exports = function() {
+
+  event.dispatcher.on(event.workers.result, function (result) {
+
+    console.log(result);
+
+  });
+}
+
+// in console log
+FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
+{
+  passes: 7,
+    failures: 1,
+  tests: 9,
+  pending: 1,
+  start: 2023-10-26T13:15:57.685Z,
+  end: 2023-10-26T13:15:59.880Z,
+  duration: 2195
+}
+```
 
 Available events:
 
@@ -119,6 +145,7 @@ Available events:
 * `event.all.result` - when results are printed
 * `event.workers.before` - before spawning workers in parallel run
 * `event.workers.after` - after workers finished in parallel run
+* `event.workers.result` - test results after workers finished in parallel run
 
 
 > *sync* - means that event is fired in the moment of the action happening.
