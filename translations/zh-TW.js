@@ -1,5 +1,10 @@
 module.exports = {
   I: '我',
+  contexts: {
+    Feature: '功能',
+    Scenario: '場景',
+    ScenarioOutline: '場景大綱',
+  },
   actions: {
     amOutsideAngularApp: '在Angular應用外',
     amInsideAngularApp: '在Angular應用內',

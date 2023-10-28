@@ -112,6 +112,16 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should run feature with tables contain long text', (done) => {
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('Given I have products in my cart');
+      stdout.should.include('name');
+      stdout.should.include('Harry Potter and the deathly hallows');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run feature with long strings', (done) => {
     exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout string"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I have product described as');
@@ -303,6 +313,33 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
       assert.equal(stdout.match(/I open a browser on a site/g).length, 1);
       assert(!err);
       done();
+    });
+  });
+
+  describe('i18n', () => {
+    const codecept_dir = path.join(__dirname, '/../data/sandbox/i18n');
+    const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
+
+    before(() => {
+      process.chdir(codecept_dir);
+    });
+    it('should run feature files in DE', (done) => {
+      exec(config_run_config('codecept.bdd.de.js') + ' --steps --grep "@i18n"', (err, stdout, stderr) => { //eslint-disable-line
+        stdout.should.include('On Angenommen: ich habe ein produkt mit einem preis von 10$ in meinem warenkorb');
+        stdout.should.include('On Und: der rabatt für bestellungen über $20 beträgt 10 %');
+        stdout.should.include('On Wenn: ich zur kasse gehe');
+        stdout.should.include('On Dann: sollte ich den gesamtpreis von "10.0" $ sehen');
+        stdout.should.include('On Angenommen: ich habe ein produkt mit einem preis von 10$ in meinem warenkorb');
+        stdout.should.include('Ich add item 10');
+        stdout.should.include('On Und: der rabatt für bestellungen über $20 beträgt 10 %');
+        stdout.should.include('Ich have discount for price 20, 10');
+        stdout.should.include('On Wenn: ich zur kasse gehe');
+        stdout.should.include('Ich checkout');
+        stdout.should.include('On Dann: sollte ich den gesamtpreis von "10.0" $ sehen');
+        stdout.should.include('Ich see sum 10');
+        assert(!err);
+        done();
+      });
     });
   });
 });

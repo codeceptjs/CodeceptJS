@@ -6,10 +6,10 @@ const str = 'text';
 const num = 1;
 
 wd.amOnPage(); // $ExpectError
-wd.amOnPage(''); // $ExpectType void
+wd.amOnPage(''); // $ExpectType Promise<void>
 
 wd.focus(); // $ExpectError
-wd.focus('div'); // $ExpectType void
+wd.focus('div'); // $ExpectType Promise<void>
 wd.focus({ css: 'div' });
 wd.focus({ xpath: '//div' });
 wd.focus({ name: 'div' });
@@ -27,7 +27,7 @@ wd.focus('div', { android: '//div' });
 wd.focus('div', { ios: '//div' });
 
 wd.blur(); // $ExpectError
-wd.blur('div'); // $ExpectType void
+wd.blur('div'); // $ExpectType Promise<void>
 wd.blur({ css: 'div' });
 wd.blur({ xpath: '//div' });
 wd.blur({ name: 'div' });
@@ -45,7 +45,7 @@ wd.blur('div', { android: '//div' });
 wd.blur('div', { ios: '//div' });
 
 wd.click(); // $ExpectError
-wd.click('div'); // $ExpectType void
+wd.click('div'); // $ExpectType Promise<void>
 wd.click({ css: 'div' });
 wd.click({ xpath: '//div' });
 wd.click({ name: 'div' });
@@ -63,7 +63,7 @@ wd.click('div', { android: '//div' });
 wd.click('div', { ios: '//div' });
 
 wd.forceClick(); // $ExpectError
-wd.forceClick('div'); // $ExpectType void
+wd.forceClick('div'); // $ExpectType Promise<void>
 wd.forceClick({ css: 'div' });
 wd.forceClick({ xpath: '//div' });
 wd.forceClick({ name: 'div' });
@@ -81,7 +81,7 @@ wd.forceClick('div', { android: '//div' });
 wd.forceClick('div', { ios: '//div' });
 
 wd.doubleClick(); // $ExpectError
-wd.doubleClick('div'); // $ExpectType void
+wd.doubleClick('div'); // $ExpectType Promise<void>
 wd.doubleClick({ css: 'div' });
 wd.doubleClick({ xpath: '//div' });
 wd.doubleClick({ name: 'div' });
@@ -99,7 +99,7 @@ wd.doubleClick('div', { android: '//div' });
 wd.doubleClick('div', { ios: '//div' });
 
 wd.rightClick(); // $ExpectError
-wd.rightClick('div'); // $ExpectType void
+wd.rightClick('div'); // $ExpectType Promise<void>
 wd.rightClick({ css: 'div' });
 wd.rightClick({ xpath: '//div' });
 wd.rightClick({ name: 'div' });
@@ -118,7 +118,7 @@ wd.rightClick('div', { ios: '//div' });
 
 wd.fillField(); // $ExpectError
 wd.fillField('div'); // $ExpectError
-wd.fillField('div', str); // $ExpectType void
+wd.fillField('div', str); // $ExpectType Promise<void>
 wd.fillField({ css: 'div' }, str);
 wd.fillField({ xpath: '//div' }, str);
 wd.fillField({ name: 'div' }, str);
@@ -129,7 +129,7 @@ wd.fillField(locate('div'), str);
 
 wd.appendField(); // $ExpectError
 wd.appendField('div'); // $ExpectError
-wd.appendField('div', str); // $ExpectType void
+wd.appendField('div', str); // $ExpectType Promise<void>
 wd.appendField({ css: 'div' }, str);
 wd.appendField({ xpath: '//div' }, str);
 wd.appendField({ name: 'div' }, str);
@@ -149,98 +149,98 @@ wd.clearField({ ios: 'div' });
 
 wd.selectOption(); // $ExpectError
 wd.selectOption('div'); // $ExpectError
-wd.selectOption('div', str); // $ExpectType void
+wd.selectOption('div', str); // $ExpectType Promise<void>
 
 wd.attachFile(); // $ExpectError
 wd.attachFile('div'); // $ExpectError
-wd.attachFile('div', str); // $ExpectType void
+wd.attachFile('div', str); // $ExpectType Promise<void>
 
 wd.checkOption(); // $ExpectError
-wd.checkOption('div'); // $ExpectType void
+wd.checkOption('div'); // $ExpectType Promise<void>
 
 wd.uncheckOption(); // $ExpectError
-wd.uncheckOption('div'); // $ExpectType void
+wd.uncheckOption('div'); // $ExpectType Promise<void>
 
 wd.seeInTitle(); // $ExpectError
-wd.seeInTitle(str); // $ExpectType void
+wd.seeInTitle(str); // $ExpectType Promise<void>
 
 wd.seeTitleEquals(); // $ExpectError
-wd.seeTitleEquals(str); // $ExpectType void
+wd.seeTitleEquals(str); // $ExpectType Promise<void>
 
 wd.dontSeeInTitle(); // $ExpectError
-wd.dontSeeInTitle(str); // $ExpectType void
+wd.dontSeeInTitle(str); // $ExpectType Promise<void>
 
 wd.see(); // $ExpectError
-wd.see(str); // $ExpectType void
-wd.see(str, 'div'); // $ExpectType void
+wd.see(str); // $ExpectType Promise<void>
+wd.see(str, 'div'); // $ExpectType Promise<void>
 
 wd.dontSee(); // $ExpectError
-wd.dontSee(str); // $ExpectType void
-wd.dontSee(str, 'div'); // $ExpectType void
+wd.dontSee(str); // $ExpectType Promise<void>
+wd.dontSee(str, 'div'); // $ExpectType Promise<void>
 
 wd.seeTextEquals(); // $ExpectError
-wd.seeTextEquals(str); // $ExpectType void
-wd.seeTextEquals(str, 'div'); // $ExpectType void
+wd.seeTextEquals(str); // $ExpectType Promise<void>
+wd.seeTextEquals(str, 'div'); // $ExpectType Promise<void>
 
 wd.seeInField(); // $ExpectError
 wd.seeInField('div'); // $ExpectError
-wd.seeInField('div', str); // $ExpectType void
+wd.seeInField('div', str); // $ExpectType Promise<void>
 
 wd.dontSeeInField(); // $ExpectError
 wd.dontSeeInField('div'); // $ExpectError
-wd.dontSeeInField('div', str); // $ExpectType void
+wd.dontSeeInField('div', str); // $ExpectType Promise<void>
 
 wd.seeCheckboxIsChecked(); // $ExpectError
-wd.seeCheckboxIsChecked('div'); // $ExpectType void
+wd.seeCheckboxIsChecked('div'); // $ExpectType Promise<void>
 
 wd.dontSeeCheckboxIsChecked(); // $ExpectError
-wd.dontSeeCheckboxIsChecked('div'); // $ExpectType void
+wd.dontSeeCheckboxIsChecked('div'); // $ExpectType Promise<void>
 
 wd.seeElement(); // $ExpectError
-wd.seeElement('div'); // $ExpectType void
+wd.seeElement('div'); // $ExpectType Promise<void>
 
 wd.dontSeeElement(); // $ExpectError
-wd.dontSeeElement('div'); // $ExpectType void
+wd.dontSeeElement('div'); // $ExpectType Promise<void>
 
 wd.seeElementInDOM(); // $ExpectError
-wd.seeElementInDOM('div'); // $ExpectType void
+wd.seeElementInDOM('div'); // $ExpectType Promise<void>
 
 wd.dontSeeElementInDOM(); // $ExpectError
-wd.dontSeeElementInDOM('div'); // $ExpectType void
+wd.dontSeeElementInDOM('div'); // $ExpectType Promise<void>
 
 wd.seeInSource(); // $ExpectError
-wd.seeInSource(str); // $ExpectType void
+wd.seeInSource(str); // $ExpectType Promise<void>
 
 wd.dontSeeInSource(); // $ExpectError
-wd.dontSeeInSource(str); // $ExpectType void
+wd.dontSeeInSource(str); // $ExpectType Promise<void>
 
 wd.seeNumberOfElements(); // $ExpectError
 wd.seeNumberOfElements('div'); // $ExpectError
-wd.seeNumberOfElements('div', num); // $ExpectType void
+wd.seeNumberOfElements('div', num); // $ExpectType Promise<void>
 
 wd.seeNumberOfVisibleElements(); // $ExpectError
 wd.seeNumberOfVisibleElements('div'); // $ExpectError
-wd.seeNumberOfVisibleElements('div', num); // $ExpectType void
+wd.seeNumberOfVisibleElements('div', num); // $ExpectType Promise<void>
 
 wd.seeCssPropertiesOnElements(); // $ExpectError
 wd.seeCssPropertiesOnElements('div'); // $ExpectError
-wd.seeCssPropertiesOnElements('div', str); // $ExpectType void
+wd.seeCssPropertiesOnElements('div', str); // $ExpectType Promise<void>
 
 wd.seeAttributesOnElements(); // $ExpectError
 wd.seeAttributesOnElements('div'); // $ExpectError
-wd.seeAttributesOnElements('div', str); // $ExpectType void
+wd.seeAttributesOnElements('div', str); // $ExpectType Promise<void>
 
 wd.seeInCurrentUrl(); // $ExpectError
-wd.seeInCurrentUrl(str); // $ExpectType void
+wd.seeInCurrentUrl(str); // $ExpectType Promise<void>
 
 wd.seeCurrentUrlEquals(); // $ExpectError
-wd.seeCurrentUrlEquals(str); // $ExpectType void
+wd.seeCurrentUrlEquals(str); // $ExpectType Promise<void>
 
 wd.dontSeeInCurrentUrl(); // $ExpectError
-wd.dontSeeInCurrentUrl(str); // $ExpectType void
+wd.dontSeeInCurrentUrl(str); // $ExpectType Promise<void>
 
 wd.dontSeeCurrentUrlEquals(); // $ExpectError
-wd.dontSeeCurrentUrlEquals(str); // $ExpectType void
+wd.dontSeeCurrentUrlEquals(str); // $ExpectType Promise<void>
 
 wd.executeScript(); // $ExpectError
 wd.executeScript(str); // $ExpectType Promise<any>
@@ -257,26 +257,26 @@ wd.scrollIntoView('div'); // $ExpectError
 wd.scrollIntoView('div', { behavior: 'auto', block: 'center', inline: 'center' });
 
 wd.scrollTo(); // $ExpectError
-wd.scrollTo('div'); // $ExpectType void
-wd.scrollTo('div', num, num); // $ExpectType void
+wd.scrollTo('div'); // $ExpectType Promise<void>
+wd.scrollTo('div', num, num); // $ExpectType Promise<void>
 
 wd.moveCursorTo(); // $ExpectError
-wd.moveCursorTo('div'); // $ExpectType void
-wd.moveCursorTo('div', num, num); // $ExpectType void
+wd.moveCursorTo('div'); // $ExpectType Promise<void>
+wd.moveCursorTo('div', num, num); // $ExpectType Promise<void>
 
 wd.saveScreenshot(); // $ExpectError
-wd.saveScreenshot(str); // $ExpectType void
-wd.saveScreenshot(str, true); // $ExpectType void
+wd.saveScreenshot(str); // $ExpectType Promise<void>
+wd.saveScreenshot(str, true); // $ExpectType Promise<void>
 
 wd.setCookie(); // $ExpectError
-wd.setCookie({ name: str, value: str }); // $ExpectType void
-wd.setCookie([{ name: str, value: str }]); // $ExpectType void
+wd.setCookie({ name: str, value: str }); // $ExpectType Promise<void>
+wd.setCookie([{ name: str, value: str }]); // $ExpectType Promise<void>
 
-wd.clearCookie(); // $ExpectType void
-wd.clearCookie(str); // $ExpectType void
+wd.clearCookie(); // $ExpectType Promise<void>
+wd.clearCookie(str); // $ExpectType Promise<void>
 
 wd.seeCookie(); // $ExpectError
-wd.seeCookie(str); // $ExpectType void
+wd.seeCookie(str); // $ExpectType Promise<void>
 
 wd.acceptPopup(); // $ExpectType void
 
@@ -286,116 +286,116 @@ wd.seeInPopup(); // $ExpectError
 wd.seeInPopup(str); // $ExpectType void
 
 wd.pressKeyDown(); // $ExpectError
-wd.pressKeyDown(str); // $ExpectType void
+wd.pressKeyDown(str); // $ExpectType Promise<void>
 
 wd.pressKeyUp(); // $ExpectError
-wd.pressKeyUp(str); // $ExpectType void
+wd.pressKeyUp(str); // $ExpectType Promise<void>
 
 wd.pressKey(); // $ExpectError
-wd.pressKey(str); // $ExpectType void
+wd.pressKey(str); // $ExpectType Promise<void>
 
 wd.type(); // $ExpectError
-wd.type(str); // $ExpectType void
+wd.type(str); // $ExpectType Promise<void>
 
 wd.resizeWindow(); // $ExpectError
 wd.resizeWindow(num); // $ExpectError
-wd.resizeWindow(num, num); // $ExpectType void
+wd.resizeWindow(num, num); // $ExpectType Promise<void>
 
 wd.dragAndDrop(); // $ExpectError
 wd.dragAndDrop('div'); // $ExpectError
-wd.dragAndDrop('div', 'div'); // $ExpectType void
+wd.dragAndDrop('div', 'div'); // $ExpectType Promise<void>
 
 wd.dragSlider(); // $ExpectError
-wd.dragSlider('div', num); // $ExpectType void
+wd.dragSlider('div', num); // $ExpectType Promise<void>
 
 wd.switchToWindow(); // $ExpectError
 wd.switchToWindow(str); // $ExpectType void
 
-wd.closeOtherTabs(); // $ExpectType void
+wd.closeOtherTabs(); // $ExpectType Promise<void>
 
 wd.wait(); // $ExpectError
-wd.wait(num); // $ExpectType void
+wd.wait(num); // $ExpectType Promise<void>
 
 wd.waitForEnabled(); // $ExpectError
-wd.waitForEnabled('div'); // $ExpectType void
-wd.waitForEnabled('div', num); // $ExpectType void
+wd.waitForEnabled('div'); // $ExpectType Promise<void>
+wd.waitForEnabled('div', num); // $ExpectType Promise<void>
 
 wd.waitForElement(); // $ExpectError
-wd.waitForElement('div'); // $ExpectType void
-wd.waitForElement('div', num); // $ExpectType void
+wd.waitForElement('div'); // $ExpectType Promise<void>
+wd.waitForElement('div', num); // $ExpectType Promise<void>
 
 wd.waitForClickable(); // $ExpectError
-wd.waitForClickable('div'); // $ExpectType void
-wd.waitForClickable('div', num); // $ExpectType void
+wd.waitForClickable('div'); // $ExpectType Promise<void>
+wd.waitForClickable('div', num); // $ExpectType Promise<void>
 
 wd.waitForVisible(); // $ExpectError
-wd.waitForVisible('div'); // $ExpectType void
-wd.waitForVisible('div', num); // $ExpectType void
+wd.waitForVisible('div'); // $ExpectType Promise<void>
+wd.waitForVisible('div', num); // $ExpectType Promise<void>
 
 wd.waitForInvisible(); // $ExpectError
-wd.waitForInvisible('div'); // $ExpectType void
-wd.waitForInvisible('div', num); // $ExpectType void
+wd.waitForInvisible('div'); // $ExpectType Promise<void>
+wd.waitForInvisible('div', num); // $ExpectType Promise<void>
 
 wd.waitToHide(); // $ExpectError
-wd.waitToHide('div'); // $ExpectType void
-wd.waitToHide('div', num); // $ExpectType void
+wd.waitToHide('div'); // $ExpectType Promise<void>
+wd.waitToHide('div', num); // $ExpectType Promise<void>
 
 wd.waitForDetached(); // $ExpectError
-wd.waitForDetached('div'); // $ExpectType void
-wd.waitForDetached('div', num); // $ExpectType void
+wd.waitForDetached('div'); // $ExpectType Promise<void>
+wd.waitForDetached('div', num); // $ExpectType Promise<void>
 
 wd.waitForFunction(); // $ExpectError
-wd.waitForFunction('div'); // $ExpectType void
-wd.waitForFunction(() => {}); // $ExpectType void
-wd.waitForFunction(() => {}, [num], num); // $ExpectType void
-wd.waitForFunction(() => {}, [str], num); // $ExpectType void
+wd.waitForFunction('div'); // $ExpectType Promise<void>
+wd.waitForFunction(() => {}); // $ExpectType Promise<void>
+wd.waitForFunction(() => {}, [num], num); // $ExpectType Promise<void>
+wd.waitForFunction(() => {}, [str], num); // $ExpectType Promise<void>
 
 wd.waitInUrl(); // $ExpectError
-wd.waitInUrl(str); // $ExpectType void
-wd.waitInUrl(str, num); // $ExpectType void
+wd.waitInUrl(str); // $ExpectType Promise<void>
+wd.waitInUrl(str, num); // $ExpectType Promise<void>
 
 wd.waitForText(); // $ExpectError
-wd.waitForText(str); // $ExpectType void
-wd.waitForText(str, num, str); // $ExpectType void
+wd.waitForText(str); // $ExpectType Promise<void>
+wd.waitForText(str, num, str); // $ExpectType Promise<void>
 
 wd.waitForValue(); // $ExpectError
 wd.waitForValue(str); // $ExpectError
-wd.waitForValue(str, str); // $ExpectType void
-wd.waitForValue(str, str, num); // $ExpectType void
+wd.waitForValue(str, str); // $ExpectType Promise<void>
+wd.waitForValue(str, str, num); // $ExpectType Promise<void>
 
 wd.waitNumberOfVisibleElements(); // $ExpectError
 wd.waitNumberOfVisibleElements('div'); // $ExpectError
-wd.waitNumberOfVisibleElements(str, num); // $ExpectType void
-wd.waitNumberOfVisibleElements(str, num, num); // $ExpectType void
+wd.waitNumberOfVisibleElements(str, num); // $ExpectType Promise<void>
+wd.waitNumberOfVisibleElements(str, num, num); // $ExpectType Promise<void>
 
 wd.waitUrlEquals(); // $ExpectError
-wd.waitUrlEquals(str); // $ExpectType void
-wd.waitUrlEquals(str, num); // $ExpectType void
+wd.waitUrlEquals(str); // $ExpectType Promise<void>
+wd.waitUrlEquals(str, num); // $ExpectType Promise<void>
 
-wd.switchTo(); // $ExpectType void
-wd.switchTo('div'); // $ExpectType void
+wd.switchTo(); // $ExpectType Promise<void>
+wd.switchTo('div'); // $ExpectType Promise<void>
 
-wd.switchToNextTab(num, num); // $ExpectType void
+wd.switchToNextTab(num, num); // $ExpectType Promise<void>
 
-wd.switchToPreviousTab(num, num); // $ExpectType void
+wd.switchToPreviousTab(num, num); // $ExpectType Promise<void>
 
-wd.closeCurrentTab(); // $ExpectType void
+wd.closeCurrentTab(); // $ExpectType Promise<void>
 
-wd.openNewTab(); // $ExpectType void
+wd.openNewTab(); // $ExpectType Promise<void>
 
-wd.refreshPage(); // $ExpectType void
+wd.refreshPage(); // $ExpectType Promise<void>
 
-wd.scrollPageToTop(); // $ExpectType void
+wd.scrollPageToTop(); // $ExpectType Promise<void>
 
-wd.scrollPageToBottom(); // $ExpectType void
+wd.scrollPageToBottom(); // $ExpectType Promise<void>
 
 wd.setGeoLocation(); // $ExpectError
 wd.setGeoLocation(num); // $ExpectError
-wd.setGeoLocation(num, num); // $ExpectType void
-wd.setGeoLocation(num, num, num); // $ExpectType void
+wd.setGeoLocation(num, num); // $ExpectType Promise<void>
+wd.setGeoLocation(num, num, num); // $ExpectType Promise<void>
 
 wd.dontSeeCookie(); // $ExpectError
-wd.dontSeeCookie(str); // $ExpectType void
+wd.dontSeeCookie(str); // $ExpectType Promise<void>
 
 wd.dragAndDrop(); // $ExpectError
 wd.dragAndDrop('#dragHandle'); // $ExpectError
@@ -446,8 +446,8 @@ wd.grabCurrentUrl(); // $ExpectType Promise<string>
 wd.grabNumberOfVisibleElements(); // $ExpectError
 wd.grabNumberOfVisibleElements('div'); // $ExpectType Promise<number>
 
-wd.grabCookie(); // $ExpectType Promise<string[]> | Promise<string>
-wd.grabCookie('name'); // $ExpectType Promise<string[]> | Promise<string>
+wd.grabCookie(); // $ExpectType any
+wd.grabCookie('name'); // $ExpectType any
 
 wd.grabPopupText(); // $ExpectType Promise<string>
 
