@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const path = require('path');
 const { Workers, event, recorder } = require('../../lib/index');
 
-describe('Workers', function () {
+(process.env.NON_WORKERS_TESTS ? describe.skip : describe)('Workers', function () {
   this.timeout(40000);
 
   before(() => {
