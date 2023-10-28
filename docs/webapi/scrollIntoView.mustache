@@ -8,4 +8,4 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 
 @param {LocatorOrString} locator located by CSS|XPath|strict locator.
 @param {ScrollIntoViewOptions} scrollIntoViewOptions see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView.
-⚠️ returns a _promise_ which is synchronized internally by recorder
+@returns {Promise<void>} automatically synchronized promise through #recorder
