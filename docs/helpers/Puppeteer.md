@@ -1227,20 +1227,6 @@ I.seeFile('avatar.jpg');
 
 -   `downloadPath` **[string][6]** change this parameter to set another directory for saving 
 
-### haveRequestHeaders
-
-Set headers for all next requests
-
-```js
-I.haveRequestHeaders({
-   'X-Sent-By': 'CodeceptJS',
-});
-```
-
-#### Parameters
-
--   `customHeaders` **[object][4]** headers to set
-
 ### moveCursorTo
 
 Moves cursor to element matched by locator.
@@ -1829,6 +1815,20 @@ I.setCookie([
 -   `cookie` **(Cookie | [Array][15]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 Returns **[Promise][7]&lt;void>** automatically synchronized promise through #recorder
+
+### setPuppeteerRequestHeaders
+
+Set headers for all next requests
+
+```js
+I.setPuppeteerRequestHeaders({
+   'X-Sent-By': 'CodeceptJS',
+});
+```
+
+#### Parameters
+
+-   `customHeaders` **[object][4]** headers to set
 
 ### switchTo
 

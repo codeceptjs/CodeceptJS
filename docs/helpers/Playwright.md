@@ -1377,20 +1377,6 @@ I.waitForFile('avatar.jpg', 5);
 
 Returns **[Promise][9]&lt;void>** 
 
-### haveRequestHeaders
-
-Set headers for all next requests
-
-```js
-I.haveRequestHeaders({
-   'X-Sent-By': 'CodeceptJS',
-});
-```
-
-#### Parameters
-
--   `customHeaders` **[object][5]** headers to set
-
 ### makeApiRequest
 
 Performs [api request][25] using
@@ -2076,6 +2062,20 @@ I.setCookie([
 -   `cookie` **(Cookie | [Array][10]&lt;Cookie>)** a cookie object or array of cookie objects.
 
 Returns **[Promise][9]&lt;void>** automatically synchronized promise through #recorder
+
+### setPlaywrightRequestHeaders
+
+Set headers for all next requests
+
+```js
+I.setPlaywrightRequestHeaders({
+   'X-Sent-By': 'CodeceptJS',
+});
+```
+
+#### Parameters
+
+-   `customHeaders` **[object][5]** headers to set
 
 ### startRecordingTraffic
 
