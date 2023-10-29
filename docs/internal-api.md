@@ -123,7 +123,7 @@ FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
 }
 ```
 
-CodeceptJS also expose the env var `process.env.RUN_WITH_WORKERS` when running tests with `run-workers` command so that you could handle the events better in your plugins/helpers
+CodeceptJS also exposes the env var `process.env.RUN_WITH_WORKERS` when running tests with `run-workers` command so that you could handle the events better in your plugins/helpers
 
 ```js
 const { event } = require('codeceptjs');
