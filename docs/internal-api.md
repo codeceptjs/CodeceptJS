@@ -112,14 +112,18 @@ module.exports = function() {
 
 // in console log
 FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
+2s
 {
-  passes: 7,
-    failures: 1,
-  tests: 9,
-  pending: 1,
-  start: 2023-10-26T13:15:57.685Z,
-  end: 2023-10-26T13:15:59.880Z,
-  duration: 2195
+  suites: [...],
+  tests: {
+        passed: [...],
+        failed: [...],
+        skipped: [...],
+      },
+  steps: {
+        passed: [...],
+        failed: [...],
+      },
 }
 ```
 
