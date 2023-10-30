@@ -86,7 +86,7 @@
     "fn-args": "4.0.0",
     "fs-extra": "8.1.0",
     "glob": "6.0.1",
-    "html-minifier": "4.0.0",
+    "html-minifier-terser": "^7.2.0",
     "inquirer": "6.5.2",
     "joi": "17.6.0",
     "js-beautify": "1.14.9",
