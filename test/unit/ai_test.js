@@ -5,10 +5,10 @@ const config = require('../../lib/config');
 describe('AI module', () => {
   beforeEach(() => config.reset());
 
-  it('should be externally configurable', () => {
+  it('should be externally configurable', async () => {
     const html = '<div><a data-qa="ok">Hey</a></div>';
     const ai = new AiAssistant();
-    ai.setHtmlContext(html);
+    await ai.setHtmlContext(html);
     expect(ai.html).to.include('<a>Hey</a>');
 
     config.create({
@@ -20,7 +20,7 @@ describe('AI module', () => {
     });
 
     const ai2 = new AiAssistant();
-    ai2.setHtmlContext(html);
+    await ai2.setHtmlContext(html);
     expect(ai2.html).to.include('<a data-qa="ok">Hey</a>');
   });
 });

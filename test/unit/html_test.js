@@ -35,7 +35,7 @@ describe('HTML module', () => {
   });
 
   describe('#removeNonInteractiveElements', () => {
-    it('should cut out all non-interactive elements from GitHub HTML', () => {
+    it('should cut out all non-interactive elements from GitHub HTML', async () => {
       // Call the function with the loaded HTML
       html = fs.readFileSync(path.join(__dirname, '../data/github.html'), 'utf8');
       const result = removeNonInteractiveElements(html, opts);
@@ -43,7 +43,7 @@ describe('HTML module', () => {
       const nodes = xpath.select('//input[@name="q"]', doc);
       expect(nodes).to.have.length(1);
       expect(result).not.to.include('Let’s build from here');
-      const minified = minifyHtml(result);
+      const minified = await minifyHtml(result);
       doc = new Dom().parseFromString(minified);
       const nodes2 = xpath.select('//input[@name="q"]', doc);
       expect(nodes2).to.have.length(1);
@@ -66,7 +66,7 @@ describe('HTML module', () => {
       expect(result).to.include('<button');
     });
 
-    it('should keep menu bar', () => {
+    it('should keep menu bar', async () => {
       html = `<div class="mainnav-menu-body">
       <ul>
         <li>
@@ -88,7 +88,7 @@ describe('HTML module', () => {
       </li>        
       </ul>
     </div>`;
-      const result = minifyHtml(removeNonInteractiveElements(html, opts));
+      const result = await minifyHtml(removeNonInteractiveElements(html, opts));
       expect(result).to.include('<button');
       expect(result).to.include('<a');
       expect(result).to.include('<svg');
@@ -133,7 +133,7 @@ describe('HTML module', () => {
       // console.log(html);
       const result = removeNonInteractiveElements(html, opts);
       result.should.include('<svg class="md-icon md-icon-check-bold');
-      // console.log(minifyHtml(result));
+      // console.log(await minifyHtml(result));
     });
   });
 
