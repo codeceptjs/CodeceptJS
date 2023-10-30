@@ -125,7 +125,7 @@
     "electron": "27.0.2",
     "eslint": "8.50.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-import": "2.29.0",
     "eslint-plugin-mocha": "6.3.0",
     "expect": "29.7.0",
     "express": "4.17.2",
