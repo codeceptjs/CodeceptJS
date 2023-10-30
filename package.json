@@ -134,7 +134,7 @@
     "inquirer-test": "2.0.1",
     "jsdoc": "3.6.10",
     "jsdoc-typeof-plugin": "1.0.0",
-    "json-server": "0.10.1",
+    "json-server": "0.17.4",
     "playwright": "1.39.0",
     "puppeteer": "21.1.1",
     "qrcode-terminal": "0.12.0",
