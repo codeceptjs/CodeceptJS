@@ -113,15 +113,79 @@ module.exports = function() {
 // in console log
 FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
 {
-  tests: {
-        passed: [...],
-        failed: [...],
-        skipped: [...],
+  "tests": {
+  "passed": [
+    {
+      "type": "test",
+      "title": "Assert @C3",
+      "body": "() => { }",
+      "async": 0,
+      "sync": true,
+      "_timeout": 2000,
+      "_slow": 75,
+      "_retries": -1,
+      "timedOut": false,
+      "_currentRetry": 0,
+      "pending": false,
+      "opts": {},
+      "tags": [
+        "@C3"
+      ],
+      "uid": "xe4q1HdqpRrZG5dPe0JG+A",
+      "workerIndex": 3,
+      "retries": -1,
+      "duration": 493,
+      "err": null,
+      "parent": {
+        "title": "My",
+        "ctx": {},
+        "suites": [],
+        "tests": [],
+        "root": false,
+        "pending": false,
+        "_retries": -1,
+        "_beforeEach": [],
+        "_beforeAll": [],
+        "_afterEach": [],
+        "_afterAll": [],
+        "_timeout": 2000,
+        "_slow": 75,
+        "_bail": false,
+        "_onlyTests": [],
+        "_onlySuites": [],
+        "delayed": false
       },
-  steps: {
-        passed: [...],
-        failed: [...],
-      },
+      "steps": [
+        {
+          "actor": "I",
+          "name": "amOnPage",
+          "status": "success",
+          "agrs": [
+            "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST"
+          ],
+          "startedAt": 1698760652610,
+          "startTime": 1698760652611,
+          "endTime": 1698760653098,
+          "finishedAt": 1698760653098,
+          "duration": 488
+        },
+        {
+          "actor": "I",
+          "name": "grabCurrentUrl",
+          "status": "success",
+          "agrs": [],
+          "startedAt": 1698760653098,
+          "startTime": 1698760653098,
+          "endTime": 1698760653099,
+          "finishedAt": 1698760653099,
+          "duration": 1
+        }
+      ]
+    }
+  ],
+    "failed": [],
+    "skipped": []
+}
 }
 ```
 
