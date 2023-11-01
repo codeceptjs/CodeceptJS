@@ -15,7 +15,9 @@ describe('Appium Web', function () {
       browser: 'chrome',
       restart: false,
       desiredCapabilities: {
-        appiumVersion: '2.0.0',
+        'sauce:options': {
+          appiumVersion: '2.0.0',
+        },
         recordVideo: 'false',
         recordScreenshots: 'false',
         platformName: 'Android',
