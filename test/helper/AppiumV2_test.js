@@ -21,7 +21,9 @@ describe('Appium', function () {
       app: apk_path,
       appiumV2: true,
       desiredCapabilities: {
-        appiumVersion: '2.0.0',
+        'sauce:options': {
+          appiumVersion: '2.0.0',
+        },
         browserName: '',
         recordVideo: 'false',
         recordScreenshots: 'false',
