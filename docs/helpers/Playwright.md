@@ -27,6 +27,10 @@ or
 
     npm i playwright-core@^1.18 --save
 
+Breaking Changes: if you use Playwright v1.38 and later, it will no longer download browsers automatically.
+
+Run `npx playwright install` to download browsers after `npm install`.
+
 Using playwright-core package, will prevent the download of browser binaries and allow connecting to an existing browser installation or for connecting to a remote one.
 
 

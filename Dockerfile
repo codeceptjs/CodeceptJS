@@ -38,6 +38,9 @@ WORKDIR /tests
 RUN npm i puppeteer@21.1.1
 RUN google-chrome --version
 
+# Install playwright browsers
+RUN npx playwright install
+
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
