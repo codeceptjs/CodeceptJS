@@ -1,10 +1,11 @@
-name: Appium Tests
+name: Appium V2 Tests
 
 on:
   push:
     branches:
       - 3.x
-      -
+      - appium-v1-deprecation
+
 env:
   CI: true
   # Force terminal colors. @see https://www.npmjs.com/package/colors
