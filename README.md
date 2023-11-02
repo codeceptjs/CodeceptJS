@@ -7,10 +7,14 @@
 
 Build Status:
 
+Appium Helper:
+[![Appium V2 Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml)
+[![Appium V2 Tests - iOS](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml)
+
+Web Helper:
 [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)
 [![Puppeteer Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml)
 [![WebDriver Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml)
-[![Appium Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium.yml)
 [![TestCafe Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml)
 
 # CodeceptJS [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
