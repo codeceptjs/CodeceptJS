@@ -1,4 +1,4 @@
-name: Appium V2 Tests
+name: Appium V2 Tests - iOS
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: 'npm run test:appium-quick'
+    - run: 'npm run test:ios:appium-quick'
       env: # Or as an environment variable
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -53,7 +53,7 @@ jobs:
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: 'npm run test:appium-other'
+    - run: 'npm run test:ios:appium-other'
       env: # Or as an environment variable
         SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
         SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
