@@ -117,6 +117,31 @@ describe('Playwright', function () {
       await I.click('Hello World');
     });
   });
+  it('check isElementChecked', async () => {
+    await I.amOnPage('/invisible_elements');
+    let result = await I.isElementChecked({ id: 'html' });
+    assert.equal(result, true);
+    result = await I.isElementChecked({ id: 'css' });
+    assert.equal(result, false);
+    result = await I.isElementChecked({ id: 'js' });
+    assert.equal(result, true);
+    result = await I.isElementChecked({ id: 'ts' });
+    assert.equal(result, false);
+    try {
+      result = await I.isElementChecked({ id: 'basic' });
+    } catch (e) {
+      assert.equal(e.message, 'Element is not a checkbox or radio input');
+    }
+  });
+  describe('#isElementDisabled', () => {
+    it('check isElementDisabled', async () => {
+      await I.amOnPage('/invisible_elements');
+      let result = await I.isElementDisabled({ id: 'fortran' });
+      assert.equal(result, true);
+      result = await I.isElementDisabled({ id: 'basic' });
+      assert.equal(result, false);
+    });
+  });
 
   describe('#waitForFunction', () => {
     it('should wait for function returns true', () => {
