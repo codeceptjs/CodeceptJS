@@ -993,13 +993,12 @@ Returns **[Promise][9]&lt;[Array][10]&lt;any>>**
 
 ### grabCheckedElementStatus
 
-{{> grabCheckedElementStatus }}
+Return the checked status of given element.
 
 #### Parameters
 
--   `locator`  
--   `options`   
--   `See` **[object][5]** [https://playwright.dev/docs/api/class-locator#locator-is-checked][24]
+-   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
+-   `options` **[object][5]?** See [https://playwright.dev/docs/api/class-locator#locator-is-checked][24] 
 
 Returns **[Promise][9]&lt;[boolean][25]>** 
 
@@ -1092,13 +1091,12 @@ Returns **[Promise][9]&lt;void>** automatically synchronized promise through #re
 
 ### grabDisabledElementStatus
 
-{{> grabDisabledElementStatus }}
+Return the disabled status of given element.
 
 #### Parameters
 
--   `locator`  
--   `options`   
--   `See` **[object][5]** [https://playwright.dev/docs/api/class-locator#locator-is-disabled][26]
+-   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
+-   `options` **[object][5]?** See [https://playwright.dev/docs/api/class-locator#locator-is-disabled][26] 
 
 Returns **[Promise][9]&lt;[boolean][25]>** 
 
