@@ -129,7 +129,7 @@ describe('Playwright', function () {
       result = await I.grabCheckedElementStatus({ id: 'ts' });
       assert.equal(result, false);
       try {
-        result = await I.grabCheckedElementStatus({ id: 'basic' });
+        await I.grabCheckedElementStatus({ id: 'basic' });
       } catch (e) {
         assert.equal(e.message, 'Element is not a checkbox or radio input');
       }
