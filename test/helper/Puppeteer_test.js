@@ -4,6 +4,7 @@ const path = require('path');
 
 const puppeteer = require('puppeteer');
 
+const fs = require('fs');
 const TestHelper = require('../support/TestHelper');
 const Puppeteer = require('../../lib/helper/Puppeteer');
 
@@ -11,6 +12,8 @@ const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
 const FileSystem = require('../../lib/helper/FileSystem');
 const Secret = require('../../lib/secret');
+const Playwright = require('../../lib/helper/Playwright');
+const { deleteDir } = require('../../lib/utils');
 global.codeceptjs = require('../../lib');
 
 let I;
@@ -1035,5 +1038,50 @@ describe('Puppeteer (remote browser)', function () {
       currentPages = await remoteBrowser.pages();
       assert.equal(currentPages.length, 0);
     });
+  });
+});
+
+describe('Puppeteer - Trace', () => {
+  const test = { title: 'a failed test', artifacts: {} };
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(`${__dirname}/../data/output`);
+
+    I = new Puppeteer({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      trace: true,
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    deleteDir(path.join(global.output_dir, 'trace'));
+    return I._before(test).then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('checks that trace is recorded', async () => {
+    await I.amOnPage('/');
+    await I.dontSee('this should be an error');
+    await I.click('More info');
+    await I.dontSee('this should be an error');
+    await I._failed(test);
+    assert(test.artifacts);
+    expect(Object.keys(test.artifacts)).to.include('trace');
+
+    assert.ok(fs.existsSync(test.artifacts.trace));
+    expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
   });
 });
