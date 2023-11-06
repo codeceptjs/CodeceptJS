@@ -90,7 +90,7 @@
     "glob": "6.0.1",
     "html-minifier": "4.0.0",
     "inquirer": "6.5.2",
-    "joi": "17.6.0",
+    "joi": "17.11.0",
     "js-beautify": "1.14.9",
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
