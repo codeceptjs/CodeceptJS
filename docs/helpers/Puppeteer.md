@@ -44,6 +44,8 @@ Type: [object][4]
 -   `disableScreenshots` **[boolean][20]?** don't save screenshot on failure.
 -   `fullPageScreenshots` **[boolean][20]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][20]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `trace` **[boolean][20]?** record [tracing information][25] with screenshots.
+-   `keepTraceForPassedTests` **[boolean][20]?** save trace for passed tests.
 -   `keepBrowserState` **[boolean][20]?** keep browser state between tests when `restart` is set to false.
 -   `keepCookies` **[boolean][20]?** keep cookies between tests when `restart` is set to false.
 -   `waitForAction` **[number][11]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
@@ -55,10 +57,18 @@ Type: [object][4]
 -   `userAgent` **[string][6]?** user-agent string.
 -   `manualStart` **[boolean][20]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
--   `chrome` **[object][4]?** pass additional [Puppeteer run options][25].
+-   `chrome` **[object][4]?** pass additional [Puppeteer run options][26].
 -   `highlightElement` **[boolean][20]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 
+
+#### Trace Recording Customization
+
+Trace recording provides complete information on test execution and includes screenshots, and network requests logged during run.
+Traces will be saved to `output/trace`
+
+-   `trace`: enables trace recording for failed tests; trace are saved into `output/trace` folder
+-   `keepTraceForPassedTests`: - save trace for passed tests
 
 #### Example #1: Wait for 0 network connections.
 
@@ -2263,4 +2273,6 @@ Returns **[Promise][7]&lt;void>** automatically synchronized promise through #re
 
 [24]: https://codecept.io/react
 
-[25]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+[25]: https://pptr.dev/api/puppeteer.tracing
+
+[26]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
