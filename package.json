@@ -142,7 +142,7 @@
     "qrcode-terminal": "0.12.0",
     "rosie": "2.1.0",
     "runok": "0.9.3",
-    "sinon": "17.0.0",
+    "sinon": "17.0.1",
     "sinon-chai": "3.7.0",
     "testcafe": "3.3.0",
     "ts-morph": "19.0.0",
