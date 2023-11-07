@@ -1542,7 +1542,7 @@ describe('Playwright - Video & Trace & HAR', () => {
       browser: 'chromium',
       trace: true,
       video: true,
-      har: {},
+      recordHar: {},
     });
     I._init();
     return I._beforeSuite();
