@@ -112,9 +112,7 @@ module.exports = function() {
 
 // in console log
 FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
-2s
 {
-  suites: [...],
   tests: {
         passed: [...],
         failed: [...],
