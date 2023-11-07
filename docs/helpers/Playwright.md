@@ -79,6 +79,7 @@ Type: [object][5]
 -   `ignoreHTTPSErrors` **[boolean][25]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 -   `bypassCSP` **[boolean][25]?** bypass Content Security Policy or CSP
 -   `highlightElement` **[boolean][25]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+-   `har` **{recordMode: `"minimal"`, content: `"embed"`}?** HAR recording. See more in HAR Recording Customization section.
 
 
 
@@ -98,6 +99,19 @@ Traces will be saved to `output/trace`
 
 -   `trace`: enables trace recording for failed tests; trace are saved into `output/trace` folder
 -   `keepTraceForPassedTests`: - save trace for passed tests
+
+#### HAR Recording Customization
+
+A HAR file is an HTTP Archive file that contains a record of all the network requests that are made when a page is loaded.
+It contains information about the request and response headers, cookies, content, timings, and more. You can use HAR files to mock network requests in your tests.
+HAR will be saved to `output/har`
+
+    ...
+    har: {
+        recordMode: 'minimal', // possible value: 'minimal', 'full'. Ref: https://playwright.dev/docs/api/class-page#page-route-from-har-option-update-mode
+        content: 'embed' // possible value: 'embed', 'attach'. Ref: https://playwright.dev/docs/api/class-page#page-route-from-har-option-update-content
+    }
+    ...
 
 #### Example #1: Wait for 0 network connections.
 
