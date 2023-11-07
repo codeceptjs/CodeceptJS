@@ -1,3 +1,177 @@
+## 3.5.7
+
+Thanks all to those who contributed to make this release!
+
+🐛 *Bug Fixes*
+* Bump playwright to 1.39.0 - run `npx playwright install` to install the browsers as starting from 1.39.0 browsers are not installed automatically (#3924) - by @KobeNguyenT
+* fix(playwright): some wait functions draw error due to switchTo iframe (#3918) - by @KobeNguyenT
+* fix(appium): AppiumTestDistribution/appium-device-farm requires 'platformName' (#3950) - by @rock-tran
+* fix: autologin with empty fetch (#3947) - by @andonary
+* fix(cli): customLocator draws error in dry-mode (#3940) - by @KobeNguyenT
+* fix: ensure docs include @returns Promise<void> where appropriate (#3954) - by @fwouts
+* fix: long text in data table cuts off (#3936) - by @KobeNguyenT
+```
+#language: de
+Funktionalität: Faker examples
+
+   Szenariogrundriss: Atualizar senha do usuário
+        Angenommen que estou logado via REST com o usuário "<customer>"
+          | protocol             | https:               |
+          | hostname             | https://cucumber.io/docs/gherkin/languages/            |
+          
+
+Faker examples --
+  Atualizar senha do usuário {"product":"{{vehicle.vehicle}}","customer":"Dr. {{name.findName}}","price":"{{commerce.price}}","cashier":"cashier 2"}
+   On Angenommen: que estou logado via rest com o usuário "dr. {{name.find name}}" 
+    protocol        | https:         
+    hostname        | https://cucumber.io/docs/gherkin/languages/
+    
+Dr. {{name.findName}}
+  ✔ OK in 13ms
+
+```
+* fix(playwright): move to waitFor (#3933) - by @KobeNguyenT
+* fix: relax grabCookie type (#3919) - by @KobeNguyenT
+* fix: proceedSee error when being called inside within (#3939) - by @KobeNguyenT
+* fix: rename haveRequestHeaders of ppt and pw helpers (#3937) - by @KobeNguyenT
+```
+Renamed haveRequestHeaders of Puppeteer, Playwright helper so that it would not confuse the REST helper.
+Puppeteer: setPuppeteerRequestHeaders
+Playwright: setPlaywrightRequestHeaders
+```
+* improvement: handle the way to load apifactory nicely (#3941) - by @KobeNguyenT
+```
+With this fix, we could now use the following syntax:
+
+export = new Factory()
+   .attr('name', () => faker.name.findName())
+   .attr('job', () => 'leader');
+   
+export default new Factory()
+   .attr('name', () => faker.name.findName())
+   .attr('job', () => 'leader');
+   
+modules.export = new Factory()
+   .attr('name', () => faker.name.findName())
+   .attr('job', () => 'leader');
+```
+
+📖 *Documentation*
+* docs(appium): update to v2 (#3932) - by @KobeNguyenT
+* docs: improve BDD Gherkin docs (#3938) - by @KobeNguyenT
+* Other docs improvements
+
+🛩️ *Features*
+* feat(puppeteer): support trace recording - by @KobeNguyenT
+```
+[Trace Recording Customization]
+Trace recording provides complete information on test execution and includes screenshots, and network requests logged during run. Traces will be saved to output/trace
+
+trace: enables trace recording for failed tests; trace are saved into output/trace folder
+keepTraceForPassedTests: - save trace for passed tests
+```
+* feat: expect helper (#3923) - by @KobeNguyenT
+```
+ * This helper allows performing assertions based on Chai.
+ *
+ * ### Examples
+ *
+ * Zero-configuration when paired with other helpers like REST, Playwright:
+ *
+ * ```js
+ * // inside codecept.conf.js
+ *{
+ *   helpers: {
+ *     Playwright: {...},
+ *     ExpectHelper: {},
+ *   }
+ 
+  Expect Helper
+    #expectEqual
+    #expectNotEqual
+    #expectContain
+    #expectNotContain
+    #expectStartsWith
+    #expectNotStartsWith
+    #expectEndsWith
+    #expectNotEndsWith
+    #expectJsonSchema
+    #expectHasProperty
+    #expectHasAProperty
+    #expectToBeA
+    #expectToBeAn
+    #expectMatchRegex
+    #expectLengthOf
+    #expectTrue
+    #expectEmpty
+    #expectFalse
+    #expectAbove
+    #expectBelow
+    #expectLengthAboveThan
+    #expectLengthBelowThan
+    #expectLengthBelowThan
+    #expectDeepMembers
+    #expectDeepIncludeMembers
+    #expectDeepEqualExcluding
+    #expectLengthBelowThan
+```
+* feat: run-workers with multiple browsers output folders - by @KobeNguyenT
+- ![Screenshot 2023-11-04 at 10 49 56](https://github.com/codeceptjs/CodeceptJS/assets/7845001/8eaecc54-de14-4597-b148-1e087bec3c76)
+- ![Screenshot 2023-11-03 at 15 56 38](https://github.com/codeceptjs/CodeceptJS/assets/7845001/715aed17-3535-48df-80dd-84f7024f08e3)
+* feat: introduce new Playwright methods - by @hatufacci
+```
+- grabCheckedElementStatus
+- grabDisabledElementStatus
+```
+* feat: gherkin supports i18n (#3934) - by @KobeNguyenT
+```
+#language: de
+Funktionalität: Checkout-Prozess
+  Um Produkte zu kaufen
+  Als Kunde
+  Möchte ich in der Lage sein, mehrere Produkte zu kaufen
+
+  @i18n
+  Szenariogrundriss: Bestellrabatt
+    Angenommen ich habe ein Produkt mit einem Preis von <price>$ in meinem Warenkorb
+    Und der Rabatt für Bestellungen über $20 beträgt 10 %
+    Wenn ich zur Kasse gehe
+    Dann sollte ich den Gesamtpreis von "<total>" $ sehen
+
+    Beispiele:
+      | price | total |
+      | 10    | 10.0  |
+```
+* feat(autoLogin): improve the check method (#3935) - by @KobeNguyenT
+```
+Instead of asserting on page elements for the current user in check, you can use the session you saved in fetch
+
+autoLogin: {
+  enabled: true,
+  saveToFile: true,
+  inject: 'login',
+  users: {
+    admin: {
+      login: async (I) => {  // If you use async function in the autoLogin plugin
+         const phrase = await I.grabTextFrom('#phrase')
+         I.fillField('username', 'admin'),
+         I.fillField('password', 'password')
+         I.fillField('phrase', phrase)
+      },
+      check: (I, session) => {
+         // Throwing an error in `check` will make CodeceptJS perform the login step for the user
+         if (session.profile.email !== the.email.you.expect@some-mail.com) {
+              throw new Error ('Wrong user signed in');
+        }
+      },
+    }
+  }
+}
+Scenario('login', async ( {I, login} ) => {
+  await login('admin') // you should use `await`
+})
+```
+
 ## 3.5.6
 
 Thanks all to those who contributed to make this release!
