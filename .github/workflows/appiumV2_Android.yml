@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 3.x
-      - appium-v1-deprecation
 
 env:
   CI: true
@@ -13,11 +12,11 @@ env:
 
 jobs:
   appium1:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
@@ -37,11 +36,11 @@ jobs:
 
   appium2:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
