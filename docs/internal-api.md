@@ -189,7 +189,7 @@ FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
 }
 ```
 
-CodeceptJS also exposes the env var `process.env.RUN_WITH_WORKERS` when running tests with `run-workers` command so that you could handle the events better in your plugins/helpers
+CodeceptJS also exposes the env var `process.env.RUNS_WITH_WORKERS` when running tests with `run-workers` command so that you could handle the events better in your plugins/helpers
 
 ```js
 const { event } = require('codeceptjs');
@@ -203,7 +203,7 @@ module.exports = function() {
   // this event would not trigger the  `_publishResultsToTestrail` multiple times when running `run-workers` command
   event.dispatcher.on(event.all.result, async () => {
       // when running `run` command, this env var is undefined
-    if (!process.env.RUN_WITH_WORKERS) await _publishResultsToTestrail();
+    if (!process.env.RUNS_WITH_WORKERS) await _publishResultsToTestrail();
   });
 }
 ```
