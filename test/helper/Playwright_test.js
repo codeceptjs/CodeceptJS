@@ -1578,3 +1578,48 @@ describe('Playwright - Video & Trace', () => {
     expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
   });
 });
+describe('Playwright - HAR', () => {
+  before(() => {
+    global.codecept_dir = path.join(process.cwd());
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('replay from HAR - non existing file', async () => {
+    try {
+      await I.replayFromHar('./non-existing-file.har');
+      await I.amOnPage('https://demo.playwright.dev/api-mocking');
+    } catch (e) {
+      expect(e.message).to.include('cannot be found on local system');
+    }
+  });
+
+  it('replay from HAR', async () => {
+    const harFile = './test/data/sandbox/testHar.har';
+    await I.replayFromHar(harFile);
+    await I.amOnPage('https://demo.playwright.dev/api-mocking');
+    await I.see('CodeceptJS');
+  });
+});
