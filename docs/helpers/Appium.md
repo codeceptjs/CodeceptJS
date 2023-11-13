@@ -526,7 +526,7 @@ Appium: support only Android
 
 -   `value` **[number][10]** The network connection mode bitmask
 
-Returns **[Promise][6]&lt;{}>** 
+Returns **[Promise][6]&lt;[number][10]>** 
 
 ### setSettings
 
