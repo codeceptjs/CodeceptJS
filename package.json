@@ -134,7 +134,7 @@
     "graphql": "14.6.0",
     "husky": "8.0.3",
     "inquirer-test": "2.0.1",
-    "jsdoc": "3.6.10",
+    "jsdoc": "3.6.11",
     "jsdoc-typeof-plugin": "1.0.0",
     "json-server": "0.10.1",
     "playwright": "1.39.0",
