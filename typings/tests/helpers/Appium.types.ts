@@ -46,7 +46,8 @@ appium.switchToNative(str); // $ExpectType Promise<void>
 appium.startActivity(); // $ExpectError
 appium.startActivity(appPackage); // $ExpectError
 appium.startActivity(appPackage, '.RegisterUserActivity'); // $ExpectType Promise<void>
-appium.setNetworkConnection(); // $ExpectType Promise<{}>
+appium.setNetworkConnection(num); // $ExpectType Promise<number>
+appium.setNetworkConnection(); // $ExpectError
 appium.setSettings(str); // $ExpectType void
 appium.hideDeviceKeyboard(); // $ExpectType void
 appium.sendDeviceKeyEvent(num); // $ExpectType Promise<void>
