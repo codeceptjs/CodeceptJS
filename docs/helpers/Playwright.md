@@ -518,12 +518,11 @@ I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
 
 ### clearCookie
 
-Clears a cookie by name,
-if none provided clears all cookies.
+Clears all cookies. Playwright currently doesn't support to delete a certain cookie.
 
 ```js
 I.clearCookie();
-I.clearCookie('test');
+I.clearCookie('test');  // currently has the same effect as line above
 ```
 
 #### Parameters
