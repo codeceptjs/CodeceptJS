@@ -522,7 +522,7 @@ Clears all cookies. Playwright currently doesn't support to delete a certain coo
 
 ```js
 I.clearCookie();
-I.clearCookie('test');  // currently has the same effect as line above
+I.clearCookie('test'); // currently has the same effect as line above
 ```
 
 #### Parameters
