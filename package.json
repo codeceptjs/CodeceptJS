@@ -109,7 +109,7 @@
   "devDependencies": {
     "@codeceptjs/detox-helper": "1.0.2",
     "@codeceptjs/mock-request": "0.3.1",
-    "@faker-js/faker": "7.6.0",
+    "@faker-js/faker": "8.3.1",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "5.1.0",
     "@types/chai": "^4.3.7",
