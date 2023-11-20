@@ -82,7 +82,7 @@
     "commander": "11.0.0",
     "cross-spawn": "7.0.3",
     "css-to-xpath": "0.1.0",
-    "envinfo": "7.8.1",
+    "envinfo": "7.11.0",
     "escape-string-regexp": "4.0.0",
     "figures": "3.2.0",
     "fn-args": "4.0.0",
