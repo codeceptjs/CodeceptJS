@@ -67,14 +67,14 @@ appium.rotate(); // $ExpectType Promise<void>
 appium.setImmediateValue(); // $ExpectType Promise<void>
 appium.simulateTouchId(); // $ExpectType Promise<void>
 appium.closeApp(); // $ExpectType Promise<void>
-appium.appendField(str, str); // $ExpectType Promise<void>
-appium.checkOption(str); // $ExpectType Promise<void>
-appium.click(str); // $ExpectType Promise<void>
-appium.dontSeeCheckboxIsChecked(str); // $ExpectType Promise<void>
-appium.dontSeeElement(str); // $ExpectType Promise<void>
-appium.dontSeeInField(str, str); // $ExpectType Promise<void>
-appium.dontSee(str); // $ExpectType Promise<void>
-appium.fillField(str, str); // $ExpectType Promise<void>
+appium.appendField(str, str); // $ExpectType void
+appium.checkOption(str); // $ExpectType void
+appium.click(str); // $ExpectType void
+appium.dontSeeCheckboxIsChecked(str); // $ExpectType void
+appium.dontSeeElement(str); // $ExpectType void
+appium.dontSeeInField(str, str); // $ExpectType void
+appium.dontSee(str); // $ExpectType void
+appium.fillField(str, str); // $ExpectType void
 appium.grabTextFromAll(str); // $ExpectType Promise<string[]>
 appium.grabTextFrom(str); // $ExpectType Promise<string>
 appium.grabNumberOfVisibleElements(str); // $ExpectType Promise<number>
@@ -83,13 +83,13 @@ appium.grabAttributeFromAll(str, str); // $ExpectType Promise<string[]>
 appium.grabValueFromAll(str); // $ExpectType Promise<string[]>
 appium.grabValueFrom(str); // $ExpectType Promise<string>
 appium.saveScreenshot(str); // $ExpectType Promise<void>
-appium.scrollIntoView(str, {}); // $ExpectType Promise<void>
-appium.seeCheckboxIsChecked(str); // $ExpectType Promise<void>
-appium.seeElement(str); // $ExpectType Promise<void>
-appium.seeInField(str, str); // $ExpectType Promise<void>
-appium.see(str); // $ExpectType Promise<void>
-appium.selectOption(str, str); // $ExpectType Promise<void>
-appium.waitForElement(str); // $ExpectType Promise<void>
-appium.waitForVisible(str); // $ExpectType Promise<void>
-appium.waitForInvisible(str); // $ExpectType Promise<void>
-appium.waitForText(str); // $ExpectType Promise<void>
+appium.scrollIntoView(str, {}); // $ExpectType void
+appium.seeCheckboxIsChecked(str); // $ExpectType void
+appium.seeElement(str); // $ExpectType void
+appium.seeInField(str, str); // $ExpectType void
+appium.see(str); // $ExpectType void
+appium.selectOption(str, str); // $ExpectType void
+appium.waitForElement(str); // $ExpectType void
+appium.waitForVisible(str); // $ExpectType void
+appium.waitForInvisible(str); // $ExpectType void
+appium.waitForText(str); // $ExpectType void
