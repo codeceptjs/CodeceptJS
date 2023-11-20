@@ -518,18 +518,17 @@ I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
 
 ### clearCookie
 
-Clears all cookies. Playwright currently doesn't support to delete a certain cookie.
+Clears a cookie by name,
+if none provided clears all cookies.
 
 ```js
 I.clearCookie();
-I.clearCookie('test'); // currently has the same effect as line above
+I.clearCookie('test'); // Playwright currently doesn't support clear a particular cookie name
 ```
 
 #### Parameters
 
 -   `cookie` **[string][8]?** (optional, `null` by default) cookie name 
-
-Returns **[Promise][9]&lt;void>** automatically synchronized promise through #recorder
 
 ### clearField
 

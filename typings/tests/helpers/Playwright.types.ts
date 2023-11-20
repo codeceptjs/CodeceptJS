@@ -96,7 +96,7 @@ playwright.setCookie({ name: str, value: str}); // $ExpectType Promise<void>
 playwright.seeCookie(str); // $ExpectType Promise<void>
 playwright.dontSeeCookie(str); // $ExpectType Promise<void>
 playwright.grabCookie(); // $ExpectType any
-playwright.clearCookie(); // $ExpectType Promise<void>
+playwright.clearCookie(); // $ExpectType void
 playwright.executeScript(() => {}); // $ExpectType Promise<any>
 playwright.grabTextFrom(str); // $ExpectType Promise<string>
 playwright.grabTextFromAll(str); // $ExpectType Promise<string[]>
