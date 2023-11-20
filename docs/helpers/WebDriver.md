@@ -554,14 +554,12 @@ if none provided clears all cookies.
 
 ```js
 I.clearCookie();
-I.clearCookie('test');
+I.clearCookie('test'); // Playwright currently doesn't support clear a particular cookie name
 ```
 
 #### Parameters
 
 -   `cookie` **[string][17]?** (optional, `null` by default) cookie name 
-
-Returns **[Promise][19]&lt;void>** automatically synchronized promise through #recorder
 
 ### clearField
 

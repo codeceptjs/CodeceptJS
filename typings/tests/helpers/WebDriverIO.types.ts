@@ -272,8 +272,8 @@ wd.setCookie(); // $ExpectError
 wd.setCookie({ name: str, value: str }); // $ExpectType Promise<void>
 wd.setCookie([{ name: str, value: str }]); // $ExpectType Promise<void>
 
-wd.clearCookie(); // $ExpectType Promise<void>
-wd.clearCookie(str); // $ExpectType Promise<void>
+wd.clearCookie(); // $ExpectType void
+wd.clearCookie(str); // $ExpectType void
 
 wd.seeCookie(); // $ExpectError
 wd.seeCookie(str); // $ExpectType Promise<void>
