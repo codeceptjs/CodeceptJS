@@ -46,22 +46,22 @@ Type: [object][5]
 -   `url` **[string][8]?** base url of website to be tested
 -   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 -   `show` **[boolean][25]?** show browser window.
--   `restart` **([string][8] | [boolean][25])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][42] but keeps running browser. Recommended by Playwright team to keep tests isolated.
+-   `restart` **([string][8] | [boolean][25])?** restart strategy between tests. Possible values:-   'context' or **false** - restarts [browser context][43] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     -   'browser' or **true** - closes browser and opens it again between tests.
     -   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
--   `timeout` **[number][19]?** -   [timeout][43] in ms of all Playwright actions .
+-   `timeout` **[number][19]?** -   [timeout][44] in ms of all Playwright actions .
 -   `disableScreenshots` **[boolean][25]?** don't save screenshot on failure.
 -   `emulate` **any?** browser in device emulation mode.
 -   `video` **[boolean][25]?** enables video recording for failed tests; videos are saved into `output/videos` folder
 -   `keepVideoForPassedTests` **[boolean][25]?** save videos for passed tests; videos are saved into `output/videos` folder
--   `trace` **[boolean][25]?** record [tracing information][44] with screenshots and snapshots.
+-   `trace` **[boolean][25]?** record [tracing information][45] with screenshots and snapshots.
 -   `keepTraceForPassedTests` **[boolean][25]?** save trace for passed tests.
 -   `fullPageScreenshots` **[boolean][25]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][25]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
 -   `keepBrowserState` **[boolean][25]?** keep browser state between tests when `restart` is set to 'session'.
 -   `keepCookies` **[boolean][25]?** keep cookies between tests when `restart` is set to 'session'.
 -   `waitForAction` **[number][19]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"commit"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `commit`. Choose one of those options is possible. See [Playwright API][40].
+-   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"commit"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `commit`. Choose one of those options is possible. See [Playwright API][41].
 -   `pressKeyDelay` **[number][19]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][19]?** config option to set maximum navigation time in milliseconds.
 -   `waitForTimeout` **[number][19]?** default wait* timeout in ms. Default: 1000.
@@ -74,8 +74,8 @@ Type: [object][5]
 -   `chromium` **[object][5]?** pass additional chromium options
 -   `firefox` **[object][5]?** pass additional firefox options
 -   `electron` **[object][5]?** (pass additional electron options
--   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][45].
--   `ignoreLog` **[Array][9]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][46].
+-   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][46].
+-   `ignoreLog` **[Array][9]&lt;[string][8]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][47].
 -   `ignoreHTTPSErrors` **[boolean][25]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 -   `bypassCSP` **[boolean][25]?** bypass Content Security Policy or CSP
 -   `highlightElement` **[boolean][25]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
@@ -1606,6 +1606,26 @@ I.refreshPage();
 
 Returns **void** automatically synchronized promise through #recorder
 
+### replayFromHar
+
+Replaying from HAR
+
+```js
+ // Replay API requests from HAR.
+ // Either use a matching response from the HAR,
+ // or abort the request if nothing matches.
+   I.replayFromHar('./output/har/something.har', { url: "*/**/api/v1/fruits" });
+   I.amOnPage('https://demo.playwright.dev/api-mocking');
+   I.see('CodeceptJS');
+```
+
+#### Parameters
+
+-   `harFilePath` **[string][8]** Path to recorded HAR file
+-   `opts` **[object][5]?** [Options for replaying from HAR][35]
+
+Returns **any** Promise<void>
+
 ### resizeWindow
 
 Resize the current window to provided width and height.
@@ -2241,7 +2261,7 @@ I.uncheckOption('agree', '//form');
 -   `context` **([string][8]? | [object][5])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 -   `options`   
 
-Returns **void** automatically synchronized promise through #recorder[Additional options][35] for uncheck available as 3rd argument.Examples:```js
+Returns **void** automatically synchronized promise through #recorder[Additional options][36] for uncheck available as 3rd argument.Examples:```js
 // click on element at position
 I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
 ```> ⚠️ To avoid flakiness, option `force: true` is set by default
@@ -2253,7 +2273,7 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][36], [`browserContext`][37] [`browser`][38] } objects from Playwright API are available.
+{ [`page`][37], [`browserContext`][38] [`browser`][39] } objects from Playwright API are available.
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
@@ -2386,7 +2406,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for navigation to finish. By default, it takes configured `waitForNavigation` option.
 
-See [Playwright's reference][39]
+See [Playwright's reference][40]
 
 #### Parameters
 
@@ -2443,7 +2463,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for page navigates to a new URL or reloads. By default, it takes configured `waitForNavigation` option.
 
-See [Playwright's reference][40]
+See [Playwright's reference][41]
 
 #### Parameters
 
@@ -2480,7 +2500,7 @@ I.waitForVisible('#popup');
 -   `locator` **([string][8] | [object][5])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][19]** (optional, `1` by default) time in seconds to wait 
 
-Returns **void** automatically synchronized promise through #recorderThis method accepts [React selectors][41].
+Returns **void** automatically synchronized promise through #recorderThis method accepts [React selectors][42].
 
 ### waitInUrl
 
@@ -2613,26 +2633,28 @@ Returns **void** automatically synchronized promise through #recorder
 
 [34]: #click
 
-[35]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
+[35]: https://playwright.dev/docs/api/class-page#page-route-from-har
 
-[36]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
+[36]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
 
-[37]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
+[37]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
 
-[38]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
+[38]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
 
-[39]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
+[39]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
 
-[40]: https://playwright.dev/docs/api/class-page#page-wait-for-url
+[40]: https://playwright.dev/docs/api/class-page?_highlight=waitfornavi#pagewaitfornavigationoptions
 
-[41]: https://codecept.io/react
+[41]: https://playwright.dev/docs/api/class-page#page-wait-for-url
 
-[42]: https://playwright.dev/docs/api/class-browsercontext
+[42]: https://codecept.io/react
 
-[43]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
+[43]: https://playwright.dev/docs/api/class-browsercontext
 
-[44]: https://playwright.dev/docs/trace-viewer
+[44]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
 
-[45]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
+[45]: https://playwright.dev/docs/trace-viewer
 
-[46]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
+[46]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
+
+[47]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
