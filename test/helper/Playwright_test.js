@@ -1527,7 +1527,9 @@ describe('Playwright - Performance Metrics', () => {
   });
 });
 
-describe('Playwright - Video & Trace', () => {
+describe('Playwright - Video & Trace & HAR', () => {
+  const test = { title: 'a failed test', artifacts: {} };
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -1540,6 +1542,7 @@ describe('Playwright - Video & Trace', () => {
       browser: 'chromium',
       trace: true,
       video: true,
+      recordHar: {},
     });
     I._init();
     return I._beforeSuite();
@@ -1551,7 +1554,8 @@ describe('Playwright - Video & Trace', () => {
     });
     deleteDir(path.join(global.output_dir, 'video'));
     deleteDir(path.join(global.output_dir, 'trace'));
-    return I._before().then(() => {
+    deleteDir(path.join(global.output_dir, 'har'));
+    return I._before(test).then(() => {
       page = I.page;
       browser = I.browser;
     });
@@ -1562,20 +1566,20 @@ describe('Playwright - Video & Trace', () => {
   });
 
   it('checks that video is recorded', async () => {
-    const test = { title: 'a failed test', artifacts: {} };
     await I.amOnPage('/');
     await I.dontSee('this should be an error');
     await I.click('More info');
     await I.dontSee('this should be an error');
     await I._failed(test);
     assert(test.artifacts);
-    // expect(Object.keys(test.artifacts).length).should.eq(2);
     expect(Object.keys(test.artifacts)).to.include('trace');
     expect(Object.keys(test.artifacts)).to.include('video');
+    expect(Object.keys(test.artifacts)).to.include('har');
 
     assert.ok(fs.existsSync(test.artifacts.trace));
     expect(test.artifacts.video).to.include(path.join(global.output_dir, 'video'));
     expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
+    expect(test.artifacts.har).to.include(path.join(global.output_dir, 'har'));
   });
 });
 describe('Playwright - HAR', () => {
