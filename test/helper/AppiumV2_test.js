@@ -716,7 +716,7 @@ describe('Appium', function () {
       await app.see('Welcome to register a new User');
     });
 
-    it.only('should execute only on Android @quick', async () => {
+    it('should execute only on Android @quick', async () => {
       let platform = null;
       await app.runOnIOS(() => {
         platform = 'ios';
