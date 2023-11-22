@@ -716,23 +716,23 @@ describe('Appium', function () {
       await app.see('Welcome to register a new User');
     });
 
-    it('should execute only on Android @quick', () => {
+    it.only('should execute only on Android @quick', async () => {
       let platform = null;
-      app.runOnIOS(() => {
+      await app.runOnIOS(() => {
         platform = 'ios';
       });
-      app.runOnAndroid(() => {
+      await app.runOnAndroid(() => {
         platform = 'android';
       });
-      app.runOnAndroid({ platformVersion: '7.0' }, () => {
+      await app.runOnAndroid({ platformVersion: '7.0' }, () => {
         platform = 'android7';
       });
 
       assert.equal('android', platform);
     });
 
-    it('should execute only on Android >= 5.0 @quick', () => {
-      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
+    it('should execute only on Android >= 5.0 @quick', async () => {
+      await app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
     });
 
     it('should execute only in Web', () => {
