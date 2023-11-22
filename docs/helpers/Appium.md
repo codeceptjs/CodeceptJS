@@ -440,7 +440,7 @@ let settings = await I.grabSettings();
 
 Returns **[Promise][6]&lt;[string][5]>** Appium: support Android and iOS
 
-### \_switchToContext
+### switchToContext
 
 Switch to the specified context.
 

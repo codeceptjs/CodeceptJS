@@ -168,12 +168,12 @@ describe('Appium', function () {
     });
   });
 
-  describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
+  describe('app context and activity: #switchToContext, #switchToWeb, #switchToNative', () => {
     it('should switch context', async () => {
       await app.resetApp();
       await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
-      await app._switchToContext('WEBVIEW_io.selendroid.testapp');
+      await app.switchToContext('WEBVIEW_io.selendroid.testapp');
       const val = await app.grabContext();
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
     });
