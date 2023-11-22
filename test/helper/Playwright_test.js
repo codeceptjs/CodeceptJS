@@ -442,7 +442,7 @@ describe('Playwright', function () {
   });
 
   describe('#selectOption', () => {
-    it.only('should select option by label and partial option text', async () => {
+    it('should select option by label and partial option text', async () => {
       await I.amOnPage('/form/select');
       await I.selectOption('Select your age', '21-');
       await I.click('Submit');
