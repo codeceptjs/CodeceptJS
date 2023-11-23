@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 3.x
+      - appium-activate-swipe-test
 
 env:
   CI: true

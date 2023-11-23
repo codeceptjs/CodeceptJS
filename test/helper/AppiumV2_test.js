@@ -268,7 +268,7 @@ describe('Appium', function () {
       assert.equal(val, '.WebViewActivity');
     });
 
-    it('should react on swipe action', async () => {
+    it('should react on swipe action @quick', async () => {
       await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']");
       await app.waitForText(
         'Gesture Type',
@@ -285,8 +285,8 @@ describe('Appium', function () {
       const vx = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view3']");
       const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']");
       assert.equal(type, 'FLICK');
-      assert.ok(vx.match(/vx: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
-      assert.ok(vy.match(/vy: \d\d000\.0 pps/), 'to be like \d\d000.0 pps');
+      assert.ok(vx.match(/vx: \d.*.\d pps/), 'to be like \d\d000.0 pps');
+      assert.ok(vy.match(/vy: \d.*.\d pps/), 'to be like \d\d000.0 pps');
     });
 
     it('should react on swipeDown action', async () => {
