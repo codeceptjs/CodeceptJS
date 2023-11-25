@@ -1349,7 +1349,7 @@ module.exports.tests = function () {
           href: '/team',
         });
       } catch (e) {
-        e.message.should.include('all elements (a[href="/login"]) to have attributes {"href":"/team"}');
+        e.message.should.include('all elements (a[href="/team"]) to have attributes {"href":"/team"}');
       }
     });
 
