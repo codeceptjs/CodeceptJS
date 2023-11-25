@@ -36,6 +36,7 @@ describe('retryFailedStep', () => {
     }, undefined, undefined, true);
     return recorder.promise();
   });
+
   it('should not retry within', async () => {
     retryFailedStep({ retries: 1, minTimeout: 1 });
     event.dispatcher.emit(event.test.before, {});
@@ -51,9 +52,10 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => err);
+      await recorder.catchWithoutStop((err) => err);
     }
 
+    expect(process.env.FAILED_STEP_RETIRES).to.equal('1');
     // expects to retry only once
     counter.should.equal(2);
   });
@@ -65,7 +67,7 @@ describe('retryFailedStep', () => {
     let counter = 0;
     event.dispatcher.emit(event.step.started, { name: 'waitForElement' });
     try {
-      recorder.add(() => {
+      await recorder.add(() => {
         counter++;
         if (counter < 3) {
           throw new Error();
@@ -73,7 +75,7 @@ describe('retryFailedStep', () => {
       }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => err);
+      await recorder.catchWithoutStop((err) => err);
     }
 
     expect(counter).to.equal(1);
@@ -87,7 +89,7 @@ describe('retryFailedStep', () => {
     let counter = 0;
     event.dispatcher.emit(event.step.started, { name: 'amOnPage' });
     try {
-      recorder.add(() => {
+      await recorder.add(() => {
         counter++;
         if (counter < 3) {
           throw new Error();
@@ -95,7 +97,7 @@ describe('retryFailedStep', () => {
       }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => err);
+      await recorder.catchWithoutStop((err) => err);
     }
 
     expect(counter).to.equal(1);
@@ -109,7 +111,7 @@ describe('retryFailedStep', () => {
     let counter = 0;
     event.dispatcher.emit(event.step.started, { name: 'somethingNew' });
     try {
-      recorder.add(() => {
+      await recorder.add(() => {
         counter++;
         if (counter < 3) {
           throw new Error();
@@ -117,7 +119,7 @@ describe('retryFailedStep', () => {
       }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => err);
+      await recorder.catchWithoutStop((err) => err);
     }
 
     expect(counter).to.equal(1);
@@ -131,7 +133,7 @@ describe('retryFailedStep', () => {
     let counter = 0;
     event.dispatcher.emit(event.step.started, { name: 'somethingNew' });
     try {
-      recorder.add(() => {
+      await recorder.add(() => {
         counter++;
         if (counter < 3) {
           throw new Error();
@@ -139,7 +141,7 @@ describe('retryFailedStep', () => {
       }, undefined, undefined, true);
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => err);
+      await recorder.catchWithoutStop((err) => err);
     }
 
     expect(counter).to.equal(1);
@@ -161,7 +163,7 @@ describe('retryFailedStep', () => {
       });
       await recorder.promise();
     } catch (e) {
-      recorder.catchWithoutStop((err) => err);
+      await recorder.catchWithoutStop((err) => err);
     }
 
     // expects to retry only once
