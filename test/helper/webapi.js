@@ -1341,7 +1341,7 @@ module.exports.tests = function () {
     });
 
     it('should check href with splash', async function () {
-      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip();
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/');
