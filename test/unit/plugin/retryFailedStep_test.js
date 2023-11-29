@@ -36,6 +36,7 @@ describe('retryFailedStep', () => {
     }, undefined, undefined, true);
     return recorder.promise();
   });
+
   it('should not retry within', async () => {
     retryFailedStep({ retries: 1, minTimeout: 1 });
     event.dispatcher.emit(event.test.before, {});
@@ -54,6 +55,7 @@ describe('retryFailedStep', () => {
       await recorder.catchWithoutStop((err) => err);
     }
 
+    expect(process.env.FAILED_STEP_RETIRES).to.equal('1');
     // expects to retry only once
     counter.should.equal(2);
   });
