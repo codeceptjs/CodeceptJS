@@ -30,7 +30,7 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
     I.saveScreenshot('session_john_2.png');
   });
 
-  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getMD5Digests([
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getSHA256Digests([
     `${output_dir}/session_default_1.png`,
     `${output_dir}/session_default_2.png`,
     `${output_dir}/session_john_1.png`,
@@ -88,7 +88,7 @@ Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Pla
 
   const fileName = clearString(this.title);
 
-  const [original, failed] = await I.getMD5Digests([
+  const [original, failed] = await I.getSHA256Digests([
     `${output_dir}/original.png`,
     `${output_dir}/${fileName}.failed.png`,
   ]);
