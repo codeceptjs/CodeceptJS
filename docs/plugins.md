@@ -65,12 +65,14 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
+Feature('Login');
+
 Before(({ login }) => {
    login('user'); // login using user session
 });
 
-// Alternatively log in for one scenario
-Scenario('log me in', ( {I, login} ) => {
+// Alternatively log in for one scenario.
+Scenario('log me in', ( { I, login } ) => {
    login('admin');
    I.see('I am logged in');
 });

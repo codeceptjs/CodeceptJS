@@ -99,6 +99,18 @@ describe('BDD Gherkin', () => {
     });
   });
 
+  it('should show data from examples in test title', (done) => {
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Include Examples in dataTtable placeholder"', (err, stdout, stderr) => { //eslint-disable-line
+      stdout.should.include('order a product with discount - iPhone 5 - 10  @IncludeExamplesIndataTtable');
+      stdout.should.include('name            | Nuclear Bomb ');
+      stdout.should.include('price           | 20 ');
+      stdout.should.include('name            | iPhone 5 ');
+      stdout.should.include('price           | 10 ');
+      assert(!err);
+      done();
+    });
+  });
+
   it('should run feature with tables', (done) => {
     exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout products"', (err, stdout, stderr) => { //eslint-disable-line
       stdout.should.include('Given I have products in my cart');

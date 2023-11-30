@@ -49,7 +49,7 @@ const xml = `<body>
       <input name="name1" label="Выберите услугу" type="text" value=""/>
     </div>
   </fieldset>
-  <label>Hello<a href="#">Please click</a></label>
+  <label class="n-1">Hello<a href="#">Please click</a></label>
   </div>
   <input type="hidden" name="return_url" value="" id="return_url" />
 </body>`;
@@ -203,6 +203,12 @@ describe('Locator', () => {
     expect(() => {
       Locator.build('tr').find('(./td)[@id="id"]');
     }).to.throw('round brackets');
+  });
+
+  it('should find element with class name contains hyphen', () => {
+    const l = Locator.build('').find('.n-1').first();
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
   });
 
   it('should throw an error when locator with specific position is nested', () => {

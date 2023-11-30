@@ -440,7 +440,7 @@ let settings = await I.grabSettings();
 
 Returns **[Promise][6]&lt;[string][5]>** Appium: support Android and iOS
 
-### \_switchToContext
+### switchToContext
 
 Switch to the specified context.
 
@@ -889,7 +889,7 @@ I.appendField('password', secret('123456'));
 -   `field` **([string][5] \| [object][11])** located by label|name|CSS|XPath|strict locator
 -   `value` **[string][5]** text value to append.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### checkOption
 
@@ -909,7 +909,7 @@ I.checkOption('agree', '//form');
 -   `field` **([string][5] \| [object][11])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### click
 
@@ -940,7 +940,7 @@ I.click({css: 'nav a.login'});
 -   `locator` **([string][5] \| [object][11])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][5]? | [object][11] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. (optional, default `null`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### dontSeeCheckboxIsChecked
 
@@ -956,7 +956,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 -   `field` **([string][5] \| [object][11])** located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### dontSeeElement
 
@@ -970,7 +970,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 
 -   `locator` **([string][5] \| [object][11])** located by CSS|XPath|Strict locator.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### dontSeeInField
 
@@ -987,7 +987,7 @@ I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
 -   `field` **([string][5] \| [object][11])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][5] \| [object][11])** value to check.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### dontSee
 
@@ -1004,7 +1004,7 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 -   `text` **[string][5]** which is not present.
 -   `context` **([string][5] \| [object][11])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. (optional, default `null`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### fillField
 
@@ -1027,7 +1027,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 -   `field` **([string][5] \| [object][11])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][5] \| [object][11])** text value to fill.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### grabTextFromAll
 
@@ -1173,7 +1173,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 -   `locator` **([string][5] \| [object][11])** located by CSS|XPath|strict locator.
 -   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][17].
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorderSupported only for web testing
+Returns **void** automatically synchronized promise through #recorderSupported only for web testing
 
 ### seeCheckboxIsChecked
 
@@ -1189,7 +1189,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 -   `field` **([string][5] \| [object][11])** located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### seeElement
 
@@ -1204,7 +1204,7 @@ I.seeElement('#modal');
 
 -   `locator` **([string][5] \| [object][11])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### seeInField
 
@@ -1223,7 +1223,7 @@ I.seeInField('#searchform input','Search');
 -   `field` **([string][5] \| [object][11])** located by label|name|CSS|XPath|strict locator.
 -   `value` **([string][5] \| [object][11])** value to check.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### see
 
@@ -1241,7 +1241,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 -   `text` **[string][5]** expected on page.
 -   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. (optional, default `null`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### selectOption
 
@@ -1269,7 +1269,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 -   `select` **([string][5] \| [object][11])** field located by label|name|CSS|XPath|strict locator.
 -   `option` **([string][5] \| [Array][8]&lt;any>)** visible text or value of option.
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorderSupported only for web testing
+Returns **void** automatically synchronized promise through #recorderSupported only for web testing
 
 ### waitForElement
 
@@ -1286,7 +1286,7 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 -   `locator` **([string][5] \| [object][11])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]?** (optional, `1` by default) time in seconds to wait (optional, default `null`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### waitForVisible
 
@@ -1302,7 +1302,7 @@ I.waitForVisible('#popup');
 -   `locator` **([string][5] \| [object][11])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### waitForInvisible
 
@@ -1318,7 +1318,7 @@ I.waitForInvisible('#popup');
 -   `locator` **([string][5] \| [object][11])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 ### waitForText
 
@@ -1337,7 +1337,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait (optional, default `1`)
 -   `context` **([string][5] \| [object][11])?** (optional) element located by CSS|XPath|strict locator. (optional, default `null`)
 
-Returns **[Promise][6]&lt;void>** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder
 
 [1]: http://codecept.io/helpers/WebDriver/
 

@@ -7,9 +7,9 @@ Feature('Session');
 Scenario('simple session @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/info');
   session('john', () => {
-    I.amOnPage('https://github.com');
+    I.amOnPage('https://codecept.io/');
     I.dontSeeInCurrentUrl('/info');
-    I.see('GitHub');
+    I.see('CodeceptJS');
   });
   I.dontSee('GitHub');
   I.seeInCurrentUrl('/info');
@@ -30,7 +30,7 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
     I.saveScreenshot('session_john_2.png');
   });
 
-  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getMD5Digests([
+  const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getSHA256Digests([
     `${output_dir}/session_default_1.png`,
     `${output_dir}/session_default_2.png`,
     `${output_dir}/session_john_1.png`,
@@ -38,11 +38,11 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
   ]);
 
   // Assert that screenshots of same page in same session are equal
-  assert.equal(default1Digest, default2Digest);
-  assert.equal(john1Digest, john2Digest);
+  I.expectEqual(default1Digest, default2Digest);
+  I.expectEqual(john1Digest, john2Digest);
 
   // Assert that screenshots of different pages in different sessions are not equal
-  assert.notEqual(default1Digest, john1Digest);
+  I.expectNotEqual(default1Digest, john1Digest);
 });
 
 Scenario('Different cookies for different sessions @WebDriverIO @Playwright @Puppeteer', async ({ I }) => {
@@ -72,9 +72,9 @@ Scenario('Different cookies for different sessions @WebDriverIO @Playwright @Pup
   assert(cookies.default);
   assert(cookies.john);
   assert(cookies.mary);
-  assert.notEqual(cookies.default, cookies.john);
-  assert.notEqual(cookies.default, cookies.mary);
-  assert.notEqual(cookies.john, cookies.mary);
+  I.expectNotEqual(cookies.default, cookies.john);
+  I.expectNotEqual(cookies.default, cookies.mary);
+  I.expectNotEqual(cookies.john, cookies.mary);
 });
 
 Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function ({ I }) {
@@ -88,13 +88,13 @@ Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Pla
 
   const fileName = clearString(this.title);
 
-  const [original, failed] = await I.getMD5Digests([
+  const [original, failed] = await I.getSHA256Digests([
     `${output_dir}/original.png`,
     `${output_dir}/${fileName}.failed.png`,
   ]);
 
   // Assert that screenshots of same page in same session are equal
-  assert.equal(original, failed);
+  I.expectEqual(original, failed);
 });
 
 Scenario('should throw exception and close correctly @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
@@ -160,7 +160,7 @@ Scenario('change page emulation @Playwright', async ({ I }) => {
   }, async () => {
     I.amOnPage('/');
     const width = await I.executeScript('window.innerWidth');
-    assert.equal(width, 300);
+    I.expectEqual(width, 300);
   });
 });
 
