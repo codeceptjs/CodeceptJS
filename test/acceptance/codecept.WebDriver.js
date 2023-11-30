@@ -21,6 +21,7 @@ module.exports.config = {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: './output',
     },
+    ExpectHelper: {},
   },
   include: {},
   bootstrap: async () => new Promise(done => {
