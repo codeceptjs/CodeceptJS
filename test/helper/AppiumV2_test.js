@@ -171,12 +171,12 @@ describe('Appium', function () {
     });
   });
 
-  describe('app context and activity: #_switchToContext, #switchToWeb, #switchToNative', () => {
+  describe('app context and activity: #switchToContext, #switchToWeb, #switchToNative', () => {
     it('should switch context', async () => {
       await app.resetApp();
       await app.waitForElement('~buttonStartWebviewCD', smallWait);
       await app.click('~buttonStartWebviewCD');
-      await app._switchToContext('WEBVIEW_io.selendroid.testapp');
+      await app.switchToContext('WEBVIEW_io.selendroid.testapp');
       const val = await app.grabContext();
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp');
     });
@@ -716,23 +716,23 @@ describe('Appium', function () {
       await app.see('Welcome to register a new User');
     });
 
-    it('should execute only on Android @quick', () => {
+    it('should execute only on Android @quick', async () => {
       let platform = null;
-      app.runOnIOS(() => {
+      await app.runOnIOS(() => {
         platform = 'ios';
       });
-      app.runOnAndroid(() => {
+      await app.runOnAndroid(() => {
         platform = 'android';
       });
-      app.runOnAndroid({ platformVersion: '7.0' }, () => {
+      await app.runOnAndroid({ platformVersion: '7.0' }, () => {
         platform = 'android7';
       });
 
       assert.equal('android', platform);
     });
 
-    it('should execute only on Android >= 5.0 @quick', () => {
-      app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
+    it('should execute only on Android >= 5.0 @quick', async () => {
+      await app.runOnAndroid(caps => caps.platformVersion >= 5, () => {});
     });
 
     it('should execute only in Web', () => {

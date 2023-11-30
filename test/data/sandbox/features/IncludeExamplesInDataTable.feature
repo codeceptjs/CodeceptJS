@@ -1,7 +1,7 @@
 Feature: Include Examples in dataTtable placeholder
 
   @IncludeExamplesIndataTtable
-  Scenario Outline: order a product with discount
+  Scenario Outline: order a product with discount - <name> - <price>
     Given I have this product in my cart
       | data     | value      |
       | name     | <name>     |

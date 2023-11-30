@@ -1,3 +1,12 @@
+## 3.5.8
+
+Thanks all to those who contributed to make this release!
+
+🐛 *Bug Fixes*
+fix(appium): type of setNetworkConnection() (#3994) - by @mirao
+fix: improve the way to show deprecated appium v1 message (#3992) - by @KobeNguyenT
+fix: missing exit condition of some wait functions - by @kobenguyent
+
 ## 3.5.7
 
 Thanks all to those who contributed to make this release!

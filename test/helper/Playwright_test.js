@@ -15,6 +15,9 @@ const { deleteDir } = require('../../lib/utils');
 const Secret = require('../../lib/secret');
 global.codeceptjs = require('../../lib');
 
+const dataFile = path.join(__dirname, '/../data/app/db');
+const formContents = require('../../lib/utils').test.submittedData(dataFile);
+
 let I;
 let page;
 let FS;
@@ -436,6 +439,15 @@ describe('Playwright', function () {
         e.should.be.instanceOf(Error);
         e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
       }));
+  });
+
+  describe('#selectOption', () => {
+    it('should select option by label and partial option text', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('Select your age', '21-');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'adult');
+    });
   });
 
   describe('#_locateClickable', () => {
@@ -1527,7 +1539,9 @@ describe('Playwright - Performance Metrics', () => {
   });
 });
 
-describe('Playwright - Video & Trace', () => {
+describe('Playwright - Video & Trace & HAR', () => {
+  const test = { title: 'a failed test', artifacts: {} };
+
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
     global.output_dir = path.join(`${__dirname}/../data/output`);
@@ -1540,6 +1554,7 @@ describe('Playwright - Video & Trace', () => {
       browser: 'chromium',
       trace: true,
       video: true,
+      recordHar: {},
     });
     I._init();
     return I._beforeSuite();
@@ -1551,7 +1566,8 @@ describe('Playwright - Video & Trace', () => {
     });
     deleteDir(path.join(global.output_dir, 'video'));
     deleteDir(path.join(global.output_dir, 'trace'));
-    return I._before().then(() => {
+    deleteDir(path.join(global.output_dir, 'har'));
+    return I._before(test).then(() => {
       page = I.page;
       browser = I.browser;
     });
@@ -1562,19 +1578,64 @@ describe('Playwright - Video & Trace', () => {
   });
 
   it('checks that video is recorded', async () => {
-    const test = { title: 'a failed test', artifacts: {} };
     await I.amOnPage('/');
     await I.dontSee('this should be an error');
     await I.click('More info');
     await I.dontSee('this should be an error');
     await I._failed(test);
     assert(test.artifacts);
-    // expect(Object.keys(test.artifacts).length).should.eq(2);
     expect(Object.keys(test.artifacts)).to.include('trace');
     expect(Object.keys(test.artifacts)).to.include('video');
+    expect(Object.keys(test.artifacts)).to.include('har');
 
     assert.ok(fs.existsSync(test.artifacts.trace));
     expect(test.artifacts.video).to.include(path.join(global.output_dir, 'video'));
     expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
+    expect(test.artifacts.har).to.include(path.join(global.output_dir, 'har'));
+  });
+});
+describe('Playwright - HAR', () => {
+  before(() => {
+    global.codecept_dir = path.join(process.cwd());
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    webApiTests.init({
+      I, siteUrl,
+    });
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('replay from HAR - non existing file', async () => {
+    try {
+      await I.replayFromHar('./non-existing-file.har');
+      await I.amOnPage('https://demo.playwright.dev/api-mocking');
+    } catch (e) {
+      expect(e.message).to.include('cannot be found on local system');
+    }
+  });
+
+  it('replay from HAR', async () => {
+    const harFile = './test/data/sandbox/testHar.har';
+    await I.replayFromHar(harFile);
+    await I.amOnPage('https://demo.playwright.dev/api-mocking');
+    await I.see('CodeceptJS');
   });
 });

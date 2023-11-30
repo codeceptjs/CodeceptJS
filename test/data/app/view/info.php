@@ -7,6 +7,9 @@
     .span {
         height: 15px; 
     }
+    h4 {
+        font-weight: 300;
+    }
 </style>
 <body>
 
@@ -23,6 +26,7 @@
 <div class="notice"><?php if (isset($notice)) echo $notice; ?></div>
 
 <h3>Don't do that at home!</h3>
+<h4>Check font-weight!</h4>
 
 <p>Is that interesting?</p>
 
