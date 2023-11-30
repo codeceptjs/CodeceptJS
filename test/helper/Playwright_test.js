@@ -15,6 +15,9 @@ const { deleteDir } = require('../../lib/utils');
 const Secret = require('../../lib/secret');
 global.codeceptjs = require('../../lib');
 
+const dataFile = path.join(__dirname, '/../data/app/db');
+const formContents = require('../../lib/utils').test.submittedData(dataFile);
+
 let I;
 let page;
 let FS;
@@ -436,6 +439,15 @@ describe('Playwright', function () {
         e.should.be.instanceOf(Error);
         e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
       }));
+  });
+
+  describe('#selectOption', () => {
+    it('should select option by label and partial option text', async () => {
+      await I.amOnPage('/form/select');
+      await I.selectOption('Select your age', '21-');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'adult');
+    });
   });
 
   describe('#_locateClickable', () => {

@@ -1382,8 +1382,8 @@ module.exports.tests = function () {
 
       try {
         await I.amOnPage('/info');
-        await I.seeCssPropertiesOnElements('h3', {
-          'font-weight': 'bold',
+        await I.seeCssPropertiesOnElements('h4', {
+          'font-weight': 300,
         });
         await I.seeCssPropertiesOnElements('h3', {
           'font-weight': 'bold',
