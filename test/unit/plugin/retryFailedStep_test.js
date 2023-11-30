@@ -55,7 +55,7 @@ describe('retryFailedStep', () => {
       await recorder.catchWithoutStop((err) => err);
     }
 
-    expect(process.env.FAILED_STEP_RETIRES).to.equal('1');
+    expect(process.env.FAILED_STEP_RETRIES).to.equal('1');
     // expects to retry only once
     counter.should.equal(2);
   });
