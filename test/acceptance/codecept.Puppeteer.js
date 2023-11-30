@@ -19,7 +19,7 @@ module.exports.config = {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: './output',
     },
-    ExpectHelper: {},
+    Expect: {},
   },
   include: {},
   bootstrap: false,
