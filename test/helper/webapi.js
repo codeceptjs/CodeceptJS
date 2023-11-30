@@ -1340,7 +1340,7 @@ module.exports.tests = function () {
       }
     });
 
-    it('should check href with splash', async function () {
+    it('should check href with slash', async function () {
       if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip();
 
       try {
