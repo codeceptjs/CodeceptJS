@@ -17,11 +17,11 @@ class ScreenshotSessionHelper extends Helper {
     this.outputPath = output_dir;
   }
 
-  getMD5Digests(files = []) {
+  getSHA256Digests(files = []) {
     const digests = [];
 
     for (const file of files) {
-      const hash = crypto.createHash('md5');
+      const hash = crypto.createHash('sha256');
       const data = fs.readFileSync(file);
       hash.update(data);
 

@@ -7,10 +7,14 @@
 
 Build Status:
 
+Appium Helper:
+[![Appium V2 Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml)
+[![Appium V2 Tests - iOS](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml)
+
+Web Helper:
 [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)
 [![Puppeteer Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml)
 [![WebDriver Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml)
-[![Appium Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium.yml)
 [![TestCafe Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml)
 
 # CodeceptJS [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
@@ -319,9 +323,9 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
 <a href="https://github.com/maojunxyz"><img src="https://avatars.githubusercontent.com/u/28778042?v=4" title="maojunxyz" width="80" height="80"></a>
 <a href="https://github.com/abhimanyupandian"><img src="https://avatars.githubusercontent.com/u/36107381?v=4" title="abhimanyupandian" width="80" height="80"></a>
+<a href="https://github.com/hatufacci"><img src="https://avatars.githubusercontent.com/u/4963181?v=4" title="hatufacci" width="80" height="80"></a>
 <a href="https://github.com/martomo"><img src="https://avatars.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
 <a href="https://github.com/denis-sokolov"><img src="https://avatars.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
-<a href="https://github.com/lennym"><img src="https://avatars.githubusercontent.com/u/117398?v=4" title="lennym" width="80" height="80"></a>
 
 [//]: contributor-faces
 

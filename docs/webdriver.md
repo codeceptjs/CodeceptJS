@@ -447,7 +447,7 @@ To share the same user session across different tests CodeceptJS provides [autoL
 This plugin requires some configuration but is very simple in use:
 
 ```js
-Scenario('do something with logged in user', ({ I, login) }) => {
+Scenario('do something with logged in user', ({ I, login }) => {
   login('user');
   I.see('Dashboard','h1');
 });
