@@ -871,7 +871,7 @@ Close the given application.
 I.closeApp();
 ```
 
-Returns **[Promise][6]&lt;void>** Appium: support only iOS
+Returns **[Promise][6]&lt;void>** Appium: support both Android and iOS
 
 ### appendField
 
