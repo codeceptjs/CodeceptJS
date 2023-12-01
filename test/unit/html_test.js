@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { expect } = require('chai');
 const xpath = require('xpath');
-const Dom = require('xmldom').DOMParser;
+const Dom = require('@xmldom/xmldom').DOMParser;
 const {
   scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks,
 } = require('../../lib/html');
@@ -85,7 +85,7 @@ describe('HTML module', () => {
       <path d="aaaa">aaa</path>
 </svg>
 </a>
-      </li>        
+      </li>
       </ul>
     </div>`;
       const result = minifyHtml(removeNonInteractiveElements(html, opts));
