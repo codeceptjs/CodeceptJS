@@ -8,8 +8,13 @@ module.exports.config = {
     WebDriver: {
       url: TestHelper.siteUrl(),
       browser: 'safari',
-      host: TestHelper.seleniumHost(),
-      port: TestHelper.seleniumPort(),
+      user: process.env.SAUCE_USERNAME,
+      key: process.env.SAUCE_ACCESS_KEY,
+      capabilities: {
+        browserName: 'safari',
+      },
+      // host: TestHelper.seleniumHost(),
+      // port: TestHelper.seleniumPort(),
       // disableScreenshots: true,
       // desiredCapabilities: {
       //   chromeOptions: {

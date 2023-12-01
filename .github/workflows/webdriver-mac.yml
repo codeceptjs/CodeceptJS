@@ -17,14 +17,14 @@ jobs:
   build:
 
     runs-on: macos-latest
+    env: # Or as an environment variable
+      SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+      SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
     strategy:
       matrix:
         node-version: [18.x]
 
     steps:
-    - name: Set up Docker
-      uses: crazy-max/ghaction-setup-docker@v1
-    - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.0
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -43,6 +43,7 @@ jobs:
       run: "php -S 127.0.0.1:8000 -t test/data/app &"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+
     - name: run tests
       run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.mac.js --grep @WebDriver --debug"
 
