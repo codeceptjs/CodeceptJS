@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { DOMParser } = require('xmldom');
+const { DOMParser } = require('@xmldom/xmldom');
 const xpath = require('xpath');
 
 const Locator = require('../../lib/locator');
