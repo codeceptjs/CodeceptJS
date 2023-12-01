@@ -1340,6 +1340,19 @@ module.exports.tests = function () {
       }
     });
 
+    it('should check href with slash', async function () {
+      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip();
+
+      try {
+        await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/');
+        await I.seeAttributesOnElements({ css: 'a[href="/team"]' }, {
+          href: '/team',
+        });
+      } catch (e) {
+        e.message.should.include('all elements (a[href="/team"]) to have attributes {"href":"/team"}');
+      }
+    });
+
     it('should check attributes values for several elements', async function () {
       if (isHelper('TestCafe')) this.skip();
 
