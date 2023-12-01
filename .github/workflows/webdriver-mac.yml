@@ -1,0 +1,46 @@
+name: WebDriver Tests
+
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.0
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.0
+    - name: npm install
+      run: |
+        npm install --legacy-peer-deps
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    - name: start a server
+      run: "php -S 127.0.0.1:8000 -t test/data/app &"
+    - name: run unit tests
+      run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js
+    - name: run tests
+      run: "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.mac.js --grep @WebDriver --debug"
+
