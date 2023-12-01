@@ -1,4 +1,4 @@
-name: WebDriver Tests
+name: WebDriver Tests - Safari
 
 on:
   push:
@@ -22,6 +22,8 @@ jobs:
         node-version: [18.x]
 
     steps:
+    - name: Set up Docker
+      uses: crazy-max/ghaction-setup-docker@v1
     - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:3.141.0
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
