@@ -127,7 +127,7 @@
     "documentation": "12.3.0",
     "dtslint": "4.2.1",
     "electron": "27.0.4",
-    "eslint": "8.54.0",
+    "eslint": "8.55.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.0",
     "eslint-plugin-mocha": "6.3.0",
