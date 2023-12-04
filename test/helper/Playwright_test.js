@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { assert } = require('chai');
 const expect = require('chai').expect;
 const path = require('path');
 const fs = require('fs');
@@ -1637,5 +1637,22 @@ describe('Playwright - HAR', () => {
     await I.replayFromHar(harFile);
     await I.amOnPage('https://demo.playwright.dev/api-mocking');
     await I.see('CodeceptJS');
+  });
+
+  describe('#grabWebElements, #grabWebElement', () => {
+    it('should return an array of WebElement', async () => {
+      await I.amOnPage('/form/focus_blur_elements');
+
+      const webElements = await I.grabWebElements('#button');
+      assert.equal(webElements[0], 'locator(\'#button\').first()');
+      assert.isAbove(webElements.length, 0);
+    });
+
+    it('should return a WebElement', async () => {
+      await I.amOnPage('/form/focus_blur_elements');
+
+      const webElement = await I.grabWebElement('#button');
+      assert.equal(webElement, 'locator(\'#button\').first()');
+    });
   });
 });

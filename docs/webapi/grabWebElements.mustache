@@ -1,0 +1,9 @@
+Grab WebElements for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const webElements = await I.grabWebElements('#button');
+```
+
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+@returns {Promise<*>} WebElement of being used Web helper

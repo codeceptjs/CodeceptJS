@@ -1389,6 +1389,36 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 Returns **[Promise][22]&lt;[Array][10]&lt;[string][9]>>** attribute value
 
+### grabWebElement
+
+Grab WebElement for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const webElement = await I.grabWebElement('#button');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][22]&lt;any>** WebElement of being used Web helper
+
+### grabWebElements
+
+Grab WebElements for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const webElements = await I.grabWebElements('#button');
+```
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][22]&lt;any>** WebElement of being used Web helper
+
 ### grabWebSocketMessages
 
 Grab the recording WS messages

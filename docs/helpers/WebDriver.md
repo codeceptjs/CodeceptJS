@@ -1367,6 +1367,21 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 Returns **[Promise][25]&lt;[Array][28]&lt;[string][17]>>** attribute value
 
+### grabWebElements
+
+Grab WebElements for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const webElements = await I.grabWebElements('#button');
+```
+
+#### Parameters
+
+-   `locator` **([string][17] | [object][16])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][25]&lt;any>** WebElement of being used Web helper
+
 ### moveCursorTo
 
 Moves cursor to element matched by locator.
