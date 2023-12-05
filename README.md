@@ -24,7 +24,7 @@ Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/tree/master/do
 ## Supercharged E2E Testing
 
 CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others).
-It abstracts browser interaction to simple steps that are written from a user perspective.
+It abstracts browser interaction to simple steps that are written from a user's perspective.
 A simple test that verifies the "Welcome" text is present on a main page of a site will look like:
 
 ```js
@@ -57,27 +57,27 @@ And more to come...
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Selenium, Puppeteer, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Playwright, Selenium, Puppeteer, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
 
 
 ## Features
  
-* 🪄 **AI-powered** with GPT features to assist and heal failing tests
-* Based on [Mocha](https://mochajs.org/) testing framework.
-* Designed for scenario driven acceptance testing in BDD-style
-* Uses ES6 natively without transpiler.
+* 🪄 **AI-powered** with GPT features to assist and heal failing tests.
+* ☕ Based on [Mocha](https://mochajs.org/) testing framework.
+* 💼 Designed for scenario driven acceptance testing in BDD-style.
+* 💻 Uses ES6 natively without transpiler.
 * Also plays nice with TypeScript.
-* Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
-* Interactive debugging shell: pause test at any point and try different commands in a browser.
+* </> Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
+* 🌐 Interactive debugging shell: pause test at any point and try different commands in a browser.
 * Easily create tests, pageobjects, stepobjects with CLI generators.
 
-## Install
+## Installation
 
 ```sh
 npm i codeceptjs --save
 ```
 
-Move to directory where you'd like to have your tests (and codeceptjs config) stored, and execute
+Move to directory where you'd like to have your tests (and CodeceptJS config) stored, and execute:
 
 ```sh
 npx codeceptjs init
@@ -131,8 +131,8 @@ Scenario('test some forms', ({ I }) => {
 });
 ```
 
-All actions are performed by I object; assertions functions start with `see` function.
-In this examples all methods of `I` are taken from WebDriver helper, see [reference](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) to learn how to use them.
+All actions are performed by `I` object; assertions functions start with `see` function.
+In these examples all methods of `I` are taken from WebDriver helper, see [reference](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) to learn how to use them.
 
 Let's execute this test with `run` command. Additional option `--steps` will show us the running process. We recommend use `--steps` or `--debug` during development.
 
@@ -198,17 +198,15 @@ In this case 'User is valid' string will be searched only inside elements locate
 ### Grabbers
 
 In case you need to return a value from a webpage and use it directly in test, you should use methods with `grab` prefix.
-They are expected to be used inside async/await functions, and their results will be available in test:
+They are expected to be used inside `async/await` functions, and their results will be available in test:
 
 ```js
-const assert = require('assert');
-
 Feature('CodeceptJS Demonstration');
 
 Scenario('test page title', async ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation');
   const title = await I.grabTitle();
-  assert.equal(title, 'Example application with SimpleForm and Twitter Bootstrap');
+  I.expectEqual(title, 'Example application with SimpleForm and Twitter Bootstrap'); // Avaiable with Expect helper. -> https://codecept.io/helpers/Expect/
 });
 ```
 
