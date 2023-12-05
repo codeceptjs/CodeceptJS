@@ -26,10 +26,122 @@ This command is similar to `run`, however, steps output can't be shown in worker
 
 Each worker spins an instance of CodeceptJS, executes a group of tests, and sends back report to the main process.
 
-By default the tests are assigned one by one to the available workers this may lead to multiple execution of `BeforeSuite()`. Use the option `--suites` to assigne the suites one by one to the workers.
+By default, the tests are assigned one by one to the available workers this may lead to multiple execution of `BeforeSuite()`. Use the option `--suites` to assign the suites one by one to the workers.
 
 ```sh
 npx codeceptjs run-workers --suites 2
+```
+
+## Test stats with Parallel Execution by Workers
+
+```js
+const { event } = require('codeceptjs');
+
+module.exports = function() {
+
+  event.dispatcher.on(event.workers.result, function (result) {
+
+    console.log(result);
+
+  });
+}
+
+// in console log
+FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
+{
+  "tests": {
+  "passed": [
+    {
+      "type": "test",
+      "title": "Assert @C3",
+      "body": "() => { }",
+      "async": 0,
+      "sync": true,
+      "_timeout": 2000,
+      "_slow": 75,
+      "_retries": -1,
+      "timedOut": false,
+      "_currentRetry": 0,
+      "pending": false,
+      "opts": {},
+      "tags": [
+        "@C3"
+      ],
+      "uid": "xe4q1HdqpRrZG5dPe0JG+A",
+      "workerIndex": 3,
+      "retries": -1,
+      "duration": 493,
+      "err": null,
+      "parent": {
+        "title": "My",
+        "ctx": {},
+        "suites": [],
+        "tests": [],
+        "root": false,
+        "pending": false,
+        "_retries": -1,
+        "_beforeEach": [],
+        "_beforeAll": [],
+        "_afterEach": [],
+        "_afterAll": [],
+        "_timeout": 2000,
+        "_slow": 75,
+        "_bail": false,
+        "_onlyTests": [],
+        "_onlySuites": [],
+        "delayed": false
+      },
+      "steps": [
+        {
+          "actor": "I",
+          "name": "amOnPage",
+          "status": "success",
+          "agrs": [
+            "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST"
+          ],
+          "startedAt": 1698760652610,
+          "startTime": 1698760652611,
+          "endTime": 1698760653098,
+          "finishedAt": 1698760653098,
+          "duration": 488
+        },
+        {
+          "actor": "I",
+          "name": "grabCurrentUrl",
+          "status": "success",
+          "agrs": [],
+          "startedAt": 1698760653098,
+          "startTime": 1698760653098,
+          "endTime": 1698760653099,
+          "finishedAt": 1698760653099,
+          "duration": 1
+        }
+      ]
+    }
+  ],
+    "failed": [],
+    "skipped": []
+}
+}
+```
+
+CodeceptJS also exposes the env var `process.env.RUNS_WITH_WORKERS` when running tests with `run-workers` command so that you could handle the events better in your plugins/helpers
+
+```js
+const { event } = require('codeceptjs');
+
+module.exports = function() {
+    // this event would trigger the  `_publishResultsToTestrail` when running `run-workers` command
+  event.dispatcher.on(event.workers.result, async () => {
+    await _publishResultsToTestrail();
+  });
+  
+  // this event would not trigger the  `_publishResultsToTestrail` multiple times when running `run-workers` command
+  event.dispatcher.on(event.all.result, async () => {
+      // when running `run` command, this env var is undefined
+    if (!process.env.RUNS_WITH_WORKERS) await _publishResultsToTestrail();
+  });
+}
 ```
 
 ## Parallel Execution by Workers on Multiple Browsers
@@ -236,7 +348,7 @@ customWorkers.on(event.all.result, () => {
 
 ### Emitting messages to the parent worker
 
-Child workers can send non test events to the main process. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
+Child workers can send non-test events to the main process. This is useful if you want to pass along information not related to the tests event cycles itself such as `event.test.success`.
 
 ```js
 // inside main process

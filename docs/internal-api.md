@@ -119,6 +119,7 @@ Available events:
 * `event.all.result` - when results are printed
 * `event.workers.before` - before spawning workers in parallel run
 * `event.workers.after` - after workers finished in parallel run
+* `event.workers.result` - test results after workers finished in parallel run
 
 
 > *sync* - means that event is fired in the moment of the action happening.
