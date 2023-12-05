@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { assert } = require('chai');
 const expect = require('chai').expect;
 const path = require('path');
 
@@ -1082,5 +1082,15 @@ describe('Puppeteer - Trace', () => {
 
     assert.ok(fs.existsSync(test.artifacts.trace));
     expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'));
+  });
+
+  describe('#grabWebElements', () => {
+    it('should return an array of WebElement', async () => {
+      await I.amOnPage('/form/focus_blur_elements');
+
+      const webElements = await I.grabWebElements('#button');
+      assert.include(webElements[0].constructor.name, 'CDPElementHandle');
+      assert.isAbove(webElements.length, 0);
+    });
   });
 });

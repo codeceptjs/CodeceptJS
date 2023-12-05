@@ -7,7 +7,7 @@ Go over the steps in [this](https://github.com/firstcontributions/first-contribu
 To start you need:
 
 1.  Fork and clone the repo.
-2.  Run `npm install --legacy-peer-deps` to install all required libraries
+2.  Run `npm install --legacy-peer-deps --omit=optional` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
 5.  Update documentation
@@ -28,7 +28,7 @@ node bin/codecept.js run -c examples
 ```
 
 
-Depending on a type of a change you should do the following.
+Depending on a type of change you should do the following.
 
 ## Debugging
 
@@ -100,7 +100,7 @@ Edit a test at `test/rest/REST_test.js` or `test/rest/ApiDataFactory_test.js`
 
 It is recommended to run mobile tests on CI.
 So do the changes, make pull request, see the CI status.
-Appium tests are executed at **Semaphore CI**.
+Appium tests are executed at **Saucelabs**.
 
 ## Core Changes
 
@@ -109,7 +109,7 @@ Please try to add corresponding testcase to runner or unit.
 
 ## Documentation
 
-Documentation is stored in `/docs` directory in markdown format.
+Documentation is stored in `/docs` directory in Markdown format.
 
 **Documentation for helpers is a part of a source code**.
 
@@ -121,7 +121,7 @@ After you updated docblock in JS file, generate markdown files with next command
 npm run docs
 ```
 
-Documentation parts can be shared accross helpers. Those parts are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
+Documentation parts can be shared across helpers. Those parts are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
 
 ```js
   /**
@@ -134,7 +134,7 @@ Documentation parts can be shared accross helpers. Those parts are located in `d
 
 ## Typings
 
-Typings is generated in `typings/` directory via `jsdoc`
+Typings are generated in `typings/` directory via `jsdoc`
 
 After you updated docblock in JS file, generate typing files with next command:
 
@@ -163,7 +163,7 @@ mocha test/runner
 Instead of manually running php, json_server and selenium for before tests you
 can use `docker-compose` to run those automatically.
 You can find `docker-compose.yml` file in `test` directory and run all commands
-from this directory. Currently we provide following commands to run tests with
+from this directory. Currently, we provide following commands to run tests with
 respective dependencies:
 
 #### Run unit tests
@@ -186,12 +186,7 @@ docker-compose run --rm test-helpers test/rest
 ```
 
 #### Run acceptance tests
-
-<<<<<<< HEAD
-To that we provide three separate services respectively for WebDriver, Puppeteer tests:
-=======
 To that we provide three separate services respectively for WebDriver, Nightmare and Puppeteer tests:
->>>>>>> 3.x
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio
@@ -200,7 +195,7 @@ docker-compose run --rm test-acceptance.puppeteer
 
 #### Running against specific Node version
 
-By default dockerized tests are run against node 12.10.0, you can run it against
+By default, dockerized tests are run against node 12.10.0, you can run it against
 specific version as long as there is Docker container available for such
 version. To do that you need to build codecept's Docker image prior to running
 tests and pass `NODE_VERSION` as build argument.
@@ -215,7 +210,7 @@ And now every command based on `test-helpers` service will use node 9.4.0. The
 same argument can be passed when building unit and acceptance tests services.
 
 ### CI flow
-We're currently using bunch of CI services to build and test codecept in
+We're currently using a bunch of CI services to build and test codecept in
 different environments. Here's short summary of what are differences between
 separate services
 

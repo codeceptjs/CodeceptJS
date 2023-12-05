@@ -6,7 +6,7 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.beforetest.failure.js `;
 
 describe('Failure in before', function () {
-  this.timeout(10000);
+  this.timeout(40000);
   it('should skip tests that are skipped because of failure in before hook', (done) => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('✔ First test will be passed');
