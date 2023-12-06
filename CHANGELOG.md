@@ -162,21 +162,21 @@ Thanks all to those who contributed to make this release!
 
 🐛 *Bug Fixes*
 fix(appium): type of setNetworkConnection() (#3994) - by @mirao
-fix: improve the way to show deprecated appium v1 message (#3992) - by @@KobeNguyenT
-fix: missing exit condition of some wait functions - by @@KobeNguyenT
+fix: improve the way to show deprecated appium v1 message (#3992) - by @KobeNguyenT
+fix: missing exit condition of some wait functions - by @KobeNguyenT
 
 ## 3.5.7
 
 Thanks all to those who contributed to make this release!
 
 🐛 *Bug Fixes*
-* Bump playwright to 1.39.0 - run `npx playwright install` to install the browsers as starting from 1.39.0 browsers are not installed automatically (#3924) - by @@KobeNguyenT
-* fix(playwright): some wait functions draw error due to switchTo iframe (#3918) - by @@KobeNguyenT
+* Bump playwright to 1.39.0 - run `npx playwright install` to install the browsers as starting from 1.39.0 browsers are not installed automatically (#3924) - by @KobeNguyenT
+* fix(playwright): some wait functions draw error due to switchTo iframe (#3918) - by @KobeNguyenT
 * fix(appium): AppiumTestDistribution/appium-device-farm requires 'platformName' (#3950) - by @rock-tran
 * fix: autologin with empty fetch (#3947) - by @andonary
-* fix(cli): customLocator draws error in dry-mode (#3940) - by @@KobeNguyenT
+* fix(cli): customLocator draws error in dry-mode (#3940) - by @KobeNguyenT
 * fix: ensure docs include @returns Promise<void> where appropriate (#3954) - by @fwouts
-* fix: long text in data table cuts off (#3936) - by @@KobeNguyenT
+* fix: long text in data table cuts off (#3936) - by @KobeNguyenT
 ```
 #language: de
 Funktionalität: Faker examples
@@ -197,16 +197,16 @@ Dr. {{name.findName}}
   ✔ OK in 13ms
 
 ```
-* fix(playwright): move to waitFor (#3933) - by @@KobeNguyenT
-* fix: relax grabCookie type (#3919) - by @@KobeNguyenT
-* fix: proceedSee error when being called inside within (#3939) - by @@KobeNguyenT
-* fix: rename haveRequestHeaders of ppt and pw helpers (#3937) - by @@KobeNguyenT
+* fix(playwright): move to waitFor (#3933) - by @KobeNguyenT
+* fix: relax grabCookie type (#3919) - by @KobeNguyenT
+* fix: proceedSee error when being called inside within (#3939) - by @KobeNguyenT
+* fix: rename haveRequestHeaders of ppt and pw helpers (#3937) - by @KobeNguyenT
 ```
 Renamed haveRequestHeaders of Puppeteer, Playwright helper so that it would not confuse the REST helper.
 Puppeteer: setPuppeteerRequestHeaders
 Playwright: setPlaywrightRequestHeaders
 ```
-* improvement: handle the way to load apifactory nicely (#3941) - by @@KobeNguyenT
+* improvement: handle the way to load apifactory nicely (#3941) - by @KobeNguyenT
 ```
 With this fix, we could now use the following syntax:
 
@@ -224,12 +224,12 @@ modules.export = new Factory()
 ```
 
 📖 *Documentation*
-* docs(appium): update to v2 (#3932) - by @@KobeNguyenT
-* docs: improve BDD Gherkin docs (#3938) - by @@KobeNguyenT
+* docs(appium): update to v2 (#3932) - by @KobeNguyenT
+* docs: improve BDD Gherkin docs (#3938) - by @KobeNguyenT
 * Other docs improvements
 
 🛩️ *Features*
-* feat(puppeteer): support trace recording - by @@KobeNguyenT
+* feat(puppeteer): support trace recording - by @KobeNguyenT
 ```
 [Trace Recording Customization]
 Trace recording provides complete information on test execution and includes screenshots, and network requests logged during run. Traces will be saved to output/trace
@@ -237,7 +237,7 @@ Trace recording provides complete information on test execution and includes scr
 trace: enables trace recording for failed tests; trace are saved into output/trace folder
 keepTraceForPassedTests: - save trace for passed tests
 ```
-* feat: expect helper (#3923) - by @@KobeNguyenT
+* feat: expect helper (#3923) - by @KobeNguyenT
 ```
  * This helper allows performing assertions based on Chai.
  *
@@ -282,7 +282,7 @@ keepTraceForPassedTests: - save trace for passed tests
     #expectDeepEqualExcluding
     #expectLengthBelowThan
 ```
-* feat: run-workers with multiple browsers output folders - by @@KobeNguyenT
+* feat: run-workers with multiple browsers output folders - by @KobeNguyenT
 - ![Screenshot 2023-11-04 at 10 49 56](https://github.com/codeceptjs/CodeceptJS/assets/7845001/8eaecc54-de14-4597-b148-1e087bec3c76)
 - ![Screenshot 2023-11-03 at 15 56 38](https://github.com/codeceptjs/CodeceptJS/assets/7845001/715aed17-3535-48df-80dd-84f7024f08e3)
 * feat: introduce new Playwright methods - by @hatufacci
@@ -290,7 +290,7 @@ keepTraceForPassedTests: - save trace for passed tests
 - grabCheckedElementStatus
 - grabDisabledElementStatus
 ```
-* feat: gherkin supports i18n (#3934) - by @@KobeNguyenT
+* feat: gherkin supports i18n (#3934) - by @KobeNguyenT
 ```
 #language: de
 Funktionalität: Checkout-Prozess
@@ -309,7 +309,7 @@ Funktionalität: Checkout-Prozess
       | price | total |
       | 10    | 10.0  |
 ```
-* feat(autoLogin): improve the check method (#3935) - by @@KobeNguyenT
+* feat(autoLogin): improve the check method (#3935) - by @KobeNguyenT
 ```
 Instead of asserting on page elements for the current user in check, you can use the session you saved in fetch
 
@@ -344,15 +344,15 @@ Scenario('login', async ( {I, login} ) => {
 Thanks all to those who contributed to make this release!
 
 🐛 *Bug Fixes*
-* fix: switchTo/within block doesn't switch to expected iframe (#3892) - by @@KobeNguyenT
-* fix: highlight element doesn't work as expected (#3896) - by @@KobeNguyenT
+* fix: switchTo/within block doesn't switch to expected iframe (#3892) - by @KobeNguyenT
+* fix: highlight element doesn't work as expected (#3896) - by @KobeNguyenT
 ```
   verbose/ highlight	TRUE	TRUE -> highlight element
   verbose/ highlight	TRUE	FALSE -> no highlight element
   verbose/ highlight	FALSE	TRUE -> no highlight element
   verbose/ highlight	FALSE	FALSE -> no highlight element
  ```
-* fix: masked value issue in data table (#3885) - by @@KobeNguyenT
+* fix: masked value issue in data table (#3885) - by @KobeNguyenT
 ```
 const accounts = new DataTable(['role', 'username', 'password']);
 accounts.add([
@@ -389,10 +389,10 @@ Data(accounts)
   ✔ OK in 1ms
 ```
 
-* fix: debug info causes error (#3882) - by @@KobeNguyenT
+* fix: debug info causes error (#3882) - by @KobeNguyenT
 
 📖 *Documentation*
-* fix: get rid of complaining when using session without await and returning nothing. (#3899) - by @@KobeNguyenT
+* fix: get rid of complaining when using session without await and returning nothing. (#3899) - by @KobeNguyenT
 * fix(FileSystem): a typo in writeToFile() (#3897) - by @mirao
 
 🛩️ *Features*
@@ -405,7 +405,7 @@ Data(accounts)
 ## 3.5.5
 
 🐛 Bug Fixes
-* fix(browserstack): issue with vendor prefix (#3845) - by @@KobeNguyenT
+* fix(browserstack): issue with vendor prefix (#3845) - by @KobeNguyenT
 ```
 export const caps = {
     androidCaps: {
@@ -439,7 +439,7 @@ export const caps = {
 }
 ```
 
-*  switchTo/within now supports strict locator (#3847) - by @@KobeNguyenT
+*  switchTo/within now supports strict locator (#3847) - by @KobeNguyenT
 
 ```
 I.switchTo({ css: 'iframe[id^=number-frame]' }) // support the strict locator
@@ -469,10 +469,10 @@ within({
       bypassCSP: true
     }
 ```
-* fix: missing requests when recording network (#3834) - by @@KobeNguyenT
+* fix: missing requests when recording network (#3834) - by @KobeNguyenT
 
 🛩️ Features and Improvements
-* Show environment info in verbose mode (#3858) - by @@KobeNguyenT
+* Show environment info in verbose mode (#3858) - by @KobeNguyenT
 
 ```
 Environment information:-
@@ -539,8 +539,8 @@ CodeceptJS v3.5.4 #StandWithUkraine
 ```
 
 * some typings improvements (#3855) - by @nikzupancic
-* support the puppeteer 21.1.1 (#3856) - by @@KobeNguyenT
-* fix: support secret value for some methods (#3837) - by @@KobeNguyenT
+* support the puppeteer 21.1.1 (#3856) - by @KobeNguyenT
+* fix: support secret value for some methods (#3837) - by @KobeNguyenT
 
 ```
 await I.amOnPage('/form/field_values');
@@ -560,10 +560,10 @@ await I.seeInField('checkbox[]', secret('see test three'));
 ## 3.5.4
 
 🐛 Bug Fixes:
- * [Playwright] When passing `userDataDir`, it throws error after test execution (#3814) - by @@KobeNguyenT
- * [CodeceptJS-CLI] Improve command to generate types (#3788) - by @@KobeNguyenT
+ * [Playwright] When passing `userDataDir`, it throws error after test execution (#3814) - by @KobeNguyenT
+ * [CodeceptJS-CLI] Improve command to generate types (#3788) - by @KobeNguyenT
  * Heal plugin fix (#3820) - by @davert
- * Fix for error in using `all` with `run-workers` (#3805) - by @@KobeNguyenT
+ * Fix for error in using `all` with `run-workers` (#3805) - by @KobeNguyenT
 ```js
   helpers: {
     Playwright: {
@@ -587,7 +587,7 @@ await I.seeInField('checkbox[]', secret('see test three'));
   },
 ```
  * Highlight elements issues (#3779) (#3778) - by @philkas
- * Support `&nbsp` symbol in `I.see` method (#3815) - by @@KobeNguyenT
+ * Support `&nbsp` symbol in `I.see` method (#3815) - by @KobeNguyenT
 
 ```js
 // HTML code uses &nbsp; instead of space
@@ -597,7 +597,7 @@ I.see("My Text!") // this test would work with both &nbsp; and space
 ```
 
 📖 Documentation
- * Improve the configuration of electron testing when the app is build with electron-forge (#3802) - by @@KobeNguyenT
+ * Improve the configuration of electron testing when the app is build with electron-forge (#3802) - by @KobeNguyenT
 
 ```js
 const path = require("path");
@@ -619,7 +619,7 @@ exports.config = {
 🛩️ Features
 
 #### [Playwright] new features and improvements
- * Parse the response in recording network steps (#3771) - by @@KobeNguyenT
+ * Parse the response in recording network steps (#3771) - by @KobeNguyenT
 
 ```js
       const traffics = await I.grabRecordedNetworkTraffics();
@@ -631,7 +631,7 @@ exports.config = {
       expect(traffics[1].response.status).to.equal(200);
       expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
 ```
- * Grab metrics (#3809) - by @@KobeNguyenT
+ * Grab metrics (#3809) - by @KobeNguyenT
 
 ```js
 const metrics = await I.grabMetrics();
@@ -678,7 +678,7 @@ const metrics = await I.grabMetrics();
 ]
 ```
 
-* Grab WebSocket (WS) messages (#3789) - by @@KobeNguyenT
+* Grab WebSocket (WS) messages (#3789) - by @KobeNguyenT
   * `flushWebSocketMessages`
   * `grabWebSocketMessages`
   * `startRecordingWebSocketMessages`
@@ -713,13 +713,13 @@ const afterWsMessages = I.grabWebSocketMessages();
 expect(wsMessages.length).to.equal(afterWsMessages.length);
 ```
 
-* Move from `ElementHandle` to `Locator`. This change is quite major, but it happened under hood, so should not affect your code.  (#3738) - by @@KobeNguyenT
+* Move from `ElementHandle` to `Locator`. This change is quite major, but it happened under hood, so should not affect your code.  (#3738) - by @KobeNguyenT
 
 ## 3.5.3
 
 🛩️ Features
 
-* [Playwright] Added commands to check network traffic #3748 - by @ngraf @@KobeNguyenT
+* [Playwright] Added commands to check network traffic #3748 - by @ngraf @KobeNguyenT
   * `startRecordingTraffic`
   * `grabRecordedNetworkTraffics`
   * `blockTraffic`
@@ -764,7 +764,7 @@ Examples:
 
 🐛 Bugfix
 
-* [retryStepPlugin] Fix retry step when using global retry #3768 - by @@KobeNguyenT
+* [retryStepPlugin] Fix retry step when using global retry #3768 - by @KobeNguyenT
 
 🗑 Deprecated
 
@@ -775,17 +775,17 @@ Examples:
 🐛 Bug Fixes
 
 * [Playwright] reverted `clearField` to previous implementation
-* [OpenAI] fixed running helper in pause mode. #3755 by @@KobeNguyenT
+* [OpenAI] fixed running helper in pause mode. #3755 by @KobeNguyenT
 
 ## 3.5.1
 
 🛩️ Features
 
-* [Puppeteer][WebDriver][TestCafe] Added methods by @@KobeNguyenT in #3737 
+* [Puppeteer][WebDriver][TestCafe] Added methods by @KobeNguyenT in #3737 
   * `blur`
   * `focus`
 * Improved BDD output to print steps without `I.` commands` by @davertmik #3739
-* Improved `codecept init` setup for Electron tests by @@KobeNguyenT. See #3733
+* Improved `codecept init` setup for Electron tests by @KobeNguyenT. See #3733
 
 🐛 Bug Fixes
 
@@ -795,7 +795,7 @@ Examples:
 
 * Fixed Playwright docs by @Horsty80
 * Fixed ai docs by @ngraf 
-* Various fixes by @@KobeNguyenT
+* Various fixes by @KobeNguyenT
 
 ## 3.5.0
 
@@ -809,7 +809,7 @@ Examples:
   * added [`OpenAI`](/helpers/openai) helper
 
 
-- [Playwright][Puppeteer][WebDriver] Highlight the interacting elements in debug mode or with `highlightElement` option set (#3672) - by @@KobeNguyenT
+- [Playwright][Puppeteer][WebDriver] Highlight the interacting elements in debug mode or with `highlightElement` option set (#3672) - by @KobeNguyenT
 
 ![](https://user-images.githubusercontent.com/220264/250415226-a7620418-56a4-4837-b790-b15e91e5d1f0.png)
 
@@ -847,18 +847,18 @@ And executed via `run-workers` with `all` argument
 npx codeceptjs run-workers 2 all
 ```
 
-- [Appium] Add Appium v2 support (#3622) - by @@KobeNguyenT
-- Improve `gpo` command to create page objects as modules or as classes (#3625) - by @@KobeNguyenT
-- Added `emptyOutputFolder` config to clean up output before running tests (#3604) - by @@KobeNguyenT
+- [Appium] Add Appium v2 support (#3622) - by @KobeNguyenT
+- Improve `gpo` command to create page objects as modules or as classes (#3625) - by @KobeNguyenT
+- Added `emptyOutputFolder` config to clean up output before running tests (#3604) - by @KobeNguyenT
 - Add `secret()` function support to `append()` and `type()` (#3615) - by @anils92
-- [Playwright] Add `bypassCSP` option to helper's config (#3641) - by @@KobeNguyenT
-- Print number of tests for each suite in dryRun (#3620) - by @@KobeNguyenT
+- [Playwright] Add `bypassCSP` option to helper's config (#3641) - by @KobeNguyenT
+- Print number of tests for each suite in dryRun (#3620) - by @KobeNguyenT
 
 🐛 Bug Fixes
 
-- Support `--grep` in dry-run command (#3673) - by @@KobeNguyenT
-- Fix typings improvements in playwright (#3650) - by @@KobeNguyenT
-- Fixed global retry #3667 by @@KobeNguyenT
+- Support `--grep` in dry-run command (#3673) - by @KobeNguyenT
+- Fix typings improvements in playwright (#3650) - by @KobeNguyenT
+- Fixed global retry #3667 by @KobeNguyenT
 - Fixed creating JavaScript test using "codeceptjs gt" (#3611) - by Jaromir Obr
 
 
