@@ -429,7 +429,7 @@ title: ${name}
       const changelog = fs.readFileSync(file).toString();
 
       const _changelog = `## ${newVersion}\n
-Thanks all to those who contributed to make this release!
+❤️ Thanks all to those who contributed to make this release! ❤️
 
 🐛 *Bug Fixes*
 
@@ -448,7 +448,7 @@ ${changelog}`;
 
   async getCommitLog() {
     console.log('Gathering commits...');
-    const logs = await exec('git log --pretty=\'format:%s - by %aN\' $(git describe --abbrev=0 --tags)..HEAD');
+    const logs = await exec('git log --pretty=\'format:* %s - by @%aN\' $(git describe --abbrev=0 --tags)..HEAD');
     console.log(logs.data.stdout);
   },
 
