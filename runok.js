@@ -431,11 +431,11 @@ title: ${name}
       const _changelog = `## ${newVersion}\n
 ❤️ Thanks all to those who contributed to make this release! ❤️
 
+🛩️ *Features*
+
 🐛 *Bug Fixes*
 
 📖 *Documentation*
-
-🛩️ *Features*
 
 ${changelog}`;
 

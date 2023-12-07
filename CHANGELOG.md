@@ -2,6 +2,51 @@
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
 
+🛩️ *Features*
+* feat: expose WebElement (#4043) - by @KobeNguyenT
+```
+Now we expose the WebElements that are returned by the WebHelper and you could make the subsequence actions on them.
+
+// Playwright helper would return the Locator
+
+I.amOnPage('/form/focus_blur_elements');
+const webElements = await I.grabWebElements('#button');
+webElements[0].click();
+```
+* feat(playwright): support HAR replaying (#3990) - by @KobeNguyenT
+```
+Replaying from HAR
+
+ // Replay API requests from HAR.
+ // Either use a matching response from the HAR,
+ // or abort the request if nothing matches.
+   I.replayFromHar('./output/har/something.har', { url: "*/**/api/v1/fruits" });
+   I.amOnPage('https://demo.playwright.dev/api-mocking');
+   I.see('CodeceptJS');
+[Parameters]
+harFilePath [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) Path to recorded HAR file
+opts [object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)? [Options for replaying from HAR](https://playwright.dev/docs/api/class-page#page-route-from-har)
+```
+* feat(playwright): support HAR recording (#3986) - by @KobeNguyenT
+```
+A HAR file is an HTTP Archive file that contains a record of all the network requests that are made when a page is loaded. 
+It contains information about the request and response headers, cookies, content, timings, and more. 
+You can use HAR files to mock network requests in your tests. HAR will be saved to output/har. 
+More info could be found here https://playwright.dev/docs/api/class-browser#browser-new-context-option-record-har.
+
+...
+recordHar: {
+    mode: 'minimal', // possible values: 'minimal'|'full'.
+    content: 'embed' // possible values:  "omit"|"embed"|"attach".
+}
+...
+```
+* improvement(playwright): support partial string for option (#4016) - by @KobeNguyenT
+```
+await I.amOnPage('/form/select');
+await I.selectOption('Select your age', '21-');
+```
+
 🐛 *Bug Fixes*
 * fix(playwright): proceedSee could not find the element (#4006) - by @hatufacci
 * fix(appium): remove the vendor prefix of 'bstack:options' (#4053) - by @mojtabaalavi
@@ -105,56 +150,12 @@ Faker examples --
 * fix: set getPageTimeout to 30s (#4031) - by @KobeNguyenT
 * fix(appium): expose switchToContext (#4015) - by @KobeNguyenT
 * fix: promise issue (#4013) - by @KobeNguyenT
+* fix: seeCssPropertiesOnElements issue with improper condition (#4057) - by @KobeNguyenT
 
 📖 *Documentation*
 * docs: Update clearCookie documentation for Playwright helper (#4005) - by @Hellosager
 * docs: improve the example code for autoLogin (#4019) - by @KobeNguyenT
   ![Screenshot 2023-11-22 at 14 40 11](https://github.com/codeceptjs/CodeceptJS/assets/7845001/c05ac436-efd0-4bc0-a46c-386f915c0f17)
-
-🛩️ *Features*
-* feat: expose WebElement (#4043) - by @KobeNguyenT
-```
-Now we expose the WebElements that are returned by the WebHelper and you could make the subsequence actions on them.
-
-// Playwright helper would return the Locator
-
-I.amOnPage('/form/focus_blur_elements');
-const webElements = await I.grabWebElements('#button');
-webElements[0].click();
-```
-* feat(playwright): support HAR replaying (#3990) - by @KobeNguyenT
-```
-Replaying from HAR
-
- // Replay API requests from HAR.
- // Either use a matching response from the HAR,
- // or abort the request if nothing matches.
-   I.replayFromHar('./output/har/something.har', { url: "*/**/api/v1/fruits" });
-   I.amOnPage('https://demo.playwright.dev/api-mocking');
-   I.see('CodeceptJS');
-[Parameters]
-harFilePath [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) Path to recorded HAR file
-opts [object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)? [Options for replaying from HAR](https://playwright.dev/docs/api/class-page#page-route-from-har)
-```
-* feat(playwright): support HAR recording (#3986) - by @KobeNguyenT
-```
-A HAR file is an HTTP Archive file that contains a record of all the network requests that are made when a page is loaded. 
-It contains information about the request and response headers, cookies, content, timings, and more. 
-You can use HAR files to mock network requests in your tests. HAR will be saved to output/har. 
-More info could be found here https://playwright.dev/docs/api/class-browser#browser-new-context-option-record-har.
-
-...
-recordHar: {
-    mode: 'minimal', // possible values: 'minimal'|'full'.
-    content: 'embed' // possible values:  "omit"|"embed"|"attach".
-}
-...
-```
-* improvement(playwright): support partial string for option (#4016) - by @KobeNguyenT
-```
-await I.amOnPage('/form/select');
-await I.selectOption('Select your age', '21-');
-```
 
 ## 3.5.8
 
