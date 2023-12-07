@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.5.8",
+  "version": "3.5.9",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -59,7 +59,8 @@
     "publish:site": "./runok.js publish:site",
     "update-contributor-faces": "./runok.js contributor:faces",
     "dtslint": "dtslint typings --localTs './node_modules/typescript/lib'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepare-release": "./runok.js versioning && ./runok.js get:commit-log"
   },
   "dependencies": {
     "@codeceptjs/configure": "0.10.0",

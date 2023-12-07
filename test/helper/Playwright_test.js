@@ -33,6 +33,7 @@ describe('Playwright', function () {
     I = new Playwright({
       url: siteUrl,
       windowSize: '500x700',
+      browser: process.env.BROWSER || 'chromium',
       show: false,
       waitForTimeout: 5000,
       waitForAction: 500,
@@ -109,6 +110,17 @@ describe('Playwright', function () {
       expect(res).to.have.property('domInteractive');
       expect(res).to.have.property('domContentLoadedEventEnd');
       expect(res).to.have.property('loadEventEnd');
+    });
+  });
+
+  describe('#seeCssPropertiesOnElements', () => {
+    it('should check background-color css property for given element', async () => {
+      try {
+        await I.amOnPage('https://codecept.io/helpers/Playwright/');
+        await I.seeCssPropertiesOnElements('.navbar', { 'background-color': 'rgb(128, 90, 213)' });
+      } catch (e) {
+        e.message.should.include('expected element (.navbar) to have CSS property { \'background-color\': \'rgb(128, 90, 213)\' }');
+      }
     });
   });
 
@@ -1051,6 +1063,7 @@ describe('Playwright', function () {
 
   describe('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
     it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       try {
         I.amOnPage('https://websocketstest.com/');
         I.waitForText('Work for You!');
@@ -1061,6 +1074,7 @@ describe('Playwright', function () {
     });
 
     it('should flush the WS messages', async () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       await I.startRecordingWebSocketMessages();
       I.amOnPage('https://websocketstest.com/');
       I.waitForText('Work for You!');
@@ -1070,6 +1084,7 @@ describe('Playwright', function () {
     });
 
     it('should see recording WS messages', async () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       await I.startRecordingWebSocketMessages();
       await I.amOnPage('https://websocketstest.com/');
       I.waitForText('Work for You!');
@@ -1078,6 +1093,7 @@ describe('Playwright', function () {
     });
 
     it('should not see recording WS messages', async () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       await I.startRecordingWebSocketMessages();
       await I.amOnPage('https://websocketstest.com/');
       I.waitForText('Work for You!');

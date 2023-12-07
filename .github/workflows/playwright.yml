@@ -50,5 +50,5 @@ jobs:
       run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
     - name: run webkit tests
       run: "BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run unit tests
+    - name: run chromium unit tests
       run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000
