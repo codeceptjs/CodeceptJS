@@ -1,4 +1,4 @@
-## 3.5.9
+## 3.5.10
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
 
