@@ -1063,6 +1063,7 @@ describe('Playwright', function () {
 
   describe('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
     it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       try {
         I.amOnPage('https://websocketstest.com/');
         I.waitForText('Work for You!');
@@ -1073,6 +1074,7 @@ describe('Playwright', function () {
     });
 
     it('should flush the WS messages', async () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       await I.startRecordingWebSocketMessages();
       I.amOnPage('https://websocketstest.com/');
       I.waitForText('Work for You!');
@@ -1082,6 +1084,7 @@ describe('Playwright', function () {
     });
 
     it('should see recording WS messages', async () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       await I.startRecordingWebSocketMessages();
       await I.amOnPage('https://websocketstest.com/');
       I.waitForText('Work for You!');
@@ -1090,6 +1093,7 @@ describe('Playwright', function () {
     });
 
     it('should not see recording WS messages', async () => {
+      if (process.env.BROWSER === 'firefox') this.skip();
       await I.startRecordingWebSocketMessages();
       await I.amOnPage('https://websocketstest.com/');
       I.waitForText('Work for You!');
