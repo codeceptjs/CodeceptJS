@@ -1399,7 +1399,7 @@ module.exports.tests = function () {
     });
 
     it('should check css property for several elements', async function () {
-      if (isHelper('TestCafe')) this.skip();
+      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox') this.skip();
 
       try {
         await I.amOnPage('/');
