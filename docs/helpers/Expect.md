@@ -20,7 +20,7 @@ Zero-configuration when paired with other helpers like REST, Playwright:
 {
   helpers: {
     Playwright: {...},
-    ExpectHelper: {},
+    Expect: {},
   }
 }
 ```
