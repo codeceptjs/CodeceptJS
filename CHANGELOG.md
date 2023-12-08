@@ -71,7 +71,7 @@ module.exports = function() {
   });
 }
 ```
-* fix: ai html updates (#3962) - by @davert
+* fix: ai html updates (#3962) - by @DavertMik
 ```
 replaced minify library with a modern and more secure fork. Fixes html-minifier@4.0.0 Regular Expression Denial of Service vulnerability #3829
 AI class is implemented as singleton
