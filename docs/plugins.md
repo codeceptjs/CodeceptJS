@@ -721,7 +721,7 @@ Run tests with plugin enabled:
 -   `factor` - The exponential factor to use. Default is 1.5.
 -   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
 -   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
--   `randomize` - Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is false.
+-   `randomize` - Randomizes the timeouts by multiplying with a factor from 1 to 2. Default is false.
 -   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
     -   `amOnPage`
     -   `wait*`
@@ -1085,7 +1085,7 @@ plugins: {
 
 ## tryTo
 
-Adds global `tryTo` function inside of which all failed steps won't fail a test but will return true/false.
+Adds global `tryTo` function in which all failed steps won't fail a test but will return true/false.
 
 Enable this plugin in `codecept.conf.js` (enabled by default for new setups):
 
@@ -1124,7 +1124,7 @@ Add assert requires first:
 const assert = require('assert');
 ````
 
-Then use the assert:
+Then use the assertion:
 const result1 = await tryTo(() => I.see('Hello, user'));
 const result2 = await tryTo(() => I.seeElement('.welcome'));
 assert.ok(result1 && result2, 'Assertions were not succesful');
