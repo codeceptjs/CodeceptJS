@@ -525,7 +525,9 @@ I.checkOption('agree', '//form');
 -   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 -   `options`   
 
-Returns **void** automatically synchronized promise through #recorder[Additional options][15] for check available as 3rd argument.Examples:```js
+Returns **void** automatically synchronized promise through #recorder.
+[Additional options][15] for check available as 3rd argument.Examples:
+```js
 // click on element at position
 I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
 ```> ⚠️ To avoid flakiness, option `force: true` is set by default
@@ -592,7 +594,8 @@ I.click({css: 'nav a.login'});
 
 -   `locator` **([string][9] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][9]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
--   `options` **any?** [Additional options][18] for click available as 3rd argument.Examples:```js
+-   `options` **any?** [Additional options][18] for click available as 3rd argument.Examples:
+    ```js
     // click on element at position
     I.click('canvas', '.model', { position: { x: 20, y: 40 } })
 
@@ -1351,7 +1354,8 @@ Returns full URL of request matching parameter "urlMatch".
 
 #### Parameters
 
--   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:```js
+-   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:
+    ```js
     I.grabTrafficUrl('https://api.example.com/session');
     I.grabTrafficUrl(/session.*start/);
     ```
@@ -1680,12 +1684,13 @@ First parameter can be set to `maximize`.
 -   `width` **[number][20]** width in pixels or `maximize`.
 -   `height` **[number][20]** height in pixels.
 
-Returns **void** automatically synchronized promise through #recorderUnlike other drivers Playwright changes the size of a viewport, not the window!
+Returns **void** automatically synchronized promise through #recorder.
+Unlike other drivers Playwright changes the size of a viewport, not the window!
 Playwright does not control the window of a browser so it can't adjust its real size.
-It also can't maximize a window.Update configuration to change real window size on start:```js
-// inside codecept.conf.js
-// @codeceptjs/configure package must be installed
-{ setWindowSize } = require('@codeceptjs/configure');
+It also can't maximize a window.Update configuration to change real window size on start:
+```js
+I.resizeWindow(640, 480);
+I.resizeWindow('maximize');
 ```
 
 ### restartBrowser
@@ -2305,10 +2310,14 @@ I.uncheckOption('agree', '//form');
 -   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 -   `options`   
 
-Returns **void** automatically synchronized promise through #recorder[Additional options][37] for uncheck available as 3rd argument.Examples:```js
+Returns **void** automatically synchronized promise through #recorder.
+[Additional options][37] for uncheck available as 3rd argument.
+Examples:
+```js
 // click on element at position
 I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
-```> ⚠️ To avoid flakiness, option `force: true` is set by default
+```
+> ⚠️ To avoid flakiness, option `force: true` is set by default
 
 ### usePlaywrightTo
 
@@ -2544,7 +2553,8 @@ I.waitForVisible('#popup');
 -   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait 
 
-Returns **void** automatically synchronized promise through #recorderThis method accepts [React selectors][43].
+Returns **void** automatically synchronized promise through #recorder.
+This method accepts [React selectors][43].
 
 ### waitInUrl
 
