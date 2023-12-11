@@ -254,6 +254,7 @@ wd.executeAsyncScript(() => {}, {}); // $ExpectType Promise<any>
 
 wd.scrollIntoView(); // $ExpectError
 wd.scrollIntoView('div'); // $ExpectError
+wd.scrollIntoView('div', true);
 wd.scrollIntoView('div', { behavior: 'auto', block: 'center', inline: 'center' });
 
 wd.scrollTo(); // $ExpectError

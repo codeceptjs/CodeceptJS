@@ -84,6 +84,7 @@ appium.grabValueFromAll(str); // $ExpectType Promise<string[]>
 appium.grabValueFrom(str); // $ExpectType Promise<string>
 appium.saveScreenshot(str); // $ExpectType Promise<void>
 appium.scrollIntoView(str, {}); // $ExpectType Promise<any>
+appium.scrollIntoView(str, true); // $ExpectType Promise<any>
 appium.seeCheckboxIsChecked(str); // $ExpectType Promise<any>
 appium.seeElement(str); // $ExpectType Promise<any>
 appium.seeInField(str, str); // $ExpectType Promise<any>
