@@ -1639,7 +1639,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 -   `locator` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
--   `scrollIntoViewOptions` **ScrollIntoViewOptions** see [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][33].
+-   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][32])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][33].
 
 Returns **void** automatically synchronized promise through #recorder
 
