@@ -592,13 +592,17 @@ I.click({css: 'nav a.login'});
 
 -   `locator` **([string][9] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][9]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
--   `options` **any?** [Additional options][18] for click available as 3rd argument.Examples:```js
-    // click on element at position
-    I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+-   `options` **any?** [Additional options][18] for click available as 3rd argument.
 
-    // make ctrl-click
-    I.click('.edit', null, { modifiers: ['Ctrl'] } )
-    ``` 
+Examples:
+
+```js
+  // click on element at position
+  I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+
+  // make ctrl-click
+  I.click('.edit', null, { modifiers: ['Ctrl'] } )
+``` 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1351,10 +1355,14 @@ Returns full URL of request matching parameter "urlMatch".
 
 #### Parameters
 
--   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:```js
-    I.grabTrafficUrl('https://api.example.com/session');
-    I.grabTrafficUrl(/session.*start/);
-    ```
+-   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.
+
+Examples:
+  
+```js
+  I.grabTrafficUrl('https://api.example.com/session');
+  I.grabTrafficUrl(/session.*start/);
+```
 
 Returns **[Promise][22]&lt;any>** 
 
@@ -1682,10 +1690,12 @@ First parameter can be set to `maximize`.
 
 Returns **void** automatically synchronized promise through #recorderUnlike other drivers Playwright changes the size of a viewport, not the window!
 Playwright does not control the window of a browser so it can't adjust its real size.
-It also can't maximize a window.Update configuration to change real window size on start:```js
-// inside codecept.conf.js
-// @codeceptjs/configure package must be installed
-{ setWindowSize } = require('@codeceptjs/configure');
+It also can't maximize a window.Update configuration to change real window size on start:
+
+```js
+  // inside codecept.conf.js
+  // @codeceptjs/configure package must be installed
+  { setWindowSize } = require('@codeceptjs/configure');
 ```
 
 ### restartBrowser
