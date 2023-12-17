@@ -482,6 +482,8 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### attachFile
 
+Appium: not tested
+
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.conf.ts or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
@@ -496,7 +498,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 -   `locator` **([string][17] | [object][16])** field located by label|name|CSS|XPath|strict locator.
 -   `pathToFile` **[string][17]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested
+Returns **void** automatically synchronized promise through #recorder
 
 ### blur
 
@@ -525,10 +527,11 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### cancelPopup
 
-Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+Dismisses the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`.
 
 ### checkOption
 
+Appium: not tested
 Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
@@ -545,7 +548,7 @@ I.checkOption('agree', '//form');
 -   `field` **([string][17] | [object][16])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][17]? | [object][16])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested
+Returns **void** automatically synchronized promise through #recorder
 
 ### clearCookie
 
@@ -671,6 +674,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### dontSeeCheckboxIsChecked
 
+Appium: not tested
 Verifies that the specified checkbox is not checked.
 
 ```js
@@ -683,7 +687,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 -   `field` **([string][17] | [object][16])** located by label|name|CSS|XPath|strict locator.
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested
+Returns **void** automatically synchronized promise through #recorder
 
 ### dontSeeCookie
 
@@ -828,6 +832,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### dragAndDrop
 
+Appium: not tested
 Drag an item to a destination element.
 
 ```js
@@ -839,7 +844,7 @@ I.dragAndDrop('#dragHandle', '#container');
 -   `srcElement` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 -   `destElement` **([string][17] | [object][16])** located by CSS|XPath|strict locator.
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested
+Returns **void** automatically synchronized promise through #recorder
 
 ### dragSlider
 
@@ -890,6 +895,8 @@ Returns **[Promise][25]&lt;any>** script return value
 
 ### executeScript
 
+Wraps [execute][26] command.
+
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
 Will return execution result to a test.
@@ -919,7 +926,7 @@ let date = await I.executeScript(function(el) {
 -   `args` **...any** to be passed to function.
 -   `fn` **([string][17] | [function][24])** function to be executed in browser context.
 
-Returns **[Promise][25]&lt;any>** script return valueWraps [execute][26] command.
+Returns **[Promise][25]&lt;any>** script return value
 
 ### fillField
 
@@ -1419,6 +1426,8 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### pressKey
 
+_Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+
 Presses a key in the browser (on a focused element).
 
 _Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][30].
@@ -1482,7 +1491,7 @@ Some of the supported key names are:
 
 -   `key` **([string][17] | [Array][28]&lt;[string][17]>)** key or array of keys to press.
 
-Returns **void** automatically synchronized promise through #recorder_Note:_ In case a text field or textarea is focused be aware that some browsers do not respect active modifier when combining modifier keys with other keys.
+Returns **void** automatically synchronized promise through #recorder
 
 ### pressKeyDown
 
@@ -1532,6 +1541,8 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### resizeWindow
 
+Appium: not tested in web, in apps doesn't work
+
 Resize the current window to provided width and height.
 First parameter can be set to `maximize`.
 
@@ -1540,7 +1551,7 @@ First parameter can be set to `maximize`.
 -   `width` **[number][22]** width in pixels or `maximize`.
 -   `height` **[number][22]** height in pixels.
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested in web, in apps doesn't work
+Returns **void** automatically synchronized promise through #recorder
 
 ### rightClick
 
@@ -1720,6 +1731,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### seeCheckboxIsChecked
 
+Appium: not tested
 Verifies that the specified checkbox is checked.
 
 ```js
@@ -1732,7 +1744,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 -   `field` **([string][17] | [object][16])** located by label|name|CSS|XPath|strict locator.
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested
+Returns **void** automatically synchronized promise through #recorder
 
 ### seeCookie
 
@@ -1983,6 +1995,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### setCookie
 
+Uses Selenium's JSON [cookie format][34].
 Sets cookie(s).
 
 Can be a single cookie object or an array of cookies:
@@ -2001,8 +2014,7 @@ I.setCookie([
 
 -   `cookie` **(Cookie | [Array][28]&lt;Cookie>)** a cookie object or array of cookie objects.
 
-Returns **void** automatically synchronized promise through #recorderUses Selenium's JSON [cookie
-format][34].
+Returns **void** automatically synchronized promise through #recorder
 
 ### setGeoLocation
 
@@ -2116,6 +2128,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### uncheckOption
 
+Appium: not tested
 Unselects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
@@ -2132,7 +2145,7 @@ I.uncheckOption('agree', '//form');
 -   `field` **([string][17] | [object][16])** checkbox located by label | name | CSS | XPath | strict locator.
 -   `context` **([string][17]? | [object][16])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
-Returns **void** automatically synchronized promise through #recorderAppium: not tested
+Returns **void** automatically synchronized promise through #recorder
 
 ### useWebDriverTo
 

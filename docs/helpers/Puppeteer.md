@@ -44,7 +44,7 @@ Type: [object][4]
 -   `disableScreenshots` **[boolean][20]?** don't save screenshot on failure.
 -   `fullPageScreenshots` **[boolean][20]?** make full page screenshots on failure.
 -   `uniqueScreenshotNames` **[boolean][20]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
--   `trace` **[boolean][20]?** record [tracing information][25] with screenshots.
+-   `trace` **[boolean][20]?** record [tracing information][24] with screenshots.
 -   `keepTraceForPassedTests` **[boolean][20]?** save trace for passed tests.
 -   `keepBrowserState` **[boolean][20]?** keep browser state between tests when `restart` is set to false.
 -   `keepCookies` **[boolean][20]?** keep cookies between tests when `restart` is set to false.
@@ -57,7 +57,7 @@ Type: [object][4]
 -   `userAgent` **[string][6]?** user-agent string.
 -   `manualStart` **[boolean][20]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
--   `chrome` **[object][4]?** pass additional [Puppeteer run options][26].
+-   `chrome` **[object][4]?** pass additional [Puppeteer run options][25].
 -   `highlightElement` **[boolean][20]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 
@@ -211,7 +211,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### _locateCheckable
 
-Find a checkbox by providing human readable text:
+Find a checkbox by providing human-readable text:
 NOTE: Assumes the checkable element exists
 
 ```js
@@ -225,7 +225,7 @@ this.helpers['Puppeteer']._locateCheckable('I agree with terms and conditions').
 
 ### _locateClickable
 
-Find a clickable element by providing human readable text:
+Find a clickable element by providing human-readable text:
 
 ```js
 this.helpers['Puppeteer']._locateClickable('Next page').then // ...
@@ -237,7 +237,7 @@ this.helpers['Puppeteer']._locateClickable('Next page').then // ...
 
 ### _locateFields
 
-Find field elements by providing human readable text:
+Find field elements by providing human-readable text:
 
 ```js
 this.helpers['Puppeteer']._locateFields('Your email').then // ...
@@ -324,6 +324,8 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### attachFile
 
+> ⚠ There is an [issue with file upload in Puppeteer 2.1.0 & 2.1.1][7], downgrade to 2.0.0 if you face it.
+
 Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.conf.ts or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
@@ -338,7 +340,7 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 -   `locator` **([string][6] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 -   `pathToFile` **[string][6]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
 
-Returns **void** automatically synchronized promise through #recorder> ⚠ There is an [issue with file upload in Puppeteer 2.1.0 & 2.1.1][7], downgrade to 2.0.0 if you face it.
+Returns **void** automatically synchronized promise through #recorder
 
 ### blur
 
@@ -718,6 +720,7 @@ This action supports [React locators](https://codecept.io/react#locators)
 
 ### executeAsyncScript
 
+Asynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
@@ -744,9 +747,11 @@ let val = await I.executeAsyncScript(function(url, done) {
 -   `args` **...any** to be passed to function.
 -   `fn` **([string][6] | [function][12])** function to be executed in browser context.
 
-Returns **[Promise][13]&lt;any>** script return valueAsynchronous scripts can also be executed with `executeScript` if a function returns a Promise.
+Returns **[Promise][13]&lt;any>** script return value
 
 ### executeScript
+
+If a function returns a Promise, tt will wait for its resolution.
 
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
@@ -777,7 +782,7 @@ let date = await I.executeScript(function(el) {
 -   `args` **...any** to be passed to function.
 -   `fn` **([string][6] | [function][12])** function to be executed in browser context.
 
-Returns **[Promise][13]&lt;any>** script return valueIf a function returns a Promise It will wait for it resolution.
+Returns **[Promise][13]&lt;any>** script return value
 
 ### fillField
 
@@ -1236,7 +1241,7 @@ Returns **[Promise][13]&lt;any>** WebElement of being used Web helper
 Sets a directory to where save files. Allows to test file downloads.
 Should be used with [FileSystem helper][16] to check that file were downloaded correctly.
 
-By default files are saved to `output/downloads`.
+By default, files are saved to `output/downloads`.
 This directory is cleaned on every `handleDownloads` call, to ensure no old files are kept.
 
 ```js
@@ -1282,9 +1287,11 @@ I.openNewTab();
 
 ### pressKey
 
+_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
+
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][17].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][18].
 
 ```js
 I.pressKey('Backspace');
@@ -1345,7 +1352,7 @@ Some of the supported key names are:
 
 -   `key` **([string][6] | [Array][15]&lt;[string][6]>)** key or array of keys to press.
 
-Returns **void** automatically synchronized promise through #recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][18]).
+Returns **void** automatically synchronized promise through #recorder
 
 ### pressKeyDown
 
@@ -1395,6 +1402,10 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### resizeWindow
 
+Unlike other drivers Puppeteer changes the size of a viewport, not the window!
+Puppeteer does not control the window of a browser, so it can't adjust its real size.
+It also can't maximize a window.
+
 Resize the current window to provided width and height.
 First parameter can be set to `maximize`.
 
@@ -1403,9 +1414,7 @@ First parameter can be set to `maximize`.
 -   `width` **[number][10]** width in pixels or `maximize`.
 -   `height` **[number][10]** height in pixels.
 
-Returns **void** automatically synchronized promise through #recorderUnlike other drivers Puppeteer changes the size of a viewport, not the window!
-Puppeteer does not control the window of a browser so it can't adjust its real size.
-It also can't maximize a window.
+Returns **void** automatically synchronized promise through #recorder
 
 ### rightClick
 
@@ -1898,7 +1907,7 @@ I.switchToPreviousTab(2);
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][17] is not an option.
+_Note:_ Should be used when [`fillField`][18] is not an option.
 
 ```js
 // passing in a string
@@ -2084,7 +2093,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### waitForNavigation
 
-Waits for navigation to finish. By default takes configured `waitForNavigation` option.
+Waits for navigation to finish. By default, takes configured `waitForNavigation` option.
 
 See [Pupeteer's reference][23]
 
@@ -2169,7 +2178,11 @@ I.waitForVisible('#popup');
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][10]** (optional, `1` by default) time in seconds to wait 
 
-Returns **void** automatically synchronized promise through #recorderThis method accepts [React selectors][24].
+Returns **void** automatically synchronized promise through #recorder
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 ### waitInUrl
 
@@ -2270,9 +2283,9 @@ Returns **void** automatically synchronized promise through #recorder
 
 [16]: https://codecept.io/helpers/FileSystem
 
-[17]: #fillfield
+[17]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[18]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[18]: #fillfield
 
 [19]: #click
 
@@ -2284,8 +2297,6 @@ Returns **void** automatically synchronized promise through #recorder
 
 [23]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
 
-[24]: https://codecept.io/react
+[24]: https://pptr.dev/api/puppeteer.tracing
 
-[25]: https://pptr.dev/api/puppeteer.tracing
-
-[26]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+[25]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
