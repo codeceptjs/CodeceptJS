@@ -131,6 +131,7 @@ Documentation parts can be shared across helpers. Those parts are located in `do
     // ...
   }
 ```
+
 _Note:_ Due to the (lib)[https://documentation.js.org/] that we are using to generate docs, the fast and cheap way to fix format issue that text after the mustache template is appended without formatting is moving the texts to above the mustache template.
 
 ```js
@@ -143,7 +144,7 @@ _Note:_ Due to the (lib)[https://documentation.js.org/] that we are using to gen
   click() {
     // ...
   }
-
+```
 
 ```js
   /**
@@ -154,6 +155,7 @@ _Note:_ Due to the (lib)[https://documentation.js.org/] that we are using to gen
   click() {
     // ...
   }
+```
 
 ## Typings
 
