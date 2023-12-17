@@ -600,13 +600,19 @@ I.click({css: 'nav a.login'});
 
 -   `locator` **([string][9] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][9]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
--   `options` **any?** [Additional options][18] for click available as 3rd argument.Examples:```js
-    // click on element at position
-    I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+-   `options` **any?** [Additional options][18] for click available as 3rd argument. 
 
-    // make ctrl-click
-    I.click('.edit', null, { modifiers: ['Ctrl'] } )
-    ``` 
+#### Examples
+
+````javascript
+```js
+// click on element at position
+I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+
+// make ctrl-click
+I.click('.edit', null, { modifiers: ['Ctrl'] } )
+```
+````
 
 Returns **void** automatically synchronized promise through #recorder
 

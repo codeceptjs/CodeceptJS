@@ -2095,7 +2095,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for navigation to finish. By default, takes configured `waitForNavigation` option.
 
-See [Pupeteer's reference][23]
+See [Puppeteer's reference][23]
 
 #### Parameters
 
