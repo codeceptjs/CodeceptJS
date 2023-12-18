@@ -96,7 +96,7 @@ FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
           "actor": "I",
           "name": "amOnPage",
           "status": "success",
-          "agrs": [
+          "args": [
             "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST"
           ],
           "startedAt": 1698760652610,
@@ -109,7 +109,7 @@ FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
           "actor": "I",
           "name": "grabCurrentUrl",
           "status": "success",
-          "agrs": [],
+          "args": [],
           "startedAt": 1698760653098,
           "startTime": 1698760653098,
           "endTime": 1698760653099,
