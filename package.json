@@ -158,7 +158,7 @@
     "webdriverio": "8.3.8",
     "xml2js": "0.6.2",
     "@xmldom/xmldom": "0.8.10",
-    "xpath": "0.0.33"
+    "xpath": "0.0.34"
   },
   "engines": {
     "node": ">=16.0",
