@@ -155,7 +155,7 @@
     "typedoc-plugin-markdown": "3.17.1",
     "typescript": "5.2.2",
     "wdio-docker-service": "1.5.0",
-    "webdriverio": "8.3.8",
+    "webdriverio": "8.26.2",
     "xml2js": "0.6.2",
     "@xmldom/xmldom": "0.8.10",
     "xpath": "0.0.34"
