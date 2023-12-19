@@ -508,6 +508,17 @@ Dismisses the active JavaScript popup, as created by window.alert|window.confirm
 
 ### checkOption
 
+[Additional options][15] for check available as 3rd argument.
+
+Examples:
+
+```js
+// click on element at position
+I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
+```
+
+> ⚠️ To avoid flakiness, option `force: true` is set by default
+
 Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
@@ -525,10 +536,7 @@ I.checkOption('agree', '//form');
 -   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 -   `options`   
 
-Returns **void** automatically synchronized promise through #recorder[Additional options][15] for check available as 3rd argument.Examples:```js
-// click on element at position
-I.checkOption('Agree', '.signup', { position: { x: 5, y: 5 } })
-```> ⚠️ To avoid flakiness, option `force: true` is set by default
+Returns **void** automatically synchronized promise through #recorder
 
 ### clearCookie
 
@@ -592,13 +600,19 @@ I.click({css: 'nav a.login'});
 
 -   `locator` **([string][9] | [object][6])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 -   `context` **([string][9]? | [object][6] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
--   `options` **any?** [Additional options][18] for click available as 3rd argument.Examples:```js
-    // click on element at position
-    I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+-   `options` **any?** [Additional options][18] for click available as 3rd argument. 
 
-    // make ctrl-click
-    I.click('.edit', null, { modifiers: ['Ctrl'] } )
-    ``` 
+#### Examples
+
+````javascript
+```js
+// click on element at position
+I.click('canvas', '.model', { position: { x: 20, y: 40 } })
+
+// make ctrl-click
+I.click('.edit', null, { modifiers: ['Ctrl'] } )
+```
+````
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -812,6 +826,13 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### dragAndDrop
 
+```js
+// specify coordinates for source position
+I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
+```
+
+> When no option is set, custom drag and drop would be used, to use the dragAndDrop API from Playwright, please set options, for example `force: true`
+
 Drag an item to a destination element.
 
 ```js
@@ -822,10 +843,7 @@ I.dragAndDrop('#dragHandle', '#container');
 
 -   `srcElement` **([string][9] | [object][6])** located by CSS|XPath|strict locator.
 -   `destElement` **([string][9] | [object][6])** located by CSS|XPath|strict locator.
--   `options` **any?** [Additional options][19] can be passed as 3rd argument.```js
-    // specify coordinates for source position
-    I.dragAndDrop('img.src', 'img.dst', { sourcePosition: {x: 10, y: 10} })
-    ```> When no option is set, custom drag and drop would be used, to use the dragAndDrop API from Playwright, please set options, for example `force: true`
+-   `options` **any?** [Additional options][19] can be passed as 3rd argument.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -860,8 +878,8 @@ Additional parameters of the function can be passed as an object argument:
 I.executeScript(({x, y}) => x + y, {x, y});
 ```
 
-You can pass only one parameter into a function
-but you can pass in array or object.
+You can pass only one parameter into a function,
+or you can pass in array or object.
 
 ```js
 I.executeScript(([x, y]) => x + y, [x, y]);
@@ -1020,6 +1038,8 @@ Returns **[Promise][22]&lt;[boolean][26]>**
 
 ### grabCookie
 
+Returns cookie in JSON format. If name not passed returns all cookies for this domain.
+
 Gets a cookie object by name.
 If none provided gets all cookies.
 Resumes test execution, so **should be used inside async function with `await`** operator.
@@ -1033,7 +1053,7 @@ assert(cookie.value, '123456');
 
 -   `name` **[string][9]?** cookie name. 
 
-Returns **any** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **any** attribute value
 
 ### grabCssPropertyFrom
 
@@ -1539,9 +1559,11 @@ I.openNewTab({ isMobile: true });
 
 ### pressKey
 
+_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][33]).
+
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][33].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][34].
 
 ```js
 I.pressKey('Backspace');
@@ -1602,7 +1624,7 @@ Some of the supported key names are:
 
 -   `key` **([string][9] | [Array][10]&lt;[string][9]>)** key or array of keys to press.
 
-Returns **void** automatically synchronized promise through #recorder_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/Puppeteer#1313][34]).
+Returns **void** automatically synchronized promise through #recorder
 
 ### pressKeyDown
 
@@ -1672,6 +1694,18 @@ Returns **any** Promise<void>
 
 ### resizeWindow
 
+Unlike other drivers Playwright changes the size of a viewport, not the window!
+Playwright does not control the window of a browser, so it can't adjust its real size.
+It also can't maximize a window.
+
+Update configuration to change real window size on start:
+
+```js
+// inside codecept.conf.js
+// @codeceptjs/configure package must be installed
+{ setWindowSize } = require('@codeceptjs/configure');
+```
+
 Resize the current window to provided width and height.
 First parameter can be set to `maximize`.
 
@@ -1680,13 +1714,7 @@ First parameter can be set to `maximize`.
 -   `width` **[number][20]** width in pixels or `maximize`.
 -   `height` **[number][20]** height in pixels.
 
-Returns **void** automatically synchronized promise through #recorderUnlike other drivers Playwright changes the size of a viewport, not the window!
-Playwright does not control the window of a browser so it can't adjust its real size.
-It also can't maximize a window.Update configuration to change real window size on start:```js
-// inside codecept.conf.js
-// @codeceptjs/configure package must be installed
-{ setWindowSize } = require('@codeceptjs/configure');
-```
+Returns **void** automatically synchronized promise through #recorder
 
 ### restartBrowser
 
@@ -2262,7 +2290,7 @@ I.switchToPreviousTab(2);
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][33] is not an option.
+_Note:_ Should be used when [`fillField`][34] is not an option.
 
 ```js
 // passing in a string
@@ -2288,6 +2316,17 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### uncheckOption
 
+[Additional options][37] for uncheck available as 3rd argument.
+
+Examples:
+
+```js
+// click on element at position
+I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
+```
+
+> ⚠️ To avoid flakiness, option `force: true` is set by default
+
 Unselects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
@@ -2305,10 +2344,7 @@ I.uncheckOption('agree', '//form');
 -   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 -   `options`   
 
-Returns **void** automatically synchronized promise through #recorder[Additional options][37] for uncheck available as 3rd argument.Examples:```js
-// click on element at position
-I.uncheckOption('Agree', '.signup', { position: { x: 5, y: 5 } })
-```> ⚠️ To avoid flakiness, option `force: true` is set by default
+Returns **void** automatically synchronized promise through #recorder
 
 ### usePlaywrightTo
 
@@ -2328,7 +2364,7 @@ I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
 #### Parameters
 
 -   `description` **[string][9]** used to show in logs.
--   `fn` **[function][21]** async function that executed with Playwright helper as argumen
+-   `fn` **[function][21]** async function that executed with Playwright helper as arguments
 
 ### wait
 
@@ -2532,6 +2568,8 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### waitForVisible
 
+This method accepts [React selectors][43].
+
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
@@ -2544,7 +2582,7 @@ I.waitForVisible('#popup');
 -   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait 
 
-Returns **void** automatically synchronized promise through #recorderThis method accepts [React selectors][43].
+Returns **void** automatically synchronized promise through #recorder
 
 ### waitInUrl
 
@@ -2673,9 +2711,9 @@ Returns **void** automatically synchronized promise through #recorder
 
 [32]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
 
-[33]: #fillfield
+[33]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[34]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[34]: #fillfield
 
 [35]: #click
 
