@@ -1374,6 +1374,19 @@ module.exports.tests = function () {
         e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}');
       }
     });
+
+    it('should return error when using non existing attribute', async function () {
+      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip();
+
+      try {
+        await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/');
+        await I.seeAttributesOnElements({ css: 'a[href="/team"]' }, {
+          disable: true,
+        });
+      } catch (e) {
+        e.message.should.include('expected all elements ({css: a[href="/team"]}) to have attributes {"disable":true} "0" to equal "1"');
+      }
+    });
   });
 
   describe('#seeCssPropertiesOnElements', () => {
