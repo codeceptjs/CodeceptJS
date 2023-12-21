@@ -137,8 +137,12 @@ describe('Puppeteer', function () {
     });
 
     it('should be unauthenticated ', async () => {
-      await I.amOnPage('/basic_auth');
-      await I.dontSee('You entered admin as your password.');
+      try {
+        await I.amOnPage('/basic_auth');
+        await I.dontSee('You entered admin as your password.');
+      } catch (e) {
+        expect(e.message).to.eq('net::ERR_INVALID_AUTH_CREDENTIALS at http://localhost:8000/basic_auth');
+      }
     });
   });
 
