@@ -32,16 +32,16 @@ Zero-configuration when paired with other helpers like REST, Playwright:
 #### Parameters
 
 -   `targetData` **any** 
--   `aboveThan` **any** number | Date
--   `customErrorMsg` **any**  
+-   `aboveThan` **any** 
+-   `customErrorMsg` **any?**  
 
 ### expectBelow
 
 #### Parameters
 
 -   `targetData` **any** 
--   `belowThan` **any** number | Date
--   `customErrorMsg` **any**  
+-   `belowThan` **any** 
+-   `customErrorMsg` **any?**  
 
 ### expectContain
 
@@ -49,7 +49,7 @@ Zero-configuration when paired with other helpers like REST, Playwright:
 
 -   `actualValue` **any** 
 -   `expectedValueToContain` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectDeepEqual
 
@@ -57,7 +57,7 @@ Zero-configuration when paired with other helpers like REST, Playwright:
 
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectDeepEqualExcluding
 
@@ -68,7 +68,7 @@ expects members of two JSON objects are deeply equal excluding some properties
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
 -   `fieldsToExclude` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectDeepIncludeMembers
 
@@ -78,7 +78,7 @@ expects an array to be a superset of another array
 
 -   `superset` **any** 
 -   `set` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectDeepMembers
 
@@ -88,14 +88,14 @@ expects members of two arrays are deeply equal
 
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectEmpty
 
 #### Parameters
 
 -   `targetData` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectEndsWith
 
@@ -103,7 +103,7 @@ expects members of two arrays are deeply equal
 
 -   `actualValue` **any** 
 -   `expectedValueToEndWith` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectEqual
 
@@ -111,7 +111,7 @@ expects members of two arrays are deeply equal
 
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectEqualIgnoreCase
 
@@ -119,14 +119,14 @@ expects members of two arrays are deeply equal
 
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectFalse
 
 #### Parameters
 
 -   `targetData` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectHasAProperty
 
@@ -134,7 +134,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `propertyName` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectHasProperty
 
@@ -142,7 +142,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `propertyName` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectJsonSchema
 
@@ -150,7 +150,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `jsonSchema` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectJsonSchemaUsingAJV
 
@@ -158,7 +158,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `jsonSchema` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 -   `ajvOptions` **any** Pass AJV options 
 
 ### expectLengthAboveThan
@@ -167,7 +167,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `lengthAboveThan` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectLengthBelowThan
 
@@ -175,7 +175,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `lengthBelowThan` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectLengthOf
 
@@ -183,7 +183,7 @@ expects members of two arrays are deeply equal
 
 -   `targetData` **any** 
 -   `length` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectMatchesPattern
 
@@ -193,7 +193,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedPattern` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectMatchRegex
 
@@ -201,7 +201,7 @@ expects a JSON object matches a provided pattern
 
 -   `targetData` **any** 
 -   `regex` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectNotContain
 
@@ -209,7 +209,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedValueToNotContain` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectNotDeepEqual
 
@@ -217,7 +217,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectNotEndsWith
 
@@ -225,7 +225,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedValueToNotEndWith` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectNotEqual
 
@@ -233,7 +233,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedValue` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectNotStartsWith
 
@@ -241,7 +241,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedValueToNotStartWith` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectStartsWith
 
@@ -249,7 +249,7 @@ expects a JSON object matches a provided pattern
 
 -   `actualValue` **any** 
 -   `expectedValueToStartWith` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectToBeA
 
@@ -257,7 +257,7 @@ expects a JSON object matches a provided pattern
 
 -   `targetData` **any** 
 -   `type` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectToBeAn
 
@@ -265,11 +265,11 @@ expects a JSON object matches a provided pattern
 
 -   `targetData` **any** 
 -   `type` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
 
 ### expectTrue
 
 #### Parameters
 
 -   `targetData` **any** 
--   `customErrorMsg` **any**  
+-   `customErrorMsg` **any?**  
