@@ -149,7 +149,7 @@
     "sinon-chai": "3.7.0",
     "testcafe": "3.3.0",
     "ts-morph": "19.0.0",
-    "ts-node": "10.9.1",
+    "ts-node": "10.9.2",
     "tsd-jsdoc": "2.5.0",
     "typedoc": "0.25.4",
     "typedoc-plugin-markdown": "3.17.1",
