@@ -431,7 +431,7 @@ declare namespace CodeceptJS {
     | string
     | ILocator
     | Locator
-    | CustomLocators[keyof CustomLocators];
+    | CustomLocators;
 
   type StringOrSecret = string | CodeceptJS.Secret;
 
