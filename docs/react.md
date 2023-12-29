@@ -66,4 +66,5 @@ To find React element names and props in a tree use [React DevTools](https://chr
 
 > Turn off minification for application builds otherwise component names will be uglified as well
 
-React locators work via [resq](https://github.com/baruchvlz/resq) library, which handles React 16 and above.
+- With WebDriver and Puppeteer, React locators work via [resq](https://github.com/baruchvlz/resq) library, which handles React 16 and above.
+- With Playwright, React locators work via [Playwright React Locator](https://playwright.dev/docs/other-locators#react-locator).
