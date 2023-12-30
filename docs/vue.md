@@ -104,6 +104,28 @@ tests
 
 If you agreed to create a demo component, you will also see `TestMe` component in `src/components` folder.
 
+## Locators
+
+For Vue apps a special `vue` locator is available. It allows to select an element by its component name, and props.
+
+```js
+{ vue: 'MyComponent' }
+{ vue: 'Button', props: { title: 'Click Me' }}
+```
+
+With Playwright, you can use Vue locators in any method where locator is required:
+
+```js
+I.click({ vue: 'Tab', props: { title: 'Click Me!' }});
+I.seeElement({ vue: 't', props: { title: 'Clicked' }});
+```
+
+To find Vue element names and props in a tree use [Vue DevTools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) extension.
+
+> Turn off minification for application builds otherwise component names will be uglified as well
+
+Vue locators work via [Playwright Vue Locator](https://playwright.dev/docs/other-locators#vue-locator).
+
 ## How to write tests?
 
 * Open `tests/e2e/app_js` and see the demo test
