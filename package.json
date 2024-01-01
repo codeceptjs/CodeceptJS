@@ -120,7 +120,7 @@
     "@types/node": "20.4.4",
     "@wdio/sauce-service": "8.3.8",
     "@wdio/selenium-standalone-service": "8.3.2",
-    "@wdio/utils": "8.20.3",
+    "@wdio/utils": "8.27.0",
     "apollo-server-express": "2.25.3",
     "chai-as-promised": "7.1.1",
     "chai-subset": "1.6.0",
