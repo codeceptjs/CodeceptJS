@@ -1,3 +1,29 @@
+## 3.5.11
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat: other locators from playwright (#4090) - by @KobeNguyenT
+  * CodeceptJS - Playwright now supports other locators like
+    * React (https://playwright.dev/docs/other-locators#react-locator),
+    * Vue (https://playwright.dev/docs/other-locators#vue-locator)
+      ![Vue Locators](https://github.com/codeceptjs/CodeceptJS/assets/7845001/841e9e54-847b-4326-b95f-f9406955a3ce)
+      ![Example](https://github.com/codeceptjs/CodeceptJS/assets/7845001/763e6788-143b-4a00-a249-d9ca5f0b2a09)
+
+🐛 *Bug Fixes*
+* fix: step object is broken when step arg is a function (#4092) - by @KobeNguyenT
+* fix: step object is broken when step arg contains joi object (#4084) - by @KobeNguyenT
+* fix(expect helper): custom error message as optional param (#4082) - by @KobeNguyenT
+* fix(puppeteer): hide deprecation info (#4075) - by @KobeNguyenT
+* fix: seeattributesonelements throws error when attribute doesn't exist (#4073) - by @KobeNguyenT
+* fix: typo in agrs (#4077) - by @KobeNguyenT
+* fix: retryFailedStep is disabled for non tryTo steps (#4069) - by @KobeNguyenT
+* fix(typings): scrollintoview complains scrollintoviewoptions (#4067) - by @KobeNguyenT
+
+📖 *Documentation*
+* fix(docs): some doc blocks are broken (#4076) - by @KobeNguyenT
+* fix(docs): expect docs (#4058) - by @KobeNguyenT
+
 ## 3.5.10
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
