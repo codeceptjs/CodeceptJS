@@ -174,7 +174,7 @@ locate('span').withText('Warning');
 Find an element with exact text
 
 ```js
-locate('button').withText('Add');
+locate('button').withTextEquals('Add');
 ```
 
 #### first
