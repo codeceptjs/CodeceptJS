@@ -52,6 +52,19 @@ const xml = `<body>
   <label class="n-1">Hello<a href="#">Please click</a></label>
   </div>
   <input type="hidden" name="return_url" value="" id="return_url" />
+
+  <div class="ps-submenu-root">
+    <ul class="ps-submenu-root">
+      <li class="ps-menu-button">Adhemar da Silva</li>
+      <li class="ps-menu-button">HelloWorld</li>
+      <li class="ps-menu-button">Hallo</li>
+    </ul>
+    <ul class="ps-submenu-root">
+      <li class="ps-menu-button">Adhemar da Silva</li>
+      <li class="ps-menu-button">HelloWorld</li>
+      <li class="ps-menu-button">Authoring</li>
+    </ul>
+  </div>
 </body>`;
 
 describe('Locator', () => {
@@ -271,5 +284,15 @@ describe('Locator', () => {
     expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Sign In', l.toXPath());
     Locator.filters = [];
+  });
+
+  it('should be able to locate complicated locator', () => {
+    const l = Locator.build('.ps-menu-button')
+      .withText('Authoring')
+      .inside('.ps-submenu-root:nth-child(2)');
+
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes[0].firstChild.data).to.eql('Authoring', l.toXPath());
   });
 });
