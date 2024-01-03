@@ -304,8 +304,8 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/APshenkin"><img src="https://avatars.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a>
 <a href="https://github.com/fabioel"><img src="https://avatars.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a>
 <a href="https://github.com/pablopaul"><img src="https://avatars.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a>
-<a href="https://github.com/Georgegriff"><img src="https://avatars.githubusercontent.com/u/9056958?v=4" title="Georgegriff" width="80" height="80"></a>
 <a href="https://github.com/mirao"><img src="https://avatars.githubusercontent.com/u/12584138?v=4" title="mirao" width="80" height="80"></a>
+<a href="https://github.com/Georgegriff"><img src="https://avatars.githubusercontent.com/u/9056958?v=4" title="Georgegriff" width="80" height="80"></a>
 <a href="https://github.com/KMKoushik"><img src="https://avatars.githubusercontent.com/u/24666922?v=4" title="KMKoushik" width="80" height="80"></a>
 <a href="https://github.com/nikocanvacom"><img src="https://avatars.githubusercontent.com/u/83254493?v=4" title="nikocanvacom" width="80" height="80"></a>
 <a href="https://github.com/elukoyanov"><img src="https://avatars.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
@@ -321,9 +321,9 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
 <a href="https://github.com/maojunxyz"><img src="https://avatars.githubusercontent.com/u/28778042?v=4" title="maojunxyz" width="80" height="80"></a>
 <a href="https://github.com/abhimanyupandian"><img src="https://avatars.githubusercontent.com/u/36107381?v=4" title="abhimanyupandian" width="80" height="80"></a>
-<a href="https://github.com/hatufacci"><img src="https://avatars.githubusercontent.com/u/4963181?v=4" title="hatufacci" width="80" height="80"></a>
 <a href="https://github.com/martomo"><img src="https://avatars.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
-<a href="https://github.com/denis-sokolov"><img src="https://avatars.githubusercontent.com/u/113721?v=4" title="denis-sokolov" width="80" height="80"></a>
+<a href="https://github.com/hatufacci"><img src="https://avatars.githubusercontent.com/u/4963181?v=4" title="hatufacci" width="80" height="80"></a>
+<a href="https://github.com/johnyb"><img src="https://avatars.githubusercontent.com/u/86358?v=4" title="johnyb" width="80" height="80"></a>
 
 [//]: contributor-faces
 
