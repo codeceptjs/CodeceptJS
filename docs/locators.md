@@ -163,10 +163,18 @@ locate('form').withDescendant('select');
 
 #### withText
 
-Finds element containing a text
+Find an element containing a text
 
 ```js
 locate('span').withText('Warning');
+```
+
+#### withTextEquals
+
+Find an element with exact text
+
+```js
+locate('button').withTextEquals('Add');
 ```
 
 #### first

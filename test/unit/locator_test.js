@@ -6,7 +6,7 @@ const Locator = require('../../lib/locator');
 
 let doc;
 const xml = `<body>
-  <span>Hey</span>
+  <span>Hey boy</span>
   <p>
     <span></span>
     <div></div>
@@ -157,8 +157,14 @@ describe('Locator', () => {
     expect(nodes).to.have.length(1);
   });
 
-  it('should build locator to match element by text', () => {
+  it('should build locator to match element containing a text', () => {
     const l = Locator.build('span').withText('Hey');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(1);
+  });
+
+  it('should build locator to match element by exact text', () => {
+    const l = Locator.build('span').withTextEquals('Hey boy');
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1);
   });
