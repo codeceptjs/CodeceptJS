@@ -1163,7 +1163,8 @@ describe('WebDriver', function () {
   });
 
   describe('GeoLocation', () => {
-    it('should set the geoLocation', async () => {
+    // deprecated JSON Wire method commands
+    it.skip('should set the geoLocation', async () => {
       await wd.setGeoLocation(37.4043, -122.0748);
       const geoLocation = await wd.grabGeoLocation();
       assert.equal(geoLocation.latitude, 37.4043, 'The latitude is not properly set');

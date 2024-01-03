@@ -1200,6 +1200,8 @@ Returns **([Promise][25]&lt;DOMRect> | [Promise][25]&lt;[number][22]>)** Element
 
 ### grabGeoLocation
 
+This method is **deprecated**.
+
 Return the current geo location 
 Resumes test execution, so **should be used inside async function with `await`** operator.
 
@@ -2017,6 +2019,8 @@ I.setCookie([
 Returns **void** automatically synchronized promise through #recorder
 
 ### setGeoLocation
+
+This method is **deprecated**.
 
 Set the current geo location
 
