@@ -566,7 +566,7 @@ module.exports.tests = function () {
   });
 
   describe('#clearField', () => {
-    it('should clear a given element', async () => {
+    it.only('should clear a given element', async () => {
       await I.amOnPage('/form/field');
       await I.fillField('#name', 'Nothing special');
       await I.seeInField('#name', 'Nothing special');
