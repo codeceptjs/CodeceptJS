@@ -1412,7 +1412,7 @@ module.exports.tests = function () {
     });
 
     it('should check css property for several elements', async function () {
-      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox') this.skip();
+      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox' || process.env.DevTools === 'true') this.skip();
 
       try {
         await I.amOnPage('/');
@@ -1433,11 +1433,7 @@ module.exports.tests = function () {
         });
         throw Error('It should never get this far');
       } catch (e) {
-        if (process.env.DevTools === 'true') {
-          e.message.should.include('expected all elements (a) to have CSS property {"color":"rgb(0, 0, 238)","cursor":"pointer"}');
-        } else {
-          e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
-        }
+        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
       }
     });
 

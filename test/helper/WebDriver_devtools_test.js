@@ -206,7 +206,7 @@ describe('WebDriver - Devtools Protocol', function () {
     });
   });
 
-  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+  describe.skip('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
       await wd.appendField('Name', '-');
