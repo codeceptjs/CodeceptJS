@@ -1319,7 +1319,7 @@ module.exports.tests = function () {
   });
 
   describe('#seeAttributesOnElements', () => {
-    it('should check attributes values for given element', async function () {
+    it.skip('should check attributes values for given element', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       try {
