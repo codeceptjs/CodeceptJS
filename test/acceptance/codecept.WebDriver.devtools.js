@@ -7,8 +7,15 @@ module.exports.config = {
   helpers: {
     WebDriver: {
       url: TestHelper.siteUrl(),
-      browser: 'chrome',
+      browser: 'Chromium',
+      windowSize: '500x700',
       devToolsProtocol: true,
+      waitForTimeout: 5000,
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=500,700'],
+        },
+      },
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
