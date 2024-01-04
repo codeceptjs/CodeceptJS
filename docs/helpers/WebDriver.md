@@ -46,6 +46,7 @@ Type: [object][16]
 -   `manualStart` **[boolean][32]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
 -   `timeouts` **[object][16]?** [WebDriver timeouts][37] defined as hash.
 -   `highlightElement` **[boolean][32]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+-   `devToolsProtocol` **[boolean][32]?** enable devtools protocol. Default: false. More info: [https://webdriver.io/docs/automationProtocols/#devtools-protocol][38].
 
 
 
@@ -99,6 +100,25 @@ website][3].
      WebDriver : {
        url: "http://localhost",
        browser: "chrome",
+       desiredCapabilities: {
+         chromeOptions: {
+           args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
+         }
+       }
+     }
+   }
+}
+```
+
+### Running with devtools protocol
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "chrome",
+       devtoolsProtocol: true,
        desiredCapabilities: {
          chromeOptions: {
            args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
@@ -2475,3 +2495,5 @@ Returns **void** automatically synchronized promise through #recorder
 [36]: http://codecept.io/acceptance/#smartwait
 
 [37]: http://webdriver.io/docs/timeouts.html
+
+[38]: https://webdriver.io/docs/automationProtocols/#devtools-protocol

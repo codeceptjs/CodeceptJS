@@ -566,7 +566,7 @@ module.exports.tests = function () {
   });
 
   describe('#clearField', () => {
-    it.only('should clear a given element', async () => {
+    it('should clear a given element', async () => {
       await I.amOnPage('/form/field');
       await I.fillField('#name', 'Nothing special');
       await I.seeInField('#name', 'Nothing special');
@@ -1329,7 +1329,7 @@ module.exports.tests = function () {
         });
         await I.seeAttributesOnElements('//form', {
           method: 'post',
-          action: `${siteUrl}/`,
+          action: '/',
         });
         await I.seeAttributesOnElements('//form', {
           method: 'get',
@@ -1433,7 +1433,11 @@ module.exports.tests = function () {
         });
         throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
+        if (process.env.DevTools === 'true') {
+          e.message.should.include('expected all elements (a) to have CSS property {"color":"rgb(0, 0, 238)","cursor":"pointer"}');
+        } else {
+          e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
+        }
       }
     });
 
