@@ -9,7 +9,7 @@ module.exports.config = {
       url: TestHelper.siteUrl(),
       browser: 'Chromium',
       windowSize: '500x700',
-      devToolsProtocol: true,
+      devtoolsProtocol: true,
       waitForTimeout: 5000,
       capabilities: {
         chromeOptions: {
