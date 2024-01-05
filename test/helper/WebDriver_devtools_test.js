@@ -31,7 +31,7 @@ describe('WebDriver - Devtools Protocol', function () {
       url: siteUrl,
       browser: 'Chromium',
       windowSize: '500x700',
-      devToolsProtocol: true,
+      devtoolsProtocol: true,
       waitForTimeout: 5000,
       capabilities: {
         chromeOptions: {
