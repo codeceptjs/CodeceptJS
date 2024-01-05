@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 
 const retryFailedStep = require('../../../lib/plugin/retryFailedStep');
+const tryTo = require('../../../lib/plugin/tryTo');
 const within = require('../../../lib/within');
 const session = require('../../../lib/session');
 const container = require('../../../lib/container');
@@ -35,6 +36,26 @@ describe('retryFailedStep', () => {
       }
     }, undefined, undefined, true);
     return recorder.promise();
+  });
+
+  it('should not retry failed step when tryTo plugin is enabled', async () => {
+    tryTo();
+    retryFailedStep({ retries: 2, minTimeout: 1 });
+    event.dispatcher.emit(event.test.before, {});
+    event.dispatcher.emit(event.step.started, { name: 'click' });
+
+    try {
+      let counter = 0;
+      await recorder.add(() => {
+        counter++;
+        if (counter < 3) {
+          throw new Error('Retry failed step is disabled when tryTo plugin is enabled');
+        }
+      }, undefined, undefined, true);
+      return recorder.promise();
+    } catch (e) {
+      expect(e.message).equal('Retry failed step is disabled when tryTo plugin is enabled');
+    }
   });
 
   it('should not retry within', async () => {
