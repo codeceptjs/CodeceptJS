@@ -46,7 +46,7 @@ Type: [object][16]
 -   `manualStart` **[boolean][32]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
 -   `timeouts` **[object][16]?** [WebDriver timeouts][37] defined as hash.
 -   `highlightElement` **[boolean][32]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
--   `devToolsProtocol` **[boolean][32]?** enable devtools protocol. Default: false. More info: [https://webdriver.io/docs/automationProtocols/#devtools-protocol][38].
+-   `devtoolsProtocol` **[boolean][32]?** enable devtools protocol. Default: false. More info: [https://webdriver.io/docs/automationProtocols/#devtools-protocol][38].
 
 
 
@@ -2053,7 +2053,7 @@ I.setGeoLocation(121.21, 11.56, 10);
 
 -   `latitude` **[number][22]** to set.
 -   `longitude` **[number][22]** to set
--   `altitude` **[number][22]?** (optional, null by default) to set 
+-   `altitude` **[number][22]?** (optional, null by default) to set
 
 Returns **void** automatically synchronized promise through #recorder
 
