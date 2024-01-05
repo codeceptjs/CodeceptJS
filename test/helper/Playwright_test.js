@@ -43,6 +43,7 @@ describe('Playwright', function () {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
       defaultPopupAction: 'accept',
+      customLocatorAttribute: 'qa-id',
     });
     I._init();
     return I._beforeSuite();
@@ -68,6 +69,13 @@ describe('Playwright', function () {
       await I.wait(1);
       const numPages = await I.grabNumberOfOpenTabs();
       assert.equal(numPages, 1);
+    });
+  });
+
+  describe('customLocatorAttribute', () => {
+    it('should locate through custom locator Attribute', async () => {
+      await I.amOnPage('/');
+      await I.seeElement('test');
     });
   });
 

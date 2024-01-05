@@ -80,6 +80,7 @@ Type: [object][6]
 -   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
 -   `highlightElement` **[boolean][26]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 -   `recordHar` **[object][6]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
+-   `customLocatorAttribute` **[string][9]?** set a custom test id attribute. See more of [Test id attribute][49].
 
 
 
@@ -249,6 +250,22 @@ const { devices } = require('playwright');
       },
     }
   },
+}
+```
+
+-   #### Example #10: Custom locator attribute.
+
+```js
+{
+   helpers: {
+     Playwright : {
+       url: "http://localhost",
+       restart: false,
+       waitForNavigation: "networkidle0",
+       waitForAction: 500,
+       customLocatorAttribute: 'qa-id'
+     }
+   }
 }
 ```
 
@@ -2742,3 +2759,5 @@ Returns **void** automatically synchronized promise through #recorder
 [47]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
 [48]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
+
+[49]: https://playwright.dev/docs/locators#set-a-custom-test-id-attribute
