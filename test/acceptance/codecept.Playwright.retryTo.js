@@ -32,9 +32,6 @@ module.exports.config = {
     screenshotOnFail: {
       enabled: true,
     },
-    retryTo: {
-      enabled: true,
-    },
   },
   name: 'acceptance',
   gherkin: {
