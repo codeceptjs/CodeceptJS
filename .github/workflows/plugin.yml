@@ -1,4 +1,4 @@
-name: Playwright Tests with Plugins
+name: Plugins tests
 
 on:
   push:
