@@ -97,7 +97,7 @@ declare namespace CodeceptJS {
      *   }
      * }
      * ```
-    */
+     */
     helpers?: {
       /**
        * Run web tests controlling browsers via Playwright engine.
@@ -289,7 +289,7 @@ declare namespace CodeceptJS {
      * ```js
      * bootstrap: 'bootstrap.js',
      * ```
-    */
+     */
     bootstrap?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute code after tests](https://codecept.io/bootstrap/) finished.
@@ -303,7 +303,7 @@ declare namespace CodeceptJS {
      * ```js
      * teardown: 'teardown.js',
      * ```
-    */
+     */
     teardown?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
@@ -312,7 +312,7 @@ declare namespace CodeceptJS {
     bootstrapAll?: (() => Promise<void>) | boolean | string;
     /**
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
-    */
+     */
     teardownAll?: (() => Promise<void>) | boolean | string;
 
     /** Enable [localized test commands](https://codecept.io/translation/) */
@@ -328,7 +328,7 @@ declare namespace CodeceptJS {
      * ```
      * require: ["should"]
      * ```
-    */
+     */
     require?: Array<string>;
 
     /**
@@ -423,15 +423,18 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
+    | { vue: string }
     | { shadow: string[] }
     | { custom: string };
 
   interface CustomLocators {}
+  interface OtherLocators { props?: object }
   type LocatorOrString =
     | string
     | ILocator
     | Locator
-    | CustomLocators;
+    | OtherLocators
+    | CustomLocators[keyof CustomLocators];
 
   type StringOrSecret = string | CodeceptJS.Secret;
 
