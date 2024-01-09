@@ -54,7 +54,7 @@
     "test:unit:webbapi:webDriver": "mocha test/helper/WebDriver_test.js",
     "test:unit:webbapi:testCafe": "mocha test/helper/TestCafe_test.js",
     "test:unit:expect": "mocha test/helper/Expect_test.js",
-    "test:plugin": "mocha test/acceptance/plugin_test.js",
+    "test:plugin": "mocha test/runner/plugin_test.js",
     "def": "./runok.js def",
     "dev:graphql": "node test/data/graphql/index.js",
     "publish:site": "./runok.js publish:site",
