@@ -32,8 +32,8 @@ describe('WebDriver', function () {
       browser: 'chrome',
       windowSize: '500x700',
       smartWait: 0, // just to try
-      host: TestHelper.seleniumHost(),
-      port: TestHelper.seleniumPort(),
+      // host: TestHelper.seleniumHost(),
+      // port: TestHelper.seleniumPort(),
       waitForTimeout: 5000,
       capabilities: {
         chromeOptions: {

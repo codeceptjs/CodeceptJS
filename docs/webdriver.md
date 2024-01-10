@@ -7,11 +7,11 @@ title: Testing with WebDriver
 
 How does your client, manager, or tester, or any other non-technical person, know your web application is working? By opening the browser, accessing a site, clicking on links, filling in the forms, and actually seeing the content on a web page.
 
-End to End tests can cover standard but complex scenarios from a user's perspective. With e2e tests you can be confident that users, following all defined scenarios, won't get errors. We check **functionality of application and a user interface** (UI) as well.
+End-to-End tests can cover standard but complex scenarios from a user's perspective. With e2e tests you can be confident that users, following all defined scenarios, won't get errors. We check **functionality of application and a user interface** (UI) as well.
 
 ## What is Selenium WebDriver
 
-The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standartized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](/mobile).
+The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standardized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](/mobile).
 
 Let's clarify the terms:
 
@@ -53,14 +53,60 @@ exports.config = {
 
 > ⚠ It is not recommended to use wdio plugin & selenium-standalone when running tests in parallel. Consider **switching to Selenoid** if you need parallel run or using cloud services.
 
+🛩️ With the release of WebdriverIO version v8.14.0, and onwards, all driver management hassles are now a thing of the past 🙌. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
+One of the significant advantages of this update is that you can now get rid of any driver services you previously had to manage, such as
+`wdio-chromedriver-service`, `wdio-geckodriver-service`, `wdio-edgedriver-service`, `wdio-safaridriver-service`, and even `@wdio/selenium-standalone-service`.
+
+For those who require custom driver options, fear not; WebDriver Helper allows you to pass in driver options through custom WebDriver configuration.
+If you have a custom grid, use a cloud service, or prefer to run your own driver, there's no need to worry since WebDriver Helper will only start a driver when there are no other connection information settings like hostname or port specified.
+
+Example:
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
+}
+```
+
+Testing Chrome locally is now more convenient than ever. You can define a browser channel, and WebDriver Helper will take care of downloading the specified browser version for you.
+For example:
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       browserVersion: '116.0.5793.0', // or 'stable', 'beta', 'dev' or 'canary'
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
+}
+```
 
 ## Configuring WebDriver
 
 WebDriver can be configured to run browser tests in window, headlessly, on a remote server or in a cloud.
 
-> By default CodeceptJS is already configured to run WebDriver tests locally with Chrome or Firefox. If you just need to start running tests - proceed to the next chapter.
+> By default, CodeceptJS is already configured to run WebDriver tests locally with Chrome or Firefox. If you just need to start running tests - proceed to the next chapter.
 
-Configuration for WebDriver should be provided inside `codecept.conf.js` file under `helpers: WebDriver` section:
+Configuration for WebDriver should be provided inside `codecept.conf.(js|ts)` file under `helpers: WebDriver` section:
 
 ```js
   helpers: {
@@ -80,7 +126,7 @@ Configuration for WebDriver should be provided inside `codecept.conf.js` file un
   }
 ```
 
-By default CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
+By default, CodeceptJS runs tests in the same browser window but clears cookies and local storage after each test. This behavior can be changed with these options:
 
 ```js
 // change to true to restart browser between tests
@@ -152,7 +198,7 @@ desiredCapabilities: {
 
 WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or any other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
 
-By default, those parameters are set to connect to local Selenium Server but they should be changed if you want to run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
+By default, those parameters are set to connect to local Selenium Server, but they should be changed if you want to run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
