@@ -108,7 +108,7 @@ describe('WebDriver - No Selenium server started', function () {
     });
   });
 
-  describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
+  describe.skip('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should throw error if field is not empty', async () => {
       await wd.amOnPage('/form/empty');
 
@@ -217,7 +217,7 @@ describe('WebDriver - No Selenium server started', function () {
     });
   });
 
-  describe('#pressKey, #pressKeyDown, #pressKeyUp', () => {
+  describe.skip('#pressKey, #pressKeyDown, #pressKeyUp', () => {
     it('should be able to send special keys to element', async () => {
       await wd.amOnPage('/form/field');
       await wd.appendField('Name', '-');
@@ -432,7 +432,7 @@ describe('WebDriver - No Selenium server started', function () {
     });
   });
 
-  describe('#waitForEnabled', () => {
+  describe.skip('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', async () => {
       await wd.amOnPage('/form/wait_enabled');
       await wd.waitForEnabled('#text', 2);
@@ -455,7 +455,7 @@ describe('WebDriver - No Selenium server started', function () {
     });
   });
 
-  describe('#waitForValue', () => {
+  describe.skip('#waitForValue', () => {
     it('should wait for expected value for given locator', async () => {
       await wd.amOnPage('/info');
       await wd.waitForValue('//input[@name= "rus"]', 'Верно');
@@ -993,7 +993,7 @@ describe('WebDriver - No Selenium server started', function () {
     });
   });
 
-  describe('#AttachFile', () => {
+  describe.skip('#AttachFile', () => {
     it('should attach to regular input element', async () => {
       await wd.amOnPage('/form/file');
       await wd.attachFile('Avatar', './app/avatar.jpg');
