@@ -8,8 +8,8 @@ module.exports.config = {
     WebDriver: {
       url: TestHelper.siteUrl(),
       browser: 'chrome',
-      // host: TestHelper.seleniumHost(),
-      // port: TestHelper.seleniumPort(),
+      host: TestHelper.seleniumHost(),
+      port: TestHelper.seleniumPort(),
       // disableScreenshots: true,
       // desiredCapabilities: {
       //   chromeOptions: {
