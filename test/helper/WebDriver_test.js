@@ -601,7 +601,7 @@ describe('WebDriver', function () {
     });
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', async () => {
       await wd.amOnPage('/');
       const numPages = await wd.grabNumberOfOpenTabs();
@@ -614,6 +614,7 @@ describe('WebDriver', function () {
       assert.equal(numPages, 1);
 
       await wd.click('New tab');
+      await wd.waitForNumberOfTabs(2);
       await wd.switchToNextTab();
       await wd.waitInUrl('/login');
       const numPagesAfter = await wd.grabNumberOfOpenTabs();

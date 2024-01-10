@@ -2101,6 +2101,21 @@ See [Puppeteer's reference][23]
 
 -   `opts` **any**  
 
+### waitForNumberOfTabs
+
+Waits for number of tabs.
+
+```js
+I.waitForNumberOfTabs(2);
+```
+
+#### Parameters
+
+-   `expectedTabs` **[number][10]** expecting the number of tabs.
+-   `sec` **[number][10]** number of secs to wait.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### waitForRequest
 
 Waits for a network request.

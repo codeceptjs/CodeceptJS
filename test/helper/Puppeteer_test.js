@@ -226,7 +226,7 @@ describe('Puppeteer', function () {
       .then(() => I.dontSee('Hovered', '#show')));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
       .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
@@ -238,7 +238,7 @@ describe('Puppeteer', function () {
       .then(numPages => assert.equal(numPages, 1))
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
-      .then(() => I.wait(2))
+      .then(() => I.waitForNumberOfTabs(2))
       .then(() => I.seeCurrentUrlEquals('/login'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 2)));

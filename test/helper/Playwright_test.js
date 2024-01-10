@@ -256,7 +256,7 @@ describe('Playwright', function () {
       .then(() => I.dontSee('Hovered', '#show')));
   });
 
-  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
+  describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
       .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
@@ -298,13 +298,13 @@ describe('Playwright', function () {
 
     it('should close other tabs', () => I.amOnPage('/')
       .then(() => I.openNewTab())
-      .then(() => I.wait(1))
+      .then(() => I.waitForNumberOfTabs(2))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.amOnPage('/info'))
       .then(() => I.openNewTab())
       .then(() => I.amOnPage('/login'))
       .then(() => I.closeOtherTabs())
-      .then(() => I.wait(1))
+      .then(() => I.waitForNumberOfTabs(1))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
       .then(numPages => assert.equal(numPages, 1)));
