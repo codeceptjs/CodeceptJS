@@ -585,7 +585,7 @@ describe('WebDriver - No Selenium server started', function () {
       try {
       await wd.moveCursorTo('#hover', 100, 100);
       } catch (e) {
-        assert.equal(e.message, "xOffset would cause a out of bounds error as it goes outside of element";
+        assert.equal(e.message, "xOffset would cause a out of bounds error as it goes outside of element");
         }
   });
 
