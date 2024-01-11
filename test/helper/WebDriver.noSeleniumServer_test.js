@@ -582,11 +582,9 @@ describe('WebDriver - No Selenium server started', function () {
 
     it('should not trigger hover event because of the offset is beyond the element', async () => {
       await wd.amOnPage('/form/hover');
-      try {
       await wd.moveCursorTo('#hover', 100, 100);
-      } catch (e) {
-        assert.equal(e.message, "xOffset would cause a out of bounds error as it goes outside of element");
-        }
+      await wd.dontSee('Hovered', '#show');
+    });
   });
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs', () => {
