@@ -54,6 +54,7 @@ Type: [object][17]
 -   `timeouts` **[object][17]?** [WebDriver timeouts][38] defined as hash.
 -   `highlightElement` **[boolean][33]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 -   `logLevel` **[string][18]?** level of logging verbosity. Default: silent. Options: trace | debug | info | warn | error | silent. More info: [https://webdriver.io/docs/configuration/#loglevel][39]
+-   `devtoolsProtocol` **[boolean][33]?** enable devtools protocol. Default: false. More info: [https://webdriver.io/docs/automationProtocols/#devtools-protocol][40].
 
 
 
@@ -128,6 +129,25 @@ website][4].
      WebDriver : {
        url: "http://localhost",
        browser: "chrome",
+       desiredCapabilities: {
+         chromeOptions: {
+           args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
+         }
+       }
+     }
+   }
+}
+```
+
+### Running with devtools protocol
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "chrome",
+       devtoolsProtocol: true,
        desiredCapabilities: {
          chromeOptions: {
            args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
@@ -2062,7 +2082,7 @@ I.setGeoLocation(121.21, 11.56, 10);
 
 -   `latitude` **[number][23]** to set.
 -   `longitude` **[number][23]** to set
--   `altitude` **[number][23]?** (optional, null by default) to set 
+-   `altitude` **[number][23]?** (optional, null by default) to set
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2508,3 +2528,5 @@ Returns **void** automatically synchronized promise through #recorder
 [38]: http://webdriver.io/docs/timeouts.html
 
 [39]: https://webdriver.io/docs/configuration/#loglevel
+
+[40]: https://webdriver.io/docs/automationProtocols/#devtools-protocol
