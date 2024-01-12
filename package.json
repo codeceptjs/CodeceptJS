@@ -86,6 +86,7 @@
     "commander": "11.1.0",
     "cross-spawn": "7.0.3",
     "csstoxpath": "1.6.0",
+    "devtools": "8.27.2",
     "envinfo": "7.11.0",
     "escape-string-regexp": "4.0.0",
     "figures": "3.2.0",
