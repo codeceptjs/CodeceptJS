@@ -156,7 +156,7 @@
     "ts-morph": "21.0.1",
     "ts-node": "10.9.2",
     "tsd-jsdoc": "2.5.0",
-    "typedoc": "0.25.4",
+    "typedoc": "0.25.7",
     "typedoc-plugin-markdown": "3.17.1",
     "typescript": "5.3.3",
     "wdio-docker-service": "1.5.0",
