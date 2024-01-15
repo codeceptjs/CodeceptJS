@@ -2492,6 +2492,21 @@ See [Playwright's reference][41]
 
 -   `options` **any**  
 
+### waitForNumberOfTabs
+
+Waits for number of tabs.
+
+```js
+I.waitForNumberOfTabs(2);
+```
+
+#### Parameters
+
+-   `expectedTabs` **[number][20]** expecting the number of tabs.
+-   `sec` **[number][20]** number of secs to wait.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### waitForRequest
 
 Waits for a network request.
