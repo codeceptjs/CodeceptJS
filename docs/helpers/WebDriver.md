@@ -2347,8 +2347,8 @@ I.waitForNumberOfTabs(2);
 
 #### Parameters
 
--   `expectedTabs` **[number][22]** expecting the number of tabs.
--   `sec` **[number][22]** number of secs to wait.
+-   `expectedTabs` **[number][23]** expecting the number of tabs.
+-   `sec` **[number][23]** number of secs to wait.
 
 Returns **void** automatically synchronized promise through #recorder
 
