@@ -68,7 +68,7 @@ const xml = `<body>
   </div>
 </body>`;
 
-describe('Locator', () => {
+describe.only('Locator', () => {
   beforeEach(() => {
     doc = new DOMParser().parseFromString(xml, 'application/xhtml+xml');
   });
@@ -303,8 +303,14 @@ describe('Locator', () => {
     expect(nodes[0].firstChild.data).to.eql('Authoring', l.toXPath());
   });
 
-  it('should find element with last of type', () => {
-    const l = Locator.build('').find('.n1:last-of-type button');
+  it('should find element with last of type with text', () => {
+    const l = Locator.build('.p-confirm-popup:last-of-type button').withText('delete');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(0, l.toXPath());
+  });
+
+  it('should find element with last of type without text', () => {
+    const l = Locator.build('.p-confirm-popup:last-of-type button');
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(0, l.toXPath());
   });
