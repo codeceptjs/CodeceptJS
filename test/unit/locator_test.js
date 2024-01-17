@@ -68,7 +68,7 @@ const xml = `<body>
   </div>
 </body>`;
 
-describe.only('Locator', () => {
+describe('Locator', () => {
   beforeEach(() => {
     doc = new DOMParser().parseFromString(xml, 'application/xhtml+xml');
   });

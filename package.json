@@ -75,7 +75,6 @@
     "acorn": "8.11.2",
     "arrify": "2.0.1",
     "axios": "1.6.3",
-    "bo-selector": "0.0.10",
     "chai": "4.3.8",
     "chai-deep-match": "1.2.1",
     "chai-exclude": "2.1.0",
@@ -111,8 +110,7 @@
     "promise-retry": "1.1.1",
     "resq": "1.11.0",
     "sprintf-js": "1.1.1",
-    "uuid": "9.0",
-    "xpath-builder": "0.0.7"
+    "uuid": "9.0"
   },
   "optionalDependencies": {
     "@codeceptjs/detox-helper": "1.0.2"
