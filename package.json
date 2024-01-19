@@ -23,7 +23,6 @@
   },
   "files": [
     "bin",
-    "docs",
     "lib",
     "translations",
     "typings/**/*.d.ts"
