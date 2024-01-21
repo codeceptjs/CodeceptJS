@@ -50,6 +50,7 @@ const xml = `<body>
     </div>
   </fieldset>
   <label class="n-1">Hello<a href="#">Please click</a></label>
+  <label class="n1">Hello no hyphen<a href="#">Please click</a></label>
   </div>
   <input type="hidden" name="return_url" value="" id="return_url" />
 
@@ -197,7 +198,7 @@ describe('Locator', () => {
       .inside(Locator.build('label').withText('Hello'));
 
     const nodes = xpath.select(l.toXPath(), doc);
-    expect(nodes).to.have.length(1, l.toXPath());
+    expect(nodes).to.have.length(2, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath());
   });
 
@@ -300,5 +301,17 @@ describe('Locator', () => {
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
     expect(nodes[0].firstChild.data).to.eql('Authoring', l.toXPath());
+  });
+
+  it('should find element with last of type with text', () => {
+    const l = Locator.build('.p-confirm-popup:last-of-type button').withText('delete');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(0, l.toXPath());
+  });
+
+  it('should find element with last of type without text', () => {
+    const l = Locator.build('.p-confirm-popup:last-of-type button');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(0, l.toXPath());
   });
 });
