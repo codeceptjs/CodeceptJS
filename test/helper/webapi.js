@@ -1318,8 +1318,8 @@ module.exports.tests = function () {
     });
   });
 
-  describe('#seeAttributesOnElements', () => {
-    it.skip('should check attributes values for given element', async function () {
+  describe.only('#seeAttributesOnElements', () => {
+    it('should check attributes values for given element', async function () {
       if (isHelper('TestCafe')) this.skip();
 
       try {
@@ -1385,6 +1385,19 @@ module.exports.tests = function () {
         });
       } catch (e) {
         e.message.should.include('expected all elements ({css: a[href="/team"]}) to have attributes {"disable":true} "0" to equal "1"');
+      }
+    });
+
+    it('should verify the boolean attribute', async function () {
+      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip();
+
+      try {
+        await I.amOnPage('/');
+        await I.seeAttributesOnElements('input', {
+          disabled: true,
+        });
+      } catch (e) {
+        e.message.should.include('expected all elements (input) to have attributes {"disabled":true} "0" to equal "1"');
       }
     });
   });

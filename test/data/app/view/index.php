@@ -25,6 +25,10 @@
   <a href="/spinner" qa-id = "test" qa-link = "test">Spinner</a>
 </div>
 
+<div id="area5" qa-id = "test">
+  <input qa-id = "test" qa-link = "test" disabled>Hidden input</a>
+</div>
+
 A wise man said: "debug!"
 
 <?php print_r($_POST); ?>
