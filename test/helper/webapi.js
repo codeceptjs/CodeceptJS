@@ -1318,7 +1318,7 @@ module.exports.tests = function () {
     });
   });
 
-  describe.only('#seeAttributesOnElements', () => {
+  describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', async function () {
       if (isHelper('TestCafe')) this.skip();
 
