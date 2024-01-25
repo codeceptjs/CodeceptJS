@@ -187,7 +187,7 @@ I.addInteractionToMockServer({
 
 -   `interaction` **(CodeceptJS.MockInteraction | [object][1])** add behavior to the mock server
 
-Returns **any** Promise<void>
+Returns **any** void
 
 ### startMockServer
 
@@ -197,13 +197,13 @@ Start the mock server
 
 -   `port` **[number][2]?** start the mock server with given port
 
-Returns **any** Promise<void>
+Returns **any** void
 
 ### stopMockServer
 
 Stop the mock server
 
-Returns **any** Promise<void>
+Returns **any** void
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
