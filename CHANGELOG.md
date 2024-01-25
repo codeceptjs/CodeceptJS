@@ -3,7 +3,7 @@
 ❤️ Thanks all to those who contributed to make this release! ❤️
 
 🛩️ *Features*
-* feat: upgrade wdio (#4123) - by @KobeN
+* feat: upgrade wdio (#4123) - by @KobeNguyenT
 
   🛩️ With the release of WebdriverIO version `v8.14.0`, and onwards, all driver management hassles are now a thing of the past 🙌. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
   One of the significant advantages of this update is that you can now get rid of any driver services you previously had to manage, such as
@@ -51,7 +51,7 @@ For example:
    }
 }
 ```
-* feat: wdio with devtools protocol (#4105) - by @KobeN
+* feat: wdio with devtools protocol (#4105) - by @KobeNguyenT
 
 Running with devtools protocol
 
@@ -77,23 +77,23 @@ Find an element with exact text
 ```js
 locate('button').withTextEquals('Add');
 ```
-* feat: waitForNumberOfTabs (#4124) - by @KobeN
+* feat: waitForNumberOfTabs (#4124) - by @KobeNguyenT
 
 Waits for number of tabs.
 
 ```js
 I.waitForNumberOfTabs(2);
 ```
-* feat: I.say would be added to Test.steps array (#4145) - by @KobeN
+* feat: I.say would be added to Test.steps array (#4145) - by @KobeNguyenT
 
 Currently `I.say` is not added into the `Test.steps` array. This PR aims to add this to steps array so that we could use it to print steps in ReportPortal for instance.
 
 ![Screenshot 2024-01-19 at 15 41 34](https://github.com/codeceptjs/CodeceptJS/assets/7845001/82af552a-aeb3-487e-ac10-b5bb7e42470f)
 
 🐛 *Bug Fixes*
-* fix: reduce the package size to 2MB (#4138) - by @KobeN
-* fix(webapi): see attributes on elements (#4147) - by @KobeN
-* fix: some assertion methods (#4144) - by @KobeN
+* fix: reduce the package size to 2MB (#4138) - by @KobeNguyenT
+* fix(webapi): see attributes on elements (#4147) - by @KobeNguyenT
+* fix: some assertion methods (#4144) - by @KobeNguyenT
 
 Improve the error message for `seeElement`, `dontSeeElement`, `seeElementInDOM`, `dontSeeElementInDOM`
 
@@ -119,7 +119,7 @@ Updated
       at Playwright.dontSeeElement (lib/helper/Playwright.js:1472:7)
 ```
 
-* fix: css to xpath backward compatibility (#4141) - by @KobeN
+* fix: css to xpath backward compatibility (#4141) - by @KobeNguyenT
 
 - [css-to-xpath](https://www.npmjs.com/package/css-to-xpath): old lib, which works perfectly unless you have hyphen in locator. (https://github.com/codeceptjs/CodeceptJS/issues/3563)
 - [csstoxpath](https://www.npmjs.com/package/csstoxpath): new lib, to solve the issue locator with hyphen but also have some [limitations](https://www.npmjs.com/package/csstoxpath#limitations)
@@ -141,7 +141,7 @@ at this time, res.data.data[0].id would throw undefined error and somehow the te
 `process.env.profile` is the string "undefined" instead of type undefined when no --profile is specified in the mode "run-multiple"
 
 
-* fix: session doesn't respect the context options (#4111) - by @KobeN
+* fix: session doesn't respect the context options (#4111) - by @KobeNguyenT
 
 ```js
 Helpers: Playwright
@@ -166,17 +166,17 @@ sessionScreen is {"width":375,"height":667}
 OK  | 1 passed   // 4s
 ```
 
-* fix(plugin): retryTo issue (#4117) - by @KobeN
+* fix(plugin): retryTo issue (#4117) - by @KobeNguyenT
   ![Screenshot 2024-01-08 at 17 36 54](https://github.com/codeceptjs/CodeceptJS/assets/7845001/39c97073-e2e9-4c4c-86ee-62540bc95015)
 
-* fix(types): CustomLocator typing broken for custom strict locators (#4120) - by @KobeN
-* fix: wrong output for skipped tests - by @KobeN
-* fix: no retry failed step after tryto block (#4103) - by @KobeN
-* fix: deprecate some JSON Wire Protocol commands (#4104) - by @KobeN
+* fix(types): CustomLocator typing broken for custom strict locators (#4120) - by @KobeNguyenT
+* fix: wrong output for skipped tests - by @KobeNguyenT
+* fix: no retry failed step after tryto block (#4103) - by @KobeNguyenT
+* fix: deprecate some JSON Wire Protocol commands (#4104) - by @KobeNguyenT
 
 deprecate some JSON Wire Protocol commands: `grabGeoLocation`, `setGeoLocation`
 
-* fix: cannot locate complicated locator (#4101) - by @KobeN
+* fix: cannot locate complicated locator (#4101) - by @KobeNguyenT
   
 Locator issue due to the lib changes
 
