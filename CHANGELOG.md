@@ -1,3 +1,191 @@
+## 3.5.12
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat: upgrade wdio (#4123) - by @KobeN
+
+  🛩️ With the release of WebdriverIO version `v8.14.0`, and onwards, all driver management hassles are now a thing of the past 🙌. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
+  One of the significant advantages of this update is that you can now get rid of any driver services you previously had to manage, such as
+  `wdio-chromedriver-service`, `wdio-geckodriver-service`, `wdio-edgedriver-service`, `wdio-safaridriver-service`, and even `@wdio/selenium-standalone-service`.
+
+For those who require custom driver options, fear not; WebDriver Helper allows you to pass in driver options through custom WebDriver configuration.
+If you have a custom grid, use a cloud service, or prefer to run your own driver, there's no need to worry since WebDriver Helper will only start a driver when there are no other connection information settings like hostname or port specified.
+
+Example:
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
+}
+```
+
+Testing Chrome locally is now more convenient than ever. You can define a browser channel, and WebDriver Helper will take care of downloading the specified browser version for you.
+For example:
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       browserVersion: '116.0.5793.0', // or 'stable', 'beta', 'dev' or 'canary'
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
+}
+```
+* feat: wdio with devtools protocol (#4105) - by @KobeN
+
+Running with devtools protocol
+
+```js
+{
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "chrome",
+       devtoolsProtocol: true,
+       desiredCapabilities: {
+         chromeOptions: {
+           args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
+         }
+       }
+     }
+   }
+}
+```
+* feat: add a locator builder method withTextEquals() (#4100) - by @mirao
+
+Find an element with exact text
+```js
+locate('button').withTextEquals('Add');
+```
+* feat: waitForNumberOfTabs (#4124) - by @KobeN
+
+Waits for number of tabs.
+
+```js
+I.waitForNumberOfTabs(2);
+```
+* feat: I.say would be added to Test.steps array (#4145) - by @KobeN
+
+Currently `I.say` is not added into the `Test.steps` array. This PR aims to add this to steps array so that we could use it to print steps in ReportPortal for instance.
+
+![Screenshot 2024-01-19 at 15 41 34](https://github.com/codeceptjs/CodeceptJS/assets/7845001/82af552a-aeb3-487e-ac10-b5bb7e42470f)
+
+🐛 *Bug Fixes*
+* fix: reduce the package size to 2MB (#4138) - by @KobeN
+* fix(webapi): see attributes on elements (#4147) - by @KobeN
+* fix: some assertion methods (#4144) - by @KobeN
+
+Improve the error message for `seeElement`, `dontSeeElement`, `seeElementInDOM`, `dontSeeElementInDOM`
+
+The current error message doesn't really help when debugging issue also causes some problem described in #4140
+
+Actual
+
+```
+      expected visible elements '[ELEMENT]' to be empty
+      + expected - actual
+
+      -[
+      -  "ELEMENT"
+      -]
+      +[]
+```
+
+Updated
+
+```
+     Error: Element "h1" is still visible
+      at seeElementError (lib/helper/errors/ElementAssertion.js:9:9)
+      at Playwright.dontSeeElement (lib/helper/Playwright.js:1472:7)
+```
+
+* fix: css to xpath backward compatibility (#4141) - by @KobeN
+
+- [css-to-xpath](https://www.npmjs.com/package/css-to-xpath): old lib, which works perfectly unless you have hyphen in locator. (https://github.com/codeceptjs/CodeceptJS/issues/3563)
+- [csstoxpath](https://www.npmjs.com/package/csstoxpath): new lib, to solve the issue locator with hyphen but also have some [limitations](https://www.npmjs.com/package/csstoxpath#limitations)
+
+* fix: grabRecordedNetworkTraffics throws error when being called twice (#4143) - by @KobeNguyenT
+* fix: missing steps of test when running with workers (#4127) - by @KobeNguyenT
+
+```js
+Scenario('Verify getting list of users', async () => {
+let res = await I.getUserPerPage(2);
+res.data = []; // this line causes the issue
+await I.expectEqual(res.data.data[0].id, 7);
+});
+```
+at this time, res.data.data[0].id would throw undefined error and somehow the test is missing all its steps.
+
+* fix: process.env.profile when --profile isn't set in run-multiple mode (#4131) - by @mirao
+
+`process.env.profile` is the string "undefined" instead of type undefined when no --profile is specified in the mode "run-multiple"
+
+
+* fix: session doesn't respect the context options (#4111) - by @KobeN
+
+```js
+Helpers: Playwright
+Plugins: screenshotOnFail, tryTo, retryFailedStep, retryTo, eachElement
+
+Repro --
+[1]  Starting recording promises
+Timeouts:
+› [Session] Starting singleton browser session
+Reproduce issue
+I am on page "https://example.com"
+› [Browser:Error] Failed to load resource: the server responded with a status of 404 ()
+› [New Context] {}
+user1: I am on page "https://example.com"
+user1: I execute script () => {
+return { width: window.screen.width, height: window.screen.height };
+}
+sessionScreen is {"width":375,"height":667}
+✔ OK in 1890ms
+
+
+OK  | 1 passed   // 4s
+```
+
+* fix(plugin): retryTo issue (#4117) - by @KobeN
+  ![Screenshot 2024-01-08 at 17 36 54](https://github.com/codeceptjs/CodeceptJS/assets/7845001/39c97073-e2e9-4c4c-86ee-62540bc95015)
+
+* fix(types): CustomLocator typing broken for custom strict locators (#4120) - by @KobeN
+* fix: wrong output for skipped tests - by @KobeN
+* fix: no retry failed step after tryto block (#4103) - by @KobeN
+* fix: deprecate some JSON Wire Protocol commands (#4104) - by @KobeN
+
+deprecate some JSON Wire Protocol commands: `grabGeoLocation`, `setGeoLocation`
+
+* fix: cannot locate complicated locator (#4101) - by @KobeN
+  
+Locator issue due to the lib changes
+
+```
+The locator locate(".ps-menu-button").withText("Authoring").inside(".ps-submenu-root:nth-child(3)") is translated to
+3.5.8: //*[contains(concat(' ', normalize-space(./@class), ' '), ' ps-menu-button ')][contains(., 'Authoring')][ancestor::*[(contains(concat(' ', normalize-space(./@class), ' '), ' ps-submenu-root ') and count(preceding-sibling::*) = 2)]] and works well
+3.5.11: //*[contains(@class, "ps-menu-button")][contains(., 'Authoring')][ancestor::*[3][contains(@class, "ps-submenu-root")]] and doesn't work (no clickable element found). Even if you test it in browser inspector, it doesn't work.
+```
+
 ## 3.5.11
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
