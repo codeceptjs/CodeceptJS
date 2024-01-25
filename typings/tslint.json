@@ -15,7 +15,8 @@
     "trim-file": false,
     "no-consecutive-blank-lines": false,
     "no-redundant-jsdoc": false,
-    "adjacent-overload-signatures": false
+    "adjacent-overload-signatures": false,
+    "no-any-union": false
   },
   "linterOptions": {
     "exclude": [

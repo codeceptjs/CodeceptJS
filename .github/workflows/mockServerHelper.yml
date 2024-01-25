@@ -1,0 +1,34 @@
+name: Mock Server Tests
+
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+      run: npm i --legacy-peer-deps
+    - name: run unit tests
+      run: npm run test:unit:mockServer
