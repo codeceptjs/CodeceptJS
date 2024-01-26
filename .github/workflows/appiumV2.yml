@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions/checkout@v4
       - name: Appium common steps
-        uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
+        uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml@3.x
 
       - name: Run Appium Tests
         run: npm run test:${{ matrix.test-suite }}
