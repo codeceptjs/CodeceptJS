@@ -3,6 +3,7 @@ description: 'install deps and start test server'
 runs:
   using: 'composite'
   steps:
+    - uses: actions/checkout@v4
     - name: npm install
       run: |
         npm install --legacy-peer-deps

@@ -3,6 +3,7 @@ description: 'install php and deps'
 runs:
   using: 'composite'
   steps:
+    - uses: actions/checkout@v4
     - uses: shivammathur/setup-php@v2
       with:
         php-version: 7.4

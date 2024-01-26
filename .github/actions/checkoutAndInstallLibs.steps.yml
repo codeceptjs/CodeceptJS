@@ -3,6 +3,7 @@ description: 'install deps'
 runs:
   using: 'composite'
   steps:
+    - uses: actions/checkout@v4
     - run: npm install --legacy-peer-deps
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
