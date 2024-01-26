@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Appium common steps
-        uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
+        uses: ./.github/actions/checkoutAndInstallLibs.steps.yml
 
       - name: Run Appium Tests
         run: npm run test:${{ matrix.test-suite }}
