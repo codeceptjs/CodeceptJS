@@ -51,7 +51,7 @@ jobs:
         uses: ./.github/commonSteps/playwright.steps.yml
 
       - name: run ${{ matrix.browser }} tests
-        run: BROWSER=${{ matrix.browser }} node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug
+        run: "BROWSER=${{ matrix.browser }} node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
       - name: run chromium with restart==${{ browser-restart }} tests
-        run: BROWSER_RESTART=${{ browser-restart }} ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug
+        run: "BROWSER_RESTART=${{ browser-restart }} ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
 
