@@ -25,6 +25,11 @@ jobs:
         test-suite: ['appium-quick', 'appium-other', 'ios:appium-quick', 'ios:appium-other']
 
     steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Appium common steps
         uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
 

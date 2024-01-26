@@ -22,6 +22,12 @@ jobs:
         node-version: [20.x]
 
     steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
     - name: Checkout and install dependencies steps
       uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
 
