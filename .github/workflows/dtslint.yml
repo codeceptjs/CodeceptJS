@@ -22,6 +22,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Checkout and install dependencies steps
-        uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml@3.x
+        uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
 
       - run: npm run def && npm run dtslint
