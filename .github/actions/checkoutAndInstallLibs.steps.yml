@@ -1,5 +1,9 @@
-steps:
-  - run: npm install --legacy-peer-deps
-    env:
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+name: 'install deps'
+description: 'install deps'
+runs:
+  using: 'composite'
+  steps:
+    - run: npm install --legacy-peer-deps
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true

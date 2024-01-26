@@ -1,8 +1,12 @@
-steps:
-  - uses: shivammathur/setup-php@v2
-    with:
-      php-version: 7.4
-  - run: npm install --legacy-peer-deps
-    env:
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+name: 'install php and deps'
+description: 'install php and deps'
+runs:
+  using: 'composite'
+  steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+    - run: npm install --legacy-peer-deps
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
