@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - uses: actions/checkout@v3
       - name: Checkout and install dependencies steps
         uses: ./.github/workflows/checkoutAndInstallLibs.steps.yml
 
