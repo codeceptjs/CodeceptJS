@@ -11,19 +11,11 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 18.x ]
+        node-version: [ 20.x ]
 
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+      - name: Checkout and install dependencies steps
+        uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
 
       - name: Configure git user
         run: |

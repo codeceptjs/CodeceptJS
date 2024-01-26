@@ -13,16 +13,9 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install --legacy-peer-deps
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: npm run def
-    - run: npm run dtslint
+      - name: Checkout and install dependencies steps
+        uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
+
+      - run: npm run def && npm run dtslint

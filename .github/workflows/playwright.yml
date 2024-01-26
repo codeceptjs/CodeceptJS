@@ -12,43 +12,46 @@ env:
   CI: true
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
+  NODE_VERSION: 20.x
+  PLATFORM: ubuntu-22.04
 
 jobs:
-  build:
-
-    runs-on: ubuntu-22.04
+  run-unit-tests:
+    runs-on: $PLATFORM
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [$NODE_VERSION]
+        browser-restart: ['browser', 'session']
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: 7.4
-    - name: npm install
-      run: |
-        npm install --legacy-peer-deps
-      env:
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - name: Install browsers and deps
-      run: npx playwright install && npx playwright install-deps
-    - name: start a server
-      run: "php -S 127.0.0.1:8000 -t test/data/app &"
-    - name: run chromium tests
-      run: "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run chromium with restart==browser tests
-      run: "BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run chromium with restart==session tests
-      run: "BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run firefox tests
-      run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run webkit tests
-      run: "BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
+    - name: Checkout and install dependencies steps
+      uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
+
+    - name: Playwright common steps
+      uses: ./.github/commonSteps/playwright.steps.yml
+
     - name: run chromium unit tests
       run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000
+
+  run-acceptance-tests:
+    runs-on: $PLATFORM
+
+    strategy:
+      matrix:
+        node-version: [ $NODE_VERSION ]
+        browser-restart: [ 'browser', 'session' ]
+        browser: [ 'chromium', 'firefox', 'webkit' ]
+
+    steps:
+      - name: Checkout and install dependencies steps
+        uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
+
+      - name: Playwright common steps
+        uses: ./.github/commonSteps/playwright.steps.yml
+
+      - name: run ${{ matrix.browser }} tests
+        run: BROWSER=${{ matrix.browser }} node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug
+      - name: run chromium with restart==${{ browser-restart }} tests
+        run: BROWSER_RESTART=${{ browser-restart }} ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug
+

@@ -1,0 +1,32 @@
+name: Appium V2 Tests
+
+on:
+  push:
+    branches:
+      - 3.x
+      - consolidate-test-env-in-gha
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+  NODE_VERSION: 20.x
+  PLATFORM: ubuntu-22.04
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+
+jobs:
+  AppiumTests:
+    runs-on: $PLATFORM
+
+    strategy:
+      matrix:
+        node-version: [$NODE_VERSION]
+        test-suite: ['appium-quick', 'appium-other', 'ios:appium-quick', 'ios:appium-other']
+
+    steps:
+      - name: Appium common steps
+        uses: ./.github/commonSteps/checkoutAndInstallLibs.steps.yml
+
+      - name: Run Appium Tests
+        run: npm run test:${{ matrix.test-suite }}
