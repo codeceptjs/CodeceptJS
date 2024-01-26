@@ -433,6 +433,13 @@ module.exports.tests = function () {
       await I.click('Submit');
       assert.deepEqual(formContents('like'), ['play', 'adult']);
     });
+
+    it('should select option by label and option text with additional spaces', async () => {
+      await I.amOnPage('/form/select_additional_spaces');
+      await I.selectOption('Select your age', '21-60');
+      await I.click('Submit');
+      assert.equal(formContents('age'), 'adult');
+    });
   });
 
   describe('#executeScript', () => {
