@@ -26,10 +26,10 @@ jobs:
 
     steps:
     - name: Checkout and install dependencies steps
-      uses: ./.github/actions/checkoutAndInstallLibs.steps.yml
+      uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
 
     - name: Playwright common steps
-      uses: ./.github/actions/playwright.steps.yml
+      uses: CodeceptJS/CodeceptJS/.github/actions/playwright.steps.yml
 
     - name: run chromium unit tests
       run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000
@@ -51,10 +51,10 @@ jobs:
 
       - uses: actions/checkout@v4
       - name: Checkout and install dependencies steps
-        uses: ./.github/actions/checkoutAndInstallLibs.steps.yml
+        uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
 
       - name: Playwright common steps
-        uses: ./.github/actions/playwright.steps.yml
+        uses: CodeceptJS/CodeceptJS/.github/actions/playwright.steps.yml
 
       - name: run ${{ matrix.browser }} tests
         run: BROWSER=${{ matrix.browser }} node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug

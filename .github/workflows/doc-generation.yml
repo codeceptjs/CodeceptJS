@@ -21,7 +21,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Checkout and install dependencies steps
-        uses: ./.github/actions/checkoutAndInstallLibs.steps.yml
+        uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
 
       - name: Configure git user
         run: |
