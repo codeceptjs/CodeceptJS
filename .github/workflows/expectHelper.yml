@@ -28,7 +28,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Checkout and install dependencies steps
-      uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
+      uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml@consolidate-test-env-in-gha
 
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/Expect_test.js --timeout 5000
