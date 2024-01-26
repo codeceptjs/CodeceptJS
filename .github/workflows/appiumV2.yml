@@ -30,7 +30,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - uses: actions/checkout@v4
       - name: Appium common steps
         uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
 

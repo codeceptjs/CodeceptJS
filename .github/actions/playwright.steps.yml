@@ -1,7 +1,10 @@
-name: 'playwright steps'
-description: 'install deps and start test server'
-runs:
-  using: 'composite'
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
   steps:
     - uses: actions/checkout@v4
     - name: npm install

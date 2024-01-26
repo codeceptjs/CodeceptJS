@@ -27,7 +27,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - uses: actions/checkout@v4
     - name: Checkout and install dependencies steps
       uses: CodeceptJS/CodeceptJS/.github/actions/checkoutAndInstallLibs.steps.yml
 
