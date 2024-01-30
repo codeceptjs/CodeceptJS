@@ -54,7 +54,7 @@ appium.sendDeviceKeyEvent(num); // $ExpectType Promise<void>
 appium.openNotifications(); // $ExpectType Promise<void>
 appium.makeTouchAction(); // $ExpectType Promise<void>
 appium.tap(str); // $ExpectType Promise<void>
-appium.performSwipe(str, str, str); // $ExpectType void
+appium.performSwipe(str, str); // $ExpectType void
 appium.swipeDown(str); // $ExpectType Promise<void>
 appium.swipeLeft(str); // $ExpectType Promise<void>
 appium.swipeRight(str); // $ExpectType Promise<void>
