@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - 3.x
-  pull_request:
-    branches:
-      - '**'
 
 env:
   CI: true
