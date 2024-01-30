@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 3.x
-      - MykaLev:performeSwipe-updated-to-w3c-protocol
+      - '**'
 
 env:
   CI: true
