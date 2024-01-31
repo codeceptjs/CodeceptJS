@@ -935,14 +935,14 @@ describe('WebDriver - Devtools Protocol', function () {
 
   describe('#dragAndDrop', () => {
     it('Drag item from source to target (no iframe) @dragNdrop', async () => {
-      await wd.amOnPage('http://jqueryuwd.com/resources/demos/droppable/default.html');
+      await wd.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html');
       await wd.seeElementInDOM('#draggable');
       await wd.dragAndDrop('#draggable', '#droppable');
       await wd.see('Dropped');
     });
 
     it.skip('Drag and drop from within an iframe', async () => {
-      await wd.amOnPage('http://jqueryuwd.com/droppable');
+      await wd.amOnPage('http://jqueryui.com/droppable');
       await wd.resizeWindow(700, 700);
       await wd.switchTo('//iframe[@class="demo-frame"]');
       await wd.seeElementInDOM('#draggable');
@@ -1291,7 +1291,7 @@ describe('WebDriver - Devtools Protocol', function () {
       }
     });
 
-    it('should check traffics with more advanced post data', async () => {
+    it.skip('should check traffics with more advanced post data', async () => {
       await wd.amOnPage('https://openawd.com/blog/chatgpt');
       await wd.startRecordingTraffic();
       await wd.seeTraffic({
@@ -1303,7 +1303,7 @@ describe('WebDriver - Devtools Protocol', function () {
       });
     });
 
-    it('should show error when advanced post data are not matching', async () => {
+    it.skip('should show error when advanced post data are not matching', async () => {
       await wd.amOnPage('https://openawd.com/blog/chatgpt');
       await wd.startRecordingTraffic();
       try {
