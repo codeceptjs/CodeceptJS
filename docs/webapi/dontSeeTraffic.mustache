@@ -1,0 +1,13 @@
+Verifies that a certain request is not part of network traffic.
+
+Examples:
+
+```js
+I.dontSeeTraffic({ name: 'Unexpected API Call', url: 'https://api.example.com' });
+I.dontSeeTraffic({ name: 'Unexpected API Call of "user" endpoint', url: /api.example.com.*user/ });
+```
+
+@param {Object} opts - options when checking the traffic network.
+@param {string} opts.name A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+@param {string|RegExp} opts.url Expected URL of request in network traffic. Can be a string or a regular expression.
+@return {void} automatically synchronized promise through #recorder

@@ -935,14 +935,14 @@ describe('WebDriver - Devtools Protocol', function () {
 
   describe('#dragAndDrop', () => {
     it('Drag item from source to target (no iframe) @dragNdrop', async () => {
-      await wd.amOnPage('http://jqueryui.com/resources/demos/droppable/default.html');
+      await wd.amOnPage('http://jqueryuwd.com/resources/demos/droppable/default.html');
       await wd.seeElementInDOM('#draggable');
       await wd.dragAndDrop('#draggable', '#droppable');
       await wd.see('Dropped');
     });
 
     it.skip('Drag and drop from within an iframe', async () => {
-      await wd.amOnPage('http://jqueryui.com/droppable');
+      await wd.amOnPage('http://jqueryuwd.com/droppable');
       await wd.resizeWindow(700, 700);
       await wd.switchTo('//iframe[@class="demo-frame"]');
       await wd.seeElementInDOM('#draggable');
@@ -1186,6 +1186,137 @@ describe('WebDriver - Devtools Protocol', function () {
         return browser.getTitle();
       });
       assert.equal('TestEd Beta 2.0', title);
+    });
+  });
+
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
+    it('should throw error when calling seeTraffic before recording traffics', async () => {
+      try {
+        wd.amOnPage('https://codecept.io/');
+        await wd.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeTraffic", but "I.startRecordingTraffic" was never called before.');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing name', async () => {
+      try {
+        wd.amOnPage('https://codecept.io/');
+        await wd.seeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing url', async () => {
+      try {
+        wd.amOnPage('https://codecept.io/');
+        await wd.seeTraffic({ name: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should flush the network traffics', async () => {
+      await wd.startRecordingTraffic();
+      await wd.amOnPage('https://codecept.io/');
+      await wd.flushNetworkTraffics();
+      const traffics = await wd.grabRecordedNetworkTraffics();
+      expect(traffics.length).to.equal(0);
+    });
+
+    it('should see recording traffics', async () => {
+      wd.startRecordingTraffic();
+      wd.amOnPage('https://codecept.io/');
+      await wd.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics', async () => {
+      wd.startRecordingTraffic();
+      wd.amOnPage('https://codecept.io/');
+      wd.stopRecordingTraffic();
+      await wd.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics using regex url', async () => {
+      wd.startRecordingTraffic();
+      wd.amOnPage('https://codecept.io/');
+      wd.stopRecordingTraffic();
+      await wd.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing name', async () => {
+      wd.startRecordingTraffic();
+      wd.amOnPage('https://codecept.io/');
+      wd.stopRecordingTraffic();
+      try {
+        await wd.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing url', async () => {
+      wd.startRecordingTraffic();
+      wd.amOnPage('https://codecept.io/');
+      wd.stopRecordingTraffic();
+      try {
+        await wd.dontSeeTraffic({ name: 'traffics' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should check traffics with more advanced params', async () => {
+      await wd.startRecordingTraffic();
+      await wd.amOnPage('https://openawd.com/blog/chatgpt');
+      const traffics = await wd.grabRecordedNetworkTraffics();
+
+      for (const traffic of traffics) {
+        if (traffic.url.includes('&width=')) {
+          // new URL object
+          const currentUrl = new URL(traffic.url);
+
+          // get access to URLSearchParams object
+          const searchParams = currentUrl.searchParams;
+
+          await wd.seeTraffic({
+            name: 'sentry event',
+            url: currentUrl.origin + currentUrl.pathname,
+            parameters: searchParams,
+          });
+
+          break;
+        }
+      }
+    });
+
+    it('should check traffics with more advanced post data', async () => {
+      await wd.amOnPage('https://openawd.com/blog/chatgpt');
+      await wd.startRecordingTraffic();
+      await wd.seeTraffic({
+        name: 'event',
+        url: 'https://region1.google-analytics.com',
+        requestPostData: {
+          st: 2,
+        },
+      });
+    });
+
+    it('should show error when advanced post data are not matching', async () => {
+      await wd.amOnPage('https://openawd.com/blog/chatgpt');
+      await wd.startRecordingTraffic();
+      try {
+        await wd.seeTraffic({
+          name: 'event',
+          url: 'https://region1.google-analytics.com',
+          requestPostData: {
+            st: 3,
+          },
+        });
+      } catch (e) {
+        expect(e.message).to.contain('actual value: "2"');
+      }
     });
   });
 });

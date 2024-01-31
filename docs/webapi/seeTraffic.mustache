@@ -1,0 +1,36 @@
+Verifies that a certain request is part of network traffic.
+
+```js
+// checking the request url contains certain query strings
+I.amOnPage('https://openai.com/blog/chatgpt');
+I.startRecordingTraffic();
+await I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+    width: '1919',
+    height: '1138',
+    },
+  });
+```
+
+```js
+// checking the request url contains certain post data
+I.amOnPage('https://openai.com/blog/chatgpt');
+I.startRecordingTraffic();
+await I.seeTraffic({
+    name: 'event',
+    url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+    requestPostData: {
+    st: 2,
+    },
+  });
+```
+
+@param {Object} opts - options when checking the traffic network.
+@param {string} opts.name A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+@param {string} opts.url Expected URL of request in network traffic
+@param {Object} [opts.parameters] Expected parameters of that request in network traffic
+@param {Object} [opts.requestPostData] Expected that request contains post data in network traffic
+@param {number} [opts.timeout] Timeout to wait for request in seconds. Default is 10 seconds.
+@return {void} automatically synchronized promise through #recorder
