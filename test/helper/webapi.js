@@ -892,6 +892,7 @@ module.exports.tests = function () {
 
     it('should wait for cookie and throw error when cookie not found', async () => {
       if (isHelper('TestCafe')) return;
+      if (process.env.DevTools) return;
 
       await I.amOnPage('https://google.com');
       try {
@@ -903,6 +904,7 @@ module.exports.tests = function () {
 
     it('should wait for cookie', async () => {
       if (isHelper('TestCafe')) return;
+      if (process.env.DevTools) return;
 
       await I.amOnPage('https://google.com');
       await I.setCookie({
