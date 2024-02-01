@@ -897,7 +897,7 @@ module.exports.tests = function () {
       try {
         await I.waitForCookie('auth', 2);
       } catch (e) {
-        assert.equal(e.message, 'auth is not found after 2s');
+        assert.equal(e.message, 'Cookie auth is not found after 2s');
       }
     });
 
