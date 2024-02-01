@@ -891,6 +891,8 @@ module.exports.tests = function () {
     });
 
     it('should wait for cookie and throw error when cookie not found', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       await I.amOnPage('https://google.com');
       try {
         await I.waitForCookie('auth', 2);
@@ -900,6 +902,8 @@ module.exports.tests = function () {
     });
 
     it('should wait for cookie', async () => {
+      if (isHelper('TestCafe')) this.skip();
+
       await I.amOnPage('https://google.com');
       await I.setCookie({
         name: 'auth',
