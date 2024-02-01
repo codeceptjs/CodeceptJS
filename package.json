@@ -121,7 +121,7 @@
     "@pollyjs/core": "5.1.0",
     "@types/chai": "4.3.7",
     "@types/inquirer": "9.0.3",
-    "@types/node": "20.10.7",
+    "@types/node": "20.11.10",
     "@wdio/sauce-service": "8.29.1",
     "@wdio/selenium-standalone-service": "8.3.2",
     "@wdio/utils": "8.28.8",
