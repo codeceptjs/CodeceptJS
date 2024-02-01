@@ -842,7 +842,7 @@ module.exports.tests = function () {
     });
   });
 
-  describe('cookies : #setCookie, #clearCookies, #seeCookie', () => {
+  describe('cookies : #setCookie, #clearCookies, #seeCookie, #waitForCookie', () => {
     it('should do all cookie stuff', async () => {
       await I.amOnPage('/');
       await I.setCookie({
@@ -888,6 +888,25 @@ module.exports.tests = function () {
       });
       await I.clearCookie();
       await I.dontSeeCookie('auth');
+    });
+
+    it('should wait for cookie and throw error when cookie not found', async () => {
+      await I.amOnPage('https://google.com');
+      try {
+        await I.waitForCookie('auth', 2);
+      } catch (e) {
+        assert.equal(e.message, 'auth is not found after 2s');
+      }
+    });
+
+    it('should wait for cookie', async () => {
+      await I.amOnPage('https://google.com');
+      await I.setCookie({
+        name: 'auth',
+        value: '123456',
+        url: 'https://google.com',
+      });
+      await I.waitForCookie('auth');
     });
   });
 
