@@ -8,7 +8,7 @@ global.codeceptjs = require('../../lib');
 
 let I;
 let restClient;
-const port = parseInt(Date.now().toString().slice(3, 8), 10);
+const port = 65000;
 const api_url = `http://0.0.0.0:${port}`;
 
 describe('MockServer Helper', function () {
