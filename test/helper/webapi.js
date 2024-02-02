@@ -906,11 +906,11 @@ module.exports.tests = function () {
       if (isHelper('TestCafe')) return;
       if (process.env.DevTools) return;
 
-      await I.amOnPage('https://google.com');
+      await I.amOnPage('/');
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'https://google.com',
+        url: 'http://localhost',
       });
       await I.waitForCookie('auth');
     });
