@@ -1,4 +1,4 @@
-name: Appium V2 Tests - iOS
+name: Appium V2 Tests - Android
 
 on:
   push:
@@ -11,48 +11,26 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  appium1:
+  appium:
     runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [20.x]
+        test-suite: ['other', 'quick']
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install --legacy-peer-deps
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: 'npm run test:ios:appium-quick'
-      env: # Or as an environment variable
-        SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install --legacy-peer-deps
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - run: "npm run test:ios:appium-${{ matrix.test-suite }}"
+        env: # Or as an environment variable
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
 
-
-  appium2:
-
-    runs-on: ubuntu-22.04
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install --legacy-peer-deps
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: 'npm run test:ios:appium-other'
-      env: # Or as an environment variable
-        SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}

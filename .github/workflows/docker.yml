@@ -11,7 +11,7 @@ on:
 jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Check out the repo with latest code
