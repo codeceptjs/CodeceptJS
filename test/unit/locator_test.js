@@ -54,18 +54,142 @@ const xml = `<body>
   </div>
   <input type="hidden" name="return_url" value="" id="return_url" />
 
-  <div class="ps-submenu-root">
-    <ul class="ps-submenu-root">
-      <li class="ps-menu-button">Adhemar da Silva</li>
-      <li class="ps-menu-button">HelloWorld</li>
-      <li class="ps-menu-button">Hallo</li>
-    </ul>
-    <ul class="ps-submenu-root">
-      <li class="ps-menu-button">Adhemar da Silva</li>
-      <li class="ps-menu-button">HelloWorld</li>
-      <li class="ps-menu-button">Authoring</li>
-    </ul>
-  </div>
+  <ul class="css-ewdv3l">
+    <li class="ps-menuitem-root css-dq4uaz">
+        <a
+            aria-current="page"
+            class="ps-menu-button active"
+            data-testid="ps-menu-button-test-id"
+            tabindex="0"
+            title="aaa"
+            href="/"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon home lg outline"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span></a
+        >
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="Dashboard"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i
+                    aria-hidden="true"
+                    class="icon tachometer alternate"
+                ></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon books"></i></span
+            ><span class="ps-menu-label css-12w9als">Authoring</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon ballot check"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon book reader"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon school"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon user"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon cog"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon tablet alternate"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+    <li class="ps-menuitem-root ps-submenu-root css-x7nyah">
+        <a
+            class="ps-menu-button"
+            data-testid="ps-menu-button-test-id"
+            title="aaa"
+            tabindex="0"
+            ><span class="ps-menu-icon css-2wa2k3"
+                ><i aria-hidden="true" class="icon tools"></i></span
+            ><span class="ps-menu-label css-12w9als">aaa</span
+            ><span class="ps-submenu-expand-icon css-1cuxlhl"
+                ><span class="css-honxw6"></span></span
+        ></a>
+    </li>
+  </ul>
+
 </body>`;
 
 describe('Locator', () => {
@@ -294,13 +418,11 @@ describe('Locator', () => {
   });
 
   it('should be able to locate complicated locator', () => {
-    const l = Locator.build('.ps-menu-button')
-      .withText('Authoring')
-      .inside('.ps-submenu-root:nth-child(2)');
+    const l = Locator.build('.ps-menu-button').withText('Authoring').inside('.ps-submenu-root:nth-child(3)');
 
     const nodes = xpath.select(l.toXPath(), doc);
     expect(nodes).to.have.length(1, l.toXPath());
-    expect(nodes[0].firstChild.data).to.eql('Authoring', l.toXPath());
+    expect(nodes[0].firstChild.nextSibling.firstChild.data).to.eql('Authoring', l.toXPath());
   });
 
   it('should find element with last of type with text', () => {
