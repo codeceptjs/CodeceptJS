@@ -2398,6 +2398,21 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 
 Returns **void** automatically synchronized promise through #recorder
 
+### waitForCookie
+
+Waits for the specified cookie in the cookies.
+
+```js
+I.waitForCookie("token");
+```
+
+#### Parameters
+
+-   `name` **[string][9]** expected cookie name.
+-   `sec` **[number][20]** (optional, `3` by default) time in seconds to wait 
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### waitForDetached
 
 Waits for an element to become not attached to the DOM on a page (by default waits for 1sec).
