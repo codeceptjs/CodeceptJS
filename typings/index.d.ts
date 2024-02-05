@@ -382,6 +382,22 @@ declare namespace CodeceptJS {
     [key: string]: any;
   };
 
+  type MockRequest = {
+    method: 'GET'|'PUT'|'POST'|'PATCH'|'DELETE'|string;
+    path: string;
+    queryParams?: object;
+  }
+
+  type MockResponse = {
+    status: number;
+    body?: object;
+  }
+
+  type MockInteraction = {
+    request: MockRequest;
+    response: MockResponse;
+  }
+
   interface PageScrollPosition {
     x: number;
     y: number;

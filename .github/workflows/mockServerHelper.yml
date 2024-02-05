@@ -1,4 +1,4 @@
-name: Expect Helper Tests
+name: Mock Server Tests
 
 on:
   push:
@@ -31,4 +31,4 @@ jobs:
     - name: npm install
       run: npm i --legacy-peer-deps
     - name: run unit tests
-      run: ./node_modules/.bin/mocha test/helper/Expect_test.js --timeout 5000
+      run: npm run test:unit:mockServer
