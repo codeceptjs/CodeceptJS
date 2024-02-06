@@ -33,7 +33,7 @@ jobs:
         php-version: 7.4
     - name: npm install
       run: |
-        npm cache clean --force && npm install joi --force && npm i --force
+        npm i --force
       env:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - name: Install browsers and deps

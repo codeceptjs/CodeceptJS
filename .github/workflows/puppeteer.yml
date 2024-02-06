@@ -33,7 +33,7 @@ jobs:
         php-version: 7.4
     - name: npm install
       run: |
-        npm cache clean --force && npm install joi --force && npm i --force && npm i puppeteer --force
+        npm i --force && npm i puppeteer --force
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
     - name: start a server
