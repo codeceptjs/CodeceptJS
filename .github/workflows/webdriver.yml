@@ -33,7 +33,7 @@ jobs:
         php-version: 8.0
     - name: npm install
       run: |
-        npm install --force
+        npm cache clean --force && npm install joi --force && npm i --force
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true

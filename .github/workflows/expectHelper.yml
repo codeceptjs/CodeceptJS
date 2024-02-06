@@ -29,6 +29,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install
-      run: npm i --force
+      run: npm cache clean --force && npm install joi --force && npm i --force
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/Expect_test.js --timeout 5000
