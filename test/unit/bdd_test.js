@@ -1,6 +1,10 @@
 const Gherkin = require('@cucumber/gherkin');
 const Messages = require('@cucumber/messages');
-const { expect } = require('chai');
+
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 
 const uuidFn = Messages.IdGenerator.uuid();
 const builder = new Gherkin.AstBuilder(uuidFn);

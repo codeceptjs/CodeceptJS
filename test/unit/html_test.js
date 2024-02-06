@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { expect } = require('chai');
+
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const xpath = require('xpath');
 const Dom = require('@xmldom/xmldom').DOMParser;
 const {

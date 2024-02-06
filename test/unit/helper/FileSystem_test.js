@@ -1,5 +1,9 @@
 const path = require('path');
-const { expect } = require('chai');
+
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 
 const FileSystem = require('../../../lib/helper/FileSystem');
 

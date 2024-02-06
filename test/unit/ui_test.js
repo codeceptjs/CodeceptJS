@@ -1,4 +1,7 @@
-const { expect } = require('chai');
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
 

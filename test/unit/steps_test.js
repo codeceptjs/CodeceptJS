@@ -1,12 +1,16 @@
 const sinon = require('sinon');
-const chai = require('chai');
+
 const Step = require('../../lib/step');
 const { MetaStep } = require('../../lib/step');
 const event = require('../../lib/event');
 const { secret } = require('../../lib/secret');
 
-const expect = chai.expect;
-chai.use(require('chai-as-promised'));
+let expect;
+
+import('chai').then(chai => {
+  expect = chai.expect;
+  chai.use(require('chai-as-promised'));
+});
 
 let step;
 let action;

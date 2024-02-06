@@ -1,5 +1,9 @@
 const { assert } = require('chai');
-const expect = require('chai').expect;
+
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const path = require('path');
 
 const puppeteer = require('puppeteer');

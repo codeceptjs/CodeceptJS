@@ -1,6 +1,10 @@
-const { expect } = require('chai');
 const AiAssistant = require('../../lib/ai');
 const config = require('../../lib/config');
+
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 
 describe('AI module', () => {
   beforeEach(() => config.reset());

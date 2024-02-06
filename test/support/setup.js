@@ -1,1 +1,3 @@
-require('chai').should();
+import('chai').then(chai => {
+  chai.should();
+});

@@ -1,4 +1,7 @@
-const expect = require('chai').expect;
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const assert = require('assert');
 const path = require('path');
 const exec = require('child_process').exec;

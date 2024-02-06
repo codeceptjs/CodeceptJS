@@ -1,10 +1,8 @@
 const fs = require('fs');
 const assert = require('assert');
 const path = require('path');
-const exec = require('child_process').exec;
-const execSync = require('child_process').execSync;
-const chai = require('chai');
-const chaiSubset = require('chai-subset');
+const { exec, execSync } = require('child_process');
+
 const { Project, StructureKind, ts } = require('ts-morph');
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
@@ -15,11 +13,29 @@ const pathOfJSDocDefinitions = path.join(pathToRootOfProject, 'typings/types.d.t
 const pathToTests = path.resolve(pathToRootOfProject, 'test');
 const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 
-chai.use(chaiSubset);
+import('chai').then(chai => {
+  chai.use(require('chai-subset'));
+  /** @type {Chai.ChaiPlugin */
+  chai.use((chai, utils) => {
+    utils.addProperty(chai.Assertion.prototype, 'valid', function () {
+      /** @type {import('ts-morph').Project} */
+      const project = utils.flag(this, 'object');
+      new chai.Assertion(project).to.be.instanceof(Project);
+
+      let diagnostics = project.getPreEmitDiagnostics();
+      diagnostics = diagnostics.filter((diagnostic) => {
+        const filePath = diagnostic.getSourceFile().getFilePath();
+        return filePath.startsWith(pathToTests) || filePath.startsWith(pathToTypings);
+      });
+      if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics));
+    });
+  });
+});
 
 describe('Definitions', function () {
   this.timeout(30000);
   this.retries(4);
+
   before(() => {
     execSync('npm run def', { cwd: pathToRootOfProject });
   });
@@ -216,22 +232,6 @@ describe('Definitions', function () {
       assert(!err);
       done();
     });
-  });
-});
-
-/** @type {Chai.ChaiPlugin */
-chai.use((chai, utils) => {
-  utils.addProperty(chai.Assertion.prototype, 'valid', function () {
-    /** @type {import('ts-morph').Project} */
-    const project = utils.flag(this, 'object');
-    new chai.Assertion(project).to.be.instanceof(Project);
-
-    let diagnostics = project.getPreEmitDiagnostics();
-    diagnostics = diagnostics.filter((diagnostic) => {
-      const filePath = diagnostic.getSourceFile().getFilePath();
-      return filePath.startsWith(pathToTests) || filePath.startsWith(pathToTypings);
-    });
-    if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics));
   });
 });
 

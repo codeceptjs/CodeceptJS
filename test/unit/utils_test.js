@@ -1,4 +1,7 @@
-const { expect } = require('chai');
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const os = require('os');
 const path = require('path');
 const sinon = require('sinon');
