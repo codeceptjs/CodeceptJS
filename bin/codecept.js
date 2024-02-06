@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-const program = require('commander');
+const { Command } = require('commander');
+
+const program = new Command();
 const Codecept = require('../lib/codecept');
 const { print, error } = require('../lib/output');
 const { printError } = require('../lib/command/utils');
@@ -116,7 +118,6 @@ program.command('run [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
@@ -137,7 +138,6 @@ program.command('run-workers <workers> [selectedRuns...]')
   .option('-i, --invert', 'inverts --grep matches')
   .option('-o, --override [value]', 'override current config options')
   .option('--suites', 'parallel execution of suites not single tests')
-  .option('--debug', 'output additional information')
   .option('--verbose', 'output internal logging information')
   .option('--features', 'run only *.feature files and skip tests')
   .option('--tests', 'run only JS test files and skip features')
@@ -159,7 +159,6 @@ program.command('run-multiple [suites...]')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
   .option('--steps', 'show step-by-step execution')
   .option('--verbose', 'output internal logging information')
-  .option('--debug', 'output additional information')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-o, --override [value]', 'override current config options')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
@@ -189,7 +188,6 @@ program.command('dry-run [test]')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
   .option('--steps', 'show step-by-step execution')
   .option('--verbose', 'output internal logging information')
-  .option('--debug', 'output additional information')
   .action(errorHandler(require('../lib/command/dryRun')));
 
 program.command('run-rerun [test]')
@@ -214,7 +212,6 @@ program.command('run-rerun [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
