@@ -33,7 +33,7 @@ jobs:
         php-version: 7.4
     - name: npm install
       run: |
-        npm install --legacy-peer-deps && npm i puppeteer --legacy-peer-deps
+        npm install --force && npm i puppeteer --force
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
     - name: start a server

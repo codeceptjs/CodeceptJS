@@ -7,7 +7,7 @@ Go over the steps in [this](https://github.com/firstcontributions/first-contribu
 To start you need:
 
 1.  Fork and clone the repo.
-2.  Run `npm install --legacy-peer-deps --omit=optional` to install all required libraries
+2.  Run `npm install --force --omit=optional` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
 5.  Update documentation
