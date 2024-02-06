@@ -1,5 +1,7 @@
+let expect;
 let assert;
 import('chai').then(chai => {
+  expect = chai.expect;
   assert = chai.assert;
 });
 const path = require('path');
@@ -232,27 +234,27 @@ describe('Puppeteer', function () {
     it('should only have 1 tab open when the browser starts and navigates to the first page', () => I.amOnPage('/')
       .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1)));
+      .then(numPages => expect(numPages).to.eq(1)));
 
     it('should switch to next tab', () => I.amOnPage('/info')
       .then(() => I.wait(1))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1))
+      .then(numPages => expect(numPages).to.eq(1))
       .then(() => I.click('New tab'))
       .then(() => I.switchToNextTab())
       .then(() => I.waitForNumberOfTabs(2))
       .then(() => I.seeCurrentUrlEquals('/login'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 2)));
+      .then(numPages => expect(numPages).to.eq(2)));
 
     it('should assert when there is no ability to switch to next tab', () => I.amOnPage('/')
       .then(() => I.click('More info'))
       .then(() => I.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
       .then(() => I.switchToNextTab(2))
       .then(() => I.wait(2))
-      .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+      .then(() => expect(true, 'Throw an error if it gets this far (which it should not)!').to.eq(false))
       .catch((e) => {
-        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
+        expect(e.message).to.eq('There is no ability to switch to next tab with offset 2');
       }));
 
     it('should close current tab', () => I.amOnPage('/info')
@@ -261,12 +263,12 @@ describe('Puppeteer', function () {
       .then(() => I.wait(2))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 2))
+      .then(numPages => expect(numPages).to.eq(2))
       .then(() => I.closeCurrentTab())
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/info'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1)));
+      .then(numPages => expect(numPages).to.eq(1)));
 
     it('should close other tabs', () => I.amOnPage('/')
       .then(() => I.openNewTab())
@@ -281,14 +283,14 @@ describe('Puppeteer', function () {
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('/login'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 1)));
+      .then(numPages => expect(numPages).to.eq(1)));
 
     it('should open new tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
       .then(() => I.wait(1))
       .then(() => I.seeInCurrentUrl('about:blank'))
       .then(() => I.grabNumberOfOpenTabs())
-      .then(numPages => assert.equal(numPages, 2)));
+      .then(numPages => expect(numPages).to.eq(2)));
 
     it('should switch to previous tab', () => I.amOnPage('/info')
       .then(() => I.openNewTab())
@@ -306,7 +308,7 @@ describe('Puppeteer', function () {
       .then(() => I.wait(2))
       .then(() => I.waitInUrl('/info'))
       .catch((e) => {
-        assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
+        expect(e.message).to.eq('There is no ability to switch to previous tab with offset 2');
       }));
   });
 
