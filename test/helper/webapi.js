@@ -1,4 +1,7 @@
-const { assert } = require('chai');
+let assert;
+import('chai').then(chai => {
+  assert = chai.assert;
+});
 const path = require('path');
 
 const dataFile = path.join(__dirname, '/../data/app/db');

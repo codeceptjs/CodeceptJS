@@ -37,7 +37,7 @@ Scenario('sample test', ({ I, myPage, mySteps }) => {
 
 ## Actor
 
-During initialization you were asked to create a custom steps file. If you accepted this option, you are now able to use the `custom_steps.js` file to extend `I`. See how the `login` method can be added to `I`:
+During initialization, you were asked to create a custom steps file. If you accepted this option, you are now able to use the `custom_steps.js` file to extend `I`. See how the `login` method can be added to `I`:
 
 ```js
 module.exports = function() {
@@ -153,7 +153,7 @@ Scenario('login2', async ({ I, loginPage, basePage }) => {
 });
 ```
 
-Page Objects can be be functions, arrays or classes. When declared as classes you can easily extend them in other page objects.
+Page Objects can be functions, arrays or classes. When declared as classes you can easily extend them in other page objects.
 
 Here is an example of declaring page object as a class:
 

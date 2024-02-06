@@ -1,4 +1,7 @@
-const { expect } = require('chai');
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 
 const Assertion = require('../../../lib/assert/include').Assertion;
 const AssertionError = require('../../../lib/assert/error');

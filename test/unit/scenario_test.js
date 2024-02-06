@@ -1,4 +1,7 @@
-const { expect } = require('chai');
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const sinon = require('sinon');
 
 const scenario = require('../../lib/scenario');

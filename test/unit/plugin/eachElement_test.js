@@ -1,5 +1,9 @@
 const path = require('path');
-const { expect } = require('chai');
+
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const container = require('../../../lib/container');
 const eachElement = require('../../../lib/plugin/eachElement')();
 const recorder = require('../../../lib/recorder');

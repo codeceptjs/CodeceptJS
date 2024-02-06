@@ -1,12 +1,13 @@
-const chai = require('chai');
-const { expect } = require('chai');
+let chai;
+let expect;
+import('chai').then(_chai => {
+  chai = _chai;
+  expect = chai.expect;
+  chai.use(sinonChai);
+});
 const sinonChai = require('sinon-chai');
 
-chai.use(sinonChai);
-
 const sinon = require('sinon');
-
-sinon.assert.expose(chai.assert, { prefix: '' });
 
 const originalOutput = require('../../lib/output');
 

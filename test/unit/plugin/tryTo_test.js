@@ -1,4 +1,7 @@
-const { expect } = require('chai');
+let expect;
+import('chai').then(chai => {
+  expect = chai.expect;
+});
 const tryTo = require('../../../lib/plugin/tryTo')();
 const recorder = require('../../../lib/recorder');
 
