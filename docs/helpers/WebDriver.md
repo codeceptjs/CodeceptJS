@@ -2377,7 +2377,7 @@ I.waitForCookie("token");
 #### Parameters
 
 -   `name` **[string][18]** expected cookie name.
--   `sec` **[number][23]** (optional, `3` by default) time in seconds to wait 
+-   `sec` **[number][24]** (optional, `3` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
