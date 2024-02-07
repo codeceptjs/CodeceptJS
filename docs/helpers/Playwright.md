@@ -805,6 +805,8 @@ I.dontSeeTraffic({ name: 'Unexpected API Call of "user" endpoint', url: /api.exa
     -   `opts.name` **[string][9]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
     -   `opts.url` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
+Returns **void** automatically synchronized promise through #recorder
+
 ### doubleClick
 
 Performs a double-click on an element matched by link|button|label|CSS or XPath.
@@ -920,6 +922,10 @@ Returns **void** automatically synchronized promise through #recorder
 ### flushNetworkTraffics
 
 Resets all recorded network requests.
+
+```js
+I.flushNetworkTraffics();
+```
 
 ### flushWebSocketMessages
 
@@ -1309,7 +1315,7 @@ expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Promise][22]&lt;[Array][10]&lt;any>>** 
+Returns **[Array][10]** recorded network traffics
 
 ### grabSource
 
@@ -2096,13 +2102,13 @@ Verifies that a certain request is part of network traffic.
 I.amOnPage('https://openai.com/blog/chatgpt');
 I.startRecordingTraffic();
 await I.seeTraffic({
-   name: 'sentry event',
-   url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-   parameters: {
-      width: '1919',
-      height: '1138',
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+    width: '1919',
+    height: '1138',
     },
-});
+  });
 ```
 
 ```js
@@ -2110,12 +2116,12 @@ await I.seeTraffic({
 I.amOnPage('https://openai.com/blog/chatgpt');
 I.startRecordingTraffic();
 await I.seeTraffic({
-   name: 'event',
-   url: 'https://cloudflareinsights.com/cdn-cgi/rum',
-   requestPostData: {
-      st: 2,
+    name: 'event',
+    url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+    requestPostData: {
+    st: 2,
     },
-});
+  });
 ```
 
 #### Parameters
@@ -2127,7 +2133,7 @@ await I.seeTraffic({
     -   `opts.requestPostData` **[Object][6]?** Expected that request contains post data in network traffic
     -   `opts.timeout` **[number][20]?** Timeout to wait for request in seconds. Default is 10 seconds. 
 
-Returns **[Promise][22]&lt;any>** 
+Returns **void** automatically synchronized promise through #recorder
 
 ### selectOption
 
@@ -2195,14 +2201,11 @@ I.setPlaywrightRequestHeaders({
 
 ### startRecordingTraffic
 
-Starts recording the network traffics.
-This also resets recorded network requests.
+Resets all recorded network requests.
 
 ```js
-I.startRecordingTraffic();
+I.flushNetworkTraffics();
 ```
-
-Returns **void** 
 
 ### startRecordingWebSocketMessages
 
