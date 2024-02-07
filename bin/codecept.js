@@ -188,6 +188,7 @@ program.command('dry-run [test]')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
   .option('--steps', 'show step-by-step execution')
   .option('--verbose', 'output internal logging information')
+  .option('--debug', 'output additional information')
   .action(errorHandler(require('../lib/command/dryRun')));
 
 program.command('run-rerun [test]')
