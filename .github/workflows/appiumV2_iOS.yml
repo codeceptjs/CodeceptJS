@@ -1,4 +1,4 @@
-name: Appium V2 Tests - Android
+name: Appium V2 Tests - iOS
 
 on:
   push:
