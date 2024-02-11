@@ -232,6 +232,10 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         cfg.replace(regex, '[1]');
       });
 
+      if (name === 'Appium') {
+        await this.docsAppium();
+      }
+
       await writeToFile(helperMarkDownFile(name), (cfg) => {
         cfg.append(`---
 permalink: /helpers/${name}
@@ -244,8 +248,6 @@ title: ${name}
         cfg.textFromFile(helperMarkDownFile(name));
       });
     }
-
-    await this.docsAppium();
   },
 
   async wiki() {
