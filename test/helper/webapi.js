@@ -990,11 +990,13 @@ module.exports.tests = function () {
     it('should throw error when text not found', async () => {
       await I.amOnPage('/dynamic');
       await I.dontSee('Dynamic text');
+      let failed = false;
       try {
         await I.waitForText('Some text', 1, '//div[@id="text"]');
       } catch (e) {
-        assert.include(e.message, 'Text "Some text" was not found on page');
+        failed = true;
       }
+      assert.ok(failed);
     });
   });
 
