@@ -986,6 +986,16 @@ module.exports.tests = function () {
       await I.dontSee('Dynamic text');
       await I.waitForText('Dynamic text', 5, '//div[@id="text"]');
     });
+
+    it('should throw error when text not found', async () => {
+      await I.amOnPage('/dynamic');
+      await I.dontSee('Dynamic text');
+      try {
+        await I.waitForText('Some text', 1, '//div[@id="text"]');
+      } catch (e) {
+        assert.include(e.message, 'Text "Some text" was not found on page');
+      }
+    });
   });
 
   describe('#waitForElement', () => {
