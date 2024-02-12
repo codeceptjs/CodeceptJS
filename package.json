@@ -121,7 +121,7 @@
     "@faker-js/faker": "7.6.0",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "5.1.0",
-    "@types/chai": "4.3.7",
+    "@types/chai": "4.3.11",
     "@types/inquirer": "9.0.3",
     "@types/node": "20.11.16",
     "@wdio/sauce-service": "8.29.1",
