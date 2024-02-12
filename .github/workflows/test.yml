@@ -27,4 +27,9 @@ jobs:
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: npm test
+    - uses: nick-fields/retry@v3
+      with:
+        timeout_minutes: 6
+        max_attempts: 3
+        retry_on: error
+        command: npm test
