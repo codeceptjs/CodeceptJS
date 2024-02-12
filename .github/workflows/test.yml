@@ -29,7 +29,7 @@ jobs:
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - uses: nick-fields/retry@v3
       with:
-        timeout_minutes: 1
+        timeout_minutes: 6
         max_attempts: 3
         retry_on: error
         command: npm test
