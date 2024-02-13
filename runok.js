@@ -450,7 +450,7 @@ ${changelog}`;
 
   async getCommitLog() {
     console.log('Gathering commits...');
-    const logs = await exec('git log --pretty=\'format:* %s - by @%aN\' $(git describe --abbrev=0 --tags)..HEAD');
+    const logs = await exec('git log --grep "chore(deps" --invert-grep --pretty=\'format:* %s - by @%aN\' $(git describe --abbrev=0 --tags)..HEAD | grep "DOC: " -v');
     console.log(logs.data.stdout);
   },
 
