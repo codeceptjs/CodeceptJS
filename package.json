@@ -75,7 +75,7 @@
     "@xmldom/xmldom": "0.8.10",
     "acorn": "8.11.3",
     "arrify": "2.0.1",
-    "axios": "1.6.3",
+    "axios": "1.6.7",
     "chai": "5.0.3",
     "chai-deep-match": "1.2.1",
     "chai-exclude": "2.1.0",
