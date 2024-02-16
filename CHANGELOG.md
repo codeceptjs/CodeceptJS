@@ -1,3 +1,69 @@
+## 3.5.13
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat: mock server helper (#4155) - by @KobeNguyenT
+  ![Screenshot 2024-01-25 at 13 47 59](https://github.com/codeceptjs/CodeceptJS/assets/7845001/8fe7aacf-f1c9-4d7e-89a6-3748b3ccb26c)
+* feat(webdriver): network traffics manipulation (#4166) - by @KobeNguyenT
+ [Webdriver] Added commands to check network traffics - supported only with devtoolsProtocol
+  * `startRecordingTraffic`
+  * `grabRecordedNetworkTraffics`
+  * `flushNetworkTraffics`
+  * `stopRecordingTraffic`
+  * `seeTraffic`
+  * `dontSeeTraffic`
+
+Examples:
+
+```js
+// recording traffics and verify the traffic
+  I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+```
+
+```js
+// check the traffic with advanced params
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  I.startRecordingTraffic();
+  I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
+```
+* feat(webapi): add waitForCookie (#4169) - by @KobeNguyenT
+  Waits for the specified cookie in the cookies.
+
+```js
+I.waitForCookie("token");
+```
+
+🐛 *Bug Fixes*
+* fix(appium): update performSwipe with w3c protocol v2 (#4181) - by @MykaLev
+* fix(webapi): selectOption method (#4157) - by @dyaroman
+* fix: waitForText doesnt throw error when text doesnt exist (#4195) - by @KobeNguyenT
+* fix: use this.options instead of this.config (#4186) - by @KobeNguyenT
+* fix: config path without selenium (#4184) - by @KobeNguyenT
+* fix: bring to front condition in _setPage (#4173) - by @KobeNguyenT
+* fix: complicated locator (#4170) - by @KobeNguyenT
+  Adding of `':nth-child'` into the array
+
+` const limitation = [':nth-of-type', ':first-of-type', ':last-of-type', ':nth-last-child', ':nth-last-of-type', ':checked', ':disabled', ':enabled', ':required', ':lang']; ` fixes the issue. Then an old conversion way over `css-to-xpath` is used.
+
+📖 *Documentation*
+* fix(docs): missing docs for codecept UI (#4175) - by @KobeNguyenT
+* fix(docs): Appium documentation sidebar menu links (#4188) - by @mirao
+
+🛩️  **Several bugfixes and improvements for Codecept-UI**
+* Several internal improvements
+* fix: title is not showing when visiting a test
+* fix: handle erros nicely
+
 ## 3.5.12
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
