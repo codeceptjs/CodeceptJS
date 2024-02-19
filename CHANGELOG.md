@@ -1,3 +1,10 @@
+## 3.5.14
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🐛 *Bug Fixes*
+* **Hotfix** Fixed missing `joi` package - by @KobeNguyenT
+
 ## 3.5.13
 
 ❤️ Thanks all to those who contributed to make this release! ❤️

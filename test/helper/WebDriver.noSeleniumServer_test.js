@@ -15,7 +15,7 @@ global.codeceptjs = require('../../lib');
 
 const siteUrl = TestHelper.siteUrl();
 let wd;
-
+const browserVersion = '116.0.5793.0';
 describe('WebDriver - No Selenium server started', function () {
   this.retries(1);
   this.timeout(35000);
@@ -34,6 +34,7 @@ describe('WebDriver - No Selenium server started', function () {
       windowSize: '500x700',
       smartWait: 0, // just to try
       waitForTimeout: 5000,
+      browserVersion,
       capabilities: {
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
@@ -1220,6 +1221,7 @@ describe('WebDriver - Basic Authentication', () => {
       basicAuth: { username: 'admin', password: 'admin' },
       browser: 'chrome',
       windowSize: '500x700',
+      browserVersion,
       remoteFileUpload: true,
       smartWait: 0, // just to try
       waitForTimeout: 5000,
