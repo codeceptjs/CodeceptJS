@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.5.13",
+  "version": "3.5.14",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -97,6 +97,7 @@
     "glob": "6.0.1",
     "html-minifier-terser": "7.2.0",
     "inquirer": "6.5.2",
+    "joi": "17.12.1",
     "js-beautify": "1.14.11",
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
