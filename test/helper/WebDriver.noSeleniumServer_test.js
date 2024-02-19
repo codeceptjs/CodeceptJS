@@ -34,6 +34,7 @@ describe('WebDriver - No Selenium server started', function () {
       windowSize: '500x700',
       smartWait: 0, // just to try
       waitForTimeout: 5000,
+      browserVersion: '116.0.5793.0',
       capabilities: {
         chromeOptions: {
           args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
