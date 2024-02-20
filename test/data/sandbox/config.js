@@ -1,9 +1,9 @@
 const profile = process.env.profile || process.profile;
 
-exports.config = {
+export const config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     FileSystem: {},
   },

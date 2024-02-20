@@ -1,6 +1,6 @@
-const path = require('path');
-const exec = require('child_process').exec;
-const assert = require('assert');
+import path from 'path';
+import { exec } from 'child_process';
+import assert from 'assert';
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/skip');

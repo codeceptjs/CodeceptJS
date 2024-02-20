@@ -21,7 +21,7 @@ After running `codeceptjs init` it should be saved in test root.
 | `include?` | `any` | Include page objects to access them via dependency injection  ```I: "./custom_steps.js", loginPage: "./pages/Login.js", User: "./pages/User.js", ``` Configured modules can be injected by name in a Scenario:  ```Scenario('test', { I, loginPage, User }) ``` |
 | `mocha?` | `any` | [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.  Example:  ```mocha: {   "mocha-junit-reporter": {      stdout: "./output/console.log",      options: {        mochaFile: "./output/result.xml",        attachments: true //add screenshot for a failed test      }   } } ``` |
 | `noGlobals?` | `boolean` | Disable registering global functions (Before, Scenario, etc). Not recommended |
-| `output` | `string` | Where to store failure screenshots, artifacts, etc   ```output: './output' ``` |
+| `output` | `string` | Where to store failure screenshots, artifacts, etc   ```output: './output.js' ``` |
 | `plugins?` | `any` | Enable CodeceptJS plugins. Example:  ```plugins: {   autoDelay: {     enabled: true   }  } ``` |
 | `require?` | `string`[] | [Require additional JS modules](https://codecept.io/configuration/#require)  Example: ``` require: ["should"] ``` |
 | `teardown?` | (() => `Promise`<`void`\>) \| `boolean` \| `string` | [Execute code after tests](https://codecept.io/bootstrap/) finished.   Can be either JS module file or async function:  ```teardown: async () => server.stop(), ``` or ```teardown: 'teardown.js', ``` |

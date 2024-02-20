@@ -1,4 +1,4 @@
-module.exports = function (done) {
+export default function (done) {
   let i = 0;
   setTimeout(() => {
     i++;

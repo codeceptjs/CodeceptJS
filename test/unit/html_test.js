@@ -1,15 +1,16 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const xpath = require('xpath');
-const Dom = require('@xmldom/xmldom').DOMParser;
-const {
-  scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks,
-} = require('../../lib/html');
+import { expect } from 'chai';
+import xpath from 'xpath';
+import { DOMParser as Dom } from '@xmldom/xmldom';
+
+import {
+  scanForErrorMessages,
+  removeNonInteractiveElements,
+  minifyHtml,
+  splitByChunks,
+} from '../../lib/html.js';
 
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],
@@ -17,6 +18,7 @@ const opts = {
   allowedRoles: ['button', 'checkbox', 'search', 'textbox', 'tab'],
   textElements: ['label'],
 };
+const __dirname = path.resolve('.', 'test');
 
 describe('HTML module', () => {
   let html;
@@ -41,7 +43,7 @@ describe('HTML module', () => {
   describe('#removeNonInteractiveElements', () => {
     it('should cut out all non-interactive elements from GitHub HTML', async () => {
       // Call the function with the loaded HTML
-      html = fs.readFileSync(path.join(__dirname, '../data/github.html'), 'utf8');
+      html = fs.readFileSync(path.join(__dirname, '../test/data/github.html'), 'utf8');
       const result = removeNonInteractiveElements(html, opts);
       let doc = new Dom().parseFromString(result);
       const nodes = xpath.select('//input[@name="q"]', doc);
@@ -101,7 +103,7 @@ describe('HTML module', () => {
 
     it('should cut out all non-interactive elements from HTML', () => {
       // Call the function with the loaded HTML
-      html = fs.readFileSync(path.join(__dirname, '../data/checkout.html'), 'utf8');
+      html = fs.readFileSync(path.join(__dirname, '../test/data/checkout.html'), 'utf8');
       const result = removeNonInteractiveElements(html, opts);
       expect(result).to.include('Name on card');
       expect(result).to.not.include('<script');
@@ -119,13 +121,13 @@ describe('HTML module', () => {
 
     it('should cut out all non-interactive elements from GitLab HTML', () => {
       // Call the function with the loaded HTML
-      html = fs.readFileSync(path.join(__dirname, '../data/gitlab.html'), 'utf8');
+      html = fs.readFileSync(path.join(__dirname, '../test/data/gitlab.html'), 'utf8');
       // console.log(html);
       const result = removeNonInteractiveElements(html, opts);
 
-      result.should.include('Get free trial');
-      result.should.include('Sign in');
-      result.should.include('<button');
+      expect(result).to.include('Get free trial');
+      expect(result).to.include('Sign in');
+      expect(result).to.include('<button');
       const doc = new Dom().parseFromString(result);
       const nodes = xpath.select('//input[@placeholder="Search"]', doc);
       expect(nodes).to.have.length(1);
@@ -133,10 +135,10 @@ describe('HTML module', () => {
 
     it('should cut out and minify Testomatio HTML', () => {
       // Call the function with the loaded HTML
-      html = fs.readFileSync(path.join(__dirname, '../data/testomat.html'), 'utf8');
+      html = fs.readFileSync(path.join(__dirname, '../test/data/testomat.html'), 'utf8');
       // console.log(html);
       const result = removeNonInteractiveElements(html, opts);
-      result.should.include('<svg class="md-icon md-icon-check-bold');
+      expect(result).to.include('<svg class="md-icon md-icon-check-bold');
       // console.log(await minifyHtml(result));
     });
   });
@@ -144,7 +146,7 @@ describe('HTML module', () => {
   describe('#splitByChunks', () => {
     it('should cut long htmls into chunks and add paths into them', () => {
       // Call the function with the loaded HTML
-      html = fs.readFileSync(path.join(__dirname, '../data/github.html'), 'utf8');
+      html = fs.readFileSync(path.join(__dirname, '../test/data/github.html'), 'utf8');
       const result = splitByChunks(html, 10000);
       expect(result).to.have.length(21);
       // console.log(result[10])

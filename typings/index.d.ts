@@ -63,7 +63,7 @@ declare namespace CodeceptJS {
      * Where to store failure screenshots, artifacts, etc
      *
      * ```js
-     * output: './output'
+     * output: './output.js'
      * ```
      */
     output: string;

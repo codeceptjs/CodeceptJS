@@ -1,7 +1,7 @@
 const Helper = codecept_helper;
 
-const crypto = require('crypto');
-const fs = require('fs');
+import crypto from 'crypto';
+import fs from 'fs';
 
 class ScreenshotSessionHelper extends Helper {
   _finishTest() {
@@ -36,4 +36,4 @@ class ScreenshotSessionHelper extends Helper {
   }
 }
 
-module.exports = ScreenshotSessionHelper;
+export default ScreenshotSessionHelper;

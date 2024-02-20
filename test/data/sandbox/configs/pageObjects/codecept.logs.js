@@ -1,7 +1,7 @@
-exports.config = {
+export const config = {
   tests: './*_test.logs.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     CustomHelper: {
       require: './customHelper.js',

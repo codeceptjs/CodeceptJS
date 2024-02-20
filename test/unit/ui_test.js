@@ -1,12 +1,11 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const Mocha = require('mocha/lib/mocha');
-const Suite = require('mocha/lib/suite');
+import lib from "../../lib/codecept.js";
 
-global.codeceptjs = require('../../lib');
-const makeUI = require('../../lib/ui');
+import { expect } from 'chai';
+import Mocha from 'mocha/lib/mocha.js';
+import Suite from 'mocha/lib/suite.js';
+
+global.codeceptjs = lib;
+import * as makeUI from '../../lib/ui.js';
 
 describe('ui', () => {
   let suite;

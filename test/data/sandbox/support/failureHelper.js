@@ -7,4 +7,4 @@ class FailureHelper extends Helper {
   }
 }
 
-module.exports = FailureHelper;
+export default FailureHelper;

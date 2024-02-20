@@ -1,4 +1,4 @@
-const Helper = require('../../lib/helper');
+import Helper from '../../lib/helper';
 
 class MyHelper extends Helper {
   method() {
@@ -58,4 +58,4 @@ class MyHelper extends Helper {
   }
 }
 
-module.exports = MyHelper;
+export default MyHelper;

@@ -1,7 +1,7 @@
-exports.config = {
+export const config = {
   tests: './invalid_require.test.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     FileSystem: {},
   },

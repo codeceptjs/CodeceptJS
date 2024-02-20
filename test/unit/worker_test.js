@@ -1,10 +1,7 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const path = require('path');
-const { Workers, event, recorder } = require('../../lib/index');
-
+import { expect } from 'chai';
+import path from 'path';
+import { Workers, event, recorder } from '../../lib/index.js';
+const __dirname = path.resolve();
 describe('Workers', function () {
   this.timeout(40000);
 
@@ -230,7 +227,7 @@ describe('Workers', function () {
       testConfig: './test/data/sandbox/codecept.non-test-events-worker.js',
     };
 
-    workers = new Workers(2, workerConfig);
+    const workers = new Workers(2, workerConfig);
 
     workers.run();
 

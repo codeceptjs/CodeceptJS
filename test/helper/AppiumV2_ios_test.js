@@ -1,9 +1,8 @@
-const assert = require('assert');
-const path = require('path');
-
-const Appium = require('../../lib/helper/Appium');
-const AssertionFailedError = require('../../lib/assert/error');
-const fileExists = require('../../lib/utils').fileExists;
+import assert from 'assert';
+import path from 'path';
+import Appium from '../../lib/helper/Appium';
+import AssertionFailedError from '../../lib/assert/error.js';
+import { fileExists } from '../../lib/utils.js';
 global.codeceptjs = require('../../lib');
 
 let app;

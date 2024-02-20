@@ -1,5 +1,5 @@
 // Need for testing pages
-module.exports = () => {
+export default () => {
   return actor({
     openDir() {
       this.amInPath('.');

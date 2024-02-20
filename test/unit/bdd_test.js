@@ -1,31 +1,19 @@
-const Gherkin = require('@cucumber/gherkin');
-const Messages = require('@cucumber/messages');
+import Gherkin from '@cucumber/gherkin';
+import * as Messages from '@cucumber/messages';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
 const uuidFn = Messages.IdGenerator.uuid();
 const builder = new Gherkin.AstBuilder(uuidFn);
 const matcher = new Gherkin.GherkinClassicTokenMatcher();
 
-const { log } = require('console');
-const Config = require('../../lib/config');
-const {
-  Given,
-  When,
-  And,
-  Then,
-  matchStep,
-  clearSteps,
-  defineParameterType,
-} = require('../../lib/interfaces/bdd');
-const run = require('../../lib/interfaces/gherkin');
-const recorder = require('../../lib/recorder');
-const container = require('../../lib/container');
-const actor = require('../../lib/actor');
-const event = require('../../lib/event');
+import Config from '../../lib/config.js';
+import { Given, When, And, Then, matchStep, clearSteps, defineParameterType } from '../../lib/interfaces/bdd.js';
+import run from '../../lib/interfaces/gherkin.js';
+import recorder from '../../lib/recorder.js';
+import container from '../../lib/container.js';
+import actor from '../../lib/actor.js';
+import * as event from '../../lib/event.js';
 
 class Color {
   constructor(name) {

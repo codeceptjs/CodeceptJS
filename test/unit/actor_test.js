@@ -1,10 +1,15 @@
-const path = require('path');
-const { expect } = require('expect');
+import path from 'path';
+import { expect } from 'expect';
+import actor from '../../lib/actor.js';
+import container from '../../lib/container.js';
+import recorder from '../../lib/recorder.js';
+import * as event from '../../lib/event.js';
 
-const actor = require('../../lib/actor');
-const container = require('../../lib/container');
-const recorder = require('../../lib/recorder');
-const event = require('../../lib/event');
+import { fileURLToPath } from 'url';
+import { store } from '../../lib/store.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 global.codecept_dir = path.join(__dirname, '/..');
 let I;
@@ -35,7 +40,6 @@ describe('Actor', () => {
   });
 
   it('should init actor on store', () => {
-    const store = require('../../lib/store');
     expect(store.actor).toBeTruthy();
   });
 

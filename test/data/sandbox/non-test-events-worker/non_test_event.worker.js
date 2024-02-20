@@ -1,4 +1,4 @@
-const { isMainThread, parentPort } = require('worker_threads');
+import { isMainThread, parentPort } from 'worker_threads';
 
 Feature('Should propagate non test events');
 

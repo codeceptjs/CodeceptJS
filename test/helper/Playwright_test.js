@@ -5,23 +5,20 @@ import('chai').then(chai => {
   expect = chai.expect;
 });
 
-const path = require('path');
-const fs = require('fs');
-
-const playwright = require('playwright');
-
-const TestHelper = require('../support/TestHelper');
-const Playwright = require('../../lib/helper/Playwright');
-
-const AssertionFailedError = require('../../lib/assert/error');
-const webApiTests = require('./webapi');
-const FileSystem = require('../../lib/helper/FileSystem');
-const { deleteDir } = require('../../lib/utils');
-const Secret = require('../../lib/secret');
+import path from 'path';
+import fs from 'fs';
+import playwright from 'playwright';
+import TestHelper from '../support/TestHelper';
+import Playwright from '../../lib/helper/Playwright';
+import AssertionFailedError from '../../lib/assert/error.js';
+import webApiTests from './webapi';
+import FileSystem from '../../lib/helper/FileSystem.js';
+import { deleteDir } from '../../lib/utils.js';
+import Secret from '../../lib/secret.js';
 global.codeceptjs = require('../../lib');
 
 const dataFile = path.join(__dirname, '/../data/app/db');
-const formContents = require('../../lib/utils').test.submittedData(dataFile);
+const formContents = require('../../lib/utils.js').test.submittedData(dataFile);
 
 let I;
 let page;

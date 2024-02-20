@@ -1,9 +1,9 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper';
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   grep: '@Playwright',
   helpers: {
     Playwright: {
@@ -21,7 +21,7 @@ module.exports.config = {
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
-      outputPath: 'test/acceptance/output',
+      outputPath: 'test/acceptance/output.js',
     },
     Expect: {},
   },

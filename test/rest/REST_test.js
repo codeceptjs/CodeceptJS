@@ -1,11 +1,10 @@
-const path = require('path');
-const { expect } = require('expect');
-const fs = require('fs');
-
-const TestHelper = require('../support/TestHelper');
-const REST = require('../../lib/helper/REST');
-const Container = require('../../lib/container');
-const Secret = require('../../lib/secret');
+import path from 'path';
+import { expect } from 'expect';
+import fs from 'fs';
+import TestHelper from '../support/TestHelper';
+import REST from '../../lib/helper/REST';
+import Container from '../../lib/container.js';
+import Secret from '../../lib/secret.js';
 
 const api_url = TestHelper.jsonServerUrl();
 global.codeceptjs = require('../../lib');

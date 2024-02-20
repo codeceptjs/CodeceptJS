@@ -1,12 +1,8 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const sinon = require('sinon');
-
-const scenario = require('../../lib/scenario');
-const recorder = require('../../lib/recorder');
-const event = require('../../lib/event');
+import { expect } from 'chai';
+import sinon from 'sinon';
+import * as Scenario from '../../lib/Scenario.js';
+import recorder from '../../lib/recorder.js';
+import * as event from '../../lib/event.js';
 
 let test;
 let fn;
@@ -27,11 +23,11 @@ describe('Scenario', () => {
   afterEach(() => event.cleanDispatcher());
 
   it('should wrap test function', () => {
-    scenario.test(test).fn(() => {});
+    Scenario.test(test).fn(() => {});
     expect(fn.called).is.ok;
   });
 
-  it('should work with async func', () => {
+  it('should work with async func', async () => {
     let counter = 0;
     test.fn = () => {
       recorder.add('test', async () => {
@@ -42,8 +38,8 @@ describe('Scenario', () => {
       });
     };
 
-    scenario.setup();
-    scenario.test(test).fn(() => null);
+    Scenario.setup();
+    Scenario.test(test).fn(() => null);
     recorder.add('validation', () => expect(counter).to.eq(4));
     return recorder.promise();
   });
@@ -55,15 +51,15 @@ describe('Scenario', () => {
       event.dispatcher.on(event.test.started, started = sinon.spy());
       event.dispatcher.on(event.suite.before, beforeSuite = sinon.spy());
       event.dispatcher.on(event.suite.after, afterSuite = sinon.spy());
-      scenario.suiteSetup();
-      scenario.setup();
+      Scenario.suiteSetup();
+      Scenario.setup();
     });
 
     it('should fire events', () => {
-      scenario.test(test).fn(() => null);
+      Scenario.test(test).fn(() => null);
       expect(started.called).is.ok;
-      scenario.teardown();
-      scenario.suiteTeardown();
+      Scenario.teardown();
+      Scenario.suiteTeardown();
       return recorder.promise()
         .then(() => expect(beforeSuite.called).is.ok)
         .then(() => expect(afterSuite.called).is.ok)
@@ -73,11 +69,11 @@ describe('Scenario', () => {
 
     it('should fire failed event on error', () => {
       event.dispatcher.on(event.test.failed, failed = sinon.spy());
-      scenario.setup();
+      Scenario.setup();
       test.fn = () => {
         throw new Error('ups');
       };
-      scenario.test(test).fn(() => {});
+      Scenario.test(test).fn(() => {});
       return recorder.promise()
         .then(() => expect(failed.called).is.ok)
         .catch(() => null);
@@ -87,7 +83,7 @@ describe('Scenario', () => {
       test.fn = () => {
         recorder.throw(new Error('ups'));
       };
-      scenario.test(test).fn(() => {});
+      Scenario.test(test).fn(() => {});
       return recorder.promise()
         .then(() => expect(failed.called).is.ok)
         .catch(() => null);

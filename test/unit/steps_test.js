@@ -1,19 +1,21 @@
-const sinon = require('sinon');
+import sinon from 'sinon';
+import Step from '../../lib/step.js';
+import { MetaStep } from '../../lib/step.js';
+import * as event from '../../lib/event.js';
+import Secret from '../../lib/secret.js';
 
-const Step = require('../../lib/step');
-const { MetaStep } = require('../../lib/step');
-const event = require('../../lib/event');
-const { secret } = require('../../lib/secret');
+import chai_as_promised from "chai-as-promised";
 
 let expect;
 
 import('chai').then(chai => {
   expect = chai.expect;
-  chai.use(require('chai-as-promised'));
+  chai.use(chai_as_promised);
 });
 
 let step;
 let action;
+let asyncAction;
 
 describe('Steps', () => {
   describe('Step', () => {
@@ -44,7 +46,7 @@ describe('Steps', () => {
       step.args = [testUndefined, 'undefined'];
       expect(step.humanizeArgs()).eql(', "undefined"');
 
-      step.args = [secret('word'), 1];
+      step.args = [new Secret('word'), 1];
       expect(step.humanizeArgs()).eql('*****, 1');
     });
 
@@ -145,6 +147,8 @@ describe('Steps', () => {
       let fn;
       let boundedRun;
       let boundedAsyncRun;
+      let asyncFn;
+      let asyncMetaStep;
       beforeEach(() => {
         metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething');
         asyncMetaStep = new MetaStep({ metaStepDoSomething: asyncAction }, 'metaStepDoSomething');

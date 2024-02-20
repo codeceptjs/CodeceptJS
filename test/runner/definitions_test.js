@@ -1,9 +1,8 @@
-const fs = require('fs');
-const assert = require('assert');
-const path = require('path');
-const { exec, execSync } = require('child_process');
-
-const { Project, StructureKind, ts } = require('ts-morph');
+import fs from 'fs';
+import assert from 'assert';
+import path from 'path';
+import { exec, execSync } from 'child_process';
+import { Project, StructureKind, ts } from 'ts-morph';
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions');

@@ -1,13 +1,9 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const sinon = require('sinon');
-
-const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail');
-const container = require('../../../lib/container');
-const event = require('../../../lib/event');
-const recorder = require('../../../lib/recorder');
+import { expect } from 'chai';
+import sinon from 'sinon';
+import screenshotOnFail from '../../../lib/plugin/screenshotOnFail.js';
+import container from '../../../lib/container.js';
+import * as event from '../../../lib/event.js';
+import recorder from '../../../lib/recorder.js';
 
 let screenshotSaved;
 

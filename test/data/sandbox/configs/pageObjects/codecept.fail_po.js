@@ -1,7 +1,7 @@
-exports.config = {
+export const config = {
   tests: './fs_test.fail.po.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     FileSystem: {},
   },

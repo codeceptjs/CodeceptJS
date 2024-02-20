@@ -1,12 +1,12 @@
-const path = require('path');
+import path from 'path';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const container = require('../../../lib/container');
-const eachElement = require('../../../lib/plugin/eachElement')();
-const recorder = require('../../../lib/recorder');
+import { expect } from 'chai';
+import container from '../../../lib/container.js';
+const eachElement = lib();
+import recorder from '../../../lib/recorder.js';
+
+import lib from "../../../lib/plugin/eachElement.js";
+const __dirname = path.resolve();
 
 describe('eachElement plugin', () => {
   beforeEach(() => {

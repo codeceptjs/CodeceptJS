@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-const program = require('commander');
-const Codecept = require('../lib/codecept');
-const { print, error } = require('../lib/output');
-const { printError } = require('../lib/command/utils');
+import program from 'commander';
+import Codecept from '../lib/codecept';
+import { print, error } from '../lib/output.js';
+import { printError } from '../lib/command/utils.js';
 
 const errorHandler = (fn) => async (...args) => {
   try {

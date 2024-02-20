@@ -1,14 +1,10 @@
-const assert = require('assert');
+import assert from 'assert';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const path = require('path');
-
-const Appium = require('../../lib/helper/Appium');
-const AssertionFailedError = require('../../lib/assert/error');
-const fileExists = require('../../lib/utils').fileExists;
+import { expect } from 'chai';
+import path from 'path';
+import Appium from '../../lib/helper/Appium';
+import AssertionFailedError from '../../lib/assert/error.js';
+import { fileExists } from '../../lib/utils.js';
 global.codeceptjs = require('../../lib');
 
 let app;

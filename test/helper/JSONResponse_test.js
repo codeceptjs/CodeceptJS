@@ -1,10 +1,7 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const joi = require('joi');
-const JSONResponse = require('../../lib/helper/JSONResponse');
-const Container = require('../../lib/container');
+import { expect } from 'chai';
+import joi from 'joi';
+import JSONResponse from '../../lib/helper/JSONResponse';
+import Container from '../../lib/container.js';
 global.codeceptjs = require('../../lib');
 
 const data = {

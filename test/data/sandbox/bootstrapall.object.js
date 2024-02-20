@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   bootstrapAll: async (done) => {
     await console.log('"bootstrapAll" is called.');
     done();

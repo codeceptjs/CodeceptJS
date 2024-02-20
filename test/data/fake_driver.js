@@ -1,4 +1,4 @@
-const Helper = require('../../lib/helper');
+import Helper from '../../lib/helper';
 
 class FakeDriver extends Helper {
   printBrowser() {
@@ -10,4 +10,4 @@ class FakeDriver extends Helper {
   }
 }
 
-module.exports = FakeDriver;
+export default FakeDriver;

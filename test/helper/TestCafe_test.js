@@ -1,9 +1,8 @@
-const path = require('path');
-const assert = require('assert');
-
-const TestHelper = require('../support/TestHelper');
-const TestCafe = require('../../lib/helper/TestCafe');
-const webApiTests = require('./webapi');
+import path from 'path';
+import assert from 'assert';
+import TestHelper from '../support/TestHelper';
+import TestCafe from '../../lib/helper/TestCafe';
+import webApiTests from './webapi';
 global.codeceptjs = require('../../lib');
 
 let I;
@@ -15,8 +14,8 @@ describe('TestCafe', function () {
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data');
-    global.output_dir = path.join(__dirname, '/../data/output');
-    global.codeceptjs = require('../../lib/index');
+    global.output_dir = path.join(__dirname, '/../data/output.js');
+    global.codeceptjs = require('../../lib/index.js');
 
     I = new TestCafe({
       url: siteUrl,

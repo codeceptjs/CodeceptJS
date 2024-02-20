@@ -1,12 +1,11 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const os = require('os');
-const path = require('path');
-const sinon = require('sinon');
-
-const utils = require('../../lib/utils');
+import { expect } from 'chai';
+import os from 'os';
+import path from 'path';
+import sinon from 'sinon';
+import * as utils from '../../lib/utils.js';
+import { fileURLToPath } from "url";
+import fsPath from "path";
+const __filename = fileURLToPath(import.meta.url);
 
 describe('utils', () => {
   describe('#fileExists', () => {

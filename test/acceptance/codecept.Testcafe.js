@@ -1,9 +1,9 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper';
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     Testcafe: {
       url: TestHelper.siteUrl(),

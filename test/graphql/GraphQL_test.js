@@ -1,9 +1,8 @@
-const path = require('path');
-const fs = require('fs');
-
-const TestHelper = require('../support/TestHelper');
-const GraphQL = require('../../lib/helper/GraphQL');
-const Container = require('../../lib/container');
+import path from 'path';
+import fs from 'fs';
+import TestHelper from '../support/TestHelper';
+import GraphQL from '../../lib/helper/GraphQL';
+import Container from '../../lib/container.js';
 global.codeceptjs = require('../../lib');
 
 const graphql_url = TestHelper.graphQLServerUrl();

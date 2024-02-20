@@ -4,19 +4,16 @@ import('chai').then(chai => {
   expect = chai.expect;
   assert = chai.assert;
 });
-const path = require('path');
-
-const puppeteer = require('puppeteer');
-
-const fs = require('fs');
-const TestHelper = require('../support/TestHelper');
-const Puppeteer = require('../../lib/helper/Puppeteer');
-
-const AssertionFailedError = require('../../lib/assert/error');
-const webApiTests = require('./webapi');
-const FileSystem = require('../../lib/helper/FileSystem');
-const Secret = require('../../lib/secret');
-const { deleteDir } = require('../../lib/utils');
+import path from 'path';
+import puppeteer from 'puppeteer';
+import fs from 'fs';
+import TestHelper from '../support/TestHelper';
+import Puppeteer from '../../lib/helper/Puppeteer';
+import AssertionFailedError from '../../lib/assert/error.js';
+import webApiTests from './webapi';
+import FileSystem from '../../lib/helper/FileSystem.js';
+import Secret from '../../lib/secret.js';
+import { deleteDir } from '../../lib/utils.js';
 global.codeceptjs = require('../../lib');
 
 let I;

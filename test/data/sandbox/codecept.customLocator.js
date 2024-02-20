@@ -1,7 +1,7 @@
-exports.config = {
+export const config = {
   tests: './*.customLocator.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     Playwright: {
       url: 'http://localhost',

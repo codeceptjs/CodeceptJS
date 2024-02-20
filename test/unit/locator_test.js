@@ -1,11 +1,7 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const { DOMParser } = require('@xmldom/xmldom');
-const xpath = require('xpath');
-
-const Locator = require('../../lib/locator');
+import { expect } from 'chai';
+import { DOMParser } from '@xmldom/xmldom';
+import xpath from 'xpath';
+import Locator from '../../lib/locator.js';
 
 let doc;
 const xml = `<body>

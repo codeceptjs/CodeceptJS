@@ -1,10 +1,8 @@
-require('../support/setup');
-const path = require('path');
-const fs = require('fs');
-
-const TestHelper = require('../support/TestHelper');
-
-const GraphQLDataFactory = require('../../lib/helper/GraphQLDataFactory');
+import '../support/setup';
+import path from 'path';
+import fs from 'fs';
+import TestHelper from '../support/TestHelper';
+import GraphQLDataFactory from '../../lib/helper/GraphQLDataFactory';
 global.codeceptjs = require('../../lib');
 
 const graphql_url = TestHelper.graphQLServerUrl();

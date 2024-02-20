@@ -2,26 +2,26 @@ let assert;
 import('chai').then(chai => {
   assert = chai.assert;
 });
-const path = require('path');
+import path from 'path';
 
 const dataFile = path.join(__dirname, '/../data/app/db');
-const formContents = require('../../lib/utils').test.submittedData(dataFile);
-const fileExists = require('../../lib/utils').fileExists;
-const secret = require('../../lib/secret').secret;
+const formContents = require('../../lib/utils.js').test.submittedData(dataFile);
+import { fileExists } from '../../lib/utils.js';
+import { secret } from '../../lib/secret.js';
 
-const Locator = require('../../lib/locator');
-const customLocators = require('../../lib/plugin/customLocator');
+import Locator from '../../lib/locator.js';
+import customLocators from '../../lib/plugin/customLocator.js';
 
 let originalLocators;
 let I;
 let data;
 let siteUrl;
 
-module.exports.init = function (testData) {
+export const init = function (testData) {
   data = testData;
 };
 
-module.exports.tests = function () {
+export const tests = function () {
   const isHelper = helperName => I.constructor.name === helperName;
 
   beforeEach(() => {

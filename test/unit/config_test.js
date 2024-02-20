@@ -1,9 +1,6 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
-const config = require('../../lib/config');
+import config from '../../lib/config.js';
 
 describe('Config', () => {
   beforeEach(() => config.reset());

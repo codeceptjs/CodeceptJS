@@ -1,7 +1,7 @@
-exports.config = {
+export const config = {
   tests: '../../workers/negative_results/*.js',
   timeout: 10000,
-  output: './output',
+  output: './output.js',
   helpers: {
     FileSystem: {},
   },

@@ -1,16 +1,12 @@
-const assert = require('assert');
+import assert from 'assert';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const path = require('path');
-const fs = require('fs');
-
-const TestHelper = require('../support/TestHelper');
-const WebDriver = require('../../lib/helper/WebDriver');
-const AssertionFailedError = require('../../lib/assert/error');
-const Secret = require('../../lib/secret');
+import { expect } from 'chai';
+import path from 'path';
+import fs from 'fs';
+import TestHelper from '../support/TestHelper';
+import WebDriver from '../../lib/helper/WebDriver';
+import AssertionFailedError from '../../lib/assert/error.js';
+import Secret from '../../lib/secret.js';
 global.codeceptjs = require('../../lib');
 
 const siteUrl = TestHelper.siteUrl();

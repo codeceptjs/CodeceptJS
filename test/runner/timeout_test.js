@@ -1,6 +1,6 @@
-const { expect } = require('expect');
-const exec = require('child_process').exec;
-const { codecept_dir, codecept_run } = require('./consts');
+import { expect } from 'expect';
+import { exec } from 'child_process';
+import { codecept_dir, codecept_run } from './consts';
 
 const debug_this_test = false;
 

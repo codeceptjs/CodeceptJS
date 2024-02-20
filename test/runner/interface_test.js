@@ -1,6 +1,6 @@
-const { expect } = require('expect');
-const path = require('path');
-const exec = require('child_process').exec;
+import { expect } from 'expect';
+import path from 'path';
+import { exec } from 'child_process';
 
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');

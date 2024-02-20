@@ -1,15 +1,12 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
-const retryFailedStep = require('../../../lib/plugin/retryFailedStep');
-const tryTo = require('../../../lib/plugin/tryTo');
-const within = require('../../../lib/within');
-const session = require('../../../lib/session');
-const container = require('../../../lib/container');
-const event = require('../../../lib/event');
-const recorder = require('../../../lib/recorder');
+import retryFailedStep from '../../../lib/plugin/retryFailedStep.js';
+import tryTo from '../../../lib/plugin/tryTo.js';
+import within from '../../../lib/within.js';
+import session from '../../../lib/session.js';
+import container from '../../../lib/container.js';
+import * as event from '../../../lib/event.js';
+import recorder from '../../../lib/recorder.js';
 
 describe('retryFailedStep', () => {
   beforeEach(() => {
@@ -81,7 +78,7 @@ describe('retryFailedStep', () => {
 
     expect(process.env.FAILED_STEP_RETRIES).to.equal('1');
     // expects to retry only once
-    counter.should.equal(2);
+    expect(counter).to.equal(2);
   });
 
   it('should not retry steps with wait*', async () => {
@@ -206,7 +203,7 @@ describe('retryFailedStep', () => {
     }, undefined, undefined, true);
 
     recorder.add(() => {
-      initalIndex.should.equal(getRetryIndex());
+      expect(initalIndex).to.equal(getRetryIndex());
     }, undefined, undefined, true);
     return recorder.promise();
   });
