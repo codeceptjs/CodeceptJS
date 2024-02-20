@@ -1,6 +1,6 @@
-import Helper from '../../lib/helper';
+import Helper from '@codeceptjs/helper';
 
-class MyHelper extends Helper {
+export default class MyHelper {
   method() {
     return 'hello world';
   }
@@ -57,5 +57,3 @@ class MyHelper extends Helper {
     return [{ name: 'el1' }, { name: 'el2' }];
   }
 }
-
-export default MyHelper;

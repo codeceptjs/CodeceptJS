@@ -186,6 +186,7 @@ describe('BDD', () => {
   });
 
   it('should execute scenarios step-by-step ', (done) => {
+    let printed;
     printed = [];
     container.append({
       helpers: {
@@ -420,4 +421,4 @@ describe('BDD', () => {
     expect('blue').is.equal(color.name);
     await Promise.resolve();
   });
-});
+}).timeout(5000);

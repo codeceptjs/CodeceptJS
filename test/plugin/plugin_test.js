@@ -2,10 +2,12 @@ import path from 'path';
 import { exec } from 'child_process';
 import { expect } from 'expect';
 
+const __dirname = path.resolve('.');
+
 const runner = path.join(__dirname, '../../bin/codecept.js');
 const codecept_dir = path.join(
   __dirname,
-  '../acceptance',
+  'test/acceptance',
 );
 const codecept_run = `${runner} run`;
 const config_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${

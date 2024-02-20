@@ -2,9 +2,10 @@ import path from 'path';
 
 import { expect } from 'chai';
 
-import ExpectHelper from '../../lib/helper/Expect';
+import ExpectHelper from '../../lib/helper/Expect.js';
 
-global.codeceptjs = require('../../lib');
+global.codeceptjs = '../../lib';
+const __dirname = path.resolve('.');
 
 let I;
 

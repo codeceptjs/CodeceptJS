@@ -55,7 +55,7 @@
     "test:unit:webbapi:webDriver:noSeleniumServer": "mocha test/helper/WebDriver.noSeleniumServer_test.js",
     "test:unit:webbapi:webDriver:devtools": "mocha test/helper/WebDriver_devtools_test.js --exit",
     "test:unit:webbapi:testCafe": "mocha test/helper/TestCafe_test.js",
-    "test:unit:expect": "mocha test/helper/Expect_test.js",
+    "test:unit:expect": "mocha test/helper/Expect_test.js --exit",
     "test:unit:mockServer": "mocha test/helper/MockServer_test.js",
     "test:plugin": "mocha test/plugin/plugin_test.js",
     "def": "./runok.js def",

@@ -5,7 +5,7 @@ import Mocha from 'mocha/lib/mocha.js';
 import Suite from 'mocha/lib/suite.js';
 
 global.codeceptjs = lib;
-import * as makeUI from '../../lib/ui.js';
+import * as _suite from '../../lib/ui.js';
 
 describe('ui', () => {
   let suite;
@@ -14,7 +14,7 @@ describe('ui', () => {
   beforeEach(() => {
     context = {};
     suite = new Suite('empty');
-    makeUI(suite);
+    _suite(suite);
     suite.emit('pre-require', context, {}, new Mocha());
   });
 
