@@ -10,12 +10,12 @@ const __dirname = path.resolve();
 
 describe('eachElement plugin', () => {
   beforeEach(() => {
-    global.codecept_dir = path.join(__dirname, '/../..');
+    global.codecept_dir = path.join(__dirname);
     recorder.start();
     container.create({
       helpers: {
         MyHelper: {
-          require: './data/helper',
+          require: './test/data/helper.js',
         },
       },
     });

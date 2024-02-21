@@ -1,6 +1,6 @@
 import { expect } from 'expect';
 import { exec } from 'child_process';
-import { codecept_dir, codecept_run } from './consts';
+import { codecept_dir, codecept_run } from './consts.js';
 
 const debug_this_test = false;
 

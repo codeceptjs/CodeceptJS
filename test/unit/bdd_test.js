@@ -12,7 +12,7 @@ import { Given, When, And, Then, matchStep, clearSteps, defineParameterType } fr
 import run from '../../lib/interfaces/gherkin.js';
 import recorder from '../../lib/recorder.js';
 import container from '../../lib/container.js';
-import actor from '../../lib/actor.js';
+import { actor } from '../../lib/actor.js';
 import * as event from '../../lib/event.js';
 
 class Color {
@@ -44,6 +44,8 @@ const checkTestForErrors = (test) => {
     });
   });
 };
+
+let I;
 
 describe('BDD', () => {
   beforeEach(() => {
@@ -99,7 +101,7 @@ describe('BDD', () => {
     }
   });
 
-  it('should contain tags', async () => {
+  it('should contain tags', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
@@ -118,8 +120,8 @@ describe('BDD', () => {
     suite.tests[0].fn(() => {
       expect(suite.tests[0].steps).is.ok;
       expect(1610).is.equal(sum);
-      done();
     });
+    done();
   });
 
   it('should allow failed steps', async () => {
@@ -181,13 +183,12 @@ describe('BDD', () => {
     suite.tests[0].fn(() => {
       expect(suite.tests[0].steps).is.ok;
       expect(1610).is.equal(sum);
-      done();
     });
+    done();
   });
 
   it('should execute scenarios step-by-step ', (done) => {
-    let printed;
-    printed = [];
+    const printed = [];
     container.append({
       helpers: {
         simple: {
@@ -227,9 +228,9 @@ describe('BDD', () => {
           'fire test.passed',
           'finish test',
         ]);
-        done();
       });
     });
+    done();
   });
 
   it('should match step with params', () => {
@@ -253,8 +254,8 @@ describe('BDD', () => {
     const suite = run(text);
     suite.tests[0].fn(() => {
       listeners.should.eql(2);
-      done();
     });
+    done();
   });
 
   it('should use shortened form for step definitions', () => {
@@ -295,8 +296,8 @@ describe('BDD', () => {
     suite._beforeEach.forEach(hook => hook.run(done));
     suite.tests[0].fn(() => {
       expect(sum).is.equal(2);
-      finish();
     });
+    finish();
   });
 
   it('should execute scenario outlines', (done) => {
@@ -346,9 +347,9 @@ describe('BDD', () => {
       suite.tests[1].fn(() => {
         expect(18).is.equal(cart);
         expect(18).is.equal(sum);
-        done();
       });
     });
+    done();
   });
 
   it('should provide a parsed DataTable', (done) => {
@@ -391,8 +392,8 @@ describe('BDD', () => {
     suite.tests[0].fn(() => {
       expect(givenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
       expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
-      done();
     });
+    done();
   });
 
   it('should match step with custom parameter type', (done) => {

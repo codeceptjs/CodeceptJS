@@ -1,6 +1,6 @@
 import Helper from '../../../lib/helper';
 import output from '../../../lib/output.js';
-import Step from '../../../lib/step.js';
+import { Step } from '../../../lib/step.js';
 
 class Within extends Helper {
   _withinBegin(testStr) {

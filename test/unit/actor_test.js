@@ -1,6 +1,6 @@
 import path from 'path';
 import { expect } from 'expect';
-import actor from '../../lib/actor.js';
+import { actor } from '../../lib/actor.js';
 import container from '../../lib/container.js';
 import recorder from '../../lib/recorder.js';
 import * as event from '../../lib/event.js';

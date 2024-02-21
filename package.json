@@ -96,6 +96,7 @@
     "fs-extra": "11.2.0",
     "glob": "6.0.1",
     "html-minifier-terser": "7.2.0",
+    "import-sync": "2.2.0",
     "inquirer": "6.5.2",
     "joi": "17.12.1",
     "js-beautify": "1.14.11",

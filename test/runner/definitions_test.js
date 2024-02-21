@@ -4,6 +4,9 @@ import path from 'path';
 import { exec, execSync } from 'child_process';
 import { Project, StructureKind, ts } from 'ts-morph';
 
+import chai_subset from "chai-subset";
+
+const __dirname = path.resolve();
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions');
 const pathToRootOfProject = path.join(__dirname, '../../');
@@ -13,7 +16,7 @@ const pathToTests = path.resolve(pathToRootOfProject, 'test');
 const pathToTypings = path.resolve(pathToRootOfProject, 'typings');
 
 import('chai').then(chai => {
-  chai.use(require('chai-subset'));
+  chai.use(chai_subset);
   /** @type {Chai.ChaiPlugin */
   chai.use((chai, utils) => {
     utils.addProperty(chai.Assertion.prototype, 'valid', function () {

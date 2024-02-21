@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import Step from '../../lib/step.js';
+import { Step } from '../../lib/step.js';
 import { MetaStep } from '../../lib/step.js';
 import * as event from '../../lib/event.js';
 import Secret from '../../lib/secret.js';
