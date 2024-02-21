@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import TestHelper from '../support/TestHelper';
 import GraphQLDataFactory from '../../lib/helper/GraphQLDataFactory';
+
 global.codeceptjs = require('../../lib');
 
 const graphql_url = TestHelper.graphQLServerUrl();

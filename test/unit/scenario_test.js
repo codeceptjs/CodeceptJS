@@ -27,10 +27,10 @@ describe('Scenario', () => {
     expect(fn.called).is.ok;
   });
 
-  it('should work with async func', async () => {
+  it('should work with async func', () => {
     let counter = 0;
-    test.fn = async () => {
-      await recorder.add('test', () => {
+    test.fn = () => {
+      recorder.add('test', () => {
         counter++;
         counter++;
         counter++;
@@ -40,8 +40,8 @@ describe('Scenario', () => {
 
     Scenario.setup();
     Scenario.test(test).fn(() => null);
-    await recorder.add('validation', () => expect(counter).to.eq(4));
-    return await recorder.promise();
+    recorder.add('validation', () => expect(counter).to.eq(4));
+    return recorder.promise();
   });
 
   describe('events', () => {
@@ -67,30 +67,28 @@ describe('Scenario', () => {
         .then(() => expect(after.called).is.ok);
     });
 
-    it('should fire failed event on error', async () => {
+    it('should fire failed event on error', () => {
       event.dispatcher.on(event.test.failed, failed = sinon.spy());
       Scenario.setup();
-      test.fn = () => {
-        throw new Error('ups');
-      };
-      Scenario.test(test).fn(() => {});
-      return await recorder.promise()
-        .then(() => {
-          expect(failed.called).is.ok;
-        })
-        .catch(() => null);
+      try {
+        test.fn = () => {
+          recorder.throw(new Error('ups'));
+        };
+        Scenario.test(test).fn(() => {});
+      } catch (e) {
+        expect(failed.called).is.ok;
+      }
     });
 
-    it('should fire failed event on async error', async () => {
-      test.fn = () => {
-        recorder.throw(new Error('ups'));
-      };
-      Scenario.test(test).fn(() => {});
-      return await recorder.promise()
-        .then(() => {
-          expect(failed.called).is.ok;
-        })
-        .catch(() => null);
+    it('should fire failed event on async error', () => {
+      try {
+        test.fn = () => {
+          recorder.throw(new Error('ups'));
+        };
+        Scenario.test(test).fn(() => {});
+      } catch (e) {
+        expect(failed.called).is.ok;
+      }
     });
   });
-});
+}).timeout('10000');

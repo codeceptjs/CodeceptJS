@@ -1,4 +1,5 @@
 import Appium from '../../lib/helper/Appium';
+
 global.codeceptjs = require('../../lib');
 
 let I;

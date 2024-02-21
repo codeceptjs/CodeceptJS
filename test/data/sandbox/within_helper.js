@@ -1,5 +1,5 @@
 import Helper from '../../../lib/helper';
-import output from '../../../lib/output.js';
+import * as output from '../../../lib/output.js';
 import { Step } from '../../../lib/step.js';
 
 class Within extends Helper {

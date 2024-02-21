@@ -2,6 +2,7 @@ import assert from 'assert';
 import { expect } from 'chai';
 import path from 'path';
 import { exec } from 'child_process';
+
 const __dirname = path.resolve('.');
 const runner = path.join(__dirname, 'bin/codecept.js');
 const codecept_dir = path.join(__dirname, 'test/data/sandbox');
@@ -14,7 +15,7 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature files', (done) => {
-    console.log(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"')
+    console.log(`${config_run_config('codecept.bdd.js')} --steps --grep "Checkout process"`);
     exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
       expect(stdout).to.include('Checkout process'); // feature
       expect(stdout).to.include('-- before checkout --');

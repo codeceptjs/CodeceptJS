@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import joi from 'joi';
 import JSONResponse from '../../lib/helper/JSONResponse';
 import Container from '../../lib/container.js';
+
 global.codeceptjs = require('../../lib');
 
 const data = {

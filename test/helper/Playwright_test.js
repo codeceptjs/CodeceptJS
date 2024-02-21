@@ -1,10 +1,3 @@
-let assert;
-let expect;
-import('chai').then(chai => {
-  assert = chai.assert;
-  expect = chai.expect;
-});
-
 import path from 'path';
 import fs from 'fs';
 import playwright from 'playwright';
@@ -15,6 +8,13 @@ import webApiTests from './webapi';
 import FileSystem from '../../lib/helper/FileSystem.js';
 import { deleteDir } from '../../lib/utils.js';
 import Secret from '../../lib/secret.js';
+
+let assert;
+let expect;
+import('chai').then(chai => {
+  assert = chai.assert;
+  expect = chai.expect;
+});
 global.codeceptjs = require('../../lib');
 
 const dataFile = path.join(__dirname, '/../data/app/db');

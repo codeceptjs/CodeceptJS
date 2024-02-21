@@ -1,8 +1,8 @@
-import { DOWN, ENTER } from 'inquirer-test';
-import run from 'inquirer-test';
+import run, { DOWN, ENTER } from 'inquirer-test';
 import path from 'path';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
+
 const __dirname = path.resolve();
 const runner = path.join(__dirname, '../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init');

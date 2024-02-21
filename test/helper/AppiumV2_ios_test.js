@@ -3,6 +3,7 @@ import path from 'path';
 import Appium from '../../lib/helper/Appium';
 import AssertionFailedError from '../../lib/assert/error.js';
 import { fileExists } from '../../lib/utils.js';
+
 global.codeceptjs = require('../../lib');
 
 let app;

@@ -1,8 +1,8 @@
-import lib from "../../../lib/plugin/tryTo.js";
-
 import { expect } from 'chai';
-const tryTo = lib();
+import lib from '../../../lib/plugin/tryTo.js';
 import recorder from '../../../lib/recorder.js';
+
+const tryTo = lib();
 
 describe('tryTo plugin', () => {
   beforeEach(() => {

@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
-chai.use(sinonChai);
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import * as originalOutput from '../../lib/output.js';
+
+chai.use(sinonChai);
 
 let output;
 

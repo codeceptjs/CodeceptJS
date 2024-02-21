@@ -1,7 +1,6 @@
+import { expect } from 'chai';
 import AiAssistant from '../../lib/ai.js';
 import config from '../../lib/config.js';
-
-import { expect } from 'chai';
 
 describe('AI module', () => {
   beforeEach(() => config.reset());

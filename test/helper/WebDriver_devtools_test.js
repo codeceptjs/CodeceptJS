@@ -8,6 +8,7 @@ import WebDriver from '../../lib/helper/WebDriver';
 import AssertionFailedError from '../../lib/assert/error.js';
 import webApiTests from './webapi';
 import Secret from '../../lib/secret.js';
+
 global.codeceptjs = require('../../lib');
 
 const siteUrl = TestHelper.siteUrl();

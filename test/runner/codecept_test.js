@@ -3,6 +3,7 @@ import assert from 'assert';
 import path from 'path';
 import { exec } from 'child_process';
 import * as event from '../../lib/event.js';
+
 const __dirname = path.resolve();
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');

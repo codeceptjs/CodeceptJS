@@ -2,10 +2,12 @@ import path from 'path';
 
 import { expect } from 'chai';
 import container from '../../../lib/container.js';
-const eachElement = lib();
 import recorder from '../../../lib/recorder.js';
 
-import lib from "../../../lib/plugin/eachElement.js";
+import lib from '../../../lib/plugin/eachElement.js';
+
+const eachElement = lib();
+
 const __dirname = path.resolve();
 
 describe('eachElement plugin', () => {

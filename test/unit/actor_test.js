@@ -1,11 +1,11 @@
 import path from 'path';
 import { expect } from 'expect';
+import { fileURLToPath } from 'url';
 import { actor } from '../../lib/actor.js';
 import container from '../../lib/container.js';
 import recorder from '../../lib/recorder.js';
 import * as event from '../../lib/event.js';
 
-import { fileURLToPath } from 'url';
 import { store } from '../../lib/store.js';
 
 const __filename = fileURLToPath(import.meta.url);

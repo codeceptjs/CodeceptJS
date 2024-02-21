@@ -6,4 +6,4 @@ export default function (done) {
     done();
   }, 0);
   console.log(`Ready: ${i}`);
-};
+}

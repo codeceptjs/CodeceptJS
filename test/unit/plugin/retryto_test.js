@@ -1,8 +1,8 @@
-import lib from "../../../lib/plugin/retryTo.js";
-
 import { expect } from 'chai';
-const retryTo = lib();
+import lib from '../../../lib/plugin/retryTo.js';
 import recorder from '../../../lib/recorder.js';
+
+const retryTo = lib();
 
 describe('retryTo plugin', () => {
   beforeEach(() => {

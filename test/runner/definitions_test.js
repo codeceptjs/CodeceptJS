@@ -4,7 +4,7 @@ import path from 'path';
 import { exec, execSync } from 'child_process';
 import { Project, StructureKind, ts } from 'ts-morph';
 
-import chai_subset from "chai-subset";
+import chai_subset from 'chai-subset';
 
 const __dirname = path.resolve();
 const runner = path.join(__dirname, '/../../bin/codecept.js');

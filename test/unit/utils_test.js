@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import os from 'os';
 import path from 'path';
 import sinon from 'sinon';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 import * as utils from '../../lib/utils.js';
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
-import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 describe('utils', () => {

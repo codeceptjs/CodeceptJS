@@ -3,6 +3,7 @@ import assert from 'assert';
 import TestHelper from '../support/TestHelper';
 import TestCafe from '../../lib/helper/TestCafe';
 import webApiTests from './webapi';
+
 global.codeceptjs = require('../../lib');
 
 let I;

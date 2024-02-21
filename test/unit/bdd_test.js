@@ -3,17 +3,19 @@ import * as Messages from '@cucumber/messages';
 
 import { expect } from 'chai';
 
-const uuidFn = Messages.IdGenerator.uuid();
-const builder = new Gherkin.AstBuilder(uuidFn);
-const matcher = new Gherkin.GherkinClassicTokenMatcher();
-
 import Config from '../../lib/config.js';
-import { Given, When, And, Then, matchStep, clearSteps, defineParameterType } from '../../lib/interfaces/bdd.js';
+import {
+  Given, When, And, Then, matchStep, clearSteps, defineParameterType,
+} from '../../lib/interfaces/bdd.js';
 import run from '../../lib/interfaces/gherkin.js';
 import recorder from '../../lib/recorder.js';
 import container from '../../lib/container.js';
 import { actor } from '../../lib/actor.js';
 import * as event from '../../lib/event.js';
+
+const uuidFn = Messages.IdGenerator.uuid();
+const builder = new Gherkin.AstBuilder(uuidFn);
+const matcher = new Gherkin.GherkinClassicTokenMatcher();
 
 class Color {
   constructor(name) {
@@ -124,45 +126,45 @@ describe('BDD', () => {
     done();
   });
 
-  it('should allow failed steps', async () => {
+  it('should allow failed steps', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => expect(false).is.true);
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
     try {
-      await checkTestForErrors(suite.tests[0]);
-      return Promise.reject((new Error('Test should have thrown with failed step, but did not')));
+      checkTestForErrors(suite.tests[0]);
+      throw Error('Test should have thrown with failed step, but did not');
     } catch (err) {
       const errored = !!err;
       expect(errored).is.true;
     }
   });
 
-  it('handles errors in steps', async () => {
+  it('handles errors in steps', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => { throw new Error('errored step'); });
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
     try {
-      await checkTestForErrors(suite.tests[0]);
-      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+      checkTestForErrors(suite.tests[0]);
+      throw Error('Test should have thrown with failed step, but did not');
     } catch (err) {
       const errored = !!err;
       expect(errored).is.true;
     }
   });
 
-  it('handles async errors in steps', async () => {
+  it('handles async errors in steps', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => Promise.reject(new Error('step failed')));
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
     try {
-      await checkTestForErrors(suite.tests[0]);
-      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+      checkTestForErrors(suite.tests[0]);
+      throw Error('Test should have thrown with failed step, but did not');
     } catch (err) {
       const errored = !!err;
       expect(errored).is.true;

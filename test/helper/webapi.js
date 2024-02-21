@@ -1,16 +1,13 @@
-let assert;
-import('chai').then(chai => {
-  assert = chai.assert;
-});
 import path from 'path';
-
-const dataFile = path.join(__dirname, '/../data/app/db');
-const formContents = require('../../lib/utils.js').test.submittedData(dataFile);
+import { assert } from 'chai';
 import { fileExists } from '../../lib/utils.js';
-import { secret } from '../../lib/secret.js';
+import * as secret from '../../lib/secret.js';
 
 import Locator from '../../lib/locator.js';
 import customLocators from '../../lib/plugin/customLocator.js';
+
+const dataFile = path.join(__dirname, '/../data/app/db');
+const formContents = require('../../lib/utils.js').test.submittedData(dataFile);
 
 let originalLocators;
 let I;

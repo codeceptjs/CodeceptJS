@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-import { program } from 'commander';
-import Codecept from '../lib/codecept.js';
+import { Command } from 'commander';
+const program = new Command();
+import { version } from '../lib/codecept.js';
 import { print, error } from '../lib/output.js';
 import { printError } from '../lib/command/utils.js';
 import * as init from '../lib/command/init.js';
@@ -21,7 +22,7 @@ import * as info from '../lib/command/info.js';
 
 const errorHandler = (fn) => async (...args) => {
   try {
-    await fn(...args);
+    await fn.default(...args);
   } catch (e) {
     printError(e);
     process.exitCode = 1;
@@ -37,7 +38,7 @@ if (process.versions.node && process.versions.node.split('.') && process.version
 }
 
 program.usage('<command> [options]');
-program.version(Codecept.version());
+program.version(version());
 
 program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
@@ -131,7 +132,7 @@ program.command('run [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
+  //.option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
@@ -229,7 +230,7 @@ program.command('run-rerun [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
+ // .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')

@@ -1,7 +1,7 @@
-const Helper = codecept_helper;
-
 import crypto from 'crypto';
 import fs from 'fs';
+
+const Helper = codecept_helper;
 
 class ScreenshotSessionHelper extends Helper {
   _finishTest() {

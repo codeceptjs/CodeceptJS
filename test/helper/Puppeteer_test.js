@@ -1,9 +1,3 @@
-let expect;
-let assert;
-import('chai').then(chai => {
-  expect = chai.expect;
-  assert = chai.assert;
-});
 import path from 'path';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
@@ -14,6 +8,13 @@ import webApiTests from './webapi';
 import FileSystem from '../../lib/helper/FileSystem.js';
 import Secret from '../../lib/secret.js';
 import { deleteDir } from '../../lib/utils.js';
+
+let expect;
+let assert;
+import('chai').then(chai => {
+  expect = chai.expect;
+  assert = chai.assert;
+});
 global.codeceptjs = require('../../lib');
 
 let I;

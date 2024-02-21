@@ -1,11 +1,10 @@
-import lib from "../../lib/codecept.js";
-
 import { expect } from 'chai';
 import Mocha from 'mocha/lib/mocha.js';
 import Suite from 'mocha/lib/suite.js';
+import lib from '../../lib/codecept.js';
+import { suite as makeUI } from '../../lib/ui.js';
 
 global.codeceptjs = lib;
-import { suite as makeUI } from '../../lib/ui.js';
 
 describe('ui', () => {
   let suite;

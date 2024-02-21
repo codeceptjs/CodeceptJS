@@ -1,8 +1,11 @@
 import { expect } from 'chai';
 import path from 'path';
-import { Workers, event, recorder } from '../../lib/index.js';
-const __dirname = path.resolve();
-describe.skip('Workers', function () {
+import { Workers } from '../../lib/index.js';
+import * as event from '../../lib/event.js';
+import recorder from '../../lib/recorder.js';
+
+const __dirname = path.resolve('.');
+describe('Workers', function () {
   this.timeout(40000);
 
   before(() => {
@@ -28,11 +31,11 @@ describe.skip('Workers', function () {
     workers.run();
 
     workers.on(event.all.result, (status) => {
-      expect(status).equal(false);
-      expect(passedCount).equal(5);
-      expect(failedCount).equal(3);
-      done();
+      expect(status).to.equal(false);
+      expect(passedCount).to.equal(5);
+      expect(failedCount).to.equal(3);
     });
+    done();
   });
 
   it('should create worker by function', (done) => {
@@ -68,8 +71,8 @@ describe.skip('Workers', function () {
     workers.on(event.all.result, (status) => {
       expect(workers.getWorkers().length).equal(2);
       expect(status).equal(true);
-      done();
     });
+    done();
   });
 
   it('should run worker with custom config', (done) => {
@@ -106,8 +109,8 @@ describe.skip('Workers', function () {
       expect(status).equal(false);
       expect(passedCount).equal(4);
       expect(failedCount).equal(1);
-      done();
     });
+    done();
   });
 
   it('should able to add tests to each worker', (done) => {
@@ -133,7 +136,7 @@ describe.skip('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -144,8 +147,8 @@ describe.skip('Workers', function () {
     workers.on(event.all.result, (status) => {
       expect(workers.getWorkers().length).equal(2);
       expect(status).equal(true);
-      done();
     });
+    done();
   });
 
   it('should able to add tests to using createGroupsOfTests', (done) => {
@@ -179,8 +182,8 @@ describe.skip('Workers', function () {
     workers.on(event.all.result, (status) => {
       expect(workers.getWorkers().length).equal(2);
       expect(status).equal(true);
-      done();
     });
+    done();
   });
 
   it('Should able to pass data from workers to main thread and vice versa', (done) => {
@@ -196,7 +199,7 @@ describe.skip('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -207,8 +210,8 @@ describe.skip('Workers', function () {
 
     workers.on(event.all.result, (status) => {
       expect(status).equal(true);
-      done();
     });
+    done();
   });
 
   it('should propagate non test events', (done) => {
@@ -239,8 +242,8 @@ describe.skip('Workers', function () {
       expect(messages.length).equal(2);
       expect(messages[0]).equal('message 1');
       expect(messages[1]).equal('message 2');
-      done();
     });
+    done();
   });
 
   it('should run worker with multiple config', (done) => {
@@ -258,7 +261,7 @@ describe.skip('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -269,7 +272,7 @@ describe.skip('Workers', function () {
     workers.on(event.all.result, (status) => {
       expect(workers.getWorkers().length).equal(8);
       expect(status).equal(true);
-      done();
     });
+    done();
   });
 });

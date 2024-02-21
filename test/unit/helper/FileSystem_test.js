@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import FileSystem from '../../../lib/helper/FileSystem.js';
 
 import lib from '../../../lib/codecept.js';
+
 const __dirname = path.resolve('.', 'test');
 
 global.codeceptjs = lib;

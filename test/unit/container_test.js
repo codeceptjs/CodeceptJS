@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import path from 'path';
+import { createRequire } from 'node:module';
 import { actor } from '../../lib/actor.js';
 import container from '../../lib/container.js';
 import Translation from '../../lib/translation.js';
-import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.resolve('.');
