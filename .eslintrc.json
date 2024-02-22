@@ -48,6 +48,8 @@
     "import/prefer-default-export": 0,
     "import/no-named-as-default-member": 0,
     "import/no-named-default": 0,
-    "import/no-cycle": 0
+    "import/no-cycle": 0,
+    "prefer-const": "off",
+    "no-import-assign": 0
   }
 }

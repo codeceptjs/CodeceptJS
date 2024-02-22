@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-const program = new Command();
 import { version } from '../lib/codecept.js';
 import { print, error } from '../lib/output.js';
 import { printError } from '../lib/command/utils.js';
@@ -19,6 +18,8 @@ import * as runMultiple from '../lib/command/run-multiple.js';
 import * as rerun from '../lib/command/run-rerun.js';
 import * as dryRun from '../lib/command/dryRun.js';
 import * as info from '../lib/command/info.js';
+
+const program = new Command();
 
 const errorHandler = (fn) => async (...args) => {
   try {
@@ -132,7 +133,7 @@ program.command('run [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-  //.option('-d, --debug', "enable node's debugger, synonym for node --debug")
+  // .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
@@ -230,7 +231,7 @@ program.command('run-rerun [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
- // .option('-d, --debug', "enable node's debugger, synonym for node --debug")
+// .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
