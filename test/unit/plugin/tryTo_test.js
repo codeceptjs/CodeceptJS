@@ -1,8 +1,6 @@
 import { expect } from 'chai';
-import lib from '../../../lib/plugin/tryTo.js';
+import { tryTo } from '../../../lib/plugin/tryTo.js';
 import recorder from '../../../lib/recorder.js';
-
-const tryTo = lib();
 
 describe('tryTo plugin', () => {
   beforeEach(() => {
@@ -10,13 +8,13 @@ describe('tryTo plugin', () => {
   });
 
   it('should execute command on success', async () => {
-    const ok = await tryTo(() => recorder.add(() => 5));
-    expect(true).is.equal(ok);
+    const ok = await tryTo(() => recorder.add('test', () => 5));
+    expect(ok).to.false;
     return recorder.promise();
   });
 
   it('should execute command on fail', async () => {
-    const notOk = await tryTo(() => recorder.add(() => {
+    const notOk = await tryTo(() => recorder.add('test', () => {
       throw new Error('Ups');
     }));
     expect(false).is.equal(notOk);

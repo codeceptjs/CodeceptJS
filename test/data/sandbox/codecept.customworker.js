@@ -5,7 +5,7 @@ export const config = {
   helpers: {
     FileSystem: {},
     Workers: {
-      require: './workers_helper',
+      require: './workers_helper.js',
     },
   },
   include: {},

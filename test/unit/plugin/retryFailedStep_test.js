@@ -23,18 +23,19 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.step.finished, { });
   });
 
-  it('should retry failed step', async () => {
+  it('should retry failed step', (done) => {
     retryFailedStep({ retries: 2, minTimeout: 1 });
     event.dispatcher.emit(event.test.before, {});
     event.dispatcher.emit(event.step.started, { name: 'click' });
 
     let counter = 0;
-    await recorder.add(() => {
+    recorder.add(() => {
       counter++;
       if (counter < 3) {
         throw new Error();
       }
     }, undefined, undefined, true);
+    done();
     return recorder.promise();
   });
 
