@@ -125,7 +125,7 @@
     "@types/chai": "4.3.11",
     "@types/inquirer": "9.0.3",
     "@types/node": "20.11.16",
-    "@wdio/sauce-service": "8.29.1",
+    "@wdio/sauce-service": "8.32.2",
     "@wdio/selenium-standalone-service": "8.3.2",
     "@wdio/utils": "8.28.8",
     "@xmldom/xmldom": "0.8.10",
