@@ -1,5 +1,5 @@
 exports.config = {
-  output: './output.js',
+  output: './output',
   helpers: {
     Playwright: {
       url: 'http://github.com',

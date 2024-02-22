@@ -1,6 +1,6 @@
 export const config = {
   tests: './*_ftest.js',
-  output: './output.js',
+  output: './output',
   helpers: {
     CustomHelper: {
       require: './customHelper.js',

@@ -6,7 +6,7 @@ eventHandlers.setConsoleLogging(true);
 export const config = {
   tests: './*_test.testevents.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FakeDriver: {
       require: '../helper',

@@ -2,7 +2,7 @@ import TestHelper from '../support/TestHelper';
 
 export const config = {
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     Puppeteer: {
       url: TestHelper.siteUrl(),

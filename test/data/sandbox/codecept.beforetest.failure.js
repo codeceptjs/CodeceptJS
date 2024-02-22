@@ -1,7 +1,7 @@
 export const config = {
   tests: './*test_before_failure.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FileSystem: {},
   },

@@ -141,7 +141,6 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-mocha": "6.3.0",
-    "esm": "^3.2.25",
     "expect": "29.7.0",
     "express": "4.18.2",
     "graphql": "14.6.0",
@@ -173,6 +172,5 @@
     "node": ">=16.0",
     "npm": ">=5.6.0"
   },
-  "es6": true,
   "type": "module"
 }

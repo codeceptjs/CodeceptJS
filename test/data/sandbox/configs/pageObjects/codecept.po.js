@@ -1,7 +1,7 @@
 export const config = {
   tests: './*_test.po.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FileSystem: {},
   },

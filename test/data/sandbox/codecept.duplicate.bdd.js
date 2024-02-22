@@ -1,7 +1,7 @@
 export const config = {
   tests: './*_no_test.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     BDD: {
       require: './support/bdd_helper.js',

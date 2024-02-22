@@ -1,6 +1,6 @@
 export const config = {
   tests: './*_spec.js',
-  output: './output.js',
+  output: './output',
   helpers: {
     CustomHelper: {
       require: './helper.js',

@@ -1,7 +1,7 @@
 export const config = {
   tests: '{./workers/base_test.workers.js,./workers/test_grep.workers.js}',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FileSystem: {},
     Workers: {

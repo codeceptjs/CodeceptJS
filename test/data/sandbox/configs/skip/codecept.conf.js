@@ -1,6 +1,6 @@
 export const config = {
   tests: './*_test.js',
-  output: './output.js',
+  output: './output',
   bootstrap: null,
   mocha: {},
   name: 'skip-test',

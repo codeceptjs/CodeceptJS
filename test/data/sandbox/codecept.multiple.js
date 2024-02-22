@@ -1,7 +1,7 @@
 export const config = {
   tests: './*_test.multiple.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FakeDriver: {
       require: '../fake_driver',

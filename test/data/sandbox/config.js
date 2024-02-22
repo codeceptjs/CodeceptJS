@@ -3,7 +3,7 @@ const profile = process.env.profile || process.profile;
 export const config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FileSystem: {},
   },

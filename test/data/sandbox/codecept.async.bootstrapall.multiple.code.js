@@ -3,7 +3,7 @@ import * as event from '../../../lib/event.js';
 export const config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     FileSystem: {},
   },

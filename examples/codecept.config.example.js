@@ -5,7 +5,7 @@ console.log(process.env.profile);
 exports.config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
     WebDriver: {
       url: 'http://localhost',

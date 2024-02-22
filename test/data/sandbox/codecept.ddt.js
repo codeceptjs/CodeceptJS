@@ -1,7 +1,7 @@
 export const config = {
   tests: './*_test.ddt.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   helpers: {
   },
   include: {},

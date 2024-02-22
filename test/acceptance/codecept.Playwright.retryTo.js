@@ -3,7 +3,7 @@ import TestHelper from '../support/TestHelper';
 export const config = {
   tests: './*_test.js',
   timeout: 10000,
-  output: './output.js',
+  output: './output',
   grep: '@Playwright',
   helpers: {
     Playwright: {
@@ -21,7 +21,7 @@ export const config = {
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
-      outputPath: 'test/acceptance/output.js',
+      outputPath: 'test/acceptance/output',
     },
     Expect: {},
   },
