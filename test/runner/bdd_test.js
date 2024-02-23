@@ -1,11 +1,12 @@
 import assert from 'assert';
 import { expect } from 'chai';
-import path from 'path';
+import path, {dirname} from 'path';
 import { exec } from 'child_process';
+import {fileURLToPath} from "url";
 
-const __dirname = path.resolve('.');
-const runner = path.join(__dirname, 'bin/codecept.js');
-const codecept_dir = path.join(__dirname, 'test/data/sandbox');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 const codecept_run = `${runner} run`;
 const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
 

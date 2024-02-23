@@ -4,7 +4,7 @@ export const config = {
   output: './output',
   helpers: {
     FakeDriver: {
-      require: '../fake_driver',
+      require: '../fake_driver.js',
       browser: 'dummy',
       windowSize: 'maximize',
     },

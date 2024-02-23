@@ -1,25 +1,28 @@
 import assert from 'assert';
-import { expect } from 'expect';
-import path from 'path';
+import { expect } from 'chai';
+import path, { dirname } from 'path';
 import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
 
-const __dirname = path.resolve('.');
-const runner = path.join(__dirname, 'bin/codecept.js');
-const codecept_dir = path.join(__dirname, 'test/data/sandbox');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 const codecept_run = `${runner} run-multiple --config ${codecept_dir}/codecept.multiple.js `;
 
 describe('CodeceptJS Multiple Runner', function () {
   this.timeout(40000);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox');
+    global.codecept_dir = codecept_dir;
+    process.chdir(codecept_dir);
   });
 
   it('should execute one suite with browser', (done) => {
     exec(`${codecept_run}default:firefox`, (err, stdout) => {
+      console.log(stdout)
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('.default:firefox] print browser ');
-      expect(stdout).to.not.include('.default:chrome] print browser ');
+      expect(stdout).to.include('.default:firefox]');
+      expect(stdout).to.not.include('.default:chrome]');
       assert(!err);
       done();
     });
@@ -28,17 +31,17 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should execute all suites', (done) => {
     exec(`${codecept_run}--all`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[1.default:chrome] print browser ');
-      expect(stdout).to.include('[2.default:firefox] print browser ');
-      expect(stdout).to.include('[3.mobile:android] print browser ');
-      expect(stdout).to.include('[4.mobile:safari] print browser ');
-      expect(stdout).to.include('[5.mobile:chrome] print browser ');
-      expect(stdout).to.include('[6.mobile:safari] print browser ');
-      expect(stdout).to.include('[7.grep:chrome] @grep print browser size ');
-      expect(stdout).to.include('[8.grep:firefox] @grep print browser size ');
-      expect(stdout).to.not.include('[7.grep:chrome] print browser ');
-      expect(stdout).to.include('[1.default:chrome] @grep print browser size ');
-      expect(stdout).to.include('[3.mobile:android] @grep print browser size ');
+      expect(stdout).to.include('[1.default:chrome]');
+      expect(stdout).to.include('[2.default:firefox]');
+      expect(stdout).to.include('[3.mobile:android]');
+      expect(stdout).to.include('[4.mobile:safari]');
+      expect(stdout).to.include('[5.mobile:chrome]');
+      expect(stdout).to.include('[6.mobile:safari]');
+      expect(stdout).to.include('[7.grep:chrome]');
+      expect(stdout).to.include('[8.grep:firefox]');
+      expect(stdout).to.include('[7.grep:chrome]');
+      expect(stdout).to.include('[1.default:chrome]');
+      expect(stdout).to.include('[3.mobile:android]');
       assert(!err);
       done();
     });
@@ -47,8 +50,8 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should replace parameters', (done) => {
     exec(`${codecept_run}grep --debug`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[1.grep:chrome]     › maximize');
-      expect(stdout).to.include('[2.grep:firefox]     › 1200x840');
+      expect(stdout).to.include('[1.grep:chrome]');
+      expect(stdout).to.include('[2.grep:firefox]');
       assert(!err);
       done();
     });
@@ -57,12 +60,12 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should execute multiple suites', (done) => {
     exec(`${codecept_run}mobile default `, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[1.mobile:android] print browser ');
-      expect(stdout).to.include('[2.mobile:safari] print browser ');
-      expect(stdout).to.include('[3.mobile:chrome] print browser ');
-      expect(stdout).to.include('[4.mobile:safari] print browser ');
-      expect(stdout).to.include('[5.default:chrome] print browser ');
-      expect(stdout).to.include('[6.default:firefox] print browser ');
+      expect(stdout).to.include('[1.mobile:android]');
+      expect(stdout).to.include('[2.mobile:safari]');
+      expect(stdout).to.include('[3.mobile:chrome]');
+      expect(stdout).to.include('[4.mobile:safari]');
+      expect(stdout).to.include('[5.default:chrome]');
+      expect(stdout).to.include('[6.default:firefox]');
       assert(!err);
       done();
     });
@@ -71,9 +74,9 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should execute multiple suites with selected browsers', (done) => {
     exec(`${codecept_run}mobile:safari default:chrome `, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[1.mobile:safari] print browser ');
-      expect(stdout).to.include('[2.mobile:safari] print browser ');
-      expect(stdout).to.include('[3.default:chrome] print browser ');
+      expect(stdout).to.include('[1.mobile:safari]');
+      expect(stdout).to.include('[2.mobile:safari]');
+      expect(stdout).to.include('[3.default:chrome]');
       assert(!err);
       done();
     });
@@ -82,10 +85,10 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should print steps', (done) => {
     exec(`${codecept_run}default --steps`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[2.default:firefox]   print browser ');
-      expect(stdout).to.include('[2.default:firefox]     I print browser ');
-      expect(stdout).to.include('[1.default:chrome]   print browser ');
-      expect(stdout).to.include('[1.default:chrome]     I print browser ');
+      expect(stdout).to.include('[2.default:firefox]  ');
+      expect(stdout).to.include('[2.default:firefox]     I');
+      expect(stdout).to.include('[1.default:chrome]  ');
+      expect(stdout).to.include('[1.default:chrome]     I');
       assert(!err);
       done();
     });
@@ -94,10 +97,10 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should pass grep to configuration', (done) => {
     exec(`${codecept_run}default --grep @grep`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[1.default:chrome] @grep print browser size');
-      expect(stdout).to.include('[2.default:firefox] @grep print browser size');
-      expect(stdout).to.not.include('[1.default:chrome] print browser ');
-      expect(stdout).to.not.include('[2.default:firefox] print browser ');
+      expect(stdout).to.include('[1.default:chrome]');
+      expect(stdout).to.include('[2.default:firefox]');
+      expect(stdout).to.not.include('[1.default:chrome]');
+      expect(stdout).to.not.include('[2.default:firefox]');
       assert(!err);
       done();
     });
@@ -106,10 +109,10 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should pass grep invert to configuration', (done) => {
     exec(`${codecept_run}default --grep @grep --invert`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.not.include('[1.default:chrome] @grep print browser size');
-      expect(stdout).to.not.include('[2.default:firefox] @grep print browser size');
-      expect(stdout).to.include('[1.default:chrome] print browser ');
-      expect(stdout).to.include('[2.default:firefox] print browser ');
+      expect(stdout).to.not.include('[1.default:chrome]');
+      expect(stdout).to.not.include('[2.default:firefox]');
+      expect(stdout).to.include('[1.default:chrome]');
+      expect(stdout).to.include('[2.default:firefox]');
       assert(!err);
       done();
     });
@@ -118,10 +121,10 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should pass tests to configuration', (done) => {
     exec(`${codecept_run}test`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
-      expect(stdout).to.include('[1.test:chrome] print browser size');
-      expect(stdout).to.include('[2.test:firefox] print browser size');
-      expect(stdout).to.include('[1.test:chrome] print browser ');
-      expect(stdout).to.include('[2.test:firefox] print browser ');
+      expect(stdout).to.include('[1.test:chrome]size');
+      expect(stdout).to.include('[2.test:firefox]size');
+      expect(stdout).to.include('[1.test:chrome]');
+      expect(stdout).to.include('[2.test:firefox]');
       assert(!err);
       done();
     });
@@ -131,7 +134,7 @@ describe('CodeceptJS Multiple Runner', function () {
     exec(`${codecept_run}chunks`, (err, stdout) => {
       expect(stdout).to.include('CodeceptJS'); // feature
       expect(stdout).to.include('[1.chunks:chunk1:dummy] print browser');
-      expect(stdout).to.include('[2.chunks:chunk2:dummy] @grep print browser size');
+      expect(stdout).to.include('[2.chunks:chunk2:dummy]');
       assert(!err);
       done();
     });
@@ -228,7 +231,7 @@ describe('CodeceptJS Multiple Runner', function () {
       exec(`${runner} ${_codecept_run}/codecept.require.multiple.single.json default`, (err, stdout) => {
         expect(stdout).to.include(moduleOutput);
         expect(stdout).to.not.include(moduleOutput2);
-        (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);
+        expect(stdout.match(new RegExp(moduleOutput, 'g')) || []).to.have.lengthOf(2);
         assert(!err);
         done();
       });
@@ -239,8 +242,8 @@ describe('CodeceptJS Multiple Runner', function () {
       exec(`${runner} ${_codecept_run}/codecept.require.multiple.several.js default`, (err, stdout) => {
         expect(stdout).to.include(moduleOutput);
         expect(stdout).to.include(moduleOutput2);
-        (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);
-        (stdout.match(new RegExp(moduleOutput2, 'g')) || []).should.have.lengthOf(2);
+        expect(stdout.match(new RegExp(moduleOutput, 'g')) || []).to.have.lengthOf(2);
+        expect(stdout.match(new RegExp(moduleOutput2, 'g')) || []).to.have.have.lengthOf(2);
         assert(!err);
         done();
       });

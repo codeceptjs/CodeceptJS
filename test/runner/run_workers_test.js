@@ -1,11 +1,12 @@
 import { expect } from 'expect';
-import path from 'path';
+import path, {dirname} from 'path';
 import { exec } from 'child_process';
 import semver from 'semver';
+import {fileURLToPath} from "url";
 
-const __dirname = path.resolve('.');
-const runner = path.join(__dirname, 'bin/codecept.js');
-const codecept_dir = path.join(__dirname, 'test/data/sandbox');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 const codecept_run = `${runner} run-workers --config ${codecept_dir}/codecept.workers.conf.js `;
 const codecept_run_glob = config => `${runner} run-workers --config ${codecept_dir}/${config} `;
 

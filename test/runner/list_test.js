@@ -1,10 +1,11 @@
 import assert from 'assert';
-import path from 'path';
+import path, {dirname} from 'path';
 import { exec } from 'child_process';
+import {fileURLToPath} from "url";
 
-const __dirname = path.resolve('.');
-const runner = path.join(__dirname, 'bin/codecept.js');
-const codecept_dir = path.join(__dirname, 'test/data/sandbox');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 
 describe('list commands', () => {
   it('list should print actions', (done) => {

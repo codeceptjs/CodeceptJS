@@ -1,11 +1,11 @@
-import path from 'path';
+import path, {dirname} from 'path';
 import { expect } from 'expect';
 import { exec } from 'child_process';
-import * as char from 'figures';
+import {fileURLToPath} from "url";
 
-const __dirname = path.resolve('.');
-const runner = path.join(__dirname, 'bin/codecept.js');
-const codecept_dir = path.join(__dirname, 'test/data/sandbox');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 const codecept_run = `${runner} dry-run`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
 
