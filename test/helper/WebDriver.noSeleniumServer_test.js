@@ -15,7 +15,7 @@ global.codeceptjs = require('../../lib');
 
 const siteUrl = TestHelper.siteUrl();
 let wd;
-const browserVersion = '116.0.5793.0';
+const browserVersion = 'stable';
 describe('WebDriver - No Selenium server started', function () {
   this.retries(1);
   this.timeout(35000);
