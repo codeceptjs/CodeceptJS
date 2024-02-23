@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { version } from '../lib/codecept.js';
-import { print, error } from '../lib/output.js';
+import * as outputLib from '../lib/output.js';
 import { printError } from '../lib/command/utils.js';
 import * as init from '../lib/command/init.js';
 import * as configMigrate from '../lib/command/configMigrate.js';
@@ -31,10 +31,10 @@ const errorHandler = (fn) => async (...args) => {
 };
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 12) {
-  error('NodeJS >= 12 is required to run.');
-  print();
-  print('Please upgrade your NodeJS engine');
-  print(`Current NodeJS version: ${process.version}`);
+  outputLib.output.error('NodeJS >= 12 is required to run.');
+  outputLib.print();
+  outputLib.print('Please upgrade your NodeJS engine');
+  outputLib.print(`Current NodeJS version: ${process.version}`);
   process.exit(1);
 }
 

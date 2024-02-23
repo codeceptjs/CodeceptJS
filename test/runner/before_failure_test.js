@@ -9,7 +9,7 @@ const codecept_run = `${runner} run --config ${codecept_dir}/codecept.beforetest
 console.log(codecept_run)
 
 describe('Failure in before', () => {
-  it('should skip tests that are skipped because of failure in before hook', (done) => {
+  it.only('should skip tests that are skipped because of failure in before hook', (done) => {
     exec(`${codecept_run}`, (err, stdout) => {
       expect(stdout).to.include('✔ First test will be passed');
       expect(stdout).to.include('S Third test will be skipped @grep');

@@ -15,8 +15,9 @@ describe('BDD Gherkin', () => {
   });
 
   it('should run feature files', (done) => {
-    console.log(`${config_run_config('codecept.bdd.js')} --steps --grep "Checkout process"`);
-    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
+    exec(config_run_config('codecept.bdd.js') + ' --verbose --grep "Checkout process"', (err, stdout, stderr) => { //eslint-disable-line
+      console.log(`${config_run_config('codecept.bdd.js')} --verbose --grep "Checkout process"`);
+      console.log(stdout)
       expect(stdout).to.include('Checkout process'); // feature
       expect(stdout).to.include('-- before checkout --');
       expect(stdout).to.include('-- after checkout --');
