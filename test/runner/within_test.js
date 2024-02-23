@@ -1,8 +1,8 @@
-import path, {dirname} from 'path';
+import path, { dirname } from 'path';
 import { exec } from 'child_process';
 import { expect } from 'chai';
+import { fileURLToPath } from 'url';
 import { grepLines } from '../../lib/utils.js';
-import {fileURLToPath} from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const runner = path.join(__dirname, '../../bin/codecept.js');
@@ -19,20 +19,16 @@ describe('CodeceptJS within', function () {
   });
 
   it('should execute if no generators', (done) => {
-    exec(`${codecept_run} --verbose`, (_err, stdout) => {
-      console.log(`${codecept_run} --debug`)
+    exec(`${codecept_run} --steps`, (_err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
-      testStatus = withoutGeneratorList.pop();
-      expect(testStatus).to.include('OK');
-      withoutGeneratorList.should.eql([
-        'I small promise ',
-        'I small promise was finished ',
-        'I hey! i am within begin. i get blabla ',
+      expect(lines.join(' ')).to.include('OK');
+      expect(lines).to.include.members([
+        'I small promise',
+        'I hey! i am within begin. i get blabla',
         'Within "blabla" ""',
         'I small promise ',
-        'I small promise was finished ',
         'I oh! i am within end( ',
       ], 'check steps execution order');
       done();

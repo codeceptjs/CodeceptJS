@@ -15,7 +15,7 @@ import * as generate from '../lib/command/generate.js';
 import * as run from '../lib/command/run.js';
 import * as runWorkers from '../lib/command/run-workers.js';
 import * as runMultiple from '../lib/command/run-multiple.js';
-import * as rerun from '../lib/command/run-rerun.js';
+import { runRerun } from '../lib/command/run-rerun.js';
 import * as dryRun from '../lib/command/dryRun.js';
 import * as info from '../lib/command/info.js';
 
@@ -244,7 +244,7 @@ program.command('run-rerun [test]')
   .option('--trace', 'trace function calls')
   .option('--child <string>', 'option for child processes')
 
-  .action(rerun);
+  .action(runRerun);
 
 program.on('command:*', (cmd) => {
   console.log(`\nUnknown command ${cmd}\n`);

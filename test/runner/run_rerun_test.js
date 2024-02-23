@@ -1,22 +1,24 @@
 import { expect } from 'expect';
 import { describe } from 'mocha';
-import path from 'path';
+import path, { dirname } from 'path';
 import { exec } from 'child_process';
-import semver from 'semver';
+import { fileURLToPath } from 'url';
 
-const __dirname = path.resolve('.');
-const runner = path.join(__dirname, 'bin/codecept.js');
-const codecept_dir = path.join(__dirname, 'test/data/sandbox/configs/run-rerun/');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox/configs/run-rerun');
 const codecept_run = `${runner} run-rerun`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} --grep "${grep || ''}"`;
 
 describe('run-rerun command', () => {
   before(() => {
+    global.codecept_dir = codecept_dir;
     process.chdir(codecept_dir);
   });
 
-  it('should display count of attemps', (done) => {
+  it('should display count of attempts', (done) => {
     exec(`${codecept_run_config('codecept.conf.js')} --debug`, (err, stdout) => {
+      console.log(err, stdout)
       const runs = stdout.split('Run Rerun - Command --');
 
       // check first run

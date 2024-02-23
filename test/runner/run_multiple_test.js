@@ -180,9 +180,9 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should exit with non-zero code for failures during init process', (done) => {
     process.chdir(codecept_dir);
     exec(`${runner} run-multiple --config codecept.multiple.initFailure.js default --all`, (err, stdout) => {
-      expect(err).not.toBeFalsy();
+      expect(err).not.to.false;
       expect(err.code).toBe(1);
-      expect(stdout).toContain('Failed on FailureHelper');
+      expect(stdout).contain('Failed on FailureHelper');
       done();
     });
   });
@@ -190,10 +190,10 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should exit code 1 when error in config', (done) => {
     process.chdir(codecept_dir);
     exec(`${runner} run-multiple --config configs/codecept-invalid.config.js default --all`, (err, stdout, stderr) => {
-      expect(stdout).not.toContain('UnhandledPromiseRejectionWarning');
-      expect(stderr).not.toContain('UnhandledPromiseRejectionWarning');
-      expect(stdout).toContain('badFn is not defined');
-      expect(err).not.toBe(null);
+      expect(stdout).not.contain('UnhandledPromiseRejectionWarning');
+      expect(stderr).not.contain('UnhandledPromiseRejectionWarning');
+      expect(stdout).contain('badFn is not defined');
+      expect(err).not.null;
       done();
     });
   });
