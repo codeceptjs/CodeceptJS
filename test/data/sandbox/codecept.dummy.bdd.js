@@ -10,7 +10,7 @@ export const config = {
   gherkin: {
     features: './support/dummy.feature',
     steps: [
-      './features/step_definitions/my_steps.js',
+      './features/step_definitions/my_other_steps.js',
       './features/step_definitions/my_other_steps.js',
     ],
   },

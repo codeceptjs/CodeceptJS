@@ -4,11 +4,11 @@ import { Step } from '../../../lib/step.js';
 
 class Within extends Helper {
   _withinBegin(testStr) {
-    output.step(new Step(this.constructor.name, `Hey! I am within Begin. I get ${testStr}`));
+    output.output.step(new Step(this.constructor.name, `Hey! I am within Begin. I get ${testStr}`));
   }
 
   _withinEnd() {
-    output.step(new Step(this.constructor.name, 'oh! I am within end('));
+    output.output.step(new Step(this.constructor.name, 'oh! I am within end('));
   }
 
   _failed() {
@@ -24,7 +24,7 @@ class Within extends Helper {
       setTimeout(() => {
         resolve('result');
       }, 100);
-    }).then(() => output.step(new Step(this.constructor.name, 'small Promise was finished')));
+    }).then(() => output.output.step(new Step(this.constructor.name, 'small Promise was finished')));
   }
 
   errorStep() {

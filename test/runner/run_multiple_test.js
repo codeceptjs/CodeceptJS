@@ -3,9 +3,9 @@ import { expect } from 'expect';
 import path from 'path';
 import { exec } from 'child_process';
 
-const __dirname = path.resolve();
-const runner = path.join(__dirname, '/../../bin/codecept.js');
-const codecept_dir = path.join(__dirname, '/../data/sandbox');
+const __dirname = path.resolve('.');
+const runner = path.join(__dirname, 'bin/codecept.js');
+const codecept_dir = path.join(__dirname, 'test/data/sandbox');
 const codecept_run = `${runner} run-multiple --config ${codecept_dir}/codecept.multiple.js `;
 
 describe('CodeceptJS Multiple Runner', function () {
@@ -17,9 +17,9 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute one suite with browser', (done) => {
     exec(`${codecept_run}default:firefox`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('.default:firefox] print browser ');
-      stdout.should.not.include('.default:chrome] print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('.default:firefox] print browser ');
+      expect(stdout).to.not.include('.default:chrome] print browser ');
       assert(!err);
       done();
     });
@@ -27,18 +27,18 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute all suites', (done) => {
     exec(`${codecept_run}--all`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.default:chrome] print browser ');
-      stdout.should.include('[2.default:firefox] print browser ');
-      stdout.should.include('[3.mobile:android] print browser ');
-      stdout.should.include('[4.mobile:safari] print browser ');
-      stdout.should.include('[5.mobile:chrome] print browser ');
-      stdout.should.include('[6.mobile:safari] print browser ');
-      stdout.should.include('[7.grep:chrome] @grep print browser size ');
-      stdout.should.include('[8.grep:firefox] @grep print browser size ');
-      stdout.should.not.include('[7.grep:chrome] print browser ');
-      stdout.should.include('[1.default:chrome] @grep print browser size ');
-      stdout.should.include('[3.mobile:android] @grep print browser size ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.default:chrome] print browser ');
+      expect(stdout).to.include('[2.default:firefox] print browser ');
+      expect(stdout).to.include('[3.mobile:android] print browser ');
+      expect(stdout).to.include('[4.mobile:safari] print browser ');
+      expect(stdout).to.include('[5.mobile:chrome] print browser ');
+      expect(stdout).to.include('[6.mobile:safari] print browser ');
+      expect(stdout).to.include('[7.grep:chrome] @grep print browser size ');
+      expect(stdout).to.include('[8.grep:firefox] @grep print browser size ');
+      expect(stdout).to.not.include('[7.grep:chrome] print browser ');
+      expect(stdout).to.include('[1.default:chrome] @grep print browser size ');
+      expect(stdout).to.include('[3.mobile:android] @grep print browser size ');
       assert(!err);
       done();
     });
@@ -46,9 +46,9 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should replace parameters', (done) => {
     exec(`${codecept_run}grep --debug`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.grep:chrome]     › maximize');
-      stdout.should.include('[2.grep:firefox]     › 1200x840');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.grep:chrome]     › maximize');
+      expect(stdout).to.include('[2.grep:firefox]     › 1200x840');
       assert(!err);
       done();
     });
@@ -56,13 +56,13 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute multiple suites', (done) => {
     exec(`${codecept_run}mobile default `, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.mobile:android] print browser ');
-      stdout.should.include('[2.mobile:safari] print browser ');
-      stdout.should.include('[3.mobile:chrome] print browser ');
-      stdout.should.include('[4.mobile:safari] print browser ');
-      stdout.should.include('[5.default:chrome] print browser ');
-      stdout.should.include('[6.default:firefox] print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.mobile:android] print browser ');
+      expect(stdout).to.include('[2.mobile:safari] print browser ');
+      expect(stdout).to.include('[3.mobile:chrome] print browser ');
+      expect(stdout).to.include('[4.mobile:safari] print browser ');
+      expect(stdout).to.include('[5.default:chrome] print browser ');
+      expect(stdout).to.include('[6.default:firefox] print browser ');
       assert(!err);
       done();
     });
@@ -70,10 +70,10 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should execute multiple suites with selected browsers', (done) => {
     exec(`${codecept_run}mobile:safari default:chrome `, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.mobile:safari] print browser ');
-      stdout.should.include('[2.mobile:safari] print browser ');
-      stdout.should.include('[3.default:chrome] print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.mobile:safari] print browser ');
+      expect(stdout).to.include('[2.mobile:safari] print browser ');
+      expect(stdout).to.include('[3.default:chrome] print browser ');
       assert(!err);
       done();
     });
@@ -81,11 +81,11 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should print steps', (done) => {
     exec(`${codecept_run}default --steps`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[2.default:firefox]   print browser ');
-      stdout.should.include('[2.default:firefox]     I print browser ');
-      stdout.should.include('[1.default:chrome]   print browser ');
-      stdout.should.include('[1.default:chrome]     I print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[2.default:firefox]   print browser ');
+      expect(stdout).to.include('[2.default:firefox]     I print browser ');
+      expect(stdout).to.include('[1.default:chrome]   print browser ');
+      expect(stdout).to.include('[1.default:chrome]     I print browser ');
       assert(!err);
       done();
     });
@@ -93,11 +93,11 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should pass grep to configuration', (done) => {
     exec(`${codecept_run}default --grep @grep`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.default:chrome] @grep print browser size');
-      stdout.should.include('[2.default:firefox] @grep print browser size');
-      stdout.should.not.include('[1.default:chrome] print browser ');
-      stdout.should.not.include('[2.default:firefox] print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.default:chrome] @grep print browser size');
+      expect(stdout).to.include('[2.default:firefox] @grep print browser size');
+      expect(stdout).to.not.include('[1.default:chrome] print browser ');
+      expect(stdout).to.not.include('[2.default:firefox] print browser ');
       assert(!err);
       done();
     });
@@ -105,11 +105,11 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should pass grep invert to configuration', (done) => {
     exec(`${codecept_run}default --grep @grep --invert`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.not.include('[1.default:chrome] @grep print browser size');
-      stdout.should.not.include('[2.default:firefox] @grep print browser size');
-      stdout.should.include('[1.default:chrome] print browser ');
-      stdout.should.include('[2.default:firefox] print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.not.include('[1.default:chrome] @grep print browser size');
+      expect(stdout).to.not.include('[2.default:firefox] @grep print browser size');
+      expect(stdout).to.include('[1.default:chrome] print browser ');
+      expect(stdout).to.include('[2.default:firefox] print browser ');
       assert(!err);
       done();
     });
@@ -117,11 +117,11 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should pass tests to configuration', (done) => {
     exec(`${codecept_run}test`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.test:chrome] print browser size');
-      stdout.should.include('[2.test:firefox] print browser size');
-      stdout.should.include('[1.test:chrome] print browser ');
-      stdout.should.include('[2.test:firefox] print browser ');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.test:chrome] print browser size');
+      expect(stdout).to.include('[2.test:firefox] print browser size');
+      expect(stdout).to.include('[1.test:chrome] print browser ');
+      expect(stdout).to.include('[2.test:firefox] print browser ');
       assert(!err);
       done();
     });
@@ -129,9 +129,9 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should run chunks', (done) => {
     exec(`${codecept_run}chunks`, (err, stdout) => {
-      stdout.should.include('CodeceptJS'); // feature
-      stdout.should.include('[1.chunks:chunk1:dummy] print browser');
-      stdout.should.include('[2.chunks:chunk2:dummy] @grep print browser size');
+      expect(stdout).to.include('CodeceptJS'); // feature
+      expect(stdout).to.include('[1.chunks:chunk1:dummy] print browser');
+      expect(stdout).to.include('[2.chunks:chunk2:dummy] @grep print browser size');
       assert(!err);
       done();
     });
@@ -140,13 +140,13 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should run features in parallel', (done) => {
     process.chdir(codecept_dir);
     exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --features  --grep '(?=.*)^(?!.*@fail)'`, (err, stdout) => {
-      stdout.should.include('[1.chunks:chunk1:default] Checkout examples process');
-      stdout.should.not.include('[2.chunks:chunk2:default] Checkout examples process');
-      stdout.should.include('[2.chunks:chunk2:default] Checkout string');
-      stdout.should.not.include('[1.chunks:chunk1:default] Checkout string');
-      stdout.should.include('[1.chunks:chunk1:default]   OK  |');
-      stdout.should.include('[2.chunks:chunk2:default]   OK  |');
-      stdout.should.not.include('@feature_grep');
+      expect(stdout).to.include('[1.chunks:chunk1:default] Checkout examples process');
+      expect(stdout).to.not.include('[2.chunks:chunk2:default] Checkout examples process');
+      expect(stdout).to.include('[2.chunks:chunk2:default] Checkout string');
+      expect(stdout).to.not.include('[1.chunks:chunk1:default] Checkout string');
+      expect(stdout).to.include('[1.chunks:chunk1:default]   OK  |');
+      expect(stdout).to.include('[2.chunks:chunk2:default]   OK  |');
+      expect(stdout).to.not.include('@feature_grep');
       assert(!err);
       done();
     });
@@ -155,9 +155,9 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should run features & tests in parallel', (done) => {
     process.chdir(codecept_dir);
     exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --grep '(?=.*)^(?!.*@fail)'`, (err, stdout) => {
-      stdout.should.include('@feature_grep');
-      stdout.should.include('Checkout examples process');
-      stdout.should.include('Checkout string');
+      expect(stdout).to.include('@feature_grep');
+      expect(stdout).to.include('Checkout examples process');
+      expect(stdout).to.include('Checkout string');
       assert(!err);
       done();
     });
@@ -166,9 +166,9 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should run only tests in parallel', (done) => {
     process.chdir(codecept_dir);
     exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --tests`, (err, stdout) => {
-      stdout.should.include('@feature_grep');
-      stdout.should.not.include('Checkout examples process');
-      stdout.should.not.include('Checkout string');
+      expect(stdout).to.include('@feature_grep');
+      expect(stdout).to.not.include('Checkout examples process');
+      expect(stdout).to.not.include('Checkout string');
       assert(!err);
       done();
     });
@@ -199,9 +199,9 @@ describe('CodeceptJS Multiple Runner', function () {
     const _codecept_run = `run-multiple --config ${codecept_dir}`;
     it('should be executed from async function in config', (done) => {
       exec(`${runner} ${_codecept_run}/codecept.async.bootstrapall.multiple.code.js default`, (err, stdout) => {
-        stdout.should.include('CodeceptJS'); // feature
-        stdout.should.include('Results: inside Promise\n"event.multiple.before" is called');
-        stdout.should.include('"teardownAll" is called.');
+        expect(stdout).to.include('CodeceptJS'); // feature
+        expect(stdout).to.include('Results: inside Promise\n"event.multiple.before" is called');
+        expect(stdout).to.include('"teardownAll" is called.');
         assert(!err);
         done();
       });
@@ -209,9 +209,9 @@ describe('CodeceptJS Multiple Runner', function () {
 
     it('should be executed from function in config', (done) => {
       exec(`${runner} ${_codecept_run}/codecept.bootstrapall.multiple.code.js default`, (err, stdout) => {
-        stdout.should.include('CodeceptJS'); // feature
-        stdout.should.include('"bootstrapAll" is called.');
-        stdout.should.include('"teardownAll" is called.');
+        expect(stdout).to.include('CodeceptJS'); // feature
+        expect(stdout).to.include('"bootstrapAll" is called.');
+        expect(stdout).to.include('"teardownAll" is called.');
         assert(!err);
         done();
       });
@@ -226,8 +226,8 @@ describe('CodeceptJS Multiple Runner', function () {
     it('should be executed with module when described', (done) => {
       process.chdir(codecept_dir);
       exec(`${runner} ${_codecept_run}/codecept.require.multiple.single.json default`, (err, stdout) => {
-        stdout.should.include(moduleOutput);
-        stdout.should.not.include(moduleOutput2);
+        expect(stdout).to.include(moduleOutput);
+        expect(stdout).to.not.include(moduleOutput2);
         (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);
         assert(!err);
         done();
@@ -237,8 +237,8 @@ describe('CodeceptJS Multiple Runner', function () {
     it('should be executed with several module when described', (done) => {
       process.chdir(codecept_dir);
       exec(`${runner} ${_codecept_run}/codecept.require.multiple.several.js default`, (err, stdout) => {
-        stdout.should.include(moduleOutput);
-        stdout.should.include(moduleOutput2);
+        expect(stdout).to.include(moduleOutput);
+        expect(stdout).to.include(moduleOutput2);
         (stdout.match(new RegExp(moduleOutput, 'g')) || []).should.have.lengthOf(2);
         (stdout.match(new RegExp(moduleOutput2, 'g')) || []).should.have.lengthOf(2);
         assert(!err);
@@ -249,8 +249,8 @@ describe('CodeceptJS Multiple Runner', function () {
     it('should not be executed without module when not described', (done) => {
       process.chdir(codecept_dir);
       exec(`${runner} ${_codecept_run}/codecept.require.multiple.without.json default`, (err, stdout) => {
-        stdout.should.not.include(moduleOutput);
-        stdout.should.not.include(moduleOutput2);
+        expect(stdout).to.not.include(moduleOutput);
+        expect(stdout).to.not.include(moduleOutput2);
         assert(!err);
         done();
       });

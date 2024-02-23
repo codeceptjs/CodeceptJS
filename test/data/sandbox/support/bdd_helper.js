@@ -1,5 +1,5 @@
 import assert from 'assert';
-import Helper from '../../../../lib/helper';
+import Helper from '../../../../lib/helper.js';
 
 class CheckoutHelper extends Helper {
   _before() {

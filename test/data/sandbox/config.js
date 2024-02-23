@@ -14,5 +14,5 @@ export const config = {
 };
 
 if (profile === 'failed') {
-  exports.config.tests = './*_test_failed.js';
+  config.tests = './*_test_failed.js';
 }

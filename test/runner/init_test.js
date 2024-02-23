@@ -5,7 +5,7 @@ import mkdirp from 'mkdirp';
 
 const __dirname = path.resolve();
 const runner = path.join(__dirname, '../../bin/codecept.js');
-const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init');
+const codecept_dir = path.join(__dirname, 'test/data/sandbox/configs/init');
 
 describe('Init Command', function () {
   this.timeout(20000);

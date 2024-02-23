@@ -6,9 +6,9 @@ import { Project, StructureKind, ts } from 'ts-morph';
 
 import chai_subset from 'chai-subset';
 
-const __dirname = path.resolve();
-const runner = path.join(__dirname, '/../../bin/codecept.js');
-const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions');
+const __dirname = path.resolve('.');
+const runner = path.join(__dirname, 'bin/codecept.js');
+const codecept_dir = path.join(__dirname, 'test/data/sandbox/configs/definitions');
 const pathToRootOfProject = path.join(__dirname, '../../');
 const pathOfStaticDefinitions = path.join(pathToRootOfProject, 'typings/index.d.ts');
 const pathOfJSDocDefinitions = path.join(pathToRootOfProject, 'typings/types.d.ts');
@@ -74,7 +74,7 @@ describe('Definitions', function () {
 
   it('def should create definition file', (done) => {
     exec(`${runner} def ${codecept_dir}`, (err, stdout) => {
-      stdout.should.include('Definitions were generated in steps.d.ts');
+      expect(stdout).to.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
@@ -98,7 +98,7 @@ describe('Definitions', function () {
 
   it('def should create definition file with correct page def', (done) => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, (err, stdout) => {
-      stdout.should.include('Definitions were generated in steps.d.ts');
+      expect(stdout).to.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 
@@ -113,7 +113,7 @@ describe('Definitions', function () {
 
   it('def should create definition file given a config file', (done) => {
     exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.js`, (err, stdout) => {
-      stdout.should.include('Definitions were generated in steps.d.ts');
+      expect(stdout).to.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/../../steps.d.ts`);
       types.should.be.valid;
       assert(!err);
@@ -214,7 +214,7 @@ describe('Definitions', function () {
 
   it('def should create definition file with promise-based feature', (done) => {
     exec(`${runner} def --config ${codecept_dir}/codecept.promise.based.js`, (err, stdout) => {
-      stdout.should.include('Definitions were generated in steps.d.ts');
+      expect(stdout).to.include('Definitions were generated in steps.d.ts');
       const types = typesFrom(`${codecept_dir}/steps.d.ts`);
       types.should.be.valid;
 

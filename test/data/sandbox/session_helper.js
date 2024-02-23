@@ -27,7 +27,7 @@ class Session extends Helper {
         resolve('res');
       }, 100);
     });
-    // .then(() => output.step(`session:${this.sessionId}.${action}`));
+    // .then(() => output.output.step(`session:${this.sessionId}.${action}`));
   }
 
   errorStep() {

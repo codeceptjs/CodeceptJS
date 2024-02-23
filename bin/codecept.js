@@ -31,7 +31,7 @@ const errorHandler = (fn) => async (...args) => {
 };
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 12) {
-  outputLib.output.error('NodeJS >= 12 is required to run.');
+  outputLib.output.output.error('NodeJS >= 12 is required to run.');
   outputLib.print();
   outputLib.print('Please upgrade your NodeJS engine');
   outputLib.print(`Current NodeJS version: ${process.version}`);
@@ -133,7 +133,7 @@ program.command('run [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-  // .option('-d, --debug', "enable node's debugger, synonym for node --debug")
+  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
@@ -231,7 +231,7 @@ program.command('run-rerun [test]')
   .option('-R, --reporter <name>', 'specify the reporter to use')
   .option('-S, --sort', 'sort test files')
   .option('-b, --bail', 'bail after first test failure')
-// .option('-d, --debug', "enable node's debugger, synonym for node --debug")
+  .option('-d, --debug', "enable node's debugger, synonym for node --debug")
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')

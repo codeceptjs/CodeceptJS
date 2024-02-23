@@ -1,4 +1,6 @@
-const given = when = then = global.codeceptjs.container.plugins('commentStep');
+const Container = require('../../../../../lib/container.js').default;
+
+const given = when = then = Container.plugins('commentStep');
 const { I } = inject();
 
 Feature('CommentStep');

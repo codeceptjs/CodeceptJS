@@ -3,6 +3,7 @@
 
 class FailureHelper extends Helper {
   constructor() {
+    super();
     throw new Error('Failed on FailureHelper');
   }
 }

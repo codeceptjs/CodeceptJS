@@ -2,9 +2,9 @@ import { expect } from 'expect';
 import path from 'path';
 import { exec } from 'child_process';
 
-const __dirname = path.resolve();
-const runner = path.join(__dirname, '/../../bin/codecept.js');
-const codecept_dir = path.join(__dirname, '/../data/sandbox');
+const __dirname = path.resolve('.');
+const runner = path.join(__dirname, 'bin/codecept.js');
+const codecept_dir = path.join(__dirname, 'test/data/sandbox');
 const codecept_run = `${runner} run`;
 const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
 
@@ -191,9 +191,9 @@ describe('CodeceptJS Interface', () => {
 
   it('should display steps and artifacts & error log', (done) => {
     exec(`${config_run_config('./configs/testArtifacts')} --debug`, (err, stdout) => {
-      stdout.should.include('Scenario Steps:');
-      stdout.should.include('Artifacts');
-      stdout.should.include('- screenshot: [ SCREEENSHOT FILE ]');
+      expect(stdout).to.include('Scenario Steps:');
+      expect(stdout).to.include('Artifacts');
+      expect(stdout).to.include('- screenshot: [ SCREEENSHOT FILE ]');
       done();
     });
   });

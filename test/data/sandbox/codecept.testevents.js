@@ -9,7 +9,7 @@ export const config = {
   output: './output',
   helpers: {
     FakeDriver: {
-      require: '../helper',
+      require: '../helper.js',
     },
   },
   include: {},
