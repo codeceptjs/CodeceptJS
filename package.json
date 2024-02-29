@@ -67,7 +67,7 @@
     "prepare-release": "./runok.js versioning && ./runok.js get:commit-log"
   },
   "dependencies": {
-    "@codeceptjs/configure": "0.10.0",
+    "@codeceptjs/configure": "1.0.1",
     "@codeceptjs/helper": "2.0.1",
     "@cucumber/cucumber-expressions": "17",
     "@cucumber/gherkin": "26",
