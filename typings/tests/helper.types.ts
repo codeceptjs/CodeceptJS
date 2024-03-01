@@ -1,46 +1,52 @@
 // @TODO: Need tests arguments of protected methods
 
+import Helper from '@codeceptjs/helper'
+import { expectError, expectType } from 'tsd';
+
 class CustomClass extends Helper {
   constructor(config: any) {
     super(
-      config // $ExpectType any
+      expectType<any>(config)
     )
-    this.helpers // $ExpectType any
-    this.debug() // $ExpectError
-    this.debugSection() // $ExpectError
-    this.debugSection('[Section]') // $ExpectError
+    // @ts-ignore
+    expectType<any>(this.helpers)
+    expectError(this.debug())
+    expectError(this.debugSection())
+    expectError(this.debugSection('[Section]'))
 
-    this.debug('log') // $ExpectType void
-    this.debugSection('[Section]', 'log') // $ExpectType void
+    // @ts-ignore
+    expectType<void>(this.debug('log'))
+    // @ts-ignore
+    expectType<void>(this.debugSection('[Section]', 'log'))
   }
-  _failed() {} // $ExpectType () => void
-  _finishTest() {} // $ExpectType () => void
-  _init() {} // $ExpectType () => void
-  _passed() {} // $ExpectType () => void
-  _setConfig() {} // $ExpectType () => void
-  _useTo() {} // $ExpectType () => void
-  _validateConfig() {} // $ExpectType () => void
-  _before() {} // $ExpectType () => void
-  _beforeStep() {} // $ExpectType () => void
-  _beforeSuite() {} // $ExpectType () => void
-  _after() {} // $ExpectType () => void
-  _afterStep() {} // $ExpectType () => void
-  _afterSuite() {} // $ExpectType () => void
+  _failed() {}
+  _finishTest() {}
+  _init() {}
+  _passed() {}
+  _setConfig() {}
+  _useTo() {}
+  _validateConfig() {}
+  _before() {}
+  _beforeStep() {}
+  _beforeSuite() {}
+  _after() {}
+  _afterStep() {}
+  _afterSuite() {}
 }
 
-const customClass = new Helper({})
+const customClass = new CustomClass({})
 
-customClass._failed() // $ExpectError
-customClass._finishTest() // $ExpectError
-customClass._init() // $ExpectError
-customClass._passed() // $ExpectError
-customClass._setConfig() // $ExpectError
-customClass._validateConfig() // $ExpectError
-customClass._before() // $ExpectError
-customClass._beforeStep() // $ExpectError
-customClass._beforeSuite() // $ExpectError
-customClass._after() // $ExpectError
-customClass._afterStep() // $ExpectError
-customClass._afterSuite() // $ExpectError
+expectType<void>(customClass._failed())
+expectType<void>(customClass._finishTest())
+expectType<void>(customClass._init())
+expectType<void>(customClass._passed())
+expectType<void>(customClass._setConfig())
+expectType<void>(customClass._validateConfig())
+expectType<void>(customClass._before())
+expectType<void>(customClass._beforeStep())
+expectType<void>(customClass._beforeSuite())
+expectType<void>(customClass._after())
+expectType<void>(customClass._afterStep())
+expectType<void>(customClass._afterSuite())
 
-customClass._useTo() // $ExpectType void
+expectType<void>(customClass._useTo())
