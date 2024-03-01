@@ -62,7 +62,8 @@
     "dev:graphql": "node test/data/graphql/index.js",
     "publish:site": "./runok.js publish:site",
     "update-contributor-faces": "./runok.js contributor:faces",
-    "dtslint": "tsd",
+    "types-fix": "node typings/fixDefFiles.js",
+    "dtslint": "npm run types-fix && tsd",
     "prepare": "husky install",
     "prepare-release": "./runok.js versioning && ./runok.js get:commit-log"
   },
