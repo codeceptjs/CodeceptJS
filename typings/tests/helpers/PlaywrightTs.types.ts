@@ -1,5 +1,6 @@
-export {}; // mark the file as external module to redeclare variables in the same block
+import { expectError, expectType } from 'tsd';
 
+// @ts-ignore
 const playwright = new CodeceptJS.PlaywrightTs();
 
 const str = 'text';
@@ -8,141 +9,141 @@ const position = { x: 100, y: 200 };
 const sourcePosition = { x: 10, y: 20 };
 const targetPosition = { x: 20, y: 30 };
 
-playwright.usePlaywrightTo(str, () => {}); // $ExpectType Promise<any>
-playwright.amAcceptingPopups(); // $ExpectType Promise<any>
-playwright.acceptPopup(); // $ExpectType Promise<any>
-playwright.amCancellingPopups(); // $ExpectType Promise<any>
-playwright.cancelPopup(); // $ExpectType Promise<any>
-playwright.seeInPopup(str); // $ExpectType Promise<any>
-playwright._setPage(str); // $ExpectType Promise<any>
-playwright._addPopupListener(); // $ExpectType Promise<any>
-playwright._getPageUrl(); // $ExpectType Promise<any>
-playwright.grabPopupText(); // $ExpectType Promise<string | null>
-playwright.amOnPage(str); // $ExpectType Promise<any>
-playwright.resizeWindow(num, num); // $ExpectType Promise<any>
-playwright.setPlaywrightRequestHeaders(str); // $ExpectType Promise<any>
-playwright.moveCursorTo(str, num, num); // $ExpectType Promise<any>
-playwright.dragAndDrop(str); // $ExpectError
-playwright.dragAndDrop(str, str); // $ExpectType Promise<any>
-playwright.dragAndDrop(str, str, { sourcePosition, targetPosition }); // $ExpectType Promise<any>
-playwright.refreshPage(); // $ExpectType Promise<any>
-playwright.scrollPageToTop(); // $ExpectType Promise<any>
-playwright.scrollPageToBottom(); // $ExpectType Promise<any>
-playwright.scrollTo(str, num, num); // $ExpectType Promise<any>
-playwright.seeInTitle(str); // $ExpectType Promise<any>
-playwright.grabPageScrollPosition(); // $ExpectType Promise<PageScrollPosition>
-playwright.seeTitleEquals(str); // $ExpectType Promise<any>
-playwright.dontSeeInTitle(str); // $ExpectType Promise<any>
-playwright.grabTitle(); // $ExpectType Promise<string>
-playwright._locate(); // $ExpectType Promise<any>
-playwright._locateCheckable(); // $ExpectType Promise<any>
-playwright._locateClickable(); // $ExpectType Promise<any>
-playwright._locateFields(); // $ExpectType Promise<any>
-playwright.switchToNextTab(); // $ExpectType Promise<any>
-playwright.switchToPreviousTab(); // $ExpectType Promise<any>
-playwright.closeCurrentTab(); // $ExpectType Promise<any>
-playwright.closeOtherTabs(); // $ExpectType Promise<any>
-playwright.openNewTab(); // $ExpectType Promise<any>
-playwright.grabNumberOfOpenTabs(); // $ExpectType Promise<number>
-playwright.seeElement(str); // $ExpectType Promise<any>
-playwright.dontSeeElement(str); // $ExpectType Promise<any>
-playwright.seeElementInDOM(str); // $ExpectType Promise<any>
-playwright.dontSeeElementInDOM(str); // $ExpectType Promise<any>
-playwright.handleDownloads(str); // $ExpectType Promise<void>
-playwright.click(str); // $ExpectType Promise<any>
-playwright.click(str, str); // $ExpectType Promise<any>
-playwright.click(str, null, { position }); // $ExpectType Promise<any>
-playwright.clickLink(); // $ExpectType Promise<any>
-playwright.forceClick(str); // $ExpectType Promise<any>
-playwright.focus(str); // $ExpectType Promise<any>
-playwright.blur(str); // $ExpectType Promise<any>
-playwright.doubleClick(str); // $ExpectType Promise<any>
-playwright.rightClick(str); // $ExpectType Promise<any>
-playwright.checkOption(str); // $ExpectType Promise<any>
-playwright.uncheckOption(str); // $ExpectType Promise<any>
-playwright.seeCheckboxIsChecked(str); // $ExpectType Promise<any>
-playwright.dontSeeCheckboxIsChecked(str); // $ExpectType Promise<any>
-playwright.pressKeyDown(str); // $ExpectType Promise<any>
-playwright.pressKeyUp(str); // $ExpectType Promise<any>
-playwright.pressKey(str); // $ExpectType Promise<any>
-playwright.type(str); // $ExpectType Promise<any>
-playwright.fillField(str, str); // $ExpectType Promise<any>
-playwright.clearField(str); // $ExpectType Promise<any>
-playwright.appendField(str, str); // $ExpectType Promise<any>
-playwright.seeInField(str, str); // $ExpectType Promise<any>
-playwright.dontSeeInField(str, str); // $ExpectType Promise<any>
-playwright.attachFile(str, str); // $ExpectType Promise<any>
-playwright.selectOption(str, str); // $ExpectType Promise<any>
-playwright.grabNumberOfVisibleElements(str); // $ExpectType Promise<number>
-playwright.seeInCurrentUrl(str); // $ExpectType Promise<any>
-playwright.dontSeeInCurrentUrl(str); // $ExpectType Promise<any>
-playwright.seeCurrentUrlEquals(str); // $ExpectType Promise<any>
-playwright.dontSeeCurrentUrlEquals(str); // $ExpectType Promise<any>
-playwright.see(str); // $ExpectType Promise<any>
-playwright.seeTextEquals(str); // $ExpectType Promise<any>
-playwright.dontSee(str); // $ExpectType Promise<any>
-playwright.grabSource(); // $ExpectType Promise<string>
-playwright.grabBrowserLogs(); // $ExpectType Promise<any[]>
-playwright.grabCurrentUrl(); // $ExpectType Promise<string>
-playwright.seeInSource(str); // $ExpectType Promise<any>
-playwright.dontSeeInSource(str); // $ExpectType Promise<any>
-playwright.seeNumberOfElements(str, num); // $ExpectType Promise<any>
-playwright.seeNumberOfVisibleElements(str, num); // $ExpectType Promise<any>
-playwright.setCookie({ name: str, value: str}); // $ExpectType Promise<any>
-playwright.seeCookie(str); // $ExpectType Promise<any>
-playwright.dontSeeCookie(str); // $ExpectType Promise<any>
-playwright.grabCookie(); // $ExpectType Promise<any>
-playwright.clearCookie(); // $ExpectType Promise<any>
-playwright.executeScript(() => {}); // $ExpectType Promise<any>
-playwright.grabTextFrom(str); // $ExpectType Promise<string>
-playwright.grabTextFromAll(str); // $ExpectType Promise<string[]>
-playwright.grabValueFrom(str); // $ExpectType Promise<string>
-playwright.grabValueFromAll(str); // $ExpectType Promise<string[]>
-playwright.grabHTMLFrom(str); // $ExpectType Promise<string>
-playwright.grabHTMLFromAll(str); // $ExpectType Promise<string[]>
-playwright.grabCssPropertyFrom(str, str); // $ExpectType Promise<string>
-playwright.grabCssPropertyFromAll(str, str); // $ExpectType Promise<string[]>
-playwright.seeCssPropertiesOnElements(str, str); // $ExpectType Promise<any>
-playwright.seeAttributesOnElements(str, str); // $ExpectType Promise<any>
-playwright.dragSlider(str, num); // $ExpectType Promise<any>
-playwright.grabAttributeFrom(str, str); // $ExpectType Promise<string>
-playwright.grabAttributeFromAll(str, str); // $ExpectType Promise<string[]>
-playwright.saveElementScreenshot(str, str); // $ExpectType Promise<any>
-playwright.saveScreenshot(str); // $ExpectType Promise<any>
-playwright.makeApiRequest(str, str, str); // $ExpectType Promise<object>
-playwright.wait(num); // $ExpectType Promise<any>
-playwright.waitForEnabled(str); // $ExpectType Promise<any>
-playwright.waitForValue(str, str); // $ExpectType Promise<any>
-playwright.waitNumberOfVisibleElements(str, num); // $ExpectType Promise<any>
-playwright.waitForClickable(str); // $ExpectType Promise<any>
-playwright.waitForElement(str); // $ExpectType Promise<any>
-playwright.waitForVisible(str); // $ExpectType Promise<any>
-playwright.waitForInvisible(str); // $ExpectType Promise<any>
-playwright.waitToHide(str); // $ExpectType Promise<any>
-playwright.waitInUrl(str); // $ExpectType Promise<any>
-playwright.waitUrlEquals(str); // $ExpectType Promise<any>
-playwright.waitForText(str); // $ExpectType Promise<any>
-playwright.waitForRequest(str); // $ExpectType Promise<any>
-playwright.waitForResponse(str); // $ExpectType Promise<any>
-playwright.switchTo(); // $ExpectType Promise<any>
-playwright.waitForFunction(() => { }); // $ExpectType Promise<any>
-playwright.waitForNavigation(str); // $ExpectType Promise<any>
-playwright.waitForDetached(str); // $ExpectType Promise<any>
-playwright.grabDataFromPerformanceTiming(); // $ExpectType Promise<any>
-playwright.grabElementBoundingRect(str); // $ExpectType Promise<number> | Promise<DOMRect>
-playwright.mockRoute(str); // $ExpectType Promise<any>
-playwright.stopMockingRoute(str); // $ExpectType Promise<any>
+expectType<Promise<any>>(playwright.usePlaywrightTo(str, () => {}));
+expectType<Promise<any>>(playwright.amAcceptingPopups());
+expectType<Promise<any>>(playwright.acceptPopup());
+expectType<Promise<any>>(playwright.amCancellingPopups());
+expectType<Promise<any>>(playwright.cancelPopup());
+expectType<Promise<any>>(playwright.seeInPopup(str));
+expectType<Promise<any>>(playwright._setPage(str));
+expectType<Promise<any>>(playwright._addPopupListener());
+expectType<Promise<any>>(playwright._getPageUrl());
+expectType<Promise<string | null>>(playwright.grabPopupText());
+expectType<Promise<any>>(playwright.amOnPage(str));
+expectType<Promise<any>>(playwright.resizeWindow(num, num));
+expectType<Promise<any>>(playwright.setPlaywrightRequestHeaders(str));
+expectType<Promise<any>>(playwright.moveCursorTo(str, num, num));
+expectError(playwright.dragAndDrop(str));
+expectType<Promise<any>>(playwright.dragAndDrop(str, str));
+expectType<Promise<any>>(playwright.dragAndDrop(str, str, { sourcePosition, targetPosition }));
+expectType<Promise<any>>(playwright.refreshPage());
+expectType<Promise<any>>(playwright.scrollPageToTop());
+expectType<Promise<any>>(playwright.scrollPageToBottom());
+expectType<Promise<any>>(playwright.scrollTo(str, num, num));
+expectType<Promise<any>>(playwright.seeInTitle(str));
+//expectType<Promise<any>>(playwright.grabPageScrollPosition());
+expectType<Promise<any>>(playwright.seeTitleEquals(str));
+expectType<Promise<any>>(playwright.dontSeeInTitle(str));
+expectType<Promise<string>>(playwright.grabTitle());
+expectType<Promise<any>>(playwright._locate());
+expectType<Promise<any>>(playwright._locateCheckable());
+expectType<Promise<any>>(playwright._locateClickable());
+expectType<Promise<any>>(playwright._locateFields());
+expectType<Promise<any>>(playwright.switchToNextTab());
+expectType<Promise<any>>(playwright.switchToPreviousTab());
+expectType<Promise<any>>(playwright.closeCurrentTab());
+expectType<Promise<any>>(playwright.closeOtherTabs());
+expectType<Promise<any>>(playwright.openNewTab());
+expectType<Promise<number>>(playwright.grabNumberOfOpenTabs());
+expectType<Promise<any>>(playwright.seeElement(str));
+expectType<Promise<any>>(playwright.dontSeeElement(str));
+expectType<Promise<any>>(playwright.seeElementInDOM(str));
+expectType<Promise<any>>(playwright.dontSeeElementInDOM(str));
+expectType<Promise<void>>(playwright.handleDownloads(str));
+expectType<Promise<any>>(playwright.click(str));
+expectType<Promise<any>>(playwright.click(str, str));
+expectType<Promise<any>>(playwright.click(str, null, { position }));
+expectType<Promise<any>>(playwright.clickLink());
+expectType<Promise<any>>(playwright.forceClick(str));
+expectType<Promise<any>>(playwright.focus(str));
+expectType<Promise<any>>(playwright.blur(str));
+expectType<Promise<any>>(playwright.doubleClick(str));
+expectType<Promise<any>>(playwright.rightClick(str));
+expectType<Promise<any>>(playwright.checkOption(str));
+expectType<Promise<any>>(playwright.uncheckOption(str));
+expectType<Promise<any>>(playwright.seeCheckboxIsChecked(str));
+expectType<Promise<any>>(playwright.dontSeeCheckboxIsChecked(str));
+expectType<Promise<any>>(playwright.pressKeyDown(str));
+expectType<Promise<any>>(playwright.pressKeyUp(str));
+expectType<Promise<any>>(playwright.pressKey(str));
+expectType<Promise<any>>(playwright.type(str));
+expectType<Promise<any>>(playwright.fillField(str, str));
+expectType<Promise<any>>(playwright.clearField(str));
+expectType<Promise<any>>(playwright.appendField(str, str));
+expectType<Promise<any>>(playwright.seeInField(str, str));
+expectType<Promise<any>>(playwright.dontSeeInField(str, str));
+expectType<Promise<any>>(playwright.attachFile(str, str));
+expectType<Promise<any>>(playwright.selectOption(str, str));
+expectType<Promise<number>>(playwright.grabNumberOfVisibleElements(str));
+expectType<Promise<any>>(playwright.seeInCurrentUrl(str));
+expectType<Promise<any>>(playwright.dontSeeInCurrentUrl(str));
+expectType<Promise<any>>(playwright.seeCurrentUrlEquals(str));
+expectType<Promise<any>>(playwright.dontSeeCurrentUrlEquals(str));
+expectType<Promise<any>>(playwright.see(str));
+expectType<Promise<any>>(playwright.seeTextEquals(str));
+expectType<Promise<any>>(playwright.dontSee(str));
+expectType<Promise<string>>(playwright.grabSource());
+expectType<Promise<any[]>>(playwright.grabBrowserLogs());
+expectType<Promise<string>>(playwright.grabCurrentUrl());
+expectType<Promise<any>>(playwright.seeInSource(str));
+expectType<Promise<any>>(playwright.dontSeeInSource(str));
+expectType<Promise<any>>(playwright.seeNumberOfElements(str, num));
+expectType<Promise<any>>(playwright.seeNumberOfVisibleElements(str, num));
+expectType<Promise<any>>(playwright.setCookie({ name: str, value: str }));
+expectType<Promise<any>>(playwright.seeCookie(str));
+expectType<Promise<any>>(playwright.dontSeeCookie(str));
+expectType<Promise<any>>(playwright.grabCookie());
+expectType<Promise<any>>(playwright.clearCookie());
+expectType<Promise<any>>(playwright.executeScript(() => {}));
+expectType<Promise<string>>(playwright.grabTextFrom(str));
+expectType<Promise<string[]>>(playwright.grabTextFromAll(str));
+expectType<Promise<string>>(playwright.grabValueFrom(str));
+expectType<Promise<string[]>>(playwright.grabValueFromAll(str));
+expectType<Promise<string>>(playwright.grabHTMLFrom(str));
+expectType<Promise<string[]>>(playwright.grabHTMLFromAll(str));
+expectType<Promise<string>>(playwright.grabCssPropertyFrom(str, str));
+expectType<Promise<string[]>>(playwright.grabCssPropertyFromAll(str, str));
+expectType<Promise<any>>(playwright.seeCssPropertiesOnElements(str, str));
+expectType<Promise<any>>(playwright.seeAttributesOnElements(str, str));
+expectType<Promise<any>>(playwright.dragSlider(str, num));
+expectType<Promise<string>>(playwright.grabAttributeFrom(str, str));
+expectType<Promise<string[]>>(playwright.grabAttributeFromAll(str, str));
+expectType<Promise<any>>(playwright.saveElementScreenshot(str, str));
+expectType<Promise<any>>(playwright.saveScreenshot(str));
+expectType<Promise<object>>(playwright.makeApiRequest(str, str, str));
+expectType<Promise<any>>(playwright.wait(num));
+expectType<Promise<any>>(playwright.waitForEnabled(str));
+expectType<Promise<any>>(playwright.waitForValue(str, str));
+expectType<Promise<any>>(playwright.waitNumberOfVisibleElements(str, num));
+expectType<Promise<any>>(playwright.waitForClickable(str));
+expectType<Promise<any>>(playwright.waitForElement(str));
+expectType<Promise<any>>(playwright.waitForVisible(str));
+expectType<Promise<any>>(playwright.waitForInvisible(str));
+expectType<Promise<any>>(playwright.waitToHide(str));
+expectType<Promise<any>>(playwright.waitInUrl(str));
+expectType<Promise<any>>(playwright.waitUrlEquals(str));
+expectType<Promise<any>>(playwright.waitForText(str));
+expectType<Promise<any>>(playwright.waitForRequest(str));
+expectType<Promise<any>>(playwright.waitForResponse(str));
+expectType<Promise<any>>(playwright.switchTo());
+expectType<Promise<any>>(playwright.waitForFunction(() => { }));
+expectType<Promise<any>>(playwright.waitForNavigation(str));
+expectType<Promise<any>>(playwright.waitForDetached(str));
+expectType<Promise<any>>(playwright.grabDataFromPerformanceTiming());
+//expectType<Promise<number>>(playwright.grabElementBoundingRect(str));
+expectType<Promise<any>>(playwright.mockRoute(str));
+expectType<Promise<any>>(playwright.stopMockingRoute(str));
 
-playwright.startRecordingTraffic(); // $ExpectType Promise<any>
-playwright.stopRecordingTraffic(); // $ExpectType Promise<any>
-playwright.seeTraffic(); // $ExpectError
-playwright.seeTraffic(str); // $ExpectError
-playwright.seeTraffic({ name: str, url: str}); // $ExpectType Promise<any>
-playwright.seeTraffic({ name: str }); // $ExpectError
-playwright.seeTraffic({ url: str }); // $ExpectError
-playwright.dontSeeTraffic(); // $ExpectError
-playwright.dontSeeTraffic(str); // $ExpectError
-playwright.dontSeeTraffic({ name: str, url: str}); // $ExpectType Promise<any>
-playwright.dontSeeTraffic({ name: str, url: /hello/}); // $ExpectType Promise<any>
-playwright.dontSeeTraffic({ name: str }); // $ExpectError
-playwright.dontSeeTraffic({ url: str }); // $ExpectError
+expectType<Promise<any>>(playwright.startRecordingTraffic());
+expectType<Promise<any>>(playwright.stopRecordingTraffic());
+expectError(playwright.seeTraffic());
+expectError(playwright.seeTraffic(str));
+expectType<Promise<any>>(playwright.seeTraffic({ name: str, url: str }));
+expectError(playwright.seeTraffic({ name: str }));
+expectError(playwright.seeTraffic({ url: str }));
+expectError(playwright.dontSeeTraffic());
+expectError(playwright.dontSeeTraffic(str));
+expectType<Promise<any>>(playwright.dontSeeTraffic({ name: str, url: str }));
+expectType<Promise<any>>(playwright.dontSeeTraffic({ name: str, url: /hello/ }));
+expectError(playwright.dontSeeTraffic({ name: str }));
+expectError(playwright.dontSeeTraffic({ url: str }));

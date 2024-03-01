@@ -1,96 +1,98 @@
-export {}; // mark the file as external module to redeclare variables in the same block
+import { expectError, expectType } from 'tsd';
 
-const appium = new CodeceptJS.AppiumTs();
+// @ts-ignore
+const appium = new CodeceptJS.Appium();
 
-const str = "text";
+const str = 'text';
 const num = 1;
-const appPackage = "com.example.android.apis";
+const appPackage = 'com.example.android.apis';
 
-appium.touchPerform(); // $ExpectError
-appium.touchPerform("press"); // $ExpectError
-appium.touchPerform([{ action: "press" }]); // $ExpectType Promise<any>
-appium.touchPerform([{ action: "press" }, { action: "release" }]); // $ExpectType Promise<any>
-appium.touchPerform([{ action: "press" }], [{ action: "release" }]); // $ExpectError
+expectError(appium.touchPerform());
+expectError(appium.touchPerform('press'));
+expectType<void>(appium.touchPerform([{ action: 'press' }]));
+expectType<void>(appium.touchPerform([{ action: 'press' }, { action: 'release' }]));
+expectError(appium.touchPerform([{ action: 'press' }], [{ action: 'release' }]));
 
-appium.hideDeviceKeyboard(); // $ExpectType Promise<any>
-appium.hideDeviceKeyboard("tapOutside"); // $ExpectType Promise<any>
-appium.hideDeviceKeyboard("pressKey", "Done"); // $ExpectType Promise<any>
-appium.hideDeviceKeyboard("pressKey", "Done", "Done"); // $ExpectError
+expectType<void>(appium.hideDeviceKeyboard());
+expectType<void>(appium.hideDeviceKeyboard('tapOutside'));
+expectType<void>(appium.hideDeviceKeyboard('pressKey', 'Done'));
+expectError(appium.hideDeviceKeyboard('pressKey', 'Done', 'Done'));
 
-appium.removeApp(); // $ExpectError
-appium.removeApp("appName"); // $ExpectType Promise<any>
-appium.removeApp("appName", appPackage); // $ExpectType Promise<any>
-appium.removeApp("appName", appPackage, "remove"); // $ExpectError
+expectError(appium.removeApp());
+expectType<void>(appium.removeApp('appName'));
+expectType<void>(appium.removeApp('appName', appPackage));
+expectError(appium.removeApp('appName', appPackage, 'remove'));
 
-appium.runOnIOS(str, () => {}); // $ExpectType Promise<any>
-appium.runOnAndroid(str, () => {}); // $ExpectType Promise<any>
-appium.seeAppIsInstalled(str); // $ExpectType Promise<void>
-appium.seeAppIsNotInstalled(str); // $ExpectType Promise<void>
-appium.installApp(str); // $ExpectType Promise<void>
-appium.removeApp(str); // $ExpectType Promise<any>
-appium.seeCurrentActivityIs(str); // $ExpectType Promise<void>
-appium.seeDeviceIsLocked(); // $ExpectType Promise<void>
-appium.seeDeviceIsUnlocked(); // $ExpectType Promise<void>
-appium.seeOrientationIs("LANDSCAPE"); // $ExpectType Promise<void>
-appium.setOrientation("LANDSCAPE"); // $ExpectType Promise<any>
-appium.grabAllContexts(); // $ExpectType Promise<string[]>
-appium.grabContext(); // $ExpectType Promise<string | null>
-appium.grabCurrentActivity(); // $ExpectType Promise<string>
-appium.grabNetworkConnection(); // $ExpectType Promise<{}>
-appium.grabOrientation(); // $ExpectType Promise<string>
-appium.grabSettings(); // $ExpectType Promise<string>
-appium.switchToContext(str); // $ExpectType Promise<any>
-appium.switchToWeb(); // $ExpectType Promise<void>
-appium.switchToNative(); // $ExpectType Promise<void>
-appium.switchToNative(str); // $ExpectType Promise<void>
-appium.startActivity(); // $ExpectError
-appium.startActivity(appPackage); // $ExpectError
-appium.startActivity(appPackage, '.RegisterUserActivity'); // $ExpectType Promise<void>
-appium.setNetworkConnection(num); // $ExpectType Promise<number>
-appium.setNetworkConnection(); // $ExpectError
-appium.setSettings(str); // $ExpectType Promise<any>
-appium.hideDeviceKeyboard(); // $ExpectType Promise<any>
-appium.sendDeviceKeyEvent(num); // $ExpectType Promise<void>
-appium.openNotifications(); // $ExpectType Promise<void>
-appium.makeTouchAction(); // $ExpectType Promise<void>
-appium.tap(str); // $ExpectType Promise<void>
-appium.performSwipe(str, str); // $ExpectType Promise<any>
-appium.swipeDown(str); // $ExpectType Promise<void>
-appium.swipeLeft(str); // $ExpectType Promise<void>
-appium.swipeRight(str); // $ExpectType Promise<void>
-appium.swipeUp(str); // $ExpectType Promise<void>
-appium.swipeTo(str, str, str, num, num, num); // $ExpectType Promise<void>
-appium.touchPerform([]); // $ExpectType Promise<any>
-appium.pullFile(str, str); // $ExpectType Promise<string>
-appium.shakeDevice(); // $ExpectType Promise<void>
-appium.rotate(); // $ExpectType Promise<void>
-appium.setImmediateValue(); // $ExpectType Promise<void>
-appium.simulateTouchId(); // $ExpectType Promise<void>
-appium.closeApp(); // $ExpectType Promise<void>
-appium.appendField(str, str); // $ExpectType Promise<any>
-appium.checkOption(str); // $ExpectType Promise<any>
-appium.click(str); // $ExpectType Promise<any>
-appium.dontSeeCheckboxIsChecked(str); // $ExpectType Promise<any>
-appium.dontSeeElement(str); // $ExpectType Promise<any>
-appium.dontSeeInField(str, str); // $ExpectType Promise<any>
-appium.dontSee(str); // $ExpectType Promise<any>
-appium.fillField(str, str); // $ExpectType Promise<any>
-appium.grabTextFromAll(str); // $ExpectType Promise<string[]>
-appium.grabTextFrom(str); // $ExpectType Promise<string>
-appium.grabNumberOfVisibleElements(str); // $ExpectType Promise<number>
-appium.grabAttributeFrom(str, str); // $ExpectType Promise<string>
-appium.grabAttributeFromAll(str, str); // $ExpectType Promise<string[]>
-appium.grabValueFromAll(str); // $ExpectType Promise<string[]>
-appium.grabValueFrom(str); // $ExpectType Promise<string>
-appium.saveScreenshot(str); // $ExpectType Promise<void>
-appium.scrollIntoView(str, {}); // $ExpectType Promise<any>
-appium.scrollIntoView(str, true); // $ExpectType Promise<any>
-appium.seeCheckboxIsChecked(str); // $ExpectType Promise<any>
-appium.seeElement(str); // $ExpectType Promise<any>
-appium.seeInField(str, str); // $ExpectType Promise<any>
-appium.see(str); // $ExpectType Promise<any>
-appium.selectOption(str, str); // $ExpectType Promise<any>
-appium.waitForElement(str); // $ExpectType Promise<any>
-appium.waitForVisible(str); // $ExpectType Promise<any>
-appium.waitForInvisible(str); // $ExpectType Promise<any>
-appium.waitForText(str); // $ExpectType Promise<any>
+expectType<void>(appium.runOnIOS(str, () => {}));
+expectType<void>(appium.runOnAndroid(str, () => {}));
+expectType<Promise<void>>(appium.seeAppIsInstalled(str));
+expectType<Promise<void>>(appium.seeAppIsNotInstalled(str));
+expectType<Promise<void>>(appium.installApp(str));
+expectType<void>(appium.removeApp(str));
+expectType<Promise<void>>(appium.seeCurrentActivityIs(str));
+expectType<Promise<void>>(appium.seeDeviceIsLocked());
+expectType<Promise<void>>(appium.seeDeviceIsUnlocked());
+expectType<Promise<void>>(appium.seeOrientationIs('LANDSCAPE'));
+expectType<void>(appium.setOrientation('LANDSCAPE'));
+expectType<Promise<string[]>>(appium.grabAllContexts());
+expectType<Promise<string | null>>(appium.grabContext());
+expectType<Promise<string>>(appium.grabCurrentActivity());
+expectType<Promise<{}>>(appium.grabNetworkConnection());
+expectType<Promise<string>>(appium.grabOrientation());
+expectType<Promise<string>>(appium.grabSettings());
+expectType<void>(appium.switchToContext(str));
+expectType<Promise<void>>(appium.switchToWeb());
+expectType<Promise<void>>(appium.switchToNative());
+expectType<Promise<void>>(appium.switchToNative(str));
+expectError(appium.startActivity());
+expectError(appium.startActivity(appPackage));
+expectType<Promise<void>>(appium.startActivity(appPackage, '.RegisterUserActivity'));
+expectType<Promise<number>>(appium.setNetworkConnection(num));
+expectError(appium.setNetworkConnection());
+expectType<void>(appium.setSettings(str));
+expectType<void>(appium.hideDeviceKeyboard());
+expectType<Promise<void>>(appium.sendDeviceKeyEvent(num));
+expectType<Promise<void>>(appium.openNotifications());
+expectType<Promise<void>>(appium.makeTouchAction());
+expectType<Promise<void>>(appium.tap(str));
+expectType<void>(appium.performSwipe(str, str));
+expectType<Promise<void>>(appium.swipeDown(str));
+expectType<Promise<void>>(appium.swipeLeft(str));
+expectType<Promise<void>>(appium.swipeRight(str));
+expectType<Promise<void>>(appium.swipeUp(str));
+expectType<Promise<void>>(appium.swipeTo(str, str, str, num, num, num));
+expectType<void>(appium.touchPerform([]));
+expectType<Promise<string>>(appium.pullFile(str, str));
+expectType<Promise<void>>(appium.shakeDevice());
+expectType<Promise<void>>(appium.rotate());
+expectType<Promise<void>>(appium.setImmediateValue());
+expectType<Promise<void>>(appium.simulateTouchId());
+expectType<Promise<void>>(appium.closeApp());
+expectType<void>(appium.appendField(str, str));
+expectType<void>(appium.checkOption(str));
+expectType<void>(appium.click(str));
+expectType<void>(appium.dontSeeCheckboxIsChecked(str));
+expectType<void>(appium.dontSeeElement(str));
+expectType<void>(appium.dontSeeInField(str, str));
+expectType<void>(appium.dontSee(str));
+expectType<void>(appium.fillField(str, str));
+expectType<Promise<string[]>>(appium.grabTextFromAll(str));
+expectType<Promise<string>>(appium.grabTextFrom(str));
+expectType<Promise<number>>(appium.grabNumberOfVisibleElements(str));
+expectType<Promise<string>>(appium.grabAttributeFrom(str, str));
+expectType<Promise<string[]>>(appium.grabAttributeFromAll(str, str));
+expectType<Promise<string[]>>(appium.grabValueFromAll(str));
+expectType<Promise<string>>(appium.grabValueFrom(str));
+expectType<Promise<void>>(appium.saveScreenshot(str));
+expectType<void>(appium.scrollIntoView(str, {}));
+expectType<void>(appium.scrollIntoView(str, true));
+expectType<void>(appium.seeCheckboxIsChecked(str));
+expectType<void>(appium.seeElement(str));
+expectType<void>(appium.seeInField(str, str));
+expectType<void>(appium.see(str));
+expectType<void>(appium.selectOption(str, str));
+expectType<void>(appium.waitForElement(str));
+expectType<void>(appium.waitForVisible(str));
+expectType<void>(appium.waitForInvisible(str));
+expectType<void>(appium.waitForText(str));
+

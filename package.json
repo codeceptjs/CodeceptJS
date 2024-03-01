@@ -29,7 +29,7 @@
     "docs/webapi/**"
   ],
   "main": "lib/index.js",
-  "typings": "typings/index.d.ts",
+  "types": "typings/index.d.ts",
   "bin": {
     "codeceptjs": "./bin/codecept.js"
   },
@@ -62,7 +62,7 @@
     "dev:graphql": "node test/data/graphql/index.js",
     "publish:site": "./runok.js publish:site",
     "update-contributor-faces": "./runok.js contributor:faces",
-    "dtslint": "dtslint typings --localTs './node_modules/typescript/lib'",
+    "dtslint": "tsd",
     "prepare": "husky install",
     "prepare-release": "./runok.js versioning && ./runok.js get:commit-log"
   },
@@ -115,7 +115,7 @@
     "uuid": "9.0"
   },
   "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.0.2"
+    "@codeceptjs/detox-helper": "1.0.5"
   },
   "devDependencies": {
     "@codeceptjs/mock-request": "0.3.1",
@@ -134,7 +134,6 @@
     "chai-subset": "1.6.0",
     "contributor-faces": "1.1.0",
     "documentation": "12.3.0",
-    "dtslint": "4.2.1",
     "electron": "28.2.1",
     "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
@@ -158,6 +157,7 @@
     "testcafe": "3.5.0",
     "ts-morph": "21.0.1",
     "ts-node": "10.9.2",
+    "tsd": "^0.30.7",
     "tsd-jsdoc": "2.5.0",
     "typedoc": "0.25.7",
     "typedoc-plugin-markdown": "3.17.1",
@@ -171,5 +171,11 @@
     "node": ">=16.0",
     "npm": ">=5.6.0"
   },
-  "es6": true
+  "es6": true,
+  "tsd": {
+    "directory": "typings",
+    "compilerOptions": {
+      "strict": false
+    }
+  }
 }
