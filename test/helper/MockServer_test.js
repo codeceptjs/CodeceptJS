@@ -2,10 +2,11 @@ import path from 'path';
 
 import { expect } from 'chai';
 import { like } from 'pactum-matchers';
-import MockServer from '../../lib/helper/MockServer';
-import REST from '../../lib/helper/REST';
+import MockServer from '../../lib/helper/MockServer.js';
+import REST from '../../lib/helper/REST.js';
+import { __dirname } from '../../lib/dirname.js';
 
-global.codeceptjs = require('../../lib');
+global.codeceptjs = '../../lib';
 
 let I;
 let restClient;
