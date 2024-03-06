@@ -16,6 +16,7 @@
     "noImplicitThis": false,
     "noEmit": true,
     "strictNullChecks": true,
+    "moduleDetection": "force"
   },
   "exclude": ["node_modules", "typings/tests"],
   "compileOnSave": true,

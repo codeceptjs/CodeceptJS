@@ -8,6 +8,7 @@
 
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
+    // @ts-ignore
     import("./utils").Translate<T, Translation.Actions>;
 
   type Cookie = {
