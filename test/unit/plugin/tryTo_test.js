@@ -4,6 +4,7 @@ import recorder from '../../../lib/recorder.js';
 
 describe('tryTo plugin', () => {
   beforeEach(() => {
+    recorder.reset();
     recorder.start();
   });
 
