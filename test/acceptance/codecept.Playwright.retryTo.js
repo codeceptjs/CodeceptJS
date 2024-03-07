@@ -1,8 +1,8 @@
-import TestHelper from '../support/TestHelper';
+import TestHelper from '../support/TestHelper.js';
 
 export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 10,
   output: './output',
   grep: '@Playwright',
   helpers: {
@@ -15,13 +15,6 @@ export const config = {
       webkit: {
         ignoreHTTPSErrors: true,
       },
-    },
-    JSONResponse: {
-      requestHelper: 'Playwright',
-    },
-    ScreenshotSessionHelper: {
-      require: '../support/ScreenshotSessionHelper.js',
-      outputPath: 'test/acceptance/output',
     },
     Expect: {},
   },

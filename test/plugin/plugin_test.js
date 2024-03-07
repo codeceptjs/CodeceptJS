@@ -1,13 +1,12 @@
 import path from 'path';
 import { exec } from 'child_process';
 import { expect } from 'expect';
+import { __dirname } from '../../lib/dirname.js';
 
-const __dirname = path.resolve('.');
-
-const runner = path.join(__dirname, '../../bin/codecept.js');
+const runner = path.join(__dirname, '../bin/codecept.js');
 const codecept_dir = path.join(
   __dirname,
-  'test/acceptance',
+  '../test/acceptance',
 );
 const codecept_run = `${runner} run`;
 const config_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${
@@ -15,7 +14,7 @@ const config_run_config = (config, grep) => `${codecept_run} --config ${codecept
 }`;
 
 describe('CodeceptJS plugin', function () {
-  this.timeout(30000);
+  this.timeout(5000);
 
   before(() => {
     process.chdir(codecept_dir);
