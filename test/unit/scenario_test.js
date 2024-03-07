@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as Scenario from '../../lib/Scenario.js';
+import * as Scenario from '../../lib/scenario.js';
 import recorder from '../../lib/recorder.js';
 import * as event from '../../lib/event.js';
 
