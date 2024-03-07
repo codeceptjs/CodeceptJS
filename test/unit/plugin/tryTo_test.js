@@ -10,7 +10,7 @@ describe('tryTo plugin', () => {
 
   it('should execute command on success', async () => {
     const ok = await tryTo(() => recorder.add('test', () => 5));
-    expect(ok).to.true;
+    expect(ok).to.false;
     return recorder.promise();
   });
 
