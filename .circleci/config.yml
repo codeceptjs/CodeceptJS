@@ -5,7 +5,7 @@ orbs:
 
 defaults: &defaults
   machine:
-    image: ubuntu-2204:2023.07.2
+    image: default
     docker_layer_caching: false
   steps:
     - checkout
