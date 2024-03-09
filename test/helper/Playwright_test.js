@@ -90,10 +90,25 @@ describe('Playwright', function () {
     
     it('should have custom header of visited webpage', async () => {
   await I.amOnPage('/', {custom: "header"});
-  const headers = await I.executeScript(() => {
-    return Array.from(new Headers(document.defaultView.fetch('').headers).entries());
-  });
+    const headers = await I.usePlaywrightTo(async ({ page }) => {
+        let capturedHeaders;
 
+    await page.route('**/*', (route) => {
+      if (route.request().resourceType() === 'document') {
+        // Capture headers when the main document is loaded
+        capturedHeaders = route.response().headers();
+        route.abort();
+      } else {
+        // Continue other requests
+        route.continue();
+      }
+    });
+
+    // Reload the page to trigger the route handler
+    await page.reload();
+    return capturedHeaders;
+  });
+  console.log(headers);
   headers[0].custom.should.eql("header");
 });
 
