@@ -90,7 +90,7 @@ describe('Playwright', function () {
     
     it('should have custom header of visited webpage', async () => {
   await I.amOnPage('/', {custom: "header"});
-    const headers = await I.usePlaywrightTo(async ({ page }) => {
+    const headers = await I.usePlaywrightTo("grab headers", async ({ page }) => {
         let capturedHeaders;
 
     await page.route('**/*', (route) => {
