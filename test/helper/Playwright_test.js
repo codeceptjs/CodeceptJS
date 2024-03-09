@@ -96,17 +96,13 @@ describe('Playwright', function () {
     await page.route('**/*', (route) => {
       if (route.request().resourceType() === 'document') {
         // Capture headers when the main document is loaded
-        capturedHeaders = route.response().headers();
+        return route.response().headers();
         route.abort();
       } else {
         // Continue other requests
         route.continue();
       }
     });
-
-    // Reload the page to trigger the route handler
-    await page.reload({ waitUntil: "load"});
-    return capturedHeaders;
   });
   console.log(headers);
   headers[0].custom.should.eql("header");
