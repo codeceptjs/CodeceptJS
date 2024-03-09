@@ -87,6 +87,15 @@ describe('Playwright', function () {
       const url = await page.url();
       return url.should.eql(`${siteUrl}/info`);
     });
+    
+    it('should have custom header of visited webpage', async () => {
+  await I.amOnPage('/', {custom: "header"});
+  const headers = await I.executeScript(() => {
+    return Array.from(new Headers(document.defaultView.fetch('').headers).entries());
+  });
+
+  headers.custom.should.eql("header");
+});
 
     it('should open absolute url', async () => {
       await I.amOnPage(siteUrl);
