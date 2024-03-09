@@ -94,7 +94,7 @@ describe('Playwright', function () {
     return Array.from(new Headers(document.defaultView.fetch('').headers).entries());
   });
 
-  headers.custom.should.eql("header");
+  headers[0].custom.should.eql("header");
 });
 
     it('should open absolute url', async () => {
