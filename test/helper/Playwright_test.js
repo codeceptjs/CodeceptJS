@@ -105,7 +105,7 @@ describe('Playwright', function () {
     });
 
     // Reload the page to trigger the route handler
-    await page.reload();
+    await page.reload({ waitUntil: "load"});
     return capturedHeaders;
   });
   console.log(headers);
