@@ -99,7 +99,7 @@
     "html-minifier-terser": "7.2.0",
     "inquirer": "6.5.2",
     "joi": "17.12.2",
-    "js-beautify": "1.14.11",
+    "js-beautify": "1.15.1",
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
     "mkdirp": "1.0.4",
