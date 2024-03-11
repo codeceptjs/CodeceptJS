@@ -1,16 +1,15 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import axios from 'axios';
-import documentation from 'documentation';
-import runok0 from 'runok';
-import contributors from 'contributor-faces';
-
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+const documentation = require('documentation');
 const {
   stopOnFail, chdir, tasks: {
     git, copy, exec, replaceInFile, npmRun, npx, writeToFile,
   }, runok,
-} = runok0;
+} = require('runok');
+const contributors = require('contributor-faces');
+
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`;
 };
@@ -18,7 +17,7 @@ const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alp
 
 stopOnFail();
 
-export default {
+module.exports = {
   async docs() {
     // generate all docs (runs all docs:* commands in parallel)
     await Promise.all([
@@ -40,10 +39,10 @@ export default {
   async defTypings() {
     console.log('Generate TypeScript definition');
     // Generate definitions for promised-based helper methods
-    await npx('jsdoc -c typings/jsdocPromiseBased.conf.js');
+    await npx('jsdoc -c typings/jsdocPromiseBased.conf.cjs');
     fs.renameSync('typings/types.d.ts', 'typings/promiseBasedTypes.d.ts');
     // Generate all other regular definitions
-    await npx('jsdoc -c typings/jsdoc.conf.js');
+    await npx('jsdoc -c typings/jsdoc.conf.cjs');
   },
 
   async docsPlugins() {
@@ -492,4 +491,4 @@ async function processChangelog() {
   });
 }
 
-//if (require.main === module) runok(module.exports);
+if (require.main === module) runok(module.exports);

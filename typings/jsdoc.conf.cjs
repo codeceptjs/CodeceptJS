@@ -30,5 +30,5 @@ module.exports = {
     recurse: true,
     destination: './typings/',
   },
-  plugins: ['jsdoc.namespace.js', 'jsdoc-typeof-plugin'],
+  plugins: ['jsdoc.namespace.cjs', 'jsdoc-typeof-plugin'],
 };

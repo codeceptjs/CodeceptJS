@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { expect } from 'chai';
-import path, {dirname} from 'path';
+import path, { dirname } from 'path';
 import { exec } from 'child_process';
-import {fileURLToPath} from "url";
+import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const runner = path.join(__dirname, '../../bin/codecept.js');
@@ -333,7 +333,7 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
   });
 
   describe('i18n', () => {
-    const codecept_dir = path.join(__dirname, 'test/data/sandbox/i18n');
+    const codecept_dir = path.join(__dirname, '../../test/data/sandbox/i18n');
     const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`;
 
     before(() => {

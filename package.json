@@ -37,9 +37,9 @@
   "scripts": {
     "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
     "json-server:graphql": "node test/data/graphql/index.js",
-    "lint": "eslint bin/ examples/ lib/ test/ translations/ runok.js",
-    "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.js --fix",
-    "docs": "./runok.js docs",
+    "lint": "eslint bin/ examples/ lib/ test/ translations/ runok.cjs",
+    "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.cjs --fix",
+    "docs": "./runok.cjs docs",
     "test:unit": "mocha $(find test/unit -name '*.js' | grep workers --invert) --timeout 40000 --exit",
     "test:runner": "mocha $(find test/runner -name '*.js') --timeout 40000 --exit",
     "test": "npm run test:unit && npm run test:runner",
@@ -58,14 +58,14 @@
     "test:unit:expect": "mocha test/helper/Expect_test.js --exit",
     "test:unit:mockServer": "mocha test/helper/MockServer_test.js",
     "test:plugin": "mocha test/plugin/plugin_test.js",
-    "def": "./runok.js def",
+    "def": "./runok.cjs def",
     "dev:graphql": "node test/data/graphql/index.js",
-    "publish:site": "./runok.js publish:site",
-    "update-contributor-faces": "./runok.js contributor:faces",
+    "publish:site": "./runok.cjs publish:site",
+    "update-contributor-faces": "./runok.cjs contributor:faces",
     "types-fix": "node typings/fixDefFiles.js",
     "dtslint": "npm run types-fix && tsd",
     "prepare": "husky install",
-    "prepare-release": "./runok.js versioning && ./runok.js get:commit-log"
+    "prepare-release": "./runok.cjs versioning && ./runok.cjs get:commit-log"
   },
   "dependencies": {
     "@babel/core": "^7.23.9",
