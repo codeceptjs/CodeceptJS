@@ -1,37 +1,5 @@
 version: '3'
 services:
-  test-unit:
-    build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
-    command: test/unit
-    working_dir: /codecept
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
-
-  test-runner:
-    image: node:12.13-slim
-    entrypoint: /codecept/node_modules/.bin/mocha
-    command: test/runner
-    working_dir: /codecept
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
-
-  test-helpers:
-    build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha --invert --fgrep Appium
-    command: test/helper
-    working_dir: /codecept
-    env_file: .env
-    depends_on:
-      - selenium.chrome
-      - php
-      - json_server
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
-
   test-rest:
     build: ..
     entrypoint: /codecept/node_modules/.bin/mocha
@@ -78,20 +46,6 @@ services:
     depends_on:
       - php
       - puppeteer-image
-    volumes:
-      - ./acceptance:/tests
-      - ./data:/data
-      - ./support:/support
-      - node_modules:/node_modules
-
-  test-acceptance.testcafe:
-    build: ..
-    env_file: .env
-    environment:
-      # TODO Add a testcafe tag
-      - CODECEPT_ARGS=-c codecept.Testcafe.js --grep @Puppeteer
-    depends_on:
-      - php
     volumes:
       - ./acceptance:/tests
       - ./data:/data
