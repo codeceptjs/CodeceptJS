@@ -1,0 +1,21 @@
+name: Acceptance Tests using docker compose
+
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
+steps:
+  # need checkout before using compose-action
+  - uses: actions/checkout@v3
+  - uses: isbang/compose-action@v1.5.1
+    with:
+      compose-file: "./test/docker-compose.yml"
