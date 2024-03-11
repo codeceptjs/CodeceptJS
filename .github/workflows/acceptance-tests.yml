@@ -13,9 +13,18 @@ env:
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
 
-steps:
-  # need checkout before using compose-action
-  - uses: actions/checkout@v3
-  - uses: isbang/compose-action@v1.5.1
-    with:
-      compose-file: "./test/docker-compose.yml"
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      # need checkout before using compose-action
+      - uses: actions/checkout@v3
+      - uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./test/docker-compose.yml"
