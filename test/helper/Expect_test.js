@@ -1,13 +1,11 @@
-const path = require('path');
+import path from 'path';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
-const ExpectHelper = require('../../lib/helper/Expect');
+import ExpectHelper from '../../lib/helper/Expect.js';
 
-global.codeceptjs = require('../../lib');
+global.codeceptjs = '../../lib';
+const __dirname = path.resolve('.');
 
 let I;
 

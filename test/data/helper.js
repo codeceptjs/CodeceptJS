@@ -1,6 +1,6 @@
-const Helper = require('../../lib/helper');
+import Helper from '@codeceptjs/helper';
 
-class MyHelper extends Helper {
+export default class MyHelper extends Helper {
   method() {
     return 'hello world';
   }
@@ -57,5 +57,3 @@ class MyHelper extends Helper {
     return [{ name: 'el1' }, { name: 'el2' }];
   }
 }
-
-module.exports = MyHelper;

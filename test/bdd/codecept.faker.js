@@ -1,6 +1,6 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper';
 
-module.exports.config = {
+export const config = {
   timeout: 10000,
   output: './output',
   helpers: {
@@ -16,7 +16,7 @@ module.exports.config = {
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
-      outputPath: './output',
+      outputPath: './output.js',
     },
   },
   include: {},

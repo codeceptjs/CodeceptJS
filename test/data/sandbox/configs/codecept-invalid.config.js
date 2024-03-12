@@ -1,6 +1,6 @@
 badFn();
 
-exports.config = {
+export const config = {
   tests: '../../**/*.js',
   timeout: 10000,
   output: './output',

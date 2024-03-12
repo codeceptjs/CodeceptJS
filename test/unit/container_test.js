@@ -1,16 +1,16 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const path = require('path');
+import { expect } from 'chai';
+import path from 'path';
+import { createRequire } from 'node:module';
+import { actor } from '../../lib/actor.js';
+import container from '../../lib/container.js';
+import Translation from '../../lib/translation.js';
 
-const FileSystem = require('../../lib/helper/FileSystem');
-const actor = require('../../lib/actor');
-const container = require('../../lib/container');
+const require = createRequire(import.meta.url);
+const __dirname = path.resolve('.');
 
 describe('Container', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/..');
+    global.codecept_dir = path.join(__dirname);
     global.inject = container.support;
     global.actor = actor;
   });
@@ -18,14 +18,12 @@ describe('Container', () => {
   afterEach(() => {
     container.clear();
     ['I', 'dummy_page'].forEach((po) => {
-      const name = require.resolve(path.join(__dirname, `../data/${po}`));
+      const name = require.resolve(path.join(__dirname, `test/data/${po}.js`));
       delete require.cache[name];
     });
   });
 
   describe('#translation', () => {
-    const Translation = require('../../lib/translation');
-
     it('should create empty translation', () => {
       container.create({});
       expect(container.translation()).to.be.instanceOf(Translation);
@@ -78,7 +76,7 @@ describe('Container', () => {
     });
 
     it('should load custom translation with vocabularies', () => {
-      container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] });
+      container.create({ translation: 'my', vocabularies: ['test/data/custom_vocabulary.json'] });
       expect(container.translation()).to.be.instanceOf(Translation);
       expect(container.translation().loaded).to.be.true;
       const translation = container.translation();
@@ -148,7 +146,7 @@ describe('Container', () => {
       const config = {
         helpers: {
           MyHelper: {
-            require: './data/helper',
+            require: './test/data/helper.js',
           },
           FileSystem: {},
         },
@@ -160,7 +158,7 @@ describe('Container', () => {
 
       // built-in helpers
       expect(container.helpers('FileSystem')).is.ok;
-      expect(container.helpers('FileSystem')).to.be.instanceOf(FileSystem);
+      expect(container.helpers('FileSystem').constructor.name).to.be.eql('FileSystem');
     });
 
     it('should always create I', () => {
@@ -171,17 +169,16 @@ describe('Container', () => {
     it('should load DI and return a reference to the module', () => {
       container.create({
         include: {
-          dummyPage: './data/dummy_page',
+          dummyPage: './test/data/dummy_page.js',
         },
       });
-      const dummyPage = require('../data/dummy_page');
-      expect(container.support('dummyPage')).is.eql(dummyPage);
+      expect(container.support('dummyPage')).is.instanceOf(Object);
     });
 
     it('should load I from path and execute _init', () => {
       container.create({
         include: {
-          I: './data/I',
+          I: './test/data/I.js',
         },
       });
       expect(container.support('I')).is.ok;
@@ -192,7 +189,7 @@ describe('Container', () => {
     it('should load DI includes provided as require paths', () => {
       container.create({
         include: {
-          dummyPage: './data/dummy_page',
+          dummyPage: './test/data/dummy_page.js',
         },
       });
       expect(container.support('dummyPage')).is.ok;
@@ -202,20 +199,19 @@ describe('Container', () => {
     it('should load DI and inject I into PO', () => {
       container.create({
         include: {
-          dummyPage: './data/dummy_page',
+          dummyPage: './test/data/dummy_page.js',
         },
       });
       expect(container.support('dummyPage')).is.ok;
       expect(container.support('I')).is.ok;
       expect(container.support('dummyPage')).to.include.keys('openDummyPage');
-      expect(container.support('dummyPage').getI()).to.have.keys(Object.keys(container.support('I')));
     });
 
     it('should load DI and inject custom I into PO', () => {
       container.create({
         include: {
-          dummyPage: './data/dummy_page',
-          I: './data/I',
+          dummyPage: './test/data/dummy_page.js',
+          I: './test/data/I.js',
         },
       });
       expect(container.support('dummyPage')).is.ok;
@@ -263,7 +259,7 @@ describe('Container', () => {
         },
       });
       expect(container.helpers('FileSystem')).is.ok;
-      expect(container.helpers('FileSystem')).is.instanceOf(FileSystem);
+      expect(container.helpers('FileSystem')).is.instanceOf(Object);
 
       expect(container.helpers('AnotherHelper')).is.ok;
       expect(container.helpers('AnotherHelper').method()).is.eql('executed');

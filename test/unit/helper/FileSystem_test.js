@@ -1,19 +1,20 @@
-const path = require('path');
+import path from 'path';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
-const FileSystem = require('../../../lib/helper/FileSystem');
+import FileSystem from '../../../lib/helper/FileSystem.js';
 
-global.codeceptjs = require('../../../lib');
+import lib from '../../../lib/codecept.js';
+
+const __dirname = path.resolve('.', 'test');
+
+global.codeceptjs = lib;
 
 let fs;
 
 describe('FileSystem', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../..');
+    global.codecept_dir = path.join(__dirname);
   });
 
   beforeEach(() => {

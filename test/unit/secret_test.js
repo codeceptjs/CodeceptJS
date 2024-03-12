@@ -1,5 +1,5 @@
-const { expect } = require('expect');
-const Secret = require('../../lib/secret');
+import { expect } from 'expect';
+import Secret from '../../lib/secret.js';
 
 describe('Secret tests', () => {
   it('should be the Secret instance', () => {

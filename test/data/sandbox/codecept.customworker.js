@@ -1,11 +1,11 @@
-exports.config = {
+export const config = {
   tests: './custom-worker/*.js',
   timeout: 10000,
   output: './output',
   helpers: {
     FileSystem: {},
     Workers: {
-      require: './workers_helper',
+      require: './workers_helper.js',
     },
   },
   include: {},

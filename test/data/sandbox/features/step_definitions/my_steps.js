@@ -1,4 +1,4 @@
-const I = actor();
+const { I } = inject();
 
 Given(/I have product with \$(\d+) price/, (price) => {
   I.addItem(parseInt(price, 10));

@@ -1,15 +1,14 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const path = require('path');
-const { Workers, event, recorder } = require('../../lib/index');
+import { expect } from 'chai';
+import path from 'path';
+import { Workers } from '../../lib/workers.js';
+import * as event from '../../lib/event.js';
+import recorder from '../../lib/recorder.js';
 
+const __dirname = path.resolve('.');
 describe('Workers', function () {
   this.timeout(40000);
-
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox');
+    global.codecept_dir = path.join(__dirname, 'test/data/sandbox');
   });
 
   it('should run simple worker', (done) => {
@@ -17,32 +16,22 @@ describe('Workers', function () {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.workers.conf.js',
     };
-    let passedCount = 0;
-    let failedCount = 0;
     const workers = new Workers(2, workerConfig);
 
-    workers.on(event.test.failed, () => {
-      failedCount += 1;
-    });
-    workers.on(event.test.passed, () => {
-      passedCount += 1;
-    });
-
     workers.run();
-
-    workers.on(event.all.result, (status) => {
-      expect(status).equal(false);
-      expect(passedCount).equal(5);
-      expect(failedCount).equal(3);
+    workers.on(event.all.result, (result) => {
+      expect(result.status).equal(false);
+      expect(result.stats.passes).equal(5);
+      expect(result.stats.failures).equal(2);
       done();
     });
-  });
+  }).timeout(10000);
 
   it('should create worker by function', (done) => {
     const createTestGroups = () => {
       const files = [
-        [path.join(codecept_dir, '/custom-worker/base_test.worker.js')],
-        [path.join(codecept_dir, '/custom-worker/custom_test.worker.js')],
+        [path.join(codecept_dir, './custom-worker/base_test.worker.js')],
+        [path.join(codecept_dir, './custom-worker/custom_test.worker.js')],
       ];
 
       return files;
@@ -60,7 +49,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -68,9 +57,9 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, (result) => {
       expect(workers.getWorkers().length).equal(2);
-      expect(status).equal(true);
+      expect(result.status).equal(true);
       done();
     });
   });
@@ -90,7 +79,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -98,17 +87,17 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.test.failed, (test) => {
+    workers.on(event.test.failed, () => {
       failedCount += 1;
     });
-    workers.on(event.test.passed, (test) => {
+    workers.on(event.test.passed, () => {
       passedCount += 1;
     });
 
-    workers.on(event.all.result, (status) => {
-      expect(status).equal(false);
-      expect(passedCount).equal(4);
-      expect(failedCount).equal(1);
+    workers.on(event.all.result, (result) => {
+      expect(result.status).equal(false);
+      expect(result.stats.passes).equal(4);
+      expect(result.stats.failures).equal(1);
       done();
     });
   });
@@ -123,12 +112,12 @@ describe('Workers', function () {
 
     const workerOne = workers.spawn();
     workerOne.addTestFiles([
-      path.join(codecept_dir, '/custom-worker/base_test.worker.js'),
+      path.join(codecept_dir, './custom-worker/base_test.worker.js'),
     ]);
 
     const workerTwo = workers.spawn();
     workerTwo.addTestFiles([
-      path.join(codecept_dir, '/custom-worker/custom_test.worker.js'),
+      path.join(codecept_dir, './custom-worker/custom_test.worker.js'),
     ]);
 
     for (const worker of workers.getWorkers()) {
@@ -136,7 +125,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -144,9 +133,9 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, (result) => {
       expect(workers.getWorkers().length).equal(2);
-      expect(status).equal(true);
+      expect(result.status).equal(true);
       done();
     });
   });
@@ -179,9 +168,9 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, (result) => {
       expect(workers.getWorkers().length).equal(2);
-      expect(status).equal(true);
+      expect(result.status).equal(true);
       done();
     });
   });
@@ -199,7 +188,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -208,8 +197,8 @@ describe('Workers', function () {
     workers.run();
     recorder.add(() => share({ fromMain: true }));
 
-    workers.on(event.all.result, (status) => {
-      expect(status).equal(true);
+    workers.on(event.all.result, (result) => {
+      expect(result.status).equal(true);
       done();
     });
   });
@@ -230,7 +219,7 @@ describe('Workers', function () {
       testConfig: './test/data/sandbox/codecept.non-test-events-worker.js',
     };
 
-    workers = new Workers(2, workerConfig);
+    const workers = new Workers(2, workerConfig);
 
     workers.run();
 
@@ -261,7 +250,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       });
@@ -269,9 +258,9 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, (result) => {
       expect(workers.getWorkers().length).equal(8);
-      expect(status).equal(true);
+      expect(result.status).equal(true);
       done();
     });
   });

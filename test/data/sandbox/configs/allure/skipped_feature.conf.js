@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './skipped_feature.js',
   timeout: 10000,
   output: './output/skipped',

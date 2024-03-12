@@ -33,6 +33,10 @@ helpers: {
 
 ## Methods
 
+### Parameters
+
+-   `config`  
+
 ### amInPath
 
 Enters a directory In local filesystem.

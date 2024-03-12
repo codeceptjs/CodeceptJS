@@ -9,5 +9,5 @@ module.exports = {
     recurse: true,
     destination: './typings/',
   },
-  plugins: ['jsdoc.promiseBased.js', 'jsdoc.namespace.js', 'jsdoc-typeof-plugin'],
+  plugins: ['jsdoc.promiseBased.cjs', 'jsdoc.namespace.cjs', 'jsdoc-typeof-plugin'],
 };

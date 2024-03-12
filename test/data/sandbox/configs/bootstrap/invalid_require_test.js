@@ -1,4 +1,4 @@
-require('invalidRequire');
+import 'invalidRequire';
 
 Feature('Filesystem');
 

@@ -32,4 +32,4 @@ class TestHelper {
   }
 }
 
-module.exports = TestHelper;
+export default TestHelper;

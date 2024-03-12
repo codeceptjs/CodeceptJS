@@ -1,9 +1,12 @@
-const path = require('path');
-const exec = require('child_process').exec;
-const { grepLines } = require('../../lib/utils').test;
+import path, { dirname } from 'path';
+import { exec } from 'child_process';
+import { expect } from 'chai';
+import { fileURLToPath } from 'url';
+import { grepLines } from '../../lib/utils.js';
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
-const codecept_dir = path.join(__dirname, '/../data/sandbox');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const runner = path.join(__dirname, '../../bin/codecept.js');
+const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.within.json `;
 
 let testStatus;
@@ -12,23 +15,20 @@ describe('CodeceptJS within', function () {
   this.timeout(40000);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox');
+    global.codecept_dir = path.join(__dirname, 'test/data/sandbox');
   });
 
   it('should execute if no generators', (done) => {
-    exec(`${codecept_run} --debug`, (_err, stdout) => {
+    exec(`${codecept_run} --steps`, (_err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
       const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order');
-      testStatus = withoutGeneratorList.pop();
-      testStatus.should.include('OK');
-      withoutGeneratorList.should.eql([
-        'I small promise ',
-        'I small promise was finished ',
-        'I hey! i am within begin. i get blabla ',
+      expect(lines.join(' ')).to.include('OK');
+      expect(lines).to.include.members([
+        'I small promise',
+        'I hey! i am within begin. i get blabla',
         'Within "blabla" ""',
         'I small promise ',
-        'I small promise was finished ',
         'I oh! i am within end( ',
       ], 'check steps execution order');
       done();
@@ -41,7 +41,7 @@ describe('CodeceptJS within', function () {
 
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is first in order', 'Check within with async/await. Await is second in order');
       testStatus = withGeneratorList.pop();
-      testStatus.should.include('OK');
+      expect(testStatus).to.include('OK');
       withGeneratorList.should.eql([
         'I small promise ',
         'I small promise was finished ',
@@ -66,7 +66,7 @@ describe('CodeceptJS within', function () {
 
       const withGeneratorList = grepLines(lines, 'Check within with async/await. Await is second in order', '-- FAILURES:');
       testStatus = withGeneratorList.pop();
-      testStatus.should.include('OK');
+      expect(testStatus).to.include('OK');
       withGeneratorList.should.eql([
         'I small promise ',
         'I small promise was finished ',

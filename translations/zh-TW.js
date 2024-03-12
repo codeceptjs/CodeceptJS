@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   I: '我',
   contexts: {
     Feature: '功能',

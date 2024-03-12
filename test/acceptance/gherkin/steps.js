@@ -1,4 +1,4 @@
-const I = actor();
+const { I } = inject();
 
 Given('I opened website', () => {
   // From "gherkin/basic.feature" {"line":8,"column":5}

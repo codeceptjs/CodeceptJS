@@ -1,4 +1,4 @@
-const Helper = require('../../../lib/helper');
+import Helper from '../../../lib/helper';
 
 class Retry extends Helper {
   failWhen(fn) {
@@ -16,4 +16,4 @@ class Retry extends Helper {
   }
 }
 
-module.exports = Retry;
+export default Retry;

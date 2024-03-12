@@ -1,3 +1,3 @@
-module.exports = {
+export default {
   "require": "./test/support/setup.js"
-}
+};

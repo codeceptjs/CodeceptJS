@@ -1,10 +1,7 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
-const Assertion = require('../../lib/assert');
-const AssertionError = require('../../lib/assert/error');
+import Assertion from '../../lib/assert.js';
+import AssertionError from '../../lib/assert/error.js';
 
 const comparator = (a, b) => a === b;
 

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   I: 'Ja',
   contexts: {
     Feature: 'Funkcja',

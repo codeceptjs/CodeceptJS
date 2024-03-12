@@ -1,31 +1,21 @@
-const Gherkin = require('@cucumber/gherkin');
-const Messages = require('@cucumber/messages');
+import Gherkin from '@cucumber/gherkin';
+import * as Messages from '@cucumber/messages';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
+
+import Config from '../../lib/config.js';
+import {
+  Given, When, And, Then, matchStep, clearSteps, defineParameterType,
+} from '../../lib/interfaces/bdd.js';
+import run from '../../lib/interfaces/gherkin.js';
+import recorder from '../../lib/recorder.js';
+import container from '../../lib/container.js';
+import { actor } from '../../lib/actor.js';
+import * as event from '../../lib/event.js';
 
 const uuidFn = Messages.IdGenerator.uuid();
 const builder = new Gherkin.AstBuilder(uuidFn);
 const matcher = new Gherkin.GherkinClassicTokenMatcher();
-
-const { log } = require('console');
-const Config = require('../../lib/config');
-const {
-  Given,
-  When,
-  And,
-  Then,
-  matchStep,
-  clearSteps,
-  defineParameterType,
-} = require('../../lib/interfaces/bdd');
-const run = require('../../lib/interfaces/gherkin');
-const recorder = require('../../lib/recorder');
-const container = require('../../lib/container');
-const actor = require('../../lib/actor');
-const event = require('../../lib/event');
 
 class Color {
   constructor(name) {
@@ -56,6 +46,8 @@ const checkTestForErrors = (test) => {
     });
   });
 };
+
+let I;
 
 describe('BDD', () => {
   beforeEach(() => {
@@ -111,7 +103,7 @@ describe('BDD', () => {
     }
   });
 
-  it('should contain tags', async () => {
+  it('should contain tags', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => sum += 10);
@@ -130,49 +122,49 @@ describe('BDD', () => {
     suite.tests[0].fn(() => {
       expect(suite.tests[0].steps).is.ok;
       expect(1610).is.equal(sum);
-      done();
     });
+    done();
   });
 
-  it('should allow failed steps', async () => {
+  it('should allow failed steps', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => expect(false).is.true);
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
     try {
-      await checkTestForErrors(suite.tests[0]);
-      return Promise.reject((new Error('Test should have thrown with failed step, but did not')));
+      checkTestForErrors(suite.tests[0]);
+      throw Error('Test should have thrown with failed step, but did not');
     } catch (err) {
       const errored = !!err;
       expect(errored).is.true;
     }
   });
 
-  it('handles errors in steps', async () => {
+  it('handles errors in steps', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => { throw new Error('errored step'); });
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
     try {
-      await checkTestForErrors(suite.tests[0]);
-      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+      checkTestForErrors(suite.tests[0]);
+      throw Error('Test should have thrown with failed step, but did not');
     } catch (err) {
       const errored = !!err;
       expect(errored).is.true;
     }
   });
 
-  it('handles async errors in steps', async () => {
+  it('handles async errors in steps', () => {
     let sum = 0;
     Given(/I have product with (\d+) price/, param => sum += parseInt(param, 10));
     When('I go to checkout process', () => Promise.reject(new Error('step failed')));
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
     try {
-      await checkTestForErrors(suite.tests[0]);
-      return Promise.reject((new Error('Test should have thrown with error, but did not')));
+      checkTestForErrors(suite.tests[0]);
+      throw Error('Test should have thrown with failed step, but did not');
     } catch (err) {
       const errored = !!err;
       expect(errored).is.true;
@@ -193,12 +185,12 @@ describe('BDD', () => {
     suite.tests[0].fn(() => {
       expect(suite.tests[0].steps).is.ok;
       expect(1610).is.equal(sum);
-      done();
     });
+    done();
   });
 
   it('should execute scenarios step-by-step ', (done) => {
-    printed = [];
+    const printed = [];
     container.append({
       helpers: {
         simple: {
@@ -238,9 +230,9 @@ describe('BDD', () => {
           'fire test.passed',
           'finish test',
         ]);
-        done();
       });
     });
+    done();
   });
 
   it('should match step with params', () => {
@@ -264,8 +256,8 @@ describe('BDD', () => {
     const suite = run(text);
     suite.tests[0].fn(() => {
       listeners.should.eql(2);
-      done();
     });
+    done();
   });
 
   it('should use shortened form for step definitions', () => {
@@ -306,8 +298,8 @@ describe('BDD', () => {
     suite._beforeEach.forEach(hook => hook.run(done));
     suite.tests[0].fn(() => {
       expect(sum).is.equal(2);
-      finish();
     });
+    finish();
   });
 
   it('should execute scenario outlines', (done) => {
@@ -357,9 +349,9 @@ describe('BDD', () => {
       suite.tests[1].fn(() => {
         expect(18).is.equal(cart);
         expect(18).is.equal(sum);
-        done();
       });
     });
+    done();
   });
 
   it('should provide a parsed DataTable', (done) => {
@@ -402,8 +394,8 @@ describe('BDD', () => {
     suite.tests[0].fn(() => {
       expect(givenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
       expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable);
-      done();
     });
+    done();
   });
 
   it('should match step with custom parameter type', (done) => {
@@ -432,4 +424,4 @@ describe('BDD', () => {
     expect('blue').is.equal(color.name);
     await Promise.resolve();
   });
-});
+}).timeout(5000);

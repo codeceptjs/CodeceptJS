@@ -1,5 +1,6 @@
-const I = actor();
-const axios = require('axios');
+import axios from 'axios';
+
+const { I } = inject();
 
 Given('I have products in my cart', (table) => { // eslint-disable-line
   for (const id in table.rows) {

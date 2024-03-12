@@ -1,1 +1,1 @@
-module.exports = ['veni', 'vedi', 'vici'];
+export default ['veni', 'vedi', 'vici'];

@@ -1,14 +1,12 @@
-const path = require('path');
+import path from 'path';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const { like } = require('pactum-matchers');
-const MockServer = require('../../lib/helper/MockServer');
-const REST = require('../../lib/helper/REST');
+import { expect } from 'chai';
+import { like } from 'pactum-matchers';
+import MockServer from '../../lib/helper/MockServer.js';
+import REST from '../../lib/helper/REST.js';
+import { __dirname } from '../../lib/dirname.js';
 
-global.codeceptjs = require('../../lib');
+global.codeceptjs = '../../lib';
 
 let I;
 let restClient;

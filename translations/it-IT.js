@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   I: 'io',
   contexts: {
     Feature: 'Caratteristica',

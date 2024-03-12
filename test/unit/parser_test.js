@@ -1,8 +1,5 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const parser = require('../../lib/parser');
+import { expect } from 'chai';
+import * as parser from '../../lib/parser.js';
 
 /* eslint-disable no-unused-vars */
 class Obj {
