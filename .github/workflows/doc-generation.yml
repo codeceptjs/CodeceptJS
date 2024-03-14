@@ -40,7 +40,7 @@ jobs:
 
       - name: Generate and update documentation
         run: |
-          npm run docs
+          npm run def && npm run docs
           git add docs/**/*.md docs/**/*.js
           if ! git diff --cached --quiet; then
             git commit -m "DOC: Autogenerate and update documentation" --no-verify
