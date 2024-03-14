@@ -11,7 +11,7 @@ defaults: &defaults
     - checkout
     - run: .circleci/build.sh
     - browser-tools/install-chrome:
-        chrome-version: 116.0.5845.96
+        chrome-version: 124.0.6358.0
         replace-existing: true
     - run:
         command: docker-compose run --rm test-acceptance.puppeteer
