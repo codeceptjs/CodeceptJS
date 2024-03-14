@@ -159,7 +159,7 @@ expects members of two arrays are deeply equal
 -   `targetData` **any** 
 -   `jsonSchema` **any** 
 -   `customErrorMsg` **any?**  
--   `ajvOptions` **any** Pass AJV options 
+-   `ajvOptions` **any?** Pass AJV options 
 
 ### expectLengthAboveThan
 
