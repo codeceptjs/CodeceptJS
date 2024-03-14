@@ -14,7 +14,6 @@ const Puppeteer = require('../../lib/helper/Puppeteer');
 
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
-const FileSystem = require('../../lib/helper/FileSystem');
 const Secret = require('../../lib/secret');
 const { deleteDir } = require('../../lib/utils');
 global.codeceptjs = require('../../lib');
