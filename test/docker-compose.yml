@@ -14,7 +14,11 @@ services:
       - json_server
 
   test-acceptance.webdriverio:
-    <<: *test-service
+    build: ..
+    entrypoint: /codecept/node_modules/.bin/mocha
+    working_dir: /codecept
+    env_file: .env
+    command: test/acceptance.webdriverio
     environment:
       - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
     depends_on:
@@ -24,10 +28,15 @@ services:
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/node_modules
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
 
   test-acceptance.puppeteer:
-    <<: *test-service
+    build: ..
+    entrypoint: /codecept/node_modules/.bin/mocha
+    working_dir: /codecept
+    env_file: .env
+    command: test/acceptance.puppeteer
     environment:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
     depends_on:
@@ -37,17 +46,23 @@ services:
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/node_modules
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
 
   test-bdd.faker:
-    <<: *test-service
+    build: ..
+    entrypoint: /codecept/node_modules/.bin/mocha
+    working_dir: /codecept
+    env_file: .env
+    command: test/bdd.faker
     environment:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
       - ./bdd:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/node_modules
+      - ..:/codecept
+      - node_modules:/codecept/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:3.141.59-oxygen
