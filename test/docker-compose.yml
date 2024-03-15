@@ -24,7 +24,6 @@ services:
     volumes:
       - ..:/codecept
       - ../test/acceptance:/tests
-      - ../test/support:/tests
       - ./data:/data
       - ./support:/support
       - node_modules:/node_modules
@@ -40,7 +39,6 @@ services:
     volumes:
       - ..:/codecept
       - ../test/acceptance:/tests
-      - ../test/support:/tests
       - ./data:/data
       - ./support:/support
       - node_modules:/node_modules
