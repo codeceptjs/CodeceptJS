@@ -18,7 +18,7 @@ services:
     entrypoint: /codecept/node_modules/.bin/mocha
     working_dir: /codecept
     env_file: .env
-    command: test/acceptance.webdriverio
+    command: test/acceptance
     environment:
       - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
     depends_on:
@@ -36,7 +36,7 @@ services:
     entrypoint: /codecept/node_modules/.bin/mocha
     working_dir: /codecept
     env_file: .env
-    command: test/acceptance.puppeteer
+    command: test/acceptance
     environment:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
     depends_on:
@@ -54,7 +54,7 @@ services:
     entrypoint: /codecept/node_modules/.bin/mocha
     working_dir: /codecept
     env_file: .env
-    command: test/bdd.faker
+    command: test/acceptance
     environment:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
