@@ -13,12 +13,6 @@ services:
     depends_on:
       - json_server
 
-  test-graphql:
-    <<: *test-service
-    command: test/graphql
-    depends_on:
-      - json_server-graphql
-
   test-acceptance.webdriverio:
     <<: *test-service
     environment:
@@ -75,13 +69,6 @@ services:
     command: npm run json-server
     expose:
       - 8010
-
-  json_server-graphql:
-    <<: *test-service
-    entrypoint: []
-    command: npm run json-server:graphql
-    expose:
-      - 8020
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
