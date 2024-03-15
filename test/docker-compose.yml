@@ -15,8 +15,6 @@ services:
 
   test-acceptance.webdriverio:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/codeceptjs
-    working_dir: /codecept
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
@@ -25,12 +23,14 @@ services:
       - selenium.chrome
     volumes:
       - ..:/codecept
-      - node_modules:/codecept/node_modules
+      - ../test/acceptance:/tests
+      - ../test/support:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   test-acceptance.puppeteer:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/codeceptjs
-    working_dir: /codecept
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
@@ -39,18 +39,24 @@ services:
       - puppeteer-image
     volumes:
       - ..:/codecept
-      - node_modules:/codecept/node_modules
+      - ../test/acceptance:/tests
+      - ../test/support:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   test-bdd.faker:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/codeceptjs
-    working_dir: /codecept
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
       - ..:/codecept
-      - node_modules:/codecept/node_modules
+      - ../test/acceptance:/tests
+      - ../test/support:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:3.141.59-oxygen
