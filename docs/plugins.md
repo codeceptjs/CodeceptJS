@@ -392,15 +392,21 @@ Dumps code coverage from Playwright/Puppeteer after every test.
 ```js
 plugins: {
    coverage: {
-     enabled: true
+     enabled: true,
+     debug: true,
+     name: 'CodeceptJS Coverage Report',
+     outputDir: 'output/coverage'
    }
 }
 ```
 
-Possible config options:
+Possible config options, More could be found at [monocart-coverage-reports][1]
 
--   `coverageDir`: directory to dump coverage files
--   `uniqueFileName`: generate a unique filename by adding uuid
+-   `debug`: debug info. By default, false.
+-   `name`: coverage report name.
+-   `outputDir`: path to coverage report.
+-   `sourceFilter`: filter the source files.
+-   `sourcePath`: option to resolve a custom path.
 
 ### Parameters
 
@@ -408,7 +414,7 @@ Possible config options:
 
 ## customLocator
 
-Creates a [custom locator][1] by using special attributes in HTML.
+Creates a [custom locator][2] by using special attributes in HTML.
 
 If you have a convention to use `data-test-id` or `data-qa` attributes to mark active elements for e2e tests,
 you can enable this plugin to simplify matching elements with these attributes:
@@ -582,9 +588,9 @@ This method works with WebDriver, Playwright, Puppeteer, Appium helpers.
 Function parameter `el` represents a matched element.
 Depending on a helper API of `el` can be different. Refer to API of corresponding browser testing engine for a complete API list:
 
--   [Playwright ElementHandle][2]
--   [Puppeteer][3]
--   [webdriverio element][4]
+-   [Playwright ElementHandle][3]
+-   [Puppeteer][4]
+-   [webdriverio element][5]
 
 #### Configuration
 
@@ -598,11 +604,11 @@ const eachElement = codeceptjs.container.plugins('eachElement');
 
 ### Parameters
 
--   `purpose` **[string][5]** 
+-   `purpose` **[string][6]** 
 -   `locator` **CodeceptJS.LocatorOrString** 
--   `fn` **[Function][6]** 
+-   `fn` **[Function][7]** 
 
-Returns **([Promise][7]&lt;any> | [undefined][8])** 
+Returns **([Promise][8]&lt;any> | [undefined][9])** 
 
 ## fakerTransform
 
@@ -680,7 +686,7 @@ Steps to heal:
 
 ## pauseOnFail
 
-Automatically launches [interactive pause][9] when a test fails.
+Automatically launches [interactive pause][10] when a test fails.
 
 Useful for debugging flaky tests on local environment.
 Add this plugin to config file:
@@ -863,14 +869,14 @@ Possible config options:
 
 ## selenoid
 
-[Selenoid][10] plugin automatically starts browsers and video recording.
+[Selenoid][11] plugin automatically starts browsers and video recording.
 Works with WebDriver helper.
 
 ### Prerequisite
 
 This plugin **requires Docker** to be installed.
 
-> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][11] tool from Selenoid
+> If you have issues starting Selenoid with this plugin consider using the official [Configuration Manager][12] tool from Selenoid
 
 ### Usage
 
@@ -899,7 +905,7 @@ plugins: {
   }
 ```
 
-When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][12] and start Selenoid automatically.
+When `autoCreate` is enabled it will pull the [latest Selenoid from DockerHub][13] and start Selenoid automatically.
 It will also create `browsers.json` file required by Selenoid.
 
 In automatic mode the latest version of browser will be used for tests. It is recommended to specify exact version of each browser inside `browsers.json` file.
@@ -911,10 +917,10 @@ In automatic mode the latest version of browser will be used for tests. It is re
 While this plugin can create containers for you for better control it is recommended to create and launch containers manually.
 This is especially useful for Continous Integration server as you can configure scaling for Selenoid containers.
 
-> Use [Selenoid Configuration Manager][11] to create and start containers semi-automatically.
+> Use [Selenoid Configuration Manager][12] to create and start containers semi-automatically.
 
 1.  Create `browsers.json` file in the same directory `codecept.conf.js` is located
-    [Refer to Selenoid documentation][13] to know more about browsers.json.
+    [Refer to Selenoid documentation][14] to know more about browsers.json.
 
 _Sample browsers.json_
 
@@ -939,7 +945,7 @@ _Sample browsers.json_
 
 2.  Create Selenoid container
 
-Run the following command to create a container. To know more [refer here][14]
+Run the following command to create a container. To know more [refer here][15]
 
 ```bash
 docker create                                    \
@@ -972,7 +978,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 | enableVideo      | Enable video recording and use `video` folder of output (default: false)       |
 | enableLog        | Enable log recording and use `logs` folder of output (default: false)          |
 | deletePassed     | Delete video and logs of passed tests (default : true)                         |
-| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][15] to know more   |
+| additionalParams | example: `additionalParams: '--env TEST=test'` [Refer here][16] to know more   |
 
 ### Parameters
 
@@ -980,7 +986,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ## stepByStepReport
 
-![step-by-step-report][16]
+![step-by-step-report][17]
 
 Generates step by step report for a test.
 After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
@@ -1161,7 +1167,7 @@ This plugin allows to run webdriverio services like:
 -   browserstack
 -   appium
 
-A complete list of all available services can be found on [webdriverio website][17].
+A complete list of all available services can be found on [webdriverio website][18].
 
 #### Setup
 
@@ -1173,7 +1179,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][18].
+Install `@wdio/selenium-standalone-service` package, as [described here][19].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -1190,7 +1196,7 @@ plugins: {
 
 #### Sauce Service
 
-Install `@wdio/sauce-service` package, as [described here][19].
+Install `@wdio/sauce-service` package, as [described here][20].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `sauce` service:
@@ -1220,40 +1226,42 @@ In the same manner additional services from webdriverio can be installed, enable
 
 -   `config`  
 
-[1]: https://codecept.io/locators#custom-locators
+[1]: https://github.com/cenfun/monocart-coverage-reports?tab=readme-ov-file#default-options
 
-[2]: https://playwright.dev/docs/api/class-elementhandle
+[2]: https://codecept.io/locators#custom-locators
 
-[3]: https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle
+[3]: https://playwright.dev/docs/api/class-elementhandle
 
-[4]: https://webdriver.io/docs/api
+[4]: https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[5]: https://webdriver.io/docs/api
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[9]: /basics/#pause
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[10]: https://aerokube.com/selenoid/
+[10]: /basics/#pause
 
-[11]: https://aerokube.com/cm/latest/
+[11]: https://aerokube.com/selenoid/
 
-[12]: https://hub.docker.com/u/selenoid
+[12]: https://aerokube.com/cm/latest/
 
-[13]: https://aerokube.com/selenoid/latest/#_prepare_configuration
+[13]: https://hub.docker.com/u/selenoid
 
-[14]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
+[14]: https://aerokube.com/selenoid/latest/#_prepare_configuration
 
-[15]: https://docs.docker.com/engine/reference/commandline/create/
+[15]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
 
-[16]: https://codecept.io/img/codeceptjs-slideshow.gif
+[16]: https://docs.docker.com/engine/reference/commandline/create/
 
-[17]: https://webdriver.io
+[17]: https://codecept.io/img/codeceptjs-slideshow.gif
 
-[18]: https://webdriver.io/docs/selenium-standalone-service.html
+[18]: https://webdriver.io
 
-[19]: https://webdriver.io/docs/sauce-service.html
+[19]: https://webdriver.io/docs/selenium-standalone-service.html
+
+[20]: https://webdriver.io/docs/sauce-service.html
