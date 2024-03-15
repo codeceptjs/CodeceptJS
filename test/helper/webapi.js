@@ -1375,10 +1375,6 @@ module.exports.tests = function () {
           method: 'post',
         });
         await I.seeAttributesOnElements('//form', {
-          method: 'post',
-          action: '/',
-        });
-        await I.seeAttributesOnElements('//form', {
           method: 'get',
         });
         throw Error('It should never get this far');

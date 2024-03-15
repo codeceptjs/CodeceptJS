@@ -288,6 +288,29 @@ I.usePuppeteerTo('emulate offline mode', async (Puppeteer) => {
 });
 ```
 
+## Capturing Code Coverage
+
+Code coverage can be captured, by enabling the `coverage` plugin in `codecept.config.js`.
+
+```js
+{
+  plugins: {
+    coverage: {
+      enabled: true
+    }
+  }
+}
+```
+
+Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
+
+![]((https://github.com/codeceptjs/CodeceptJS/assets/7845001/3b8b81a3-7c85-470c-992d-ecdc7d5b4a1e))
+
+Open `index.html` in your browser to view the full interactive coverage report.
+
+![](https://github.com/codeceptjs/CodeceptJS/assets/7845001/f45607ed-dbe8-4ed4-9b21-01ce25288d22)
+
+![](https://github.com/codeceptjs/CodeceptJS/assets/7845001/c821ce45-6590-4ace-b7ae-2cafb3a4e532)
 
 ## Extending Helper
 

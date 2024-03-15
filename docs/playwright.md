@@ -540,25 +540,13 @@ Code coverage can be captured, by enabling the `coverage` plugin in `codecept.co
 
 Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
 
-![](https://user-images.githubusercontent.com/16587779/131362352-30ee9c51-705f-4098-b665-53035ea9275f.png)
-
-Then you need to [convert code coverage from Playwright's format into Istanbul format](https://github.com/codeceptjs/CodeceptJS/wiki/Converting-Playwright-to-Istanbul-Coverage).
-
-Once the istanbul compatible coverage is generated, use [`nyc`](https://www.npmjs.com/package/nyc) to generate your coverage report in your desired format.
-
-```
-npx nyc report --reporter html -t coverage
-```
-
-The above command will generate will generate coverage in an interactive html format. It should generate `html` files in the directory where your code coverage is present, something like shown below.
-
-![](https://user-images.githubusercontent.com/16587779/131858419-cbc7df7d-0851-47b9-b086-b5e3b9165674.png)
+![]((https://github.com/codeceptjs/CodeceptJS/assets/7845001/3b8b81a3-7c85-470c-992d-ecdc7d5b4a1e))
 
 Open `index.html` in your browser to view the full interactive coverage report.
 
-![](https://user-images.githubusercontent.com/16587779/131858993-87d1aafc-8ef1-4a82-867d-e64a13e36106.png)
+![](https://github.com/codeceptjs/CodeceptJS/assets/7845001/f45607ed-dbe8-4ed4-9b21-01ce25288d22)
 
-![](https://user-images.githubusercontent.com/16587779/131859006-c6f17d18-c603-44a5-9d59-0670177276cf.png)
+![](https://github.com/codeceptjs/CodeceptJS/assets/7845001/c821ce45-6590-4ace-b7ae-2cafb3a4e532)
 
 ## Extending Helper
 

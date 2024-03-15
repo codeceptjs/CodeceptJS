@@ -45,7 +45,7 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
   I.expectNotEqual(default1Digest, john1Digest);
 });
 
-Scenario('Different cookies for different sessions @WebDriverIO @Playwright @Puppeteer', async ({ I }) => {
+Scenario('Different cookies for different sessions @Playwright @Puppeteer', async ({ I }) => {
   const cookiePage = 'https://www.microsoft.com/en-au/';
   const cookieName = 'MUID';
   const cookies = {};

@@ -14,7 +14,6 @@ const Puppeteer = require('../../lib/helper/Puppeteer');
 
 const AssertionFailedError = require('../../lib/assert/error');
 const webApiTests = require('./webapi');
-const FileSystem = require('../../lib/helper/FileSystem');
 const Secret = require('../../lib/secret');
 const { deleteDir } = require('../../lib/utils');
 global.codeceptjs = require('../../lib');
@@ -1097,7 +1096,7 @@ describe('Puppeteer - Trace', () => {
       await I.amOnPage('/form/focus_blur_elements');
 
       const webElements = await I.grabWebElements('#button');
-      assert.include(webElements[0].constructor.name, 'CDPElementHandle');
+      assert.include(webElements[0].constructor.name, 'CdpElementHandle');
       assert.isAbove(webElements.length, 0);
     });
   });

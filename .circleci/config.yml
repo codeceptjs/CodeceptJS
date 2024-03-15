@@ -5,13 +5,13 @@ orbs:
 
 defaults: &defaults
   machine:
-    image: ubuntu-2204:2023.07.2
+    image: default
     docker_layer_caching: false
   steps:
     - checkout
     - run: .circleci/build.sh
     - browser-tools/install-chrome:
-        chrome-version: 116.0.5845.96
+        chrome-version: 124.0.6358.0
         replace-existing: true
     - run:
         command: docker-compose run --rm test-acceptance.puppeteer
