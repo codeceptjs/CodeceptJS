@@ -540,25 +540,13 @@ Code coverage can be captured, by enabling the `coverage` plugin in `codecept.co
 
 Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
 
-![](https://user-images.githubusercontent.com/16587779/131362352-30ee9c51-705f-4098-b665-53035ea9275f.png)
-
-Then you need to [convert code coverage from Playwright's format into Istanbul format](https://github.com/codeceptjs/CodeceptJS/wiki/Converting-Playwright-to-Istanbul-Coverage).
-
-Once the istanbul compatible coverage is generated, use [`nyc`](https://www.npmjs.com/package/nyc) to generate your coverage report in your desired format.
-
-```
-npx nyc report --reporter html -t coverage
-```
-
-The above command will generate will generate coverage in an interactive html format. It should generate `html` files in the directory where your code coverage is present, something like shown below.
-
-![](https://user-images.githubusercontent.com/16587779/131858419-cbc7df7d-0851-47b9-b086-b5e3b9165674.png)
+![](https://private-user-images.githubusercontent.com/7845001/313117208-f7165429-426a-44c5-af27-df5536ef492d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA0OTEyNTIsIm5iZiI6MTcxMDQ5MDk1MiwicGF0aCI6Ii83ODQ1MDAxLzMxMzExNzIwOC1mNzE2NTQyOS00MjZhLTQ0YzUtYWYyNy1kZjU1MzZlZjQ5MmQucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMTVUMDgyMjMyWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NjRmNTFmOWUyYzJjYWE3ZWE0MDA0MGI3ODY5NzY5MDRlYjQyNTMxODRjZGU1ZWM5ZDdjNDJiNGRmZGUxM2FlOCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ._gfEYZn2AK0NVA0bt-sFmzMoMKlyBVpxd7m4590Ux1M)
 
 Open `index.html` in your browser to view the full interactive coverage report.
 
-![](https://user-images.githubusercontent.com/16587779/131858993-87d1aafc-8ef1-4a82-867d-e64a13e36106.png)
+![](https://private-user-images.githubusercontent.com/7845001/313117882-cb77beea-c478-49ea-8677-b025d5614545.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA0OTEzOTAsIm5iZiI6MTcxMDQ5MTA5MCwicGF0aCI6Ii83ODQ1MDAxLzMxMzExNzg4Mi1jYjc3YmVlYS1jNDc4LTQ5ZWEtODY3Ny1iMDI1ZDU2MTQ1NDUucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMTVUMDgyNDUwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9YmY0YTkxOTM0ZjUyNjZmMzk0NmM4MjU5MGFjZTZlZDc0Njc3OTZkNTNjMjc5YzQxODI3OWUyODJkNTU2NGViZSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ.LATp5aqrvm-8Nn4tRGSuMrOjJQ4L-NIJEwsB3BbB5po)
 
-![](https://user-images.githubusercontent.com/16587779/131859006-c6f17d18-c603-44a5-9d59-0670177276cf.png)
+![](https://private-user-images.githubusercontent.com/7845001/313117886-92a11844-0a2b-4bcb-8c73-aef5cf518dbf.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA0OTEzOTAsIm5iZiI6MTcxMDQ5MTA5MCwicGF0aCI6Ii83ODQ1MDAxLzMxMzExNzg4Ni05MmExMTg0NC0wYTJiLTRiY2ItOGM3My1hZWY1Y2Y1MThkYmYucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMTVUMDgyNDUwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MTQ4ODUyMTVlM2MwODRhMzE0Yjg2YWQxYTRiNmYzOWJkYWU2ZWIyNDA2YWMyYjIxYTMyNTZkYjg5NGU3Zjk4OCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ.gxyQ9RgAAtFcCUIqqjzponc53ZRn9sG0hN4cBeQovMg)
 
 ## Extending Helper
 
