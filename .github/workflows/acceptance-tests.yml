@@ -31,22 +31,18 @@ jobs:
       - name: Run Puppeteer Acceptance Tests
         run: docker-compose run --rm test-acceptance.puppeteer
         working-directory: test
-        continue-on-error: true
 
       # Run rest tests using docker-compose
       - name: Run REST Tests
         run: docker-compose run --rm test-rest
         working-directory: test
-        continue-on-error: true
 
       # Run WebDriverIO acceptance tests using docker-compose
       - name: Run WebDriverIO Acceptance Tests
         run: docker-compose run --rm test-acceptance.webdriverio
         working-directory: test
-        continue-on-error: true
 
       # Run faker BDD tests using docker-compose
       - name: Run Faker BDD Tests
         run: docker-compose run --rm test-bdd.faker
         working-directory: test
-        continue-on-error: true
