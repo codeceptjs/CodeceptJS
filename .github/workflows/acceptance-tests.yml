@@ -28,3 +28,20 @@ jobs:
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./test/docker-compose.yml"
+          down-flags: "--volumes"
+      - run:
+          command: docker-compose run --rm test-acceptance.puppeteer
+          working_directory: test
+          when: always
+      - run:
+          command: docker-compose run --rm test-rest
+          working_directory: test
+          when: always
+      - run:
+          command: docker-compose run --rm test-acceptance.webdriverio
+          working_directory: test
+          when: always
+      - run:
+          command: docker-compose run --rm test-bdd.faker
+          working_directory: test
+          when: always
