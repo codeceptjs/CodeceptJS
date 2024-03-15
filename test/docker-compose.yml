@@ -22,7 +22,6 @@ services:
       - php
       - selenium.chrome
     volumes:
-      - ..:/codecept
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
@@ -37,7 +36,6 @@ services:
       - php
       - puppeteer-image
     volumes:
-      - ..:/codecept
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
@@ -49,7 +47,6 @@ services:
     environment:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
-      - ..:/codecept
       - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
