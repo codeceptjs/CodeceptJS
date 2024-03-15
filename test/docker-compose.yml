@@ -47,7 +47,7 @@ services:
     environment:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
-      - ./acceptance:/tests
+      - ./bdd:/tests
       - ./data:/data
       - ./support:/support
       - node_modules:/node_modules
