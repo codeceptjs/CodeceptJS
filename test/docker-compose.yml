@@ -23,7 +23,7 @@ services:
       - selenium.chrome
     volumes:
       - ..:/codecept
-      - ../test/acceptance:/tests
+      - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
       - node_modules:/node_modules
@@ -38,7 +38,7 @@ services:
       - puppeteer-image
     volumes:
       - ..:/codecept
-      - ../test/acceptance:/tests
+      - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
       - node_modules:/node_modules
@@ -50,8 +50,7 @@ services:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
       - ..:/codecept
-      - ../test/acceptance:/tests
-      - ../test/support:/tests
+      - ./acceptance:/tests
       - ./data:/data
       - ./support:/support
       - node_modules:/node_modules
