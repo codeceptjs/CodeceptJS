@@ -15,7 +15,7 @@ services:
 
   test-acceptance.webdriverio:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
+    entrypoint: /codecept/node_modules/.bin/codeceptjs
     working_dir: /codecept
     env_file: .env
     command: test/acceptance
@@ -30,7 +30,7 @@ services:
 
   test-acceptance.puppeteer:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
+    entrypoint: /codecept/node_modules/.bin/codeceptjs
     working_dir: /codecept
     env_file: .env
     command: test/acceptance
@@ -45,7 +45,7 @@ services:
 
   test-bdd.faker:
     build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
+    entrypoint: /codecept/node_modules/.bin/codeceptjs
     working_dir: /codecept
     env_file: .env
     command: test/acceptance
