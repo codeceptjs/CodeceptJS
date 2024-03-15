@@ -1,32 +1,26 @@
 version: '3'
 services:
   test-rest:
-    build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
+    <<: &test-service
+      build: ..
+      entrypoint: /codecept/node_modules/.bin/mocha
+      working_dir: /codecept
+      env_file: .env
+      volumes:
+        - ..:/codecept
+        - node_modules:/codecept/node_modules
     command: test/rest
-    working_dir: /codecept
-    env_file: .env
     depends_on:
       - json_server
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
 
   test-graphql:
-    build: ..
-    entrypoint: /codecept/node_modules/.bin/mocha
+    <<: *test-service
     command: test/graphql
-    working_dir: /codecept
-    env_file: .env
     depends_on:
       - json_server-graphql
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
 
   test-acceptance.webdriverio:
-    build: ..
-    env_file: .env
+    <<: *test-service
     environment:
       - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
     depends_on:
@@ -39,8 +33,7 @@ services:
       - node_modules:/node_modules
 
   test-acceptance.puppeteer:
-    build: ..
-    env_file: .env
+    <<: *test-service
     environment:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
     depends_on:
@@ -53,8 +46,7 @@ services:
       - node_modules:/node_modules
 
   test-bdd.faker:
-    build: ..
-    env_file: .env
+    <<: *test-service
     environment:
       - CODECEPT_ARGS=-c codecept.faker.js
     volumes:
@@ -78,29 +70,21 @@ services:
       - .:/test
 
   json_server:
-    build: ..
+    <<: *test-service
     entrypoint: []
     command: npm run json-server
-    working_dir: /codecept
     expose:
       - 8010
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
 
   json_server-graphql:
-    build: ..
+    <<: *test-service
     entrypoint: []
     command: npm run json-server:graphql
-    working_dir: /codecept
     expose:
       - 8020
-    volumes:
-      - ..:/codecept
-      - node_modules:/codecept/node_modules
 
   puppeteer-image:
-    image: ghcr.io/puppeteer/puppeteer:21.1.1
+    image: ghcr.io/puppeteer/puppeteer:22.4.1
 
 volumes:
   node_modules:
