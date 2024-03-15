@@ -1,3 +1,64 @@
+## 3.5.15
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat: improve code coverage plugin (#4252) - by @KobeNguyenT
+  We revamp the coverage plugin to make it easier to use
+
+Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
+
+![](https://private-user-images.githubusercontent.com/7845001/313117208-f7165429-426a-44c5-af27-df5536ef492d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA0OTEyNTIsIm5iZiI6MTcxMDQ5MDk1MiwicGF0aCI6Ii83ODQ1MDAxLzMxMzExNzIwOC1mNzE2NTQyOS00MjZhLTQ0YzUtYWYyNy1kZjU1MzZlZjQ5MmQucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMTVUMDgyMjMyWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NjRmNTFmOWUyYzJjYWE3ZWE0MDA0MGI3ODY5NzY5MDRlYjQyNTMxODRjZGU1ZWM5ZDdjNDJiNGRmZGUxM2FlOCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ._gfEYZn2AK0NVA0bt-sFmzMoMKlyBVpxd7m4590Ux1M)
+
+Open `index.html` in your browser to view the full interactive coverage report.
+
+![](https://private-user-images.githubusercontent.com/7845001/313117882-cb77beea-c478-49ea-8677-b025d5614545.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA0OTEzOTAsIm5iZiI6MTcxMDQ5MTA5MCwicGF0aCI6Ii83ODQ1MDAxLzMxMzExNzg4Mi1jYjc3YmVlYS1jNDc4LTQ5ZWEtODY3Ny1iMDI1ZDU2MTQ1NDUucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMTVUMDgyNDUwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9YmY0YTkxOTM0ZjUyNjZmMzk0NmM4MjU5MGFjZTZlZDc0Njc3OTZkNTNjMjc5YzQxODI3OWUyODJkNTU2NGViZSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ.LATp5aqrvm-8Nn4tRGSuMrOjJQ4L-NIJEwsB3BbB5po)
+
+![](https://private-user-images.githubusercontent.com/7845001/313117886-92a11844-0a2b-4bcb-8c73-aef5cf518dbf.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA0OTEzOTAsIm5iZiI6MTcxMDQ5MTA5MCwicGF0aCI6Ii83ODQ1MDAxLzMxMzExNzg4Ni05MmExMTg0NC0wYTJiLTRiY2ItOGM3My1hZWY1Y2Y1MThkYmYucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMTVUMDgyNDUwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MTQ4ODUyMTVlM2MwODRhMzE0Yjg2YWQxYTRiNmYzOWJkYWU2ZWIyNDA2YWMyYjIxYTMyNTZkYjg5NGU3Zjk4OCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ.gxyQ9RgAAtFcCUIqqjzponc53ZRn9sG0hN4cBeQovMg)
+
+🐛 *Bug Fixes*
+* fix: bump puppeteer to v22.x (#4249) - by @KobeNguyenT
+* fix: improve dry-run command (#4225) - by @KobeNguyenT
+
+dry-run command now supports test level grep.
+
+```
+Tests from /Users/t/Desktop/projects/codeceptjs-rest-demo:@jaja
+
+GET tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/GET_test.ts -- 4 tests
+  ☐ Verify getting a single user @jaja
+  ☐ Verify getting list of users @jaja
+PUT tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/PUT_test.ts -- 4 tests
+  ☐ Verify creating new user @Jaja
+
+
+  Total: 2 suites | 3 tests  
+
+--- DRY MODE: No tests were executed ---
+➜  codeceptjs-rest-demo git:(master) ✗ npx codeceptjs dry-run             
+Tests from /Users/t/Desktop/projects/codeceptjs-rest-demo:
+
+DELETE tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/DELETE_test.ts -- 4 tests
+  ☐ Verify deleting a user
+GET tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/GET_test.ts -- 4 tests
+  ☐ Verify a successful call
+  ☐ Verify a not found call
+  ☐ Verify getting a single user @jaja
+  ☐ Verify getting list of users @jaja
+POST tests -- /Users/tDesktop/projects/codeceptjs-rest-demo/src/POST_test.ts -- 4 tests
+  ☐ Verify creating new user
+  ☐ Verify uploading a file
+PUT tests -- /Users/tDesktop/projects/codeceptjs-rest-demo/src/PUT_test.ts -- 4 tests
+  ☐ Verify creating new user @Jaja
+
+
+  Total: 4 suites | 8 tests  
+
+--- DRY MODE: No tests were executed ---
+```
+
+* Several internal fixes and improvements for github workflows
+
 ## 3.5.14
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
