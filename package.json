@@ -71,6 +71,7 @@
     "@cucumber/cucumber-expressions": "17",
     "@cucumber/gherkin": "26",
     "@cucumber/messages": "24.0.1",
+    "@testomatio/reporter": "^1.2.2-beta.show-error.1",
     "@xmldom/xmldom": "0.8.10",
     "acorn": "8.11.2",
     "arrify": "2.0.1",
