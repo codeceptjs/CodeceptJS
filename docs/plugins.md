@@ -661,18 +661,6 @@ plugins: {
 More config options are available:
 
 -   `healLimit` - how many steps can be healed in a single test (default: 2)
--   `healSteps` - which steps can be healed (default: all steps that interact with UI, see list below)
-
-Steps to heal:
-
--   `click`
--   `fillField`
--   `appendField`
--   `selectOption`
--   `attachFile`
--   `checkOption`
--   `uncheckOption`
--   `doubleClick`
 
 ### Parameters
 
