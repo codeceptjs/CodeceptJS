@@ -2,8 +2,6 @@ const { I } = inject();
 
 Feature('Plugins');
 
-Feature('TODO mvc demo');
-
 Before(() => {
   I.amOnPage('https://todomvc.com/examples/react/dist/');
 
