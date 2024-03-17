@@ -443,7 +443,7 @@ declare namespace CodeceptJS {
     | { vue: string }
     | { shadow: string[] }
     | { custom: string }
-    | { playwright: string };
+    | { pw: string };
   interface CustomLocators {}
   interface OtherLocators { props?: object }
   type LocatorOrString =

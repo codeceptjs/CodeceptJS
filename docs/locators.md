@@ -18,7 +18,7 @@ CodeceptJS provides flexible strategies for locating elements:
 
 Most methods in CodeceptJS use locators which can be either a string or an object.
 
-If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class`, `shadow` or `playwright`) and the value being the locator itself. This is called a "strict" locator.
+If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class`, `shadow` or `pw`) and the value being the locator itself. This is called a "strict" locator.
 
 Examples:
 
@@ -27,7 +27,7 @@ Examples:
 * {css: 'input[type=input][value=foo]'} matches `<input type="input" value="foo">`
 * {xpath: "//input[@type='submit'][contains(@value, 'foo')]"} matches `<input type="submit" value="foobar">`
 * {class: 'foo'} matches `<div class="foo">`
-* { playwright: '_react=t[name = "="]' }
+* { pw: '_react=t[name = "="]' }
 
 Writing good locators can be tricky.
 The Mozilla team has written an excellent guide titled [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/).

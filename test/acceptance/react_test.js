@@ -24,10 +24,10 @@ Scenario('component name @Puppeteer @Playwright', () => {
 Scenario('using playwright locator @Playwright', () => {
   I.amOnPage('https://codecept.io/test-react-calculator/');
   I.click('7');
-  I.click({ playwright: '_react=t[name = "="]' });
-  I.seeElement({ playwright: '_react=t[value = "7"]' });
-  I.click({ playwright: '_react=t[name = "+"]' });
-  I.click({ playwright: '_react=t[name = "3"]' });
-  I.click({ playwright: '_react=t[name = "="]' });
-  I.seeElement({ playwright: '_react=t[value = "10"]' });
+  I.click({ pw: '_react=t[name = "="]' });
+  I.seeElement({ pw: '_react=t[value = "7"]' });
+  I.click({ pw: '_react=t[name = "+"]' });
+  I.click({ pw: '_react=t[name = "3"]' });
+  I.click({ pw: '_react=t[name = "="]' });
+  I.seeElement({ pw: '_react=t[value = "10"]' });
 });

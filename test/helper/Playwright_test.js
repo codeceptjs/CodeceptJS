@@ -1709,7 +1709,7 @@ describe('using data-testid attribute', () => {
   it('should find element by data-testid attribute', async () => {
     await I.amOnPage('/');
 
-    const webElements = await I.grabWebElements({ playwright: '[data-testid="welcome"]' });
+    const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' });
     assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0');
     assert.equal(webElements.length, 1);
   });
