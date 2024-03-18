@@ -951,6 +951,26 @@ describe('Puppeteer', function () {
       assert.equal('TestEd Beta 2.0', title);
     });
   });
+
+  describe('#mockRoute, #stopMockingRoute', () => {
+    it('should mock a route', async () => {
+      await I.amOnPage('/form/fetch_call');
+      await I.mockRoute('https://reqres.in/api/comments/1', request => {
+        request.respond({
+          status: 200,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json',
+          body: '{"name": "this was mocked" }',
+        });
+      });
+      await I.click('GET COMMENTS');
+      await I.see('this was mocked');
+      await I.stopMockingRoute('https://reqres.in/api/comments/1');
+      await I.click('GET COMMENTS');
+      await I.see('data');
+      await I.dontSee('this was mocked');
+    });
+  });
 });
 
 let remoteBrowser;

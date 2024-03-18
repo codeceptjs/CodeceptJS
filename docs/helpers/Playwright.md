@@ -1505,7 +1505,7 @@ This method allows intercepting and mocking requests & responses. [Learn more ab
 #### Parameters
 
 -   `url` **([string][9] | [RegExp][11])?** URL, regex or pattern for to match URL
--   `handler` **[function][21]?** a function to process reques
+-   `handler` **[function][21]?** a function to process request
 
 ### mockTraffic
 
@@ -2230,7 +2230,7 @@ If no handler is passed, all mock requests for the rote are disabled.
 #### Parameters
 
 -   `url` **([string][9] | [RegExp][11])?** URL, regex or pattern for to match URL
--   `handler` **[function][21]?** a function to process reques
+-   `handler` **[function][21]?** a function to process request
 
 ### stopRecordingTraffic
 

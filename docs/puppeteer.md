@@ -216,52 +216,28 @@ await eachElement(
 
 > ℹ Learn more about [eachElement plugin](/plugins/#eachelement)
 
-## Mocking Requests
+## Mocking Network Requests <Badge text="Since 3.5.16" type="warning"/>
 
-Web application sends various requests to local services (Rest API, GraphQL) or to 3rd party services (CDNS, Google Analytics, etc).
-When you run tests with Puppeteer you can control those requests by mocking them. For instance, you can speed up your tests by blocking trackers, Google Analytics, and other services you don't control.
-
-Also you can replace real request with a one explicitly defined. This is useful when you want to isolate application testing from a backend. For instance, if you don't want to save data to database, and you know the request which performs save, you can mock the request, so application will treat this as valid response, but no data will be actually saved.
-
-To mock requests enable additional helper [MockRequest](/helpers/MockRequest) (which is based on Polly.js).
+Network requests & responses can be mocked and modified. Use `mockRoute` which strictly follows [Puppeteer's `setRequestInterception` API](https://pptr.dev/next/api/puppeteer.page.setrequestinterception).
 
 ```js
-helpers: {
-   Puppeteer: {
-     // regular Puppeteer config here
-   },
-   MockRequest: {}
-}
+I.mockRoute('https://reqres.in/api/comments/1', request => {
+  request.respond({
+    status: 200,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    contentType: 'application/json',
+    body: '{"name": "this was mocked" }',
+  });
+})
+
+I.mockRoute('**/*.{png,jpg,jpeg}', route => route.abort());
+
+// To disable mocking for a route call `stopMockingRoute`
+// for previously mocked URL
+I.stopMockingRoute('**/*.{png,jpg,jpeg}'
 ```
 
-And install additional packages:
-
-```
-npm i @pollyjs/core @pollyjs/adapter-puppeteer --save-dev
-```
-
-After an installation function `mockRequest` will be added to `I` object. You can use it to explicitly define which requests to block and which response they should return instead:
-
-```js
-// block all Google Analytics calls
-I.mockRequest('/google-analytics/*path', 200);
-// return an empty successful response
-I.mockRequest('GET', '/api/users', 200);
-// block post requests to /api/users and return predefined object
-I.mockRequest('POST', '/api/users', { user: 'davert' });
-// return error request with body
-I.mockRequest('GET', '/api/users/1', 404, { error: 'User not found' });
-```
-
-> See [`mockRequest` API](/helpers/MockRequest#mockrequest)
-
-To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
-
-```
-npx codeceptjs def
-```
-
-Mocking rules will be kept while a test is running. To stop mocking use `I.stopMocking()` command
+To master request intercepting [use `HTTPRequest` object](https://pptr.dev/next/api/puppeteer.httprequest) object passed into mock request handler.
 
 
 ## Accessing Puppeteer API
