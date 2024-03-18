@@ -39,26 +39,26 @@ Type: [object][4]
 
 -   `url` **[string][6]** base url of website to be tested
 -   `basicAuth` **[object][4]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
--   `show` **[boolean][20]?** show Google Chrome window for debug.
--   `restart` **[boolean][20]?** restart browser between tests.
--   `disableScreenshots` **[boolean][20]?** don't save screenshot on failure.
--   `fullPageScreenshots` **[boolean][20]?** make full page screenshots on failure.
--   `uniqueScreenshotNames` **[boolean][20]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
--   `trace` **[boolean][20]?** record [tracing information][24] with screenshots.
--   `keepTraceForPassedTests` **[boolean][20]?** save trace for passed tests.
--   `keepBrowserState` **[boolean][20]?** keep browser state between tests when `restart` is set to false.
--   `keepCookies` **[boolean][20]?** keep cookies between tests when `restart` is set to false.
+-   `show` **[boolean][22]?** show Google Chrome window for debug.
+-   `restart` **[boolean][22]?** restart browser between tests.
+-   `disableScreenshots` **[boolean][22]?** don't save screenshot on failure.
+-   `fullPageScreenshots` **[boolean][22]?** make full page screenshots on failure.
+-   `uniqueScreenshotNames` **[boolean][22]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+-   `trace` **[boolean][22]?** record [tracing information][26] with screenshots.
+-   `keepTraceForPassedTests` **[boolean][22]?** save trace for passed tests.
+-   `keepBrowserState` **[boolean][22]?** keep browser state between tests when `restart` is set to false.
+-   `keepCookies` **[boolean][22]?** keep cookies between tests when `restart` is set to false.
 -   `waitForAction` **[number][10]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
--   `waitForNavigation` **[string][6]?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][23]. Array values are accepted as well.
+-   `waitForNavigation` **[string][6]?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][25]. Array values are accepted as well.
 -   `pressKeyDelay` **[number][10]?** delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 -   `getPageTimeout` **[number][10]?** config option to set maximum navigation time in milliseconds. If the timeout is set to 0, then timeout will be disabled.
 -   `waitForTimeout` **[number][10]?** default wait* timeout in ms.
 -   `windowSize` **[string][6]?** default window size. Set a dimension in format WIDTHxHEIGHT like `640x480`.
 -   `userAgent` **[string][6]?** user-agent string.
--   `manualStart` **[boolean][20]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
+-   `manualStart` **[boolean][22]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 -   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
--   `chrome` **[object][4]?** pass additional [Puppeteer run options][25].
--   `highlightElement` **[boolean][20]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+-   `chrome` **[object][4]?** pass additional [Puppeteer run options][27].
+-   `highlightElement` **[boolean][22]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 
 
@@ -1255,6 +1255,21 @@ I.seeFile('avatar.jpg');
 
 -   `downloadPath` **[string][6]** change this parameter to set another directory for saving 
 
+### mockRoute
+
+Mocks network request using [`Request Interception`][17]
+
+```js
+I.mockRoute(/(.png$)|(.jpg$)/, route => route.abort());
+```
+
+This method allows intercepting and mocking requests & responses. [Learn more about it][17]
+
+#### Parameters
+
+-   `url` **([string][6] | [RegExp][18])?** URL, regex or pattern for to match URL
+-   `handler` **[function][12]?** a function to process request
+
 ### moveCursorTo
 
 Moves cursor to element matched by locator.
@@ -1287,11 +1302,11 @@ I.openNewTab();
 
 ### pressKey
 
-_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][17]).
+_Note:_ Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][19]).
 
 Presses a key in the browser (on a focused element).
 
-_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][18].
+_Hint:_ For populating text field or textarea, it is recommended to use [`fillField`][20].
 
 ```js
 I.pressKey('Backspace');
@@ -1358,7 +1373,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][19]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][21]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1376,7 +1391,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][19]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][21]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1470,7 +1485,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 -   `fileName` **[string][6]** file name to save.
--   `fullPage` **[boolean][20]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+-   `fullPage` **[boolean][22]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1862,6 +1877,18 @@ I.setPuppeteerRequestHeaders({
 
 -   `customHeaders` **[object][4]** headers to set
 
+### stopMockingRoute
+
+Stops network mocking created by `mockRoute`.
+
+```js
+I.stopMockingRoute(/(.png$)|(.jpg$)/);
+```
+
+#### Parameters
+
+-   `url` **([string][6] | [RegExp][18])?** URL, regex or pattern for to match URL
+
 ### switchTo
 
 Switches frame or in case of null locator reverts to parent.
@@ -1907,7 +1934,7 @@ I.switchToPreviousTab(2);
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-_Note:_ Should be used when [`fillField`][18] is not an option.
+_Note:_ Should be used when [`fillField`][20] is not an option.
 
 ```js
 // passing in a string
@@ -1958,7 +1985,7 @@ Use Puppeteer API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][21], [`browser`][22] } from Puppeteer API are available.
+{ [`page`][23], [`browser`][24] } from Puppeteer API are available.
 
 ```js
 I.usePuppeteerTo('emulate offline mode', async ({ page }) {
@@ -2110,7 +2137,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for navigation to finish. By default, takes configured `waitForNavigation` option.
 
-See [Puppeteer's reference][23]
+See [Puppeteer's reference][25]
 
 #### Parameters
 
@@ -2313,20 +2340,24 @@ Returns **void** automatically synchronized promise through #recorder
 
 [16]: https://codecept.io/helpers/FileSystem
 
-[17]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[17]: https://pptr.dev/next/guides/request-interception
 
-[18]: #fillfield
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[19]: #click
+[19]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
-[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[20]: #fillfield
 
-[21]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
+[21]: #click
 
-[22]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
+[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[23]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
+[23]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
 
-[24]: https://pptr.dev/api/puppeteer.tracing
+[24]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
 
-[25]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+[25]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
+
+[26]: https://pptr.dev/api/puppeteer.tracing
+
+[27]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
