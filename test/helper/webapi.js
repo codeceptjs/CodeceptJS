@@ -1614,7 +1614,7 @@ module.exports.tests = function () {
 
   describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     beforeEach(function () {
-      if (isHelper('TestCafe') || (I.puppeteerBrowser && I.puppeteerBrowser.constructor.name.toLowerCase() !== 'cdpbrowser')) this.skip();
+      if (isHelper('TestCafe') || process.env.isSelenium === 'true') this.skip();
     });
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
