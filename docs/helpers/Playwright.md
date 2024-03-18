@@ -1371,19 +1371,6 @@ let title = await I.grabTitle();
 
 Returns **[Promise][22]&lt;[string][9]>** title
 
-### grabTrafficUrl
-
-Returns full URL of request matching parameter "urlMatch".
-
-#### Parameters
-
--   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:```js
-    I.grabTrafficUrl('https://api.example.com/session');
-    I.grabTrafficUrl(/session.*start/);
-    ```
-
-Returns **[Promise][22]&lt;any>** 
-
 ### grabValueFrom
 
 Retrieves a value from a form element located by CSS or XPath and returns it to test.
