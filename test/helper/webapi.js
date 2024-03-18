@@ -1614,11 +1614,10 @@ module.exports.tests = function () {
 
   describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     beforeEach(function () {
-      if (isHelper('TestCafe') || (I.puppeteerBrowser && I.puppeteerBrowser.constructor.name !== 'CDPBrowser')) this.skip();
+      if (isHelper('TestCafe') || (I.puppeteerBrowser && I.puppeteerBrowser.constructor.name.toLowerCase() !== 'cdpbrowser')) this.skip();
     });
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
-      if (isHelper('Puppeteer')) return;
       try {
         I.amOnPage('https://codecept.io/');
         await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
