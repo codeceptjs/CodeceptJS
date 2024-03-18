@@ -24,5 +24,5 @@ jobs:
       env:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: npm run docs && npm run def
+    - run: npm run def
     - run: npm run dtslint
