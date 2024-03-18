@@ -1,8 +1,4 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-
+const { expect } = require('chai');
 const heal = require('../../lib/heal');
 const recorder = require('../../lib/recorder');
 const Step = require('../../lib/step');
@@ -56,5 +52,43 @@ describe('heal', () => {
     await heal.healStep(new Step(null, 'click'));
 
     expect(isHealed).to.be.true;
+  });
+
+  it('should match tests by grep', () => {
+    heal.addRecipe('reload', {
+      priority: 10,
+      grep: '@slow',
+      steps: ['step1'],
+      fn: () => {},
+    });
+
+    heal.contextName = 'TestSuite @slow';
+    expect(heal.hasCorrespondingRecipes({ name: 'step1' })).to.be.true;
+    heal.contextName = 'TestSuite @fast';
+    expect(heal.hasCorrespondingRecipes({ name: 'step1' })).not.to.be.true;
+  });
+
+  it('should contain info', async () => {
+    let isHealed = false;
+    let passedOpts = null;
+    heal.addRecipe('reload', {
+      priority: 10,
+      steps: ['click'],
+      fn: async (opts) => {
+        passedOpts = opts;
+        return () => {
+          isHealed = true;
+        };
+      },
+    });
+
+    await heal.healStep(new Step(null, 'click'), new Error('Ups'), { test: { title: 'test' } });
+
+    expect(isHealed).to.be.true;
+    expect(passedOpts).to.haveOwnProperty('test');
+    expect(passedOpts).to.haveOwnProperty('error');
+    expect(passedOpts).to.haveOwnProperty('step');
+    expect(passedOpts).to.haveOwnProperty('prevSteps');
+    expect(passedOpts.error.message).to.eql('Ups');
   });
 });
