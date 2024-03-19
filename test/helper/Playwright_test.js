@@ -1678,3 +1678,39 @@ describe('Playwright - HAR', () => {
     });
   });
 });
+
+describe('using data-testid attribute', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(`${__dirname}/../data/output`);
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('should find element by data-testid attribute', async () => {
+    await I.amOnPage('/');
+
+    const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' });
+    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0');
+    assert.equal(webElements.length, 1);
+  });
+});
