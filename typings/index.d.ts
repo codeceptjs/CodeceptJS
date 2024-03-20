@@ -442,8 +442,8 @@ declare namespace CodeceptJS {
     | { react: string }
     | { vue: string }
     | { shadow: string[] }
-    | { custom: string };
-
+    | { custom: string }
+    | { pw: string };
   interface CustomLocators {}
   interface OtherLocators { props?: object }
   type LocatorOrString =

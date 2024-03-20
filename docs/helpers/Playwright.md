@@ -80,6 +80,7 @@ Type: [object][6]
 -   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
 -   `highlightElement` **[boolean][26]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 -   `recordHar` **[object][6]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
+-   `testIdAttribute` **[string][9]?** locate elements based on the testIdAttribute. See more of [locate by test id][49].
 
 
 
@@ -2775,3 +2776,5 @@ Returns **void** automatically synchronized promise through #recorder
 [47]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
 [48]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
+
+[49]: https://playwright.dev/docs/locators#locate-by-test-id

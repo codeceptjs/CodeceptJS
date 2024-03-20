@@ -2,7 +2,7 @@
     <title>TestEd Beta 2.0</title>
 <body>
 
-<h1>Welcome to test app!</h1>
+<h1 data-testid="welcome">Welcome to test app!</h1>
 <h2>With&nbsp;special&nbsp;space chars</h1>
 
 <div class="notice" qa-id = "test"><?php if (isset($notice)) echo $notice; ?></div>
