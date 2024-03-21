@@ -811,6 +811,10 @@ Returns **void** automatically synchronized promise through #recorder
 This action supports [React locators](https://codecept.io/react#locators)
 
 
+### flushWebSocketMessages
+
+Resets all recorded WS messages.
+
 ### focus
 
 Calls [focus][8] on the matching element.
@@ -1235,6 +1239,12 @@ const webElements = await I.grabWebElements('#button');
 -   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
 
 Returns **[Promise][13]&lt;any>** WebElement of being used Web helper
+
+### grabWebSocketMessages
+
+Grab the recording WS messages
+
+Returns **[Array][15]&lt;any>** 
 
 ### handleDownloads
 
@@ -1877,6 +1887,17 @@ I.setPuppeteerRequestHeaders({
 
 -   `customHeaders` **[object][4]** headers to set
 
+### startRecordingWebSocketMessages
+
+Starts recording of websocket messages.
+This also resets recorded websocket messages.
+
+```js
+await I.startRecordingWebSocketMessages();
+```
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### stopMockingRoute
 
 Stops network mocking created by `mockRoute`.
@@ -1888,6 +1909,16 @@ I.stopMockingRoute(/(.png$)|(.jpg$)/);
 #### Parameters
 
 -   `url` **([string][6] | [RegExp][18])?** URL, regex or pattern for to match URL
+
+### stopRecordingWebSocketMessages
+
+Stops recording WS messages. Recorded WS messages is not flashed.
+
+```js
+await I.stopRecordingWebSocketMessages();
+```
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### switchTo
 
