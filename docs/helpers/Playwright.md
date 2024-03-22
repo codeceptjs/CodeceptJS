@@ -2217,6 +2217,8 @@ This also resets recorded websocket messages.
 await I.startRecordingWebSocketMessages();
 ```
 
+Returns **void** automatically synchronized promise through #recorder
+
 ### stopMockingRoute
 
 Stops network mocking created by `mockRoute`.
@@ -2248,6 +2250,8 @@ Stops recording WS messages. Recorded WS messages is not flashed.
 ```js
 await I.stopRecordingWebSocketMessages();
 ```
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### switchTo
 
