@@ -1,8 +1,8 @@
-let assert;
 let expect;
+let assert;
 import('chai').then(chai => {
-  assert = chai.assert;
   expect = chai.expect;
+  assert = chai.assert;
 });
 const path = require('path');
 
@@ -1609,6 +1609,125 @@ module.exports.tests = function () {
       await I.see('Textarea is focused', '#textareaMessage');
       await I.blur('#textarea');
       await I.see('Textarea not focused', '#textareaMessage');
+    });
+  });
+
+  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
+    beforeEach(function () {
+      if (isHelper('TestCafe') || process.env.isSelenium === 'true') this.skip();
+    });
+
+    it('should throw error when calling seeTraffic before recording traffics', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeTraffic", but "I.startRecordingTraffic" was never called before.');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing name', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should throw error when calling seeTraffic but missing url', async () => {
+      try {
+        I.amOnPage('https://codecept.io/');
+        await I.seeTraffic({ name: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.seeTraffic".');
+      }
+    });
+
+    it('should flush the network traffics', async () => {
+      await I.startRecordingTraffic();
+      await I.amOnPage('https://codecept.io/');
+      await I.flushNetworkTraffics();
+      const traffics = await I.grabRecordedNetworkTraffics();
+      expect(traffics.length).to.equal(0);
+    });
+
+    it('should see recording traffics', async () => {
+      I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics', async () => {
+      I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+    });
+
+    it('should not see recording traffics using regex url', async () => {
+      I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      await I.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing name', async () => {
+      I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "name" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should throw error when calling dontSeeTraffic but missing url', async () => {
+      I.startRecordingTraffic();
+      I.amOnPage('https://codecept.io/');
+      I.stopRecordingTraffic();
+      try {
+        await I.dontSeeTraffic({ name: 'traffics' });
+      } catch (e) {
+        expect(e.message).to.equal('Missing required key "url" in object given to "I.dontSeeTraffic".');
+      }
+    });
+
+    it('should check traffics with more advanced params', async () => {
+      await I.startRecordingTraffic();
+      await I.amOnPage('https://openaI.com/blog/chatgpt');
+      const traffics = await I.grabRecordedNetworkTraffics();
+
+      for (const traffic of traffics) {
+        if (traffic.url.includes('&width=')) {
+          // new URL object
+          const currentUrl = new URL(traffic.url);
+
+          // get access to URLSearchParams object
+          const searchParams = currentUrl.searchParams;
+
+          await I.seeTraffic({
+            name: 'sentry event',
+            url: currentUrl.origin + currentUrl.pathname,
+            parameters: searchParams,
+          });
+
+          break;
+        }
+      }
+    });
+
+    it.skip('should check traffics with more advanced post data', async () => {
+      await I.amOnPage('https://openaI.com/blog/chatgpt');
+      await I.startRecordingTraffic();
+      await I.seeTraffic({
+        name: 'event',
+        url: 'https://region1.google-analytics.com',
+        requestPostData: {
+          st: 2,
+        },
+      });
     });
   });
 
