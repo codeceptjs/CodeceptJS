@@ -11,8 +11,9 @@ xScenario('test ai features', ({ I }) => {
 });
 
 Scenario('Incorrect search for Codeceptjs', ({ I }) => {
-  I.fillField('.search', 'CodeceptJS');
+  I.fillField('.search-input', 'CodeceptJS');
   I.pressKey('Enter');
+  I.waitForElement('[data-testid=search-sub-header]', 10);
   I.see('Supercharged End 2 End Testing');
 });
 
