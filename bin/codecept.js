@@ -121,6 +121,11 @@ program.command('generate:helper [path]')
   .description('Generates a new helper')
   .action(errorHandler(require('../lib/command/generate').helper));
 
+program.command('generate:heal [path]')
+  .alias('gr')
+  .description('Generates basic heal recipes')
+  .action(errorHandler(require('../lib/command/generate').heal));
+
 program.command('run [test]')
   .description('Executes tests')
 

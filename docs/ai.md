@@ -5,7 +5,7 @@ title: Testing with AI 🪄
 
 # 🪄 Testing with AI
 
-**CodeceptJS is the first open-source test automation framework with AI** features to improve the testing experience. CodeceptJS uses OpenAI GPT to auto-heal failing tests, assist in writing tests, and more...
+**CodeceptJS is the first open-source test automation framework with AI** features to improve the testing experience. CodeceptJS uses AI provider like OpenAI or Anthropic to auto-heal failing tests, assist in writing tests, and more...
 
 Think of it as your testing co-pilot built into the testing framework
 
@@ -14,47 +14,138 @@ Think of it as your testing co-pilot built into the testing framework
 
 ## How AI Improves Automated Testing
 
-ChatGPT can write automated tests for you. What you need is just ask it "How to write CodeceptJS test" and it will generate the code that can be executed but not the actual code you need. ChatGPT misses the context, of your application. 
+LLMs like ChatGPT can technically write automated tests for you. However, ChatGPT misses the context of your application so it will guess elements on page, instead of writing the code that works.
 
-CodeceptJS uses OpenAI API to send the prompt and share the HTML context of a page. So, it can ask: how to write a test for **this** page. GPT model knows how to write CodeceptJS code, how to build good-looking semantic locators and how to analyze HTML to match them. Even more, GPT suggestions can be tested in real-time in a browser, making a feedback loop.
+CodeceptJS can share the testing context with AI provider when asked questions about a test.
+
+So, instead of asking "write me a test" it can ask "write a test for **this** page". GPT knows how to write CodeceptJS code, how to build good-looking semantic locators and how to analyze HTML to match them. Even more, GPT suggestions can be tested in real-time in a browser, making a feedback loop.
 
 CodeceptJS AI can do the following:
 
 * 🏋️‍♀️ **assist writing tests** in `pause()` or interactive shell mode
 * 🚑 **self-heal failing tests** (can be used on CI)
-* 💬 send arbitrary prompts to GPT from any tested page attaching its HTML contents
+* 💬 send arbitrary prompts to AI provider from any tested page attaching its HTML contents
 
 ![](/img/fill_form.gif)
 
 ### How it works
 
-As we can't send a browser window with ChatGPT we are not be able to fully share the context. As only text information is accepted, we can send HTML of the currently tested page. GPT doesn't know what elements are hidden, or what elements are visible. It can operate only on the HTML provided.
+As we can't send a browser window with ChatGPT we are not be able to fully share the context. But we can chare HTML of the current page, which is quite enough to analyze and identify if a page contains an element which can be used in a test.
 
-GPT models have limits on information passed, and HTML pages can be huge. And some information may be irrelevant for testing. For instance, if you test a reading application, you won't probably need text contents of a book inside your HTML, as they won't be used in locators. That's why CodeceptJS send HTML with **all non-interactive HTML elements removed**. So, only links, buttons, fields, and all elements that are set as a link, button, etc will be used by GPT for analysis. In case you have clickable `<div>` but with no `role="button"` it will be ignored. Also, we minify HTML before sending.
+AI providers have limits on input tokens but HTML pages can be huge. However, some information from a web page may be irrelevant for testing. For instance, if you test a blog, you won't need text contents of a post, as it can't be used in locators. That's why CodeceptJS sends HTML with **all non-interactive HTML elements removed**. So, only links, buttons, fields, etc will be sent to AI as a context. In case you have clickable `<div>` but with no `role="button"` it will be ignored. Also, we minify HTML before sending.
 
-Even though, the HTML is still quite big and may exceed the token limit. So we recommend using **gpt-3.5-turbo-16k** model, as it accepts 16K tokens (approx. 50K of HTML text), which should be enough for most web pages. It is possible to strictly limit the size of HTML to not exceed GPT tokens limit.
+Even though, the HTML is still quite big and may exceed the token limit. So we recommend using models with at least 16K input tokens, (approx. 50K of HTML text), which should be enough for most web pages. It is possible to strictly limit the size of HTML to not exceed tokens limit.
 
-> ❗AI features require sending HTML contents to OpenAI. If you use it in enterprise, ensure that your company requirements match [OpenAI complience](https://openai.com/security). If you work on public web applications this should be ok, as HTML code is genrally available to all web application users.
+> ❗AI features require sending HTML contents to AI provider. Choosing one may depend on the descurity policy of your company. Ask your security department which AI providers you can use. 
 
 
-### Getting Started
 
-[Install CodeceptJS 3.5](/installation):
+### Set up AI Provider
+
+To enable AI features in CodeceptJS you should pick an AI provider and add `ai` section to `codecept.conf` file. This section should contain `request` function which will take a prompt from CodeceptJS, send it to AI provider and return a result.
+
+```js
+ai: {
+  request: async (messages) => {
+    // implement OpenAI or any other provider like this
+    const ai = require('my-ai-provider')
+    return ai.send(messages);
+  }
+}
+```
+
+In `request` function `messages` is an array of prompt messages in format
+
+```js
+[{ role: 'user', content: 'prompt text'}]
+```
+
+Which is natively supported by OpenAI, Anthropic, and others. You can adjust messages to expected format before sending a request. The expected response from AI provider is a text in markdown format with code samples, which can be interpreted by CodeceptJS.
+
+Once AI provider is configured run tests with `--ai` flag to enable AI features
 
 ```
-npx create-codeceptjs .
-```
-[Obtain API token](https://platform.openai.com/account/api-keys) from OpenAI. Please check out [their pricing](https://openai.com/pricing) first, as unlike ChatGPT using OpenAI API requires a paid account.
-
-Add `OPENAI_API_KEY` environment variable with a key when running codeceptjs:
-
-```
-OPENAI_API_KEY=sk-******** npx codeceptjs run
+npx codeceptjs run --ai
 ```
 
-This will enable AI features in CodeceptJS.
+Below we list sample configuration for popular AI providers
 
-> When running on CI set `OPENAI_API_KEY` as a secured environment variable
+#### OpenAI GPT
+
+Prerequisite:
+
+* Install `openai` package
+* obtain `OPENAI_API_KEY` from OpenAI
+* set `OPENAI_API_KEY` as environment variable
+
+Sample OpenAI configuration:
+
+```js
+ai: {
+  request: async (messages) => {
+    const OpenAI = require('openai');
+    const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] })
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo-0125',
+      messages,
+    });
+    // return only text content
+    return response?.data?.choices[0]?.message?.content;
+  }
+}
+```
+
+#### Anthropic Claude
+
+Prerequisite:
+
+* Install `@anthropic-ai/sdk` package
+* obtain `CLAUDE_API_KEY` from Anthropic
+* set `CLAUDE_API_KEY` as environment variable
+
+```js
+ai: {
+  request: async(messages) => {
+    const Anthropic = require('@anthropic-ai/sdk');
+
+    const anthropic = new Anthropic({
+      apiKey: process.env.CLAUDE_API_KEY,
+    });
+
+    const resp = await anthropic.messages.create({
+      model: 'claude-2.1',
+      max_tokens: 1024,
+      messages
+    });      
+    return resp.content.map((c) => c.text).join('\n\n');
+  }
+}
+```
+
+#### Azure OpenAI
+
+Prerequisite:
+
+* Install `@azure/openai` package
+* obtain `Azure API key`, `resource name` and `deployment ID`
+
+```js
+ai: {
+  request: async(messages) => {
+    const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
+
+    const client = new OpenAIClient(
+      "https://<resource name>.openai.azure.com/", 
+      new AzureKeyCredential("<Azure API key>")
+    );
+    const { choices } = await client.getCompletions("<deployment ID>", messages);
+
+    return choices[0]?.message?.content;
+  }
+}
+```
+
+
 
 ### Writing Tests with AI Copilot
 
@@ -77,10 +168,10 @@ Scenario.only('test ai features', ({ I }) => {
 });
 ```
 
-Now run the test in debug mode:
+Now run the test in debug mode with AI enabled:
 
 ```
-OPENAI_API_KEY=sk-******** npx codeceptjs run --debug
+npx codeceptjs run --debug --ai
 ```
 
 When pause mode started you can ask GPT to fill in the fields on this page. Use natural language to describe your request, and provide enough details that AI could operate with it. It is important to include at least a space char in your input, otherwise, CodeceptJS will consider the input to be JavaScript code.
@@ -104,15 +195,19 @@ Please keep in mind that GPT can't react to page changes and operates with stati
 
 ### Self-Healing Tests
 
-In large test suites, the cost of maintaining tests goes exponentially. That's why any effort that can improve the stability of tests pays itself. In CodeceptJS 3.5 we introduced a new [heal plugin](/plugins#heal) that will use AI to automatically fix a failing test.
+In large test suites, the cost of maintaining tests goes exponentially. That's why any effort that can improve the stability of tests pays itself. That's why CodeceptJS has concept of [heal recipes](./heal), functions that can be executed on a test failure. Those functions can try to revive the test and continue execution. When combined with AI, heal recipe can ask AI provider how to fix the test. It will provide error message, step being executed and HTML context of a page. Based on this information AI can suggest the code to be executed to fix the failing test.
 
-Heal plugin can solve exactly one problem: if a locator of an element has changed, and an action can't be performed, **it matches a new locator, tries a command again, and continues executing a test**. For instance, if the "Sign in" button was renamed to "Login" or changed its class, it will detect a new locator of the button and will retry execution.
+
+AI healing can solve exactly one problem: if a locator of an element has changed, and an action can't be performed, **it matches a new locator, tries a command again, and continues executing a test**. For instance, if the "Sign in" button was renamed to "Login" or changed its class, it will detect a new locator of the button and will retry execution.
+
+> You can define your own [heal recipes](./heal) that won't use AI to revive failing tests.
 
 Heal actions **work only on actions like `click`, `fillField`**, etc, and won't work on assertions, waiters, grabbers, etc. Assertions can't be guessed by AI, the same way as grabbers, as this may lead to unpredictable results.
 
 If Heal plugin successfully fixes the step, it will print a suggested change at the end of execution. Take it as actionable advice and use it to update the codebase. Heal plugin is supposed to be used on CI, and works automatically without human assistance.
 
-To start, enable `heal` plugin in `codecept.conf.js` or `codecept.conf.ts`:
+
+To start, make sure [AI provider is connected](#set-up-ai-provider), and [heal recipes were created](./heal#how-to-start-healing) and included into `codecept.conf.js` or `codecept.conf.ts` config file. Then enable `heal` plugin:
 
 ```js
 plugins: {
@@ -122,20 +217,23 @@ plugins: {
 }
 ```
 
-and run tests in AI mode with `OPENAI_API_KEY` provided:
+If you tests in AI mode and test fails, a request to AI provider will be sent
 
 ```
-OPENAI_API_KEY=sk-******** npx codeceptjs run
+npx codeceptjs run --ai
 ```
 
 ![](/img/heal.png)
+
+When execution finishes, you will receive information on token usage and code suggestions proposed by AI.
+By evaluating this information you will be able to check how effective AI can be for your case.
 
 
 ### Arbitrary GPT Prompts
 
 What if you want to take ChatGPT on the journey of test automation and ask it questions while browsing pages?
 
-This is possible with the new `OpenAI` helper. Enable it in your config and it will automatically attach to Playwright, WebDriver, or another web helper you use. It includes the following methods:
+This is possible with the new `AI` helper. Enable it in your config and it will automatically attach to Playwright, WebDriver, or another web helper you use. It includes the following methods:
 
 * `askGptOnPage` - sends GPT prompt attaching the HTML of the page. Large pages will be split into chunks, according to `chunkSize` config. You will receive responses for all chunks.
 * `askGptOnPageFragment` - sends GPT prompt attaching the HTML of the specific element. This method is recommended over `askGptOnPage` as you can reduce the amount of data to be processed.
@@ -157,23 +255,42 @@ const pageDoc = await I.askGptOnPageFragment('Act as technical writer, describe 
 
 As of now, those use cases do not apply to test automation but maybe you can apply them to your testing setup. 
 
-## Configuration
+## Advanced Configuration
 
-AI features can be configured inside `codecept.conf` file under `ai` section:
+GPT prompts and HTML compression can also be configured inside `ai` section of `codecept.conf` file:
 
 ```js
 ai: {
-  model: 'gpt-3.5-turbo-16k',
-  temperature: 0.1,
-  html: // {}
+  // define how requests to AI are sent 
+  request: (messages) => {
+    // ...
+  }
+  // redefine prompts 
+  prompts: {
+    // {}
+  },
+  // how to process HTML content
+  html: {
+    // {}
+  }
+  // limit the number of tokens to be
+  // used during one session
+  maxTokens: 100000
 }
 ```
 
-Available options are:
+Default prompts for healing steps or writing steps can be re-declared. Use function that accepts HTML as the first parameter and additional information as second and create a prompt from that information. Prompt should be an array of messages with `role` and `content` data set.
 
-* `model` - [OpenAI model](https://platform.openai.com/docs/models), `gpt-3.5-turbo-16k` is recommended. You may switch to another GPT model, however, consider the speed of processing and size of the input. Models with less than 16K tokens won't be able to process complete HTML even reduced to interactive elements.
-* `temperature` - [temperature](https://platform.openai.com/docs/api-reference/chat/create#chat/create-temperature) is a measure of randomness. Use the lowest value possible for test automation purposes.
-* `html` - configures how HTML is processed before sending it to GPT. This section is highly important to tune to adapt to your application. For instance, the default strategy may remove some important elements, or contrary keep some elements that have no practical usage in test automation.
+```js
+ai: {
+  prompts: {
+    writeStep: (html, input) => [{ role: 'user', content: 'As a test engineer...' }]
+    healStep: (html, { step, error, prevSteps }) => [{ role: 'user', content: 'As a test engineer...' }]
+  }
+}
+```
+
+HTML is processed before sending it to GPT to reduce the number of tokens used. You may need to adjust default settings to work with your application. For instance, the default strategy may remove some important elements, or contrary keep HTML elements that have no use for test automation.
 
 Here is the default config:
 
@@ -241,8 +358,8 @@ For instance, if you use `data-qa` attributes to specify locators and you want t
 
 ## Debugging
 
-To debug AI features run tests with `DEBUG="codeceptjs:ai"` flag. This will print all prompts and responses from OpenAI
+To debug AI features run tests with `DEBUG="codeceptjs:ai"` flag. This will print all prompts and responses from AI provider
 
 ```
-DEBUG="codeceptjs:ai" OPENAI_API_KEY=sk-******** npx codeceptjs run
+DEBUG="codeceptjs:ai" npx codeceptjs run --ai
 ```

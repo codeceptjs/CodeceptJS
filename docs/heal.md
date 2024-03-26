@@ -41,23 +41,146 @@ There are some ideas where healing can be useful to you:
 
 Unlike retries heal recipes has following benefits:
 
-* Heal recipes are declarative, they are not added directly into into the test code. This keeps test clean and scenario-focused,
-* Retry can only re-run failed step(s), but heal recipe can perform arbitrary actions
-* Heal recipe can react to any step of any test. So if you catch a common error and you can heal it, you won't need to guess where it can be thrown.
+* Heal recipes are **declarative**, they are not added directly into into the test code. This keeps test clean and scenario-focused,
+* Retry can only re-run failed step(s), but heal recipe can **perform wide set of actions**
+* Heal recipe **can react to any step of any test**. So if you catch a common error and you can heal it, you won't need to guess where it can be thrown.
 
+## How to Start Healing
 
+To enable healing, you need to define healing recipes and enable heal plugin.
 
+Create basic healing recipes using this command:
 
+```
+npx codeceptjs geenrate:heal
+```
 
+or
 
+```
+npx codeceptjs gr
+```
 
+this will generate `recipes.js` (or `recipes.ts`) in the root directory. Provided default recipe include [AI healing](#ai-healing) and `clickAndType` recipe that replaces `fillField` with `click`+`type`. Use them as examples to write your own heal recipes that will fit for application you are testing.
 
+Require `recipes` file and add `heal` plugin to `codecept.conf` file:
 
+```js
 
+require('./heal')
 
-## Create Heal
+exports.config = {
+  // ...
+  plugins: {
+    heal: {
+      enabled: true
+    }
+  }
+}
+```
 
-## Heal Plugin
+> Please note that, healing has no sense while developing tests, so it won't work in `--debug` mode. 
+
+## Writing Recipes
+
+Custom heal recipes can be added by running `heal.addRecipe()` function. By default it should be added to `recipes.js` (or `recipes.ts`) file. 
+
+Let's see what recipe consist of:
+
+```js
+heal.addRecipe('reloadPageOnUserAccount', {
+  // recipe priority
+  // which recipe should be tried first 
+  priority: 10,
+
+  // an array of steps which may cause the error
+  // after which a recipe should be activate
+  steps: [
+    'click',
+  ],
+
+  // if you need some additional information like URL of a page,
+  // or its HTML, you can add this context to healing function by 
+  // defining `prepare` list of variable
+  prepare: {
+    url: ({ I }) => I.grabCurrentUrl(),
+    html: ({ I }) => I.grabHTMLFrom('body'),
+    // don't add variables that you won't use inside the recipe
+  },
+
+  // probably we want to execute recipes only on some tests
+  // so you can set a string or regex which will check if a test title matches the name
+  // in this case we execute recipe only on tests that have "@flaky" in their name
+  grep: '@flaky',
+
+  // function to launch to heal the 
+  fn: async ({ 
+    // standard context variables
+    step, test, error, prevSteps,
+
+    // variables coming from prepare function
+    html, url,
+    
+    }) => {
+    const stepArgs = step.args;
+
+    // at this point we can decide, should we provide a healing recipe or not
+    // for instance, if URL is not the one we can heal at, we should not provide any recipes
+    if (!url.includes('/user/acccount')) return;
+  
+    // otherwise we return a function that will be executed
+    return ({ I }) => {
+      // this is a very basic example action
+      // probably you should do something more sophisticated
+      // to heal the test
+      I.reloadPage();
+      I.wait(1); 
+    };
+  },
+});
+```
+
+Let's briefly sum up the properties of a recipe:
+
+* `grep` - selects tests by their name to apply heal to
+* `steps` - defines on which steps a recipe should react
+* `priority` - sets the order of recipes being applied
+* `prepare` - declare variables from a context, which can be used for healing
+* `fn` - a function to be applied for healing. It takes all context params: `test`, `step`, `error`, `prevSteps` and returns return either a function or a markdown text with recipes (used by AI healers). If no recipes match the context should not return anything;
+
 
 ## AI Healing
 
+AI can be used to heal failed tests. Large Language Models can analyze HTML of a failed test and provide a suggestion what actions should be performed instead. This can be helpful when running tests on CI as AI can make basic decisions to stabilize failing tests. 
+
+> Use **OpenAI, Azure OpenAI, Claude**, or any of other LLM that can take a prompt, analyze request and provide valid JS code which can be executed by CodeceptJS as a healing suggestion.
+
+AI healing recipe is created within `recipes.js` file:
+
+```js
+heal.addRecipe('ai', {
+  priority: 10,
+  prepare: {
+    html: ({ I }) => I.grabHTMLFrom('body'),
+  },
+  steps: [
+    'click',
+    'fillField',
+    'appendField',
+    'selectOption',
+    'attachFile',
+    'checkOption',
+    'uncheckOption',
+    'doubleClick',
+  ],
+  fn: async (args) => {
+    return ai.healFailedStep(args);
+  },
+});
+```
+
+As you usee, it will be activated on failed steps and will use HTML of a page as additional information. The prompt, error, and the HTML will be sent to AI provider you configured. 
+
+Learn more how you can [configure AI provider](./ai).
+
+To activate the AI healer don't forget to run tests with `--ai` flag.
