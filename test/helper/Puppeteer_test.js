@@ -193,15 +193,14 @@ describe('Puppeteer', function () {
   });
 
   describe('#waitNumberOfVisibleElements', () => {
-    it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
-      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
-      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
-      .then(() => {
-        throw Error('It should never get this far');
-      })
-      .catch((e) => {
+    it('should wait for a specified number of elements on the page', async () => {
+      try {
+        await I.amOnPage('/info');
+        await I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3);
+      } catch (e) {
         e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
-      }));
+      }
+    });
 
     it('should wait for a specified number of elements on the page using a css selector', () => I.amOnPage('/info')
       .then(() => I.waitNumberOfVisibleElements('#grab-multiple > a', 3))
@@ -217,6 +216,11 @@ describe('Puppeteer', function () {
       .then(() => I.waitNumberOfVisibleElements('.title', 2, 3))
       .then(() => I.see('Hello'))
       .then(() => I.see('World')));
+
+    it('should wait for 0 number of visible elements', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.waitNumberOfVisibleElements('#step_1', 0);
+    });
   });
 
   describe('#moveCursorTo', () => {

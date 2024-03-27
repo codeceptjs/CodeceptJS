@@ -532,6 +532,11 @@ describe('WebDriver - Devtools Protocol', function () {
         .then(() => wd.see('Hello'))
         .then(() => wd.see('World'));
     });
+
+    it('should wait for 0 number of visible elements', async () => {
+      await wd.amOnPage('/form/wait_invisible');
+      await wd.waitNumberOfVisibleElements('#step_1', 0);
+    });
   });
 
   describe('#waitForVisible', () => {
