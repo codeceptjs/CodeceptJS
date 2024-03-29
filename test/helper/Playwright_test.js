@@ -249,6 +249,11 @@ describe('Playwright', function () {
       .then(() => I.waitNumberOfVisibleElements('.title', 2, 3))
       .then(() => I.see('Hello'))
       .then(() => I.see('World')));
+
+    it('should wait for 0 number of visible elements', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.waitNumberOfVisibleElements('#step_1', 0);
+    });
   });
 
   describe('#moveCursorTo', () => {
