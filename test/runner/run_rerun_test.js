@@ -18,7 +18,7 @@ describe('run-rerun command', () => {
 
   it('should display count of attempts', (done) => {
     exec(`${codecept_run_config('codecept.conf.js')} --debug`, (err, stdout) => {
-      console.log(err, stdout)
+      console.log(err, stdout);
       const runs = stdout.split('Run Rerun - Command --');
 
       // check first run

@@ -21,7 +21,7 @@ describe('CodeceptJS commentStep plugin', function () {
   it('should print nested steps when global var comments used', done => {
     exec(`${config_run_config('codecept.conf.js', 'global var')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
-      console.log(stdout)
+      console.log(stdout);
       expect(lines).toEqual(
         expect.arrayContaining([
           expect.stringContaining('Prepare user base:'),

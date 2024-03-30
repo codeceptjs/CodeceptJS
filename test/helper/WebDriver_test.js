@@ -15,6 +15,7 @@ const siteUrl = TestHelper.siteUrl();
 let wd;
 
 console.log('Connecting to Selenium Server', TestHelper.seleniumAddress());
+process.env.isSelenium = 'true';
 
 describe('WebDriver', function () {
   this.retries(1);

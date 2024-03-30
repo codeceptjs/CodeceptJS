@@ -1,7 +1,7 @@
-import path, {dirname} from 'path';
+import path, { dirname } from 'path';
 import { exec } from 'node:child_process';
 import { expect } from 'chai';
-import {fileURLToPath} from "url";
+import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const runner = path.join(__dirname, '../../bin/codecept.js');

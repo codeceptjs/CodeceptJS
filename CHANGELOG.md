@@ -1,3 +1,64 @@
+## 3.5.15
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat: improve code coverage plugin (#4252) - by @KobeNguyenT
+  We revamp the coverage plugin to make it easier to use
+
+Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
+
+![]((https://github.com/codeceptjs/CodeceptJS/assets/7845001/3b8b81a3-7c85-470c-992d-ecdc7d5b4a1e))
+
+Open `index.html` in your browser to view the full interactive coverage report.
+
+![](https://github.com/codeceptjs/CodeceptJS/assets/7845001/f45607ed-dbe8-4ed4-9b21-01ce25288d22)
+
+![](https://github.com/codeceptjs/CodeceptJS/assets/7845001/c821ce45-6590-4ace-b7ae-2cafb3a4e532)
+
+🐛 *Bug Fixes*
+* fix: bump puppeteer to v22.x (#4249) - by @KobeNguyenT
+* fix: improve dry-run command (#4225) - by @KobeNguyenT
+
+dry-run command now supports test level grep.
+
+```
+Tests from /Users/t/Desktop/projects/codeceptjs-rest-demo:@jaja
+
+GET tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/GET_test.ts -- 4 tests
+  ☐ Verify getting a single user @jaja
+  ☐ Verify getting list of users @jaja
+PUT tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/PUT_test.ts -- 4 tests
+  ☐ Verify creating new user @Jaja
+
+
+  Total: 2 suites | 3 tests  
+
+--- DRY MODE: No tests were executed ---
+➜  codeceptjs-rest-demo git:(master) ✗ npx codeceptjs dry-run             
+Tests from /Users/t/Desktop/projects/codeceptjs-rest-demo:
+
+DELETE tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/DELETE_test.ts -- 4 tests
+  ☐ Verify deleting a user
+GET tests -- /Users/t/Desktop/projects/codeceptjs-rest-demo/src/GET_test.ts -- 4 tests
+  ☐ Verify a successful call
+  ☐ Verify a not found call
+  ☐ Verify getting a single user @jaja
+  ☐ Verify getting list of users @jaja
+POST tests -- /Users/tDesktop/projects/codeceptjs-rest-demo/src/POST_test.ts -- 4 tests
+  ☐ Verify creating new user
+  ☐ Verify uploading a file
+PUT tests -- /Users/tDesktop/projects/codeceptjs-rest-demo/src/PUT_test.ts -- 4 tests
+  ☐ Verify creating new user @Jaja
+
+
+  Total: 4 suites | 8 tests  
+
+--- DRY MODE: No tests were executed ---
+```
+
+* Several internal fixes and improvements for github workflows
+
 ## 3.5.14
 
 ❤️ Thanks all to those who contributed to make this release! ❤️

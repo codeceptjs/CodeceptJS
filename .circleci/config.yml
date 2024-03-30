@@ -5,7 +5,7 @@ orbs:
 
 defaults: &defaults
   machine:
-    image: ubuntu-2204:2023.07.2
+    image: default
     docker_layer_caching: false
   steps:
     - checkout
@@ -19,10 +19,6 @@ defaults: &defaults
         when: always
     - run:
         command: docker-compose run --rm test-rest
-        working_directory: test
-        when: always
-    - run:
-        command: docker-compose run --rm test-graphql
         working_directory: test
         when: always
     - run:

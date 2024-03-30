@@ -1,0 +1,48 @@
+name: Acceptance Tests using docker compose
+
+on:
+  push:
+    branches:
+      - '3.x'
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Run acceptance tests using docker-compose
+      - name: Run Puppeteer Acceptance Tests
+        run: docker-compose run --rm test-acceptance.puppeteer
+        working-directory: test
+
+      # Run rest tests using docker-compose
+      - name: Run REST Tests
+        run: docker-compose run --rm test-rest
+        working-directory: test
+
+      # Run WebDriverIO acceptance tests using docker-compose
+      - name: Run WebDriverIO Acceptance Tests
+        run: docker-compose run --rm test-acceptance.webdriverio
+        working-directory: test
+
+      # Run faker BDD tests using docker-compose
+      - name: Run Faker BDD Tests
+        run: docker-compose run --rm test-bdd.faker
+        working-directory: test

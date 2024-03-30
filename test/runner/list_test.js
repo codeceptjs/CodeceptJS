@@ -11,7 +11,7 @@ const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 describe('list commands', () => {
   it('list should print actions', (done) => {
     exec(`${runner} list ${codecept_dir}`, (err, stdout) => {
-      console.log(stdout, err)
+      console.log(stdout, err);
       expect(stdout).to.include('FileSystem'); // helper name
       expect(stdout).to.include('FileSystem I.amInPath(openPath)'); // action name
       expect(stdout).to.include('FileSystem I.seeFile(name)');

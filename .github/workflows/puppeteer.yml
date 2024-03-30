@@ -41,6 +41,6 @@ jobs:
     - uses: browser-actions/setup-chrome@v1
     - run: chrome --version
     - name: run tests
-      run:  "./bin/codecept.js run -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
+      run:  "./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
     - name: run unit tests
       run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js

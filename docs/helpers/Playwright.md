@@ -80,6 +80,7 @@ Type: [object][6]
 -   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
 -   `highlightElement` **[boolean][26]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 -   `recordHar` **[object][6]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
+-   `testIdAttribute` **[string][9]?** locate elements based on the testIdAttribute. See more of [locate by test id][49].
 
 
 
@@ -1505,7 +1506,7 @@ This method allows intercepting and mocking requests & responses. [Learn more ab
 #### Parameters
 
 -   `url` **([string][9] | [RegExp][11])?** URL, regex or pattern for to match URL
--   `handler` **[function][21]?** a function to process reques
+-   `handler` **[function][21]?** a function to process request
 
 ### mockTraffic
 
@@ -2216,6 +2217,8 @@ This also resets recorded websocket messages.
 await I.startRecordingWebSocketMessages();
 ```
 
+Returns **void** automatically synchronized promise through #recorder
+
 ### stopMockingRoute
 
 Stops network mocking created by `mockRoute`.
@@ -2230,7 +2233,7 @@ If no handler is passed, all mock requests for the rote are disabled.
 #### Parameters
 
 -   `url` **([string][9] | [RegExp][11])?** URL, regex or pattern for to match URL
--   `handler` **[function][21]?** a function to process reques
+-   `handler` **[function][21]?** a function to process request
 
 ### stopRecordingTraffic
 
@@ -2247,6 +2250,8 @@ Stops recording WS messages. Recorded WS messages is not flashed.
 ```js
 await I.stopRecordingWebSocketMessages();
 ```
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### switchTo
 
@@ -2775,3 +2780,5 @@ Returns **void** automatically synchronized promise through #recorder
 [47]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
 [48]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
+
+[49]: https://playwright.dev/docs/locators#locate-by-test-id

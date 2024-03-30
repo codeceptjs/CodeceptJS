@@ -5,7 +5,6 @@ import TestHelper from '../support/TestHelper';
 import Puppeteer from '../../lib/helper/Puppeteer';
 import AssertionFailedError from '../../lib/assert/error.js';
 import webApiTests from './webapi';
-import FileSystem from '../../lib/helper/FileSystem.js';
 import Secret from '../../lib/secret.js';
 import { deleteDir } from '../../lib/utils.js';
 
@@ -15,6 +14,7 @@ import('chai').then(chai => {
   expect = chai.expect;
   assert = chai.assert;
 });
+
 global.codeceptjs = require('../../lib');
 
 let I;
@@ -192,15 +192,14 @@ describe('Puppeteer', function () {
   });
 
   describe('#waitNumberOfVisibleElements', () => {
-    it('should wait for a specified number of elements on the page', () => I.amOnPage('/info')
-      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
-      .then(() => I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
-      .then(() => {
-        throw Error('It should never get this far');
-      })
-      .catch((e) => {
+    it('should wait for a specified number of elements on the page', async () => {
+      try {
+        await I.amOnPage('/info');
+        await I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3);
+      } catch (e) {
         e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
-      }));
+      }
+    });
 
     it('should wait for a specified number of elements on the page using a css selector', () => I.amOnPage('/info')
       .then(() => I.waitNumberOfVisibleElements('#grab-multiple > a', 3))
@@ -216,6 +215,11 @@ describe('Puppeteer', function () {
       .then(() => I.waitNumberOfVisibleElements('.title', 2, 3))
       .then(() => I.see('Hello'))
       .then(() => I.see('World')));
+
+    it('should wait for 0 number of visible elements', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.waitNumberOfVisibleElements('#step_1', 0);
+    });
   });
 
   describe('#moveCursorTo', () => {
@@ -950,6 +954,26 @@ describe('Puppeteer', function () {
       assert.equal('TestEd Beta 2.0', title);
     });
   });
+
+  describe('#mockRoute, #stopMockingRoute', () => {
+    it('should mock a route', async () => {
+      await I.amOnPage('/form/fetch_call');
+      await I.mockRoute('https://reqres.in/api/comments/1', request => {
+        request.respond({
+          status: 200,
+          headers: { 'Access-Control-Allow-Origin': '*' },
+          contentType: 'application/json',
+          body: '{"name": "this was mocked" }',
+        });
+      });
+      await I.click('GET COMMENTS');
+      await I.see('this was mocked');
+      await I.stopMockingRoute('https://reqres.in/api/comments/1');
+      await I.click('GET COMMENTS');
+      await I.see('data');
+      await I.dontSee('this was mocked');
+    });
+  });
 });
 
 let remoteBrowser;
@@ -1095,7 +1119,7 @@ describe('Puppeteer - Trace', () => {
       await I.amOnPage('/form/focus_blur_elements');
 
       const webElements = await I.grabWebElements('#button');
-      assert.include(webElements[0].constructor.name, 'CDPElementHandle');
+      assert.include(webElements[0].constructor.name, 'CdpElementHandle');
       assert.isAbove(webElements.length, 0);
     });
   });

@@ -246,6 +246,11 @@ describe('Playwright', function () {
       .then(() => I.waitNumberOfVisibleElements('.title', 2, 3))
       .then(() => I.see('Hello'))
       .then(() => I.see('World')));
+
+    it('should wait for 0 number of visible elements', async () => {
+      await I.amOnPage('/form/wait_invisible');
+      await I.waitNumberOfVisibleElements('#step_1', 0);
+    });
   });
 
   describe('#moveCursorTo', () => {
@@ -895,220 +900,6 @@ describe('Playwright', function () {
     });
   });
 
-  describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
-    it('should throw error when calling seeTraffic before recording traffics', async () => {
-      try {
-        I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-      } catch (e) {
-        expect(e.message).to.equal('Failure in test automation. You use "I.seeTraffic", but "I.startRecordingTraffic" was never called before.');
-      }
-    });
-
-    it('should throw error when calling seeTraffic but missing name', async () => {
-      try {
-        I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-      } catch (e) {
-        expect(e.message).to.equal('Missing required key "name" in object given to "I.seeTraffic".');
-      }
-    });
-
-    it('should throw error when calling seeTraffic but missing url', async () => {
-      try {
-        I.amOnPage('https://codecept.io/');
-        await I.seeTraffic({ name: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-      } catch (e) {
-        expect(e.message).to.equal('Missing required key "url" in object given to "I.seeTraffic".');
-      }
-    });
-
-    it('should flush the network traffics', async () => {
-      I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      I.flushNetworkTraffics();
-      const traffics = await I.grabRecordedNetworkTraffics();
-      expect(traffics.length).to.equal(0);
-    });
-
-    it('should see recording traffics', async () => {
-      I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-    });
-
-    it('should not see recording traffics', async () => {
-      I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      I.stopRecordingTraffic();
-      await I.dontSeeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-    });
-
-    it('should not see recording traffics using regex url', async () => {
-      I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      I.stopRecordingTraffic();
-      await I.dontSeeTraffic({ name: 'traffics', url: /BC_LogoScreen_C.jpg/ });
-    });
-
-    it('should throw error when calling dontSeeTraffic but missing name', async () => {
-      I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      I.stopRecordingTraffic();
-      try {
-        await I.dontSeeTraffic({ url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
-      } catch (e) {
-        expect(e.message).to.equal('Missing required key "name" in object given to "I.dontSeeTraffic".');
-      }
-    });
-
-    it('should throw error when calling dontSeeTraffic but missing url', async () => {
-      I.startRecordingTraffic();
-      I.amOnPage('https://codecept.io/');
-      I.stopRecordingTraffic();
-      try {
-        await I.dontSeeTraffic({ name: 'traffics' });
-      } catch (e) {
-        expect(e.message).to.equal('Missing required key "url" in object given to "I.dontSeeTraffic".');
-      }
-    });
-
-    it('should mock traffics', async () => {
-      await I.amOnPage('/form/fetch_call');
-      await I.mockTraffic('https://reqres.in/api/comments/1', '{"name": "this was mocked" }');
-      await I.startRecordingTraffic();
-      await I.click('GET COMMENTS');
-      await I.see('this was mocked');
-
-      await I.mockTraffic('https://reqres.in/api/comments/1', '{"name": "this was another mocked" }');
-      await I.click('GET COMMENTS');
-      await I.see('this was another mocked');
-
-      const traffics = await I.grabRecordedNetworkTraffics();
-      await I.grabRecordedNetworkTraffics();
-      expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
-      expect(traffics[0].response.status).to.equal(200);
-      expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
-
-      expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
-      expect(traffics[1].response.status).to.equal(200);
-      expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
-    });
-
-    it('should block traffics using a list of urls', async () => {
-      I.blockTraffic(['https://reqres.in/api/*', 'https://reqres.in/api/comments/*']);
-      I.amOnPage('/form/fetch_call');
-      I.startRecordingTraffic();
-      I.click('GET COMMENTS');
-      I.see('Can not load data!');
-    });
-
-    it('should block traffics of a given url', async () => {
-      I.blockTraffic('https://reqres.in/api/comments/*');
-      I.amOnPage('/form/fetch_call');
-      I.startRecordingTraffic();
-      I.click('GET COMMENTS');
-      I.see('Can not load data!');
-    });
-
-    it('should check traffics with more advanced params', async () => {
-      await I.startRecordingTraffic();
-      await I.amOnPage('https://openai.com/blog/chatgpt');
-      const traffics = await I.grabRecordedNetworkTraffics();
-
-      for (const traffic of traffics) {
-        if (traffic.url.includes('&width=')) {
-          // new URL object
-          const currentUrl = new URL(traffic.url);
-
-          // get access to URLSearchParams object
-          const searchParams = currentUrl.searchParams;
-
-          await I.seeTraffic({
-            name: 'sentry event',
-            url: currentUrl.origin + currentUrl.pathname,
-            parameters: searchParams,
-          });
-
-          break;
-        }
-      }
-    });
-
-    it('should check traffics with more advanced post data', async () => {
-      I.amOnPage('https://openai.com/blog/chatgpt');
-      I.startRecordingTraffic();
-      await I.seeTraffic({
-        name: 'event',
-        url: 'https://cloudflareinsights.com/cdn-cgi/rum',
-        requestPostData: {
-          st: 2,
-        },
-      });
-    });
-
-    it('should show error when advanced post data are not matching', async () => {
-      I.amOnPage('https://openai.com/blog/chatgpt');
-      I.startRecordingTraffic();
-      try {
-        await I.seeTraffic({
-          name: 'event',
-          url: 'https://cloudflareinsights.com/cdn-cgi/rum',
-          requestPostData: {
-            st: 3,
-          },
-        });
-      } catch (e) {
-        expect(e.message).to.contain('actual value: "2"');
-      }
-    });
-  });
-
-  describe('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
-    it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
-      if (process.env.BROWSER === 'firefox') this.skip();
-      try {
-        I.amOnPage('https://websocketstest.com/');
-        I.waitForText('Work for You!');
-        I.grabWebSocketMessages();
-      } catch (e) {
-        expect(e.message).to.equal('Failure in test automation. You use "I.grabWebSocketMessages", but "I.startRecordingWebSocketMessages" was never called before.');
-      }
-    });
-
-    it('should flush the WS messages', async () => {
-      if (process.env.BROWSER === 'firefox') this.skip();
-      await I.startRecordingWebSocketMessages();
-      I.amOnPage('https://websocketstest.com/');
-      I.waitForText('Work for You!');
-      I.flushNetworkTraffics();
-      const wsMessages = I.grabWebSocketMessages();
-      expect(wsMessages.length).to.equal(0);
-    });
-
-    it('should see recording WS messages', async () => {
-      if (process.env.BROWSER === 'firefox') this.skip();
-      await I.startRecordingWebSocketMessages();
-      await I.amOnPage('https://websocketstest.com/');
-      I.waitForText('Work for You!');
-      const wsMessages = I.grabWebSocketMessages();
-      expect(wsMessages.length).to.greaterThan(0);
-    });
-
-    it('should not see recording WS messages', async () => {
-      if (process.env.BROWSER === 'firefox') this.skip();
-      await I.startRecordingWebSocketMessages();
-      await I.amOnPage('https://websocketstest.com/');
-      I.waitForText('Work for You!');
-      const wsMessages = I.grabWebSocketMessages();
-      await I.stopRecordingWebSocketMessages();
-      await I.amOnPage('https://websocketstest.com/');
-      I.waitForText('Work for You!');
-      const afterWsMessages = I.grabWebSocketMessages();
-      expect(wsMessages.length).to.equal(afterWsMessages.length);
-    });
-  });
-
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
       const response = await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
@@ -1673,5 +1464,41 @@ describe('Playwright - HAR', () => {
       const webElement = await I.grabWebElement('#button');
       assert.equal(webElement, 'locator(\'#button\').first()');
     });
+  });
+});
+
+describe('using data-testid attribute', () => {
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data');
+    global.output_dir = path.join(`${__dirname}/../data/output`);
+
+    I = new Playwright({
+      url: siteUrl,
+      windowSize: '500x700',
+      show: false,
+      restart: true,
+      browser: 'chromium',
+    });
+    I._init();
+    return I._beforeSuite();
+  });
+
+  beforeEach(async () => {
+    return I._before().then(() => {
+      page = I.page;
+      browser = I.browser;
+    });
+  });
+
+  afterEach(async () => {
+    return I._after();
+  });
+
+  it('should find element by data-testid attribute', async () => {
+    await I.amOnPage('/');
+
+    const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' });
+    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0');
+    assert.equal(webElements.length, 1);
   });
 });
