@@ -1,4 +1,4 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper.js';
 
 module.exports.config = {
   tests: './*_test.js',
@@ -23,7 +23,6 @@ module.exports.config = {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: 'test/acceptance/output',
     },
-    Expect: {},
   },
   include: {},
   bootstrap: false,

@@ -16,7 +16,6 @@ export const config = {
         ignoreHTTPSErrors: true,
       },
     },
-    Expect: {},
   },
   include: {},
   bootstrap: false,
