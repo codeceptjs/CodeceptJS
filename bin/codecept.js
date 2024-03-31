@@ -236,5 +236,6 @@ program.on('command:*', (cmd) => {
 
 if (process.argv.length <= 2) {
   program.outputHelp();
+} else {
+  program.parse(process.argv);
 }
-program.parse(process.argv);
