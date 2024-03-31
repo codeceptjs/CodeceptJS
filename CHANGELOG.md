@@ -1,3 +1,46 @@
+## 3.6.0
+
+🛩️ *Features*
+
+* Introduced [healers](./heal) to improve stability of failed tests. Write functions that can perform actions to fix a failing test:
+
+```js
+heal.addRecipe('reloadPageIfModalIsNotVisisble', {
+  steps: [
+    'click',
+  ],
+  fn: async ({ error, step }) => {
+    // this function will be executed only if test failed with
+    // "model is not visible" message
+    if (error.message.include('modal is not visible')) return;
+
+    // we return a function that will refresh a page
+    // and tries to perform last step again
+    return async ({ I }) => {
+      I.reloadPage();
+      I.wait(1);
+      await step.run();
+    };
+    // if a function succeeds, test continues without an error
+  },
+});
+```
+
+* **Breaking Change** **AI** features refactored. Read updated [AI guide](./ai):
+  * **removed dependency on `openai`**
+  * added support for **Azure OpenAI**, **Claude**, **Mistal**, or any AI via custom request function
+  * `--ai` option added to explicitly enable AI features
+  * heal plugin decoupled from AI to run custom heal recipes
+  * improved healing for async/await scenarios
+  * token limits added
+  * token calculation introduced
+  * `OpenAI` helper renamed to `AI`
+
+🐛 *Bug Fixes*
+
+* Fixed double help message #4278 by @masiuchi
+* waitNumberOfVisibleElements always failed when passing num as 0. See #4274 by @KobeNguyenT
+
 ## 3.5.15
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
