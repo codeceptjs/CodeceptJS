@@ -91,6 +91,7 @@
     "cross-spawn": "7.0.3",
     "css-to-xpath": "0.1.0",
     "csstoxpath": "1.6.0",
+    "debug": "^4.3.4",
     "devtools": "8.33.1",
     "envinfo": "7.11.1",
     "escape-string-regexp": "4.0.0",

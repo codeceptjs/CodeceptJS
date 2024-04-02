@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import AiAssistant from '../../lib/ai.cjs';
+import AiAssistant from '../../lib/ai.js';
 import config from '../../lib/config.js';
 
 describe('AI module', () => {
