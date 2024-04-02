@@ -21,6 +21,33 @@ import * as info from '../lib/command/info.js';
 
 const program = new Command();
 
+const commandFlags = {
+  ai: {
+    flag: '--ai',
+    description: 'enable AI assistant',
+  },
+  verbose: {
+    flag: '--verbose',
+    description: 'output internal logging information',
+  },
+  debug: {
+    flag: '--debug',
+    description: 'output additional information',
+  },
+  config: {
+    flag: '-c, --config [file]',
+    description: 'configuration file to be used',
+  },
+  profile: {
+    flag: '--profile [value]',
+    description: 'configuration profile to be used',
+  },
+  steps: {
+    flag: '--steps',
+    description: 'show step-by-step execution',
+  },
+};
+
 const errorHandler = (fn) => async (...args) => {
   try {
     await fn.default(...args);
@@ -52,9 +79,10 @@ program.command('migrate [path]')
 program.command('shell [path]')
   .alias('sh')
   .description('Interactive shell')
-  .option('--verbose', 'output internal logging information')
-  .option('--profile [value]', 'configuration profile to be used')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.verbose.flag, commandFlags.verbose.description)
+  .option(commandFlags.profile.flag, commandFlags.profile.description)
+  .option(commandFlags.ai.flag, commandFlags.ai.description)
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .action(errorHandler(interactive));
 
 program.command('list [path]')
@@ -64,27 +92,27 @@ program.command('list [path]')
 
 program.command('def [path]')
   .description('Generates TypeScript definitions for all I actions.')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('-o, --output [folder]', 'target folder to paste definitions')
   .action(errorHandler(definitions));
 
 program.command('gherkin:init [path]')
   .alias('bdd:init')
   .description('Prepare CodeceptJS to run feature files.')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .action(errorHandler(gherkinInit));
 
 program.command('gherkin:steps [path]')
   .alias('bdd:steps')
   .description('Prints all defined gherkin steps.')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .action(errorHandler(gherkinSteps));
 
 program.command('gherkin:snippets [path]')
   .alias('bdd:snippets')
   .description('Generate step definitions from steps.')
   .option('--dry-run', "don't save snippets to file")
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('--feature [file]', 'feature files(s) to scan')
   .option('--path [file]', 'file in which to place the new snippets')
   .action(errorHandler(gherkinSnippets));
@@ -110,16 +138,22 @@ program.command('generate:helper [path]')
   .description('Generates a new helper')
   .action(errorHandler(generate.helper));
 
+program.command('generate:heal [path]')
+  .alias('gr')
+  .description('Generates basic heal recipes')
+  .action(errorHandler(require('../lib/command/generate').heal));
+
 program.command('run [test]')
   .description('Executes tests')
 
   // codecept-only options
-  .option('--steps', 'show step-by-step execution')
-  .option('--debug', 'output additional information')
-  .option('--verbose', 'output internal logging information')
+  .option(commandFlags.ai.flag, commandFlags.ai.description)
+  .option(commandFlags.steps.flag, commandFlags.steps.description)
+  .option(commandFlags.debug.flag, commandFlags.debug.description)
+  .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option('-o, --override [value]', 'override current config options')
-  .option('--profile [value]', 'configuration profile to be used')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.profile.flag, commandFlags.profile.description)
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('--features', 'run only *.feature files and skip tests')
   .option('--tests', 'run only JS test files and skip features')
   .option('--no-timeouts', 'disable all timeouts')
@@ -149,16 +183,17 @@ program.command('run [test]')
 
 program.command('run-workers <workers> [selectedRuns...]')
   .description('Executes tests in workers')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-i, --invert', 'inverts --grep matches')
   .option('-o, --override [value]', 'override current config options')
   .option('--suites', 'parallel execution of suites not single tests')
-  .option('--debug', 'output additional information')
-  .option('--verbose', 'output internal logging information')
+  .option(commandFlags.debug.flag, commandFlags.debug.description)
+  .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option('--features', 'run only *.feature files and skip tests')
   .option('--tests', 'run only JS test files and skip features')
-  .option('--profile [value]', 'configuration profile to be used')
+  .option(commandFlags.profile.flag, commandFlags.profile.description)
+  .option(commandFlags.ai.flag, commandFlags.ai.description)
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
@@ -166,17 +201,18 @@ program.command('run-workers <workers> [selectedRuns...]')
 
 program.command('run-multiple [suites...]')
   .description('Executes tests multiple')
-  .option('-c, --config [file]', 'configuration file to be used')
-  .option('--profile [value]', 'configuration profile to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
+  .option(commandFlags.profile.flag, commandFlags.profile.description)
   .option('--all', 'run all suites')
   .option('--features', 'run only *.feature files and skip tests')
   .option('--tests', 'run only JS test files and skip features')
+  .option(commandFlags.ai.flag, commandFlags.ai.description)
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
-  .option('--steps', 'show step-by-step execution')
-  .option('--verbose', 'output internal logging information')
-  .option('--debug', 'output additional information')
+  .option(commandFlags.steps.flag, commandFlags.steps.description)
+  .option(commandFlags.verbose.flag, commandFlags.verbose.description)
+  .option(commandFlags.debug.flag, commandFlags.debug.description)
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-o, --override [value]', 'override current config options')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
@@ -197,28 +233,28 @@ program.command('dry-run [test]')
   .description('Prints step-by-step scenario for a test without actually running it')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('--bootstrap', 'enable bootstrap & teardown scripts for dry-run')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('--all', 'run all suites')
   .option('--features', 'run only *.feature files and skip tests')
   .option('--tests', 'run only JS test files and skip features')
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
   .option('-f, --fgrep <string>', 'only run tests containing <string>')
   .option('-i, --invert', 'inverts --grep and --fgrep matches')
-  .option('--steps', 'show step-by-step execution')
-  .option('--verbose', 'output internal logging information')
-  .option('--debug', 'output additional information')
+  .option(commandFlags.steps.flag, commandFlags.steps.description)
+  .option(commandFlags.verbose.flag, commandFlags.verbose.description)
+  .option(commandFlags.debug.flag, commandFlags.debug.description)
   .action(errorHandler(dryRun));
 
 program.command('run-rerun [test]')
   .description('Executes tests in more than one test suite run')
 
   // codecept-only options
-  .option('--steps', 'show step-by-step execution')
-  .option('--debug', 'output additional information')
-  .option('--verbose', 'output internal logging information')
+  .option(commandFlags.steps.flag, commandFlags.steps.description)
+  .option(commandFlags.debug.flag, commandFlags.debug.description)
+  .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option('-o, --override [value]', 'override current config options')
-  .option('--profile [value]', 'configuration profile to be used')
-  .option('-c, --config [file]', 'configuration file to be used')
+  .option(commandFlags.profile.flag, commandFlags.profile.description)
+  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('--features', 'run only *.feature files and skip tests')
   .option('--tests', 'run only JS test files and skip features')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
@@ -253,5 +289,6 @@ program.on('command:*', (cmd) => {
 
 if (process.argv.length <= 2) {
   program.outputHelp();
+} else {
+  program.parse(process.argv);
 }
-program.parse(process.argv);

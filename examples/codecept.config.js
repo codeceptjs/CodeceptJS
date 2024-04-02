@@ -1,3 +1,5 @@
+require('./heal_recipes');
+
 exports.config = {
   output: './output',
   helpers: {
@@ -40,8 +42,8 @@ exports.config = {
     tryTo: {
       enabled: true,
     },
-    allure: {
-      enabled: false,
+    heal: {
+      enabled: true,
     },
     wdio: {
       enabled: false,
@@ -52,9 +54,6 @@ exports.config = {
     stepByStepReport: {},
     autoDelay: {
       enabled: false,
-    },
-    heal: {
-      enabled: true,
     },
     retryFailedStep: {
       enabled: false,
