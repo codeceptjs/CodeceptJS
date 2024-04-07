@@ -1,3 +1,146 @@
+## 3.6.0
+
+🛩️ *Features*
+
+* Introduced [healers](./heal) to improve stability of failed tests. Write functions that can perform actions to fix a failing test:
+
+```js
+heal.addRecipe('reloadPageIfModalIsNotVisisble', {
+  steps: [
+    'click',
+  ],
+  fn: async ({ error, step }) => {
+    // this function will be executed only if test failed with
+    // "model is not visible" message
+    if (error.message.include('modal is not visible')) return;
+
+    // we return a function that will refresh a page
+    // and tries to perform last step again
+    return async ({ I }) => {
+      I.reloadPage();
+      I.wait(1);
+      await step.run();
+    };
+    // if a function succeeds, test continues without an error
+  },
+});
+```
+
+* **Breaking Change** **AI** features refactored. Read updated [AI guide](./ai):
+  * **removed dependency on `openai`**
+  * added support for **Azure OpenAI**, **Claude**, **Mistal**, or any AI via custom request function
+  * `--ai` option added to explicitly enable AI features
+  * heal plugin decoupled from AI to run custom heal recipes
+  * improved healing for async/await scenarios
+  * token limits added
+  * token calculation introduced
+  * `OpenAI` helper renamed to `AI`
+
+
+* feat(puppeteer): network traffic manipulation. See #4263 by @KobeNguyenT
+  * `startRecordingTraffic`
+  * `grabRecordedNetworkTraffics`
+  * `flushNetworkTraffics`
+  * `stopRecordingTraffic`
+  * `seeTraffic`
+  * `dontSeeTraffic`
+
+* feat(Puppeteer): recording WS messages. See #4264 by @KobeNguyenT
+
+Recording WS messages:
+```
+      I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.greaterThan(0);
+```
+
+flushing WS messages:
+```
+      I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      I.flushWebSocketMessages();
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(0);
+```
+
+Examples:
+
+```js
+// recording traffics and verify the traffic
+  I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+```
+
+```js
+// check the traffic with advanced params
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  I.startRecordingTraffic();
+  I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
+```
+
+* Introduce the playwright locator: `_react`, `_vue`, `data-testid` attribute. See #4255 by @KobeNguyenT
+
+```
+Scenario('using playwright locator @Playwright', () => {
+  I.amOnPage('https://codecept.io/test-react-calculator/');
+  I.click('7');
+  I.click({ pw: '_react=t[name = "="]' });
+  I.seeElement({ pw: '_react=t[value = "7"]' });
+  I.click({ pw: '_react=t[name = "+"]' });
+  I.click({ pw: '_react=t[name = "3"]' });
+  I.click({ pw: '_react=t[name = "="]' });
+  I.seeElement({ pw: '_react=t[value = "10"]' });
+});
+```
+
+```
+Scenario('using playwright data-testid attribute @Playwright', () => {
+    I.amOnPage('/');
+    const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' });
+    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0');
+    assert.equal(webElements.length, 1);
+});
+```
+
+* feat(puppeteer): mockRoute support. See #4262 by @KobeNguyenT
+
+Network requests & responses can be mocked and modified. Use `mockRoute` which strictly follows [Puppeteer's setRequestInterception API](https://pptr.dev/next/api/puppeteer.page.setrequestinterception).
+
+```
+I.mockRoute('https://reqres.in/api/comments/1', request => {
+  request.respond({
+    status: 200,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    contentType: 'application/json',
+    body: '{"name": "this was mocked" }',
+  });
+})
+```
+```
+I.mockRoute('**/*.{png,jpg,jpeg}', route => route.abort());
+
+// To disable mocking for a route call `stopMockingRoute`
+// for previously mocked URL
+I.stopMockingRoute('**/*.{png,jpg,jpeg}');
+```
+To master request intercepting [use HTTPRequest object](https://pptr.dev/next/api/puppeteer.httprequest) passed into mock request handler.
+
+🐛 *Bug Fixes*
+
+* Fixed double help message #4278 by @masiuchi
+* waitNumberOfVisibleElements always failed when passing num as 0. See #4274 by @KobeNguyenT
+
 ## 3.5.15
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
