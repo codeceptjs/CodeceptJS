@@ -18,6 +18,7 @@ import * as runMultiple from '../lib/command/run-multiple.js';
 import { runRerun } from '../lib/command/run-rerun.js';
 import * as dryRun from '../lib/command/dryRun.js';
 import * as info from '../lib/command/info.js';
+import { heal } from "../lib/command/generate.js";
 
 const program = new Command();
 
@@ -141,7 +142,7 @@ program.command('generate:helper [path]')
 program.command('generate:heal [path]')
   .alias('gr')
   .description('Generates basic heal recipes')
-  .action(errorHandler(require('../lib/command/generate').heal));
+  .action(errorHandler(heal));
 
 program.command('run [test]')
   .description('Executes tests')
