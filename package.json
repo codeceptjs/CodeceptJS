@@ -69,7 +69,7 @@
   },
   "dependencies": {
     "@codeceptjs/configure": "1.0.1",
-    "@codeceptjs/helper": "2.0.1",
+    "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "17",
     "@cucumber/gherkin": "26",
     "@cucumber/messages": "24.1.0",
