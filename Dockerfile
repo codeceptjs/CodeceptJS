@@ -35,7 +35,7 @@ RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
 # Install puppeteer so it's available in the container.
-RUN npm i puppeteer@22.6.0 && npx puppeteer browsers install chrome
+RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
 RUN google-chrome --version
 
 # Install playwright browsers
