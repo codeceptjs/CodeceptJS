@@ -1497,11 +1497,19 @@ describe('using data-testid attribute', () => {
     return I._after();
   });
 
-  it('should find element by data-testid attribute', async () => {
+  it('should find element by pw locator', async () => {
     await I.amOnPage('/');
 
     const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' });
     assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0');
+    assert.equal(webElements.length, 1);
+  });
+
+  it('should find element by h1[data-testid="welcome"]', async () => {
+    await I.amOnPage('/');
+
+    const webElements = await I.grabWebElements('h1[data-testid="welcome"]');
+    assert.equal(webElements[0]._selector, 'h1[data-testid="welcome"] >> nth=0');
     assert.equal(webElements.length, 1);
   });
 });
