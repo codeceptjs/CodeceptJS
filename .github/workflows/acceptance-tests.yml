@@ -27,9 +27,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Extract ppt version from package.json
+        uses: sergeysova/jq-action@v2
+        id: version
+        with:
+          cmd: 'jq .devDependencies.puppeteer package.json -r'
+
       # Run acceptance tests using docker-compose
       - name: Run Puppeteer Acceptance Tests
-        run: docker-compose run --rm test-acceptance.puppeteer
+        run: 'PPT_VERSION=${{ steps.version.outputs.value }}" docker-compose run --rm test-acceptance.puppeteer'
         working-directory: test
 
       # Run rest tests using docker-compose

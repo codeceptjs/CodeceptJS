@@ -35,7 +35,7 @@ RUN chown -R pptruser:pptruser /codecept
 RUN runuser -l pptruser -c 'npm i --force --loglevel=warn --prefix /codecept'
 
 # Install puppeteer so it's available in the container.
-RUN npm i puppeteer@$(jq .devDependencies.puppeteer package.json -r) && npx puppeteer browsers install chrome
+RUN npm i puppeteer@$(echo $PPT_VERSION) && npx puppeteer browsers install chrome
 RUN google-chrome --version
 
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
@@ -49,6 +49,7 @@ RUN npx playwright install
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
 ENV NO_OF_WORKERS=""
+ENV PPT_VERSION=$PPT_VERSION
 
 # Set HOST ENV variable for Selenium Server
 ENV HOST=selenium
