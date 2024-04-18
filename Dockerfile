@@ -34,12 +34,13 @@ COPY . /codecept
 RUN chown -R pptruser:pptruser /codecept
 RUN runuser -l pptruser -c 'npm i --force --loglevel=warn --prefix /codecept'
 
-RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
-RUN mkdir /tests
-WORKDIR /tests
 # Install puppeteer so it's available in the container.
 RUN npm i puppeteer@$(jq .devDependencies.puppeteer package.json -r) && npx puppeteer browsers install chrome
 RUN google-chrome --version
+
+RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
+RUN mkdir /tests
+WORKDIR /tests
 
 # Install playwright browsers
 RUN npx playwright install
