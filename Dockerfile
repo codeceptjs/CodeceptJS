@@ -7,6 +7,9 @@ RUN apt-get update && \
       apt-get install -y libgtk2.0-0 libgconf-2-4 \
       libasound2 libxtst6 libxss1 libnss3 xvfb
 
+# Install jq
+RUN apt-get update && apt-get install -y jq
+
 # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
 # installs, work.
@@ -35,7 +38,7 @@ RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
 # Install puppeteer so it's available in the container.
-RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
+RUN npm i puppeteer@$(jq .devDependencies.puppeteer package.json -r) && npx puppeteer browsers install chrome
 RUN google-chrome --version
 
 # Install playwright browsers
