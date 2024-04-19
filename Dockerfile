@@ -7,9 +7,6 @@ RUN apt-get update && \
       apt-get install -y libgtk2.0-0 libgconf-2-4 \
       libasound2 libxtst6 libxss1 libnss3 xvfb
 
-# Install jq
-RUN apt-get update && apt-get install -y jq
-
 # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
 # installs, work.
@@ -34,14 +31,12 @@ COPY . /codecept
 RUN chown -R pptruser:pptruser /codecept
 RUN runuser -l pptruser -c 'npm i --force --loglevel=warn --prefix /codecept'
 
-# Install puppeteer so it's available in the container.
-RUN echo $PPT_VERSION
-RUN npm i puppeteer@$(echo $PPT_VERSION) --force && npx puppeteer browsers install chrome
-RUN google-chrome --version
-
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
+# Install puppeteer so it's available in the container.
+RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
+RUN google-chrome --version
 
 # Install playwright browsers
 RUN npx playwright install
@@ -50,7 +45,6 @@ RUN npx playwright install
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
 ENV NO_OF_WORKERS=""
-ENV PPT_VERSION=$PPT_VERSION
 
 # Set HOST ENV variable for Selenium Server
 ENV HOST=selenium
