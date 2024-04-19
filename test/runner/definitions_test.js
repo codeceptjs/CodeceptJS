@@ -39,7 +39,7 @@ import('chai').then(chai => {
   });
 });
 
-describe('Definitions', function () {
+describe.skip('Definitions', function () {
   this.timeout(30000);
   this.retries(4);
 

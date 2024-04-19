@@ -1,5 +1,6 @@
-const { event, recorder } = codeceptjs;
+import recorder from '../../../../lib/recorder.js';
 
+const { event } = codeceptjs;
 const { page } = inject();
 
 class PagesStore {

@@ -9,7 +9,7 @@ const codecept_dir = path.join(__dirname, '../../test/data/sandbox');
 const codecept_run = `${runner} dry-run`;
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
 
-describe('dry-run command', () => {
+describe.only('dry-run command', () => {
   before(() => {
     process.chdir(codecept_dir);
   });

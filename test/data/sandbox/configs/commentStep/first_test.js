@@ -1,6 +1,4 @@
-const Container = require('../../../../../lib/container.js').default;
-
-const given = when = then = Container.plugins('commentStep');
+const given = when = then = codeceptjs.container.default.plugins('commentStep');
 const { I } = inject();
 
 Feature('CommentStep');
@@ -23,7 +21,7 @@ Scenario('global var', ({ I }) => {
   I.print('see everything works');
 });
 
-Scenario('local vars', ({ I }) => {
+Scenario('local vars', async ({ I }) => {
   given`Prepare project`;
   I.print('other thins');
 

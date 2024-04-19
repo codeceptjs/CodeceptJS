@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 Feature('Filesystem');
 
 Scenario('check current dir', ({ I, MyPage }) => {
