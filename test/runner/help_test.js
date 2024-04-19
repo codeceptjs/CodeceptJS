@@ -1,15 +1,19 @@
-const assert = require('assert');
-const path = require('path');
-const exec = require('child_process').exec;
+import assert from 'assert';
+import { expect } from 'chai';
+import path, { dirname } from 'path';
+import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
 
-const runner = path.join(__dirname, '/../../bin/codecept.js');
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const runner = path.join(__dirname, '../../bin/codecept.js');
 
 describe('help option', () => {
   it('should print help message with --help option', (done) => {
     exec(`${runner} --help`, (err, stdout) => {
-      stdout.should.include('Usage:');
-      stdout.should.include('Options:');
-      stdout.should.include('Commands:');
+      expect(stdout).to.include('Usage:');
+      expect(stdout).to.include('Options:');
+      expect(stdout).to.include('Commands:');
       assert(!err);
       done();
     });
@@ -17,9 +21,9 @@ describe('help option', () => {
 
   it('should print help message with -h option', (done) => {
     exec(`${runner} -h`, (err, stdout) => {
-      stdout.should.include('Usage:');
-      stdout.should.include('Options:');
-      stdout.should.include('Commands:');
+      expect(stdout).to.include('Usage:');
+      expect(stdout).to.include('Options:');
+      expect(stdout).to.include('Commands:');
       assert(!err);
       done();
     });
@@ -27,9 +31,9 @@ describe('help option', () => {
 
   it('should print help message with no option', (done) => {
     exec(`${runner}`, (err, stdout) => {
-      stdout.should.include('Usage:');
-      stdout.should.include('Options:');
-      stdout.should.include('Commands:');
+      expect(stdout).to.include('Usage:');
+      expect(stdout).to.include('Options:');
+      expect(stdout).to.include('Commands:');
       assert(!err);
       done();
     });
