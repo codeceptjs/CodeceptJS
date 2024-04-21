@@ -1321,8 +1321,6 @@ describe('Playwright - Performance Metrics', () => {
       show: false,
       restart: true,
       browser: 'chromium',
-      trace: true,
-      video: true,
     });
     I._init();
     return I._beforeSuite();
@@ -1332,7 +1330,6 @@ describe('Playwright - Performance Metrics', () => {
     webApiTests.init({
       I, siteUrl,
     });
-    deleteDir(path.join(global.output_dir, 'video'));
     return I._before().then(() => {
       page = I.page;
       browser = I.browser;
@@ -1346,7 +1343,6 @@ describe('Playwright - Performance Metrics', () => {
   it('grabs performance metrics', async () => {
     await I.amOnPage('https://codecept.io');
     const metrics = await I.grabMetrics();
-    console.log(metrics);
     expect(metrics.length).to.greaterThan(0);
     expect(metrics[0].name).to.equal('Timestamp');
   });
@@ -1361,12 +1357,18 @@ describe('Playwright - Video & Trace & HAR', () => {
 
     I = new Playwright({
       url: siteUrl,
-      windowSize: '500x700',
+      windowSize: '300x500',
       show: false,
       restart: true,
       browser: 'chromium',
       trace: true,
       video: true,
+      recordVideo: {
+        size: {
+          width: 400,
+          height: 600,
+        },
+      },
       recordHar: {},
     });
     I._init();
