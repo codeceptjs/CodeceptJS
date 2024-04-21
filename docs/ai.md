@@ -28,7 +28,7 @@ CodeceptJS AI can do the following:
 
 ![](/img/fill_form.gif)
 
-### How it works
+## How it works
 
 As we can't send a browser window with ChatGPT we are not be able to fully share the context. But we can chare HTML of the current page, which is quite enough to analyze and identify if a page contains an element which can be used in a test.
 
@@ -40,7 +40,7 @@ Even though, the HTML is still quite big and may exceed the token limit. So we r
 
 
 
-### Set up AI Provider
+## Set up AI Provider
 
 To enable AI features in CodeceptJS you should pick an AI provider and add `ai` section to `codecept.conf` file. This section should contain `request` function which will take a prompt from CodeceptJS, send it to AI provider and return a result.
 
@@ -85,12 +85,13 @@ ai: {
   request: async (messages) => {
     const OpenAI = require('openai');
     const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] })
-    const response = await openai.chat.completions.create({
+
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo-0125',
       messages,
     });
-    // return only text content
-    return response?.data?.choices[0]?.message?.content;
+    
+    return completion?.choices[0]?.message?.content;
   }
 }
 ```
