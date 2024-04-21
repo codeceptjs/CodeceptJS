@@ -96,6 +96,34 @@ ai: {
 }
 ```
 
+#### Mixtral
+
+Mixtral is opensource and can be used via Cloudflare, Google Cloud, Azure or installed locally.
+
+The simplest way to try Mixtral on your case is using [Groq Cloud](https://groq.com) which provides Mixtral access with GPT-like API:
+
+Prerequisite:
+
+* Install `groq-sdk` package
+* obtain `GROQ_API_KEY` from OpenAI
+* set `GROQ_API_KEY` as environment variable
+
+Sample Groq configuration with Mixtral model:
+
+```js
+ai: {
+  request: async (messages) => {
+    const chatCompletion = await groq.chat.completions.create({
+        messages,
+        model: "mixtral-8x7b-32768",
+    });
+    return chatCompletion.choices[0]?.message?.content || "";
+  }
+}
+```
+
+> Groq also provides access to other opensource models like llama or gemma
+
 #### Anthropic Claude
 
 Prerequisite:
