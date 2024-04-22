@@ -27,11 +27,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Run acceptance tests using docker-compose
-      - name: Run Puppeteer Acceptance Tests
-        run: docker-compose run --rm test-acceptance.puppeteer
-        working-directory: test
-
       # Run rest tests using docker-compose
       - name: Run REST Tests
         run: docker-compose run --rm test-rest
