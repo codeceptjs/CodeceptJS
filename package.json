@@ -103,7 +103,7 @@
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
     "mkdirp": "1.0.4",
-    "mocha": "10.3.0",
+    "mocha": "10.4.0",
     "monocart-coverage-reports": "2.7.4",
     "ms": "2.1.3",
     "ora-classic": "5.4.2",
