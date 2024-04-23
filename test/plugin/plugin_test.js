@@ -33,7 +33,7 @@ describe('CodeceptJS plugin', function () {
   });
 
   it('should generate the coverage report', (done) => {
-    exec(`${config_run_config('codecept.Playwright.coverage.js', '@coverage')} --debug`, (err, stdout) => {
+    exec(`${config_run_config('codecept.Playwright.coverage.js', '@coverage')} --verbose`, (err, stdout) => {
       expect(stdout).toContain('writing output/coverage');
       expect(stdout).toContain('generated coverage reports: output/coverage/index.html');
       expect(err).toBeFalsy();
