@@ -34,15 +34,8 @@ describe('CodeceptJS plugin', function () {
 
   it('should generate the coverage report', (done) => {
     exec(`${config_run_config('codecept.Playwright.coverage.js', '@coverage')} --debug`, (err, stdout) => {
-      const lines = stdout.split('\n');
-      console.log(stdout)
-      console.log(err)
-      expect(lines).toEqual(
-        expect.arrayContaining([
-          expect.stringContaining('writing output/coverage'),
-          expect.stringContaining('generated coverage reports: output/coverage/index.html'),
-        ]),
-      );
+      expect(stdout).toContain('writing output/coverage');
+      expect(stdout).toContain('generated coverage reports: output/coverage/index.html');
       expect(err).toBeFalsy();
       done();
     });
