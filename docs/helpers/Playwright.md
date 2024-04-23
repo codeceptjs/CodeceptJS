@@ -2202,11 +2202,14 @@ I.setPlaywrightRequestHeaders({
 
 ### startRecordingTraffic
 
-Resets all recorded network requests.
+Starts recording the network traffics.
+This also resets recorded network requests.
 
 ```js
-I.flushNetworkTraffics();
+I.startRecordingTraffic();
 ```
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### startRecordingWebSocketMessages
 
