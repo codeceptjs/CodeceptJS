@@ -1390,11 +1390,11 @@ module.exports.tests = function () {
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/');
-        await I.seeAttributesOnElements({ css: 'a[href="/team"]' }, {
-          href: '/team',
+        await I.seeAttributesOnElements({ css: 'a[href="/codeceptjs/CodeceptJS"]' }, {
+          href: '/codeceptjs/CodeceptJS',
         });
       } catch (e) {
-        e.message.should.include('all elements (a[href="/team"]) to have attributes {"href":"/team"}');
+        e.message.should.include('all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href"="/codeceptjs/CodeceptJS"}');
       }
     });
 
@@ -1425,11 +1425,11 @@ module.exports.tests = function () {
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/');
-        await I.seeAttributesOnElements({ css: 'a[href="/team"]' }, {
+        await I.seeAttributesOnElements({ css: 'a[href="/codeceptjs/CodeceptJS"]' }, {
           disable: true,
         });
       } catch (e) {
-        e.message.should.include('expected all elements ({css: a[href="/team"]}) to have attributes {"disable":true} "0" to equal "1"');
+        e.message.should.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"');
       }
     });
 
