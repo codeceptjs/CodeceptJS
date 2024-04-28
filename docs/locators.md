@@ -145,6 +145,15 @@ Find an element with provided attributes
 locate('input').withAttr({ placeholder: 'Type in name' });
 ```
 
+#### withClassAttr
+
+Find an element with class attribute
+
+```js
+// find div with class contains 'form'
+locate('div').withClassAttr('text');
+```
+
 #### withChild
 
 Finds an element which contains a child element provided:

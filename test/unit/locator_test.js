@@ -306,6 +306,12 @@ describe('Locator', () => {
     expect(nodes).to.have.length(1);
   });
 
+  it('should build locator to match element by class', () => {
+    const l = Locator.build('div').withClassAttr('form-');
+    const nodes = xpath.select(l.toXPath(), doc);
+    expect(nodes).to.have.length(9);
+  });
+
   it('should build locator to match element containing a text', () => {
     const l = Locator.build('span').withText('Hey');
     const nodes = xpath.select(l.toXPath(), doc);
