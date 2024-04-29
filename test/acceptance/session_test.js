@@ -33,7 +33,7 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
   const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getSHA256Digests([
     `${output_dir}/session_default_1.png`,
     `${output_dir}/session_default_2.png`,
-    `${output_dir}/session_john_1.png`,
+    `${output_dir}/john_session_john_1.png`,
     `${output_dir}/session_john_2.png`,
   ]);
 
