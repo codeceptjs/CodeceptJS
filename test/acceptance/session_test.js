@@ -77,7 +77,7 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
   I.expectNotEqual(cookies.john, cookies.mary);
 });
 
-Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwright', async function ({ I }) {
   await I.amOnPage('/form/bug1467');
   await I.saveScreenshot('original.png');
   await I.amOnPage('/');
@@ -87,7 +87,7 @@ Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwrigh
     event.dispatcher.emit(event.test.failed, this);
   });
 
-  const fileName = clearString('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright');
+  const fileName = clearString(this.title);
   const [original, failed] = await I.getSHA256Digests([
     `${output_dir}/original.png`,
     `${output_dir}/john_${fileName}.failed.png`,
