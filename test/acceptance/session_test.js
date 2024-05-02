@@ -33,7 +33,7 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
   const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getSHA256Digests([
     `${output_dir}/session_default_1.png`,
     `${output_dir}/session_default_2.png`,
-    `${output_dir}/session_john_1.png`,
+    `${output_dir}/john_session_john_1.png`,
     `${output_dir}/session_john_2.png`,
   ]);
 
@@ -77,24 +77,31 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
   I.expectNotEqual(cookies.john, cookies.mary);
 });
 
-Scenario('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright', async function ({ I }) {
-  I.amOnPage('/form/bug1467');
-  I.saveScreenshot('original.png');
-  I.amOnPage('/');
+Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwright', async function ({ I }) {
+  await I.amOnPage('/form/bug1467');
+  await I.saveScreenshot('original.png');
+  await I.amOnPage('/');
+  await I.saveScreenshot('main_session.png');
   session('john', async () => {
     await I.amOnPage('/form/bug1467');
     event.dispatcher.emit(event.test.failed, this);
   });
 
   const fileName = clearString(this.title);
-
   const [original, failed] = await I.getSHA256Digests([
     `${output_dir}/original.png`,
-    `${output_dir}/${fileName}.failed.png`,
+    `${output_dir}/john_${fileName}.failed.png`,
   ]);
 
   // Assert that screenshots of same page in same session are equal
-  I.expectEqual(original, failed);
+  await I.expectEqual(original, failed);
+
+  // Assert that screenshots of sessions are created
+  const [main_original, session_failed] = await I.getSHA256Digests([
+    `${output_dir}/main_session.png`,
+    `${output_dir}/john_${fileName}.failed.png`,
+  ]);
+  await I.expectNotEqual(main_original, session_failed);
 });
 
 Scenario('should throw exception and close correctly @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
