@@ -1376,12 +1376,16 @@ Returns **[Promise][22]&lt;[string][9]>** title
 
 Returns full URL of request matching parameter "urlMatch".
 
+Examples:
+
+```js
+I.grabTrafficUrl('https://api.example.com/session');
+I.grabTrafficUrl(/session.*start/);
+```
+
 #### Parameters
 
--   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:```js
-    I.grabTrafficUrl('https://api.example.com/session');
-    I.grabTrafficUrl(/session.*start/);
-    ```
+-   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
 Returns **[Promise][22]&lt;any>** 
 
@@ -2202,11 +2206,14 @@ I.setPlaywrightRequestHeaders({
 
 ### startRecordingTraffic
 
-Resets all recorded network requests.
+Starts recording the network traffics.
+This also resets recorded network requests.
 
 ```js
-I.flushNetworkTraffics();
+I.startRecordingTraffic();
 ```
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### startRecordingWebSocketMessages
 
