@@ -51,16 +51,16 @@ declare namespace CodeceptJS {
 
   type AiConfig = {
     /** request function to send prompts to AI provider */
-    request: () => Promise<string>,
+    request: (messages: any) => Promise<string>,
 
     /** custom prompts */
     prompts?: {
-      writeStep?: (string, string) => Array<AiPrompt>;
+      writeStep?: (html: string, input: string) => Array<AiPrompt>;
       healStep?: (string, object) => Array<AiPrompt>;
     },
 
     /** max tokens to use */
-    maxTokens?: number, 
+    maxTokens?: number,
 
 
     /** configuration for processing HTML for GPT */
