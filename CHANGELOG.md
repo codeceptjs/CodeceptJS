@@ -1,3 +1,99 @@
+## 3.6.2
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(REST): support httpAgent conf (#4328) - by @KobeNguyent
+
+Support the httpAgent conf to create the TSL connection via REST helper
+
+```
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
+      httpAgent: {
+         key: fs.readFileSync(__dirname + '/path/to/keyfile.key'),
+         cert: fs.readFileSync(__dirname + '/path/to/certfile.cert'),
+         rejectUnauthorized: false,
+         keepAlive: true
+      }
+    }
+  }
+}
+```
+
+* feat(wd): screenshots for sessions (#4322) - by @KobeNguyent
+
+Currently only screenshot of the active session is saved, this PR aims to save the screenshot of every session for easy debugging
+
+```
+Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+  await I.amOnPage('/form/bug1467');
+  await I.saveScreenshot('original.png');
+  await I.amOnPage('/');
+  await I.saveScreenshot('main_session.png');
+  session('john', async () => {
+    await I.amOnPage('/form/bug1467');
+    event.dispatcher.emit(event.test.failed, this);
+  });
+
+  const fileName = clearString('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright');
+  const [original, failed] = await I.getSHA256Digests([
+    `${output_dir}/original.png`,
+    `${output_dir}/john_${fileName}.failed.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  await I.expectEqual(original, failed);
+
+  // Assert that screenshots of sessions are created
+  const [main_original, session_failed] = await I.getSHA256Digests([
+    `${output_dir}/main_session.png`,
+    `${output_dir}/john_${fileName}.failed.png`,
+  ]);
+  await I.expectNotEqual(main_original, session_failed);
+});
+```
+![Screenshot 2024-04-29 at 11 07 47](https://github.com/codeceptjs/CodeceptJS/assets/7845001/5dddf85a-ed77-474b-adfd-2f208d3c16a8)
+
+
+* feat: locate element with withClassAttr (#4321) - by @KobeNguyent
+
+Find an element with class attribute
+
+```js
+// find div with class contains 'form'
+locate('div').withClassAttr('text');
+```
+
+* fix(playwright): set the record video resolution (#4311) - by @KobeNguyent
+You could now set the recording video resolution
+```
+  url: siteUrl,
+  windowSize: '300x500',
+  show: false,
+  restart: true,
+  browser: 'chromium',
+  trace: true,
+  video: true,
+  recordVideo: {
+    size: {
+      width: 400,
+      height: 600,
+    },
+  },
+```
+
+🐛 *Bug Fixes*
+* fix: several issues of stepByStep report (#4331) - by @KobeNguyent
+
+📖 *Documentation*
+* fix: wrong format docs (#4330) - by @KobeNguyent
+* fix(docs): wrong method is mentioned (#4320) - by @KobeNguyent
+* fix: ChatGPT docs - by @davert
+
 ## 3.6.1
 
 * Fixed regression in interactive pause.
