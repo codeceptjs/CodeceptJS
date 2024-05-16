@@ -38,7 +38,8 @@ describe('CodeceptJS plugin', function () {
       expect(lines).toEqual(
         expect.arrayContaining([
           expect.stringContaining('writing output/coverage'),
-          expect.stringContaining('generated coverage reports: output/coverage/index.html'),
+          expect.stringContaining('generated coverage reports:'),
+          expect.stringContaining('output/coverage/index.html')
         ]),
       );
       expect(err).toBeFalsy();
