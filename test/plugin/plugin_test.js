@@ -38,7 +38,23 @@ describe('CodeceptJS plugin', function () {
       expect(lines).toEqual(
         expect.arrayContaining([
           expect.stringContaining('writing output/coverage'),
-          expect.stringContaining('generated coverage reports: output/coverage/index.html'),
+          expect.stringContaining('generated coverage reports:'),
+          expect.stringContaining('output/coverage/index.html')
+        ]),
+      );
+      expect(err).toBeFalsy();
+      done();
+    });
+  });
+
+  it('should generate the coverage report - WebDriver - Devtools protocol', (done) => {
+    exec(`${config_run_config('codecept.WebDriver.devtools.coverage.js', '@coverage')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining('writing output/coverage'),
+          expect.stringContaining('generated coverage reports:'),
+          expect.stringContaining('output/coverage/index.html')
         ]),
       );
       expect(err).toBeFalsy();
