@@ -131,7 +131,7 @@
     "@wdio/utils": "8.36.1",
     "@xmldom/xmldom": "0.8.10",
     "apollo-server-express": "2.25.3",
-    "chai-as-promised": "7.1.1",
+    "chai-as-promised": "7.1.2",
     "chai-subset": "1.6.0",
     "contributor-faces": "1.1.0",
     "documentation": "12.3.0",
