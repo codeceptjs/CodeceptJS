@@ -5,7 +5,7 @@ import('chai').then(chai => {
   expect = chai.expect;
 });
 
-const ExpectHelper = require('../../lib/helper/Expect');
+const ExpectHelper = require('../../lib/helper/ExpectHelper');
 
 global.codeceptjs = require('../../lib');
 
