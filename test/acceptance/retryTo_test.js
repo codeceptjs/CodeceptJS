@@ -14,3 +14,9 @@ Scenario('retryTo works with non await steps @plugin', async () => {
     if (tryNum < 3) I.waitForVisible('.nothing', 1);
   }, 4);
 });
+
+Scenario('Should fail after reached max retries', async () => {
+  await retryTo(() => {
+    throw new Error('Custom pluginRetryTo Error');
+  }, 3);
+});
