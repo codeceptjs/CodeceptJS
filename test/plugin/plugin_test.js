@@ -32,6 +32,15 @@ describe('CodeceptJS plugin', function () {
     });
   });
 
+  it('should failed before the retryTo instruction', (done) => {
+    exec(`${config_run_config('codecept.Playwright.retryTo.js', 'Should be succeed')} --verbose`, (err, stdout) => {
+      expect(stdout).toContain('locator.waitFor: Timeout 1000ms exceeded.'),
+      expect(stdout).toContain('[1] Error | Error: element (.nothing) still not visible after 1 sec'),
+      expect(err).toBeTruthy();
+      done();
+    });
+  });
+
   it('should generate the coverage report', (done) => {
     exec(`${config_run_config('codecept.Playwright.coverage.js', '@coverage')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');

@@ -19,7 +19,6 @@ describe('CodeceptJS Workers Runner', function () {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version');
     console.log(`${codecept_run} 3 --debug`);
     exec(`${codecept_run} 3 --debug`, (err, stdout) => {
-      console.log('aaaaaaaaaaaaa', stdout);
       expect(stdout).toContain('CodeceptJS'); // feature
       expect(stdout).toContain('glob current dir');
       expect(stdout).toContain('From worker @1_grep print message 1');
