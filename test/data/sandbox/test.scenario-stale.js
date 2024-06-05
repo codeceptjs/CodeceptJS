@@ -1,5 +1,3 @@
-const { I } = inject();
-
 Feature("Scenario should not be staling");
 
 const SHOULD_NOT_STALE = "should not stale scenario error";
