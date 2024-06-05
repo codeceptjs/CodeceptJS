@@ -14,8 +14,6 @@ describe('CodeceptJS Interface', () => {
 
   it('Should always failed and terminate', (done) => {
     exec(config_run_config('codecept.stale.js'), (err, stdout) => {
-      console.log('err', err);
-      console.log('stdout',stdout)
       expect(stdout).toContain('@@@Flaky error'); // feature
       expect(err).toBeTruthy();
       done();

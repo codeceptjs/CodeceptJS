@@ -1,6 +1,6 @@
 exports.config = {
     tests: './*_test.stale.js',
-    // timeout: 10000,
+    timeout: 10000,
     retry: {
       Scenario: 2,
       After: 0,
@@ -8,10 +8,15 @@ exports.config = {
     },
     output: './output',
     helpers: {
+      Playwright: {
+        url: 'http://localhost',
+        show: false,
+        browser: 'chromium',
+      },
     },
     include: {},
     bootstrap: false,
     mocha: {},
-    name: 'sandbox',
+    name: 'sandbox'
   };
   

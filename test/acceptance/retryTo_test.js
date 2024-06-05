@@ -14,3 +14,13 @@ Scenario('retryTo works with non await steps @plugin', async () => {
     if (tryNum < 3) I.waitForVisible('.nothing', 1);
   }, 4);
 });
+
+
+
+Scenario('Should be succeed @plugin', async ({ I }) => {
+  I.amOnPage('http://example.org')
+  I.waitForVisible('.nothing', 1); // should fail here but it won't terminate
+  await retryTo( (tryNum) => {
+      I.see(".doesNotMatter");
+  }, 10);
+})
