@@ -1,5 +1,5 @@
 exports.config = {
-    tests: './*_test.stale.js',
+    tests: './test.scenario-stale.js',
     timeout: 10000,
     retry: {
       Scenario: 2,
