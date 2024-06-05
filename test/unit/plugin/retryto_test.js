@@ -21,10 +21,10 @@ describe('retryTo plugin', () => {
     let counter = 0;
     let errorCaught = false;
     try {
-    await retryTo(() => {
-      recorder.add(() => counter++);
-      recorder.add(() => { throw new Error('Ups'); });
-    }, 5, 10);
+      await retryTo(() => {
+        recorder.add(() => counter++);
+        recorder.add(() => { throw new Error('Ups'); });
+      }, 5, 10);
       await recorder.promise();
     } catch (err) {
       errorCaught = true;
