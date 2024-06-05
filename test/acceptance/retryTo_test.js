@@ -34,3 +34,12 @@ Scenario('Should succeed at the third attempt @plugin', async () => {
     if (tryNum < 2) throw new Error('Custom pluginRetryTo Error');
   }, 3);
 });
+
+
+Scenario('Should be succeed', async ({ I }) => {
+  I.amOnPage('http://example.org')
+  I.waitForVisible('.nothing', 1); // should fail here but it won't terminate
+  await retryTo( (tryNum) => {
+      I.see(".doesNotMatter");
+  }, 10);
+})
