@@ -39,7 +39,7 @@ describe('CodeceptJS plugin', function () {
         expect.arrayContaining([
           expect.stringContaining('writing output/coverage'),
           expect.stringContaining('generated coverage reports:'),
-          expect.stringContaining('output/coverage/index.html')
+          expect.stringContaining('output/coverage/index.html'),
         ]),
       );
       expect(err).toBeFalsy();
@@ -54,7 +54,7 @@ describe('CodeceptJS plugin', function () {
         expect.arrayContaining([
           expect.stringContaining('writing output/coverage'),
           expect.stringContaining('generated coverage reports:'),
-          expect.stringContaining('output/coverage/index.html')
+          expect.stringContaining('output/coverage/index.html'),
         ]),
       );
       expect(err).toBeFalsy();
