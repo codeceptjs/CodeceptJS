@@ -37,9 +37,9 @@ Scenario('Should succeed at the third attempt @plugin', async () => {
 
 
 Scenario('Should be succeed', async ({ I }) => {
-  I.amOnPage('http://example.org')
+  I.amOnPage('http://example.org');
   I.waitForVisible('.nothing', 1); // should fail here but it won't terminate
-  await retryTo( (tryNum) => {
-      I.see(".doesNotMatter");
+  await retryTo((tryNum) => {
+    I.see('.doesNotMatter');
   }, 10);
 })
