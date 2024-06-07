@@ -9,7 +9,7 @@ module.exports.config = {
       url: TestHelper.siteUrl(),
       show: true,
     },
-    Expect: {},
+    ExpectHelper: {},
   },
   include: {},
   bootstrap: false,
