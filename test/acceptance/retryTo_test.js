@@ -22,3 +22,15 @@ Scenario('Should be succeed', async ({ I }) => {
     I.see('.doesNotMatter');
   }, 10);
 });
+
+Scenario('Should fail after reached max retries', async () => {
+  await retryTo(() => {
+    throw new Error('Custom pluginRetryTo Error');
+  }, 3);
+});
+
+Scenario('Should succeed at the third attempt @plugin', async () => {
+  await retryTo(async (tryNum) => {
+    if (tryNum < 2) throw new Error('Custom pluginRetryTo Error');
+  }, 3);
+});

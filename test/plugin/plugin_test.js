@@ -70,4 +70,17 @@ describe('CodeceptJS plugin', function () {
       done();
     });
   });
+
+  it('should retry to failure', (done) => {
+    exec(
+      `${config_run_config('codecept.Playwright.retryTo.js', 'Should fail after reached max retries')} --verbose`, (err, stdout) => {
+        const lines = stdout.split('\n');
+        expect(lines).toEqual(
+          expect.arrayContaining([expect.stringContaining('Custom pluginRetryTo Error')])
+        );
+        expect(err).toBeTruthy();
+        done();
+      }
+    );
+  });
 });
