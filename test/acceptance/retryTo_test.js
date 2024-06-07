@@ -15,6 +15,14 @@ Scenario('retryTo works with non await steps @plugin', async () => {
   }, 4);
 });
 
+Scenario('Should be succeed', async ({ I }) => {
+  I.amOnPage('http://example.org');
+  I.waitForVisible('.nothing', 1); // should fail here but it won't terminate
+  await retryTo((tryNum) => {
+    I.see('.doesNotMatter');
+  }, 10);
+});
+
 Scenario('Should fail after reached max retries', async () => {
   await retryTo(() => {
     throw new Error('Custom pluginRetryTo Error');
