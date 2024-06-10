@@ -1,3 +1,22 @@
+## 3.6.3
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(plugin): coverage with WebDriver - devtools (#4349) - by @KobeNguyent
+  ![Screenshot 2024-05-16 at 16 49 20](https://github.com/codeceptjs/CodeceptJS/assets/7845001/a02f0f99-ac78-4d3f-9774-2cb51c688025)
+
+🐛 *Bug Fixes*
+* fix(cli): stale process (#4367) - by @Horsty80 @kobenguyent
+* fix(runner): screenshot error in beforeSuite/AfterSuite (#4385) - by @kobenguyent
+* fix(cli): gherkin command init with TypeScript (#4366) - by @andonary
+* fix(webApi): error message of dontSeeCookie (#4357) - by @a-stankevich
+
+📖 *Documentation*
+* fix(doc): Expect helper is not described correctly (#4370) - by @kobenguyent
+* fix(docs): some strange characters (#4387) - by @kobenguyent
+* fix: Puppeteer helper doc typo (#4369) - by @yoannfleurydev
+
 ## 3.6.2
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
