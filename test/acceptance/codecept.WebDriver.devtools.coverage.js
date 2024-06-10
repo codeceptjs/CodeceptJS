@@ -4,30 +4,28 @@ module.exports.config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',
-  grep: '@Playwright',
   helpers: {
-    Playwright: {
+    WebDriver: {
       url: TestHelper.siteUrl(),
-      show: false,
-      restart: process.env.BROWSER_RESTART || false,
-      browser: process.env.BROWSER || 'chromium',
-      ignoreHTTPSErrors: true,
-      webkit: {
-        ignoreHTTPSErrors: true,
+      browser: 'Chromium',
+      windowSize: '500x700',
+      devtoolsProtocol: true,
+      waitForTimeout: 5000,
+      capabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=500,700'],
+        },
       },
-    },
-    JSONResponse: {
-      requestHelper: 'Playwright',
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
-      outputPath: 'test/acceptance/output',
+      outputPath: './output',
     },
     ExpectHelper: {},
   },
   include: {},
-  bootstrap: false,
   mocha: {},
+  name: 'acceptance',
   plugins: {
     screenshotOnFail: {
       enabled: true,
@@ -44,7 +42,6 @@ module.exports.config = {
       outputDir: 'output/coverage',
     },
   },
-  name: 'acceptance',
   gherkin: {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],

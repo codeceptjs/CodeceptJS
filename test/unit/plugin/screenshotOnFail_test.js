@@ -64,5 +64,19 @@ describe('screenshotOnFail', () => {
     const regexpFileName = /test1_[0-9]{10}.failed.png/;
     expect(fileName.match(regexpFileName).length).is.equal(1);
   });
+
+  it('should not save screenshot in BeforeSuite', async () => {
+    screenshotOnFail({ uniqueScreenshotNames: true });
+    event.dispatcher.emit(event.test.failed, { title: 'test1', ctx: { _runnable: { title: 'hook: BeforeSuite' } } });
+    await recorder.promise();
+    expect(!screenshotSaved.called).is.ok;
+  });
+
+  it('should not save screenshot in AfterSuite', async () => {
+    screenshotOnFail({ uniqueScreenshotNames: true });
+    event.dispatcher.emit(event.test.failed, { title: 'test1', ctx: { _runnable: { title: 'hook: AfterSuite' } } });
+    await recorder.promise();
+    expect(!screenshotSaved.called).is.ok;
+  });
   // TODO: write more tests for different options
 });
