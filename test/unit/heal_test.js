@@ -26,6 +26,32 @@ describe('heal', () => {
     expect(heal.hasCorrespondingRecipes({ name: 'click' })).to.be.true;
   });
 
+  it('should respect the priority of recipes', async () => {
+    heal.addRecipe('secondPrior', {
+      priority: 2,
+      steps: ['click'],
+      fn: async () => {
+        return ({ I }) => {
+          I.refreshPage();
+        };
+      },
+    });
+
+    heal.addRecipe('firstPrior', {
+      priority: 1,
+      steps: ['refresh'],
+      fn: async () => {
+        return ({ I }) => {
+          I.refreshPage();
+          I.refreshPage();
+        };
+      },
+    });
+
+    expect((await heal.getCodeSuggestions({}))[0].name).to.equal('firstPrior');
+    expect((await heal.getCodeSuggestions({}))[1].name).to.equal('secondPrior');
+  });
+
   it('should have corresponding recipes', () => {
     heal.recipes = { test: { steps: ['step1', 'step2'], fn: () => {} } };
     heal.contextName = 'TestSuite';
