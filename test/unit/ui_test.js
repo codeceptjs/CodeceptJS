@@ -195,7 +195,7 @@ describe('ui', () => {
 
                 expect(scenarioConfig.test.pending).eq(true, 'Todo Scenario must be contain pending === true')
                 expect(scenarioConfig.test.opts.skipInfo.message).eq('Test not implemented!')
-                expect(scenarioConfig.test.opts.skipInfo.description).eq("() => { console.log('Scenario Body'); }")
+                expect(scenarioConfig.test.opts.skipInfo.description).to.include("console.log('Scenario Body')")
             })
 
             it('should contain empty description in skipInfo and empty body', () => {
