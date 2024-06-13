@@ -1,37 +1,34 @@
-const TestHelper = require('../support/TestHelper');
+const TestHelper = require('../support/TestHelper')
 
 module.exports.config = {
-  tests: './*_test.js',
-  timeout: 10000,
-  output: './output',
-  helpers: {
-    Puppeteer: {
-      url: TestHelper.siteUrl(),
-      show: false,
-      chrome: {
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
-      },
+    tests: './*_test.js',
+    timeout: 10000,
+    output: './output',
+    helpers: {
+        Puppeteer: {
+            url: TestHelper.siteUrl(),
+            show: false,
+            chrome: {
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            },
+        },
+        ScreenshotSessionHelper: {
+            require: '../support/ScreenshotSessionHelper.js',
+            outputPath: './output',
+        },
+        ExpectHelper: {},
     },
-    ScreenshotSessionHelper: {
-      require: '../support/ScreenshotSessionHelper.js',
-      outputPath: './output',
+    include: {},
+    bootstrap: false,
+    mocha: {},
+    plugins: {
+        screenshotOnFail: {
+            enabled: true,
+        },
     },
-    ExpectHelper: {},
-  },
-  include: {},
-  bootstrap: false,
-  mocha: {},
-  plugins: {
-    screenshotOnFail: {
-      enabled: true,
+    name: 'acceptance',
+    gherkin: {
+        features: './gherkin/*.feature',
+        steps: ['./gherkin/steps.js'],
     },
-  },
-  name: 'acceptance',
-  gherkin: {
-    features: './gherkin/*.feature',
-    steps: ['./gherkin/steps.js'],
-  },
-};
+}

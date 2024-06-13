@@ -1,67 +1,67 @@
-let chai;
-let expect;
-import('chai').then(_chai => {
-  chai = _chai;
-  expect = chai.expect;
-  chai.use(sinonChai);
-});
-const sinonChai = require('sinon-chai');
+let chai
+let expect
+import('chai').then((_chai) => {
+    chai = _chai
+    expect = chai.expect
+    chai.use(sinonChai)
+})
+const sinonChai = require('sinon-chai')
 
-const sinon = require('sinon');
+const sinon = require('sinon')
 
-const originalOutput = require('../../lib/output');
+const originalOutput = require('../../lib/output')
 
-let output;
+let output
 
 describe('Output', () => {
-  beforeEach(() => {
-    sinon.spy(console, 'log');
-    output = originalOutput;
-  });
+    beforeEach(() => {
+        sinon.spy(console, 'log')
+        output = originalOutput
+    })
 
-  it('should allow the output level to be set', () => {
-    const expectedLevel = 2;
-    output.level(expectedLevel);
-    expect(output.level()).to.equal(expectedLevel);
-  });
+    it('should allow the output level to be set', () => {
+        const expectedLevel = 2
+        output.level(expectedLevel)
+        expect(output.level()).to.equal(expectedLevel)
+    })
 
-  it('should allow the process to be set', () => {
-    const expectedProcess = {
-      profile: 'firefox',
-    };
+    it('should allow the process to be set', () => {
+        const expectedProcess = {
+            profile: 'firefox',
+        }
 
-    output.process(expectedProcess);
-    expect(output.process()).to.equal(`[${expectedProcess}]`);
-  });
+        output.process(expectedProcess)
+        expect(output.process()).to.equal(`[${expectedProcess}]`)
+    })
 
-  it('should allow debug messages when output level >= 2', () => {
-    const debugMsg = 'Dear Henrietta';
+    it('should allow debug messages when output level >= 2', () => {
+        const debugMsg = 'Dear Henrietta'
 
-    output.level(0);
-    output.debug(debugMsg);
-    expect(console.log).not.to.be.called;
+        output.level(0)
+        output.debug(debugMsg)
+        expect(console.log).not.to.be.called
 
-    output.level(1);
-    output.debug(debugMsg);
-    expect(console.log).not.to.be.called;
+        output.level(1)
+        output.debug(debugMsg)
+        expect(console.log).not.to.be.called
 
-    output.level(2);
-    output.debug(debugMsg);
-    expect(console.log).to.have.been.called;
+        output.level(2)
+        output.debug(debugMsg)
+        expect(console.log).to.have.been.called
 
-    output.level(3);
-    output.debug(debugMsg);
-    expect(console.log).to.have.been.calledTwice;
-  });
+        output.level(3)
+        output.debug(debugMsg)
+        expect(console.log).to.have.been.calledTwice
+    })
 
-  it('should not throwing error when using non predefined system color for say function', () => {
-    const debugMsg = 'Dear Henrietta';
+    it('should not throwing error when using non predefined system color for say function', () => {
+        const debugMsg = 'Dear Henrietta'
 
-    output.say(debugMsg, 'orange');
-    expect(console.log).to.have.been.called;
-  });
+        output.say(debugMsg, 'orange')
+        expect(console.log).to.have.been.called
+    })
 
-  afterEach(() => {
-    console.log.restore();
-  });
-});
+    afterEach(() => {
+        console.log.restore()
+    })
+})
