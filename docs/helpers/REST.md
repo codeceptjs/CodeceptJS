@@ -27,6 +27,7 @@ Type: [object][4]
 -   `printCurl` **[boolean][6]?** print cURL request on console logs. False by default.
 -   `timeout` **[number][5]?** timeout for requests in milliseconds. 10000ms by default.
 -   `defaultHeaders` **[object][4]?** a list of default headers.
+-   `httpAgent` **[object][4]?** create an agent with SSL certificate
 -   `onRequest` **[function][7]?** an async function which can update request object.
 -   `onResponse` **[function][7]?** an async function which can update response object.
 -   `maxUploadFileSize` **[number][5]?** set the max content file size in MB when performing api calls.
@@ -43,6 +44,25 @@ Type: [object][4]
       prettyPrintJson: true,
       onRequest: (request) => {
         request.headers.auth = '123';
+      }
+    }
+  }
+}
+```
+
+ With httpAgent
+
+```js
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
+      httpAgent: {
+         key: fs.readFileSync(__dirname + '/path/to/keyfile.key'),
+         cert: fs.readFileSync(__dirname + '/path/to/certfile.cert'),
+         rejectUnauthorized: false,
+         keepAlive: true
       }
     }
   }
