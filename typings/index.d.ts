@@ -55,8 +55,12 @@ declare namespace CodeceptJS {
 
     /** custom prompts */
     prompts?: {
+      /** Returns prompt to write CodeceptJS steps inside pause mode  */
       writeStep?: (html: string, input: string) => Array<AiPrompt>;
-      healStep?: (string, object) => Array<AiPrompt>;
+      /** Returns prompt to heal step when test fails on CI if healing is on  */
+      healStep?: (html: string, object) => Array<AiPrompt>;
+      /** Returns prompt to generate page object inside pause mode  */
+      generatePageObject?: (html: string, extraPrompt?: string, rootLocator?: string) => Array<AiPrompt>;
     },
 
     /** max tokens to use */
@@ -198,6 +202,9 @@ declare namespace CodeceptJS {
        * ```
        */
       JSONResponse?: any;
+
+      /** Enable AI features for development purposes */
+      AI?: any;
 
       [key: string]: any;
     },

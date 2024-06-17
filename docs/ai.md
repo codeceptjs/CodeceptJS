@@ -23,6 +23,7 @@ So, instead of asking "write me a test" it can ask "write a test for **this** pa
 CodeceptJS AI can do the following:
 
 * 🏋️‍♀️ **assist writing tests** in `pause()` or interactive shell mode
+* 📃 **generate page objects** in `pause()` or interactive shell mode
 * 🚑 **self-heal failing tests** (can be used on CI)
 * 💬 send arbitrary prompts to AI provider from any tested page attaching its HTML contents
 
@@ -260,15 +261,29 @@ By evaluating this information you will be able to check how effective AI can be
 
 ### Arbitrary GPT Prompts
 
-What if you want to take ChatGPT on the journey of test automation and ask it questions while browsing pages?
+What if you want to take AI on the journey of test automation and ask it questions while browsing pages?
 
-This is possible with the new `AI` helper. Enable it in your config and it will automatically attach to Playwright, WebDriver, or another web helper you use. It includes the following methods:
+This is possible with the new `AI` helper. Enable it in your config file in `helpers` section:
+
+```js
+// inside codecept.conf
+helpers: {
+  // Playwright, Puppeteer, or WebDrver helper should be enabled too
+  Playwright: {
+  },
+
+  AI: {}
+}
+```
+
+AI helper will be automatically attached to Playwright, WebDriver, or another web helper you use. It includes the following methods:
 
 * `askGptOnPage` - sends GPT prompt attaching the HTML of the page. Large pages will be split into chunks, according to `chunkSize` config. You will receive responses for all chunks.
 * `askGptOnPageFragment` - sends GPT prompt attaching the HTML of the specific element. This method is recommended over `askGptOnPage` as you can reduce the amount of data to be processed.
 * `askGptGeneralPrompt` - sends GPT prompt without HTML.
+* `askForPageObject` - creates PageObject for you, explained in next section.
 
-OpenAI helper won't remove non-interactive elements, so it is recommended to manually control the size of the sent HTML.
+`askGpt` methods won't remove non-interactive elements, so it is recommended to manually control the size of the sent HTML.
 
 Here are some good use cases for this helper:
 
@@ -282,7 +297,84 @@ Here are some good use cases for this helper:
 const pageDoc = await I.askGptOnPageFragment('Act as technical writer, describe what is this page for', '#container');
 ```
 
-As of now, those use cases do not apply to test automation but maybe you can apply them to your testing setup. 
+As of now, those use cases do not apply to test automation but maybe you can apply them to your testing setup.
+
+## Generate PageObjects
+
+Last but not the least. AI helper can be used to quickly prototype PageObjects on pages browsed within interactive session.
+
+![](/img/ai_page_object.png)
+
+Enable AI helper as explained in previous section and launch shell:
+
+```
+npx codeceptjs shell --ai
+```
+
+Also this is availble from `pause()` if AI helper is enabled,
+
+Ensure that browser is started in window mode, then browse the web pages on your site. 
+On a page you want to create PageObject execute `askForPageObject()` command. The only required parameter is the name of a page:
+
+```js
+I.askForPageObject('login')
+```
+
+This command sends request to AI provider should create valid CodeceptJS PageObject.
+Run it few times or switch AI provider if response is not satisfactory to you.
+
+> You can change the style of PageObject and locator preferences by adjusting prompt in a config file
+
+When completed successfully, page object is saved to **output** directory and loaded into the shell as `page` variable so locators and methods can be checked on the fly.
+
+If page object has `signInButton` locator you can quickly check it by typing:
+
+```js
+I.click(page.signInButton)
+```
+
+If page object has `clickForgotPassword` method you can execute it as:
+
+```js
+=> page.clickForgotPassword()
+```
+
+```shell
+Page object for login is saved to .../output/loginPage-1718579784751.js
+Page object registered for this session as `page` variable
+Use `=>page.methodName()` in shell to run methods of page object
+Use `click(page.locatorName)` to check locators of page object
+
+ I.=>page.clickSignUp()
+ I.click(page.signUpLink)
+ I.=> page.enterPassword('asdasd')
+ I.=> page.clickSignIn()
+```
+
+You can improve prompt by passing custom request as a second parameter:
+
+```js
+I.askForPageObject('login', 'implement signIn(username, password) method')
+```
+
+To generate page object for the part of a page, pass in root locator as third parameter.
+
+```js
+I.askForPageObject('login', '', '#auth')
+```
+
+In this case, all generated locators, will use `#auth` as their root element.
+
+Don't aim for perfect PageObjects but find a good enough one, which you can use for writing your tests.
+All created page objects are considered temporary, that's why saved to `output` directory.
+
+Rename created PageObject to remove timestamp and move it from `output` to `pages` folder and include it into codecept.conf file:
+
+```js
+  include: {
+    loginPage: "./pages/loginPage.js",
+    // ...
+```
 
 ## Advanced Configuration
 
@@ -315,6 +407,7 @@ ai: {
   prompts: {
     writeStep: (html, input) => [{ role: 'user', content: 'As a test engineer...' }]
     healStep: (html, { step, error, prevSteps }) => [{ role: 'user', content: 'As a test engineer...' }]
+    generatePageObject: (html, extraPrompt = '',  rootLocator = null) => [{ role: 'user', content: 'As a test engineer...' }]
   }
 }
 ```
@@ -391,4 +484,10 @@ To debug AI features run tests with `DEBUG="codeceptjs:ai"` flag. This will prin
 
 ```
 DEBUG="codeceptjs:ai" npx codeceptjs run --ai
+```
+
+or if you run it in shell mode:
+
+```
+DEBUG="codeceptjs:ai" npx codeceptjs shell --ai
 ```
