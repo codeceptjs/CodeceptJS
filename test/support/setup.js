@@ -1,3 +1,3 @@
 import('chai').then((chai) => {
-    chai.should()
+  chai.should()
 })

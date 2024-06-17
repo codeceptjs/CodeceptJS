@@ -1,6 +1,6 @@
 let expect
 import('chai').then((chai) => {
-    expect = chai.expect
+  expect = chai.expect
 })
 const { DOMParser } = require('@xmldom/xmldom')
 const xpath = require('xpath')
@@ -196,254 +196,254 @@ const xml = `<body>
 </body>`
 
 describe('Locator', () => {
-    beforeEach(() => {
-        doc = new DOMParser().parseFromString(xml, 'application/xhtml+xml')
+  beforeEach(() => {
+    doc = new DOMParser().parseFromString(xml, 'application/xhtml+xml')
+  })
+
+  describe('constructor', () => {
+    describe('with string argument', () => {
+      it('should create css locator', () => {
+        const l = new Locator('#foo')
+        expect(l.type).to.equal('css')
+        expect(l.value).to.equal('#foo')
+        expect(l.toString()).to.equal('#foo')
+      })
+
+      it('should create xpath locator', () => {
+        const l = new Locator('//foo[@bar="baz"]/*')
+        expect(l.type).to.equal('xpath')
+        expect(l.value).to.equal('//foo[@bar="baz"]/*')
+        expect(l.toString()).to.equal('//foo[@bar="baz"]/*')
+      })
+
+      it('should create fuzzy locator', () => {
+        const l = new Locator('foo')
+        expect(l.type).to.equal('fuzzy')
+        expect(l.value).to.equal('foo')
+        expect(l.toString()).to.equal('foo')
+      })
+
+      it('should create custom locator', () => {
+        const l = new Locator({ custom: 'foo' })
+        expect(l.type).to.equal('custom')
+        expect(l.value).to.equal('foo')
+        expect(l.toString()).to.equal('{custom: foo}')
+      })
+
+      it('should create shadow locator', () => {
+        const l = new Locator({ shadow: ['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'] })
+        expect(l.type).to.equal('shadow')
+        expect(l.value).to.deep.equal(['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'])
+        expect(l.toString()).to.equal('{shadow: my-app,recipe-hello-binding,ui-input,input.input}')
+      })
+
+      it('should create described custom default type locator', () => {
+        const l = new Locator('foo', 'defaultLocator')
+        expect(l.type).to.equal('defaultLocator')
+        expect(l.value).to.equal('foo')
+        expect(l.toString()).to.equal('foo')
+      })
+
+      it('should create playwright locator - _react', () => {
+        const l = new Locator({ pw: '_react=button' })
+        expect(l.type).to.equal('pw')
+        expect(l.value).to.equal('_react=button')
+        expect(l.toString()).to.equal('{pw: _react=button}')
+      })
+
+      it('should create playwright locator - _vue', () => {
+        const l = new Locator({ pw: '_vue=button' })
+        expect(l.type).to.equal('pw')
+        expect(l.value).to.equal('_vue=button')
+        expect(l.toString()).to.equal('{pw: _vue=button}')
+      })
+
+      it('should create playwright locator - data-testid', () => {
+        const l = new Locator({ pw: '[data-testid="directions"]' })
+        expect(l.type).to.equal('pw')
+        expect(l.value).to.equal('[data-testid="directions"]')
+        expect(l.toString()).to.equal('{pw: [data-testid="directions"]}')
+      })
     })
 
-    describe('constructor', () => {
-        describe('with string argument', () => {
-            it('should create css locator', () => {
-                const l = new Locator('#foo')
-                expect(l.type).to.equal('css')
-                expect(l.value).to.equal('#foo')
-                expect(l.toString()).to.equal('#foo')
-            })
+    describe('with object argument', () => {
+      it('should create id locator', () => {
+        const l = new Locator({ id: 'foo' })
+        expect(l.type).to.equal('id')
+        expect(l.value).to.equal('foo')
+        expect(l.toString()).to.equal('{id: foo}')
+      })
 
-            it('should create xpath locator', () => {
-                const l = new Locator('//foo[@bar="baz"]/*')
-                expect(l.type).to.equal('xpath')
-                expect(l.value).to.equal('//foo[@bar="baz"]/*')
-                expect(l.toString()).to.equal('//foo[@bar="baz"]/*')
-            })
-
-            it('should create fuzzy locator', () => {
-                const l = new Locator('foo')
-                expect(l.type).to.equal('fuzzy')
-                expect(l.value).to.equal('foo')
-                expect(l.toString()).to.equal('foo')
-            })
-
-            it('should create custom locator', () => {
-                const l = new Locator({ custom: 'foo' })
-                expect(l.type).to.equal('custom')
-                expect(l.value).to.equal('foo')
-                expect(l.toString()).to.equal('{custom: foo}')
-            })
-
-            it('should create shadow locator', () => {
-                const l = new Locator({ shadow: ['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'] })
-                expect(l.type).to.equal('shadow')
-                expect(l.value).to.deep.equal(['my-app', 'recipe-hello-binding', 'ui-input', 'input.input'])
-                expect(l.toString()).to.equal('{shadow: my-app,recipe-hello-binding,ui-input,input.input}')
-            })
-
-            it('should create described custom default type locator', () => {
-                const l = new Locator('foo', 'defaultLocator')
-                expect(l.type).to.equal('defaultLocator')
-                expect(l.value).to.equal('foo')
-                expect(l.toString()).to.equal('foo')
-            })
-
-            it('should create playwright locator - _react', () => {
-                const l = new Locator({ pw: '_react=button' })
-                expect(l.type).to.equal('pw')
-                expect(l.value).to.equal('_react=button')
-                expect(l.toString()).to.equal('{pw: _react=button}')
-            })
-
-            it('should create playwright locator - _vue', () => {
-                const l = new Locator({ pw: '_vue=button' })
-                expect(l.type).to.equal('pw')
-                expect(l.value).to.equal('_vue=button')
-                expect(l.toString()).to.equal('{pw: _vue=button}')
-            })
-
-            it('should create playwright locator - data-testid', () => {
-                const l = new Locator({ pw: '[data-testid="directions"]' })
-                expect(l.type).to.equal('pw')
-                expect(l.value).to.equal('[data-testid="directions"]')
-                expect(l.toString()).to.equal('{pw: [data-testid="directions"]}')
-            })
-        })
-
-        describe('with object argument', () => {
-            it('should create id locator', () => {
-                const l = new Locator({ id: 'foo' })
-                expect(l.type).to.equal('id')
-                expect(l.value).to.equal('foo')
-                expect(l.toString()).to.equal('{id: foo}')
-            })
-
-            it('should create described custom locator', () => {
-                const l = new Locator({ customLocator: '=foo' })
-                expect(l.type).to.equal('customLocator')
-                expect(l.value).to.equal('=foo')
-                expect(l.toString()).to.equal('{customLocator: =foo}')
-            })
-        })
-
-        describe('with Locator object argument', () => {
-            it('should create id locator', () => {
-                const l = new Locator(new Locator({ id: 'foo' }))
-                expect(l).to.eql(new Locator({ id: 'foo' }))
-                expect(l.type).to.equal('id')
-                expect(l.value).to.equal('foo')
-                expect(l.toString()).to.equal('{id: foo}')
-            })
-        })
+      it('should create described custom locator', () => {
+        const l = new Locator({ customLocator: '=foo' })
+        expect(l.type).to.equal('customLocator')
+        expect(l.value).to.equal('=foo')
+        expect(l.toString()).to.equal('{customLocator: =foo}')
+      })
     })
 
-    it('should transform CSS to xpath', () => {
-        const l = new Locator('p > #user', 'css')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1)
-        expect(nodes[0].firstChild.data).to.eql('davert')
+    describe('with Locator object argument', () => {
+      it('should create id locator', () => {
+        const l = new Locator(new Locator({ id: 'foo' }))
+        expect(l).to.eql(new Locator({ id: 'foo' }))
+        expect(l.type).to.equal('id')
+        expect(l.value).to.equal('foo')
+        expect(l.toString()).to.equal('{id: foo}')
+      })
     })
+  })
 
-    it('should build locator to match element by attr', () => {
-        const l = Locator.build('input').withAttr({ 'data-value': 'yes' })
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1)
+  it('should transform CSS to xpath', () => {
+    const l = new Locator('p > #user', 'css')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1)
+    expect(nodes[0].firstChild.data).to.eql('davert')
+  })
+
+  it('should build locator to match element by attr', () => {
+    const l = Locator.build('input').withAttr({ 'data-value': 'yes' })
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1)
+  })
+
+  it('should build locator to match element by class', () => {
+    const l = Locator.build('div').withClassAttr('form-')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(9)
+  })
+
+  it('should build locator to match element containing a text', () => {
+    const l = Locator.build('span').withText('Hey')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1)
+  })
+
+  it('should build locator to match element by exact text', () => {
+    const l = Locator.build('span').withTextEquals('Hey boy')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1)
+  })
+
+  it('should build locator to match element by position', () => {
+    const l = Locator.build('#fieldset-buttons').find('//tr').first().find('td').at(2)
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+    expect(nodes[0].firstChild.data).to.eql('Edit')
+  })
+
+  it('should build complex locator', () => {
+    const l = Locator.build('#fieldset-buttons').find('tr').last().find('td').first()
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+    expect(nodes[0].firstChild.data).to.eql('Show')
+  })
+
+  it('should select a by label', () => {
+    const l = Locator.build('a').withAttr({ href: '#' }).inside(Locator.build('label').withText('Hello'))
+
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(2, l.toXPath())
+    expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath())
+  })
+
+  it('should select child element by name', () => {
+    const l = Locator.build('.form-field').withDescendant(Locator.build('//input[@name="name1"]'))
+    const nodes = xpath.select(l.toXPath(), doc)
+
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('should select element by siblings', () => {
+    const l = Locator.build('//table').withChild(Locator.build('tr').withChild('td').withText('Also Edit'))
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('should throw an error when xpath with round brackets is nested', () => {
+    expect(() => {
+      Locator.build('tr').find('(./td)[@id="id"]')
+    }).to.throw('round brackets')
+  })
+
+  it('should find element with class name contains hyphen', () => {
+    const l = Locator.build('').find('.n-1').first()
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('should throw an error when locator with specific position is nested', () => {
+    expect(() => {
+      Locator.build('tr').withChild(Locator.build('td').first())
+    }).to.throw('round brackets')
+  })
+
+  it('should not select element by deep nested siblings', () => {
+    const l = Locator.build('//table').withChild('td')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
+
+  it('should select element by siblings', () => {
+    const l = Locator.build('//table').find('td').after(Locator.build('td').withText('Also Edit')).first()
+
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+    expect(nodes[0].firstChild.data).to.eql('Also Delete', l.toXPath())
+  })
+
+  it('should translate locator to string', () => {
+    const l = Locator.build('//table').find('td').as('cell')
+    expect(l.toString()).to.eql('cell')
+  })
+
+  it('should be able to add custom locator strategy', () => {
+    Locator.addFilter((selector, locator) => {
+      if (selector.data) {
+        locator.type = 'css'
+        locator.value = `[data-element=${locator.value}]`
+      }
     })
+    const l = Locator.build({ data: 'name' })
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+    expect(nodes[0].firstChild.data).to.eql('davert', l.toXPath())
+    Locator.filters = []
+  })
 
-    it('should build locator to match element by class', () => {
-        const l = Locator.build('div').withClassAttr('form-')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(9)
+  it('should be able to add custom locator strategy', () => {
+    Locator.addFilter((providedLocator, locator) => {
+      if (typeof providedLocator === 'string') {
+        // this is a string
+        if (providedLocator[0] === '=') {
+          locator.value = `.//*[text()='${providedLocator.substring(1)}']`
+          locator.type = 'xpath'
+        }
+      }
     })
+    const l = Locator.build('=Sign In')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+    expect(nodes[0].firstChild.data).to.eql('Sign In', l.toXPath())
+    Locator.filters = []
+  })
 
-    it('should build locator to match element containing a text', () => {
-        const l = Locator.build('span').withText('Hey')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1)
-    })
+  it('should be able to locate complicated locator', () => {
+    const l = Locator.build('.ps-menu-button').withText('Authoring').inside('.ps-submenu-root:nth-child(3)')
 
-    it('should build locator to match element by exact text', () => {
-        const l = Locator.build('span').withTextEquals('Hey boy')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1)
-    })
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+    expect(nodes[0].firstChild.nextSibling.firstChild.data).to.eql('Authoring', l.toXPath())
+  })
 
-    it('should build locator to match element by position', () => {
-        const l = Locator.build('#fieldset-buttons').find('//tr').first().find('td').at(2)
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-        expect(nodes[0].firstChild.data).to.eql('Edit')
-    })
+  it('should find element with last of type with text', () => {
+    const l = Locator.build('.p-confirm-popup:last-of-type button').withText('delete')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
 
-    it('should build complex locator', () => {
-        const l = Locator.build('#fieldset-buttons').find('tr').last().find('td').first()
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-        expect(nodes[0].firstChild.data).to.eql('Show')
-    })
-
-    it('should select a by label', () => {
-        const l = Locator.build('a').withAttr({ href: '#' }).inside(Locator.build('label').withText('Hello'))
-
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(2, l.toXPath())
-        expect(nodes[0].firstChild.data).to.eql('Please click', l.toXPath())
-    })
-
-    it('should select child element by name', () => {
-        const l = Locator.build('.form-field').withDescendant(Locator.build('//input[@name="name1"]'))
-        const nodes = xpath.select(l.toXPath(), doc)
-
-        expect(nodes).to.have.length(1, l.toXPath())
-    })
-
-    it('should select element by siblings', () => {
-        const l = Locator.build('//table').withChild(Locator.build('tr').withChild('td').withText('Also Edit'))
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-    })
-
-    it('should throw an error when xpath with round brackets is nested', () => {
-        expect(() => {
-            Locator.build('tr').find('(./td)[@id="id"]')
-        }).to.throw('round brackets')
-    })
-
-    it('should find element with class name contains hyphen', () => {
-        const l = Locator.build('').find('.n-1').first()
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-    })
-
-    it('should throw an error when locator with specific position is nested', () => {
-        expect(() => {
-            Locator.build('tr').withChild(Locator.build('td').first())
-        }).to.throw('round brackets')
-    })
-
-    it('should not select element by deep nested siblings', () => {
-        const l = Locator.build('//table').withChild('td')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(0, l.toXPath())
-    })
-
-    it('should select element by siblings', () => {
-        const l = Locator.build('//table').find('td').after(Locator.build('td').withText('Also Edit')).first()
-
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-        expect(nodes[0].firstChild.data).to.eql('Also Delete', l.toXPath())
-    })
-
-    it('should translate locator to string', () => {
-        const l = Locator.build('//table').find('td').as('cell')
-        expect(l.toString()).to.eql('cell')
-    })
-
-    it('should be able to add custom locator strategy', () => {
-        Locator.addFilter((selector, locator) => {
-            if (selector.data) {
-                locator.type = 'css'
-                locator.value = `[data-element=${locator.value}]`
-            }
-        })
-        const l = Locator.build({ data: 'name' })
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-        expect(nodes[0].firstChild.data).to.eql('davert', l.toXPath())
-        Locator.filters = []
-    })
-
-    it('should be able to add custom locator strategy', () => {
-        Locator.addFilter((providedLocator, locator) => {
-            if (typeof providedLocator === 'string') {
-                // this is a string
-                if (providedLocator[0] === '=') {
-                    locator.value = `.//*[text()='${providedLocator.substring(1)}']`
-                    locator.type = 'xpath'
-                }
-            }
-        })
-        const l = Locator.build('=Sign In')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-        expect(nodes[0].firstChild.data).to.eql('Sign In', l.toXPath())
-        Locator.filters = []
-    })
-
-    it('should be able to locate complicated locator', () => {
-        const l = Locator.build('.ps-menu-button').withText('Authoring').inside('.ps-submenu-root:nth-child(3)')
-
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(1, l.toXPath())
-        expect(nodes[0].firstChild.nextSibling.firstChild.data).to.eql('Authoring', l.toXPath())
-    })
-
-    it('should find element with last of type with text', () => {
-        const l = Locator.build('.p-confirm-popup:last-of-type button').withText('delete')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(0, l.toXPath())
-    })
-
-    it('should find element with last of type without text', () => {
-        const l = Locator.build('.p-confirm-popup:last-of-type button')
-        const nodes = xpath.select(l.toXPath(), doc)
-        expect(nodes).to.have.length(0, l.toXPath())
-    })
+  it('should find element with last of type without text', () => {
+    const l = Locator.build('.p-confirm-popup:last-of-type button')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
 })
