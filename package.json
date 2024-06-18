@@ -79,7 +79,7 @@
     "axios": "1.7.2",
     "chai": "5.1.1",
     "chai-deep-match": "1.2.1",
-    "chai-exclude": "2.1.0",
+    "chai-exclude": "2.1.1",
     "chai-json-schema": "1.5.1",
     "chai-json-schema-ajv": "5.2.4",
     "chai-match-pattern": "1.3.0",
