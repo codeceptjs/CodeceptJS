@@ -27,7 +27,7 @@ REST: {
 ![Screenshot from 2024-06-17 02-47-37](https://github.com/codeceptjs/CodeceptJS/assets/220264/12acd2c7-18d1-4105-a24b-84070ec4d393)
 
 🐛 *Bug Fixes*
-* fix(heal): wrong priority (#4394) - by @KobeN
+* fix(heal): wrong priority (#4394) - by @kobenguyent
 
 📖 *Documentation*
 * AI docs improvements
