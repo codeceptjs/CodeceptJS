@@ -28,7 +28,7 @@ REST: {
 › [CURL Request] curl --location --request POST https://httpbin.org/post -H ...
 ```
 
-* feat(AI): Generate PageObject, added types, shell improvement ([#4319](https://github.com/codeceptjs/CodeceptJS/issues/4319)) - by **[davert](https://github.com/davert)**
+* feat(AI): Generate PageObject, added types, shell improvement ([#4319](https://github.com/codeceptjs/CodeceptJS/issues/4319)) - by **[DavertMik](https://github.com/DavertMik)**
   * added `askForPageObject` method to generate PageObjects on the fly
   * improved AI types
   * interactive shell improved to restore history
@@ -39,7 +39,7 @@ REST: {
 * fix(heal): wrong priority ([#4394](https://github.com/codeceptjs/CodeceptJS/issues/4394)) - by **[kobenguyent](https://github.com/kobenguyent)**
 
 📖 *Documentation*
-* AI docs improvements
+* AI docs improvements by **[DavertMik](https://github.com/DavertMik)**
 
 ## 3.6.3
 
