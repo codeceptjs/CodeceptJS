@@ -1,3 +1,37 @@
+## 3.6.4
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(rest): print curl (#4396) - by @kobenguyent
+
+```
+Config:
+
+...
+REST: {
+ ...
+ printCurl: true,
+ ...
+}
+... 
+
+› [CURL Request] curl --location --request POST https://httpbin.org/post -H ...
+```
+
+* feat(AI): Generate PageObject, added types, shell improvement (#4319) - by @DavertMik
+  * added `askForPageObject` method to generate PageObjects on the fly
+  * improved AI types
+  * interactive shell improved to restore history
+
+![Screenshot from 2024-06-17 02-47-37](https://github.com/codeceptjs/CodeceptJS/assets/220264/12acd2c7-18d1-4105-a24b-84070ec4d393)
+
+🐛 *Bug Fixes*
+* fix(heal): wrong priority (#4394) - by @kobenguyent
+
+📖 *Documentation*
+* AI docs improvements by @DavertMik
+
 ## 3.6.3
 
 ❤️ Thanks all to those who contributed to make this release! ❤️

@@ -56,6 +56,8 @@ module.exports = function() {
 
 ## PageObject
 
+> ✨ CodeceptJS can [generate PageObjects using AI](/ai#generate-pageobjects). It fetches all interactive elements from a page, generates locators and methods page and writes JS code. Generated page object can be tested on the fly within the same browser session.
+
 If an application has different pages (login, admin, etc) you should use a page object.
 CodeceptJS can generate a template for it with the following command:
 

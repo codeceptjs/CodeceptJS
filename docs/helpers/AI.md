@@ -16,6 +16,8 @@ AI Helper for CodeceptJS.
 This helper class provides integration with the AI GPT-3.5 or 4 language model for generating responses to questions or prompts within the context of web pages. It allows you to interact with the GPT-3.5 model to obtain intelligent responses based on HTML fragments or general prompts.
 This helper should be enabled with any web helpers like Playwright or Puppeteer or WebDrvier to ensure the HTML context is available.
 
+Use it only in development mode. It is recommended to run it only inside pause() mode.
+
 ## Configuration
 
 This helper should be configured in codecept.json or codecept.conf.js
@@ -26,9 +28,37 @@ This helper should be configured in codecept.json or codecept.conf.js
 
 -   `config`  
 
+### askForPageObject
+
+Generates PageObject for current page using AI.
+
+It saves the PageObject to the output directory. You can review the page object and adjust it as needed and move to pages directory.
+Prompt can be customized in a global config file.
+
+```js
+// create page object for whole page
+I.askForPageObject('home');
+
+// create page object with extra prompt
+I.askForPageObject('home', 'implement signIn(username, password) method');
+
+// create page object for a specific element
+I.askForPageObject('home', null, '.detail');
+```
+
+Asks for a page object based on the provided page name, locator, and extra prompt.
+
+#### Parameters
+
+-   `pageName` **[string][1]** The name of the page to retrieve the object for.
+-   `extraPrompt` **([string][1] | null)** An optional extra prompt for additional context or information. 
+-   `locator` **([string][1] | null)** An optional locator to find a specific element on the page. 
+
+Returns **[Promise][2]&lt;[Object][3]>** A promise that resolves to the requested page object.
+
 ### askGptGeneralPrompt
 
-Send a general request to ChatGPT and return response.
+Send a general request to AI and return response.
 
 #### Parameters
 
@@ -68,3 +98,5 @@ Returns **[Promise][2]&lt;[string][1]>** A Promise that resolves to the generate
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
