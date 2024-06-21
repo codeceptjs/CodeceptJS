@@ -1,4 +1,4 @@
-const TestHelper = require('../support/TestHelper');
+const TestHelper = require('../support/TestHelper')
 
 module.exports.config = {
   timeout: 10000,
@@ -8,10 +8,7 @@ module.exports.config = {
       url: TestHelper.siteUrl(),
       show: false,
       chrome: {
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
     },
     ScreenshotSessionHelper: {
@@ -35,4 +32,4 @@ module.exports.config = {
     features: './features/faker.feature',
     steps: ['./defs/faker.js'],
   },
-};
+}

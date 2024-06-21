@@ -73,4 +73,4 @@ module.exports = {
     sendDeleteRequest: 'envoieLaRequêteDelete',
     sendPostRequest: 'envoieLaRequêtePost',
   },
-};
+}

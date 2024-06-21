@@ -55,4 +55,4 @@ module.exports = {
     resizeWindow: 'растягиваю_окно',
     wait: 'жду',
   },
-};
+}

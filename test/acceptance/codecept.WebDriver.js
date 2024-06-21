@@ -1,4 +1,4 @@
-const TestHelper = require('../support/TestHelper');
+const TestHelper = require('../support/TestHelper')
 
 module.exports.config = {
   tests: './*_test.js',
@@ -24,9 +24,10 @@ module.exports.config = {
     ExpectHelper: {},
   },
   include: {},
-  bootstrap: async () => new Promise(done => {
-    setTimeout(done, 5000);
-  }), // let's wait for selenium
+  bootstrap: async () =>
+    new Promise((done) => {
+      setTimeout(done, 5000)
+    }), // let's wait for selenium
   mocha: {},
   name: 'acceptance',
   plugins: {
@@ -38,4 +39,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-};
+}
