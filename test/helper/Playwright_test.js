@@ -733,16 +733,13 @@ describe('Playwright', function () {
 
   describe('#waitForDisabled', () => {
     it('should wait for input text field to be disabled', () =>
-      I.amOnPage('/form/wait_disabled')
-        .then(() => I.waitForDisabled('#text', 1)))
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
 
     it('should wait for input text field to be enabled by xpath', () =>
-      I.amOnPage('/form/wait_disabled')
-        .then(() => I.waitForDisabled("//*[@name = 'test']", 1)))
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)))
 
     it('should wait for a button to be disabled', () =>
-      I.amOnPage('/form/wait_disabled')
-        .then(() => I.waitForDisabled('#text', 1)))
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
   })
 
   describe('#waitForValue', () => {
