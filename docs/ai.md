@@ -220,7 +220,7 @@ ai: {
 
       const result = await makeApiRequest(endpoint, deploymentId, messages)
 
-      return result.choices[0]?.text;
+      return result.choices[0]?.message.content
     } catch (error) {
       console.error("Error calling API:", error);
       throw error;
@@ -253,7 +253,7 @@ async function makeApiRequest(endpoint, deploymentId, messages) {
         'Authorization': `${token}`
       }
     });
-    console.log("API Response:", response.data);
+    return response.data
   } catch (err) {
     console.error("API request failed:", err.response);
   }
