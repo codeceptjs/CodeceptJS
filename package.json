@@ -144,7 +144,7 @@
     "expect": "29.7.0",
     "express": "4.19.2",
     "graphql": "16.9.0",
-    "husky": "8.0.3",
+    "husky": "9.1.1",
     "inquirer-test": "2.0.1",
     "jsdoc": "4.0.3",
     "jsdoc-typeof-plugin": "1.0.0",
