@@ -731,6 +731,17 @@ describe('Playwright', function () {
         .then(() => I.see('button was clicked', '#message')))
   })
 
+  describe('#waitForDisabled', () => {
+    it('should wait for input text field to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+    it('should wait for input text field to be enabled by xpath', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)))
+
+    it('should wait for a button to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+  })
+
   describe('#waitForValue', () => {
     it('should wait for expected value for given locator', () =>
       I.amOnPage('/info')
