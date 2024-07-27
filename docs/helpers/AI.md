@@ -14,13 +14,13 @@ title: AI
 AI Helper for CodeceptJS.
 
 This helper class provides integration with the AI GPT-3.5 or 4 language model for generating responses to questions or prompts within the context of web pages. It allows you to interact with the GPT-3.5 model to obtain intelligent responses based on HTML fragments or general prompts.
-This helper should be enabled with any web helpers like Playwright or Puppeteer or WebDrvier to ensure the HTML context is available.
+This helper should be enabled with any web helpers like Playwright or Puppeteer or WebDriver to ensure the HTML context is available.
 
 Use it only in development mode. It is recommended to run it only inside pause() mode.
 
 ## Configuration
 
-This helper should be configured in codecept.json or codecept.conf.js
+This helper should be configured in codecept.conf.{js|ts}
 
 -   `chunkSize`:  - The maximum number of characters to send to the AI API at once. We split HTML fragments by 8000 chars to not exceed token limit. Increase this value if you use GPT-4.
 
