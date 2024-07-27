@@ -154,6 +154,8 @@ ai: {
 
 #### Azure OpenAI
 
+When your setup using Azure API key
+
 Prerequisite:
 
 * Install `@azure/openai` package
@@ -175,7 +177,88 @@ ai: {
 }
 ```
 
+When your setup using `bearer token`
 
+Prerequisite:
+
+* Install `@azure/openai`, `@azure/identity` packages
+* obtain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET`
+
+```js
+ai: {
+  request: async (messages) => {
+    try {
+      const { OpenAIClient} = require("@azure/openai");
+      const { DefaultAzureCredential } = require("@azure/identity");
+
+      const endpoint = process.env.API_ENDPOINT;
+      const deploymentId = process.env.DEPLOYMENT_ID;
+
+      const client = new OpenAIClient(endpoint, new DefaultAzureCredential());
+      const result = await client.getCompletions(deploymentId, {
+        prompt: messages,
+        model: 'gpt-3.5-turbo' // your preferred model
+      });
+
+      return result.choices[0]?.text;
+    } catch (error) {
+      console.error("Error calling API:", error);
+      throw error;
+    }
+  }
+}
+```
+
+Or you could try with direct API request
+
+```js
+ai: {
+  request: async (messages) => {
+    try {
+      const endpoint = process.env.API_ENDPOINT;
+      const deploymentId = process.env.DEPLOYMENT_ID;
+
+      const result = await makeApiRequest(endpoint, deploymentId, messages)
+
+      return result.choices[0]?.message.content
+    } catch (error) {
+      console.error("Error calling API:", error);
+      throw error;
+    }
+  }
+}
+...
+
+async function getAccessToken() {
+  const credential = new DefaultAzureCredential();
+  const scope = "https://cognitiveservices.azure.com/.default";
+
+  try {
+    const accessToken = await credential.getToken(scope);
+    return `Bearer ${accessToken.token}`;
+  } catch (err) {
+    console.error("Failed to get access token:", err);
+  }
+}
+
+async function makeApiRequest(endpoint, deploymentId, messages) {
+  const token = await getAccessToken();
+  const url = `${endpoint}/openai/deployments/${deploymentId}/chat/completions?api-version=2024-06-01`;
+
+  const data = { messages };
+
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        'Authorization': `${token}`
+      }
+    });
+    return response.data
+  } catch (err) {
+    console.error("API request failed:", err.response);
+  }
+}
+```
 
 ### Writing Tests with AI Copilot
 
