@@ -9,7 +9,6 @@ Build Status:
 
 Appium Helper:
 [![Appium V2 Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml)
-[![Appium V2 Tests - iOS](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml)
 
 Web Helper:
 [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)
