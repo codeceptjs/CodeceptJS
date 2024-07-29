@@ -149,7 +149,7 @@
     "jsdoc": "4.0.3",
     "jsdoc-typeof-plugin": "1.0.0",
     "json-server": "0.10.1",
-    "playwright": "1.45.2",
+    "playwright": "1.45.3",
     "prettier": "^3.3.2",
     "puppeteer": "22.12.1",
     "qrcode-terminal": "0.12.0",
