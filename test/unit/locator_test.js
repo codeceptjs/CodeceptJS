@@ -300,6 +300,15 @@ describe('Locator', () => {
     expect(nodes[0].firstChild.data).to.eql('davert')
   })
 
+  it('should transform CSS having has pseudo to xpath', () => {
+    const l = new Locator('#submit-element:has(button)', 'css')
+    const convertedXpath = l.toXPath();
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(convertedXpath).to.equal('.//*[(./@id = \'submit-element\' and .//button)]')
+    expect(nodes).to.have.length(1)
+    expect(nodes[0].firstChild.data.trim()).to.eql('')
+  })
+
   it('should build locator to match element by attr', () => {
     const l = Locator.build('input').withAttr({ 'data-value': 'yes' })
     const nodes = xpath.select(l.toXPath(), doc)
