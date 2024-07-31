@@ -302,9 +302,9 @@ describe('Locator', () => {
 
   it('should transform CSS having has pseudo to xpath', () => {
     const l = new Locator('#submit-element:has(button)', 'css')
-    const convertedXpath = l.toXPath();
+    const convertedXpath = l.toXPath()
     const nodes = xpath.select(l.toXPath(), doc)
-    expect(convertedXpath).to.equal('.//*[(./@id = \'submit-element\' and .//button)]')
+    expect(convertedXpath).to.equal(".//*[(./@id = 'submit-element' and .//button)]")
     expect(nodes).to.have.length(1)
     expect(nodes[0].firstChild.data.trim()).to.eql('')
   })
