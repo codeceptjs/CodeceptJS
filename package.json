@@ -114,7 +114,7 @@
     "promise-retry": "1.1.1",
     "resq": "1.11.0",
     "sprintf-js": "1.1.1",
-    "uuid": "9.0"
+    "uuid": "10.0"
   },
   "optionalDependencies": {
     "@codeceptjs/detox-helper": "1.0.8"
