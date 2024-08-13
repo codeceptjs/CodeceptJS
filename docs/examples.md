@@ -16,6 +16,7 @@ Playground repository where you can run tests in different helpers on a basic si
 
 Tests repository demonstrate usage of
 
+* Playwright helper
 * Puppeteer helper
 * WebDriver helper
 * TestCafe plugin
@@ -27,7 +28,6 @@ Tests repository demonstrate usage of
 
 CodeceptJS repo contains basic tests (both failing and passing) just to show how it works.
 Our team uses it to test new features and run simple scenarios.
-
 
 ## [CodeceptJS Cucumber E2E Framework](https://github.com/gkushang/codeceptjs-e2e)
 
@@ -147,3 +147,9 @@ This is necessary if all integrations with TMS and CI/CD are already configured,
 * Exemplary code control
 * Ready to launch in a CI/CD system as is
 * OOP, Test data models and builders, endpoint decorators
+
+## [Playwright fun with CodeceptJS](https://github.com/PeterNgTr/codeceptjs-playwright-fun)
+* Tests are written in TS
+* CI/CD with Github Actions
+* Page Object Model is applied
+* ReportPortal Integration

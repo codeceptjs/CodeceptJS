@@ -71,4 +71,4 @@ module.exports = {
     sendPostRequest: 'mache_einen_post_request',
     switchTo: 'wechlse_in_iframe',
   },
-};
+}

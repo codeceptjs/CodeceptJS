@@ -2444,6 +2444,18 @@ I.waitForDetached('#popup');
 
 Returns **void** automatically synchronized promise through #recorder
 
+### waitForDisabled
+
+Waits for element to become disabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][20]** (optional) time in seconds to wait, 1 by default. 
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### waitForElement
 
 Waits for element to be present on page (by default waits for 1sec).

@@ -31,9 +31,6 @@ Please **add your own** by editing this page.
 * [codeceptjs-bshelper](https://github.com/PeterNgTr/codeceptjs-bshelper) - a helper which updates `Test Names` & `Test Results` on Browserstack 
 * [codeceptjs-tbhelper](https://github.com/testingbot/codeceptjs-tbhelper) - a helper which updates `Test Names` & `Test Results` on TestingBot 
 
-## Integrations
-* [codeceptjs-testrail](https://github.com/PeterNgTr/codeceptjs-testrail) - a plugin to integrate with [Testrail](https://www.gurock.com/testrail)
-
 ## Visual-Testing
 * [codeceptjs-resemblehelper](https://github.com/puneet0191/codeceptjs-resemblehelper) - a helper which helps with visual testing using resemble.js. 
 * [codeceptjs-applitoolshelper](https://www.npmjs.com/package/codeceptjs-applitoolshelper) - a helper which helps interaction with [Applitools](https://applitools.com)
@@ -42,8 +39,11 @@ Please **add your own** by editing this page.
 ## Reporters
 * [codeceptjs-rphelper](https://github.com/reportportal/agent-js-codecept) is a CodeceptJS helper which can publish tests results on ReportPortal after execution.
 * [codeceptjs-xray-helper](https://www.npmjs.com/package/codeceptjs-xray-helper) is a CodeceptJS helper which can publish tests results on [XRAY](https://confluence.xpand-it.com/display/XRAYCLOUD/Import+Execution+Results+-+REST).
+* [codeceptjs-xray-cloud-helper](https://www.npmjs.com/package/codeceptjs-xray-cloud-helper) is a helper that automatically retrieves the result of CodeceptJS tests and sends them to XRAY/JIRA(cloud version) via [XRAY Cloud API](https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresults).
 * [codeceptjs-slack-reporter](https://www.npmjs.com/package/codeceptjs-slack-reporter) Get a Slack notification when one or more scenarios fail.
 * [codeceptjs-browserlogs-plugin](https://github.com/pavkam/codeceptjs-browserlogs-plugin) Record the browser logs for failed tests.
+* [codeceptjs-testrail](https://github.com/PeterNgTr/codeceptjs-testrail) - a plugin to integrate with [Testrail](https://www.gurock.com/testrail)
+* [codeceptjs-monocart-coverage](https://github.com/cenfun/codeceptjs-monocart-coverage) - a plugin to generate coverage reports, it integrate with [monocart coverage reports](https://github.com/cenfun/monocart-coverage-reports)
 
 ## Browser request control
 * [codeceptjs-resources-check](https://github.com/luarmr/codeceptjs-resources-check) Load a URL with Puppeteer and listen to the requests while the page is loading. Enabling count the number or check the sizes of the requests.
@@ -56,3 +56,8 @@ Please **add your own** by editing this page.
 
 * [codeceptjs-cmdhelper](https://github.com/thiagodp/codeceptjs-cmdhelper) allows you to run commands in the terminal/console
 * [eslint-plugin-codeceptjs](https://www.npmjs.com/package/eslint-plugin-codeceptjs) Eslint rules for CodeceptJS.
+* [codeceptjs-datalayer-helper](https://github.com/kobenguyent/codeceptjs-datalayer-helper) CodeceptJS DataLayer helper helps you to get the datalayer JavaScript array that is used to store information and send this data to the tag manager.
+* [codeceptjs-a11y-helper](https://github.com/kobenguyent/codeceptjs-a11y-helper) accessibility tests integrated with CodeceptJS - Playwright-axe
+* [codeceptjs-lighthouse-helper](https://github.com/kobenguyent/codeceptjs-lighthouse-helper) lighthouse audit integrated with CodeceptJS - Playwright
+* [Snowplow Data analytics](https://www.npmjs.com/package/@viasat/codeceptjs-snowplow-helper) - Test your Snowplow events implementations with CodeceptJS and Snowplow Micro.
+* [codeceptjs-failure-logger](https://github.com/kobenguyent/codeceptjs-failure-logger) - Log failed CodeceptJS tests to file

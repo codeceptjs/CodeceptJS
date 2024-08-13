@@ -1,3 +1,88 @@
+## 3.6.5
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(helper): playwright > wait for disabled (#4412) - by @kobenguyent
+```
+it('should wait for input text field to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+    it('should wait for input text field to be enabled by xpath', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)))
+
+    it('should wait for a button to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+Waits for element to become disabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+@param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
+@returns {void} automatically synchronized promise through #recorder
+```
+
+🐛 *Bug Fixes*
+* fix(AI): AI is not triggered (#4422) - by @kobenguyent
+* fix(plugin): stepByStep > report doesn't sync properly (#4413) - by @kobenguyent
+* fix: Locator > Unsupported pseudo selector 'has' (#4448) - by @anils92
+
+📖 *Documentation*
+* docs: setup azure open ai using bearer token (#4434) - by @kobenguyent
+
+## 3.6.4
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(rest): print curl (#4396) - by @kobenguyent
+
+```
+Config:
+
+...
+REST: {
+ ...
+ printCurl: true,
+ ...
+}
+... 
+
+› [CURL Request] curl --location --request POST https://httpbin.org/post -H ...
+```
+
+* feat(AI): Generate PageObject, added types, shell improvement (#4319) - by @DavertMik
+  * added `askForPageObject` method to generate PageObjects on the fly
+  * improved AI types
+  * interactive shell improved to restore history
+
+![Screenshot from 2024-06-17 02-47-37](https://github.com/codeceptjs/CodeceptJS/assets/220264/12acd2c7-18d1-4105-a24b-84070ec4d393)
+
+🐛 *Bug Fixes*
+* fix(heal): wrong priority (#4394) - by @kobenguyent
+
+📖 *Documentation*
+* AI docs improvements by @DavertMik
+
+## 3.6.3
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(plugin): coverage with WebDriver - devtools (#4349) - by @KobeNguyent
+  ![Screenshot 2024-05-16 at 16 49 20](https://github.com/codeceptjs/CodeceptJS/assets/7845001/a02f0f99-ac78-4d3f-9774-2cb51c688025)
+
+🐛 *Bug Fixes*
+* fix(cli): stale process (#4367) - by @Horsty80 @kobenguyent
+* fix(runner): screenshot error in beforeSuite/AfterSuite (#4385) - by @kobenguyent
+* fix(cli): gherkin command init with TypeScript (#4366) - by @andonary
+* fix(webApi): error message of dontSeeCookie (#4357) - by @a-stankevich
+
+📖 *Documentation*
+* fix(doc): Expect helper is not described correctly (#4370) - by @kobenguyent
+* fix(docs): some strange characters (#4387) - by @kobenguyent
+* fix: Puppeteer helper doc typo (#4369) - by @yoannfleurydev
+
 ## 3.6.2
 
 ❤️ Thanks all to those who contributed to make this release! ❤️

@@ -57,4 +57,4 @@ module.exports = {
     resizeWindow: '调整窗口尺寸',
     wait: '等',
   },
-};
+}

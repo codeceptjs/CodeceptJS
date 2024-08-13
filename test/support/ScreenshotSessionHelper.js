@@ -1,31 +1,31 @@
-const Helper = codecept_helper;
+const Helper = codecept_helper
 
-const crypto = require('crypto');
-const fs = require('fs');
+const crypto = require('crypto')
+const fs = require('fs')
 
 class ScreenshotSessionHelper extends Helper {
   constructor(config) {
-    super(config);
-    this.outputPath = output_dir;
+    super(config)
+    this.outputPath = output_dir
   }
 
   getSHA256Digests(files = []) {
-    const digests = [];
+    const digests = []
 
     for (const file of files) {
-      const hash = crypto.createHash('sha256');
-      const data = fs.readFileSync(file);
-      hash.update(data);
+      const hash = crypto.createHash('sha256')
+      const data = fs.readFileSync(file)
+      hash.update(data)
 
-      digests.push(hash.digest('base64'));
+      digests.push(hash.digest('base64'))
     }
 
-    return digests;
+    return digests
   }
 
   getOutputPath() {
-    return this.outputPath;
+    return this.outputPath
   }
 }
 
-module.exports = ScreenshotSessionHelper;
+module.exports = ScreenshotSessionHelper

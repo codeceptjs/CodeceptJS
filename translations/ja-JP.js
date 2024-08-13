@@ -57,4 +57,4 @@ module.exports = {
     resizeWindow: 'ウィンドウをリサイズする',
     wait: '待つ',
   },
-};
+}

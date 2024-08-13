@@ -62,4 +62,4 @@ module.exports = {
     resizeWindow: 'redimensionaJanela',
     wait: 'aguardo',
   },
-};
+}

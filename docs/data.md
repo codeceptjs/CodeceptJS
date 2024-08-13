@@ -92,11 +92,8 @@ I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest
 ## GraphQL
 
 [GraphQL helper](https://codecept.io/helpers/GraphQL/) allows sending GraphQL queries and mutations to application, over Http.
-<<<<<<< HEAD
-This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver helper for browser testing.
-=======
-This is a tool to make shortcuts and create your data pragmatically via GraphQL endpoint. However, it doesn't provide tools for testing the endpoint, so it should be paired with WebDriver helpers for browser testing.
->>>>>>> 3.x
+
+This tool allows you to create shortcuts and manage your data pragmatically via a GraphQL endpoint. However, it does not include tools for testing the endpoint, so it should be used in conjunction with WebDriver helpers for browser testing.
 
 Enable GraphQL helper in the config. It is recommended to set `endpoint`, the URL to which the requests go to. If you need some authorization you can optionally set default headers too.
 

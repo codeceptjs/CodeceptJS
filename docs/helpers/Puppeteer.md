@@ -2476,7 +2476,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 [18]: https://codecept.io/helpers/FileSystem
 
-[19]: https://pptr.dev/next/guides/request-interception
+[19]: https://pptr.dev/guides/network-interception
 
 [20]: https://github.com/GoogleChrome/puppeteer/issues/1313
 

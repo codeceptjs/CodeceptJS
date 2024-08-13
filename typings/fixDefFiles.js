@@ -25,9 +25,13 @@ filePath.forEach(file => {
 });
 
 function modifyContent(content) {
-  const modifiedContent = content.replace(/    class MockServer {/g, '    // @ts-ignore\n'
-    + '    class MockServer {').replace(/    type MockServerConfig = {/g, '    // @ts-ignore\n'
+  const modifiedContent = content.replace(/    class MockServer {/, '    // @ts-ignore\n'
+    + '    class MockServer {').replace(/    type MockServerConfig = {/, '    // @ts-ignore\n'
     + '    type MockServerConfig = {').replace(/    class ExpectHelper {/g, '    // @ts-ignore\n'
-    + '    class ExpectHelper {');
+    + '    class ExpectHelper {').replace(/    type PlaywrightConfig = {/, '    // @ts-ignore\n'
+    + '    type PlaywrightConfig = {').replace(/    type PuppeteerConfig = {/, '    // @ts-ignore\n'
+    + '    type PuppeteerConfig = {').replace(/    type RESTConfig = {/, '    // @ts-ignore\n'
+    + '    type RESTConfig = {').replace(/    type WebDriverConfig = {/, '    // @ts-ignore\n'
+    + '    type WebDriverConfig = {')
   return modifiedContent;
 }

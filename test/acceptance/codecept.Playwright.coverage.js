@@ -1,4 +1,4 @@
-const TestHelper = require('../support/TestHelper');
+const TestHelper = require('../support/TestHelper')
 
 module.exports.config = {
   tests: './*_test.js',
@@ -23,7 +23,7 @@ module.exports.config = {
       require: '../support/ScreenshotSessionHelper.js',
       outputPath: 'test/acceptance/output',
     },
-    Expect: {},
+    ExpectHelper: {},
   },
   include: {},
   bootstrap: false,
@@ -49,4 +49,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-};
+}
