@@ -455,4 +455,22 @@ describe('Locator', () => {
     const nodes = xpath.select(l.toXPath(), doc)
     expect(nodes).to.have.length(0, l.toXPath())
   })
+
+  it('should find element with attribute value starts with text', () => {
+    const l = Locator.build('a').withAttrStartsWith('class', 'ps-menu-button')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(10, l.toXPath())
+  })
+
+  it('should find element with attribute value ends with text', () => {
+    const l = Locator.build('a').withAttrEndsWith('class', 'ps-menu-button')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(9, l.toXPath())
+  })
+
+  it('should find element with attribute value contains text', () => {
+    const l = Locator.build('a').withAttrEndsWith('class', 'active')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
 })
