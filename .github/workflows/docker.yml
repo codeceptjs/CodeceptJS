@@ -27,7 +27,7 @@ jobs:
 
       - name: Get the current tag
         id: currentTag
-        run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+        run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG && echo "TAG="$TAG >> "$GITHUB_ENV"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
