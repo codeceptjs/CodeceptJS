@@ -315,12 +315,28 @@ AI healing can solve exactly one problem: if a locator of an element has changed
 
 > You can define your own [heal recipes](./heal) that won't use AI to revive failing tests.
 
-Heal actions **work only on actions like `click`, `fillField`**, etc, and won't work on assertions, waiters, grabbers, etc. Assertions can't be guessed by AI, the same way as grabbers, as this may lead to unpredictable results.
+Heal actions **work only on actions like `click`, `fillField`, etc, and won't work on assertions, waiters, grabbers, etc. Assertions can't be guessed by AI, the same way as grabbers, as this may lead to unpredictable results.
 
 If Heal plugin successfully fixes the step, it will print a suggested change at the end of execution. Take it as actionable advice and use it to update the codebase. Heal plugin is supposed to be used on CI, and works automatically without human assistance.
 
 
-To start, make sure [AI provider is connected](#set-up-ai-provider), and [heal recipes were created](./heal#how-to-start-healing) and included into `codecept.conf.js` or `codecept.conf.ts` config file. Then enable `heal` plugin:
+To start, make sure [AI provider is connected](#set-up-ai-provider), and [heal recipes were created](/heal#how-to-start-healing) by running this command:
+
+```
+npx codeceptjs generate:heal
+```
+
+Heal recipes should be included into `codecept.conf.js` or `codecept.conf.ts` config file:
+
+```js
+
+require('./heal')
+
+exports.config = {
+  // ... your codeceptjs config
+```
+
+Then enable `heal` plugin:
 
 ```js
 plugins: {
@@ -330,7 +346,7 @@ plugins: {
 }
 ```
 
-If you tests in AI mode and test fails, a request to AI provider will be sent
+If you run tests in AI mode and a test fails, a request to AI provider will be sent
 
 ```
 npx codeceptjs run --ai
