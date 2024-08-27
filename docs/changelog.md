@@ -7,6 +7,35 @@ layout: Section
 
 # Releases
 
+## 3.6.5
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(helper): playwright > wait for disabled ([#4412](https://github.com/codeceptjs/CodeceptJS/issues/4412)) - by **[kobenguyent](https://github.com/kobenguyent)**
+```
+it('should wait for input text field to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+    it('should wait for input text field to be enabled by xpath', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)))
+
+    it('should wait for a button to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+Waits for element to become disabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+ **[param](https://github.com/param)** {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator. **[param](https://github.com/param)** {number} [sec=1] (optional) time in seconds to wait, 1 by default. **[returns](https://github.com/returns)** {void} automatically synchronized promise through #recorder
+```
+
+🐛 *Bug Fixes*
+* fix(AI): AI is not triggered ([#4422](https://github.com/codeceptjs/CodeceptJS/issues/4422)) - by **[kobenguyent](https://github.com/kobenguyent)**
+* fix(plugin): stepByStep > report doesn't sync properly ([#4413](https://github.com/codeceptjs/CodeceptJS/issues/4413)) - by **[kobenguyent](https://github.com/kobenguyent)**
+* fix: Locator > Unsupported pseudo selector 'has' ([#4448](https://github.com/codeceptjs/CodeceptJS/issues/4448)) - by **[anils92](https://github.com/anils92)**
+
+📖 *Documentation*
+* docs: setup azure open ai using bearer token ([#4434](https://github.com/codeceptjs/CodeceptJS/issues/4434)) - by **[kobenguyent](https://github.com/kobenguyent)**
+
 ## 3.6.4
 
 ❤️ Thanks all to those who contributed to make this release! ❤️

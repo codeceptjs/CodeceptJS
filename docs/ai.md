@@ -1,6 +1,6 @@
 ---
 permalink: /ai
-title: Testing with AI 🪄 
+title: Testing with AI 🪄
 ---
 
 # 🪄 Testing with AI
@@ -37,7 +37,7 @@ AI providers have limits on input tokens but HTML pages can be huge. However, so
 
 Even though, the HTML is still quite big and may exceed the token limit. So we recommend using models with at least 16K input tokens, (approx. 50K of HTML text), which should be enough for most web pages. It is possible to strictly limit the size of HTML to not exceed tokens limit.
 
-> ❗AI features require sending HTML contents to AI provider. Choosing one may depend on the descurity policy of your company. Ask your security department which AI providers you can use. 
+> ❗AI features require sending HTML contents to AI provider. Choosing one may depend on the descurity policy of your company. Ask your security department which AI providers you can use.
 
 
 
@@ -91,7 +91,7 @@ ai: {
       model: 'gpt-3.5-turbo-0125',
       messages,
     });
-    
+
     return completion?.choices[0]?.message?.content;
   }
 }
@@ -146,7 +146,7 @@ ai: {
       model: 'claude-2.1',
       max_tokens: 1024,
       messages
-    });      
+    });
     return resp.content.map((c) => c.text).join('\n\n');
   }
 }
@@ -167,7 +167,7 @@ ai: {
     const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
 
     const client = new OpenAIClient(
-      "https://<resource name>.openai.azure.com/", 
+      "https://<resource name>.openai.azure.com/",
       new AzureKeyCredential("<Azure API key>")
     );
     const { choices } = await client.getCompletions("<deployment ID>", messages);
@@ -260,7 +260,7 @@ async function makeApiRequest(endpoint, deploymentId, messages) {
 }
 ```
 
-### Writing Tests with AI Copilot
+## Writing Tests with AI Copilot
 
 If AI features are enabled when using [interactive pause](/basics/#debug) with `pause()` command inside tests:
 
@@ -302,11 +302,11 @@ GPT will generate code and data and CodeceptJS will try to execute its code. If 
 
 This AI copilot works best with long static forms. In the case of complex and dynamic single-page applications, it may not perform as well, as the form may not be present on HTML page yet. For instance, interacting with calendars or inputs with real-time validations (like credit cards) can not yet be performed by AI.
 
-Please keep in mind that GPT can't react to page changes and operates with static text only. This is why it is not ready yet to write the test completely. However, if you are new to CodeceptJS and automated testing AI copilot may help you write tests more efficiently. 
+Please keep in mind that GPT can't react to page changes and operates with static text only. This is why it is not ready yet to write the test completely. However, if you are new to CodeceptJS and automated testing AI copilot may help you write tests more efficiently.
 
 > 👶 Enable AI copilot for junior test automation engineers. It may help them to get started with CodeceptJS and to write good semantic locators.
 
-### Self-Healing Tests
+## Self-Healing Tests
 
 In large test suites, the cost of maintaining tests goes exponentially. That's why any effort that can improve the stability of tests pays itself. That's why CodeceptJS has concept of [heal recipes](./heal), functions that can be executed on a test failure. Those functions can try to revive the test and continue execution. When combined with AI, heal recipe can ask AI provider how to fix the test. It will provide error message, step being executed and HTML context of a page. Based on this information AI can suggest the code to be executed to fix the failing test.
 
@@ -358,7 +358,7 @@ When execution finishes, you will receive information on token usage and code su
 By evaluating this information you will be able to check how effective AI can be for your case.
 
 
-### Arbitrary GPT Prompts
+## Arbitrary Prompts
 
 What if you want to take AI on the journey of test automation and ask it questions while browsing pages?
 
@@ -412,7 +412,7 @@ npx codeceptjs shell --ai
 
 Also this is availble from `pause()` if AI helper is enabled,
 
-Ensure that browser is started in window mode, then browse the web pages on your site. 
+Ensure that browser is started in window mode, then browse the web pages on your site.
 On a page you want to create PageObject execute `askForPageObject()` command. The only required parameter is the name of a page:
 
 ```js
@@ -437,6 +437,8 @@ If page object has `clickForgotPassword` method you can execute it as:
 ```js
 => page.clickForgotPassword()
 ```
+
+Here is an example of a session:
 
 ```shell
 Page object for login is saved to .../output/loginPage-1718579784751.js
@@ -481,11 +483,11 @@ GPT prompts and HTML compression can also be configured inside `ai` section of `
 
 ```js
 ai: {
-  // define how requests to AI are sent 
+  // define how requests to AI are sent
   request: (messages) => {
     // ...
   }
-  // redefine prompts 
+  // redefine prompts
   prompts: {
     // {}
   },
