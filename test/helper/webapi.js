@@ -1605,7 +1605,7 @@ module.exports.tests = function () {
     })
   })
 
-  describe.only('#focus, #blur', () => {
+  describe('#focus, #blur', () => {
     beforeEach(function () {
       if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
     })
