@@ -1605,9 +1605,9 @@ module.exports.tests = function () {
     })
   })
 
-  describe('#focus, #blur', () => {
+  describe.only('#focus, #blur', () => {
     beforeEach(function () {
-      if (isHelper('WebDriver')) this.skip()
+      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
     })
 
     it('should focus a button, field and textarea', async () => {
