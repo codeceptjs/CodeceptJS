@@ -66,7 +66,8 @@
     "types-fix": "node typings/fixDefFiles.js",
     "dtslint": "npm run types-fix && tsd",
     "prepare": "husky install",
-    "prepare-release": "./runok.js versioning && ./runok.js get:commit-log"
+    "prepare-release": "./runok.js versioning && ./runok.js get:commit-log",
+    "publish-beta": "./runok.js publish:next-beta-version"
   },
   "dependencies": {
     "@codeceptjs/configure": "1.0.1",
@@ -155,6 +156,7 @@
     "qrcode-terminal": "0.12.0",
     "rosie": "2.1.1",
     "runok": "0.9.3",
+    "semver": "7.6.3",
     "sinon": "18.0.0",
     "sinon-chai": "3.7.0",
     "testcafe": "3.5.0",
