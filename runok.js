@@ -10,6 +10,8 @@ const {
   runok,
 } = require('runok')
 const contributors = require('contributor-faces')
+const { execSync } = require('node:child_process');
+const semver = require('semver');
 
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`
@@ -477,6 +479,47 @@ ${changelog}`
         '',
       )
     fs.writeFileSync('./README.md', readmeContent)
+  },
+
+  getCurrentBetaVersion() {
+    try {
+      const output = execSync('npm view codeceptjs versions --json').toString();
+      const versions = JSON.parse(output);
+      const betaVersions = versions.filter(version => version.includes('beta'));
+      const latestBeta = betaVersions.length ? betaVersions[betaVersions.length - 1] : null;
+      console.log(`Current beta version: ${latestBeta}`)
+      return latestBeta;
+    } catch (error) {
+      console.error('Error fetching package versions:', error);
+      process.exit(1);
+    }
+  },
+
+  publishNextBetaVersion() {
+    const currentBetaVersion = this.getCurrentBetaVersion()
+    if (!currentBetaVersion) {
+      console.error('No beta version found.');
+      process.exit(1);
+    }
+
+    const nextBetaVersion = semver.inc(currentBetaVersion, 'prerelease', 'beta');
+    console.log(`Publishing version: ${nextBetaVersion}`);
+
+    try {
+      // Save original version
+      const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+      const originalVersion = packageJson.version;
+      execSync(`npm version ${nextBetaVersion} --no-git-tag-version`);
+      execSync('npm publish --tag beta');
+      console.log(`Successfully published ${nextBetaVersion}`);
+
+      // Revert to original version
+      execSync(`npm version ${originalVersion} --no-git-tag-version`);
+      console.log(`Reverted back to original version: ${originalVersion}`);
+    } catch (error) {
+      console.error('Error publishing package:', error);
+      process.exit(1);
+    }
   },
 }
 
