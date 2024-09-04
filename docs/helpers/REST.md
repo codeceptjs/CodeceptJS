@@ -69,6 +69,22 @@ Type: [object][4]
 }
 ```
 
+```js
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
+      httpAgent: {
+         ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
+         rejectUnauthorized: false,
+         keepAlive: true
+      }
+    }
+  }
+}
+```
+
 ## Access From Helpers
 
 Send REST requests by accessing `_executeRequest` method:
