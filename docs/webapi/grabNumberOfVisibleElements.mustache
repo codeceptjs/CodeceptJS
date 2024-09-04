@@ -3,7 +3,9 @@ Resumes test execution, so **should be used inside async function with `await`**
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
+let numOfElementsWithWait = await I.grabNumberOfVisibleElements('p', 2); // timeout applied
 ```
 
 @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+@param {number} [sec] (optional, `1` by default) time in seconds to wait
 @returns {Promise<number>} number of visible elements
