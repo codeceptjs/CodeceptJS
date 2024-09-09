@@ -68,6 +68,7 @@ module.exports = {
     sendGetRequest: 'mache_einen_get_request',
     sendPutRequest: 'mache_einen_put_request',
     sendDeleteRequest: 'mache_einen_delete_request',
+    sendDeleteRequestWithPayload: 'mache_einen_delete_request_mit_payload',
     sendPostRequest: 'mache_einen_post_request',
     switchTo: 'wechlse_in_iframe',
   },

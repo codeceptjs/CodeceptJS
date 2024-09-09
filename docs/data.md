@@ -54,6 +54,7 @@ I.sendPostRequest()
 I.sendPutRequest()
 I.sendPatchRequest()
 I.sendDeleteRequest()
+I.sendDeleteRequestWithPayload()
 ```
 
 As well as a method for setting headers: `haveRequestHeaders`.

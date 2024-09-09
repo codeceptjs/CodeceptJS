@@ -148,6 +148,7 @@ REST helper can send GET/POST/PATCH/etc requests to REST API endpoint:
 * [`I.sendPutRequest()`](/helpers/REST#sendPutRequest)
 * [`I.sendPatchRequest()`](/helpers/REST#sendPatchRequest)
 * [`I.sendDeleteRequest()`](/helpers/REST#sendDeleteRequest)
+* [`I.sendDeleteRequestWithPayload()`](/helpers/REST#sendDeleteRequestWithPayload)
 * ...
 
 Authentication headers can be set in [helper's config](https://codecept.io/helpers/REST/#configuration) or per test with headers or special methods like `I.amBearerAuthenticated`.

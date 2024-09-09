@@ -156,6 +156,22 @@ I.sendDeleteRequest('/api/users/1');
 
 Returns **[Promise][2]&lt;any>** response
 
+### sendDeleteRequestWithPayload
+
+Sends DELETE request to API with payload.
+
+```js
+I.sendDeleteRequestWithPayload('/api/users/1', { author: 'john' });
+```
+
+#### Parameters
+
+-   `url` **any** 
+-   `payload` **any** the payload to be sent. By default it is sent as an empty object 
+-   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
+
+Returns **[Promise][2]&lt;any>** response
+
 ### sendGetRequest
 
 Send GET request to REST API
