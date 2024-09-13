@@ -96,4 +96,18 @@ describe('run-rerun command', () => {
       },
     )
   })
+
+  it('should throw exit code 1 if all tests were supposed to pass', (done) => {
+    exec(
+      `FAIL_ATTEMPT=0  ${codecept_run_config('codecept.conf.pass_all_test.js', '@RunRerun - fail second test')} --debug`,
+      (err, stdout) => {
+        expect(stdout).toContain('Process run 1 of max 3, success runs 1/3')
+        expect(stdout).toContain('Fail run 2 of max 3, success runs 1/3')
+        expect(stdout).toContain('Process run 3 of max 3, success runs 2/3')
+        expect(stdout).toContain('Flaky tests detected!')
+        expect(err.code).toBe(1)
+        done()
+      },
+    )
+  })
 })
