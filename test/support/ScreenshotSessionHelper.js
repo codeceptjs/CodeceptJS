@@ -11,10 +11,10 @@ class ScreenshotSessionHelper extends Helper {
 
   async getSHA256Digests(files = []) {
     if (!Array.isArray(files)) {
-      throw new TypeError('Expected an array of file paths');
+      throw new TypeError('Expected an array of file paths')
     }
 
-    const digests = [];
+    const digests = []
 
     for (const file of files) {
       try {
