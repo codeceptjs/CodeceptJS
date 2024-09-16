@@ -17,24 +17,24 @@ Scenario('simple session @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
 
 Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright @WebDriver', async ({ I }) => {
   I.amOnPage('/')
-  I.saveScreenshot('session_default_1.png')
+  I.saveScreenshot('default_session_1.png')
 
   session('john', () => {
     I.amOnPage('/info')
-    I.saveScreenshot('session_john_1.png')
+    I.saveScreenshot('john_session_1.png')
   })
 
-  I.saveScreenshot('session_default_2.png')
+  I.saveScreenshot('default_session_2.png')
 
   session('john', () => {
-    I.saveScreenshot('session_john_2.png')
+    I.saveScreenshot('john_session_2.png')
   })
 
   const [default1Digest, default2Digest, john1Digest, john2Digest] = await I.getSHA256Digests([
-    `${output_dir}/session_default_1.png`,
-    `${output_dir}/session_default_2.png`,
-    `${output_dir}/john_session_john_1.png`,
-    `${output_dir}/session_john_2.png`,
+    `${output_dir}/default_session_1.png`,
+    `${output_dir}/default_session_2.png`,
+    `${output_dir}/john_john_session_1.png`,
+    `${output_dir}/john_session_2.png`,
   ])
 
   // Assert that screenshots of same page in same session are equal
