@@ -32,7 +32,7 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
 ![Screenshot 2024-09-02 at 15 24 53](https://github.com/user-attachments/assets/efff0312-1229-44b6-a94f-c9b9370b9a64)
 
 🐛 *Bug Fixes*
-* fix(AI): minor AI improvements - by @davert
+* fix(AI): minor AI improvements - by @DavertMik
 * fix(AI): add missing await in AI.js (#4486) - by @tomaculum
 * fix(playwright): no async save video page (#4472) - by @kobenguyent
 * fix(rest): httpAgent condition (#4484) - by @kobenguyent
@@ -58,7 +58,7 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
 ```
 
 📖 *Documentation*
-* doc(AI): minor AI improvements - by @davert
+* doc(AI): minor AI improvements - by @DavertMik
 
 ## 3.6.5
 
