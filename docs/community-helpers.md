@@ -43,6 +43,7 @@ Please **add your own** by editing this page.
 * [codeceptjs-slack-reporter](https://www.npmjs.com/package/codeceptjs-slack-reporter) Get a Slack notification when one or more scenarios fail.
 * [codeceptjs-browserlogs-plugin](https://github.com/pavkam/codeceptjs-browserlogs-plugin) Record the browser logs for failed tests.
 * [codeceptjs-testrail](https://github.com/PeterNgTr/codeceptjs-testrail) - a plugin to integrate with [Testrail](https://www.gurock.com/testrail)
+* [codeceptjs-monocart-coverage](https://github.com/cenfun/codeceptjs-monocart-coverage) - a plugin to generate coverage reports, it integrate with [monocart coverage reports](https://github.com/cenfun/monocart-coverage-reports)
 
 ## Browser request control
 * [codeceptjs-resources-check](https://github.com/luarmr/codeceptjs-resources-check) Load a URL with Puppeteer and listen to the requests while the page is loading. Enabling count the number or check the sizes of the requests.
