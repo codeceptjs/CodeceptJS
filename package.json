@@ -74,6 +74,7 @@
     "@cucumber/cucumber-expressions": "17",
     "@cucumber/gherkin": "26",
     "@cucumber/messages": "24.1.0",
+    "@types/chai-string": "^1.4.5",
     "@xmldom/xmldom": "0.8.10",
     "acorn": "8.11.3",
     "arrify": "2.0.1",
