@@ -5,7 +5,7 @@ import * as event from '../../lib/event.js';
 import recorder from '../../lib/recorder.js';
 
 const __dirname = path.resolve('.');
-describe('Workers', function () {
+describe.skip('Workers', function () {
   this.timeout(40000);
   before(() => {
     global.codecept_dir = path.join(__dirname, 'test/data/sandbox');

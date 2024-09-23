@@ -5,15 +5,20 @@ import * as secret from '../../lib/secret.js';
 import Locator from '../../lib/locator.js';
 import customLocators from '../../lib/plugin/customLocator.js';
 
-let expect;
-let assert;
-import('chai').then(chai => {
-  expect = chai.expect;
-  assert = chai.assert;
-});
+import { expect, assert } from 'chai';
+import test from '../../lib/utils.js'; // importing test method
 
+// To get __dirname in ESM
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Path to data file
 const dataFile = path.join(__dirname, '/../data/app/db');
-const formContents = require('../../lib/utils.js').test.submittedData(dataFile);
+
+// Accessing formContents from test.submittedData
+const formContents = test.submittedData(dataFile);
+
 
 let originalLocators;
 let I;
