@@ -61,4 +61,4 @@ export default {
     resizeWindow: 'ridimesiono_la_finestra',
     wait: 'aspetto',
   },
-};
+}

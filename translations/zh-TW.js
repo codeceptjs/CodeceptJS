@@ -57,4 +57,4 @@ export default {
     resizeWindow: '調整窗口尺寸',
     wait: '等',
   },
-};
+}

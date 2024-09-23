@@ -55,4 +55,4 @@ export default {
     resizeWindow: 'растягиваю_окно',
     wait: 'жду',
   },
-};
+}

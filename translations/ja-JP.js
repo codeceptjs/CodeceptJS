@@ -57,4 +57,4 @@ export default {
     resizeWindow: 'ウィンドウをリサイズする',
     wait: '待つ',
   },
-};
+}

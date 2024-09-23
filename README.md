@@ -9,7 +9,6 @@ Build Status:
 
 Appium Helper:
 [![Appium V2 Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml)
-[![Appium V2 Tests - iOS](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_iOS.yml)
 
 Web Helper:
 [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)
@@ -46,7 +45,7 @@ CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently, 
 
 * [**Playwright**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Playwright.md) - is a Node library to automate the Chromium, WebKit and Firefox browsers with a single API.
 * [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
-* [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver protocol.
+* [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver or Devtools protocol.
 * [**TestCafe**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
 * [**Appium**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 * [**Detox**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimed to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially well for React Native apps.
@@ -315,8 +314,8 @@ Thanks all to those who are and will have contributing to this awesome project!
 <a href="https://github.com/VikalpP"><img src="https://avatars.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
 <a href="https://github.com/elaichenkov"><img src="https://avatars.githubusercontent.com/u/29764053?v=4" title="elaichenkov" width="80" height="80"></a>
 <a href="https://github.com/BorisOsipov"><img src="https://avatars.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
-<a href="https://github.com/hubidu"><img src="https://avatars.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
 <a href="https://github.com/nitschSB"><img src="https://avatars.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
+<a href="https://github.com/hubidu"><img src="https://avatars.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
 <a href="https://github.com/jploskonka"><img src="https://avatars.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
 <a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
 <a href="https://github.com/maojunxyz"><img src="https://avatars.githubusercontent.com/u/28778042?v=4" title="maojunxyz" width="80" height="80"></a>

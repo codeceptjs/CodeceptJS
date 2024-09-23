@@ -1376,12 +1376,16 @@ Returns **[Promise][22]&lt;[string][9]>** title
 
 Returns full URL of request matching parameter "urlMatch".
 
+Examples:
+
+```js
+I.grabTrafficUrl('https://api.example.com/session');
+I.grabTrafficUrl(/session.*start/);
+```
+
 #### Parameters
 
--   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.Examples:```js
-    I.grabTrafficUrl('https://api.example.com/session');
-    I.grabTrafficUrl(/session.*start/);
-    ```
+-   `urlMatch` **([string][9] | [RegExp][11])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
 Returns **[Promise][22]&lt;any>** 
 
@@ -2202,11 +2206,14 @@ I.setPlaywrightRequestHeaders({
 
 ### startRecordingTraffic
 
-Resets all recorded network requests.
+Starts recording the network traffics.
+This also resets recorded network requests.
 
 ```js
-I.flushNetworkTraffics();
+I.startRecordingTraffic();
 ```
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### startRecordingWebSocketMessages
 
@@ -2434,6 +2441,18 @@ I.waitForDetached('#popup');
 
 -   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
 -   `sec` **[number][20]** (optional, `1` by default) time in seconds to wait 
+
+Returns **void** automatically synchronized promise through #recorder
+
+### waitForDisabled
+
+Waits for element to become disabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+#### Parameters
+
+-   `locator` **([string][9] | [object][6])** element located by CSS|XPath|strict locator.
+-   `sec` **[number][20]** (optional) time in seconds to wait, 1 by default. 
 
 Returns **void** automatically synchronized promise through #recorder
 

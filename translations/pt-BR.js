@@ -62,4 +62,4 @@ export default {
     resizeWindow: 'redimensionaJanela',
     wait: 'aguardo',
   },
-};
+}

@@ -52,7 +52,7 @@ To enable healing, you need to define healing recipes and enable heal plugin.
 Create basic healing recipes using this command:
 
 ```
-npx codeceptjs geenrate:heal
+npx codeceptjs generate:heal
 ```
 
 or
@@ -113,7 +113,7 @@ heal.addRecipe('reloadPageOnUserAccount', {
   // in this case we execute recipe only on tests that have "@flaky" in their name
   grep: '@flaky',
 
-  // function to launch to heal the 
+  // function to launch healing process 
   fn: async ({ 
     // standard context variables
     step, test, error, prevSteps,
@@ -179,7 +179,7 @@ heal.addRecipe('ai', {
 });
 ```
 
-As you usee, it will be activated on failed steps and will use HTML of a page as additional information. The prompt, error, and the HTML will be sent to AI provider you configured. 
+As you use, it will be activated on failed steps and will use HTML of a page as additional information. The prompt, error, and the HTML will be sent to AI provider you configured. 
 
 Learn more how you can [configure AI provider](./ai).
 

@@ -32,6 +32,7 @@ services:
     env_file: .env
     environment:
       - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
+      - PPT_VERSION=$PPT_VERSION
     depends_on:
       - php
       - puppeteer-image

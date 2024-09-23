@@ -33,6 +33,7 @@ Applicable plugins:
 - [ ] :fire: Breaking changes
 - [ ] :rocket: New functionality
 - [ ] :bug: Bug fix
+- [ ] 🧹 Chore
 - [ ] :clipboard: Documentation changes/updates
 - [ ] :hotsprings: Hot fix
 - [ ] :hammer: Markdown files fix - not related to source code

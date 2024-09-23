@@ -62,4 +62,4 @@ export default {
     moveCursorTo: 'przesuwam_kursor_do',
     scrollTo: 'skroluję_do',
   },
-};
+}

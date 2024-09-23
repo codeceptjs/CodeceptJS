@@ -1,3 +1,393 @@
+## 3.6.6
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(locator): add withAttrEndsWith, withAttrStartsWith, withAttrContains (#4334) - by @Maksym-Artemenko
+* feat: soft assert (#4473) - by @kobenguyent
+  * Soft assert
+
+Zero-configuration when paired with other helpers like REST, Playwright:
+
+```js
+// inside codecept.conf.js
+{
+  helpers: {
+    Playwright: {...},
+    SoftExpectHelper: {},
+  }
+}
+```
+
+```js
+// in scenario
+I.softExpectEqual('a', 'b')
+I.flushSoftAssertions() // Throws an error if any soft assertions have failed. The error message contains all the accumulated failures.
+```
+* feat(cli): print failed hooks (#4476) - by @kobenguyent
+  * run command
+  ![Screenshot 2024-09-02 at 15 25 20](https://github.com/user-attachments/assets/625c6b54-03f6-41c6-9d0c-cd699582404a)
+
+  * run workers command
+![Screenshot 2024-09-02 at 15 24 53](https://github.com/user-attachments/assets/efff0312-1229-44b6-a94f-c9b9370b9a64)
+
+🐛 *Bug Fixes*
+* fix(AI): minor AI improvements - by @DavertMik
+* fix(AI): add missing await in AI.js (#4486) - by @tomaculum
+* fix(playwright): no async save video page (#4472) - by @kobenguyent
+* fix(rest): httpAgent condition (#4484) - by @kobenguyent
+* fix: DataCloneError error when `I.executeScript` command is used with `run-workers` (#4483) - by @code4muktesh
+* fix: no error thrown from rerun script (#4494) - by @lin-brian-l
+
+
+```js
+// fix the validation of httpAgent config. we could now pass ca, instead of key/cert.
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
+      httpAgent: {
+         ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
+         rejectUnauthorized: false,
+         keepAlive: true
+      }
+    }
+  }
+}
+```
+
+📖 *Documentation*
+* doc(AI): minor AI improvements - by @DavertMik
+
+## 3.6.5
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(helper): playwright > wait for disabled (#4412) - by @kobenguyent
+```
+it('should wait for input text field to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+    it('should wait for input text field to be enabled by xpath', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)))
+
+    it('should wait for a button to be disabled', () =>
+      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)))
+
+Waits for element to become disabled (by default waits for 1sec).
+Element can be located by CSS or XPath.
+
+@param {CodeceptJS.LocatorOrString} locator element located by CSS|XPath|strict locator.
+@param {number} [sec=1] (optional) time in seconds to wait, 1 by default.
+@returns {void} automatically synchronized promise through #recorder
+```
+
+🐛 *Bug Fixes*
+* fix(AI): AI is not triggered (#4422) - by @kobenguyent
+* fix(plugin): stepByStep > report doesn't sync properly (#4413) - by @kobenguyent
+* fix: Locator > Unsupported pseudo selector 'has' (#4448) - by @anils92
+
+📖 *Documentation*
+* docs: setup azure open ai using bearer token (#4434) - by @kobenguyent
+
+## 3.6.4
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(rest): print curl (#4396) - by @kobenguyent
+
+```
+Config:
+
+...
+REST: {
+ ...
+ printCurl: true,
+ ...
+}
+... 
+
+› [CURL Request] curl --location --request POST https://httpbin.org/post -H ...
+```
+
+* feat(AI): Generate PageObject, added types, shell improvement (#4319) - by @DavertMik
+  * added `askForPageObject` method to generate PageObjects on the fly
+  * improved AI types
+  * interactive shell improved to restore history
+
+![Screenshot from 2024-06-17 02-47-37](https://github.com/codeceptjs/CodeceptJS/assets/220264/12acd2c7-18d1-4105-a24b-84070ec4d393)
+
+🐛 *Bug Fixes*
+* fix(heal): wrong priority (#4394) - by @kobenguyent
+
+📖 *Documentation*
+* AI docs improvements by @DavertMik
+
+## 3.6.3
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(plugin): coverage with WebDriver - devtools (#4349) - by @KobeNguyent
+  ![Screenshot 2024-05-16 at 16 49 20](https://github.com/codeceptjs/CodeceptJS/assets/7845001/a02f0f99-ac78-4d3f-9774-2cb51c688025)
+
+🐛 *Bug Fixes*
+* fix(cli): stale process (#4367) - by @Horsty80 @kobenguyent
+* fix(runner): screenshot error in beforeSuite/AfterSuite (#4385) - by @kobenguyent
+* fix(cli): gherkin command init with TypeScript (#4366) - by @andonary
+* fix(webApi): error message of dontSeeCookie (#4357) - by @a-stankevich
+
+📖 *Documentation*
+* fix(doc): Expect helper is not described correctly (#4370) - by @kobenguyent
+* fix(docs): some strange characters (#4387) - by @kobenguyent
+* fix: Puppeteer helper doc typo (#4369) - by @yoannfleurydev
+
+## 3.6.2
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(REST): support httpAgent conf (#4328) - by @KobeNguyent
+
+Support the httpAgent conf to create the TSL connection via REST helper
+
+```
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
+      httpAgent: {
+         key: fs.readFileSync(__dirname + '/path/to/keyfile.key'),
+         cert: fs.readFileSync(__dirname + '/path/to/certfile.cert'),
+         rejectUnauthorized: false,
+         keepAlive: true
+      }
+    }
+  }
+}
+```
+
+* feat(wd): screenshots for sessions (#4322) - by @KobeNguyent
+
+Currently only screenshot of the active session is saved, this PR aims to save the screenshot of every session for easy debugging
+
+```
+Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+  await I.amOnPage('/form/bug1467');
+  await I.saveScreenshot('original.png');
+  await I.amOnPage('/');
+  await I.saveScreenshot('main_session.png');
+  session('john', async () => {
+    await I.amOnPage('/form/bug1467');
+    event.dispatcher.emit(event.test.failed, this);
+  });
+
+  const fileName = clearString('should save screenshot for active session @WebDriverIO @Puppeteer @Playwright');
+  const [original, failed] = await I.getSHA256Digests([
+    `${output_dir}/original.png`,
+    `${output_dir}/john_${fileName}.failed.png`,
+  ]);
+
+  // Assert that screenshots of same page in same session are equal
+  await I.expectEqual(original, failed);
+
+  // Assert that screenshots of sessions are created
+  const [main_original, session_failed] = await I.getSHA256Digests([
+    `${output_dir}/main_session.png`,
+    `${output_dir}/john_${fileName}.failed.png`,
+  ]);
+  await I.expectNotEqual(main_original, session_failed);
+});
+```
+![Screenshot 2024-04-29 at 11 07 47](https://github.com/codeceptjs/CodeceptJS/assets/7845001/5dddf85a-ed77-474b-adfd-2f208d3c16a8)
+
+
+* feat: locate element with withClassAttr (#4321) - by @KobeNguyent
+
+Find an element with class attribute
+
+```js
+// find div with class contains 'form'
+locate('div').withClassAttr('text');
+```
+
+* fix(playwright): set the record video resolution (#4311) - by @KobeNguyent
+You could now set the recording video resolution
+```
+  url: siteUrl,
+  windowSize: '300x500',
+  show: false,
+  restart: true,
+  browser: 'chromium',
+  trace: true,
+  video: true,
+  recordVideo: {
+    size: {
+      width: 400,
+      height: 600,
+    },
+  },
+```
+
+🐛 *Bug Fixes*
+* fix: several issues of stepByStep report (#4331) - by @KobeNguyent
+
+📖 *Documentation*
+* fix: wrong format docs (#4330) - by @KobeNguyent
+* fix(docs): wrong method is mentioned (#4320) - by @KobeNguyent
+* fix: ChatGPT docs - by @davert
+
+## 3.6.1
+
+* Fixed regression in interactive pause.
+
+## 3.6.0
+
+🛩️ *Features*
+
+* Introduced [healers](./heal) to improve stability of failed tests. Write functions that can perform actions to fix a failing test:
+
+```js
+heal.addRecipe('reloadPageIfModalIsNotVisisble', {
+  steps: [
+    'click',
+  ],
+  fn: async ({ error, step }) => {
+    // this function will be executed only if test failed with
+    // "model is not visible" message
+    if (error.message.include('modal is not visible')) return;
+
+    // we return a function that will refresh a page
+    // and tries to perform last step again
+    return async ({ I }) => {
+      I.reloadPage();
+      I.wait(1);
+      await step.run();
+    };
+    // if a function succeeds, test continues without an error
+  },
+});
+```
+
+* **Breaking Change** **AI** features refactored. Read updated [AI guide](./ai):
+  * **removed dependency on `openai`**
+  * added support for **Azure OpenAI**, **Claude**, **Mistal**, or any AI via custom request function
+  * `--ai` option added to explicitly enable AI features
+  * heal plugin decoupled from AI to run custom heal recipes
+  * improved healing for async/await scenarios
+  * token limits added
+  * token calculation introduced
+  * `OpenAI` helper renamed to `AI`
+
+
+* feat(puppeteer): network traffic manipulation. See #4263 by @KobeNguyenT
+  * `startRecordingTraffic`
+  * `grabRecordedNetworkTraffics`
+  * `flushNetworkTraffics`
+  * `stopRecordingTraffic`
+  * `seeTraffic`
+  * `dontSeeTraffic`
+
+* feat(Puppeteer): recording WS messages. See #4264 by @KobeNguyenT
+
+Recording WS messages:
+```
+      I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.greaterThan(0);
+```
+
+flushing WS messages:
+```
+      I.startRecordingWebSocketMessages();
+      I.amOnPage('https://websocketstest.com/');
+      I.waitForText('Work for You!');
+      I.flushWebSocketMessages();
+      const wsMessages = I.grabWebSocketMessages();
+      expect(wsMessages.length).to.equal(0);
+```
+
+Examples:
+
+```js
+// recording traffics and verify the traffic
+  I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+```
+
+```js
+// check the traffic with advanced params
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  I.startRecordingTraffic();
+  I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
+```
+
+* Introduce the playwright locator: `_react`, `_vue`, `data-testid` attribute. See #4255 by @KobeNguyenT
+
+```
+Scenario('using playwright locator @Playwright', () => {
+  I.amOnPage('https://codecept.io/test-react-calculator/');
+  I.click('7');
+  I.click({ pw: '_react=t[name = "="]' });
+  I.seeElement({ pw: '_react=t[value = "7"]' });
+  I.click({ pw: '_react=t[name = "+"]' });
+  I.click({ pw: '_react=t[name = "3"]' });
+  I.click({ pw: '_react=t[name = "="]' });
+  I.seeElement({ pw: '_react=t[value = "10"]' });
+});
+```
+
+```
+Scenario('using playwright data-testid attribute @Playwright', () => {
+    I.amOnPage('/');
+    const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' });
+    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0');
+    assert.equal(webElements.length, 1);
+});
+```
+
+* feat(puppeteer): mockRoute support. See #4262 by @KobeNguyenT
+
+Network requests & responses can be mocked and modified. Use `mockRoute` which strictly follows [Puppeteer's setRequestInterception API](https://pptr.dev/next/api/puppeteer.page.setrequestinterception).
+
+```
+I.mockRoute('https://reqres.in/api/comments/1', request => {
+  request.respond({
+    status: 200,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    contentType: 'application/json',
+    body: '{"name": "this was mocked" }',
+  });
+})
+```
+```
+I.mockRoute('**/*.{png,jpg,jpeg}', route => route.abort());
+
+// To disable mocking for a route call `stopMockingRoute`
+// for previously mocked URL
+I.stopMockingRoute('**/*.{png,jpg,jpeg}');
+```
+To master request intercepting [use HTTPRequest object](https://pptr.dev/next/api/puppeteer.httprequest) passed into mock request handler.
+
+🐛 *Bug Fixes*
+
+* Fixed double help message #4278 by @masiuchi
+* waitNumberOfVisibleElements always failed when passing num as 0. See #4274 by @KobeNguyenT
+
 ## 3.5.15
 
 ❤️ Thanks all to those who contributed to make this release! ❤️

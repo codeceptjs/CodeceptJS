@@ -19,11 +19,11 @@ describe('retryTo plugin', () => {
   it('should execute few times command on fail', async () => {
     let counter = 0;
     let errorCaught = false;
-    await retryTo(() => {
-      recorder.add(() => counter++);
-      recorder.add(() => { throw new Error('Ups'); });
-    }, 5, 10);
     try {
+      await retryTo(() => {
+        recorder.add(() => counter++);
+        recorder.add(() => { throw new Error('Ups'); });
+      }, 5, 10);
       await recorder.promise();
     } catch (err) {
       errorCaught = true;

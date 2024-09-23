@@ -73,4 +73,4 @@ export default {
     sendDeleteRequest: 'envoieLaRequêteDelete',
     sendPostRequest: 'envoieLaRequêtePost',
   },
-};
+}

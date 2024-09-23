@@ -44,6 +44,44 @@ declare namespace CodeceptJS {
     Scenario: number;
   };
 
+  type AiPrompt = {
+    role: string;
+    content: string;
+  }
+
+  type AiConfig = {
+    /** request function to send prompts to AI provider */
+    request: (messages: any) => Promise<string>,
+
+    /** custom prompts */
+    prompts?: {
+      /** Returns prompt to write CodeceptJS steps inside pause mode  */
+      writeStep?: (html: string, input: string) => Array<AiPrompt>;
+      /** Returns prompt to heal step when test fails on CI if healing is on  */
+      healStep?: (html: string, object) => Array<AiPrompt>;
+      /** Returns prompt to generate page object inside pause mode  */
+      generatePageObject?: (html: string, extraPrompt?: string, rootLocator?: string) => Array<AiPrompt>;
+    },
+
+    /** max tokens to use */
+    maxTokens?: number,
+
+
+    /** configuration for processing HTML for GPT */
+    html?: {
+      /** max size of HTML to be sent to OpenAI to avoid token limit */
+      maxLength?: number,
+      /** should HTML be changed by removing non-interactive elements */
+      simplify?: boolean,
+      /** should HTML be minified before sending */
+      minify?: boolean,
+      interactiveElements?: Array<string>,
+      textElements?: Array<string>,
+      allowedAttrs?: Array<string>,
+      allowedRoles?: Array<string>,
+    }
+  }
+
   type MainConfig = {
     /** Pattern to locate CodeceptJS tests.
      * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
@@ -164,6 +202,9 @@ declare namespace CodeceptJS {
        * ```
        */
       JSONResponse?: any;
+
+      /** Enable AI features for development purposes */
+      AI?: any;
 
       [key: string]: any;
     },
@@ -353,25 +394,7 @@ declare namespace CodeceptJS {
     /**
      * [AI](https://codecept.io/ai/) features configuration.
      */
-    ai?: {
-      /** OpenAI model to use */
-      model?: string,
-      /** temperature, measure of randomness. Lower is better. */
-      temperature?: number,
-      /** configuration for processing HTML for GPT */
-      html?: {
-        /** max size of HTML to be sent to OpenAI to avoid token limit */
-        maxLength?: number,
-        /** should HTML be changed by removing non-interactive elements */
-        simplify?: boolean,
-        /** should HTML be minified before sending */
-        minify?: boolean,
-        interactiveElements?: Array<string>,
-        textElements?: Array<string>,
-        allowedAttrs?: Array<string>,
-        allowedRoles?: Array<string>,
-      }
-    },
+    ai?: AiConfig,
 
     /**
      * Enable full promise-based helper methods for [TypeScript](https://codecept.io/typescript/) project.
