@@ -10,6 +10,7 @@ import test from '../../lib/utils.js'; // importing test method
 
 // To get __dirname in ESM
 import { fileURLToPath } from 'url';
+import {unlinkSync} from "node:fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -25,17 +26,17 @@ let I;
 let data;
 let siteUrl;
 
-export const init = function (testData) {
+export function init (testData) {
   data = testData;
-};
+}
 
-export const tests = function () {
+export function tests () {
   const isHelper = helperName => I.constructor.name === helperName;
 
   beforeEach(() => {
     I = data.I;
     siteUrl = data.siteUrl;
-    if (fileExists(dataFile)) require('fs').unlinkSync(dataFile);
+    if (fileExists(dataFile)) unlinkSync(dataFile);
   });
 
   describe('#saveElementScreenshot', () => {

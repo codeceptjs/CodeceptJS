@@ -1,27 +1,32 @@
 import path from 'path';
 import fs from 'fs';
 import playwright from 'playwright';
-import TestHelper from '../support/TestHelper';
-import Playwright from '../../lib/helper/Playwright';
+import TestHelper from '../support/TestHelper.js';
+import Playwright from '../../lib/helper/Playwright.js';
 import AssertionFailedError from '../../lib/assert/error.js';
-import webApiTests from './webapi';
+import * as webApiTests from './webapi.js';
 import FileSystem from '../../lib/helper/FileSystem.js';
 import { deleteDir } from '../../lib/utils.js';
 import Secret from '../../lib/secret.js';
 
-let assert;
-let expect;
-import('chai').then(chai => {
-  assert = chai.assert;
-  expect = chai.expect;
-});
-global.codeceptjs = require('../../lib');
+import { expect, assert } from 'chai';
+import test from '../../lib/utils.js'; // importing test method
+global.codeceptjs = '../../lib'
 
+// To get __dirname in ESM
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Path to data file
 const dataFile = path.join(__dirname, '/../data/app/db');
-const formContents = require('../../lib/utils.js').test.submittedData(dataFile);
+
+// Accessing formContents from test.submittedData
+const formContents = test.submittedData(dataFile);
 
 let I;
 let page;
+let browser;
 let FS;
 const siteUrl = TestHelper.siteUrl();
 
