@@ -551,7 +551,7 @@ Provides `eachElement` global function to iterate over found elements to perform
 
 `eachElement` takes following args:
 
--   `purpose` - the goal of an action. A comment text that will be displayed in output.
+-   `purpose` - the goal of an action. A comment text that will be displayed in output.output.
 -   `locator` - a CSS/XPath locator to match elements
 -   `fn(element, index)` - **asynchronous** function which will be executed for each matched element.
 

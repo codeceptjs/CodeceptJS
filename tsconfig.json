@@ -3,10 +3,10 @@
     "files": true
   },
   "compilerOptions": {
-    "target": "es2018",
-    "lib": ["es2018", "DOM"],
+    "target": "es6",
+    "lib": ["es6", "DOM"],
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "es2020",
     "types": ["node"],
     "declaration": true,
     "skipLibCheck": true,

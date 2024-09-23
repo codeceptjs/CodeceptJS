@@ -1,4 +1,4 @@
-const I = actor();
+const { I } = inject();
 Feature('Custom Locator');
 
 Scenario('no error with dry-mode', () => {

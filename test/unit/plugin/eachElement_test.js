@@ -1,21 +1,23 @@
-const path = require('path');
+import path from 'path';
 
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const container = require('../../../lib/container');
-const eachElement = require('../../../lib/plugin/eachElement')();
-const recorder = require('../../../lib/recorder');
+import { expect } from 'chai';
+import container from '../../../lib/container.js';
+import recorder from '../../../lib/recorder.js';
+
+import lib from '../../../lib/plugin/eachElement.js';
+
+const eachElement = lib();
+
+const __dirname = path.resolve();
 
 describe('eachElement plugin', () => {
   beforeEach(() => {
-    global.codecept_dir = path.join(__dirname, '/../..');
+    global.codecept_dir = path.join(__dirname);
     recorder.start();
     container.create({
       helpers: {
         MyHelper: {
-          require: './data/helper',
+          require: './test/data/helper.js',
         },
       },
     });

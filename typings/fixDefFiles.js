@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { resolve } = require('path');
+import fs from 'fs';
+import { resolve } from 'path';
 
 const filePath = [resolve('./typings/promiseBasedTypes.d.ts'), resolve('./typings/types.d.ts')];
 
@@ -25,13 +25,9 @@ filePath.forEach(file => {
 });
 
 function modifyContent(content) {
-  const modifiedContent = content.replace(/    class MockServer {/, '    // @ts-ignore\n'
-    + '    class MockServer {').replace(/    type MockServerConfig = {/, '    // @ts-ignore\n'
-    + '    type MockServerConfig = {').replace(/    class ExpectHelper {/g, '    // @ts-ignore\n'
-    + '    class ExpectHelper {').replace(/    type PlaywrightConfig = {/, '    // @ts-ignore\n'
-    + '    type PlaywrightConfig = {').replace(/    type PuppeteerConfig = {/, '    // @ts-ignore\n'
-    + '    type PuppeteerConfig = {').replace(/    type RESTConfig = {/, '    // @ts-ignore\n'
-    + '    type RESTConfig = {').replace(/    type WebDriverConfig = {/, '    // @ts-ignore\n'
-    + '    type WebDriverConfig = {')
+  const modifiedContent = content.replace(/ {4}class MockServer {/g, '    // @ts-ignore\n'
+    + '    class MockServer {').replace(/ {4}type MockServerConfig = {/g, '    // @ts-ignore\n'
+    + '    type MockServerConfig = {').replace(/ {4}class ExpectHelper {/g, '    // @ts-ignore\n'
+    + '    class ExpectHelper {');
   return modifiedContent;
 }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   I: '私は',
   contexts: {
     Feature: 'フィーチャ',

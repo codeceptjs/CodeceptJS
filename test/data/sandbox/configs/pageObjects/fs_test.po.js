@@ -1,6 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
 Feature('Filesystem');
 
 Scenario('check current dir', ({ I, MyPage }) => {

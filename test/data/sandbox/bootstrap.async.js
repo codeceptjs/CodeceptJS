@@ -1,4 +1,4 @@
-module.exports = function (done) {
+export default function (done) {
   let i = 0;
   setTimeout(() => {
     i++;
@@ -6,4 +6,4 @@ module.exports = function (done) {
     done();
   }, 0);
   console.log(`Ready: ${i}`);
-};
+}

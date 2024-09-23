@@ -1,52 +1,50 @@
-const path = require('path')
+import path from 'path';
 
-let expect
-import('chai').then((chai) => {
-  expect = chai.expect
-})
-const { like } = require('pactum-matchers')
-const MockServer = require('../../lib/helper/MockServer')
-const REST = require('../../lib/helper/REST')
+import { expect } from 'chai';
+import { like } from 'pactum-matchers';
+import MockServer from '../../lib/helper/MockServer.js';
+import REST from '../../lib/helper/REST.js';
+import { __dirname } from '../../lib/dirname.js';
 
-global.codeceptjs = require('../../lib')
+global.codeceptjs = '../../lib';
 
-let I
-let restClient
-const port = 65000
-const api_url = `http://0.0.0.0:${port}`
+let I;
+let restClient;
+const port = 65000;
+const api_url = `http://0.0.0.0:${port}`;
 
 describe('MockServer Helper', function () {
-  this.timeout(3000)
-  this.retries(1)
+  this.timeout(3000);
+  this.retries(1);
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
+    global.codecept_dir = path.join(__dirname, '/../data');
 
-    I = new MockServer({ port })
+    I = new MockServer({ port });
     restClient = new REST({
       endpoint: api_url,
       defaultHeaders: {
         'X-Test': 'test',
       },
-    })
-  })
+    });
+  });
 
   beforeEach(async () => {
-    await I.startMockServer()
-  })
+    await I.startMockServer();
+  });
 
   afterEach(async () => {
-    await I.stopMockServer()
-  })
+    await I.stopMockServer();
+  });
 
   describe('#startMockServer', () => {
     it('should start the mock server with custom port', async () => {
-      global.debugMode = true
-      await I.startMockServer(6789)
-      await I.stopMockServer()
-      global.debugMode = undefined
-    })
-  })
+      global.debugMode = true;
+      await I.startMockServer(6789);
+      await I.stopMockServer();
+      global.debugMode = undefined;
+    });
+  });
 
   describe('#addInteractionToMockServer', () => {
     it('should return the correct response', async () => {
@@ -61,15 +59,15 @@ describe('MockServer Helper', function () {
             say: 'hello to mock server',
           },
         },
-      })
-      const res = await restClient.sendGetRequest('/api/hello')
-      expect(res.data).to.eql({ say: 'hello to mock server' })
-    })
+      });
+      const res = await restClient.sendGetRequest('/api/hello');
+      expect(res.data).to.eql({ say: 'hello to mock server' });
+    });
 
     it('should return 404 when not found route', async () => {
-      const res = await restClient.sendGetRequest('/api/notfound')
-      expect(res.status).to.eql(404)
-    })
+      const res = await restClient.sendGetRequest('/api/notfound');
+      expect(res.status).to.eql(404);
+    });
 
     it('should return the strong Match on Query Params', async () => {
       await I.addInteractionToMockServer({
@@ -86,7 +84,7 @@ describe('MockServer Helper', function () {
             user: 1,
           },
         },
-      })
+      });
 
       await I.addInteractionToMockServer({
         request: {
@@ -102,12 +100,12 @@ describe('MockServer Helper', function () {
             user: 2,
           },
         },
-      })
-      let res = await restClient.sendGetRequest('/api/users?id=1')
-      expect(res.data).to.eql({ user: 1 })
-      res = await restClient.sendGetRequest('/api/users?id=2')
-      expect(res.data).to.eql({ user: 2 })
-    })
+      });
+      let res = await restClient.sendGetRequest('/api/users?id=1');
+      expect(res.data).to.eql({ user: 1 });
+      res = await restClient.sendGetRequest('/api/users?id=2');
+      expect(res.data).to.eql({ user: 2 });
+    });
 
     it('should check the stateful behavior', async () => {
       await I.addInteractionToMockServer({
@@ -127,9 +125,9 @@ describe('MockServer Helper', function () {
             id: '$S{ProjectId}',
           },
         },
-      })
-      const res = await restClient.sendGetRequest('/api/projects/10')
-      expect(res.data).to.eql({ id: '10' })
-    })
-  })
-})
+      });
+      const res = await restClient.sendGetRequest('/api/projects/10');
+      expect(res.data).to.eql({ id: '10' });
+    });
+  });
+});

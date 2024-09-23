@@ -1,13 +1,14 @@
-const Helper = require('../../lib/helper')
+import Helper from '../../lib/helper.js';
+import { output } from '../../lib/output.js';
 
 class FakeDriver extends Helper {
   printBrowser() {
-    this.debug(this.config.browser)
+    output.debug(this.config.browser);
   }
 
   printWindowSize() {
-    this.debug(this.config.windowSize)
+    output.debug(this.config.windowSize);
   }
 }
 
-module.exports = FakeDriver
+export default FakeDriver;

@@ -1,9 +1,8 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const retryTo = require('../../../lib/plugin/retryTo')();
-const recorder = require('../../../lib/recorder');
+import { expect } from 'chai';
+import lib from '../../../lib/plugin/retryTo.js';
+import recorder from '../../../lib/recorder.js';
+
+const retryTo = lib();
 
 describe('retryTo plugin', () => {
   beforeEach(() => {

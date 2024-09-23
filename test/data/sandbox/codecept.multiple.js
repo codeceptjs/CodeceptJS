@@ -1,10 +1,10 @@
-exports.config = {
+export const config = {
   tests: './*_test.multiple.js',
   timeout: 10000,
   output: './output',
   helpers: {
     FakeDriver: {
-      require: '../fake_driver',
+      require: '../fake_driver.js',
       browser: 'dummy',
       windowSize: 'maximize',
     },

@@ -1,13 +1,9 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const sinon = require('sinon');
-
-const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail');
-const container = require('../../../lib/container');
-const event = require('../../../lib/event');
-const recorder = require('../../../lib/recorder');
+import { expect } from 'chai';
+import sinon from 'sinon';
+import screenshotOnFail from '../../../lib/plugin/screenshotOnFail.js';
+import container from '../../../lib/container.js';
+import * as event from '../../../lib/event.js';
+import recorder from '../../../lib/recorder.js';
 
 let screenshotSaved;
 
@@ -69,14 +65,14 @@ describe('screenshotOnFail', () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1', ctx: { _runnable: { title: 'hook: BeforeSuite' } } });
     await recorder.promise();
-    expect(!screenshotSaved.called).is.ok;
+    expect(screenshotSaved.called).to.be.false;
   });
 
   it('should not save screenshot in AfterSuite', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true });
     event.dispatcher.emit(event.test.failed, { title: 'test1', ctx: { _runnable: { title: 'hook: AfterSuite' } } });
     await recorder.promise();
-    expect(!screenshotSaved.called).is.ok;
+    expect(screenshotSaved.called).to.be.false;
   });
   // TODO: write more tests for different options
 });

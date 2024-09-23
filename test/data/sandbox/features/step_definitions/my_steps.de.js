@@ -1,4 +1,4 @@
-const I = actor();
+const { I } = inject();
 
 Given('ich habe ein Produkt mit einem Preis von {int}$ in meinem Warenkorb', (price) => {
   I.addItem(parseInt(price, 10));

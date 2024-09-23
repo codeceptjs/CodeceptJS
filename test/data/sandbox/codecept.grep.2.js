@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './grep_test.js',
   timeout: 10000,
   output: './output',

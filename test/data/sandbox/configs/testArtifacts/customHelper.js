@@ -11,4 +11,4 @@ class CustomHelper extends Helper {
   }
 }
 
-module.exports = CustomHelper;
+export default CustomHelper;

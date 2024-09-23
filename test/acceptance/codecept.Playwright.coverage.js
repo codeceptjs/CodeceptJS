@@ -1,6 +1,6 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper.js';
 
-module.exports.config = {
+const config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',
@@ -16,14 +16,6 @@ module.exports.config = {
         ignoreHTTPSErrors: true,
       },
     },
-    JSONResponse: {
-      requestHelper: 'Playwright',
-    },
-    ScreenshotSessionHelper: {
-      require: '../support/ScreenshotSessionHelper.js',
-      outputPath: 'test/acceptance/output',
-    },
-    ExpectHelper: {},
   },
   include: {},
   bootstrap: false,
@@ -49,4 +41,6 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-}
+};
+
+exports.config = config;

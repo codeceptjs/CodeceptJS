@@ -1,6 +1,6 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper';
 
-module.exports.config = {
+export const config = {
   timeout: 10000,
   output: './output',
   helpers: {
@@ -8,12 +8,15 @@ module.exports.config = {
       url: TestHelper.siteUrl(),
       show: false,
       chrome: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
       },
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
-      outputPath: './output',
+      outputPath: './output.js',
     },
   },
   include: {},
@@ -32,4 +35,4 @@ module.exports.config = {
     features: './features/faker.feature',
     steps: ['./defs/faker.js'],
   },
-}
+};

@@ -14,4 +14,4 @@ class PageObject {
   }
 }
 
-module.exports = new PageObject();
+export default new PageObject();

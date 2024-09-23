@@ -533,7 +533,7 @@ ai: {
 
 * `maxLength`: the size of HTML to cut to not reach the token limit. 50K is the current default but you may try to increase it or even set it to null.
 * `simplify`: should we process HTML before sending to GPT. This will remove all non-interactive elements from HTML.
-* `minify`: shold HTML be additionally minified. This removed empty attributes, shortens notations, etc.
+* `minify`: should HTML be additionally minified. This removed empty attributes, shortens notations, etc.
 * `interactiveElements`: explicit list of all elements that are considered interactive.
 * `textElements`: elements that contain text which can be used for test automation.
 * `allowedAttrs`: explicit list of attributes that may be used to construct locators. If you use special `data-` attributes to enable locators, add them to the list.

@@ -1,9 +1,6 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
+import { expect } from 'chai';
 
-const DataTable = require('../../../lib/data/table');
+import DataTable from '../../../lib/data/table.js';
 
 describe('DataTable', () => {
   it('should take an array for creation', () => {

@@ -1,8 +1,26 @@
 #!/usr/bin/env node
-const program = require('commander')
-const Codecept = require('../lib/codecept')
-const { print, error } = require('../lib/output')
-const { printError } = require('../lib/command/utils')
+import { Command } from 'commander';
+import { version } from '../lib/codecept.js';
+import * as outputLib from '../lib/output.js';
+import { printError } from '../lib/command/utils.js';
+import * as init from '../lib/command/init.js';
+import * as configMigrate from '../lib/command/configMigrate.js';
+import * as interactive from '../lib/command/interactive.js';
+import * as definitions from '../lib/command/definitions.js';
+import * as list from '../lib/command/list.js';
+import * as gherkinInit from '../lib/command/gherkin/init.js';
+import * as gherkinSteps from '../lib/command/gherkin/steps.js';
+import * as gherkinSnippets from '../lib/command/gherkin/snippets.js';
+import * as generate from '../lib/command/generate.js';
+import * as run from '../lib/command/run.js';
+import * as runWorkers from '../lib/command/run-workers.js';
+import * as runMultiple from '../lib/command/run-multiple.js';
+import { runRerun } from '../lib/command/run-rerun.js';
+import * as dryRun from '../lib/command/dryRun.js';
+import * as info from '../lib/command/info.js';
+import { heal } from "../lib/command/generate.js";
+
+const program = new Command();
 
 const commandFlags = {
   ai: {
@@ -29,120 +47,104 @@ const commandFlags = {
     flag: '--steps',
     description: 'show step-by-step execution',
   },
-}
+};
 
-const errorHandler =
-  (fn) =>
-  async (...args) => {
-    try {
-      await fn(...args)
-    } catch (e) {
-      printError(e)
-      process.exitCode = 1
-    }
+const errorHandler = (fn) => async (...args) => {
+  try {
+    await fn.default(...args);
+  } catch (e) {
+    printError(e);
+    process.exitCode = 1;
   }
+};
 
 if (process.versions.node && process.versions.node.split('.') && process.versions.node.split('.')[0] < 12) {
-  error('NodeJS >= 12 is required to run.')
-  print()
-  print('Please upgrade your NodeJS engine')
-  print(`Current NodeJS version: ${process.version}`)
-  process.exit(1)
+  outputLib.output.output.error('NodeJS >= 12 is required to run.');
+  outputLib.print();
+  outputLib.print('Please upgrade your NodeJS engine');
+  outputLib.print(`Current NodeJS version: ${process.version}`);
+  process.exit(1);
 }
 
-program.usage('<command> [options]')
-program.version(Codecept.version())
+program.usage('<command> [options]');
+program.version(version());
 
-program
-  .command('init [path]')
+program.command('init [path]')
   .description('Creates dummy config in current dir or [path]')
-  .action(errorHandler(require('../lib/command/init')))
+  .action(errorHandler(init));
 
-program
-  .command('migrate [path]')
+program.command('migrate [path]')
   .description('Migrate json config to js config in current dir or [path]')
-  .action(errorHandler(require('../lib/command/configMigrate')))
+  .action(errorHandler(configMigrate));
 
-program
-  .command('shell [path]')
+program.command('shell [path]')
   .alias('sh')
   .description('Interactive shell')
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option(commandFlags.profile.flag, commandFlags.profile.description)
   .option(commandFlags.ai.flag, commandFlags.ai.description)
   .option(commandFlags.config.flag, commandFlags.config.description)
-  .action(errorHandler(require('../lib/command/interactive')))
+  .action(errorHandler(interactive));
 
-program
-  .command('list [path]')
+program.command('list [path]')
   .alias('l')
   .description('List all actions for I.')
-  .action(errorHandler(require('../lib/command/list')))
+  .action(errorHandler(list));
 
-program
-  .command('def [path]')
+program.command('def [path]')
   .description('Generates TypeScript definitions for all I actions.')
   .option(commandFlags.config.flag, commandFlags.config.description)
   .option('-o, --output [folder]', 'target folder to paste definitions')
-  .action(errorHandler(require('../lib/command/definitions')))
+  .action(errorHandler(definitions));
 
-program
-  .command('gherkin:init [path]')
+program.command('gherkin:init [path]')
   .alias('bdd:init')
   .description('Prepare CodeceptJS to run feature files.')
   .option(commandFlags.config.flag, commandFlags.config.description)
-  .action(errorHandler(require('../lib/command/gherkin/init')))
+  .action(errorHandler(gherkinInit));
 
-program
-  .command('gherkin:steps [path]')
+program.command('gherkin:steps [path]')
   .alias('bdd:steps')
   .description('Prints all defined gherkin steps.')
   .option(commandFlags.config.flag, commandFlags.config.description)
-  .action(errorHandler(require('../lib/command/gherkin/steps')))
+  .action(errorHandler(gherkinSteps));
 
-program
-  .command('gherkin:snippets [path]')
+program.command('gherkin:snippets [path]')
   .alias('bdd:snippets')
   .description('Generate step definitions from steps.')
   .option('--dry-run', "don't save snippets to file")
   .option(commandFlags.config.flag, commandFlags.config.description)
   .option('--feature [file]', 'feature files(s) to scan')
   .option('--path [file]', 'file in which to place the new snippets')
-  .action(errorHandler(require('../lib/command/gherkin/snippets')))
+  .action(errorHandler(gherkinSnippets));
 
-program
-  .command('generate:test [path]')
+program.command('generate:test [path]')
   .alias('gt')
   .description('Generates an empty test')
-  .action(errorHandler(require('../lib/command/generate').test))
+  .action(errorHandler(generate.test));
 
-program
-  .command('generate:pageobject [path]')
+program.command('generate:pageobject [path]')
   .alias('gpo')
   .description('Generates an empty page object')
-  .action(errorHandler(require('../lib/command/generate').pageObject))
+  .action(errorHandler(generate.pageObject));
 
-program
-  .command('generate:object [path]')
+program.command('generate:object [path]')
   .alias('go')
   .option('--type, -t [kind]', 'type of object to be created')
   .description('Generates an empty support object (page/step/fragment)')
-  .action(errorHandler(require('../lib/command/generate').pageObject))
+  .action(errorHandler(generate.pageObject));
 
-program
-  .command('generate:helper [path]')
+program.command('generate:helper [path]')
   .alias('gh')
   .description('Generates a new helper')
-  .action(errorHandler(require('../lib/command/generate').helper))
+  .action(errorHandler(generate.helper));
 
-program
-  .command('generate:heal [path]')
+program.command('generate:heal [path]')
   .alias('gr')
   .description('Generates basic heal recipes')
-  .action(errorHandler(require('../lib/command/generate').heal))
+  .action(errorHandler(heal));
 
-program
-  .command('run [test]')
+program.command('run [test]')
   .description('Executes tests')
 
   // codecept-only options
@@ -178,10 +180,9 @@ program
   .option('--recursive', 'include sub directories')
   .option('--trace', 'trace function calls')
   .option('--child <string>', 'option for child processes')
-  .action(errorHandler(require('../lib/command/run')))
+  .action(errorHandler(run));
 
-program
-  .command('run-workers <workers> [selectedRuns...]')
+program.command('run-workers <workers> [selectedRuns...]')
   .description('Executes tests in workers')
   .option(commandFlags.config.flag, commandFlags.config.description)
   .option('-g, --grep <pattern>', 'only run tests matching <pattern>')
@@ -197,10 +198,9 @@ program
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
-  .action(errorHandler(require('../lib/command/run-workers')))
+  .action(errorHandler(runWorkers));
 
-program
-  .command('run-multiple [suites...]')
+program.command('run-multiple [suites...]')
   .description('Executes tests multiple')
   .option(commandFlags.config.flag, commandFlags.config.description)
   .option(commandFlags.profile.flag, commandFlags.profile.description)
@@ -223,16 +223,14 @@ program
   // mocha options
   .option('--colors', 'force enabling of colors')
 
-  .action(errorHandler(require('../lib/command/run-multiple')))
+  .action(errorHandler(runMultiple));
 
-program
-  .command('info [path]')
+program.command('info [path]')
   .description('Print debugging information concerning the local environment')
   .option('-c, --config', 'your config file path')
-  .action(errorHandler(require('../lib/command/info')))
+  .action(errorHandler(info));
 
-program
-  .command('dry-run [test]')
+program.command('dry-run [test]')
   .description('Prints step-by-step scenario for a test without actually running it')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('--bootstrap', 'enable bootstrap & teardown scripts for dry-run')
@@ -246,10 +244,9 @@ program
   .option(commandFlags.steps.flag, commandFlags.steps.description)
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option(commandFlags.debug.flag, commandFlags.debug.description)
-  .action(errorHandler(require('../lib/command/dryRun')))
+  .action(errorHandler(dryRun));
 
-program
-  .command('run-rerun [test]')
+program.command('run-rerun [test]')
   .description('Executes tests in more than one test suite run')
 
   // codecept-only options
@@ -284,15 +281,15 @@ program
   .option('--trace', 'trace function calls')
   .option('--child <string>', 'option for child processes')
 
-  .action(require('../lib/command/run-rerun'))
+  .action(runRerun);
 
 program.on('command:*', (cmd) => {
-  console.log(`\nUnknown command ${cmd}\n`)
-  program.outputHelp()
-})
+  console.log(`\nUnknown command ${cmd}\n`);
+  program.outputHelp();
+});
 
 if (process.argv.length <= 2) {
-  program.outputHelp()
+  program.outputHelp();
 } else {
-  program.parse(process.argv)
+  program.parse(process.argv);
 }

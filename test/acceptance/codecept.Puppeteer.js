@@ -1,6 +1,6 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper';
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',
@@ -9,14 +9,17 @@ module.exports.config = {
       url: TestHelper.siteUrl(),
       show: false,
       chrome: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
       },
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
-      outputPath: './output',
+      outputPath: './output.js',
     },
-    ExpectHelper: {},
+    Expect: {},
   },
   include: {},
   bootstrap: false,
@@ -31,4 +34,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-}
+};

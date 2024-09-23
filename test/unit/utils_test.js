@@ -1,73 +1,74 @@
-let expect
-import('chai').then((chai) => {
-  expect = chai.expect
-})
-const os = require('os')
-const path = require('path')
-const sinon = require('sinon')
+import { expect } from 'chai';
+import os from 'os';
+import path from 'path';
+import sinon from 'sinon';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+import * as utils from '../../lib/utils.js';
 
-const utils = require('../../lib/utils')
+const __filename = fileURLToPath(import.meta.url);
+const require = createRequire(import.meta.url);
 
 describe('utils', () => {
   describe('#fileExists', () => {
-    it('exists', () => expect(utils.fileExists(__filename)).to.be.true)
-    it('not exists', () => expect(utils.fileExists('not_utils.js')).to.be.false)
-    it('not exists if file used as directory', () => expect(utils.fileExists(`${__filename}/not_utils.js`)).to.be.false)
-  })
+    it('exists', () => expect(utils.fileExists(__filename)).to.be.true);
+    it('not exists', () => expect(utils.fileExists('not_utils.js')).to.be.false);
+    it('not exists if file used as directory', () => expect(utils.fileExists(`${__filename}/not_utils.js`)).to.be.false);
+  });
   /* eslint-disable no-unused-vars */
   describe('#getParamNames', () => {
-    it('fn#1', () => expect(utils.getParamNames((a, b) => {})).eql(['a', 'b']))
-    it('fn#2', () => expect(utils.getParamNames((I, userPage) => {})).eql(['I', 'userPage']))
-    it('should handle single-param arrow functions with omitted parens', () =>
-      expect(utils.getParamNames((I) => {})).eql(['I']))
-    it('should handle trailing comma', () =>
-      expect(utils.getParamNames((I, trailing, comma) => {})).eql(['I', 'trailing', 'comma']))
-  })
+    it('fn#1', () => expect(utils.getParamNames((a, b) => { })).eql(['a', 'b']));
+    it('fn#2', () => expect(utils.getParamNames((I, userPage) => { })).eql(['I', 'userPage']));
+    it('should handle single-param arrow functions with omitted parens', () => expect(utils.getParamNames((I) => { })).eql(['I']));
+    it('should handle trailing comma', () => expect(utils.getParamNames((
+      I,
+      trailing,
+      comma,
+    ) => { })).eql(['I', 'trailing', 'comma']));
+  });
   /* eslint-enable no-unused-vars */
 
   describe('#methodsOfObject', () => {
     it('should get methods', () => {
-      expect(
-        utils.methodsOfObject({
-          a: 1,
-          hello: () => {},
-          world: () => {},
-        }),
-      ).eql(['hello', 'world'])
-    })
-  })
+      expect(utils.methodsOfObject({
+        a: 1,
+        hello: () => { },
+        world: () => { },
+      })).eql(['hello', 'world']);
+    });
+  });
 
   describe('#ucfirst', () => {
     it('should capitalize first letter', () => {
-      expect(utils.ucfirst('hello')).equal('Hello')
-    })
-  })
+      expect(utils.ucfirst('hello')).equal('Hello');
+    });
+  });
 
   describe('#beautify', () => {
     it('should beautify JS code', () => {
-      expect(utils.beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};'))
-        .eql(`module.exports = function(a, b) {
+      expect(utils
+        .beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {
   a++;
   b = a;
   if (a == b) {
     return 2
   }
-};`)
-    })
-  })
+};`);
+    });
+  });
 
   describe('#xpathLocator', () => {
     it('combines xpaths', () => {
-      expect(utils.xpathLocator.combine(['//a', '//button'])).eql('//a | //button')
-    })
+      expect(utils.xpathLocator.combine(['//a', '//button'])).eql('//a | //button');
+    });
 
     it('converts string to xpath literal', () => {
-      expect(utils.xpathLocator.literal("can't find thing")).eql("concat('can',\"'\",'t find thing')")
-    })
-  })
+      expect(utils.xpathLocator.literal("can't find thing")).eql('concat(\'can\',"\'",\'t find thing\')');
+    });
+  });
 
   describe('#replaceValueDeep', () => {
-    let target
+    let target;
 
     it('returns updated object', () => {
       target = {
@@ -75,16 +76,16 @@ describe('utils', () => {
         helpers: {
           something: 2,
         },
-      }
+      };
 
-      expect(utils.replaceValueDeep(target.helpers, 'something', 1234)).eql({ something: 1234 })
+      expect(utils.replaceValueDeep(target.helpers, 'something', 1234)).eql({ something: 1234 });
       expect(target).eql({
         timeout: 1,
         helpers: {
           something: 1234,
         },
-      })
-    })
+      });
+    });
 
     it('do not replace unexisting value', () => {
       target = {
@@ -92,16 +93,16 @@ describe('utils', () => {
         helpers: {
           something: 2,
         },
-      }
+      };
 
-      utils.replaceValueDeep(target, 'unexisting', 1234)
+      utils.replaceValueDeep(target, 'unexisting', 1234);
       expect(target).eql({
         timeout: 1,
         helpers: {
           something: 2,
         },
-      })
-    })
+      });
+    });
 
     it('replace simple value', () => {
       target = {
@@ -109,16 +110,16 @@ describe('utils', () => {
         helpers: {
           something: 2,
         },
-      }
+      };
 
-      utils.replaceValueDeep(target, 'timeout', 1234)
+      utils.replaceValueDeep(target, 'timeout', 1234);
       expect(target).eql({
         timeout: 1234,
         helpers: {
           something: 2,
         },
-      })
-    })
+      });
+    });
 
     it('replace simple falsy value', () => {
       target = {
@@ -137,9 +138,9 @@ describe('utils', () => {
         nullValue: {
           timeout: null,
         },
-      }
+      };
 
-      utils.replaceValueDeep(target, 'timeout', 1234)
+      utils.replaceValueDeep(target, 'timeout', 1234);
       expect(target).eql({
         zeroValue: {
           timeout: 1234,
@@ -156,43 +157,37 @@ describe('utils', () => {
         nullValue: {
           timeout: 1234,
         },
-      })
-    })
+      });
+    });
 
     it('replace value in array of objects', () => {
       target = {
         timeout: 1,
-        something: [
-          {
-            a: 1,
-            b: 2,
-          },
-          {
-            a: 3,
-          },
-          123,
-          0,
-          [{ a: 1 }, 123],
-        ],
-      }
+        something: [{
+          a: 1,
+          b: 2,
+        }, {
+          a: 3,
+        },
+        123,
+        0,
+        [{ a: 1 }, 123]],
+      };
 
-      utils.replaceValueDeep(target, 'a', 1234)
+      utils.replaceValueDeep(target, 'a', 1234);
       expect(target).eql({
         timeout: 1,
-        something: [
-          {
-            a: 1234,
-            b: 2,
-          },
-          {
-            a: 1234,
-          },
-          123,
-          0,
-          [{ a: 1234 }, 123],
-        ],
-      })
-    })
+        something: [{
+          a: 1234,
+          b: 2,
+        }, {
+          a: 1234,
+        },
+        123,
+        0,
+        [{ a: 1234 }, 123]],
+      });
+    });
 
     it('replace simple value deep in object', () => {
       target = {
@@ -202,9 +197,9 @@ describe('utils', () => {
             otherthing: 2,
           },
         },
-      }
+      };
 
-      utils.replaceValueDeep(target, 'otherthing', 1234)
+      utils.replaceValueDeep(target, 'otherthing', 1234);
       expect(target).eql({
         timeout: 1,
         helpers: {
@@ -212,8 +207,8 @@ describe('utils', () => {
             otherthing: 1234,
           },
         },
-      })
-    })
+      });
+    });
 
     it('replace object value', () => {
       target = {
@@ -227,9 +222,9 @@ describe('utils', () => {
             timeouts: 3,
           },
         },
-      }
+      };
 
-      utils.replaceValueDeep(target.helpers, 'WebDriver', { timeouts: 1234 })
+      utils.replaceValueDeep(target.helpers, 'WebDriver', { timeouts: 1234 });
       expect(target).eql({
         timeout: 1,
         helpers: {
@@ -241,111 +236,118 @@ describe('utils', () => {
             timeouts: 3,
           },
         },
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('#getNormalizedKeyAttributeValue', () => {
     it('should normalize key (alias) to key attribute value', () => {
-      expect(utils.getNormalizedKeyAttributeValue('Arrow down')).equal('ArrowDown')
-      expect(utils.getNormalizedKeyAttributeValue('RIGHT_ARROW')).equal('ArrowRight')
-      expect(utils.getNormalizedKeyAttributeValue('leftarrow')).equal('ArrowLeft')
-      expect(utils.getNormalizedKeyAttributeValue('Up arrow')).equal('ArrowUp')
+      expect(utils.getNormalizedKeyAttributeValue('Arrow down')).equal('ArrowDown');
+      expect(utils.getNormalizedKeyAttributeValue('RIGHT_ARROW')).equal('ArrowRight');
+      expect(utils.getNormalizedKeyAttributeValue('leftarrow')).equal('ArrowLeft');
+      expect(utils.getNormalizedKeyAttributeValue('Up arrow')).equal('ArrowUp');
 
-      expect(utils.getNormalizedKeyAttributeValue('Left Alt')).equal('AltLeft')
-      expect(utils.getNormalizedKeyAttributeValue('RIGHT_ALT')).equal('AltRight')
-      expect(utils.getNormalizedKeyAttributeValue('alt')).equal('Alt')
+      expect(utils.getNormalizedKeyAttributeValue('Left Alt')).equal('AltLeft');
+      expect(utils.getNormalizedKeyAttributeValue('RIGHT_ALT')).equal('AltRight');
+      expect(utils.getNormalizedKeyAttributeValue('alt')).equal('Alt');
 
-      expect(utils.getNormalizedKeyAttributeValue('oPTION left')).equal('AltLeft')
-      expect(utils.getNormalizedKeyAttributeValue('ALTGR')).equal('AltGraph')
-      expect(utils.getNormalizedKeyAttributeValue('alt graph')).equal('AltGraph')
+      expect(utils.getNormalizedKeyAttributeValue('oPTION left')).equal('AltLeft');
+      expect(utils.getNormalizedKeyAttributeValue('ALTGR')).equal('AltGraph');
+      expect(utils.getNormalizedKeyAttributeValue('alt graph')).equal('AltGraph');
 
-      expect(utils.getNormalizedKeyAttributeValue('Control Left')).equal('ControlLeft')
-      expect(utils.getNormalizedKeyAttributeValue('RIGHT_CTRL')).equal('ControlRight')
-      expect(utils.getNormalizedKeyAttributeValue('Ctrl')).equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('Control Left')).equal('ControlLeft');
+      expect(utils.getNormalizedKeyAttributeValue('RIGHT_CTRL')).equal('ControlRight');
+      expect(utils.getNormalizedKeyAttributeValue('Ctrl')).equal('Control');
 
-      expect(utils.getNormalizedKeyAttributeValue('Cmd')).equal('Meta')
-      expect(utils.getNormalizedKeyAttributeValue('LeftCommand')).equal('MetaLeft')
-      expect(utils.getNormalizedKeyAttributeValue('os right')).equal('MetaRight')
-      expect(utils.getNormalizedKeyAttributeValue('SUPER')).equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('Cmd')).equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('LeftCommand')).equal('MetaLeft');
+      expect(utils.getNormalizedKeyAttributeValue('os right')).equal('MetaRight');
+      expect(utils.getNormalizedKeyAttributeValue('SUPER')).equal('Meta');
 
-      expect(utils.getNormalizedKeyAttributeValue('NumpadComma')).equal('Comma')
-      expect(utils.getNormalizedKeyAttributeValue('Separator')).equal('Comma')
+      expect(utils.getNormalizedKeyAttributeValue('NumpadComma')).equal('Comma');
+      expect(utils.getNormalizedKeyAttributeValue('Separator')).equal('Comma');
 
-      expect(utils.getNormalizedKeyAttributeValue('Add')).equal('NumpadAdd')
-      expect(utils.getNormalizedKeyAttributeValue('Decimal')).equal('NumpadDecimal')
-      expect(utils.getNormalizedKeyAttributeValue('Divide')).equal('NumpadDivide')
-      expect(utils.getNormalizedKeyAttributeValue('Multiply')).equal('NumpadMultiply')
-      expect(utils.getNormalizedKeyAttributeValue('Subtract')).equal('NumpadSubtract')
-    })
+      expect(utils.getNormalizedKeyAttributeValue('Add')).equal('NumpadAdd');
+      expect(utils.getNormalizedKeyAttributeValue('Decimal')).equal('NumpadDecimal');
+      expect(utils.getNormalizedKeyAttributeValue('Divide')).equal('NumpadDivide');
+      expect(utils.getNormalizedKeyAttributeValue('Multiply')).equal('NumpadMultiply');
+      expect(utils.getNormalizedKeyAttributeValue('Subtract')).equal('NumpadSubtract');
+    });
 
     it('should normalize modifier key based on operating system', () => {
-      sinon.stub(os, 'platform').callsFake(() => {
-        return 'notdarwin'
-      })
-      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft')
-      os.platform.restore()
+      sinon.stub(os, 'platform').callsFake(() => { return 'notdarwin'; });
+      expect(utils.getNormalizedKeyAttributeValue('CmdOrCtrl')).to.equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL')).to.equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('ControlOrCommand')).to.equal('Control');
+      expect(utils.getNormalizedKeyAttributeValue('left ctrl or command')).to.equal('ControlLeft');
+      os.platform.restore();
 
-      sinon.stub(os, 'platform').callsFake(() => {
-        return 'darwin'
-      })
-      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight')
-      os.platform.restore()
-    })
-  })
+      sinon.stub(os, 'platform').callsFake(() => { return 'darwin'; });
+      expect(utils.getNormalizedKeyAttributeValue('CtrlOrCmd')).to.equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND')).to.equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('CommandOrControl')).to.equal('Meta');
+      expect(utils.getNormalizedKeyAttributeValue('right command or ctrl')).to.equal('MetaRight');
+      os.platform.restore();
+    });
+  });
 
   describe('#screenshotOutputFolder', () => {
-    let _oldGlobalOutputDir
-    let _oldGlobalCodeceptDir
+    let _oldGlobalOutputDir;
+    let _oldGlobalCodeceptDir;
 
     before(() => {
-      _oldGlobalOutputDir = global.output_dir
-      _oldGlobalCodeceptDir = global.codecept_dir
+      _oldGlobalOutputDir = global.output_dir;
+      _oldGlobalCodeceptDir = global.codecept_dir;
 
-      global.output_dir = '/Users/someuser/workbase/project1/test_output'
-      global.codecept_dir = '/Users/someuser/workbase/project1/tests/e2e'
-    })
+      global.output_dir = '/Users/someuser/workbase/project1/test_output';
+      global.codecept_dir = '/Users/someuser/workbase/project1/tests/e2e';
+    });
 
     after(() => {
-      global.output_dir = _oldGlobalOutputDir
-      global.codecept_dir = _oldGlobalCodeceptDir
-    })
+      global.output_dir = _oldGlobalOutputDir;
+      global.codecept_dir = _oldGlobalCodeceptDir;
+    });
 
     it('returns the joined filename for filename only', () => {
-      const _path = utils.screenshotOutputFolder('screenshot1.failed.png')
-      expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep))
-    })
+      const _path = utils.screenshotOutputFolder('screenshot1.failed.png');
+      expect(_path).eql(
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
+          /\//g,
+          path.sep,
+        ),
+      );
+    });
 
     it('returns the given filename for absolute one', () => {
       const _path = utils.screenshotOutputFolder(
-        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep),
-      )
+        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(
+          /\//g,
+          path.sep,
+        ),
+      );
       if (os.platform() === 'win32') {
         expect(_path).eql(
-          path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'),
-        )
+          path.resolve(
+            global.codecept_dir,
+            '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
+          ),
+        );
       } else {
-        expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')
+        expect(_path).eql(
+          '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png',
+        );
       }
-    })
-  })
+    });
+  });
 
   describe('#requireWithFallback', () => {
     it('returns the fallback package', () => {
-      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(require('playwright'))
-    })
+      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(require('playwright'));
+    });
 
     it('returns provide default require not found message', () => {
-      expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2')).to.throw(
-        Error,
-        'Cannot find modules unexisting-package,unexisting-package2',
-      )
-    })
-  })
-})
+      expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2'))
+        .to.throw(Error, 'Cannot find modules unexisting-package,unexisting-package2');
+    });
+  });
+});

@@ -42,7 +42,7 @@ const newEventHandler = (name) => {
 
 eventTypes.forEach(name => newEventHandler(name));
 
-module.exports = {
+export default {
   events: eventRecorder,
   counter: eventTypeCounter,
   clearEvents: () => {

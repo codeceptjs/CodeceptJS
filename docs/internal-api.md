@@ -191,7 +191,7 @@ const output = require('codeceptjs').output;
 
 output.print('This is basic information');
 output.debug('This is debug information');
-output.log('This is verbose logging information');
+output.output.log('This is verbose logging information');
 ```
 
 #### Test Object
