@@ -99,7 +99,7 @@ module.exports.tests = function () {
     it('should check text on site', async () => {
       await I.amOnPage('/')
       await I.see('Welcome to test app!')
-      await I.see('A wise man said: "debug!"')
+      await I.see('A wise man said: "debug!!"')
       await I.dontSee('Info')
     })
 
