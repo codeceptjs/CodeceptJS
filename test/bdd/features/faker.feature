@@ -7,4 +7,4 @@ Feature: Faker examples
                Then "<cashier>" returned "<change>" in change to "<customer>"
           Examples:
   | product             | customer              | price              | cashier   |
-  | {{vehicle.vehicle}} | Dr. {{name.findName}} | {{commerce.price}} | cashier 2 |
+  | {{vehicle.vehicle}} | Dr. {{name.fullName}} | {{commerce.price}} | cashier 2 |
