@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
-const { createPromptModule } = require('@inquirer/testing');
+const { createPrompt } = require('@inquirer/testing');
 
 const runner = path.join(__dirname, '../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init');
@@ -35,8 +35,8 @@ describe('Init Command', function () {
   });
 
   it('should init Codecept with TypeScript REST JSONResponse English', async () => {
-    const prompt = createPromptModule();
-    
+    const prompt = createPrompt();
+
     prompt.inject([
       'Y', // Confirm TypeScript usage
       '',  // Default for test location
@@ -56,7 +56,7 @@ describe('Init Command', function () {
   });
 
   it.skip('should init Codecept with JavaScript REST JSONResponse de-DE', async () => {
-    const prompt = createPromptModule();
+    const prompt = createPrompt();
 
     prompt.inject([
       '',  // Default (No TypeScript)
