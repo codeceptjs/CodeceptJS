@@ -146,7 +146,7 @@
     "express": "4.19.2",
     "graphql": "16.9.0",
     "husky": "9.1.6",
-    "inquirer-test": "2.0.1",
+    "@inquirer/testing": "2.1.34",
     "jsdoc": "4.0.3",
     "jsdoc-typeof-plugin": "1.0.0",
     "json-server": "0.10.1",
