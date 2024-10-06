@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
-const { createPrompt } = require('@inquirer/testing');
+const { PromptUI, inquirerPrompt } = require('@inquirer/testing'); // Correct imports
 
 const runner = path.join(__dirname, '../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init');
@@ -35,16 +35,16 @@ describe('Init Command', function () {
   });
 
   it('should init Codecept with TypeScript REST JSONResponse English', async () => {
-    const prompt = createPrompt();
-
-    prompt.inject([
-      'Y', // Confirm TypeScript usage
-      '',  // Default for test location
-      'DOWN', 'DOWN', 'DOWN', 'ENTER',  // Select REST helper
-      'y', // Confirm JSONResponse usage
-      '',  // Default for logs/screenshots/reports
-      '',  // Default for localization
-    ]);
+    const promptUI = new PromptUI({
+      input: inquirerPrompt([
+        'Y', // Confirm TypeScript usage
+        '',  // Default for test location
+        'DOWN', 'DOWN', 'DOWN', 'ENTER',  // Select REST helper
+        'y', // Confirm JSONResponse usage
+        '',  // Default for logs/screenshots/reports
+        '',  // Default for localization
+      ])
+    });
 
     await require(runner).init(codecept_dir);
 
@@ -56,16 +56,16 @@ describe('Init Command', function () {
   });
 
   it.skip('should init Codecept with JavaScript REST JSONResponse de-DE', async () => {
-    const prompt = createPrompt();
-
-    prompt.inject([
-      '',  // Default (No TypeScript)
-      '',  // Default for test location
-      'DOWN', 'DOWN', 'DOWN', 'ENTER',  // Select REST helper
-      'y', // Confirm JSONResponse usage
-      '',  // Default for logs/screenshots/reports
-      'DOWN', '',  // Select de-DE localization
-    ]);
+    const promptUI = new PromptUI({
+      input: inquirerPrompt([
+        '',  // Default (No TypeScript)
+        '',  // Default for test location
+        'DOWN', 'DOWN', 'DOWN', 'ENTER',  // Select REST helper
+        'y', // Confirm JSONResponse usage
+        '',  // Default for logs/screenshots/reports
+        'DOWN', '',  // Select de-DE localization
+      ])
+    });
 
     await require(runner).init(codecept_dir);
 
