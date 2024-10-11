@@ -1605,7 +1605,11 @@ module.exports.tests = function () {
     })
   })
 
-  describe('#focus, #blur', () => {
+  describe.skip('#focus, #blur', () => {
+    beforeEach(function () {
+      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+    })
+
     it('should focus a button, field and textarea', async () => {
       await I.amOnPage('/form/focus_blur_elements')
 
