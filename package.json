@@ -73,7 +73,7 @@
     "@codeceptjs/configure": "1.0.1",
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "17",
-    "@cucumber/gherkin": "26",
+    "@cucumber/gherkin": "29",
     "@cucumber/messages": "25.0.1",
     "@xmldom/xmldom": "0.8.10",
     "acorn": "8.12.1",
