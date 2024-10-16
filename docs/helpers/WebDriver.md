@@ -1342,11 +1342,13 @@ Resumes test execution, so **should be used inside async function with `await`**
 
 ```js
 let numOfElements = await I.grabNumberOfVisibleElements('p');
+let numOfElementsWithWait = await I.grabNumberOfVisibleElements('p', 2); // timeout applied
 ```
 
 #### Parameters
 
 -   `locator` **([string][18] | [object][17])** located by CSS|XPath|strict locator.
+-   `sec` **[number][24]?** (optional, `1` by default) time in seconds to wait
 
 Returns **[Promise][27]&lt;[number][24]>** number of visible elements
 
