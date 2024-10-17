@@ -109,6 +109,13 @@ describe('REST', () => {
       getResponse.data.should.be.empty
     })
 
+    it('should send DELETE requests with payload', async () => {
+      await I.sendDeleteRequestWithPayload('/posts/1', { author: 'john' })
+      const getResponse = await I.sendGetRequest('/posts')
+
+      getResponse.data.should.be.empty
+    })
+
     it('should update request with onRequest', async () => {
       I.config.onRequest = (request) => (request.data = { name: 'Vasya' })
 

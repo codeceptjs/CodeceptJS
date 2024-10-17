@@ -70,7 +70,7 @@ module.exports = {
     scrollTo: 'défileVers',
     sendGetRequest: 'envoieLaRequêteGet',
     sendPutRequest: 'envoieLaRequêtePut',
-    sendDeleteRequest: 'envoieLaRequêteDelete',
+    sendDeleteRequest: 'envoieLaRequêteDeleteAvecPayload',
     sendPostRequest: 'envoieLaRequêtePost',
   },
 }
