@@ -120,7 +120,7 @@ describe('HTML module', () => {
     })
 
     it('should allow adding new elements', () => {
-      const html = '<div><h6>Hey</h6></div>';
+      const html = '<div><h6>Hey</h6></div>'
       const result = removeNonInteractiveElements(html, { textElements: ['h6'] })
       expect(result).to.include('<h6>Hey</h6>')
     })
