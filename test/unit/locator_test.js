@@ -197,7 +197,7 @@ const xml = `<body>
 
 describe('Locator', () => {
   beforeEach(() => {
-    doc = new DOMParser().parseFromString(xml, 'application/xhtml+xml')
+    doc = new DOMParser().parseFromString(xml, 'text/xml')
   })
 
   describe('constructor', () => {
