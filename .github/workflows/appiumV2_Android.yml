@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 3.x
-      - fix-appium-issues-with-async
 
 env:
   CI: true
