@@ -767,23 +767,23 @@ describe('Appium', function () {
       await app.see('Welcome to register a new User')
     })
 
-    it('should execute only on Android @quick', async () => {
+    it('should execute only on Android @quick', () => {
       let platform = null
-      await app.runOnIOS(() => {
+      app.runOnIOS(() => {
         platform = 'ios'
       })
-      await app.runOnAndroid(() => {
+      app.runOnAndroid(() => {
         platform = 'android'
       })
-      await app.runOnAndroid({ platformVersion: '7.0' }, () => {
+      app.runOnAndroid({ platformVersion: '7.0' }, () => {
         platform = 'android7'
       })
 
       assert.equal('android', platform)
     })
 
-    it('should execute only on Android >= 5.0 @quick', async () => {
-      await app.runOnAndroid(
+    it('should execute only on Android >= 5.0 @quick', () => {
+      app.runOnAndroid(
         (caps) => caps.platformVersion >= 5,
         () => {},
       )
