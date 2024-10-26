@@ -1007,6 +1007,11 @@ module.exports.tests = function () {
       await I.waitForText('Dynamic text', 5, '//div[@id="text"]')
     })
 
+    it('should wait for text with double quotes', async () => {
+      await I.amOnPage('/')
+      await I.waitForText('said: "debug!"', 5)
+    })
+
     it('should throw error when text not found', async () => {
       await I.amOnPage('/dynamic')
       await I.dontSee('Dynamic text')
