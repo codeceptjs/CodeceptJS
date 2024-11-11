@@ -136,7 +136,7 @@
     "cheerio": "^1.0.0",
     "contributor-faces": "1.1.0",
     "documentation": "12.3.0",
-    "electron": "31.3.1",
+    "electron": "33.2.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.30.0",
