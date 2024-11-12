@@ -89,7 +89,6 @@
     "cross-spawn": "7.0.5",
     "css-to-xpath": "0.1.0",
     "csstoxpath": "1.6.0",
-    "devtools": "8.40.2",
     "envinfo": "7.14.0",
     "escape-string-regexp": "4.0.0",
     "figures": "3.2.0",
@@ -166,7 +165,7 @@
     "typedoc-plugin-markdown": "4.2.10",
     "typescript": "5.6.3",
     "wdio-docker-service": "1.5.0",
-    "webdriverio": "8.39.1",
+    "webdriverio": "9.2.12",
     "xml2js": "0.6.2",
     "xpath": "0.0.34"
   },
