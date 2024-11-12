@@ -591,7 +591,6 @@ Running with devtools protocol
      WebDriver : {
        url: "http://localhost",
        browser: "chrome",
-       devtoolsProtocol: true,
        desiredCapabilities: {
          chromeOptions: {
            args: [ "--headless", "--disable-gpu", "--no-sandbox" ]

@@ -147,7 +147,6 @@ website][4].
      WebDriver : {
        url: "http://localhost",
        browser: "chrome",
-       devtoolsProtocol: true,
        desiredCapabilities: {
          chromeOptions: {
            args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
