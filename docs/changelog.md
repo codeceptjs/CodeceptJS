@@ -35,10 +35,10 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
 ```
 * feat(cli): print failed hooks ([#4476](https://github.com/codeceptjs/CodeceptJS/issues/4476)) - by **[kobenguyent](https://github.com/kobenguyent)**
   * run command
-  ![Screenshot 2024-09-02 at 15 25 20](https://github.com/user-attachments/assets/625c6b54-03f6-41c6-9d0c-cd699582404a)
+    ![Screenshot 2024-09-02 at 15 25 20](https://github.com/user-attachments/assets/625c6b54-03f6-41c6-9d0c-cd699582404a)
 
   * run workers command
-![Screenshot 2024-09-02 at 15 24 53](https://github.com/user-attachments/assets/efff0312-1229-44b6-a94f-c9b9370b9a64)
+    ![Screenshot 2024-09-02 at 15 24 53](https://github.com/user-attachments/assets/efff0312-1229-44b6-a94f-c9b9370b9a64)
 
 🐛 *Bug Fixes*
 * fix(AI): minor AI improvements - by **[DavertMik](https://github.com/DavertMik)**
@@ -55,11 +55,11 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
   helpers: {
     REST: {
       endpoint: 'http://site.com/api',
-      prettyPrintJson: true,
-      httpAgent: {
-         ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
-         rejectUnauthorized: false,
-         keepAlive: true
+        prettyPrintJson: true,
+        httpAgent: {
+        ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
+          rejectUnauthorized: false,
+          keepAlive: true
       }
     }
   }
@@ -222,7 +222,7 @@ locate('div').withClassAttr('text');
 ```
 
 * fix(playwright): set the record video resolution ([#4311](https://github.com/codeceptjs/CodeceptJS/issues/4311)) - by **[KobeNguyent](https://github.com/KobeNguyent)**
-You could now set the recording video resolution
+  You could now set the recording video resolution
 ```
   url: siteUrl,
   windowSize: '300x500',
@@ -323,23 +323,23 @@ Examples:
 
 ```js
 // recording traffics and verify the traffic
-  I.startRecordingTraffic();
-  I.amOnPage('https://codecept.io/');
-  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+I.startRecordingTraffic();
+I.amOnPage('https://codecept.io/');
+I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
 ```
 
 ```js
 // check the traffic with advanced params
-  I.amOnPage('https://openai.com/blog/chatgpt');
-  I.startRecordingTraffic();
-  I.seeTraffic({
-    name: 'sentry event',
-    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-    parameters: {
-      width: '1919',
-      height: '1138',
-    },
-  });
+I.amOnPage('https://openai.com/blog/chatgpt');
+I.startRecordingTraffic();
+I.seeTraffic({
+  name: 'sentry event',
+  url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+  parameters: {
+    width: '1919',
+    height: '1138',
+  },
+});
 ```
 
 * Introduce the playwright locator: `_react`, `_vue`, `data-testid` attribute. See [#4255](https://github.com/codeceptjs/CodeceptJS/issues/4255) by **[KobeNguyenT](https://github.com/KobeNguyenT)**
@@ -470,7 +470,7 @@ PUT tests -- /Users/tDesktop/projects/codeceptjs-rest-demo/src/PUT_test.ts -- 4 
 * feat: mock server helper ([#4155](https://github.com/codeceptjs/CodeceptJS/issues/4155)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
   ![Screenshot 2024-01-25 at 13 47 59](https://github.com/codeceptjs/CodeceptJS/assets/7845001/8fe7aacf-f1c9-4d7e-89a6-3748b3ccb26c)
 * feat(webdriver): network traffics manipulation ([#4166](https://github.com/codeceptjs/CodeceptJS/issues/4166)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
- **[Webdriver]** Added commands to check network traffics - supported only with devtoolsProtocol
+  **[Webdriver]** Added commands to check network traffics - supported only with devtoolsProtocol
   * `startRecordingTraffic`
   * `grabRecordedNetworkTraffics`
   * `flushNetworkTraffics`
@@ -482,23 +482,23 @@ Examples:
 
 ```js
 // recording traffics and verify the traffic
-  I.startRecordingTraffic();
-  I.amOnPage('https://codecept.io/');
-  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+I.startRecordingTraffic();
+I.amOnPage('https://codecept.io/');
+I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
 ```
 
 ```js
 // check the traffic with advanced params
-  I.amOnPage('https://openai.com/blog/chatgpt');
-  I.startRecordingTraffic();
-  I.seeTraffic({
-    name: 'sentry event',
-    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-    parameters: {
-      width: '1919',
-      height: '1138',
-    },
-  });
+I.amOnPage('https://openai.com/blog/chatgpt');
+I.startRecordingTraffic();
+I.seeTraffic({
+  name: 'sentry event',
+  url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+  parameters: {
+    width: '1919',
+    height: '1138',
+  },
+});
 ```
 * feat(webapi): add waitForCookie ([#4169](https://github.com/codeceptjs/CodeceptJS/issues/4169)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
   Waits for the specified cookie in the cookies.
@@ -546,18 +546,18 @@ Example:
 
 ```js
 {
-   helpers: {
-     WebDriver : {
-       smartWait: 5000,
-       browser: "chrome",
-       restart: false,
-       windowSize: "maximize",
-       timeouts: {
-         "script": 60000,
-         "page load": 10000
-       }
-     }
-   }
+  helpers: {
+    WebDriver : {
+      smartWait: 5000,
+        browser: "chrome",
+        restart: false,
+        windowSize: "maximize",
+        timeouts: {
+        "script": 60000,
+          "page load": 10000
+      }
+    }
+  }
 }
 ```
 
@@ -566,19 +566,19 @@ For example:
 
 ```js
 {
-   helpers: {
-     WebDriver : {
-       smartWait: 5000,
-       browser: "chrome",
-       browserVersion: '116.0.5793.0', // or 'stable', 'beta', 'dev' or 'canary'
-       restart: false,
-       windowSize: "maximize",
-       timeouts: {
-         "script": 60000,
-         "page load": 10000
-       }
-     }
-   }
+  helpers: {
+    WebDriver : {
+      smartWait: 5000,
+        browser: "chrome",
+        browserVersion: '116.0.5793.0', // or 'stable', 'beta', 'dev' or 'canary'
+        restart: false,
+        windowSize: "maximize",
+        timeouts: {
+        "script": 60000,
+          "page load": 10000
+      }
+    }
+  }
 }
 ```
 * feat: wdio with devtools protocol ([#4105](https://github.com/codeceptjs/CodeceptJS/issues/4105)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
@@ -587,17 +587,18 @@ Running with devtools protocol
 
 ```js
 {
-   helpers: {
-     WebDriver : {
-       url: "http://localhost",
-       browser: "chrome",
-       desiredCapabilities: {
-         chromeOptions: {
-           args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
-         }
-       }
-     }
-   }
+  helpers: {
+    WebDriver : {
+      url: "http://localhost",
+        browser: "chrome",
+        devtoolsProtocol: true,
+        desiredCapabilities: {
+        chromeOptions: {
+          args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
+        }
+      }
+    }
+  }
 }
 ```
 * feat: add a locator builder method withTextEquals() ([#4100](https://github.com/codeceptjs/CodeceptJS/issues/4100)) - by **[mirao](https://github.com/mirao)**
@@ -658,9 +659,9 @@ Updated
 
 ```js
 Scenario('Verify getting list of users', async () => {
-let res = await I.getUserPerPage(2);
-res.data = []; // this line causes the issue
-await I.expectEqual(res.data.data[0].id, 7);
+  let res = await I.getUserPerPage(2);
+  res.data = []; // this line causes the issue
+  await I.expectEqual(res.data.data[0].id, 7);
 });
 ```
 at this time, res.data.data[0].id would throw undefined error and somehow the test is missing all its steps.
@@ -678,14 +679,14 @@ Plugins: screenshotOnFail, tryTo, retryFailedStep, retryTo, eachElement
 
 Repro -- **[1]**  Starting recording promises
 Timeouts:
-› **[Session]** Starting singleton browser session
+  › **[Session]** Starting singleton browser session
 Reproduce issue
 I am on page "https://example.com"
 › [Browser:Error] Failed to load resource: the server responded with a status of 404 ()
 › [New Context] {}
 user1: I am on page "https://example.com"
 user1: I execute script () => {
-return { width: window.screen.width, height: window.screen.height };
+  return { width: window.screen.width, height: window.screen.height };
 }
 sessionScreen is {"width":375,"height":667}
 ✔ OK in 1890ms
@@ -705,7 +706,7 @@ OK  | 1 passed   // 4s
 deprecate some JSON Wire Protocol commands: `grabGeoLocation`, `setGeoLocation`
 
 * fix: cannot locate complicated locator ([#4101](https://github.com/codeceptjs/CodeceptJS/issues/4101)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
-  
+
 Locator issue due to the lib changes
 
 ```
@@ -830,7 +831,7 @@ Fixed this error:
 locator.isVisible: Unexpected token "s" while parsing selector ":has-text('Were you able to resolve the resident's issue?') >> nth=0"
       at Playwright.waitForText (node_modules\codeceptjs\lib\helper\Playwright.js:2584:79)
 ```
-* fix: move to sha256 ([#4038](https://github.com/codeceptjs/CodeceptJS/issues/4038)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)** 
+* fix: move to sha256 ([#4038](https://github.com/codeceptjs/CodeceptJS/issues/4038)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 * fix: respect retries from retryfailedstep plugin in helpers ([#4028](https://github.com/codeceptjs/CodeceptJS/issues/4028)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 ```
 Currently inside the _before() of helpers for example Playwright, the retries is set there, however, when retryFailedStep plugin is enabled, the retries of recorder is still using the value from _before() not the value from retryFailedStep plugin.
@@ -1301,34 +1302,34 @@ await I.seeInField('checkbox[]', secret('see test three'));
 ## 3.5.4
 
 🐛 Bug Fixes:
- * **[Playwright]** When passing `userDataDir`, it throws error after test execution ([#3814](https://github.com/codeceptjs/CodeceptJS/issues/3814)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
- * [CodeceptJS-CLI] Improve command to generate types ([#3788](https://github.com/codeceptjs/CodeceptJS/issues/3788)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
- * Heal plugin fix ([#3820](https://github.com/codeceptjs/CodeceptJS/issues/3820)) - by **[davert](https://github.com/davert)**
- * Fix for error in using `all` with `run-workers` ([#3805](https://github.com/codeceptjs/CodeceptJS/issues/3805)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* **[Playwright]** When passing `userDataDir`, it throws error after test execution ([#3814](https://github.com/codeceptjs/CodeceptJS/issues/3814)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* [CodeceptJS-CLI] Improve command to generate types ([#3788](https://github.com/codeceptjs/CodeceptJS/issues/3788)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* Heal plugin fix ([#3820](https://github.com/codeceptjs/CodeceptJS/issues/3820)) - by **[davert](https://github.com/davert)**
+* Fix for error in using `all` with `run-workers` ([#3805](https://github.com/codeceptjs/CodeceptJS/issues/3805)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 ```js
   helpers: {
-    Playwright: {
-      url: 'https://github.com',
+  Playwright: {
+    url: 'https://github.com',
       show: false,
       browser: 'chromium',
       waitForNavigation: 'load',
       waitForTimeout: 30_000,
       trace: true,
       keepTraceForPassedTests: true
-    },
   },
-  multiple: {
-    profile1: {
-      browsers: [
-        {
-          browser: "chromium",
-        }
-      ]
-    },
+},
+multiple: {
+  profile1: {
+    browsers: [
+      {
+        browser: "chromium",
+      }
+    ]
   },
+},
 ```
- * Highlight elements issues ([#3779](https://github.com/codeceptjs/CodeceptJS/issues/3779)) ([#3778](https://github.com/codeceptjs/CodeceptJS/issues/3778)) - by **[philkas](https://github.com/philkas)**
- * Support `&nbsp` symbol in `I.see` method ([#3815](https://github.com/codeceptjs/CodeceptJS/issues/3815)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* Highlight elements issues ([#3779](https://github.com/codeceptjs/CodeceptJS/issues/3779)) ([#3778](https://github.com/codeceptjs/CodeceptJS/issues/3778)) - by **[philkas](https://github.com/philkas)**
+* Support `&nbsp` symbol in `I.see` method ([#3815](https://github.com/codeceptjs/CodeceptJS/issues/3815)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 
 ```js
 // HTML code uses &nbsp; instead of space
@@ -1338,7 +1339,7 @@ I.see("My Text!") // this test would work with both &nbsp; and space
 ```
 
 📖 Documentation
- * Improve the configuration of electron testing when the app is build with electron-forge ([#3802](https://github.com/codeceptjs/CodeceptJS/issues/3802)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* Improve the configuration of electron testing when the app is build with electron-forge ([#3802](https://github.com/codeceptjs/CodeceptJS/issues/3802)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 
 ```js
 const path = require("path");
@@ -1360,19 +1361,19 @@ exports.config = {
 🛩️ Features
 
 #### **[Playwright]** new features and improvements
- * Parse the response in recording network steps ([#3771](https://github.com/codeceptjs/CodeceptJS/issues/3771)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* Parse the response in recording network steps ([#3771](https://github.com/codeceptjs/CodeceptJS/issues/3771)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 
 ```js
       const traffics = await I.grabRecordedNetworkTraffics();
-      expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
-      expect(traffics[0].response.status).to.equal(200);
-      expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].response.status).to.equal(200);
+expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 
-      expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
-      expect(traffics[1].response.status).to.equal(200);
-      expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
+expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[1].response.status).to.equal(200);
+expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
 ```
- * Grab metrics ([#3809](https://github.com/codeceptjs/CodeceptJS/issues/3809)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
+* Grab metrics ([#3809](https://github.com/codeceptjs/CodeceptJS/issues/3809)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 
 ```js
 const metrics = await I.grabMetrics();
@@ -1475,32 +1476,32 @@ Examples:
 
 ```js
 // recording traffics and verify the traffic
-  await I.startRecordingTraffic();
-  I.amOnPage('https://codecept.io/');
-  await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+await I.startRecordingTraffic();
+I.amOnPage('https://codecept.io/');
+await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
 ```
 
 ```js
 // block the traffic
-  I.blockTraffic('https://reqres.in/api/comments/*');
-  await I.amOnPage('/form/fetch_call');
-  await I.startRecordingTraffic();
-  await I.click('GET COMMENTS');
-  await I.see('Can not load data!');
+I.blockTraffic('https://reqres.in/api/comments/*');
+await I.amOnPage('/form/fetch_call');
+await I.startRecordingTraffic();
+await I.click('GET COMMENTS');
+await I.see('Can not load data!');
 ```
 
 ```js
 // check the traffic with advanced params
-  I.amOnPage('https://openai.com/blog/chatgpt');
-  await I.startRecordingTraffic();
-  await I.seeTraffic({
-    name: 'sentry event',
-    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-    parameters: {
-      width: '1919',
-      height: '1138',
-    },
-  });
+I.amOnPage('https://openai.com/blog/chatgpt');
+await I.startRecordingTraffic();
+await I.seeTraffic({
+  name: 'sentry event',
+  url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+  parameters: {
+    width: '1919',
+    height: '1138',
+  },
+});
 ```
 
 🐛 Bugfix
@@ -1522,7 +1523,7 @@ Examples:
 
 🛩️ Features
 
-* [Puppeteer][WebDriver][TestCafe] Added methods by **[KobeNguyenT](https://github.com/KobeNguyenT)** in [#3737](https://github.com/codeceptjs/CodeceptJS/issues/3737) 
+* [Puppeteer][WebDriver][TestCafe] Added methods by **[KobeNguyenT](https://github.com/KobeNguyenT)** in [#3737](https://github.com/codeceptjs/CodeceptJS/issues/3737)
   * `blur`
   * `focus`
 * Improved BDD output to print steps without `I.` commands` by **[davertmik](https://github.com/davertmik)** [#3739](https://github.com/codeceptjs/CodeceptJS/issues/3739)
@@ -1535,7 +1536,7 @@ Examples:
 📖 Documentation
 
 * Fixed Playwright docs by **[Horsty80](https://github.com/Horsty80)**
-* Fixed ai docs by **[ngraf](https://github.com/ngraf)** 
+* Fixed ai docs by **[ngraf](https://github.com/ngraf)**
 * Various fixes by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 
 ## 3.5.0
@@ -1543,7 +1544,7 @@ Examples:
 🛩️ Features
 
 - **🪄 [AI Powered Test Automation](/ai)** - use OpenAI as a copilot for test automation. [#3713](https://github.com/codeceptjs/CodeceptJS/issues/3713) By **[davertmik](https://github.com/davertmik)**
-![](https://user-images.githubusercontent.com/220264/250418764-c382709a-3ccb-4eb5-b6bc-538f3b3b3d35.png)
+  ![](https://user-images.githubusercontent.com/220264/250418764-c382709a-3ccb-4eb5-b6bc-538f3b3b3d35.png)
   * [AI guide](/ai) added
   * added support for OpenAI in `pause()`
   * added [`heal` plugin](/plugins#heal) for self-healing tests
@@ -1623,13 +1624,13 @@ Feature('flaky Before & BeforeSuite', { retryBefore: 2, retryBeforeSuite: 3 })
 retry: [
   {
     // enable this config only for flaky tests
-    grep: '@flaky', 
+    grep: '@flaky',
     Before: 3 // retry Before 3 times
     Scenario: 3 // retry Scenario 3 times
-  }, 
+  },
   {
     // retry less when running slow tests
-    grep: '@slow' 
+    grep: '@slow'
     Scenario: 1
     Before: 1
   }, {
@@ -1651,7 +1652,7 @@ timeout: [
 ```
 
 * JsDoc: Removed promise from `I.say`. See [#3535](https://github.com/codeceptjs/CodeceptJS/issues/3535) by **[danielrentz](https://github.com/danielrentz)**
-* **[Playwright]** `handleDownloads` requires now a filename param. See [#3511](https://github.com/codeceptjs/CodeceptJS/issues/3511) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* **[Playwright]** `handleDownloads` requires now a filename param. See [#3511](https://github.com/codeceptjs/CodeceptJS/issues/3511) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[WebDriver]** Added support for v8, removed support for webdriverio v5 and lower. See [#3578](https://github.com/codeceptjs/CodeceptJS/issues/3578) by **[PeterNgTr](https://github.com/PeterNgTr)**
 
 
@@ -1660,20 +1661,20 @@ timeout: [
 🛩️ Features
 
 * **Promise-based typings** for TypeScript definitions in [#3465](https://github.com/codeceptjs/CodeceptJS/issues/3465) by **[nlespiaucq](https://github.com/nlespiaucq)**. If you use TypeScript or use linters [check how it may be useful to you](https://bit.ly/3XIMq6n).
-* **Translation** improved to use [custom vocabulary](https://codecept.io/translation/). 
+* **Translation** improved to use [custom vocabulary](https://codecept.io/translation/).
 * **[Playwright]** Added methods in [#3398](https://github.com/codeceptjs/CodeceptJS/issues/3398) by **[mirao](https://github.com/mirao)**
   * `restartBrowser` - to restart a browser (with different config)
   * `_createContextPage` - to create a new browser context with a page from a helper
-* Added [Cucumber custom types](/bdd#custom-types) for BDD in [#3435](https://github.com/codeceptjs/CodeceptJS/issues/3435) by **[Likstern](https://github.com/Likstern)** 
-* Propose using JSONResponse helper when initializing project for API testing. [#3455](https://github.com/codeceptjs/CodeceptJS/issues/3455) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* Added [Cucumber custom types](/bdd#custom-types) for BDD in [#3435](https://github.com/codeceptjs/CodeceptJS/issues/3435) by **[Likstern](https://github.com/Likstern)**
+* Propose using JSONResponse helper when initializing project for API testing. [#3455](https://github.com/codeceptjs/CodeceptJS/issues/3455) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * When translation enabled, generate tests using localized aliases. By **[davertmik](https://github.com/davertmik)**
-* **[Appium]** Added `checkIfAppIsInstalled` in [#3507](https://github.com/codeceptjs/CodeceptJS/issues/3507) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* **[Appium]** Added `checkIfAppIsInstalled` in [#3507](https://github.com/codeceptjs/CodeceptJS/issues/3507) by **[PeterNgTr](https://github.com/PeterNgTr)**
 
 🐛 Bugfixes
 
 * Fixed [#3462](https://github.com/codeceptjs/CodeceptJS/issues/3462) `TypeError: Cannot read properties of undefined (reading 'setStatus')` by **[dwentland24](https://github.com/dwentland24)** in [#3438](https://github.com/codeceptjs/CodeceptJS/issues/3438)
-* Fixed creating steps file for TypeScript setup [#3459](https://github.com/codeceptjs/CodeceptJS/issues/3459) by **[PeterNgTr](https://github.com/PeterNgTr)** 
-* Fixed issue of after all event in `run-rerun` command after complete execution [#3464](https://github.com/codeceptjs/CodeceptJS/issues/3464) by **[jain-neeeraj](https://github.com/jain-neeeraj)** 
+* Fixed creating steps file for TypeScript setup [#3459](https://github.com/codeceptjs/CodeceptJS/issues/3459) by **[PeterNgTr](https://github.com/PeterNgTr)**
+* Fixed issue of after all event in `run-rerun` command after complete execution [#3464](https://github.com/codeceptjs/CodeceptJS/issues/3464) by **[jain-neeeraj](https://github.com/jain-neeeraj)**
 * [Playwright][WebDriver][Appium] Do not change `waitForTimeout` value on validation. See [#3478](https://github.com/codeceptjs/CodeceptJS/issues/3478) by **[pmajewski24](https://github.com/pmajewski24)**. Fixes [#2589](https://github.com/codeceptjs/CodeceptJS/issues/2589)
 * [Playwright][WebDriver][Protractor][Puppeteer][TestCafe] Fixes `Element "{null: undefined}" was not found` and `element ([object Object]) still not present` messages when using object locators. See [#3501](https://github.com/codeceptjs/CodeceptJS/issues/3501) and [#3502](https://github.com/codeceptjs/CodeceptJS/issues/3502) by **[pmajewski24](https://github.com/pmajewski24)**
 * **[Playwright]** Improved file names when downloading file in [#3449](https://github.com/codeceptjs/CodeceptJS/issues/3449) by **[PeterNgTr](https://github.com/PeterNgTr)**. Fixes [#3412](https://github.com/codeceptjs/CodeceptJS/issues/3412) and [#3409](https://github.com/codeceptjs/CodeceptJS/issues/3409)
@@ -1681,7 +1682,7 @@ timeout: [
 * **[Playwright]** Using system-native path separator when saving artifacts in [#3460](https://github.com/codeceptjs/CodeceptJS/issues/3460) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[Playwright]** Saving videos and traces from multiple sessions in [#3505](https://github.com/codeceptjs/CodeceptJS/issues/3505) by **[davertmik](https://github.com/davertmik)**
 * **[Playwright]** Fixed `amOnPage` to navigate to `about:blank` by **[zaxoavoki](https://github.com/zaxoavoki)** in [#3470](https://github.com/codeceptjs/CodeceptJS/issues/3470) Fixes [#2311](https://github.com/codeceptjs/CodeceptJS/issues/2311)
-* Various typing improvements by **[AWolf81](https://github.com/AWolf81)** **[PeterNgTr](https://github.com/PeterNgTr)** **[mirao](https://github.com/mirao)**  
+* Various typing improvements by **[AWolf81](https://github.com/AWolf81)** **[PeterNgTr](https://github.com/PeterNgTr)** **[mirao](https://github.com/mirao)**
 
 📖 Documentation
 
@@ -1714,7 +1715,7 @@ const response = await I.sendPostRequest('/user', secretData);
 * fix(playwright) - video name and missing type by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3430](https://github.com/codeceptjs/CodeceptJS/issues/3430)
 * fix for expected type of "bootstrap", "teardown", "bootstrapAll" and "teardownAll" by **[ngraf](https://github.com/ngraf)** in [#3424](https://github.com/codeceptjs/CodeceptJS/issues/3424)
 * Improve generate pageobject `gpo` command to work with TypeScript by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3411](https://github.com/codeceptjs/CodeceptJS/issues/3411)
-* Fixed dry-run to always return 0 code and exit 
+* Fixed dry-run to always return 0 code and exit
 * Added minimal version notice for NodeJS >= 12
 * fix(utils): remove . of test title to avoid confusion by **[PeterNgTr](https://github.com/PeterNgTr)** in [#3431](https://github.com/codeceptjs/CodeceptJS/issues/3431)
 
@@ -1722,7 +1723,7 @@ const response = await I.sendPostRequest('/user', secretData);
 
 🛩️ Features
 
-* Added **TypeScript types for CodeceptJS config**. 
+* Added **TypeScript types for CodeceptJS config**.
 
 Update `codecept.conf.js` to get intellisense when writing config file:
 
@@ -1743,17 +1744,17 @@ exports.config = {
 
 🐛 Bugfixes
 
-* **[Puppeteer]** Fixed support for Puppeteer > 14.4 by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* **[Puppeteer]** Fixed support for Puppeteer > 14.4 by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Don't report files as existing when non-directory is in path by **[jonathanperret](https://github.com/jonathanperret)**. See [#3374](https://github.com/codeceptjs/CodeceptJS/issues/3374)
-* Fixed TS type for `secret` function by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* Fixed TS type for `secret` function by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Fixed wrong order for async MetaSteps by **[dwentland24](https://github.com/dwentland24)**. See [#3393](https://github.com/codeceptjs/CodeceptJS/issues/3393)
-* Fixed same param substitution in BDD step. See [#3385](https://github.com/codeceptjs/CodeceptJS/issues/3385) by **[snehabhandge](https://github.com/snehabhandge)** 
+* Fixed same param substitution in BDD step. See [#3385](https://github.com/codeceptjs/CodeceptJS/issues/3385) by **[snehabhandge](https://github.com/snehabhandge)**
 
 📖 Documentation
 
 * Updated [configuration options](https://codecept.io/configuration/) to match TypeScript types
 * Updated [TypeScript documentation](https://codecept.io/typescript/) on simplifying TS installation
-* Added codecept-tesults plugin documentation by **[ajeetd](https://github.com/ajeetd)** 
+* Added codecept-tesults plugin documentation by **[ajeetd](https://github.com/ajeetd)**
 
 
 
@@ -1766,21 +1767,21 @@ I.sendPostRequest('/auth', secret({ name: 'jon', password: '123456' }, 'password
 ```
 * Added [a guide about using of `secret`](/secrets) function
 * **[Appium]** Use `touchClick` when interacting with elements in iOS. See [#3317](https://github.com/codeceptjs/CodeceptJS/issues/3317) by **[mikk150](https://github.com/mikk150)**
-* **[Playwright]** Added `cdpConnection` option to connect over CDP. See [#3309](https://github.com/codeceptjs/CodeceptJS/issues/3309) by **[Hmihaly](https://github.com/Hmihaly)** 
+* **[Playwright]** Added `cdpConnection` option to connect over CDP. See [#3309](https://github.com/codeceptjs/CodeceptJS/issues/3309) by **[Hmihaly](https://github.com/Hmihaly)**
 * [customLocator plugin] Allowed to specify multiple attributes for custom locator. Thanks to **[aruiz-caritsqa](https://github.com/aruiz-caritsqa)**
 
 ```js
 plugins: {
- customLocator: {
-   enabled: true,
-   prefix: '$',
-   attribute: ['data-qa', 'data-test'],
- }
+  customLocator: {
+    enabled: true,
+      prefix: '$',
+      attribute: ['data-qa', 'data-test'],
+  }
 }
 ```
 * [retryTo plugin] Fixed [#3147](https://github.com/codeceptjs/CodeceptJS/issues/3147) using `pollInterval` option. See [#3351](https://github.com/codeceptjs/CodeceptJS/issues/3351) by **[cyonkee](https://github.com/cyonkee)**
 * **[Playwright]** Fixed grabbing of browser console messages and window resize in new tab. Thanks to **[mirao](https://github.com/mirao)**
-* **[REST]** Added `prettyPrintJson` option to print JSON in nice way by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* **[REST]** Added `prettyPrintJson` option to print JSON in nice way by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[JSONResponse]** Updated response validation to iterate over array items if response is array. Thanks to **[PeterNgTr](https://github.com/PeterNgTr)**
 
 ```js
@@ -1804,7 +1805,7 @@ I.dontSeeResponseContainsJson({ user: 2 });
 ## 3.3.2
 
 * **[REST]** Fixed override of headers/token in `haveRequestHeaders()` and `amBearerAuthenticated()`. See [#3304](https://github.com/codeceptjs/CodeceptJS/issues/3304) by **[mirao](https://github.com/mirao)**
-* Reverted typings change introduced in [#3245](https://github.com/codeceptjs/CodeceptJS/issues/3245). [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873) 
+* Reverted typings change introduced in [#3245](https://github.com/codeceptjs/CodeceptJS/issues/3245). [More details on this](https://twitter.com/CodeceptJS/status/1519725963856207873)
 
 ## 3.3.1
 
@@ -1812,7 +1813,7 @@ I.dontSeeResponseContainsJson({ user: 2 });
 
 * Add option to avoid duplicate gherkin step definitions ([#3257](https://github.com/codeceptjs/CodeceptJS/issues/3257)) - **[raywiis](https://github.com/raywiis)**
 * Added `step.*` for run-workers [#3272](https://github.com/codeceptjs/CodeceptJS/issues/3272). Thanks to **[abhimanyupandian](https://github.com/abhimanyupandian)**
-* Fixed loading tests for `codecept run` using glob patterns. By **[jayudey-wf](https://github.com/jayudey-wf)** 
+* Fixed loading tests for `codecept run` using glob patterns. By **[jayudey-wf](https://github.com/jayudey-wf)**
 
 ```
 npx codeceptjs run test-dir/*"
@@ -1825,9 +1826,9 @@ npx codeceptjs run test-dir/*"
  helpers: {
   Playwright : {
     url: "http://localhost",
-    colorScheme: "dark",
+      colorScheme: "dark",
   }
- }
+}
 ```
 
 
@@ -1835,8 +1836,8 @@ npx codeceptjs run test-dir/*"
 
 * **[Playwright]** Fixed `Cannot read property 'video' of undefined`
 * Fixed haveRequestHeaders() and amBearerAuthenticated() of REST helper ([#3260](https://github.com/codeceptjs/CodeceptJS/issues/3260)) - **[mirao](https://github.com/mirao)**
-* Fixed: allure attachment fails if screenshot failed [#3298](https://github.com/codeceptjs/CodeceptJS/issues/3298) by **[ruudvanderweijde](https://github.com/ruudvanderweijde)** 
-* Fixed [#3105](https://github.com/codeceptjs/CodeceptJS/issues/3105) using autoLogin() plugin with TypeScript. Fix [#3290](https://github.com/codeceptjs/CodeceptJS/issues/3290) by **[PeterNgTr](https://github.com/PeterNgTr)** 
+* Fixed: allure attachment fails if screenshot failed [#3298](https://github.com/codeceptjs/CodeceptJS/issues/3298) by **[ruudvanderweijde](https://github.com/ruudvanderweijde)**
+* Fixed [#3105](https://github.com/codeceptjs/CodeceptJS/issues/3105) using autoLogin() plugin with TypeScript. Fix [#3290](https://github.com/codeceptjs/CodeceptJS/issues/3290) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * **[Playwright]** Added extra params for click and dragAndDrop to type definitions by **[mirao](https://github.com/mirao)**
 
 
@@ -1881,10 +1882,10 @@ await eachElement('click all links in .list', '.list a', (el) => {
 ```
 * **[Playwright]** Added support to `playwright-core` package if `playwright` is not installed. See [#3190](https://github.com/codeceptjs/CodeceptJS/issues/3190), fixes [#2663](https://github.com/codeceptjs/CodeceptJS/issues/2663).
 * **[Playwright]** Added `makeApiRequest` action to perform API requests. Requires Playwright >= 1.18
-* Added support to `codecept.config.js` for name consistency across other JS tools. See motivation at [#3195](https://github.com/codeceptjs/CodeceptJS/issues/3195) by **[JiLiZART](https://github.com/JiLiZART)** 
+* Added support to `codecept.config.js` for name consistency across other JS tools. See motivation at [#3195](https://github.com/codeceptjs/CodeceptJS/issues/3195) by **[JiLiZART](https://github.com/JiLiZART)**
 * **[ApiDataFactory]** Added options arg to `have` method. See [#3197](https://github.com/codeceptjs/CodeceptJS/issues/3197) by **[JJlokidoki](https://github.com/JJlokidoki)**
-* Improved pt-br translations to include keywords: 'Funcionalidade', 'Cenário', 'Antes', 'Depois', 'AntesDaSuite', 'DepoisDaSuite'. See [#3206](https://github.com/codeceptjs/CodeceptJS/issues/3206) by **[danilolutz](https://github.com/danilolutz)** 
-* [allure plugin] Introduced `addStep` method to add comments and attachments. See [#3104](https://github.com/codeceptjs/CodeceptJS/issues/3104) by **[EgorBodnar](https://github.com/EgorBodnar)** 
+* Improved pt-br translations to include keywords: 'Funcionalidade', 'Cenário', 'Antes', 'Depois', 'AntesDaSuite', 'DepoisDaSuite'. See [#3206](https://github.com/codeceptjs/CodeceptJS/issues/3206) by **[danilolutz](https://github.com/danilolutz)**
+* [allure plugin] Introduced `addStep` method to add comments and attachments. See [#3104](https://github.com/codeceptjs/CodeceptJS/issues/3104) by **[EgorBodnar](https://github.com/EgorBodnar)**
 
 🐛 Bugfixes:
 
@@ -1896,14 +1897,14 @@ await eachElement('click all links in .list', '.list a', (el) => {
 * Added [api testing](/api) guides
 * Added [internal api](/internal-api) guides
 * **[Appium]** Fixed documentation for `performSwipe`
-* **[Playwright]** update docs for `usePlaywrightTo` method by **[dbudzins](https://github.com/dbudzins)** 
+* **[Playwright]** update docs for `usePlaywrightTo` method by **[dbudzins](https://github.com/dbudzins)**
 
 ## 3.2.3
 
 * Documentation improvements by **[maojunxyz](https://github.com/maojunxyz)**
-* Guard mocha cli reporter from registering step logger multiple times [#3180](https://github.com/codeceptjs/CodeceptJS/issues/3180) by **[nikocanvacom](https://github.com/nikocanvacom)** 
+* Guard mocha cli reporter from registering step logger multiple times [#3180](https://github.com/codeceptjs/CodeceptJS/issues/3180) by **[nikocanvacom](https://github.com/nikocanvacom)**
 * **[Playwright]** Fixed "tracing.stop: tracing.stop: ENAMETOOLONG: name too long" by **[hatufacci](https://github.com/hatufacci)**
-* Fixed [#2889](https://github.com/codeceptjs/CodeceptJS/issues/2889): return always the same error contract from simplifyTest. See [#3168](https://github.com/codeceptjs/CodeceptJS/issues/3168) by **[andremoah](https://github.com/andremoah)** 
+* Fixed [#2889](https://github.com/codeceptjs/CodeceptJS/issues/2889): return always the same error contract from simplifyTest. See [#3168](https://github.com/codeceptjs/CodeceptJS/issues/3168) by **[andremoah](https://github.com/andremoah)**
 
 ## 3.2.2
 
@@ -1929,10 +1930,10 @@ await eachElement('click all links in .list', '.list a', (el) => {
 🛩️ Features:
 
 **[Timeouts](https://codecept.io/advanced/#timeout) implemented**
-  * global timeouts (via `timeout` config option). 
-    * _Breaking change:_ timeout option expects **timeout in seconds**, not in milliseconds as it was previously.
-  * test timeouts (via `Scenario` and `Feature` options)
-    * _Breaking change:_ `Feature().timeout()` and `Scenario().timeout()` calls has no effect and are deprecated
+* global timeouts (via `timeout` config option).
+  * _Breaking change:_ timeout option expects **timeout in seconds**, not in milliseconds as it was previously.
+* test timeouts (via `Scenario` and `Feature` options)
+  * _Breaking change:_ `Feature().timeout()` and `Scenario().timeout()` calls has no effect and are deprecated
 
 ```js
 // set timeout for every test in suite to 10 secs
@@ -1942,13 +1943,13 @@ Feature('tests with timeout', { timeout: 10 });
 Scenario('a test with timeout', { timeout: 20 }, ({ I }) => {});
 ```  
 
-  * step timeouts (See [#3059](https://github.com/codeceptjs/CodeceptJS/issues/3059) by **[nikocanvacom](https://github.com/nikocanvacom)**)
+* step timeouts (See [#3059](https://github.com/codeceptjs/CodeceptJS/issues/3059) by **[nikocanvacom](https://github.com/nikocanvacom)**)
 
 ```js
 // set step timeout to 5 secs
 I.limitTime(5).click('Link');
 ```  
- * `stepTimeout` plugin introduced to automatically add timeouts for each step ([#3059](https://github.com/codeceptjs/CodeceptJS/issues/3059) by **[nikocanvacom](https://github.com/nikocanvacom)**).
+* `stepTimeout` plugin introduced to automatically add timeouts for each step ([#3059](https://github.com/codeceptjs/CodeceptJS/issues/3059) by **[nikocanvacom](https://github.com/nikocanvacom)**).
 
 [**retryTo**](/plugins/#retryto) plugin introduced to rerun a set of steps on failure:
 
@@ -1966,7 +1967,7 @@ await retryTo(() => {
 
 🐛 Bugfixes:
 
-* Fixed  allure plugin "Unexpected endStep()" error in [#3098](https://github.com/codeceptjs/CodeceptJS/issues/3098) by **[abhimanyupandian](https://github.com/abhimanyupandian)** 
+* Fixed  allure plugin "Unexpected endStep()" error in [#3098](https://github.com/codeceptjs/CodeceptJS/issues/3098) by **[abhimanyupandian](https://github.com/abhimanyupandian)**
 * **[Puppeteer]** always close remote browser on test end. See [#3054](https://github.com/codeceptjs/CodeceptJS/issues/3054) by **[mattonem](https://github.com/mattonem)**
 * stepbyStepReport Plugin: Disabled screenshots after test has failed. See [#3119](https://github.com/codeceptjs/CodeceptJS/issues/3119) by **[ioannisChalkias](https://github.com/ioannisChalkias)**
 
@@ -1975,23 +1976,23 @@ await retryTo(() => {
 
 🛩️ Features:
 
-* BDD Improvement. Added `DataTableArgument` class to work with table data structures. 
+* BDD Improvement. Added `DataTableArgument` class to work with table data structures.
 
 ```js
 const { DataTableArgument } = require('codeceptjs');
 //...
 Given('I have an employee card', (table) => {
   const dataTableArgument = new DataTableArgument(table);
-  const hashes = dataTableArgument.hashes(); 
+  const hashes = dataTableArgument.hashes();
   // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
   const rows = dataTableArgument.rows();
   // rows = [['Harry', 'Potter', Seeker]];
-  }
+}
 ```
 See updated [BDD section](https://codecept.io/bdd/) for more API options. Thanks to **[EgorBodnar](https://github.com/EgorBodnar)**
 
 * Support `cjs` file extensions for config file: `codecept.conf.cjs`. See [#3052](https://github.com/codeceptjs/CodeceptJS/issues/3052) by **[kalvenschraut](https://github.com/kalvenschraut)**
-* API updates: Added `test.file` and `suite.file` properties to `test` and `suite` objects to use in helpers and plugins. 
+* API updates: Added `test.file` and `suite.file` properties to `test` and `suite` objects to use in helpers and plugins.
 
 🐛 Bugfixes:
 
@@ -1999,9 +2000,9 @@ See updated [BDD section](https://codecept.io/bdd/) for more API options. Thanks
 * **[Playwright]** Apply `basicAuth` credentials to all opened browser contexts. See [#3036](https://github.com/codeceptjs/CodeceptJS/issues/3036) by **[nikocanvacom](https://github.com/nikocanvacom)**. Fixes [#3035](https://github.com/codeceptjs/CodeceptJS/issues/3035)
 * **[WebDriver]** Updated `webdriverio` default version to `^6.12.1`. See [#3043](https://github.com/codeceptjs/CodeceptJS/issues/3043) by **[sridhareaswaran](https://github.com/sridhareaswaran)**
 * **[Playwright]** `I.haveRequestHeaders` affects all tabs. See [#3049](https://github.com/codeceptjs/CodeceptJS/issues/3049) by **[jancorvus](https://github.com/jancorvus)**
-* BDD: Fixed unhandled empty feature files. Fix [#3046](https://github.com/codeceptjs/CodeceptJS/issues/3046) by **[abhimanyupandian](https://github.com/abhimanyupandian)** 
-* Fixed `RangeError: Invalid string length` in `recorder.js` when running huge amount of tests.  
-* **[Appium]** Fixed definitions for `touchPerform`, `hideDeviceKeyboard`, `removeApp` by **[mirao](https://github.com/mirao)** 
+* BDD: Fixed unhandled empty feature files. Fix [#3046](https://github.com/codeceptjs/CodeceptJS/issues/3046) by **[abhimanyupandian](https://github.com/abhimanyupandian)**
+* Fixed `RangeError: Invalid string length` in `recorder.js` when running huge amount of tests.
+* **[Appium]** Fixed definitions for `touchPerform`, `hideDeviceKeyboard`, `removeApp` by **[mirao](https://github.com/mirao)**
 
 📖 Documentation:
 
@@ -2026,10 +2027,10 @@ exports.config = {
 
 🐛 Bugfixes:
 
-* **[Playwright]** Fixed [#2986](https://github.com/codeceptjs/CodeceptJS/issues/2986) error is thrown when deleting a missing video. Fix by **[hatufacci](https://github.com/hatufacci)** 
+* **[Playwright]** Fixed [#2986](https://github.com/codeceptjs/CodeceptJS/issues/2986) error is thrown when deleting a missing video. Fix by **[hatufacci](https://github.com/hatufacci)**
 * Fixed false positive result when invalid function is called in a helper. See [#2997](https://github.com/codeceptjs/CodeceptJS/issues/2997) by **[abhimanyupandian](https://github.com/abhimanyupandian)**
 * **[Appium]** Removed full page mode for `saveScreenshot`. See [#3002](https://github.com/codeceptjs/CodeceptJS/issues/3002) by **[nlespiaucq](https://github.com/nlespiaucq)**
-* **[Playwright]** Fixed [#3003](https://github.com/codeceptjs/CodeceptJS/issues/3003) saving trace for a test with a long name. Fix by **[hatufacci](https://github.com/hatufacci)** 
+* **[Playwright]** Fixed [#3003](https://github.com/codeceptjs/CodeceptJS/issues/3003) saving trace for a test with a long name. Fix by **[hatufacci](https://github.com/hatufacci)**
 
 🎱 Other:
 
@@ -2038,7 +2039,7 @@ exports.config = {
 ## 3.1.1
 
 * **[Appium]** Fixed [#2759](https://github.com/codeceptjs/CodeceptJS/issues/2759)
- `grabNumberOfVisibleElements`, `grabAttributeFrom`, `grabAttributeFromAll` to allow id locators.
+  `grabNumberOfVisibleElements`, `grabAttributeFrom`, `grabAttributeFromAll` to allow id locators.
 
 ## 3.1.0
 
@@ -2056,11 +2057,11 @@ exports.config = {
 🐛 Bugfixes:
 
 * **[Puppeteer]** Fixed [#2244](https://github.com/codeceptjs/CodeceptJS/issues/2244) `els[0]._clickablePoint is not a function` by **[karunandrii](https://github.com/karunandrii)**.
-* **[Puppeteer]** Fixed `fillField` to check for invisible elements. See [#2916](https://github.com/codeceptjs/CodeceptJS/issues/2916) by **[anne-open-xchange](https://github.com/anne-open-xchange)** 
-* **[Playwright]** Reset of dialog event listener before registration of new one. [#2946](https://github.com/codeceptjs/CodeceptJS/issues/2946) by **[nikocanvacom](https://github.com/nikocanvacom)** 
+* **[Puppeteer]** Fixed `fillField` to check for invisible elements. See [#2916](https://github.com/codeceptjs/CodeceptJS/issues/2916) by **[anne-open-xchange](https://github.com/anne-open-xchange)**
+* **[Playwright]** Reset of dialog event listener before registration of new one. [#2946](https://github.com/codeceptjs/CodeceptJS/issues/2946) by **[nikocanvacom](https://github.com/nikocanvacom)**
 * Fixed running Gherkin features with `run-multiple` using chunks. See [#2900](https://github.com/codeceptjs/CodeceptJS/issues/2900) by **[andrenoberto](https://github.com/andrenoberto)**
 * Fixed [#2937](https://github.com/codeceptjs/CodeceptJS/issues/2937) broken typings for subfolders on Windows by **[jancorvus](https://github.com/jancorvus)**
-* Fixed issue where cucumberJsonReporter not working with fakerTransform plugin. See [#2942](https://github.com/codeceptjs/CodeceptJS/issues/2942) by **[ilangv](https://github.com/ilangv)** 
+* Fixed issue where cucumberJsonReporter not working with fakerTransform plugin. See [#2942](https://github.com/codeceptjs/CodeceptJS/issues/2942) by **[ilangv](https://github.com/ilangv)**
 * Fixed [#2952](https://github.com/codeceptjs/CodeceptJS/issues/2952) finished job with status code 0 when playwright cannot connect to remote wss url. By **[davertmik](https://github.com/davertmik)**
 
 
@@ -2193,23 +2194,23 @@ Library updates:
 * **[Playwright]** Fix connection close with remote browser. See [#2629](https://github.com/codeceptjs/CodeceptJS/issues/2629) by **[dipiash](https://github.com/dipiash)**
 * **[REST]** set maxUploadFileSize when performing api calls. See [#2611](https://github.com/codeceptjs/CodeceptJS/issues/2611) by **[PeterNgTr](https://github.com/PeterNgTr)**
 * Duplicate Scenario names (combined with Feature name) are now detected via a warning message.
-Duplicate test names can cause `codeceptjs run-workers` to not function. See [#2656](https://github.com/codeceptjs/CodeceptJS/issues/2656) by **[Georgegriff](https://github.com/Georgegriff)**
+  Duplicate test names can cause `codeceptjs run-workers` to not function. See [#2656](https://github.com/codeceptjs/CodeceptJS/issues/2656) by **[Georgegriff](https://github.com/Georgegriff)**
 * Documentation fixes
 
 Bug Fixes:
-  *  --suites flag now should function correctly for `codeceptjs run-workers`. See [#2655](https://github.com/codeceptjs/CodeceptJS/issues/2655) by **[Georgegriff](https://github.com/Georgegriff)**
-  * [autoLogin plugin] Login methods should now function as expected with `codeceptjs run-workers`. See [#2658](https://github.com/codeceptjs/CodeceptJS/issues/2658) by **[Georgegriff](https://github.com/Georgegriff)**, resolves [#2620](https://github.com/codeceptjs/CodeceptJS/issues/2620)
+*  --suites flag now should function correctly for `codeceptjs run-workers`. See [#2655](https://github.com/codeceptjs/CodeceptJS/issues/2655) by **[Georgegriff](https://github.com/Georgegriff)**
+* [autoLogin plugin] Login methods should now function as expected with `codeceptjs run-workers`. See [#2658](https://github.com/codeceptjs/CodeceptJS/issues/2658) by **[Georgegriff](https://github.com/Georgegriff)**, resolves [#2620](https://github.com/codeceptjs/CodeceptJS/issues/2620)
 
 
 
 ## 3.0.1
 
 ♨️ Hot fix:
-  * Lock the mocha version to avoid the errors. See [#2624](https://github.com/codeceptjs/CodeceptJS/issues/2624) by PeterNgTr
+* Lock the mocha version to avoid the errors. See [#2624](https://github.com/codeceptjs/CodeceptJS/issues/2624) by PeterNgTr
 
 🐛 Bug Fix:
-  * Fixed error handling in Scenario.js. See [#2607](https://github.com/codeceptjs/CodeceptJS/issues/2607) by haveac1gar
-  * Changing type definition in order to allow the use of functions with any number of any arguments. See [#2616](https://github.com/codeceptjs/CodeceptJS/issues/2616) by akoltun
+* Fixed error handling in Scenario.js. See [#2607](https://github.com/codeceptjs/CodeceptJS/issues/2607) by haveac1gar
+* Changing type definition in order to allow the use of functions with any number of any arguments. See [#2616](https://github.com/codeceptjs/CodeceptJS/issues/2616) by akoltun
 
 * Some updates/changes on documentations
 
@@ -2255,23 +2256,23 @@ Read changelog to learn more about version 👇
 ## 3.0.0-beta.4
 
 🐛 Bug Fix:
-  * PageObject was broken when using "this" inside a simple object.
-  * The typings for all WebDriver methods work correctly.
-  * The typings for "this.helper" and helper constructor work correctly, too.
+* PageObject was broken when using "this" inside a simple object.
+* The typings for all WebDriver methods work correctly.
+* The typings for "this.helper" and helper constructor work correctly, too.
 
 🧤 Internal:
- * Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
- Example:
+* Our TS Typings will be tested now! We strarted using [dtslint](https://github.com/microsoft/dtslint) to check all typings and all rules for linter.
+  Example:
   ```ts
   const psp = wd.grabPageScrollPosition() // $ExpectType Promise<PageScrollPosition>
-  psp.then(
-    result => {
-      result.x // $ExpectType number
-      result.y // $ExpectType number
-    }
-  )
+psp.then(
+  result => {
+    result.x // $ExpectType number
+    result.y // $ExpectType number
+  }
+)
   ```
- * And last: Reducing package size from 3.3Mb to 2.0Mb
+* And last: Reducing package size from 3.3Mb to 2.0Mb
 
 ## 3.0.0-beta-3
 
@@ -2293,8 +2294,8 @@ MyPage.hasFiles('first arg', 'second arg');
 
 // OUTPUT:
 MyPage: hasFile "First arg", "Second arg"
-  I see file "codecept.js"
-  I see file "codecept.po.json"
+I see file "codecept.js"
+I see file "codecept.po.json"
 ```
 * Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by **[Vorobeyko](https://github.com/Vorobeyko)**.
 
@@ -2444,22 +2445,22 @@ npm i playwright@^0.12 --save
 ```
 
 [Notable changes](https://github.com/microsoft/playwright/releases/tag/v0.12.0):
-  * Fixed opening two browsers on start
-  * `executeScript` - passed function now accepts only one argument. Pass in objects or arrays if you need multtple arguments:
+* Fixed opening two browsers on start
+* `executeScript` - passed function now accepts only one argument. Pass in objects or arrays if you need multtple arguments:
 ```js
 // Old style, does not work anymore:
 I.executeScript((x, y) => x + y, x, y);
 // New style, passing an object:
 I.executeScript(({x, y}) => x + y, {x, y});
 ```
-  * `click` - automatically waits for element to become clickable (visible, not animated) and waits for navigation.
-  * `clickLink` - deprecated
-  * `waitForClickable` - deprecated
-  * `forceClick` - added
-  * Added support for custom locators. See [#2277](https://github.com/codeceptjs/CodeceptJS/issues/2277)
-  * Introduced [device emulation](/playwright/#device-emulation):
-    * globally via `emulate` config option
-    * per session
+* `click` - automatically waits for element to become clickable (visible, not animated) and waits for navigation.
+* `clickLink` - deprecated
+* `waitForClickable` - deprecated
+* `forceClick` - added
+* Added support for custom locators. See [#2277](https://github.com/codeceptjs/CodeceptJS/issues/2277)
+* Introduced [device emulation](/playwright/#device-emulation):
+  * globally via `emulate` config option
+  * per session
 
 **[WebDriver] Updated to webdriverio v6** by **[PeterNgTr](https://github.com/PeterNgTr)**.
 
@@ -2470,7 +2471,7 @@ upgrade webdriverio to ^6.0:
 npm i webdriverio@^6.0 --save
 ```
 *(webdriverio v5 support is deprecated and will be removed in CodeceptJS 3.0)*
- **[WebDriver]** Introduced [Shadow DOM support](/shadow) by **[gkushang](https://github.com/gkushang)**
+**[WebDriver]** Introduced [Shadow DOM support](/shadow) by **[gkushang](https://github.com/gkushang)**
 
 ```js
 I.click({ shadow: ['my-app', 'recipe-hello', 'button'] });
@@ -2628,7 +2629,7 @@ I.click({ css: '[data-test-id=register_button]');
 I.click('$register_button');
 ```
 * [Puppeteer][WebDriver] `pressKey` improvements by **[martomo](https://github.com/martomo)**:
-Changed pressKey method to resolve issues and extend functionality.
+  Changed pressKey method to resolve issues and extend functionality.
   * Did not properly recognize 'Meta' (or 'Command') as modifier key.
   * Right modifier keys did not work in WebDriver using JsonWireProtocol.
   * 'Shift' + 'key' combination would not reflect actual keyboard behavior.
@@ -2684,8 +2685,8 @@ npx codeceptjs dry-run
 * **[Appium]** Optimization when clicking, searching for fields by accessibility id. See [#1777](https://github.com/codeceptjs/CodeceptJS/issues/1777) by **[gagandeepsingh26](https://github.com/gagandeepsingh26)**
 * **[TestCafe]** Fixed `switchTo` by **[KadoBOT](https://github.com/KadoBOT)**
 * **[WebDriver]** Added geolocation actions by **[PeterNgTr](https://github.com/PeterNgTr)**
-    * `grabGeoLocation()`
-    * `setGeoLocation()`
+  * `grabGeoLocation()`
+  * `setGeoLocation()`
 * **[Polly]** Check typeof arguments for mock requests by **[VikalpP](https://github.com/VikalpP)**. Fixes [#1815](https://github.com/codeceptjs/CodeceptJS/issues/1815)
 * CLI improvements by **[jamesgeorge007](https://github.com/jamesgeorge007)**
   * `codeceptjs` command prints list of all available commands
@@ -2853,8 +2854,8 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS
 Use it with `FileSystem` helper to test availability of a file:
 ```js
   const fileName = await I.downloadFile('a.file-link');
-  I.amInPath('output');
-  I.seeFile(fileName);
+I.amInPath('output');
+I.seeFile(fileName);
 ```
 > Actions `amInPath` and `seeFile` are taken from [FileSystem](https://codecept.io/helpers/FileSystem) helper
 
@@ -3010,8 +3011,8 @@ I.say('This is by default'); //cyan is used
 ## 1.4.5
 
 * Add **require** param to main config. Allows to require Node modules before executing tests. By **[LukoyanovE](https://github.com/LukoyanovE)**. For example:
-    * Use `ts-node/register` to register TypeScript parser
-    * Use `should` to register should-style assertions
+  * Use `ts-node/register` to register TypeScript parser
+  * Use `should` to register should-style assertions
 
 ```js
 "require": ["ts-node/register", "should"]
@@ -3067,10 +3068,10 @@ Scenario('update user profile', () => {
 * [**Allure Reporter Integration**](https://codecept.io/reports/#allure). Full inegration with Allure Server. Get nicely looking UI for tests,including steps, nested steps, and screenshots. Thanks **Natarajan Krishnamurthy **[krish](https://github.com/krish)**** for sponsoring this feature.
 * [Plugins API introduced](https://codecept.io/hooks/#plugins). Create custom plugins for CodeceptJS by hooking into event dispatcher, and using promise recorder.
 * **Official [CodeceptJS plugins](https://codecept.io/plugins) added**:
-    * **`stepByStepReport` - creates nicely looking report to see test execution as a slideshow**. Use this plugin to debug tests in headless environment without recording a video.
-    * `allure` - Allure reporter added as plugin.
-    * `screenshotOnFail` - saves screenshot on fail. Replaces similar functionality from helpers.
-    * `retryFailedStep` - to rerun each failed step.
+  * **`stepByStepReport` - creates nicely looking report to see test execution as a slideshow**. Use this plugin to debug tests in headless environment without recording a video.
+  * `allure` - Allure reporter added as plugin.
+  * `screenshotOnFail` - saves screenshot on fail. Replaces similar functionality from helpers.
+  * `retryFailedStep` - to rerun each failed step.
 * **[Puppeteer]** Fix `executeAsyncScript` unexpected token by **[jonathanz](https://github.com/jonathanz)**
 * Added `override` option to `run-multiple` command by **[svarlet](https://github.com/svarlet)**
 
@@ -3081,11 +3082,11 @@ Scenario('update user profile', () => {
 ## 1.3.2
 
 * Interactve Shell improvements for `pause()`
-    * Added `next` command for **step-by-step debug** when using `pause()`.
-    * Use `After(pause);` in a to start interactive console after last step.
+  * Added `next` command for **step-by-step debug** when using `pause()`.
+  * Use `After(pause);` in a to start interactive console after last step.
 * **[Puppeteer]** Updated to Puppeteer 1.6.0
-    * Added `waitForRequest` to wait for network request.
-    * Added `waitForResponse` to wait for network response.
+  * Added `waitForRequest` to wait for network request.
+  * Added `waitForResponse` to wait for network response.
 * Improved TypeScript definitions to support custom steps and page objects. By **[xt1](https://github.com/xt1)**
 * Fixed XPath detection to accept XPath which starts with `./` by **[BenoitZugmeyer](https://github.com/BenoitZugmeyer)**
 
@@ -3150,14 +3151,14 @@ This change allows using auto-completion when running a specific test.
 ---
 
 * Nested steps output enabled for page objects.
-    * to see high-level steps only run tests with `--steps` flag.
-    * to see PageObjects implementation run tests with `--debug`.
+  * to see high-level steps only run tests with `--steps` flag.
+  * to see PageObjects implementation run tests with `--debug`.
 * PageObjects simplified to remove `_init()` extra method. Try updated generators and see [updated guide](https://codecept.io/pageobjects/#pageobject).
 * **[Puppeteer]** [Multiple sessions](https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
 * **[Puppeteer]** Stability improvement. Waits for for `load` event on page load. This strategy can be changed in config:
-    * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
-    * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
-    * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
+  * `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+  * `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
+  * `waitForNavigation` method added. Explicitly waits for navigation to be finished.
 * [WebDriverIO][Protractor][Puppeteer][Nightmare] **Possible BC** `grabTextFrom` unified. Return a text for single matched element and an array of texts for multiple elements.
 * [Puppeteer]Fixed `resizeWindow` by **[sergejkaravajnij](https://github.com/sergejkaravajnij)**
 * [WebDriverIO][Protractor][Puppeteer][Nightmare] `waitForFunction` added. Waits for client-side JavaScript function to return true by **[GREENpoint](https://github.com/GREENpoint)**.
@@ -3200,8 +3201,8 @@ Scenario('run in different browsers', (I) => {
   "parallel": {
     // run in 2 processes
     "chunks": 2,
-    // run all tests in chrome
-    "browsers": ["chrome"]
+      // run all tests in chrome
+      "browsers": ["chrome"]
   },
 }
 ```
@@ -3251,45 +3252,45 @@ Scenario('this test should throw error', (I) => {
 ## 1.1.7
 
 * Docker Image updateed. [See updated reference](https://codecept.io/docker/):
-    * codeceptjs package is mounted as `/codecept` insde container
-    * tests directory is expected to be mounted as `/tests`
-    * `codeceptjs` global runner added (symlink to `/codecept/bin/codecept.js`)
+  * codeceptjs package is mounted as `/codecept` insde container
+  * tests directory is expected to be mounted as `/tests`
+  * `codeceptjs` global runner added (symlink to `/codecept/bin/codecept.js`)
 * **[Protractor]** Functions added by **[reubenmiller](https://github.com/reubenmiller)**:
-    * `_locateCheckable (only available from other helpers)`
-    * `_locateClickable (only available from other helpers)`
-    * `_locateFields (only available from other helpers)`
-    * `acceptPopup`
-    * `cancelPopup`
-    * `dragAndDrop`
-    * `grabBrowserLogs`
-    * `grabCssPropertyFrom`
-    * `grabHTMLFrom`
-    * `grabNumberOfVisibleElements`
-    * `grabPageScrollPosition (new)`
-    * `rightClick`
-    * `scrollPageToBottom`
-    * `scrollPageToTop`
-    * `scrollTo`
-    * `seeAttributesOnElements`
-    * `seeCssPropertiesOnElements`
-    * `seeInPopup`
-    * `seeNumberOfVisibleElements`
-    * `switchTo`
-    * `waitForEnabled`
-    * `waitForValue`
-    * `waitInUrl`
-    * `waitNumberOfVisibleElements`
-    * `waitToHide`
-    * `waitUntil`
-    * `waitUrlEquals`
+  * `_locateCheckable (only available from other helpers)`
+  * `_locateClickable (only available from other helpers)`
+  * `_locateFields (only available from other helpers)`
+  * `acceptPopup`
+  * `cancelPopup`
+  * `dragAndDrop`
+  * `grabBrowserLogs`
+  * `grabCssPropertyFrom`
+  * `grabHTMLFrom`
+  * `grabNumberOfVisibleElements`
+  * `grabPageScrollPosition (new)`
+  * `rightClick`
+  * `scrollPageToBottom`
+  * `scrollPageToTop`
+  * `scrollTo`
+  * `seeAttributesOnElements`
+  * `seeCssPropertiesOnElements`
+  * `seeInPopup`
+  * `seeNumberOfVisibleElements`
+  * `switchTo`
+  * `waitForEnabled`
+  * `waitForValue`
+  * `waitInUrl`
+  * `waitNumberOfVisibleElements`
+  * `waitToHide`
+  * `waitUntil`
+  * `waitUrlEquals`
 * **[Nightmare]** added:
-    * `grabPageScrollPosition` (new)
-    * `seeNumberOfVisibleElements`
-    * `waitToHide`
+  * `grabPageScrollPosition` (new)
+  * `seeNumberOfVisibleElements`
+  * `waitToHide`
 * **[Puppeteer]** added:
-    * `grabPageScrollPosition` (new)
+  * `grabPageScrollPosition` (new)
 * **[WebDriverIO]** added"
-    * `grabPageScrollPosition` (new)
+  * `grabPageScrollPosition` (new)
 * **[Puppeteer]** Fixed running wait* functions without setting `sec` parameter.
 * [Puppeteer][Protractor] Fixed bug with I.click when using an object selector with the xpath property. By **[reubenmiller](https://github.com/reubenmiller)**
 * [WebDriverIO][Protractor][Nightmare][Puppeteer] Fixed I.switchTo(0) and I.scrollTo(100, 100) api inconsistencies between helpers.
@@ -3311,13 +3312,13 @@ Scenario('this test should throw error', (I) => {
 * **[Puppeteer]** Added `waitForEnabled`, `waitForValue` and `waitNumberOfVisibleElements` methods by **[reubenmiller](https://github.com/reubenmiller)**
 * **[WebDriverIO]** Fixed `grabNumberOfVisibleElements` to return 0 when no visible elements are on page. By **[michaltrunek](https://github.com/michaltrunek)**
 * Helpers API improvements (by **[reubenmiller](https://github.com/reubenmiller)**)
-    * `_passed` hook runs after a test passed successfully
-    * `_failed` hook runs on a failed test
+  * `_passed` hook runs after a test passed successfully
+  * `_failed` hook runs on a failed test
 * Hooks API. New events added by **[reubenmiller](https://github.com/reubenmiller)**:
-    * `event.all.before` - executed before all tests
-    * `event.all.after` - executed after all tests
-    * `event.multiple.before` - executed before all processes in run-multiple
-    * `event.multiple.after` - executed after all processes in run-multiple
+  * `event.all.before` - executed before all tests
+  * `event.all.after` - executed after all tests
+  * `event.multiple.before` - executed before all processes in run-multiple
+  * `event.multiple.after` - executed after all processes in run-multiple
 * Multiple execution
 * Allow `AfterSuite` and `After` test hooks to be defined after the first Scenario. By **[reubenmiller](https://github.com/reubenmiller)**
 * **[Nightmare]** Prevent `I.amOnpage` navigation if the browser is already at the given url
@@ -3381,46 +3382,46 @@ I.runOnAndroid(caps => caps.platformVersion >= 7, () => {
 ## 1.1.3
 
 * **[Puppeteer]** +25 Functions added by **[reubenmiller](https://github.com/reubenmiller)**
-    * `_locateCheckable`
-    * `_locateClickable`
-    * `_locateFields`
-    * `closeOtherTabs`
-    * `dragAndDrop`
-    * `grabBrowserLogs`
-    * `grabCssPropertyFrom`
-    * `grabHTMLFrom`
-    * `grabNumberOfVisibleElements`
-    * `grabSource`
-    * `rightClick`
-    * `scrollPageToBottom`
-    * `scrollPageToTop`
-    * `scrollTo`
-    * `seeAttributesOnElements`
-    * `seeCssPropertiesOnElements`
-    * `seeInField`
-    * `seeNumberOfElements`
-    * `seeNumberOfVisibleElements`
-    * `seeTextEquals`
-    * `seeTitleEquals`
-    * `switchTo`
-    * `waitForInvisible`
-    * `waitInUrl`
-    * `waitUrlEquals`
+  * `_locateCheckable`
+  * `_locateClickable`
+  * `_locateFields`
+  * `closeOtherTabs`
+  * `dragAndDrop`
+  * `grabBrowserLogs`
+  * `grabCssPropertyFrom`
+  * `grabHTMLFrom`
+  * `grabNumberOfVisibleElements`
+  * `grabSource`
+  * `rightClick`
+  * `scrollPageToBottom`
+  * `scrollPageToTop`
+  * `scrollTo`
+  * `seeAttributesOnElements`
+  * `seeCssPropertiesOnElements`
+  * `seeInField`
+  * `seeNumberOfElements`
+  * `seeNumberOfVisibleElements`
+  * `seeTextEquals`
+  * `seeTitleEquals`
+  * `switchTo`
+  * `waitForInvisible`
+  * `waitInUrl`
+  * `waitUrlEquals`
 * **[Protractor]** +8 functions added by **[reubenmiller](https://github.com/reubenmiller)**
-    * `closeCurrentTab`
-    * `grabSource`
-    * `openNewTab`
-    * `seeNumberOfElements`
-    * `seeTextEquals`
-    * `seeTitleEquals`
-    * `switchToNextTab`
-    * `switchToPreviousTab`
+  * `closeCurrentTab`
+  * `grabSource`
+  * `openNewTab`
+  * `seeNumberOfElements`
+  * `seeTextEquals`
+  * `seeTitleEquals`
+  * `switchToNextTab`
+  * `switchToPreviousTab`
 * **[Nightmare]** `waitForInvisible` added by **[reubenmiller](https://github.com/reubenmiller)**
 * **[Puppeteer]** Printing console.log information in debug mode.
 * **[Nightmare]** Integrated with `nightmare-har-plugin` by mingfang. Added `enableHAR` option. Added HAR functions:
-    * `grabHAR`
-    * `saveHAR`
-    * `resetHAR`
+  * `grabHAR`
+  * `saveHAR`
+  * `resetHAR`
 * **[WebDriverIO]** Fixed execution stability for parallel requests with Chromedriver
 * **[WebDriverIO]** Fixed resizeWindow when resizing to 'maximize' by **[reubenmiller](https://github.com/reubenmiller)**
 * **[WebDriverIO]** Fixing resizing window to full screen when taking a screenshot by **[reubenmiller](https://github.com/reubenmiller)**
@@ -3479,7 +3480,7 @@ I.dontSee('Email Address');
 
 ```html
 <Text accessibilityLabel="foobar">
-    CodeceptJS is awesome
+  CodeceptJS is awesome
 </Text>
 ```
 ↑ This element can be located with `~foobar` in WebDriverIO and Appium helpers. Thanks to **[flyskywhy](https://github.com/flyskywhy)**
@@ -3599,35 +3600,35 @@ Next notable feature is **[SmartWait](http://codecept.io/acceptance/#smartwait)*
 * [WebDriverIO][SeleniumWebdriver] Fixed "windowSize": "maximize" for Chrome 59+ version [#560](https://github.com/codeceptjs/CodeceptJS/issues/560) by **[APshenkin](https://github.com/APshenkin)**
 * **[Nightmare]** Fixed restarting by **[APshenkin](https://github.com/APshenkin)** [#581](https://github.com/codeceptjs/CodeceptJS/issues/581)
 * **[WebDriverIO]** Methods added by **[APshenkin](https://github.com/APshenkin)**:
-    * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
-    * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seetitleequals)
-    * [seeTextEquals](http://codecept.io/helpers/WebDriverIO/#seetextequals)
-    * [seeCssPropertiesOnElements](http://codecept.io/helpers/WebDriverIO/#seecsspropertiesonelements)
-    * [seeAttributesOnElements](http://codecept.io/helpers/WebDriverIO/#seeattributesonelements)
-    * [grabNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#grabnumberofvisibleelements)
-    * [waitInUrl](http://codecept.io/helpers/WebDriverIO/#waitinurl)
-    * [waitUrlEquals](http://codecept.io/helpers/WebDriverIO/#waiturlequals)
-    * [waitForValue](http://codecept.io/helpers/WebDriverIO/#waitforvalue)
-    * [waitNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#waitnumberofvisibleelements)
-    * [switchToNextTab](http://codecept.io/helpers/WebDriverIO/#switchtonexttab)
-    * [switchToPreviousTab](http://codecept.io/helpers/WebDriverIO/#switchtoprevioustab)
-    * [closeCurrentTab](http://codecept.io/helpers/WebDriverIO/#closecurrenttab)
-    * [openNewTab](http://codecept.io/helpers/WebDriverIO/#opennewtab)
-    * [refreshPage](http://codecept.io/helpers/WebDriverIO/#refreshpage)
-    * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
-    * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
-    * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
+  * [grabCssPropertyFrom](http://codecept.io/helpers/WebDriverIO/#grabcsspropertyfrom)
+  * [seeTitleEquals](http://codecept.io/helpers/WebDriverIO/#seetitleequals)
+  * [seeTextEquals](http://codecept.io/helpers/WebDriverIO/#seetextequals)
+  * [seeCssPropertiesOnElements](http://codecept.io/helpers/WebDriverIO/#seecsspropertiesonelements)
+  * [seeAttributesOnElements](http://codecept.io/helpers/WebDriverIO/#seeattributesonelements)
+  * [grabNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#grabnumberofvisibleelements)
+  * [waitInUrl](http://codecept.io/helpers/WebDriverIO/#waitinurl)
+  * [waitUrlEquals](http://codecept.io/helpers/WebDriverIO/#waiturlequals)
+  * [waitForValue](http://codecept.io/helpers/WebDriverIO/#waitforvalue)
+  * [waitNumberOfVisibleElements](http://codecept.io/helpers/WebDriverIO/#waitnumberofvisibleelements)
+  * [switchToNextTab](http://codecept.io/helpers/WebDriverIO/#switchtonexttab)
+  * [switchToPreviousTab](http://codecept.io/helpers/WebDriverIO/#switchtoprevioustab)
+  * [closeCurrentTab](http://codecept.io/helpers/WebDriverIO/#closecurrenttab)
+  * [openNewTab](http://codecept.io/helpers/WebDriverIO/#opennewtab)
+  * [refreshPage](http://codecept.io/helpers/WebDriverIO/#refreshpage)
+  * [scrollPageToBottom](http://codecept.io/helpers/WebDriverIO/#scrollpagetobottom)
+  * [scrollPageToTop](http://codecept.io/helpers/WebDriverIO/#scrollpagetotop)
+  * [grabBrowserLogs](http://codecept.io/helpers/WebDriverIO/#grabbrowserlogs)
 * Use mkdirp to create output directory. [#592](https://github.com/codeceptjs/CodeceptJS/issues/592) by **[vkramskikh](https://github.com/vkramskikh)**
 * **[WebDriverIO]** Fixed `seeNumberOfVisibleElements` by **[BorisOsipov](https://github.com/BorisOsipov)** [#574](https://github.com/codeceptjs/CodeceptJS/issues/574)
 * Lots of fixes for promise chain by **[APshenkin](https://github.com/APshenkin)** [#568](https://github.com/codeceptjs/CodeceptJS/issues/568)
-    * Fix [#543](https://github.com/codeceptjs/CodeceptJS/issues/543)- After block not properly executed if Scenario fails
-    * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
-    * if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another
-    * if during test we got error from Selenium server - stop complete this suite and go to another
-    * [WebDriverIO][Protractor] if `restart` option is false - close all tabs expect one in `_after`.
-    * Complete `_after`, `_afterSuite` hooks even After/AfterSuite from test was failed
-    * Don't close browser between suites, when `restart` option is false. We should start browser only one time and close it only after all tests.
-    * Close tabs and clear local storage, if `keepCookies` flag is enabled
+  * Fix [#543](https://github.com/codeceptjs/CodeceptJS/issues/543)- After block not properly executed if Scenario fails
+  * Expected behavior in promise chains: `_beforeSuite` hooks from helpers -> `BeforeSuite` from test -> `_before` hooks from helpers -> `Before` from test - > Test steps -> `_failed` hooks from helpers (if test failed) -> `After` from test -> `_after` hooks from helpers -> `AfterSuite` from test -> `_afterSuite` hook from helpers.
+  * if during test we got errors from any hook (in test or in helper) - stop complete this suite and go to another
+  * if during test we got error from Selenium server - stop complete this suite and go to another
+  * [WebDriverIO][Protractor] if `restart` option is false - close all tabs expect one in `_after`.
+  * Complete `_after`, `_afterSuite` hooks even After/AfterSuite from test was failed
+  * Don't close browser between suites, when `restart` option is false. We should start browser only one time and close it only after all tests.
+  * Close tabs and clear local storage, if `keepCookies` flag is enabled
 * Fix TypeError when using babel-node or ts-node on node.js 7+ [#586](https://github.com/codeceptjs/CodeceptJS/issues/586) by **[vkramskikh](https://github.com/vkramskikh)**
 * **[Nightmare]** fixed usage of `_locate`
 
@@ -3661,8 +3662,8 @@ const actor = require('codeceptjs').actor;
 * run command to create `output` directory if it doesn't exist
 * **[Protractor]** fixed loading globally installed Protractor
 * run-multiple command improvements:
-     * create output directories for each process
-     * print process ids in output
+  * create output directories for each process
+  * print process ids in output
 
 ## 0.6.1
 
@@ -3695,13 +3696,13 @@ codeceptjs run users_test.js -c tests
 * **[WebDriverIO]** added `seeNumberOfVisibleElements` method by **[elarouche](https://github.com/elarouche)**.
 * Exit with non-zero code if init throws an error by **[rincedd](https://github.com/rincedd)**
 * New guides published:
-    * [Installation](http://codecept.io/installation/)
-    * [Hooks](http://codecept.io/hooks/)
-    * [Advanced Usage](http://codecept.io/advanced/)
+  * [Installation](http://codecept.io/installation/)
+  * [Hooks](http://codecept.io/hooks/)
+  * [Advanced Usage](http://codecept.io/advanced/)
 * Meta packages published:
-    * [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio)
-    * [codecept-protractor](https://www.npmjs.com/package/codecept-protractor)
-    * [codecept-nightmare](https://www.npmjs.com/package/codecept-nightmare)
+  * [codecept-webdriverio](https://www.npmjs.com/package/codecept-webdriverio)
+  * [codecept-protractor](https://www.npmjs.com/package/codecept-protractor)
+  * [codecept-nightmare](https://www.npmjs.com/package/codecept-nightmare)
 
 
 ## 0.5.1
@@ -3742,7 +3743,7 @@ _before() {
 }
 
 _afterStep() {
- if (this.err) throw new Error('Browser JS error '+this.err);
+  if (this.err) throw new Error('Browser JS error '+this.err);
 }
 ```
 
@@ -3757,7 +3758,7 @@ _before() {
 }
 
 _afterStep() {
- if (this.err) throw new Error('Browser JS error '+this.err);
+  if (this.err) throw new Error('Browser JS error '+this.err);
 }
 ```
 
