@@ -7,6 +7,68 @@ layout: Section
 
 # Releases
 
+## 3.6.6
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ *Features*
+* feat(locator): add withAttrEndsWith, withAttrStartsWith, withAttrContains ([#4334](https://github.com/codeceptjs/CodeceptJS/issues/4334)) - by **[Maksym-Artemenko](https://github.com/Maksym-Artemenko)**
+* feat: soft assert ([#4473](https://github.com/codeceptjs/CodeceptJS/issues/4473)) - by **[kobenguyent](https://github.com/kobenguyent)**
+  * Soft assert
+
+Zero-configuration when paired with other helpers like REST, Playwright:
+
+```js
+// inside codecept.conf.js
+{
+  helpers: {
+    Playwright: {...},
+    SoftExpectHelper: {},
+  }
+}
+```
+
+```js
+// in scenario
+I.softExpectEqual('a', 'b')
+I.flushSoftAssertions() // Throws an error if any soft assertions have failed. The error message contains all the accumulated failures.
+```
+* feat(cli): print failed hooks ([#4476](https://github.com/codeceptjs/CodeceptJS/issues/4476)) - by **[kobenguyent](https://github.com/kobenguyent)**
+  * run command
+  ![Screenshot 2024-09-02 at 15 25 20](https://github.com/user-attachments/assets/625c6b54-03f6-41c6-9d0c-cd699582404a)
+
+  * run workers command
+![Screenshot 2024-09-02 at 15 24 53](https://github.com/user-attachments/assets/efff0312-1229-44b6-a94f-c9b9370b9a64)
+
+🐛 *Bug Fixes*
+* fix(AI): minor AI improvements - by **[DavertMik](https://github.com/DavertMik)**
+* fix(AI): add missing await in AI.js ([#4486](https://github.com/codeceptjs/CodeceptJS/issues/4486)) - by **[tomaculum](https://github.com/tomaculum)**
+* fix(playwright): no async save video page ([#4472](https://github.com/codeceptjs/CodeceptJS/issues/4472)) - by **[kobenguyent](https://github.com/kobenguyent)**
+* fix(rest): httpAgent condition ([#4484](https://github.com/codeceptjs/CodeceptJS/issues/4484)) - by **[kobenguyent](https://github.com/kobenguyent)**
+* fix: DataCloneError error when `I.executeScript` command is used with `run-workers` ([#4483](https://github.com/codeceptjs/CodeceptJS/issues/4483)) - by **[code4muktesh](https://github.com/code4muktesh)**
+* fix: no error thrown from rerun script ([#4494](https://github.com/codeceptjs/CodeceptJS/issues/4494)) - by **[lin-brian-l](https://github.com/lin-brian-l)**
+
+
+```js
+// fix the validation of httpAgent config. we could now pass ca, instead of key/cert.
+{
+  helpers: {
+    REST: {
+      endpoint: 'http://site.com/api',
+      prettyPrintJson: true,
+      httpAgent: {
+         ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
+         rejectUnauthorized: false,
+         keepAlive: true
+      }
+    }
+  }
+}
+```
+
+📖 *Documentation*
+* doc(AI): minor AI improvements - by **[DavertMik](https://github.com/DavertMik)**
+
 ## 3.6.5
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
