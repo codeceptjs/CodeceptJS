@@ -55,11 +55,11 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
   helpers: {
     REST: {
       endpoint: 'http://site.com/api',
-        prettyPrintJson: true,
-        httpAgent: {
-        ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
-          rejectUnauthorized: false,
-          keepAlive: true
+      prettyPrintJson: true,
+      httpAgent: {
+         ca: fs.readFileSync(__dirname + '/path/to/ca.pem'),
+         rejectUnauthorized: false,
+         keepAlive: true
       }
     }
   }
@@ -323,23 +323,23 @@ Examples:
 
 ```js
 // recording traffics and verify the traffic
-I.startRecordingTraffic();
-I.amOnPage('https://codecept.io/');
-I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+  I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
 ```
 
 ```js
 // check the traffic with advanced params
-I.amOnPage('https://openai.com/blog/chatgpt');
-I.startRecordingTraffic();
-I.seeTraffic({
-  name: 'sentry event',
-  url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-  parameters: {
-    width: '1919',
-    height: '1138',
-  },
-});
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  I.startRecordingTraffic();
+  I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
 ```
 
 * Introduce the playwright locator: `_react`, `_vue`, `data-testid` attribute. See [#4255](https://github.com/codeceptjs/CodeceptJS/issues/4255) by **[KobeNguyenT](https://github.com/KobeNguyenT)**
@@ -482,23 +482,23 @@ Examples:
 
 ```js
 // recording traffics and verify the traffic
-I.startRecordingTraffic();
-I.amOnPage('https://codecept.io/');
-I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+  I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
 ```
 
 ```js
 // check the traffic with advanced params
-I.amOnPage('https://openai.com/blog/chatgpt');
-I.startRecordingTraffic();
-I.seeTraffic({
-  name: 'sentry event',
-  url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-  parameters: {
-    width: '1919',
-    height: '1138',
-  },
-});
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  I.startRecordingTraffic();
+  I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
 ```
 * feat(webapi): add waitForCookie ([#4169](https://github.com/codeceptjs/CodeceptJS/issues/4169)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
   Waits for the specified cookie in the cookies.
@@ -546,18 +546,18 @@ Example:
 
 ```js
 {
-  helpers: {
-    WebDriver : {
-      smartWait: 5000,
-        browser: "chrome",
-        restart: false,
-        windowSize: "maximize",
-        timeouts: {
-        "script": 60000,
-          "page load": 10000
-      }
-    }
-  }
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
 }
 ```
 
@@ -566,19 +566,19 @@ For example:
 
 ```js
 {
-  helpers: {
-    WebDriver : {
-      smartWait: 5000,
-        browser: "chrome",
-        browserVersion: '116.0.5793.0', // or 'stable', 'beta', 'dev' or 'canary'
-        restart: false,
-        windowSize: "maximize",
-        timeouts: {
-        "script": 60000,
-          "page load": 10000
-      }
-    }
-  }
+   helpers: {
+     WebDriver : {
+       smartWait: 5000,
+       browser: "chrome",
+       browserVersion: '116.0.5793.0', // or 'stable', 'beta', 'dev' or 'canary'
+       restart: false,
+       windowSize: "maximize",
+       timeouts: {
+         "script": 60000,
+         "page load": 10000
+       }
+     }
+   }
 }
 ```
 * feat: wdio with devtools protocol ([#4105](https://github.com/codeceptjs/CodeceptJS/issues/4105)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
@@ -587,18 +587,18 @@ Running with devtools protocol
 
 ```js
 {
-  helpers: {
-    WebDriver : {
-      url: "http://localhost",
-        browser: "chrome",
-        devtoolsProtocol: true,
-        desiredCapabilities: {
-        chromeOptions: {
-          args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
-        }
-      }
-    }
-  }
+   helpers: {
+     WebDriver : {
+       url: "http://localhost",
+       browser: "chrome",
+       devtoolsProtocol: true,
+       desiredCapabilities: {
+         chromeOptions: {
+           args: [ "--headless", "--disable-gpu", "--no-sandbox" ]
+         }
+       }
+     }
+   }
 }
 ```
 * feat: add a locator builder method withTextEquals() ([#4100](https://github.com/codeceptjs/CodeceptJS/issues/4100)) - by **[mirao](https://github.com/mirao)**
@@ -659,9 +659,9 @@ Updated
 
 ```js
 Scenario('Verify getting list of users', async () => {
-  let res = await I.getUserPerPage(2);
-  res.data = []; // this line causes the issue
-  await I.expectEqual(res.data.data[0].id, 7);
+let res = await I.getUserPerPage(2);
+res.data = []; // this line causes the issue
+await I.expectEqual(res.data.data[0].id, 7);
 });
 ```
 at this time, res.data.data[0].id would throw undefined error and somehow the test is missing all its steps.
@@ -679,14 +679,14 @@ Plugins: screenshotOnFail, tryTo, retryFailedStep, retryTo, eachElement
 
 Repro -- **[1]**  Starting recording promises
 Timeouts:
-  › **[Session]** Starting singleton browser session
+› **[Session]** Starting singleton browser session
 Reproduce issue
 I am on page "https://example.com"
 › [Browser:Error] Failed to load resource: the server responded with a status of 404 ()
 › [New Context] {}
 user1: I am on page "https://example.com"
 user1: I execute script () => {
-  return { width: window.screen.width, height: window.screen.height };
+return { width: window.screen.width, height: window.screen.height };
 }
 sessionScreen is {"width":375,"height":667}
 ✔ OK in 1890ms
@@ -1308,25 +1308,25 @@ await I.seeInField('checkbox[]', secret('see test three'));
 * Fix for error in using `all` with `run-workers` ([#3805](https://github.com/codeceptjs/CodeceptJS/issues/3805)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 ```js
   helpers: {
-  Playwright: {
-    url: 'https://github.com',
+    Playwright: {
+      url: 'https://github.com',
       show: false,
       browser: 'chromium',
       waitForNavigation: 'load',
       waitForTimeout: 30_000,
       trace: true,
       keepTraceForPassedTests: true
+    },
   },
-},
-multiple: {
-  profile1: {
-    browsers: [
-      {
-        browser: "chromium",
-      }
-    ]
+  multiple: {
+    profile1: {
+      browsers: [
+        {
+          browser: "chromium",
+        }
+      ]
+    },
   },
-},
 ```
 * Highlight elements issues ([#3779](https://github.com/codeceptjs/CodeceptJS/issues/3779)) ([#3778](https://github.com/codeceptjs/CodeceptJS/issues/3778)) - by **[philkas](https://github.com/philkas)**
 * Support `&nbsp` symbol in `I.see` method ([#3815](https://github.com/codeceptjs/CodeceptJS/issues/3815)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
@@ -1365,13 +1365,13 @@ exports.config = {
 
 ```js
       const traffics = await I.grabRecordedNetworkTraffics();
-expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
-expect(traffics[0].response.status).to.equal(200);
-expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+      expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[0].response.status).to.equal(200);
+      expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 
-expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
-expect(traffics[1].response.status).to.equal(200);
-expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
+      expect(traffics[1].url).to.equal('https://reqres.in/api/comments/1');
+      expect(traffics[1].response.status).to.equal(200);
+      expect(traffics[1].response.body).to.contain({ name: 'this was another mocked' });
 ```
 * Grab metrics ([#3809](https://github.com/codeceptjs/CodeceptJS/issues/3809)) - by **[KobeNguyenT](https://github.com/KobeNguyenT)**
 
@@ -1476,32 +1476,32 @@ Examples:
 
 ```js
 // recording traffics and verify the traffic
-await I.startRecordingTraffic();
-I.amOnPage('https://codecept.io/');
-await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
+  await I.startRecordingTraffic();
+  I.amOnPage('https://codecept.io/');
+  await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
 ```
 
 ```js
 // block the traffic
-I.blockTraffic('https://reqres.in/api/comments/*');
-await I.amOnPage('/form/fetch_call');
-await I.startRecordingTraffic();
-await I.click('GET COMMENTS');
-await I.see('Can not load data!');
+  I.blockTraffic('https://reqres.in/api/comments/*');
+  await I.amOnPage('/form/fetch_call');
+  await I.startRecordingTraffic();
+  await I.click('GET COMMENTS');
+  await I.see('Can not load data!');
 ```
 
 ```js
 // check the traffic with advanced params
-I.amOnPage('https://openai.com/blog/chatgpt');
-await I.startRecordingTraffic();
-await I.seeTraffic({
-  name: 'sentry event',
-  url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
-  parameters: {
-    width: '1919',
-    height: '1138',
-  },
-});
+  I.amOnPage('https://openai.com/blog/chatgpt');
+  await I.startRecordingTraffic();
+  await I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+      width: '1919',
+      height: '1138',
+    },
+  });
 ```
 
 🐛 Bugfix
@@ -1624,13 +1624,13 @@ Feature('flaky Before & BeforeSuite', { retryBefore: 2, retryBeforeSuite: 3 })
 retry: [
   {
     // enable this config only for flaky tests
-    grep: '@flaky',
+    grep: '@flaky', 
     Before: 3 // retry Before 3 times
     Scenario: 3 // retry Scenario 3 times
-  },
+  }, 
   {
     // retry less when running slow tests
-    grep: '@slow'
+    grep: '@slow' 
     Scenario: 1
     Before: 1
   }, {
@@ -1772,11 +1772,11 @@ I.sendPostRequest('/auth', secret({ name: 'jon', password: '123456' }, 'password
 
 ```js
 plugins: {
-  customLocator: {
-    enabled: true,
-      prefix: '$',
-      attribute: ['data-qa', 'data-test'],
-  }
+ customLocator: {
+   enabled: true,
+   prefix: '$',
+   attribute: ['data-qa', 'data-test'],
+ }
 }
 ```
 * [retryTo plugin] Fixed [#3147](https://github.com/codeceptjs/CodeceptJS/issues/3147) using `pollInterval` option. See [#3351](https://github.com/codeceptjs/CodeceptJS/issues/3351) by **[cyonkee](https://github.com/cyonkee)**
@@ -1826,9 +1826,9 @@ npx codeceptjs run test-dir/*"
  helpers: {
   Playwright : {
     url: "http://localhost",
-      colorScheme: "dark",
+    colorScheme: "dark",
   }
-}
+ }
 ```
 
 
@@ -1983,11 +1983,11 @@ const { DataTableArgument } = require('codeceptjs');
 //...
 Given('I have an employee card', (table) => {
   const dataTableArgument = new DataTableArgument(table);
-  const hashes = dataTableArgument.hashes();
+  const hashes = dataTableArgument.hashes(); 
   // hashes = [{ name: 'Harry', surname: 'Potter', position: 'Seeker' }];
   const rows = dataTableArgument.rows();
   // rows = [['Harry', 'Potter', Seeker]];
-}
+  }
 ```
 See updated [BDD section](https://codecept.io/bdd/) for more API options. Thanks to **[EgorBodnar](https://github.com/EgorBodnar)**
 
@@ -2265,12 +2265,12 @@ Read changelog to learn more about version 👇
   Example:
   ```ts
   const psp = wd.grabPageScrollPosition() // $ExpectType Promise<PageScrollPosition>
-psp.then(
-  result => {
-    result.x // $ExpectType number
-    result.y // $ExpectType number
-  }
-)
+  psp.then(
+    result => {
+      result.x // $ExpectType number
+      result.y // $ExpectType number
+    }
+  )
   ```
 * And last: Reducing package size from 3.3Mb to 2.0Mb
 
@@ -2294,8 +2294,8 @@ MyPage.hasFiles('first arg', 'second arg');
 
 // OUTPUT:
 MyPage: hasFile "First arg", "Second arg"
-I see file "codecept.js"
-I see file "codecept.po.json"
+  I see file "codecept.js"
+  I see file "codecept.po.json"
 ```
 * Introduced official [TypeScript boilerplate](https://github.com/codeceptjs/typescript-boilerplate). Started by **[Vorobeyko](https://github.com/Vorobeyko)**.
 
@@ -2854,8 +2854,8 @@ Do you want to improve this project? [Learn more about sponsorin CodeceptJS
 Use it with `FileSystem` helper to test availability of a file:
 ```js
   const fileName = await I.downloadFile('a.file-link');
-I.amInPath('output');
-I.seeFile(fileName);
+  I.amInPath('output');
+  I.seeFile(fileName);
 ```
 > Actions `amInPath` and `seeFile` are taken from [FileSystem](https://codecept.io/helpers/FileSystem) helper
 
@@ -3201,8 +3201,8 @@ Scenario('run in different browsers', (I) => {
   "parallel": {
     // run in 2 processes
     "chunks": 2,
-      // run all tests in chrome
-      "browsers": ["chrome"]
+    // run all tests in chrome
+    "browsers": ["chrome"]
   },
 }
 ```
@@ -3480,7 +3480,7 @@ I.dontSee('Email Address');
 
 ```html
 <Text accessibilityLabel="foobar">
-  CodeceptJS is awesome
+    CodeceptJS is awesome
 </Text>
 ```
 ↑ This element can be located with `~foobar` in WebDriverIO and Appium helpers. Thanks to **[flyskywhy](https://github.com/flyskywhy)**
@@ -3743,7 +3743,7 @@ _before() {
 }
 
 _afterStep() {
-  if (this.err) throw new Error('Browser JS error '+this.err);
+ if (this.err) throw new Error('Browser JS error '+this.err);
 }
 ```
 
