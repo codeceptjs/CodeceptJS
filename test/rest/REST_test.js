@@ -319,7 +319,7 @@ describe('REST - Form upload', () => {
   })
 
   describe('upload file', () => {
-    it('should show error when file size exceedes the permit', async (done) => {
+    it('should show error when file size exceedes the permit', async () => {
       const form = new FormData()
       form.append('file', fs.createReadStream(testFile))
 
@@ -328,10 +328,9 @@ describe('REST - Form upload', () => {
       } catch (error) {
         error.message.should.eql('Request body larger than maxBodyLength limit')
       }
-      done();
     })
 
-    it('should not show error when file size doesnt exceedes the permit', async (done) => {
+    it('should not show error when file size doesnt exceedes the permit', async () => {
       const form = new FormData()
       form.append('file', fs.createReadStream(testFile))
 
@@ -341,7 +340,6 @@ describe('REST - Form upload', () => {
       } catch (error) {
         console.log(error.message)
       }
-      done();
     })
   })
 })
