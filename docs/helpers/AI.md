@@ -22,11 +22,11 @@ Use it only in development mode. It is recommended to run it only inside pause()
 
 This helper should be configured in codecept.conf.{js|ts}
 
--   `chunkSize`:  - The maximum number of characters to send to the AI API at once. We split HTML fragments by 8000 chars to not exceed token limit. Increase this value if you use GPT-4.
+*   `chunkSize`:  - The maximum number of characters to send to the AI API at once. We split HTML fragments by 8000 chars to not exceed token limit. Increase this value if you use GPT-4.
 
 ### Parameters
 
--   `config`  
+*   `config` &#x20;
 
 ### askForPageObject
 
@@ -50,11 +50,11 @@ Asks for a page object based on the provided page name, locator, and extra promp
 
 #### Parameters
 
--   `pageName` **[string][1]** The name of the page to retrieve the object for.
--   `extraPrompt` **([string][1] | null)** An optional extra prompt for additional context or information. 
--   `locator` **([string][1] | null)** An optional locator to find a specific element on the page. 
+*   `pageName` **[string][1]** The name of the page to retrieve the object for.
+*   `extraPrompt` **([string][1] | null)** An optional extra prompt for additional context or information. 
+*   `locator` **([string][1] | null)** An optional locator to find a specific element on the page. 
 
-Returns **[Promise][2]&lt;[Object][3]>** A promise that resolves to the requested page object.
+Returns **[Promise][2]<[Object][3]>** A promise that resolves to the requested page object.
 
 ### askGptGeneralPrompt
 
@@ -62,9 +62,9 @@ Send a general request to AI and return response.
 
 #### Parameters
 
--   `prompt` **[string][1]** 
+*   `prompt` **[string][1]**&#x20;
 
-Returns **[Promise][2]&lt;[string][1]>** A Promise that resolves to the generated response from the GPT model.
+Returns **[Promise][2]<[string][1]>** A Promise that resolves to the generated response from the GPT model.
 
 ### askGptOnPage
 
@@ -76,9 +76,9 @@ I.askGptOnPage('what does this page do?');
 
 #### Parameters
 
--   `prompt` **[string][1]** The question or prompt to ask the GPT model.
+*   `prompt` **[string][1]** The question or prompt to ask the GPT model.
 
-Returns **[Promise][2]&lt;[string][1]>** A Promise that resolves to the generated responses from the GPT model, joined by newlines.
+Returns **[Promise][2]<[string][1]>** A Promise that resolves to the generated responses from the GPT model, joined by newlines.
 
 ### askGptOnPageFragment
 
@@ -90,10 +90,10 @@ I.askGptOnPageFragment('describe features of this screen', '.screen');
 
 #### Parameters
 
--   `prompt` **[string][1]** The question or prompt to ask the GPT-3.5 model.
--   `locator` **[string][1]** The locator or selector used to identify the HTML fragment on the page.
+*   `prompt` **[string][1]** The question or prompt to ask the GPT-3.5 model.
+*   `locator` **[string][1]** The locator or selector used to identify the HTML fragment on the page.
 
-Returns **[Promise][2]&lt;[string][1]>** A Promise that resolves to the generated response from the GPT model.
+Returns **[Promise][2]<[string][1]>** A Promise that resolves to the generated response from the GPT model.
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
