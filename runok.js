@@ -15,9 +15,7 @@ const semver = require('semver')
 
 let documentation
 
-import('documentation').then(mod =>
-  documentation = mod,
-);
+import('documentation').then((mod) => (documentation = mod))
 
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`
