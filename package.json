@@ -128,7 +128,7 @@
     "@wdio/selenium-standalone-service": "8.3.2",
     "@wdio/utils": "9.2.8",
     "@xmldom/xmldom": "0.9.4",
-    "apollo-server-express": "2.25.3",
+    "apollo-server-express": "3.13.0",
     "chai-as-promised": "7.1.2",
     "chai-subset": "1.6.0",
     "cheerio": "^1.0.0",
