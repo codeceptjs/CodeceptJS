@@ -58,7 +58,7 @@ const { faker } = require('@faker-js/faker');
 
 module.exports = new Factory()
    // no need to set id, it will be set by REST API
-   .attr('author', () => faker.name.findName())
+   .attr('author', () => faker.person.findName())
    .attr('title', () => faker.lorem.sentence())
    .attr('body', () => faker.lorem.paragraph());
 ```

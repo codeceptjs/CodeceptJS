@@ -62,7 +62,7 @@ module.exports = new Factory((buildObj) => ({
    input: { ...buildObj },
 }))
    // 'attr'-id can be left out depending on the GraphQl resolvers
-   .attr('name', () => faker.name.findName())
+   .attr('name', () => faker.person.findName())
    .attr('email', () => faker.interact.email())
 ```
 
