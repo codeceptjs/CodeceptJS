@@ -405,11 +405,6 @@ expectType<void>(wd.scrollPageToTop());
 
 expectType<void>(wd.scrollPageToBottom());
 
-expectError(wd.setGeoLocation());
-expectError(wd.setGeoLocation(num));
-expectType<void>(wd.setGeoLocation(num, num));
-expectType<void>(wd.setGeoLocation(num, num, num));
-
 expectError(wd.dontSeeCookie());
 expectType<void>(wd.dontSeeCookie(str));
 
@@ -479,8 +474,6 @@ psp.then(
     result.y; // $ExpectType number
   },
 );
-
-expectType<Promise<{ latitude: number; longitude: number; altitude: number; }>>(wd.grabGeoLocation());
 
 expectError(wd.grabElementBoundingRect());
 //expectType<Promise<number>>(wd.grabElementBoundingRect('h3'));
