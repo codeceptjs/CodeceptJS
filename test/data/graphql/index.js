@@ -17,9 +17,9 @@ const server = new ApolloServer({
   playground: true,
 });
 
-server.start().then(res => {
+server.start().then(() => {
   server.applyMiddleware({ app });
   app.use(middleware);
   app.use(router);
   module.exports = app.listen(PORT, () => console.log(`test graphQL server listening on port ${PORT}...`));
-})
+});
