@@ -35,7 +35,7 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
-    "json-server": "./node_modules/json-server/bin/index.js test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
+    "json-server": "npx json-server test/data/rest/db.json -p 8010 --watch -m test/data/rest/headers.js",
     "json-server:graphql": "node test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ runok.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.js --fix",
@@ -64,7 +64,7 @@
     "update-contributor-faces": "./runok.js contributor:faces",
     "types-fix": "node typings/fixDefFiles.js",
     "dtslint": "npm run types-fix && tsd",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prepare-release": "./runok.js versioning && ./runok.js get:commit-log",
     "publish-beta": "./runok.js publish:next-beta-version"
   },
@@ -148,7 +148,7 @@
     "inquirer-test": "2.0.1",
     "jsdoc": "4.0.3",
     "jsdoc-typeof-plugin": "1.0.0",
-    "json-server": "0.10.1",
+    "json-server": "0.17.4",
     "playwright": "1.48.2",
     "prettier": "^3.3.2",
     "puppeteer": "23.6.0",
