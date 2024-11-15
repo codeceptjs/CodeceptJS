@@ -68,9 +68,9 @@ services:
 
   json_server:
     <<: *test-service
-    image: testcontainers/json-server:latest
-    environment:
-      - JSON_SERVER_PORT=8010
+    image: vimagick/json-server
+    command: -H 0.0.0.0 -p 8010 -w db.json
+    restart: always
     ports:
       - 8010:8010
     volumes:
