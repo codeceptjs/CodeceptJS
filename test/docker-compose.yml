@@ -68,10 +68,13 @@ services:
 
   json_server:
     <<: *test-service
-    entrypoint: []
-    command: npm run json-server
-    expose:
-      - 8010
+    image: testcontainers/json-server:latest
+    environment:
+      - JSON_SERVER_PORT=8010
+    ports:
+      - 8010:8010
+    volumes:
+      - ./data/rest/db.json:/data
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
