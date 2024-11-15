@@ -20,7 +20,7 @@ class TestHelper {
   }
 
   static jsonServerUrl() {
-    return 'http://localhost:8010'
+    return process.env.JSON_SERVER_URL || 'http://localhost:8010'
   }
 
   static graphQLServerPort() {
