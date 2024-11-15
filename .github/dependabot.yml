@@ -15,8 +15,6 @@ updates:
     ignore:
       - dependency-name: "escape-string-regexp"
         versions: [">=5.0"]
-      - dependency-name: "apollo-server-express"
-        versions: [">=3.0"]
       - dependency-name: "eslint"
         versions: [ ">8.57.0" ]
 

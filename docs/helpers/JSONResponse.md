@@ -13,15 +13,15 @@ title: JSONResponse
 
 This helper allows performing assertions on JSON responses paired with following helpers:
 
--   REST
--   GraphQL
--   Playwright
+*   REST
+*   GraphQL
+*   Playwright
 
 It can check status codes, response data, response structure.
 
 ## Configuration
 
--   `requestHelper` - a helper which will perform requests. `REST` by default, also `Playwright` or `GraphQL` can be used. Custom helpers must have `onResponse` hook in their config, which will be executed when request is performed.
+*   `requestHelper` - a helper which will perform requests. `REST` by default, also `Playwright` or `GraphQL` can be used. Custom helpers must have `onResponse` hook in their config, which will be executed when request is performed.
 
 ### Examples
 
@@ -68,7 +68,7 @@ const response = this.helpers.JSONResponse.response;
 
 ### Parameters
 
--   `config`   
+*   `config`   
 
 ### dontSeeResponseCodeIs
 
@@ -80,7 +80,7 @@ I.dontSeeResponseCodeIs(500);
 
 #### Parameters
 
--   `code` **[number][1]** 
+*   `code` **[number][1]**&#x20;
 
 ### dontSeeResponseContainsJson
 
@@ -102,7 +102,7 @@ I.dontSeeResponseContainsJson({ user: 2 });
 
 #### Parameters
 
--   `json` **[object][2]**  
+*   `json` **[object][2]**  
 
 ### seeResponseCodeIs
 
@@ -114,7 +114,7 @@ I.seeResponseCodeIs(200);
 
 #### Parameters
 
--   `code` **[number][1]** 
+*   `code` **[number][1]**&#x20;
 
 ### seeResponseCodeIsClientError
 
@@ -157,7 +157,7 @@ I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
 
 #### Parameters
 
--   `json` **[object][2]**  
+*   `json` **[object][2]**  
 
 ### seeResponseContainsKeys
 
@@ -179,7 +179,7 @@ I.seeResponseContainsKeys(['user']);
 
 #### Parameters
 
--   `keys` **[array][3]**  
+*   `keys` **[array][3]**  
 
 ### seeResponseEquals
 
@@ -193,7 +193,7 @@ I.seeResponseEquals({ error: 'Not allowed' })
 
 #### Parameters
 
--   `resp` **[object][2]** 
+*   `resp` **[object][2]**&#x20;
 
 ### seeResponseMatchesJsonSchema
 
@@ -223,7 +223,7 @@ I.seeResponseMatchesJsonSchema(joi.object({
 
 #### Parameters
 
--   `fnOrSchema` **any** 
+*   `fnOrSchema` **any**&#x20;
 
 ### seeResponseValidByCallback
 
@@ -239,7 +239,7 @@ I.seeResponseValidByCallback(({ data, status, expect }) => {
 
 #### Parameters
 
--   `fn` **[function][6]** 
+*   `fn` **[function][6]**&#x20;
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 

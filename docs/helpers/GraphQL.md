@@ -16,10 +16,10 @@ GraphQL helper allows to send additional requests to a GraphQl endpoint during a
 
 ## Configuration
 
--   endpoint: GraphQL base URL
--   timeout: timeout for requests in milliseconds. 10000ms by default
--   defaultHeaders: a list of default headers
--   onRequest: a async function which can update request object.
+*   endpoint: GraphQL base URL
+*   timeout: timeout for requests in milliseconds. 10000ms by default
+*   defaultHeaders: a list of default headers
+*   onRequest: a async function which can update request object.
 
 ## Example
 
@@ -47,7 +47,7 @@ this.helpers['GraphQL']._executeQuery({
 
 ### Parameters
 
--   `config`  
+*   `config` &#x20;
 
 ### _executeQuery
 
@@ -55,7 +55,7 @@ Executes query via axios call
 
 #### Parameters
 
--   `request` **[object][2]** 
+*   `request` **[object][2]**&#x20;
 
 ### _prepareGraphQLRequest
 
@@ -63,8 +63,8 @@ Prepares request for axios call
 
 #### Parameters
 
--   `operation` **[object][2]** 
--   `headers` **[object][2]** 
+*   `operation` **[object][2]**&#x20;
+*   `headers` **[object][2]**&#x20;
 
 Returns **[object][2]** graphQLRequest
 
@@ -79,7 +79,7 @@ I.amBearerAuthenticated(secret('heregoestoken'))
 
 #### Parameters
 
--   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+*   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
 
 ### haveRequestHeaders
 
@@ -87,7 +87,7 @@ Sets request headers for all requests of this test
 
 #### Parameters
 
--   `headers` **[object][2]** headers list
+*   `headers` **[object][2]** headers list
 
 ### sendMutation
 
@@ -113,10 +113,10 @@ I.sendMutation(`
 
 #### Parameters
 
--   `mutation` **[String][3]** 
--   `variables` **[object][2]?** that may go along with the mutation
--   `options` **[object][2]?** are additional query options 
--   `headers` **[object][2]?**  
+*   `mutation` **[String][3]**&#x20;
+*   `variables` **[object][2]?** that may go along with the mutation
+*   `options` **[object][2]?** are additional query options 
+*   `headers` **[object][2]?**  
 
 Returns **any** Promise<any>
 
@@ -126,6 +126,7 @@ Send query to GraphQL endpoint over http.
 Returns a response as a promise.
 
 ```js
+
 const response = await I.sendQuery('{ users { name email }}');
 // with variables
 const response = await I.sendQuery(
@@ -137,10 +138,10 @@ const user = response.data.data;
 
 #### Parameters
 
--   `query` **[String][3]** 
--   `variables` **[object][2]?** that may go along with the query
--   `options` **[object][2]?** are additional query options 
--   `headers` **[object][2]?**  
+*   `query` **[String][3]**&#x20;
+*   `variables` **[object][2]?** that may go along with the query
+*   `options` **[object][2]?** are additional query options 
+*   `headers` **[object][2]?**  
 
 Returns **any** Promise<any>
 

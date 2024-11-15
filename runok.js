@@ -2,7 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 const axios = require('axios')
-const documentation = require('documentation')
+
 const {
   stopOnFail,
   chdir,
@@ -12,6 +12,10 @@ const {
 const contributors = require('contributor-faces')
 const { execSync } = require('node:child_process')
 const semver = require('semver')
+
+let documentation
+
+import('documentation').then((mod) => (documentation = mod))
 
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`

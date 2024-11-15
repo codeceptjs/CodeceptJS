@@ -42,7 +42,7 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
 Throws an error if any soft assertions have failed.
 The error message contains all the accumulated failures.
 
--   Throws **[Error][1]** If there are any soft assertion failures.
+*   Throws **[Error][1]** If there are any soft assertion failures.
 
 ### softAssert
 
@@ -51,8 +51,8 @@ If the assertion fails, the error is caught and stored without halting the execu
 
 #### Parameters
 
--   `assertionFn` **[Function][2]** The assertion function to execute.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `assertionFn` **[Function][2]** The assertion function to execute.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectAbove
 
@@ -60,9 +60,9 @@ Softly asserts that the target data is above a specified value.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `aboveThan` **any** The value that the target data should be above.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `aboveThan` **any** The value that the target data should be above.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectBelow
 
@@ -70,9 +70,9 @@ Softly asserts that the target data is below a specified value.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `belowThan` **any** The value that the target data should be below.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `belowThan` **any** The value that the target data should be below.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectContain
 
@@ -80,9 +80,9 @@ Softly asserts that a value contains the expected value.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValueToContain` **any** The value that should be contained within the actual value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValueToContain` **any** The value that should be contained within the actual value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectDeepEqual
 
@@ -90,9 +90,9 @@ Softly asserts that two values are deeply equal.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValue` **any** The expected value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValue` **any** The expected value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectDeepEqualExcluding
 
@@ -100,10 +100,10 @@ Softly asserts that two objects are deeply equal, excluding specified fields.
 
 #### Parameters
 
--   `actualValue` **[Object][4]** The actual object.
--   `expectedValue` **[Object][4]** The expected object.
--   `fieldsToExclude` **[Array][5]&lt;[string][3]>** The fields to exclude from the comparison.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **[Object][4]** The actual object.
+*   `expectedValue` **[Object][4]** The expected object.
+*   `fieldsToExclude` **[Array][5]<[string][3]>** The fields to exclude from the comparison.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectDeepIncludeMembers
 
@@ -111,9 +111,9 @@ Softly asserts that an array (superset) deeply includes all members of another a
 
 #### Parameters
 
--   `superset` **[Array][5]** The array that should contain the expected members.
--   `set` **[Array][5]** The array with members that should be included.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `superset` **[Array][5]** The array that should contain the expected members.
+*   `set` **[Array][5]** The array with members that should be included.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectDeepMembers
 
@@ -121,9 +121,9 @@ Softly asserts that two arrays have deep equality, considering members in any or
 
 #### Parameters
 
--   `actualValue` **[Array][5]** The actual array.
--   `expectedValue` **[Array][5]** The expected array.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **[Array][5]** The actual array.
+*   `expectedValue` **[Array][5]** The expected array.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectEmpty
 
@@ -131,8 +131,8 @@ Softly asserts that the target data is empty.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectEndsWith
 
@@ -140,9 +140,9 @@ Softly asserts that a value ends with the expected value.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValueToEndWith` **any** The value that the actual value should end with.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValueToEndWith` **any** The value that the actual value should end with.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectEqual
 
@@ -150,9 +150,9 @@ Softly asserts that two values are equal.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValue` **any** The expected value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValue` **any** The expected value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectEqualIgnoreCase
 
@@ -160,9 +160,9 @@ Softly asserts that two values are equal, ignoring case.
 
 #### Parameters
 
--   `actualValue` **[string][3]** The actual string value.
--   `expectedValue` **[string][3]** The expected string value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **[string][3]** The actual string value.
+*   `expectedValue` **[string][3]** The expected string value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectFalse
 
@@ -170,8 +170,8 @@ Softly asserts that the target data is false.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectHasAProperty
 
@@ -179,9 +179,9 @@ Softly asserts that the target data has a property with the specified name.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `propertyName` **[string][3]** The property name to check for.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `propertyName` **[string][3]** The property name to check for.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectHasProperty
 
@@ -189,9 +189,9 @@ Softly asserts that the target data has the specified property.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `propertyName` **[string][3]** The property name to check for.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion
+*   `targetData` **any** The data to check.
+*   `propertyName` **[string][3]** The property name to check for.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion
     fails. 
 
 ### softExpectJsonSchema
@@ -200,9 +200,9 @@ Softly asserts that the target data matches the given JSON schema.
 
 #### Parameters
 
--   `targetData` **any** The data to validate.
--   `jsonSchema` **[Object][4]** The JSON schema to validate against.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to validate.
+*   `jsonSchema` **[Object][4]** The JSON schema to validate against.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectJsonSchemaUsingAJV
 
@@ -210,10 +210,10 @@ Softly asserts that the target data matches the given JSON schema using AJV.
 
 #### Parameters
 
--   `targetData` **any** The data to validate.
--   `jsonSchema` **[Object][4]** The JSON schema to validate against.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
--   `ajvOptions` **[Object][4]** Options to pass to AJV. 
+*   `targetData` **any** The data to validate.
+*   `jsonSchema` **[Object][4]** The JSON schema to validate against.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `ajvOptions` **[Object][4]** Options to pass to AJV. 
 
 ### softExpectLengthAboveThan
 
@@ -221,9 +221,9 @@ Softly asserts that the length of the target data is above a specified value.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `lengthAboveThan` **[number][6]** The length that the target data should be above.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `lengthAboveThan` **[number][6]** The length that the target data should be above.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectLengthBelowThan
 
@@ -231,9 +231,9 @@ Softly asserts that the length of the target data is below a specified value.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `lengthBelowThan` **[number][6]** The length that the target data should be below.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `lengthBelowThan` **[number][6]** The length that the target data should be below.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectLengthOf
 
@@ -241,9 +241,9 @@ Softly asserts that the target data has a specified length.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `length` **[number][6]** The expected length.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `length` **[number][6]** The expected length.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectMatchesPattern
 
@@ -251,9 +251,9 @@ Softly asserts that a value matches the expected pattern.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedPattern` **any** The pattern the value should match.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedPattern` **any** The pattern the value should match.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectNotContain
 
@@ -261,9 +261,9 @@ Softly asserts that a value does not contain the expected value.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValueToNotContain` **any** The value that should not be contained within the actual value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValueToNotContain` **any** The value that should not be contained within the actual value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectNotDeepEqual
 
@@ -271,9 +271,9 @@ Softly asserts that two values are not deeply equal.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValue` **any** The expected value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValue` **any** The expected value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectNotEndsWith
 
@@ -281,9 +281,9 @@ Softly asserts that a value does not end with the expected value.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValueToNotEndWith` **any** The value that the actual value should not end with.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValueToNotEndWith` **any** The value that the actual value should not end with.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectNotEqual
 
@@ -291,9 +291,9 @@ Softly asserts that two values are not equal.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValue` **any** The expected value.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValue` **any** The expected value.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectNotStartsWith
 
@@ -301,9 +301,9 @@ Softly asserts that a value does not start with the expected value.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValueToNotStartWith` **any** The value that the actual value should not start with.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValueToNotStartWith` **any** The value that the actual value should not start with.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectStartsWith
 
@@ -311,9 +311,9 @@ Softly asserts that a value starts with the expected value.
 
 #### Parameters
 
--   `actualValue` **any** The actual value.
--   `expectedValueToStartWith` **any** The value that the actual value should start with.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `actualValue` **any** The actual value.
+*   `expectedValueToStartWith` **any** The value that the actual value should start with.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectToBeA
 
@@ -321,9 +321,9 @@ Softly asserts that the target data is of a specific type.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `type` **[string][3]** The expected type (e.g., 'string', 'number').
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `type` **[string][3]** The expected type (e.g., 'string', 'number').
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectToBeAn
 
@@ -331,9 +331,9 @@ Softly asserts that the target data is of a specific type (alternative for artic
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `type` **[string][3]** The expected type (e.g., 'string', 'number').
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `type` **[string][3]** The expected type (e.g., 'string', 'number').
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 ### softExpectTrue
 
@@ -341,8 +341,8 @@ Softly asserts that the target data is true.
 
 #### Parameters
 
--   `targetData` **any** The data to check.
--   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
+*   `targetData` **any** The data to check.
+*   `customErrorMsg` **[string][3]** A custom error message to display if the assertion fails. 
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
 

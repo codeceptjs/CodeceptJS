@@ -62,7 +62,7 @@ module.exports = new Factory((buildObj) => ({
    input: { ...buildObj },
 }))
    // 'attr'-id can be left out depending on the GraphQl resolvers
-   .attr('name', () => faker.name.findName())
+   .attr('name', () => faker.person.findName())
    .attr('email', () => faker.interact.email())
 ```
 
@@ -74,11 +74,11 @@ Then configure GraphQLDataHelper to match factories and GraphQL schema:
 
 GraphQLDataFactory has following config options:
 
--   `endpoint`: URL for the GraphQL server.
--   `cleanup` (default: true): should inserted records be deleted up after tests
--   `factories`: list of defined factories
--   `headers`: list of headers
--   `GraphQL`: configuration for GraphQL requests.
+*   `endpoint`: URL for the GraphQL server.
+*   `cleanup` (default: true): should inserted records be deleted up after tests
+*   `factories`: list of defined factories
+*   `headers`: list of headers
+*   `GraphQL`: configuration for GraphQL requests.
 
 See the example:
 
@@ -121,16 +121,16 @@ For instance, to set timeout you should add:
 
 Factory contains operations -
 
--   `operation`: The operation/mutation that needs to be performed for creating a record in the backend.
+*   `operation`: The operation/mutation that needs to be performed for creating a record in the backend.
 
 Each operation must have the following:
 
--   `query`: The mutation(query) string. It is expected to use variables to send data with the query.
--   `factory`: The path to factory file. The object built by the factory in this file will be passed
-     as the 'variables' object to go along with the mutation.
--   `revert`: A function called with the data returned when an item is created. The object returned by
-     this function is will be used to later delete the items created. So, make sure RELEVANT DATA IS RETURNED
-     when a record is created by a mutation.
+*   `query`: The mutation(query) string. It is expected to use variables to send data with the query.
+*   `factory`: The path to factory file. The object built by the factory in this file will be passed
+    as the 'variables' object to go along with the mutation.
+*   `revert`: A function called with the data returned when an item is created. The object returned by
+    this function is will be used to later delete the items created. So, make sure RELEVANT DATA IS RETURNED
+    when a record is created by a mutation.
 
 ### Requests
 
@@ -158,7 +158,7 @@ Data of created records are collected and used in the end of a test for the clea
 
 ### Parameters
 
--   `config`  
+*   `config` &#x20;
 
 ### _requestCreate
 
@@ -167,8 +167,8 @@ Can be replaced from a custom helper.
 
 #### Parameters
 
--   `operation` **[string][4]** 
--   `variables` **any** to be sent along with the query
+*   `operation` **[string][4]**&#x20;
+*   `variables` **any** to be sent along with the query
 
 ### _requestDelete
 
@@ -177,8 +177,8 @@ Can be replaced from a custom helper.
 
 #### Parameters
 
--   `operation` **[string][4]** 
--   `data` **any** of the record to be deleted.
+*   `operation` **[string][4]**&#x20;
+*   `data` **any** of the record to be deleted.
 
 ### mutateData
 
@@ -194,8 +194,8 @@ const user = await I.mutateData('createUser', { email: 'user@user.com'});
 
 #### Parameters
 
--   `operation` **[string][4]** to be performed
--   `params` **any** predefined parameters
+*   `operation` **[string][4]** to be performed
+*   `params` **any** predefined parameters
 
 ### mutateMultiple
 
@@ -211,9 +211,9 @@ I.mutateMultiple('createUser', 3, { age: 25 });
 
 #### Parameters
 
--   `operation` **[string][4]** 
--   `times` **[number][5]** 
--   `params` **any** 
+*   `operation` **[string][4]**&#x20;
+*   `times` **[number][5]**&#x20;
+*   `params` **any**&#x20;
 
 [1]: https://github.com/rosiejs/rosie
 

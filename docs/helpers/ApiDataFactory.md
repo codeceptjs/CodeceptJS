@@ -58,7 +58,7 @@ const { faker } = require('@faker-js/faker');
 
 module.exports = new Factory()
    // no need to set id, it will be set by REST API
-   .attr('author', () => faker.name.findName())
+   .attr('author', () => faker.person.findName())
    .attr('title', () => faker.lorem.sentence())
    .attr('body', () => faker.lorem.paragraph());
 ```
@@ -71,12 +71,12 @@ Then configure ApiDataHelper to match factories and REST API:
 
 ApiDataFactory has following config options:
 
--   `endpoint`: base URL for the API to send requests to.
--   `cleanup` (default: true): should inserted records be deleted up after tests
--   `factories`: list of defined factories
--   `returnId` (default: false): return id instead of a complete response when creating items.
--   `headers`: list of headers
--   `REST`: configuration for REST requests
+*   `endpoint`: base URL for the API to send requests to.
+*   `cleanup` (default: true): should inserted records be deleted up after tests
+*   `factories`: list of defined factories
+*   `returnId` (default: false): return id instead of a complete response when creating items.
+*   `headers`: list of headers
+*   `REST`: configuration for REST requests
 
 See the example:
 
@@ -121,25 +121,26 @@ For instance, to set timeout you should add:
 
 By default to create a record ApiDataFactory will use endpoint and plural factory name:
 
--   create: `POST {endpoint}/{resource} data`
--   delete: `DELETE {endpoint}/{resource}/id`
+*   create: `POST {endpoint}/{resource} data`
+*   delete: `DELETE {endpoint}/{resource}/id`
 
 Example (`endpoint`: `http://app.com/api`):
 
--   create: POST request to `http://app.com/api/users`
--   delete: DELETE request to `http://app.com/api/users/1`
+*   create: POST request to `http://app.com/api/users`
+*   delete: DELETE request to `http://app.com/api/users/1`
 
 This behavior can be configured with following options:
 
--   `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
--   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
--   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
+*   `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
+*   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
+*   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
 
 Requests can also be overridden with a function which returns [axois request config][4].
 
 ```js
 create: (data) => ({ method: 'post', url: '/posts', data }),
 delete: (id) => ({ method: 'delete', url: '/posts', data: { id } })
+
 ```
 
 Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
@@ -189,7 +190,7 @@ By default `id` property of response is taken. This behavior can be changed by s
 
 ### Parameters
 
--   `config`  
+*   `config` &#x20;
 
 ### _requestCreate
 
@@ -198,8 +199,8 @@ Can be replaced from a in custom helper.
 
 #### Parameters
 
--   `factory` **any** 
--   `data` **any** 
+*   `factory` **any**&#x20;
+*   `data` **any**&#x20;
 
 ### _requestDelete
 
@@ -208,8 +209,8 @@ Can be replaced from a custom helper.
 
 #### Parameters
 
--   `factory` **any** 
--   `id` **any** 
+*   `factory` **any**&#x20;
+*   `id` **any**&#x20;
 
 ### have
 
@@ -227,11 +228,11 @@ I.have('user', { }, { age: 33, height: 55 })
 
 #### Parameters
 
--   `factory` **any** factory to use
--   `params` **any?** predefined parameters
--   `options` **any?** options for programmatically generate the attributes
+*   `factory` **any** factory to use
+*   `params` **any?** predefined parameters
+*   `options` **any?** options for programmatically generate the attributes
 
-Returns **[Promise][5]&lt;any>** 
+Returns **[Promise][5]<any>**&#x20;
 
 ### haveMultiple
 
@@ -250,10 +251,10 @@ I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 
 #### Parameters
 
--   `factory` **any** 
--   `times` **any** 
--   `params` **any?** 
--   `options` **any?** 
+*   `factory` **any**&#x20;
+*   `times` **any**&#x20;
+*   `params` **any?**&#x20;
+*   `options` **any?**&#x20;
 
 [1]: https://github.com/rosiejs/rosie
 

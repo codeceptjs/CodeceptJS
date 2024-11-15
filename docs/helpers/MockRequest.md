@@ -17,11 +17,11 @@ Another way of using is to emulate requests from server by passing prepared data
 
 MockRequest helper works in these [modes][1]:
 
--   passthrough (default) - mock prefefined HTTP requests
--   record - record all requests into a file
--   replay - replay all recorded requests from a file
+*   passthrough (default) - mock prefefined HTTP requests
+*   record - record all requests into a file
+*   replay - replay all recorded requests from a file
 
-Combining record/replay modes allows testing websites with large datasets. 
+Combining record/replay modes allows testing websites with large datasets.
 
 To use in passthrough mode set rules to mock requests and they will be automatically intercepted and replaced:
 
@@ -83,9 +83,9 @@ helpers: {
 }
 ```
 
-* * *
+***
 
-**TROUBLESHOOTING**: Puppeteer does not mock requests in headless mode: 
+**TROUBLESHOOTING**: Puppeteer does not mock requests in headless mode:
 
 Problem: request mocking does not work and in debug mode you see this in output:
 
@@ -104,7 +104,7 @@ Solution: update Puppeteer config to include `--disable-web-security` arguments:
  },
 ```
 
-* * *
+***
 
 #### With WebDriver
 
@@ -129,10 +129,10 @@ helpers: {
 
 To intercept API requests and mock them use following API
 
--   [startMocking()][4] - to enable request interception
--   [mockRequest()][5] - to define mock in a simple way
--   [mockServer()][6] - to use PollyJS server API to define complex mocks
--   [stopMocking()][7] - to stop intercepting requests and disable mocks.
+*   [startMocking()][4] - to enable request interception
+*   [mockRequest()][5] - to define mock in a simple way
+*   [mockServer()][6] - to use PollyJS server API to define complex mocks
+*   [stopMocking()][7] - to stop intercepting requests and disable mocks.
 
 Calling `mockRequest` or `mockServer` will start mocking, if it was not enabled yet.
 
@@ -156,7 +156,7 @@ I.stopMocking();
 > At this moment works only with Puppeteer
 
 Record & Replay mode allows you to record all xhr & fetch requests and save them to file.
-On next runs those requests can be replayed. 
+On next runs those requests can be replayed.
 By default, it stores all passed requests, but this behavior can be customized with `I.mockServer`
 
 Set mode via enironment variable, `replay` mode by default:
@@ -195,7 +195,7 @@ I.mockServer((server) => {
 
 To stop request recording/replaying use `I.stopMocking()`.
 
-🎥 To record HTTP interactions execute tests with MOCK_MODE environment variable set as "record":
+🎥 To record HTTP interactions execute tests with MOCK\_MODE environment variable set as "record":
 
     MOCK_MODE=record npx codeceptjs run --debug
 
@@ -205,7 +205,7 @@ To stop request recording/replaying use `I.stopMocking()`.
 
 ### Parameters
 
--   `config`  
+*   `config` &#x20;
 
 ### flushMocking
 
@@ -234,10 +234,10 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403);
 
 #### Parameters
 
--   `method` **[string][8]** request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
--   `oneOrMoreUrls` **([string][8] \| [Array][9]&lt;[string][8]>)** url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
--   `dataOrStatusCode` **([number][10] \| [string][8] \| [object][11])** status code when number provided. A response body otherwise
--   `additionalData` **([string][8] \| [object][11])** response body when a status code is set by previous parameter. (optional, default `null`)
+*   `method` **[string][8]** request method. Can be `GET`, `POST`, `PUT`, etc or `ANY`.
+*   `oneOrMoreUrls` **([string][8] | [Array][9]<[string][8]>)** url(s) to mock. Can be exact URL, a pattern, or an array of URLs.
+*   `dataOrStatusCode` **([number][10] | [string][8] | [object][11])** status code when number provided. A response body otherwise
+*   `additionalData` **([string][8] | [object][11])** response body when a status code is set by previous parameter. (optional, default `null`)
 
 ### mockServer
 
@@ -274,7 +274,7 @@ I.mockServer((server) => {
 
 #### Parameters
 
--   `configFn`  
+*   `configFn` &#x20;
 
 ### passthroughMocking
 
@@ -336,8 +336,8 @@ I.startMocking('users-loaded', {
 
 #### Parameters
 
--   `title` **any**  (optional, default `'Test'`)
--   `config`   (optional, default `{}`)
+*   `title` **any**  (optional, default `'Test'`)
+*   `config`   (optional, default `{}`)
 
 ### stopMocking
 
