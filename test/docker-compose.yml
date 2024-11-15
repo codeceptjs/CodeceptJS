@@ -67,6 +67,7 @@ services:
       - .:/test
 
   json_server:
+    <<: &test-service
     image: testcontainers/json-server:latest
     environment:
       - JSON_SERVER_PORT=8010
