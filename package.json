@@ -118,7 +118,7 @@
   },
   "devDependencies": {
     "@codeceptjs/mock-request": "0.3.1",
-    "@eslint/eslintrc": "3.1.0",
+    "@eslint/eslintrc": "3.2.0",
     "@eslint/js": "9.15.0",
     "@faker-js/faker": "9.2.0",
     "@pollyjs/adapter-puppeteer": "6.0.6",
