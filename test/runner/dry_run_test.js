@@ -117,6 +117,25 @@ describe('dry-run command', () => {
     })
   })
 
+  it('should run feature files with regex grep', (done) => {
+    exec(codecept_run_config('codecept.bdd.js') + ' --steps --grep "(?=.*Checkout process)"', (err, stdout) => {
+      //eslint-disable-line
+      expect(stdout).toContain('Checkout process') // feature
+      expect(stdout).toContain('-- before checkout --')
+      expect(stdout).toContain('-- after checkout --')
+      // expect(stdout).toContain('In order to buy products'); // test name
+      expect(stdout).toContain('Given I have product with $600 price')
+      expect(stdout).toContain('And I have product with $1000 price')
+      expect(stdout).toContain('Then I should see that total number of products is 2')
+      expect(stdout).toContain('And my order amount is $1600')
+      expect(stdout).not.toContain('I add item 600') // 'Given' actor's non-gherkin step check
+      expect(stdout).not.toContain('I see sum 1600') // 'And' actor's non-gherkin step check
+      expect(stdout).toContain('No tests were executed')
+      expect(err).toBeFalsy()
+      done()
+    })
+  })
+
   it('should print substeps in debug mode', (done) => {
     exec(codecept_run_config('codecept.bdd.js') + ' --debug --grep "Checkout process @important"', (err, stdout) => {
       //eslint-disable-line
