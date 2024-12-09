@@ -120,7 +120,7 @@
     "@codeceptjs/mock-request": "0.3.1",
     "@eslint/eslintrc": "3.2.0",
     "@eslint/js": "9.15.0",
-    "@faker-js/faker": "9.2.0",
+    "@faker-js/faker": "9.3.0",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "5.1.0",
     "@types/chai": "4.3.19",
