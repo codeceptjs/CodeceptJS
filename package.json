@@ -137,7 +137,7 @@
     "contributor-faces": "1.1.0",
     "documentation": "14.0.3",
     "electron": "33.2.1",
-    "eslint": "9.15.0",
+    "eslint": "9.16.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-mocha": "10.5.0",
