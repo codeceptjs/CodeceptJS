@@ -147,6 +147,7 @@
     "graphql": "16.9.0",
     "husky": "9.1.7",
     "inquirer-test": "2.0.1",
+    "invisi-data": "^1.0.0",
     "jsdoc": "4.0.4",
     "jsdoc-typeof-plugin": "1.0.0",
     "json-server": "0.17.4",

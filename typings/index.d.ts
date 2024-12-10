@@ -115,6 +115,14 @@ declare namespace CodeceptJS {
      */
     emptyOutputFolder?: boolean;
     /**
+     * mask sensitive data in output logs
+     *
+     * ```js
+     * maskSensitiveData: true
+     * ```
+     */
+    maskSensitiveData?: boolean;
+    /**
      * Pattern to filter tests by name.
      * This option is useful if you plan to use multiple configs for different environments.
      *
