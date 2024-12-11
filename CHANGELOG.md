@@ -1,3 +1,17 @@
+## 3.6.10
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🐛 *Bug Fixes*
+fix(cli): missing failure counts when there is failedHooks (#4633) - by @kobenguyent
+
+## 3.6.9
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🐛 *Hot Fixes*
+fix: could not run tests due to missing `invisi-data` lib - by @kobenguyent
+
 ## 3.6.8
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
