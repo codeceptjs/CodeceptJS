@@ -29,6 +29,7 @@ After running `codeceptjs init` it should be saved in test root.
 | `tests` | `string` | Pattern to locate CodeceptJS tests. Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.  For tests in JavaScript:  ```tests: 'tests/**.test.js' ``` For tests in TypeScript:  ```tests: 'tests/**.test.ts' ``` |
 | `timeout?` | `number` | Set default tests timeout in seconds. Tests will be killed on no response after timeout.  ```timeout: 20, ``` |
 | `translation?` | `string` | Enable [localized test commands](https://codecept.io/translation/) |
+| `maskSensitiveData?` | `boolean` | Enable to mask Sensitive Data in console. |
 
 
 ## Require
