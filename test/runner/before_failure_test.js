@@ -12,7 +12,7 @@ describe('Failure in before', function () {
       stdout.should.include('First test will be passed @grep')
       stdout.should.include('Third test will be skipped @grep')
       stdout.should.include('Fourth test will be skipped')
-      stdout.should.include('1 passed, 1 failedHooks, 2 skipped')
+      stdout.should.include('1 passed, 1 failed, 1 failedHooks, 2 skipped')
       err.code.should.eql(1)
       done()
     })
@@ -22,7 +22,7 @@ describe('Failure in before', function () {
     exec(`${codecept_run} --grep @grep`, (err, stdout) => {
       stdout.should.include('First test will be passed @grep')
       stdout.should.include('Third test will be skipped @grep')
-      stdout.should.include('1 passed, 1 failedHooks, 1 skipped')
+      stdout.should.include('1 passed, 1 failed, 1 failedHooks, 1 skipped')
       err.code.should.eql(1)
       done()
     })

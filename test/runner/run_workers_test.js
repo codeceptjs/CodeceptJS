@@ -44,7 +44,8 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).not.toContain('this is running inside worker')
       expect(stdout).toContain('failed')
       expect(stdout).toContain('File notafile not found')
-      expect(stdout).toContain('5 passed, 1 failed, 1 failedHooks')
+      expect(stdout).toContain('Scenario Steps:')
+      expect(stdout).toContain('5 passed, 2 failed, 1 failedHooks')
       // We are not testing order in logs, because it depends on race condition between workers
       expect(stdout).toContain(') Workers Failing\n') // first fail log
       expect(stdout).toContain(') Workers\n') // second fail log
