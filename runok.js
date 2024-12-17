@@ -9,7 +9,6 @@ const {
   tasks: { git, copy, exec, replaceInFile, npmRun, npx, writeToFile },
   runok,
 } = require('runok')
-const contributors = require('contributor-faces')
 const { execSync } = require('node:child_process')
 const semver = require('semver')
 
@@ -474,15 +473,69 @@ ${changelog}`
 
   async contributorFaces() {
     // update contributors list in readme
-    await contributors.update(null, { exclude: 'actions-user' })
-    let readmeContent = fs.readFileSync('README.md')
-    readmeContent = readmeContent
-      .toString()
-      .replace(
-        '<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>\n',
-        '',
-      )
-    fs.writeFileSync('./README.md', readmeContent)
+    const owner = 'codeceptjs'
+    const repo = 'codeceptjs'
+    const token = process.env.GH_TOKEN
+
+    try {
+      const response = await axios.get(
+        `https://api.github.com/repos/${owner}/${repo}/contributors`,
+        {
+          headers: { Authorization: `token ${token}` },
+        },
+      );
+
+      // Filter out bot accounts
+      const filteredContributors = response.data.filter(
+        (contributor) => !contributor.login.includes('dependabot'),
+      ).filter(
+        (contributor) => !contributor.login.includes('actions-user'),
+      );
+
+      const contributors = filteredContributors.map((contributor) => {
+        return `
+<div style="text-align: center; margin: 10px;">
+  <a href="${contributor.html_url}" target="_blank">
+    <img src="${contributor.avatar_url}" width="100" height="100" style="border-radius: 50%;" alt="${contributor.login}">
+  </a>
+  <br>
+  <a href="${contributor.html_url}" target="_blank" style="text-decoration: none; color: inherit;">
+    <strong>${contributor.login}</strong>
+  </a>
+</div>
+      `;
+      });
+
+      // Wrap contributors in a grid container
+      const contributorsGrid = `
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+  ${contributors.join('\n')}
+</div>
+    `;
+
+      const readmePath = path.join(__dirname, 'README.md');
+      let content = fs.readFileSync(readmePath, 'utf-8');
+
+      // Replace or add the contributors section in the README
+      const contributorsSectionRegex = /(## Contributors\s*\n)([\s\S]*?)(\n##|$)/;
+      const match = content.match(contributorsSectionRegex);
+
+      if (match) {
+        const updatedContent = content.replace(
+          contributorsSectionRegex,
+          `${match[1]}\n${contributorsGrid}\n${match[3]}`,
+        );
+        fs.writeFileSync(readmePath, updatedContent, 'utf-8');
+      } else {
+        // If no contributors section exists, add one at the end
+        content += `\n${contributorsGrid}`;
+        fs.writeFileSync(readmePath, content, 'utf-8');
+      }
+
+      console.log('Contributors section updated successfully!');
+    } catch (error) {
+      console.error('Error fetching contributors:', error.message);
+    }
   },
 
   getCurrentBetaVersion() {

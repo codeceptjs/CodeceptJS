@@ -135,7 +135,6 @@
     "apollo-server-express": "3.13.0",
     "chai-as-promised": "7.1.2",
     "chai-subset": "1.6.0",
-    "contributor-faces": "1.1.0",
     "documentation": "14.0.3",
     "electron": "33.2.1",
     "eslint": "9.17.0",
