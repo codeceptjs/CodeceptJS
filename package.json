@@ -87,7 +87,7 @@
     "chalk": "4.1.2",
     "cheerio": "^1.0.0",
     "commander": "11.1.0",
-    "cross-spawn": "7.0.5",
+    "cross-spawn": "7.0.6",
     "css-to-xpath": "0.1.0",
     "csstoxpath": "1.6.0",
     "envinfo": "7.14.0",
