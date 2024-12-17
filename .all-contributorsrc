@@ -1,0 +1,14 @@
+{
+  "projectName": "CodeceptJS",
+  "projectOwner": "codeceptjs",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "eslint",
+  "contributors": [],
+  "contributorsPerLine": 7,
+  "linkToUsage": true
+}
+

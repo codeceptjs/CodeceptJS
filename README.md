@@ -1,4 +1,7 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 
@@ -293,38 +296,15 @@ When using Typescript, replace `module.exports` with `export` for autocompletion
 ## Contributors
 
 Thanks all to those who are and will have contributing to this awesome project!
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
-[//]: contributor-faces
-<a href="https://github.com/DavertMik"><img src="https://avatars.githubusercontent.com/u/220264?v=4" title="DavertMik" width="80" height="80"></a>
-<a href="https://github.com/kobenguyent"><img src="https://avatars.githubusercontent.com/u/7845001?v=4" title="kobenguyent" width="80" height="80"></a>
-<a href="https://github.com/Vorobeyko"><img src="https://avatars.githubusercontent.com/u/11293201?v=4" title="Vorobeyko" width="80" height="80"></a>
-<a href="https://github.com/reubenmiller"><img src="https://avatars.githubusercontent.com/u/3029781?v=4" title="reubenmiller" width="80" height="80"></a>
-<a href="https://github.com/Arhell"><img src="https://avatars.githubusercontent.com/u/26163841?v=4" title="Arhell" width="80" height="80"></a>
-<a href="https://github.com/APshenkin"><img src="https://avatars.githubusercontent.com/u/14344430?v=4" title="APshenkin" width="80" height="80"></a>
-<a href="https://github.com/fabioel"><img src="https://avatars.githubusercontent.com/u/9824235?v=4" title="fabioel" width="80" height="80"></a>
-<a href="https://github.com/pablopaul"><img src="https://avatars.githubusercontent.com/u/635526?v=4" title="pablopaul" width="80" height="80"></a>
-<a href="https://github.com/mirao"><img src="https://avatars.githubusercontent.com/u/12584138?v=4" title="mirao" width="80" height="80"></a>
-<a href="https://github.com/Georgegriff"><img src="https://avatars.githubusercontent.com/u/9056958?v=4" title="Georgegriff" width="80" height="80"></a>
-<a href="https://github.com/KMKoushik"><img src="https://avatars.githubusercontent.com/u/24666922?v=4" title="KMKoushik" width="80" height="80"></a>
-<a href="https://github.com/nikocanvacom"><img src="https://avatars.githubusercontent.com/u/83254493?v=4" title="nikocanvacom" width="80" height="80"></a>
-<a href="https://github.com/elukoyanov"><img src="https://avatars.githubusercontent.com/u/11647141?v=4" title="elukoyanov" width="80" height="80"></a>
-<a href="https://github.com/gkushang"><img src="https://avatars.githubusercontent.com/u/3663389?v=4" title="gkushang" width="80" height="80"></a>
-<a href="https://github.com/thomashohn"><img src="https://avatars.githubusercontent.com/u/3414869?v=4" title="thomashohn" width="80" height="80"></a>
-<a href="https://github.com/tsuemura"><img src="https://avatars.githubusercontent.com/u/17092259?v=4" title="tsuemura" width="80" height="80"></a>
-<a href="https://github.com/EgorBodnar"><img src="https://avatars.githubusercontent.com/u/63167966?v=4" title="EgorBodnar" width="80" height="80"></a>
-<a href="https://github.com/VikalpP"><img src="https://avatars.githubusercontent.com/u/11846339?v=4" title="VikalpP" width="80" height="80"></a>
-<a href="https://github.com/elaichenkov"><img src="https://avatars.githubusercontent.com/u/29764053?v=4" title="elaichenkov" width="80" height="80"></a>
-<a href="https://github.com/BorisOsipov"><img src="https://avatars.githubusercontent.com/u/6514276?v=4" title="BorisOsipov" width="80" height="80"></a>
-<a href="https://github.com/ngraf"><img src="https://avatars.githubusercontent.com/u/7094389?v=4" title="ngraf" width="80" height="80"></a>
-<a href="https://github.com/nitschSB"><img src="https://avatars.githubusercontent.com/u/39341455?v=4" title="nitschSB" width="80" height="80"></a>
-<a href="https://github.com/hubidu"><img src="https://avatars.githubusercontent.com/u/13134082?v=4" title="hubidu" width="80" height="80"></a>
-<a href="https://github.com/jploskonka"><img src="https://avatars.githubusercontent.com/u/669483?v=4" title="jploskonka" width="80" height="80"></a>
-<a href="https://github.com/maojunxyz"><img src="https://avatars.githubusercontent.com/u/28778042?v=4" title="maojunxyz" width="80" height="80"></a>
-<a href="https://github.com/abhimanyupandian"><img src="https://avatars.githubusercontent.com/u/36107381?v=4" title="abhimanyupandian" width="80" height="80"></a>
-<a href="https://github.com/martomo"><img src="https://avatars.githubusercontent.com/u/1850135?v=4" title="martomo" width="80" height="80"></a>
-<a href="https://github.com/hatufacci"><img src="https://avatars.githubusercontent.com/u/4963181?v=4" title="hatufacci" width="80" height="80"></a>
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
-[//]: contributor-faces
+
 
 ## License
 
