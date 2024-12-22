@@ -1,8 +1,6 @@
-let expect
-import('chai').then((chai) => {
-  expect = chai.expect
-})
 const path = require('path')
+const expect = require('chai').expect
+
 const { Workers, event, recorder } = require('../../lib/index')
 
 describe('Workers', function () {

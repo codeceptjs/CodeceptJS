@@ -1,10 +1,9 @@
 const Gherkin = require('@cucumber/gherkin')
 const Messages = require('@cucumber/messages')
 
-let expect
-import('chai').then((chai) => {
-  expect = chai.expect
-})
+const chai = require('chai')
+
+const expect = chai.expect
 
 const uuidFn = Messages.IdGenerator.uuid()
 const builder = new Gherkin.AstBuilder(uuidFn)
@@ -190,7 +189,8 @@ describe('BDD', () => {
     })
   })
 
-  it('should execute scenarios step-by-step ', (done) => {
+  it('should execute scenarios step-by-step ', async () => {
+    recorder.start()
     printed = []
     container.append({
       helpers: {
