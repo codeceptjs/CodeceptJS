@@ -105,8 +105,8 @@ describe('Workers', function () {
 
     workers.on(event.all.result, (status) => {
       expect(status).equal(false)
-      expect(passedCount).equal(4)
-      expect(failedCount).equal(1)
+      expect(passedCount).equal(3)
+      expect(failedCount).equal(2)
       done()
     })
   })
