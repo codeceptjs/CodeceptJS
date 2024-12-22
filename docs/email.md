@@ -47,24 +47,24 @@ To create a mailbox use `I.haveNewMailbox()` command:
 
 ```js
 // inside async/await function
-const mailbox = await I.haveNewMailbox();
+const mailbox = await I.haveNewMailbox()
 ```
 
 mailbox object contains:
 
-* `id` - which is used in next commands
-* `emailAddress` - randomly generated address of a created mailbox.
+- `id` - which is used in next commands
+- `emailAddress` - randomly generated address of a created mailbox.
 
 > See [MailSlurp's guide](https://www.mailslurp.com/guides/getting-started/#create-email-addresses) for details.
 
 Mailbox is opened on creation. If you need more than one mailbox and you want to switch between them use `openMailbox` method:
 
 ```js
-const mailbox1 = await I.haveNewMailbox();
-const mailbox2 = await I.haveNewMailbox();
+const mailbox1 = await I.haveNewMailbox()
+const mailbox2 = await I.haveNewMailbox()
 // mailbox2 is now default mailbox
 // switch back to mailbox1
-I.openMailbox(mailbox1);
+I.openMailbox(mailbox1)
 ```
 
 ## Receiving An Email
@@ -78,54 +78,55 @@ Use `waitForLatestEmail` function to return the first email from a mailbox:
 
 ```js
 // to wait for default time (10 secs by default)
-I.waitForLatestEmail();
+I.waitForLatestEmail()
 
 // or specify number of time to wait
-I.waitForLatestEmail(30);
+I.waitForLatestEmail(30)
 ```
 
 To specify the exact email to match use `waitForEmailMatching` function:
 
 ```js
 // wait for an email with partial match in subject
-I.waitForEmailMatching({ subject: 'Restore password' });
+I.waitForEmailMatching({ subject: 'Restore password' })
 
 // wait 30 seconds for email with exact subject
-I.waitForEmailMatching({ subject: '=Forgot password' }, 30);
+I.waitForEmailMatching({ subject: '=Forgot password' }, 30)
 
 // wait a last email from any address @mysite.com
 I.waitForEmailMatching({
- from: '@mysite.com', // find anything from mysite
- subject: 'Restore password', // with Restore password in subject
-});
+  from: '@mysite.com', // find anything from mysite
+  subject: 'Restore password', // with Restore password in subject
+})
 ```
 
 ## Opening An Email
 
-All wait* functions return a matched email as a result. So you can use it in a test:
+All wait\* functions return a matched email as a result. So you can use it in a test:
 
 ```js
-const email = await I.waitForLatestEmail();
+const email = await I.waitForLatestEmail()
 ```
+
 > Please note, that we use `await` to assign email. This should be declared inside async function
 
 An `email` object contains the following fields:
 
-* `subject`
-* `for`
-* `to`
-* `body`
+- `subject`
+- `for`
+- `to`
+- `body`
 
 So you can analyze them inside a test. For instance, you can extract an URL from email body and open it.
 This is how we can emulate "click on this link" behavior in email:
 
 ```js
 // clicking a link in email
-const email = await I.waitForLatestEmail();
+const email = await I.waitForLatestEmail()
 // extract a link by RegExp
-const url = email.body.match(/http(s):\/\/(.*?)\s/)[0];
+const url = email.body.match(/http(s):\/\/(.*?)\s/)[0]
 // open URL
-I.amOnPage(url);
+I.amOnPage(url)
 ```
 
 ## Assertions
@@ -133,30 +134,30 @@ I.amOnPage(url);
 Assertions are performed on the currently opened email. Email is opened on `waitFor` email call, however, you can open an exact email by using `openEmail` function.
 
 ```js
-const email1 = await I.waitForLatestEmail();
+const email1 = await I.waitForLatestEmail()
 // test proceeds...
-const email2 = await I.waitForLatestEmail();
-I.openEmail(email1); // open previous email
+const email2 = await I.waitForLatestEmail()
+I.openEmail(email1) // open previous email
 ```
 
 After opening an email assertion methods are available.
 
-* `seeInEmailSubject`
-* `seeEmailIsFrom`
-* `seeInEmailBody`
-* `dontSeeInEmailBody`
-* `seeNumberOfEmailAttachments`
-* `seeEmailAttachment`
+- `seeInEmailSubject`
+- `seeEmailIsFrom`
+- `seeInEmailBody`
+- `dontSeeInEmailBody`
+- `seeNumberOfEmailAttachments`
+- `seeEmailAttachment`
 
 And here is an example of their usage:
 
 ```js
 I.waitForLatestEmail()
-I.seeEmailIsFrom('@mysite.com');
-I.seeInEmailSubject('Awesome Proposal!');
-I.seeInEmailBody('To unsubscribe click here');
-I.seeNumberOfEmailAttachments(2);
-I.seeEmailAttachment('Attachment_1.pdf')
+I.seeEmailIsFrom('@mysite.com')
+I.seeInEmailSubject('Awesome Proposal!')
+I.seeInEmailBody('To unsubscribe click here')
+I.seeNumberOfEmailAttachments(2)
+I.seeEmailAttachment('Attachment_1.pdf') // Regular expression. Escape special characters like '(' or ')' in filename.
 I.seeEmailAttachment('Attachment_2.pdf')
 ```
 
@@ -167,7 +168,7 @@ I.seeEmailAttachment('Attachment_2.pdf')
 Use `grabAllEmailsFromMailbox` to get all emails from a current mailbox:
 
 ```js
-const emails = await I.grabAllEmailsFromMailbox();
+const emails = await I.grabAllEmailsFromMailbox()
 ```
 
 ## Sending an Email
@@ -178,6 +179,6 @@ You can also send an email from an active mailbox:
 I.sendEmail({
   to: ['user@site.com'],
   subject: 'Hello',
-  body: 'World'
-});
+  body: 'World',
+})
 ```

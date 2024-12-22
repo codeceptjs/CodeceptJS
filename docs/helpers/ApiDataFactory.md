@@ -28,9 +28,9 @@ Most of web application have API, and it can be used to create and delete test r
 By combining REST API with Factories you can easily create records for tests:
 
 ```js
-I.have('user', { login: 'davert', email: 'davert@mail.com' });
-let id = await I.have('post', { title: 'My first post'});
-I.haveMultiple('comment', 3, {post_id: id});
+I.have('user', { login: 'davert', email: 'davert@mail.com' })
+let id = await I.have('post', { title: 'My first post' })
+I.haveMultiple('comment', 3, { post_id: id })
 ```
 
 To make this work you need
@@ -53,14 +53,14 @@ See the example for Posts factories:
 ```js
 // tests/factories/posts.js
 
-const { Factory } = require('rosie');
-const { faker } = require('@faker-js/faker');
+const { Factory } = require('rosie')
+const { faker } = require('@faker-js/faker')
 
 module.exports = new Factory()
-   // no need to set id, it will be set by REST API
-   .attr('author', () => faker.name.findName())
-   .attr('title', () => faker.lorem.sentence())
-   .attr('body', () => faker.lorem.paragraph());
+  // no need to set id, it will be set by REST API
+  .attr('author', () => faker.person.findName())
+  .attr('title', () => faker.lorem.sentence())
+  .attr('body', () => faker.lorem.paragraph())
 ```
 
 For more options see [rosie documentation][1].
@@ -71,12 +71,12 @@ Then configure ApiDataHelper to match factories and REST API:
 
 ApiDataFactory has following config options:
 
--   `endpoint`: base URL for the API to send requests to.
--   `cleanup` (default: true): should inserted records be deleted up after tests
--   `factories`: list of defined factories
--   `returnId` (default: false): return id instead of a complete response when creating items.
--   `headers`: list of headers
--   `REST`: configuration for REST requests
+- `endpoint`: base URL for the API to send requests to.
+- `cleanup` (default: true): should inserted records be deleted up after tests
+- `factories`: list of defined factories
+- `returnId` (default: false): return id instead of a complete response when creating items.
+- `headers`: list of headers
+- `REST`: configuration for REST requests
 
 See the example:
 
@@ -121,35 +121,36 @@ For instance, to set timeout you should add:
 
 By default to create a record ApiDataFactory will use endpoint and plural factory name:
 
--   create: `POST {endpoint}/{resource} data`
--   delete: `DELETE {endpoint}/{resource}/id`
+- create: `POST {endpoint}/{resource} data`
+- delete: `DELETE {endpoint}/{resource}/id`
 
 Example (`endpoint`: `http://app.com/api`):
 
--   create: POST request to `http://app.com/api/users`
--   delete: DELETE request to `http://app.com/api/users/1`
+- create: POST request to `http://app.com/api/users`
+- delete: DELETE request to `http://app.com/api/users/1`
 
 This behavior can be configured with following options:
 
--   `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
--   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
--   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
+- `uri`: set different resource uri. Example: `uri: account` => `http://app.com/api/account`.
+- `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
+- `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
 
 Requests can also be overridden with a function which returns [axois request config][4].
 
 ```js
 create: (data) => ({ method: 'post', url: '/posts', data }),
 delete: (id) => ({ method: 'delete', url: '/posts', data: { id } })
+
 ```
 
 Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
 
 ```js
- onRequest: async (request) => {
-    // using global codeceptjs instance
-    let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session');
-    request.headers = { Cookie: `session=${cookie.value}` };
-  }
+onRequest: async (request) => {
+  // using global codeceptjs instance
+  let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session')
+  request.headers = { Cookie: `session=${cookie.value}` }
+}
 ```
 
 ### Responses
@@ -157,7 +158,7 @@ Requests can be updated on the fly by using `onRequest` function. For instance, 
 By default `I.have()` returns a promise with a created data:
 
 ```js
-let client = await I.have('client');
+let client = await I.have('client')
 ```
 
 Ids of created records are collected and used in the end of a test for the cleanup.
@@ -165,11 +166,11 @@ If you need to receive `id` instead of full response enable `returnId` in a help
 
 ```js
 // returnId: false
-let clientId = await I.have('client');
+let clientId = await I.have('client')
 // clientId == 1
 
 // returnId: true
-let clientId = await I.have('client');
+let clientId = await I.have('client')
 // client == { name: 'John', email: 'john@snow.com' }
 ```
 
@@ -189,27 +190,27 @@ By default `id` property of response is taken. This behavior can be changed by s
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
-### _requestCreate
+### \_requestCreate
 
 Executes request to create a record in API.
 Can be replaced from a in custom helper.
 
 #### Parameters
 
--   `factory` **any** 
--   `data` **any** 
+- `factory` **any**&#x20;
+- `data` **any**&#x20;
 
-### _requestDelete
+### \_requestDelete
 
 Executes request to delete a record in API
 Can be replaced from a custom helper.
 
 #### Parameters
 
--   `factory` **any** 
--   `id` **any** 
+- `factory` **any**&#x20;
+- `id` **any**&#x20;
 
 ### have
 
@@ -217,21 +218,21 @@ Generates a new record using factory and saves API request to store it.
 
 ```js
 // create a user
-I.have('user');
+I.have('user')
 // create user with defined email
 // and receive it when inside async function
-const user = await I.have('user', { email: 'user@user.com'});
+const user = await I.have('user', { email: 'user@user.com' })
 // create a user with options that will not be included in the final request
-I.have('user', { }, { age: 33, height: 55 })
+I.have('user', {}, { age: 33, height: 55 })
 ```
 
 #### Parameters
 
--   `factory` **any** factory to use
--   `params` **any?** predefined parameters
--   `options` **any?** options for programmatically generate the attributes
+- `factory` **any** factory to use
+- `params` **any?** predefined parameters
+- `options` **any?** options for programmatically generate the attributes
 
-Returns **[Promise][5]&lt;any>** 
+Returns **[Promise][5]<any>**&#x20;
 
 ### haveMultiple
 
@@ -239,28 +240,24 @@ Generates bunch of records and saves multiple API requests to store them.
 
 ```js
 // create 3 posts
-I.haveMultiple('post', 3);
+I.haveMultiple('post', 3)
 
 // create 3 posts by one author
-I.haveMultiple('post', 3, { author: 'davert' });
+I.haveMultiple('post', 3, { author: 'davert' })
 
 // create 3 posts by one author with options
-I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
+I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' })
 ```
 
 #### Parameters
 
--   `factory` **any** 
--   `times` **any** 
--   `params` **any?** 
--   `options` **any?** 
+- `factory` **any**&#x20;
+- `times` **any**&#x20;
+- `params` **any?**&#x20;
+- `options` **any?**&#x20;
 
 [1]: https://github.com/rosiejs/rosie
-
 [2]: https://www.npmjs.com/package/faker
-
 [3]: http://codecept.io/helpers/REST/
-
 [4]: https://github.com/axios/axios#request-config
-
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise

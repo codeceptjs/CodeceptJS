@@ -9,76 +9,75 @@
 declare namespace CodeceptJS {
   type WithTranslation<T> = T &
     // @ts-ignore
-    import("./utils").Translate<T, Translation.Actions>;
+    import('./utils').Translate<T, Translation.Actions>
 
   type Cookie = {
-    name: string;
-    value: string | boolean;
-    domain?: string,
-    path?: string,
-  };
+    name: string
+    value: string | boolean
+    domain?: string
+    path?: string
+  }
 
   type RetryConfig = {
     /** Filter tests by string or regexp pattern */
-    grep?: string | RegExp;
+    grep?: string | RegExp
     /** Number of times to repeat scenarios of a Feature */
-    Feature?: number;
+    Feature?: number
     /** Number of times to repeat scenarios */
-    Scenario?: number;
+    Scenario?: number
     /** Number of times to repeat Before hook */
-    Before?: number;
+    Before?: number
     /** Number of times to repeat After hook */
-    After?: number;
+    After?: number
     /** Number of times to repeat BeforeSuite hook */
-    BeforeSuite?: number;
+    BeforeSuite?: number
     /** Number of times to repeat AfterSuite hook */
-    AfterSuite?: number;
-  };
+    AfterSuite?: number
+  }
 
   type TimeoutConfig = {
     /** Filter tests by string or regexp pattern */
-    grep: string | RegExp;
+    grep: string | RegExp
     /** Set timeout for a scenarios of a Feature */
-    Feature: number;
+    Feature: number
     /** Set timeout for scenarios */
-    Scenario: number;
-  };
+    Scenario: number
+  }
 
   type AiPrompt = {
-    role: string;
-    content: string;
+    role: string
+    content: string
   }
 
   type AiConfig = {
     /** request function to send prompts to AI provider */
-    request: (messages: any) => Promise<string>,
+    request: (messages: any) => Promise<string>
 
     /** custom prompts */
     prompts?: {
       /** Returns prompt to write CodeceptJS steps inside pause mode  */
-      writeStep?: (html: string, input: string) => Array<AiPrompt>;
+      writeStep?: (html: string, input: string) => Array<AiPrompt>
       /** Returns prompt to heal step when test fails on CI if healing is on  */
-      healStep?: (html: string, object) => Array<AiPrompt>;
+      healStep?: (html: string, object) => Array<AiPrompt>
       /** Returns prompt to generate page object inside pause mode  */
-      generatePageObject?: (html: string, extraPrompt?: string, rootLocator?: string) => Array<AiPrompt>;
-    },
+      generatePageObject?: (html: string, extraPrompt?: string, rootLocator?: string) => Array<AiPrompt>
+    }
 
     /** max tokens to use */
-    maxTokens?: number,
-
+    maxTokens?: number
 
     /** configuration for processing HTML for GPT */
     html?: {
       /** max size of HTML to be sent to OpenAI to avoid token limit */
-      maxLength?: number,
+      maxLength?: number
       /** should HTML be changed by removing non-interactive elements */
-      simplify?: boolean,
+      simplify?: boolean
       /** should HTML be minified before sending */
-      minify?: boolean,
-      interactiveElements?: Array<string>,
-      textElements?: Array<string>,
-      allowedAttrs?: Array<string>,
-      allowedRoles?: Array<string>,
+      minify?: boolean
+      interactiveElements?: Array<string>
+      textElements?: Array<string>
+      allowedAttrs?: Array<string>
+      allowedRoles?: Array<string>
     }
   }
 
@@ -97,7 +96,7 @@ declare namespace CodeceptJS {
      * tests: 'tests/**.test.ts'
      * ```
      */
-    tests: string;
+    tests: string
     /**
      * Where to store failure screenshots, artifacts, etc
      *
@@ -105,7 +104,7 @@ declare namespace CodeceptJS {
      * output: './output'
      * ```
      */
-    output: string;
+    output: string
     /**
      * empty output folder for next run
      *
@@ -113,7 +112,15 @@ declare namespace CodeceptJS {
      * emptyOutputFolder: true
      * ```
      */
-    emptyOutputFolder?: boolean;
+    emptyOutputFolder?: boolean
+    /**
+     * mask sensitive data in output logs
+     *
+     * ```js
+     * maskSensitiveData: true
+     * ```
+     */
+    maskSensitiveData?: boolean
     /**
      * Pattern to filter tests by name.
      * This option is useful if you plan to use multiple configs for different environments.
@@ -124,7 +131,7 @@ declare namespace CodeceptJS {
      * grep: '@firefox'
      * ```
      */
-    grep?: string;
+    grep?: string
     /**
      * Enable and configure helpers:
      *
@@ -150,7 +157,7 @@ declare namespace CodeceptJS {
        * I.see('Welcome');
        * ```
        */
-      Playwright?: PlaywrightConfig;
+      Playwright?: PlaywrightConfig
       /**
        * Run web tests controlling browsers via Puppeteer engine.
        *
@@ -163,7 +170,7 @@ declare namespace CodeceptJS {
        * I.see('Welcome');
        * ```
        */
-      Puppeteer?: PuppeteerConfig;
+      Puppeteer?: PuppeteerConfig
 
       /**
        * Run web tests controlling browsers via WebDriver engine.
@@ -177,7 +184,7 @@ declare namespace CodeceptJS {
        *
        * https://codecept.io/helpers/webdriver
        */
-      WebDriver?: WebDriverConfig;
+      WebDriver?: WebDriverConfig
       /**
        * Execute REST API requests for API testing or to assist web testing.
        *
@@ -188,7 +195,7 @@ declare namespace CodeceptJS {
        * I.sendGetRequest('/');
        * ```
        */
-      REST?: RESTConfig;
+      REST?: RESTConfig
 
       /**
        * Use JSON assertions for API testing.
@@ -201,13 +208,13 @@ declare namespace CodeceptJS {
        * I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
        * ```
        */
-      JSONResponse?: any;
+      JSONResponse?: any
 
       /** Enable AI features for development purposes */
-      AI?: any;
+      AI?: any
 
-      [key: string]: any;
-    },
+      [key: string]: any
+    }
     /**
      * Enable CodeceptJS plugins.
      *
@@ -225,7 +232,7 @@ declare namespace CodeceptJS {
       }
      * ```
      */
-    plugins?: any;
+    plugins?: any
     /**
      * Include page objects to access them via dependency injection
      *
@@ -240,7 +247,7 @@ declare namespace CodeceptJS {
      * Scenario('test', { I, loginPage, User })
      * ```
      */
-    include?: any;
+    include?: any
     /**
      * Set default tests timeout in seconds.
      * Tests will be killed on no response after timeout.
@@ -261,7 +268,7 @@ declare namespace CodeceptJS {
      * ]
      * ```
      */
-    timeout?: number | Array<TimeoutConfig> | TimeoutConfig;
+    timeout?: number | Array<TimeoutConfig> | TimeoutConfig
 
     /**
      * Configure retry strategy for tests
@@ -296,11 +303,10 @@ declare namespace CodeceptJS {
      * ]
      * ```
      */
-    retry?: number | Array<RetryConfig> | RetryConfig;
-
+    retry?: number | Array<RetryConfig> | RetryConfig
 
     /** Disable registering global functions (Before, Scenario, etc). Not recommended */
-    noGlobals?: boolean;
+    noGlobals?: boolean
     /**
      * [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here.
      *
@@ -318,7 +324,7 @@ declare namespace CodeceptJS {
      * }
      * ```
      */
-    mocha?: any;
+    mocha?: any
     /**
      * [Execute code before](https://codecept.io/bootstrap/) tests are run.
      *
@@ -332,7 +338,7 @@ declare namespace CodeceptJS {
      * bootstrap: 'bootstrap.js',
      * ```
      */
-    bootstrap?: (() => Promise<void>) | boolean | string;
+    bootstrap?: (() => Promise<void>) | boolean | string
     /**
      * [Execute code after tests](https://codecept.io/bootstrap/) finished.
      *
@@ -346,22 +352,22 @@ declare namespace CodeceptJS {
      * teardown: 'teardown.js',
      * ```
      */
-    teardown?: (() => Promise<void>) | boolean | string;
+    teardown?: (() => Promise<void>) | boolean | string
     /**
      * [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
      *
      */
-    bootstrapAll?: (() => Promise<void>) | boolean | string;
+    bootstrapAll?: (() => Promise<void>) | boolean | string
     /**
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
      */
-    teardownAll?: (() => Promise<void>) | boolean | string;
+    teardownAll?: (() => Promise<void>) | boolean | string
 
     /** Enable [localized test commands](https://codecept.io/translation/) */
-    translation?: string;
+    translation?: string
 
     /** Additional vocabularies for [localication](https://codecept.io/translation/) */
-    vocabularies?: Array<string>;
+    vocabularies?: Array<string>
 
     /**
      * [Require additional JS modules](https://codecept.io/configuration/#require)
@@ -371,7 +377,7 @@ declare namespace CodeceptJS {
      * require: ["should"]
      * ```
      */
-    require?: Array<string>;
+    require?: Array<string>
 
     /**
      * Enable [BDD features](https://codecept.io/bdd/#configuration).
@@ -386,45 +392,45 @@ declare namespace CodeceptJS {
      */
     gherkin?: {
       /** load feature files by pattern. Multiple patterns can be specified as array */
-      features: string | Array<string>,
+      features: string | Array<string>
       /** load step definitions from JS files */
       steps: string | Array<string>
-    };
+    }
 
     /**
      * [AI](https://codecept.io/ai/) features configuration.
      */
-    ai?: AiConfig,
+    ai?: AiConfig
 
     /**
      * Enable full promise-based helper methods for [TypeScript](https://codecept.io/typescript/) project.
      * If true, all helper methods are typed as asynchronous;
      * Otherwise, it remains as it works in versions prior to 3.3.6
      */
-    fullPromiseBased?: boolean;
+    fullPromiseBased?: boolean
 
-    [key: string]: any;
-  };
+    [key: string]: any
+  }
 
   type MockRequest = {
-    method: 'GET'|'PUT'|'POST'|'PATCH'|'DELETE'|string;
-    path: string;
-    queryParams?: object;
+    method: 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE' | string
+    path: string
+    queryParams?: object
   }
 
   type MockResponse = {
-    status: number;
-    body?: object;
+    status: number
+    body?: object
   }
 
   type MockInteraction = {
-    request: MockRequest;
-    response: MockResponse;
+    request: MockRequest
+    response: MockResponse
   }
 
   interface PageScrollPosition {
-    x: number;
-    y: number;
+    x: number
+    y: number
   }
 
   // Could get extended by user generated typings
@@ -433,11 +439,11 @@ declare namespace CodeceptJS {
   interface IHook {}
   interface IScenario {}
   interface IFeature {
-    (title: string): FeatureConfig;
+    (title: string): FeatureConfig
   }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
-    I: CodeceptJS.I;
+    I: CodeceptJS.I
   }
   namespace Translation {
     interface Actions {}
@@ -445,13 +451,13 @@ declare namespace CodeceptJS {
 
   // Extending JSDoc generated typings
   interface Step {
-    isMetaStep(): this is MetaStep;
+    isMetaStep(): this is MetaStep
   }
 
   // Types who are not be defined by JSDoc
   type actor = <T extends { [action: string]: (...args: any[]) => void }>(
-    customSteps?: T & ThisType<WithTranslation<Methods & T>>
-  ) => WithTranslation<Methods & T>;
+    customSteps?: T & ThisType<WithTranslation<Methods & T>>,
+  ) => WithTranslation<Methods & T>
 
   type ILocator =
     | { id: string }
@@ -466,49 +472,42 @@ declare namespace CodeceptJS {
     | { vue: string }
     | { shadow: string[] }
     | { custom: string }
-    | { pw: string };
+    | { pw: string }
   interface CustomLocators {}
-  interface OtherLocators { props?: object }
-  type LocatorOrString =
-    | string
-    | ILocator
-    | Locator
-    | OtherLocators
-    | CustomLocators[keyof CustomLocators];
+  interface OtherLocators {
+    props?: object
+  }
+  type LocatorOrString = string | ILocator | Locator | OtherLocators | CustomLocators[keyof CustomLocators]
 
-  type StringOrSecret = string | CodeceptJS.Secret;
+  type StringOrSecret = string | CodeceptJS.Secret
 
   interface HookCallback {
-    (args: SupportObject): void | Promise<void>;
+    (args: SupportObject): void | Promise<void>
   }
   interface Scenario extends IScenario {
-    only: IScenario;
-    skip: IScenario;
-    todo: IScenario;
+    only: IScenario
+    skip: IScenario
+    todo: IScenario
   }
   interface Feature extends IFeature {
-    skip: IFeature;
+    skip: IFeature
   }
   interface IData {
-    Scenario: IScenario;
-    only: { Scenario: IScenario };
+    Scenario: IScenario
+    only: { Scenario: IScenario }
   }
 
   interface IScenario {
     // Scenario.todo can be called only with a title.
-    (title: string, callback?: HookCallback): ScenarioConfig;
-    (
-      title: string,
-      opts: { [key: string]: any },
-      callback: HookCallback
-    ): ScenarioConfig;
+    (title: string, callback?: HookCallback): ScenarioConfig
+    (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig
   }
   interface IHook {
-    (callback: HookCallback): void;
+    (callback: HookCallback): void
   }
 
   interface Globals {
-    codeceptjs: typeof codeceptjs;
+    codeceptjs: typeof codeceptjs
   }
 
   interface IParameterTypeDefinition<T> {
@@ -521,119 +520,117 @@ declare namespace CodeceptJS {
 }
 
 // Globals
-declare const codecept_dir: string;
-declare const output_dir: string;
-declare function tryTo(...fn): Promise<boolean>;
-declare function retryTo(...fn): Promise<null>;
+declare const codecept_dir: string
+declare const output_dir: string
+declare function tryTo(...fn): Promise<boolean>
+declare function retryTo(...fn): Promise<null>
 
-declare const actor: CodeceptJS.actor;
-declare const codecept_actor: CodeceptJS.actor;
-declare const Helper: typeof CodeceptJS.Helper;
-declare const codecept_helper: typeof CodeceptJS.Helper;
-declare const pause: typeof CodeceptJS.pause;
-declare const within: typeof CodeceptJS.within;
-declare const session: typeof CodeceptJS.session;
-declare const DataTable: typeof CodeceptJS.DataTable;
-declare const DataTableArgument: typeof CodeceptJS.DataTableArgument;
-declare const codeceptjs: typeof CodeceptJS.index;
-declare const locate: typeof CodeceptJS.Locator.build;
-declare function inject(): CodeceptJS.SupportObject;
-declare function inject<T extends keyof CodeceptJS.SupportObject>(
-  name: T
-): CodeceptJS.SupportObject[T];
-declare const secret: typeof CodeceptJS.Secret.secret;
+declare const actor: CodeceptJS.actor
+declare const codecept_actor: CodeceptJS.actor
+declare const Helper: typeof CodeceptJS.Helper
+declare const codecept_helper: typeof CodeceptJS.Helper
+declare const pause: typeof CodeceptJS.pause
+declare const within: typeof CodeceptJS.within
+declare const session: typeof CodeceptJS.session
+declare const DataTable: typeof CodeceptJS.DataTable
+declare const DataTableArgument: typeof CodeceptJS.DataTableArgument
+declare const codeceptjs: typeof CodeceptJS.index
+declare const locate: typeof CodeceptJS.Locator.build
+declare function inject(): CodeceptJS.SupportObject
+declare function inject<T extends keyof CodeceptJS.SupportObject>(name: T): CodeceptJS.SupportObject[T]
+declare const secret: typeof CodeceptJS.Secret.secret
 
 // BDD
-declare const Given: typeof CodeceptJS.addStep;
-declare const When: typeof CodeceptJS.addStep;
-declare const Then: typeof CodeceptJS.addStep;
+declare const Given: typeof CodeceptJS.addStep
+declare const When: typeof CodeceptJS.addStep
+declare const Then: typeof CodeceptJS.addStep
 
-declare const Feature: typeof CodeceptJS.Feature;
-declare const Scenario: CodeceptJS.Scenario;
-declare const xScenario: CodeceptJS.IScenario;
-declare const xFeature: CodeceptJS.IFeature;
-declare function Data(data: any): CodeceptJS.IData;
-declare function xData(data: any): CodeceptJS.IData;
-declare function defineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
+declare const Feature: typeof CodeceptJS.Feature
+declare const Scenario: CodeceptJS.Scenario
+declare const xScenario: CodeceptJS.IScenario
+declare const xFeature: CodeceptJS.IFeature
+declare function Data(data: any): CodeceptJS.IData
+declare function xData(data: any): CodeceptJS.IData
+declare function DefineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
 
 // Hooks
-declare const BeforeSuite: CodeceptJS.IHook;
-declare const AfterSuite: CodeceptJS.IHook;
-declare const Background: CodeceptJS.IHook;
-declare const Before: CodeceptJS.IHook;
-declare const After: CodeceptJS.IHook;
+declare const BeforeSuite: CodeceptJS.IHook
+declare const AfterSuite: CodeceptJS.IHook
+declare const Background: CodeceptJS.IHook
+declare const Before: CodeceptJS.IHook
+declare const After: CodeceptJS.IHook
 
 // Plugins
 declare const __: any
 
 interface Window {
-  resq: any;
+  resq: any
 }
 
 declare namespace NodeJS {
   interface Process {
-    profile: string;
+    profile: string
   }
 
   interface Global extends CodeceptJS.Globals {
-    codecept_dir: typeof codecept_dir;
-    output_dir: typeof output_dir;
+    codecept_dir: typeof codecept_dir
+    output_dir: typeof output_dir
 
-    actor: typeof actor;
-    codecept_actor: typeof codecept_actor;
-    Helper: typeof Helper;
-    codecept_helper: typeof codecept_helper;
-    pause: typeof pause;
-    within: typeof within;
-    session: typeof session;
-    DataTable: typeof DataTable;
-    DataTableArgument: typeof DataTableArgument;
-    locate: typeof locate;
-    inject: typeof inject;
-    secret: typeof secret;
+    actor: typeof actor
+    codecept_actor: typeof codecept_actor
+    Helper: typeof Helper
+    codecept_helper: typeof codecept_helper
+    pause: typeof pause
+    within: typeof within
+    session: typeof session
+    DataTable: typeof DataTable
+    DataTableArgument: typeof DataTableArgument
+    locate: typeof locate
+    inject: typeof inject
+    secret: typeof secret
     // plugins
-    tryTo: typeof tryTo;
-    retryTo: typeof retryTo;
+    tryTo: typeof tryTo
+    retryTo: typeof retryTo
 
     // BDD
-    Given: typeof Given;
-    When: typeof When;
-    Then: typeof Then;
-    DefineParameterType: typeof defineParameterType
+    Given: typeof Given
+    When: typeof When
+    Then: typeof Then
+    DefineParameterType: typeof DefineParameterType
   }
 }
 
 declare namespace Mocha {
   interface MochaGlobals {
-    Feature: typeof Feature;
-    Scenario: typeof Scenario;
-    xFeature: typeof xFeature;
-    xScenario: typeof xScenario;
-    Data: typeof Data;
-    xData: typeof xData;
-    BeforeSuite: typeof BeforeSuite;
-    AfterSuite: typeof AfterSuite;
-    Background: typeof Background;
-    Before: typeof Before;
-    After: typeof After;
+    Feature: typeof Feature
+    Scenario: typeof Scenario
+    xFeature: typeof xFeature
+    xScenario: typeof xScenario
+    Data: typeof Data
+    xData: typeof xData
+    BeforeSuite: typeof BeforeSuite
+    AfterSuite: typeof AfterSuite
+    Background: typeof Background
+    Before: typeof Before
+    After: typeof After
   }
 
   interface Suite extends SuiteRunnable {
-    tags: any[];
-    comment: string;
-    feature: any;
+    tags: any[]
+    comment: string
+    feature: any
   }
 
   interface Test extends Runnable {
-    artifacts: [],
-    tags: any[];
+    artifacts: []
+    tags: any[]
   }
 }
 
-declare module "codeceptjs" {
-  export = codeceptjs;
+declare module 'codeceptjs' {
+  export = codeceptjs
 }
 
-declare module "@codeceptjs/helper" {
-  export = CodeceptJS.Helper;
+declare module '@codeceptjs/helper' {
+  export = CodeceptJS.Helper
 }

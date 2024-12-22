@@ -10,7 +10,6 @@ const uuidFn = Messages.IdGenerator.uuid()
 const builder = new Gherkin.AstBuilder(uuidFn)
 const matcher = new Gherkin.GherkinClassicTokenMatcher()
 
-const { log } = require('console')
 const Config = require('../../lib/config')
 const { Given, When, And, Then, matchStep, clearSteps, defineParameterType } = require('../../lib/interfaces/bdd')
 const run = require('../../lib/interfaces/gherkin')
@@ -107,7 +106,7 @@ describe('BDD', () => {
     let sum = 0
     Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)))
     When('I go to checkout process', () => (sum += 10))
-    const suite = run(text)
+    const suite = await run(text)
     suite.tests[0].fn(() => {})
     expect(suite.tests[0].tags).is.ok
     expect('@super').is.equal(suite.tests[0].tags[0])

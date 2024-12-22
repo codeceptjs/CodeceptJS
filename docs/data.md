@@ -5,7 +5,7 @@ title: Data Management
 
 # Data Management
 
-> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](https://codecept.io/advanced/#data-drivern-tests) section*
+> This chapter describes data management for external sources. If you are looking for using Data Sets in tests, see [Data Driven Tests](https://codecept.io/advanced/#data-drivern-tests) section\*
 
 Managing data for tests is always a tricky issue. How isolate data between tests, how to prepare data for different tests, etc.
 There are different approaches to solve it:
@@ -62,30 +62,30 @@ As well as a method for setting headers: `haveRequestHeaders`.
 Here is a usage example:
 
 ```js
-let postId = null;
+let postId = null
 
-Scenario('check post page', async ({ I })  => {
+Scenario('check post page', async ({ I }) => {
   // valid access token
-  I.haveRequestHeaders({auth: '1111111'});
+  I.haveRequestHeaders({ auth: '1111111' })
   // get the first user
-  let user = await I.sendGetRequest('/api/users/1');
+  let user = await I.sendGetRequest('/api/users/1')
   // create a post and save its Id
-  postId = await I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' });
+  postId = await I.sendPostRequest('/api/posts', { author: user.id, body: 'some text' })
   // open browser page of new post
-  I.amOnPage('/posts/2.html');
-  I.see('some text', 'p.body');
-});
+  I.amOnPage('/posts/2.html')
+  I.see('some text', 'p.body')
+})
 
 // cleanup created data
 After(({ I }) => {
-  I.sendDeleteRequest('/api/posts/'+postId);
-});
+  I.sendDeleteRequest('/api/posts/' + postId)
+})
 ```
 
 This can also be used to emulate Ajax requests:
 
 ```js
-I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' });
+I.sendPostRequest('/update-status', {}, { http_x_requested_with: 'xmlhttprequest' })
 ```
 
 > See complete reference on [REST](https://codecept.io/helpers/REST) helper
@@ -129,37 +129,31 @@ As well as a method for setting headers: `haveRequestHeaders`.
 Here is a usage example:
 
 ```js
-let postData = null;
+let postData = null
 
-Scenario('check post page', async ({ I })  => {
+Scenario('check post page', async ({ I }) => {
   // valid access token
-  I.haveRequestHeaders({auth: '1111111'});
+  I.haveRequestHeaders({ auth: '1111111' })
   // get the first user
-  let response = await I.sendQuery('{ user(id:1) { id }}');
-  let user = response.data;
+  let response = await I.sendQuery('{ user(id:1) { id }}')
+  let user = response.data
   // create a post and save its Id
-  response = await I.sendMutation(
-    'mutation createPost($input: PostInput!) { createPost(input: $input) { id }}',
-    {
-      input : {
-        author: user.data.id,
-        body: 'some text',
-      }
+  response = await I.sendMutation('mutation createPost($input: PostInput!) { createPost(input: $input) { id }}', {
+    input: {
+      author: user.data.id,
+      body: 'some text',
     },
-  );
-  postData = response.data.data['createPost'];
+  })
+  postData = response.data.data['createPost']
   // open browser page of new post
-  I.amOnPage(`/posts/${postData.slug}.html`);
-  I.see(postData.body, 'p.body');
-});
+  I.amOnPage(`/posts/${postData.slug}.html`)
+  I.see(postData.body, 'p.body')
+})
 
 // cleanup created data
 After(({ I }) => {
-  I.sendMutation(
-    'mutation deletePost($id: ID!) { deletePost(id: $id) }',
-    { id: postData.id},
-  );
-});
+  I.sendMutation('mutation deletePost($id: ID!) { deletePost(id: $id) }', { id: postData.id })
+})
 ```
 
 > See complete reference on [GraphQL](https://codecept.io/helpers/GraphQL) helper
@@ -167,6 +161,7 @@ After(({ I }) => {
 ## Data Generation with Factories
 
 This concept is extended by:
+
 - [ApiDataFactory](https://codecept.io/helpers/ApiDataFactory/) helper, and,
 - [GraphQLDataFactory](https://codecept.io/helpers/GraphQLDataFactory/) helper.
 
@@ -197,8 +192,8 @@ The way for setting data for a test is as simple as writing:
 
 ```js
 // inside async function
-let post = await I.have('post');
-I.haveMultiple('comment', 5, { postId: post.id});
+let post = await I.have('post')
+I.haveMultiple('comment', 5, { postId: post.id })
 ```
 
 After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
@@ -207,12 +202,10 @@ See the example providing a factory for User generation:
 
 ```js
 // factories/post.js
-var Factory = require('rosie').Factory;
-var faker = require('@faker-js/faker');
+var Factory = require('rosie').Factory
+var faker = require('@faker-js/faker')
 
-module.exports = new Factory()
-  .attr('name', () => faker.name.findName())
-  .attr('email', () => faker.internet.email());
+module.exports = new Factory().attr('name', () => faker.person.findName()).attr('email', () => faker.internet.email())
 ```
 
 Next is to configure helper to match factories with API:
@@ -249,11 +242,9 @@ This way for setting data for a test is as simple as writing:
 
 ```js
 // inside async function
-let post = await I.mutateData('createPost');
-I.mutateMultiple('createComment', 5, { postId: post.id});
+let post = await I.mutateData('createPost')
+I.mutateMultiple('createComment', 5, { postId: post.id })
 ```
-
-
 
 After completing the preparations under 'Data Generation with Factories', create a factory module which will export a factory.
 
@@ -263,16 +254,16 @@ See the example providing a factory for User generation:
 
 ```js
 // factories/post.js
-var Factory = require('rosie').Factory;
-var faker = require('@faker-js/faker');
+var Factory = require('rosie').Factory
+var faker = require('@faker-js/faker')
 
 module.exports = new Factory((buildObj) => {
   return {
     input: { ...buildObj },
   }
 })
-  .attr('name', () => faker.name.findName())
-  .attr('email', () => faker.internet.email());
+  .attr('name', () => faker.person.findName())
+  .attr('email', () => faker.internet.email())
 ```
 
 Next is to configure helper to match factories with API:
@@ -326,10 +317,10 @@ Import `setSharedCookies` function and call it inside a config:
 
 ```js
 // in codecept.conf.js
-const { setSharedCookies } = require('@codeceptjs/configure');
+const { setSharedCookies } = require('@codeceptjs/configure')
 
 // share cookies between browser helpers and REST/GraphQL
-setSharedCookies();
+setSharedCookies()
 
 exports.config = {}
 ```

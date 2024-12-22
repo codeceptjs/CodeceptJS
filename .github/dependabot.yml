@@ -1,22 +1,17 @@
 version: 2
 updates:
   # github-actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-    target-branch: "3.x"
+      interval: 'weekly'
+    target-branch: '3.x'
   # npm
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-    target-branch: "3.x"
+      interval: 'weekly'
+    target-branch: '3.x'
     ignore:
-      - dependency-name: "escape-string-regexp"
-        versions: [">=5.0"]
-      - dependency-name: "apollo-server-express"
-        versions: [">=3.0"]
-      - dependency-name: "eslint"
-        versions: [ ">8.57.0" ]
-
+      - dependency-name: 'escape-string-regexp'
+        versions: ['>=5.0']

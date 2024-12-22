@@ -28,9 +28,9 @@ If a web application has GraphQL support, it can be used to create and delete te
 By combining GraphQL with Factories you can easily create records for tests:
 
 ```js
-I.mutateData('createUser', { name: 'davert', email: 'davert@mail.com' });
-let user = await I.mutateData('createUser', { name: 'davert'});
-I.mutateMultiple('createPost', 3, {post_id: user.id});
+I.mutateData('createUser', { name: 'davert', email: 'davert@mail.com' })
+let user = await I.mutateData('createUser', { name: 'davert' })
+I.mutateMultiple('createPost', 3, { post_id: user.id })
 ```
 
 To make this work you need
@@ -53,17 +53,17 @@ See the example for Users factories:
 ```js
 // tests/factories/users.js
 
-const { Factory } = require('rosie').Factory;
-const { faker } = require('@faker-js/faker');
+const { Factory } = require('rosie').Factory
+const { faker } = require('@faker-js/faker')
 
 // Used with a constructor function passed to Factory, so that the final build
 // object matches the necessary pattern to be sent as the variables object.
 module.exports = new Factory((buildObj) => ({
-   input: { ...buildObj },
+  input: { ...buildObj },
 }))
-   // 'attr'-id can be left out depending on the GraphQl resolvers
-   .attr('name', () => faker.name.findName())
-   .attr('email', () => faker.interact.email())
+  // 'attr'-id can be left out depending on the GraphQl resolvers
+  .attr('name', () => faker.person.findName())
+  .attr('email', () => faker.interact.email())
 ```
 
 For more options see [rosie documentation][1].
@@ -74,11 +74,11 @@ Then configure GraphQLDataHelper to match factories and GraphQL schema:
 
 GraphQLDataFactory has following config options:
 
--   `endpoint`: URL for the GraphQL server.
--   `cleanup` (default: true): should inserted records be deleted up after tests
--   `factories`: list of defined factories
--   `headers`: list of headers
--   `GraphQL`: configuration for GraphQL requests.
+- `endpoint`: URL for the GraphQL server.
+- `cleanup` (default: true): should inserted records be deleted up after tests
+- `factories`: list of defined factories
+- `headers`: list of headers
+- `GraphQL`: configuration for GraphQL requests.
 
 See the example:
 
@@ -121,27 +121,27 @@ For instance, to set timeout you should add:
 
 Factory contains operations -
 
--   `operation`: The operation/mutation that needs to be performed for creating a record in the backend.
+- `operation`: The operation/mutation that needs to be performed for creating a record in the backend.
 
 Each operation must have the following:
 
--   `query`: The mutation(query) string. It is expected to use variables to send data with the query.
--   `factory`: The path to factory file. The object built by the factory in this file will be passed
-     as the 'variables' object to go along with the mutation.
--   `revert`: A function called with the data returned when an item is created. The object returned by
-     this function is will be used to later delete the items created. So, make sure RELEVANT DATA IS RETURNED
-     when a record is created by a mutation.
+- `query`: The mutation(query) string. It is expected to use variables to send data with the query.
+- `factory`: The path to factory file. The object built by the factory in this file will be passed
+  as the 'variables' object to go along with the mutation.
+- `revert`: A function called with the data returned when an item is created. The object returned by
+  this function is will be used to later delete the items created. So, make sure RELEVANT DATA IS RETURNED
+  when a record is created by a mutation.
 
 ### Requests
 
 Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
 
 ```js
- onRequest: async (request) => {
-    // using global codeceptjs instance
-    let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session');
-    request.headers = { Cookie: `session=${cookie.value}` };
-  }
+onRequest: async (request) => {
+  // using global codeceptjs instance
+  let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session')
+  request.headers = { Cookie: `session=${cookie.value}` }
+}
 ```
 
 ### Responses
@@ -149,7 +149,7 @@ Requests can be updated on the fly by using `onRequest` function. For instance, 
 By default `I.mutateData()` returns a promise with created data as specified in operation query string:
 
 ```js
-let client = await I.mutateData('createClient');
+let client = await I.mutateData('createClient')
 ```
 
 Data of created records are collected and used in the end of a test for the cleanup.
@@ -158,27 +158,27 @@ Data of created records are collected and used in the end of a test for the clea
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
-### _requestCreate
+### \_requestCreate
 
 Executes request to create a record to the GraphQL endpoint.
 Can be replaced from a custom helper.
 
 #### Parameters
 
--   `operation` **[string][4]** 
--   `variables` **any** to be sent along with the query
+- `operation` **[string][4]**&#x20;
+- `variables` **any** to be sent along with the query
 
-### _requestDelete
+### \_requestDelete
 
 Executes request to delete a record to the GraphQL endpoint.
 Can be replaced from a custom helper.
 
 #### Parameters
 
--   `operation` **[string][4]** 
--   `data` **any** of the record to be deleted.
+- `operation` **[string][4]**&#x20;
+- `data` **any** of the record to be deleted.
 
 ### mutateData
 
@@ -186,16 +186,16 @@ Generates a new record using factory, sends a GraphQL mutation to store it.
 
 ```js
 // create a user
-I.mutateData('createUser');
+I.mutateData('createUser')
 // create user with defined email
 // and receive it when inside async function
-const user = await I.mutateData('createUser', { email: 'user@user.com'});
+const user = await I.mutateData('createUser', { email: 'user@user.com' })
 ```
 
 #### Parameters
 
--   `operation` **[string][4]** to be performed
--   `params` **any** predefined parameters
+- `operation` **[string][4]** to be performed
+- `params` **any** predefined parameters
 
 ### mutateMultiple
 
@@ -203,24 +203,20 @@ Generates bunch of records and sends multiple GraphQL mutation requests to store
 
 ```js
 // create 3 users
-I.mutateMultiple('createUser', 3);
+I.mutateMultiple('createUser', 3)
 
 // create 3 users of same age
-I.mutateMultiple('createUser', 3, { age: 25 });
+I.mutateMultiple('createUser', 3, { age: 25 })
 ```
 
 #### Parameters
 
--   `operation` **[string][4]** 
--   `times` **[number][5]** 
--   `params` **any** 
+- `operation` **[string][4]**&#x20;
+- `times` **[number][5]**&#x20;
+- `params` **any**&#x20;
 
 [1]: https://github.com/rosiejs/rosie
-
 [2]: https://www.npmjs.com/package/faker
-
 [3]: http://codecept.io/helpers/GraphQL/
-
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number

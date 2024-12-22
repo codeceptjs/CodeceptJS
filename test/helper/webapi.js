@@ -913,7 +913,6 @@ module.exports.tests = function () {
 
     it('should wait for cookie and throw error when cookie not found', async () => {
       if (isHelper('TestCafe')) return
-      if (process.env.DevTools) return
 
       await I.amOnPage('https://google.com')
       try {
@@ -925,7 +924,6 @@ module.exports.tests = function () {
 
     it('should wait for cookie', async () => {
       if (isHelper('TestCafe')) return
-      if (process.env.DevTools) return
 
       await I.amOnPage('/')
       await I.setCookie({
@@ -1501,7 +1499,7 @@ module.exports.tests = function () {
     })
 
     it('should check css property for several elements', async function () {
-      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox' || process.env.DevTools === 'true') this.skip()
+      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox') this.skip()
 
       try {
         await I.amOnPage('/')

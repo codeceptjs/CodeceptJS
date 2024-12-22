@@ -2,16 +2,19 @@
 const fs = require('fs')
 const path = require('path')
 const axios = require('axios')
-const documentation = require('documentation')
+
 const {
   stopOnFail,
   chdir,
   tasks: { git, copy, exec, replaceInFile, npmRun, npx, writeToFile },
   runok,
 } = require('runok')
-const contributors = require('contributor-faces')
 const { execSync } = require('node:child_process')
 const semver = require('semver')
+
+let documentation
+
+import('documentation').then((mod) => (documentation = mod))
 
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`
@@ -470,15 +473,67 @@ ${changelog}`
 
   async contributorFaces() {
     // update contributors list in readme
-    await contributors.update(null, { exclude: 'actions-user' })
-    let readmeContent = fs.readFileSync('README.md')
-    readmeContent = readmeContent
-      .toString()
-      .replace(
-        '<a href="https://github.com/apps/dependabot"><img src="https://avatars.githubusercontent.com/in/29110?v=4" title="dependabot[bot]" width="80" height="80"></a>\n',
-        '',
-      )
-    fs.writeFileSync('./README.md', readmeContent)
+    const owner = 'codeceptjs'
+    const repo = 'codeceptjs'
+    const token = process.env.GH_TOKEN
+
+    try {
+      const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
+        headers: { Authorization: `token ${token}` },
+      })
+
+      // Filter out bot accounts
+      const excludeUsers = ['dependabot[bot]', 'actions-user']
+
+      const filteredContributors = response.data.filter((contributor) => !excludeUsers.includes(contributor.login))
+
+      const contributors = filteredContributors.map((contributor) => {
+        return `
+<td align="center">
+  <a href="${contributor.html_url}">
+    <img src="${contributor.avatar_url}" width="100" height="100" alt="${contributor.login}"/><br />
+    <sub><b>${contributor.login}</b></sub>
+  </a>
+</td>`
+      })
+
+      // Chunk contributors into rows of 4
+      const rows = []
+      const chunkSize = 4
+      for (let i = 0; i < contributors.length; i += chunkSize) {
+        rows.push(`<tr>${contributors.slice(i, i + chunkSize).join('')}</tr>`)
+      }
+
+      // Combine rows into a table
+      const contributorsTable = `
+<table>
+  ${rows.join('\n')}
+</table>
+    `
+
+      const readmePath = path.join(__dirname, 'README.md')
+      let content = fs.readFileSync(readmePath, 'utf-8')
+
+      // Replace or add the contributors section in the README
+      const contributorsSectionRegex = /(## Contributors\s*\n)([\s\S]*?)(\n##|$)/
+      const match = content.match(contributorsSectionRegex)
+
+      if (match) {
+        const updatedContent = content.replace(
+          contributorsSectionRegex,
+          `${match[1]}\n${contributorsTable}\n${match[3]}`,
+        )
+        fs.writeFileSync(readmePath, updatedContent, 'utf-8')
+      } else {
+        // If no contributors section exists, add one at the end
+        content += `\n${contributorsTable}`
+        fs.writeFileSync(readmePath, content, 'utf-8')
+      }
+
+      console.log('Contributors section updated successfully!')
+    } catch (error) {
+      console.error('Error fetching contributors:', error.message)
+    }
   },
 
   getCurrentBetaVersion() {

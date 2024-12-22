@@ -1,6 +1,6 @@
 ---
 permalink: plugins
-sidebarDepth: 
+sidebarDepth:
 sidebar: auto
 title: Plugins
 ---
@@ -20,32 +20,32 @@ It puts a tiny delay for before and after action commands.
 
 Commands affected (by default):
 
--   `click`
--   `fillField`
--   `checkOption`
--   `pressKey`
--   `doubleClick`
--   `rightClick`
+- `click`
+- `fillField`
+- `checkOption`
+- `pressKey`
+- `doubleClick`
+- `rightClick`
 
 #### Configuration
 
 ```js
 plugins: {
-   autoDelay: {
-     enabled: true
-   }
+  autoDelay: {
+    enabled: true
+  }
 }
 ```
 
 Possible config options:
 
--   `methods`: list of affected commands. Can be overridden
--   `delayBefore`: put a delay before a command. 100ms by default
--   `delayAfter`: put a delay after a command. 200ms by default
+- `methods`: list of affected commands. Can be overridden
+- `delayBefore`: put a delay before a command. 100ms by default
+- `delayAfter`: put a delay after a command. 200ms by default
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## autoLogin
 
@@ -65,28 +65,28 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
-Feature('Login');
+Feature('Login')
 
 Before(({ login }) => {
-   login('user'); // login using user session
-});
+  login('user') // login using user session
+})
 
 // Alternatively log in for one scenario.
-Scenario('log me in', ( { I, login } ) => {
-   login('admin');
-   I.see('I am logged in');
-});
+Scenario('log me in', ({ I, login }) => {
+  login('admin')
+  I.see('I am logged in')
+})
 ```
 
 #### Configuration
 
--   `saveToFile` (default: false) - save cookies to file. Allows to reuse session between execution.
--   `inject` (default: `login`) - name of the login function to use
--   `users` - an array containing different session names and functions to:
-    -   `login` - sign in into the system
-    -   `check` - check that user is logged in
-    -   `fetch` - to get current cookies (by default `I.grabCookie()`)
-    -   `restore` - to set cookies (by default `I.amOnPage('/'); I.setCookie(cookie)`)
+- `saveToFile` (default: false) - save cookies to file. Allows to reuse session between execution.
+- `inject` (default: `login`) - name of the login function to use
+- `users` - an array containing different session names and functions to:
+  - `login` - sign in into the system
+  - `check` - check that user is logged in
+  - `fetch` - to get current cookies (by default `I.grabCookie()`)
+  - `restore` - to set cookies (by default `I.amOnPage('/'); I.setCookie(cookie)`)
 
 #### How It Works
 
@@ -237,7 +237,7 @@ autoLogin: {
 ```
 
 ```js
-Scenario('login', async ( {I, login} ) => {
+Scenario('login', async ({ I, login }) => {
   await login('admin') // you should use `await`
 })
 ```
@@ -271,14 +271,14 @@ autoLogin: {
 ```
 
 ```js
-Scenario('login', async ( {I, login} ) => {
+Scenario('login', async ({ I, login }) => {
   await login('admin') // you should use `await`
 })
 ```
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## commentStep
 
@@ -286,15 +286,15 @@ Add descriptive nested steps for your tests:
 
 ```js
 Scenario('project update test', async (I) => {
-  __`Given`;
-  const projectId = await I.have('project');
+  __`Given`
+  const projectId = await I.have('project')
 
-  __`When`;
-  projectPage.update(projectId, { title: 'new title' });
+  __`When`
+  projectPage.update(projectId, { title: 'new title' })
 
-  __`Then`;
-  projectPage.open(projectId);
-  I.see('new title', 'h1');
+  __`Then`
+  projectPage.open(projectId)
+  I.see('new title', 'h1')
 })
 ```
 
@@ -314,8 +314,8 @@ This plugin can be used
 
 ### Config
 
--   `enabled` - (default: false) enable a plugin
--   `registerGlobal` - (default: false) register `__` template literal function globally. You can override function global name by providing a name as a value.
+- `enabled` - (default: false) enable a plugin
+- `registerGlobal` - (default: false) register `__` template literal function globally. You can override function global name by providing a name as a value.
 
 ### Examples
 
@@ -356,23 +356,23 @@ For instance, you can prepare Given/When/Then functions to use them inside tests
 
 ```js
 // inside a test
-const step = codeceptjs.container.plugins('commentStep');
+const step = codeceptjs.container.plugins('commentStep')
 
-const Given = () => step`Given`;
-const When = () => step`When`;
-const Then = () => step`Then`;
+const Given = () => step`Given`
+const When = () => step`When`
+const Then = () => step`Then`
 ```
 
 Scenario('project update test', async (I) => {
-  Given();
-  const projectId = await I.have('project');
+Given();
+const projectId = await I.have('project');
 
-  When();
-  projectPage.update(projectId, { title: 'new title' });
+When();
+projectPage.update(projectId, { title: 'new title' });
 
-  Then();
-  projectPage.open(projectId);
-  I.see('new title', 'h1');
+Then();
+projectPage.open(projectId);
+I.see('new title', 'h1');
 });
 
 ```
@@ -381,7 +381,7 @@ Scenario('project update test', async (I) => {
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## coverage
 
@@ -402,15 +402,15 @@ plugins: {
 
 Possible config options, More could be found at [monocart-coverage-reports][1]
 
--   `debug`: debug info. By default, false.
--   `name`: coverage report name.
--   `outputDir`: path to coverage report.
--   `sourceFilter`: filter the source files.
--   `sourcePath`: option to resolve a custom path.
+- `debug`: debug info. By default, false.
+- `name`: coverage report name.
+- `outputDir`: path to coverage report.
+- `sourceFilter`: filter the source files.
+- `sourcePath`: option to resolve a custom path.
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## customLocator
 
@@ -430,11 +430,11 @@ This plugin will create a valid XPath locator for you.
 
 #### Configuration
 
--   `enabled` (default: `false`) should a locator be enabled
--   `prefix` (default: `$`) sets a prefix for a custom locator.
--   `attribute` (default: `data-test-id`) to set an attribute to be matched.
--   `strategy` (default: `xpath`) actual locator strategy to use in query (`css` or `xpath`).
--   `showActual` (default: false) show in the output actually produced XPath or CSS locator. By default shows custom locator value.
+- `enabled` (default: `false`) should a locator be enabled
+- `prefix` (default: `$`) sets a prefix for a custom locator.
+- `attribute` (default: `data-test-id`) to set an attribute to be matched.
+- `strategy` (default: `xpath`) actual locator strategy to use in query (`css` or `xpath`).
+- `showActual` (default: false) show in the output actually produced XPath or CSS locator. By default shows custom locator value.
 
 #### Examples:
 
@@ -453,8 +453,8 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('$user'); // matches => [data-test=user]
-I.click('$sign-up'); // matches => [data-test=sign-up]
+I.seeElement('$user') // matches => [data-test=user]
+I.click('$sign-up') // matches => [data-test=sign-up]
 ```
 
 Using `data-qa` attribute with `=` prefix:
@@ -473,8 +473,8 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('=user'); // matches => [data-qa=user]
-I.click('=sign-up'); // matches => [data-qa=sign-up]
+I.seeElement('=user') // matches => [data-qa=user]
+I.click('=sign-up') // matches => [data-qa=sign-up]
 ```
 
 Using `data-qa` OR `data-test` attribute with `=` prefix:
@@ -494,8 +494,8 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('=user'); // matches => //*[@data-qa=user or @data-test=user]
-I.click('=sign-up'); // matches => //*[data-qa=sign-up or @data-test=sign-up]
+I.seeElement('=user') // matches => //*[@data-qa=user or @data-test=user]
+I.click('=sign-up') // matches => //*[data-qa=sign-up or @data-test=sign-up]
 ```
 
 ```js
@@ -513,13 +513,13 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('=user'); // matches => [data-qa=user],[data-test=user]
-I.click('=sign-up'); // matches => [data-qa=sign-up],[data-test=sign-up]
+I.seeElement('=user') // matches => [data-qa=user],[data-test=user]
+I.click('=sign-up') // matches => [data-qa=sign-up],[data-test=sign-up]
 ```
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## debugErrors
 
@@ -539,11 +539,11 @@ plugins: {
 
 Additional config options:
 
--   `errorClasses` - list of classes to search for errors (default: `['error', 'warning', 'alert', 'danger']`)
+- `errorClasses` - list of classes to search for errors (default: `['error', 'warning', 'alert', 'danger']`)
 
 ### Parameters
 
--   `config`   (optional, default `{}`)
+- `config` (optional, default `{}`)
 
 ## eachElement
 
@@ -551,17 +551,17 @@ Provides `eachElement` global function to iterate over found elements to perform
 
 `eachElement` takes following args:
 
--   `purpose` - the goal of an action. A comment text that will be displayed in output.
--   `locator` - a CSS/XPath locator to match elements
--   `fn(element, index)` - **asynchronous** function which will be executed for each matched element.
+- `purpose` - the goal of an action. A comment text that will be displayed in output.
+- `locator` - a CSS/XPath locator to match elements
+- `fn(element, index)` - **asynchronous** function which will be executed for each matched element.
 
 Example of usage:
 
 ```js
 // this example works with Playwright and Puppeteer helper
 await eachElement('click all checkboxes', 'form input[type=checkbox]', async (el) => {
-  await el.click();
-});
+  await el.click()
+})
 ```
 
 Click odd elements:
@@ -569,18 +569,18 @@ Click odd elements:
 ```js
 // this example works with Playwright and Puppeteer helper
 await eachElement('click odd buttons', '.button-select', async (el, index) => {
-  if (index % 2) await el.click();
-});
+  if (index % 2) await el.click()
+})
 ```
 
 Check all elements for visibility:
 
 ```js
 // this example works with Playwright and Puppeteer helper
-const assert = require('assert');
+const assert = require('assert')
 await eachElement('check all items are visible', '.item', async (el) => {
-  assert(await el.isVisible());
-});
+  assert(await el.isVisible())
+})
 ```
 
 This method works with WebDriver, Playwright, Puppeteer, Appium helpers.
@@ -588,27 +588,27 @@ This method works with WebDriver, Playwright, Puppeteer, Appium helpers.
 Function parameter `el` represents a matched element.
 Depending on a helper API of `el` can be different. Refer to API of corresponding browser testing engine for a complete API list:
 
--   [Playwright ElementHandle][3]
--   [Puppeteer][4]
--   [webdriverio element][5]
+- [Playwright ElementHandle][3]
+- [Puppeteer][4]
+- [webdriverio element][5]
 
 #### Configuration
 
--   `registerGlobal` - to register `eachElement` function globally, true by default
+- `registerGlobal` - to register `eachElement` function globally, true by default
 
 If `registerGlobal` is false you can use eachElement from the plugin:
 
 ```js
-const eachElement = codeceptjs.container.plugins('eachElement');
+const eachElement = codeceptjs.container.plugins('eachElement')
 ```
 
 ### Parameters
 
--   `purpose` **[string][6]** 
--   `locator` **CodeceptJS.LocatorOrString** 
--   `fn` **[Function][7]** 
+- `purpose` **[string][6]**&#x20;
+- `locator` **CodeceptJS.LocatorOrString**&#x20;
+- `fn` **[Function][7]**&#x20;
 
-Returns **([Promise][8]&lt;any> | [undefined][9])** 
+Returns **([Promise][8]\<any> | [undefined][9])**&#x20;
 
 ## fakerTransform
 
@@ -620,15 +620,17 @@ To start please install `@faker-js/faker` package
 
     npm install -D @faker-js/faker
 
+<!---->
+
     yarn add -D @faker-js/faker
 
 Add this plugin to config file:
 
 ```js
 plugins: {
-   fakerTransform: {
-     enabled: true
-   }
+  fakerTransform: {
+    enabled: true
+  }
 }
 ```
 
@@ -646,7 +648,7 @@ Scenario Outline: ...
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## heal
 
@@ -664,11 +666,11 @@ plugins: {
 
 More config options are available:
 
--   `healLimit` - how many steps can be healed in a single test (default: 2)
+- `healLimit` - how many steps can be healed in a single test (default: 2)
 
 ### Parameters
 
--   `config`   (optional, default `{}`)
+- `config` (optional, default `{}`)
 
 ## pauseOnFail
 
@@ -696,9 +698,9 @@ Add this plugin to config file:
 
 ```js
 plugins: {
-    retryFailedStep: {
-       enabled: true
-    }
+  retryFailedStep: {
+    enabled: true
+  }
 }
 ```
 
@@ -708,22 +710,22 @@ Run tests with plugin enabled:
 
 #### Configuration:
 
--   `retries` - number of retries (by default 3),
--   `when` - function, when to perform a retry (accepts error as parameter)
--   `factor` - The exponential factor to use. Default is 1.5.
--   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
--   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
--   `randomize` - Randomizes the timeouts by multiplying with a factor from 1 to 2. Default is false.
--   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
-    -   `amOnPage`
-    -   `wait*`
-    -   `send*`
-    -   `execute*`
-    -   `run*`
-    -   `have*`
--   `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
-    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
-    To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
+- `retries` - number of retries (by default 3),
+- `when` - function, when to perform a retry (accepts error as parameter)
+- `factor` - The exponential factor to use. Default is 1.5.
+- `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
+- `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
+- `randomize` - Randomizes the timeouts by multiplying with a factor from 1 to 2. Default is false.
+- `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
+  - `amOnPage`
+  - `wait*`
+  - `send*`
+  - `execute*`
+  - `run*`
+  - `have*`
+- `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
+  You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+  To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 
 #### Example
 
@@ -747,13 +749,13 @@ Use scenario configuration to disable plugin for a test
 
 ```js
 Scenario('scenario tite', () => {
-   // test goes here
-}).config(test => test.disableRetryFailedStep = true)
+  // test goes here
+}).config((test) => (test.disableRetryFailedStep = true))
 ```
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## retryTo
 
@@ -774,21 +776,25 @@ Use it in your tests:
 ```js
 // retry these steps 5 times before failing
 await retryTo((tryNum) => {
-  I.switchTo('#editor frame');
-  I.click('Open');
+  I.switchTo('#editor frame')
+  I.click('Open')
   I.see('Opened')
-}, 5);
+}, 5)
 ```
 
 Set polling interval as 3rd argument (200ms by default):
 
 ```js
 // retry these steps 5 times before failing
-await retryTo((tryNum) => {
-  I.switchTo('#editor frame');
-  I.click('Open');
-  I.see('Opened')
-}, 5, 100);
+await retryTo(
+  (tryNum) => {
+    I.switchTo('#editor frame')
+    I.click('Open')
+    I.see('Opened')
+  },
+  5,
+  100,
+)
 ```
 
 Default polling interval can be changed in a config:
@@ -806,23 +812,23 @@ Disables retryFailedStep plugin for steps inside a block;
 
 Use this plugin if:
 
--   you need repeat a set of actions in flaky tests
--   iframe was not rendered and you need to retry switching to it
+- you need repeat a set of actions in flaky tests
+- iframe was not rendered and you need to retry switching to it
 
 #### Configuration
 
--   `pollInterval` - default interval between retries in ms. 200 by default.
--   `registerGlobal` - to register `retryTo` function globally, true by default
+- `pollInterval` - default interval between retries in ms. 200 by default.
+- `registerGlobal` - to register `retryTo` function globally, true by default
 
 If `registerGlobal` is false you can use retryTo from the plugin:
 
 ```js
-const retryTo = codeceptjs.container.plugins('retryTo');
+const retryTo = codeceptjs.container.plugins('retryTo')
 ```
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## screenshotOnFail
 
@@ -838,20 +844,20 @@ Configuration can either be taken from a corresponding helper (deprecated) or a 
 
 ```js
 plugins: {
-   screenshotOnFail: {
-     enabled: true
-   }
+  screenshotOnFail: {
+    enabled: true
+  }
 }
 ```
 
 Possible config options:
 
--   `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
--   `fullPageScreenshots`: make full page screenshots. Default: false.
+- `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
+- `fullPageScreenshots`: make full page screenshots. Default: false.
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## selenoid
 
@@ -968,7 +974,7 @@ When `allure` plugin is enabled a video is attached to report automatically.
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## stepByStepReport
 
@@ -994,17 +1000,17 @@ Run tests with plugin enabled:
 
 Possible config options:
 
--   `deleteSuccessful`: do not save screenshots for successfully executed tests. Default: true.
--   `animateSlides`: should animation for slides to be used. Default: true.
--   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
--   `fullPageScreenshots`: should full page screenshots be used. Default: false.
--   `output`: a directory where reports should be stored. Default: `output`.
--   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
--   \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
+- `deleteSuccessful`: do not save screenshots for successfully executed tests. Default: true.
+- `animateSlides`: should animation for slides to be used. Default: true.
+- `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
+- `fullPageScreenshots`: should full page screenshots be used. Default: false.
+- `output`: a directory where reports should be stored. Default: `output`.
+- `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
+- \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
 
 ### Parameters
 
--   `config` **any** 
+- `config` **any**&#x20;
 
 ## stepTimeout
 
@@ -1014,9 +1020,9 @@ Add this plugin to config file:
 
 ```js
 plugins: {
-    stepTimeout: {
-       enabled: true
-    }
+  stepTimeout: {
+    enabled: true
+  }
 }
 ```
 
@@ -1026,17 +1032,19 @@ Run tests with plugin enabled:
 
 #### Configuration:
 
--   `timeout` - global step timeout, default 150 seconds
--   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
--   `noTimeoutSteps` - an array of steps with no timeout. Default:
+- `timeout` - global step timeout, default 150 seconds
 
-    -   `amOnPage`
-    -   `wait*`
+- `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
 
-    you could set your own noTimeoutSteps which would replace the default one.
+- `noTimeoutSteps` - an array of steps with no timeout. Default:
 
--   `customTimeoutSteps` - an array of step actions with custom timeout. Use it to override or extend noTimeoutSteps.
-    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+  - `amOnPage`
+  - `wait*`
+
+  you could set your own noTimeoutSteps which would replace the default one.
+
+- `customTimeoutSteps` - an array of step actions with custom timeout. Use it to override or extend noTimeoutSteps.
+  You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
 
 #### Example
 
@@ -1059,7 +1067,7 @@ plugins: {
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## subtitles
 
@@ -1069,9 +1077,9 @@ Automatically captures steps as subtitle, and saves it as an artifact when a vid
 
 ```js
 plugins: {
- subtitles: {
-   enabled: true
- }
+  subtitles: {
+    enabled: true
+  }
 }
 ```
 
@@ -1092,7 +1100,7 @@ plugins: {
 Use it in your tests:
 
 ```js
-const result = await tryTo(() => I.see('Welcome'));
+const result = await tryTo(() => I.see('Welcome'))
 
 // if text "Welcome" is on page, result => true
 // if text "Welcome" is not on page, result => false
@@ -1102,15 +1110,16 @@ Disables retryFailedStep plugin for steps inside a block;
 
 Use this plugin if:
 
--   you need to perform multiple assertions inside a test
--   there is A/B testing on a website you test
--   there is "Accept Cookie" banner which may surprisingly appear on a page.
+- you need to perform multiple assertions inside a test
+- there is A/B testing on a website you test
+- there is "Accept Cookie" banner which may surprisingly appear on a page.
 
 #### Usage
 
 #### Multiple Conditional Assertions
 
 ````js
+
 Add assert requires first:
 ```js
 const assert = require('assert');
@@ -1121,25 +1130,28 @@ const result1 = await tryTo(() => I.see('Hello, user'));
 const result2 = await tryTo(() => I.seeElement('.welcome'));
 assert.ok(result1 && result2, 'Assertions were not succesful');
 
-    ##### Optional click
+````
 
-    ```js
-    I.amOnPage('/');
-    tryTo(() => I.click('Agree', '.cookies'));
+##### Optional click
+
+```js
+I.amOnPage('/');
+tryTo(() => I.click('Agree', '.cookies'));
+````
 
 #### Configuration
 
--   `registerGlobal` - to register `tryTo` function globally, true by default
+- `registerGlobal` - to register `tryTo` function globally, true by default
 
 If `registerGlobal` is false you can use tryTo from the plugin:
 
 ```js
-const tryTo = codeceptjs.container.plugins('tryTo');
+const tryTo = codeceptjs.container.plugins('tryTo')
 ```
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 ## wdio
 
@@ -1147,11 +1159,11 @@ Webdriverio services runner.
 
 This plugin allows to run webdriverio services like:
 
--   selenium-standalone
--   sauce
--   testingbot
--   browserstack
--   appium
+- selenium-standalone
+- sauce
+- testingbot
+- browserstack
+- appium
 
 A complete list of all available services can be found on [webdriverio website][19].
 
@@ -1165,7 +1177,7 @@ See examples below:
 
 #### Selenium Standalone Service
 
-Install `@wdio/selenium-standalone-service` package, as [described here][20].
+Install ` @wdio/selenium-standalone-service` package, as [described here][20].
 It is important to make sure it is compatible with current webdriverio version.
 
 Enable `wdio` plugin in plugins list and add `selenium-standalone` service:
@@ -1199,57 +1211,37 @@ plugins: {
 }
 ```
 
-* * *
+---
 
 In the same manner additional services from webdriverio can be installed, enabled, and configured.
 
 #### Configuration
 
--   `services` - list of enabled services
--   ... - additional configuration passed into services.
+- `services` - list of enabled services
+- ... - additional configuration passed into services.
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
 [1]: https://github.com/cenfun/monocart-coverage-reports?tab=readme-ov-file#default-options
-
 [2]: https://codecept.io/locators#custom-locators
-
 [3]: https://playwright.dev/docs/api/class-elementhandle
-
 [4]: https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle
-
 [5]: https://webdriver.io/docs/api
-
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
-
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
 [9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
-
 [10]: https://codecept.io/heal/
-
 [11]: /basics/#pause
-
 [12]: https://aerokube.com/selenoid/
-
 [13]: https://aerokube.com/cm/latest/
-
 [14]: https://hub.docker.com/u/selenoid
-
 [15]: https://aerokube.com/selenoid/latest/#_prepare_configuration
-
 [16]: https://aerokube.com/selenoid/latest/#_option_2_start_selenoid_container
-
 [17]: https://docs.docker.com/engine/reference/commandline/create/
-
 [18]: https://codecept.io/img/codeceptjs-slideshow.gif
-
 [19]: https://webdriver.io
-
 [20]: https://webdriver.io/docs/selenium-standalone-service.html
-
 [21]: https://webdriver.io/docs/sauce-service.html

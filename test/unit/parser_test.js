@@ -4,7 +4,6 @@ import('chai').then((chai) => {
 })
 const parser = require('../../lib/parser')
 
-/* eslint-disable no-unused-vars */
 class Obj {
   method1(locator, sec) {}
 

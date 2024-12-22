@@ -14,25 +14,21 @@ title: REST
 REST helper allows to send additional requests to the REST API during acceptance tests.
 [Axios][1] library is used to perform requests.
 
-
-
 ## Configuration
 
 Type: [object][4]
 
 ### Properties
 
--   `endpoint` **[string][3]?** API base URL
--   `prettyPrintJson` **[boolean][6]?** pretty print json for response/request on console logs.
--   `printCurl` **[boolean][6]?** print cURL request on console logs. False by default.
--   `timeout` **[number][5]?** timeout for requests in milliseconds. 10000ms by default.
--   `defaultHeaders` **[object][4]?** a list of default headers.
--   `httpAgent` **[object][4]?** create an agent with SSL certificate
--   `onRequest` **[function][7]?** an async function which can update request object.
--   `onResponse` **[function][7]?** an async function which can update response object.
--   `maxUploadFileSize` **[number][5]?** set the max content file size in MB when performing api calls.
-
-
+- `endpoint` **[string][3]?** API base URL
+- `prettyPrintJson` **[boolean][6]?** pretty print json for response/request on console logs.
+- `printCurl` **[boolean][6]?** print cURL request on console logs. False by default.
+- `timeout` **[number][5]?** timeout for requests in milliseconds. 10000ms by default.
+- `defaultHeaders` **[object][4]?** a list of default headers.
+- `httpAgent` **[object][4]?** create an agent with SSL certificate
+- `onRequest` **[function][7]?** an async function which can update request object.
+- `onResponse` **[function][7]?** an async function which can update response object.
+- `maxUploadFileSize` **[number][5]?** set the max content file size in MB when performing api calls.
 
 ## Example
 
@@ -50,7 +46,7 @@ Type: [object][4]
 }
 ```
 
- With httpAgent
+With httpAgent
 
 ```js
 {
@@ -91,34 +87,34 @@ Send REST requests by accessing `_executeRequest` method:
 
 ```js
 this.helpers['REST']._executeRequest({
-   url,
-   data,
-});
+  url,
+  data,
+})
 ```
 
 ## Methods
 
 ### Parameters
 
--   `config`  
+- `config` &#x20;
 
-### _executeRequest
+### \_executeRequest
 
 Executes axios request
 
 #### Parameters
 
--   `request` **any** 
+- `request` **any**&#x20;
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
-### _url
+### \_url
 
 Generates url based on format sent (takes endpoint + url if latter lacks 'http')
 
 #### Parameters
 
--   `url` **any** 
+- `url` **any**&#x20;
 
 ### amBearerAuthenticated
 
@@ -131,7 +127,7 @@ I.amBearerAuthenticated(secret('heregoestoken'))
 
 #### Parameters
 
--   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+- `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
 
 ### haveRequestHeaders
 
@@ -139,133 +135,127 @@ Sets request headers for all requests of this test
 
 #### Parameters
 
--   `headers` **[object][4]** headers list
+- `headers` **[object][4]** headers list
 
 ### sendDeleteRequest
 
 Sends DELETE request to API.
 
 ```js
-I.sendDeleteRequest('/api/users/1');
+I.sendDeleteRequest('/api/users/1')
 ```
 
 #### Parameters
 
--   `url` **any** 
--   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
+- `url` **any**&#x20;
+- `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
 ### sendDeleteRequestWithPayload
 
 Sends DELETE request to API with payload.
 
 ```js
-I.sendDeleteRequestWithPayload('/api/users/1', { author: 'john' });
+I.sendDeleteRequestWithPayload('/api/users/1', { author: 'john' })
 ```
 
 #### Parameters
 
--   `url` **any** 
--   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
+- `url` **any**&#x20;
+- `payload` **any** the payload to be sent. By default it is sent as an empty object
+- `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
 ### sendGetRequest
 
 Send GET request to REST API
 
 ```js
-I.sendGetRequest('/api/users.json');
+I.sendGetRequest('/api/users.json')
 ```
 
 #### Parameters
 
--   `url` **any** 
--   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
+- `url` **any**&#x20;
+- `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
 ### sendPatchRequest
 
 Sends PATCH request to API.
 
 ```js
-I.sendPatchRequest('/api/users.json', { "email": "user@user.com" });
+I.sendPatchRequest('/api/users.json', { email: 'user@user.com' })
 
 // To mask the payload in logs
-I.sendPatchRequest('/api/users.json', secret({ "email": "user@user.com" }));
+I.sendPatchRequest('/api/users.json', secret({ email: 'user@user.com' }))
 ```
 
 #### Parameters
 
--   `url` **[string][3]** 
--   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+- `url` **[string][3]**&#x20;
+- `payload` **any** the payload to be sent. By default it is sent as an empty object
+- `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
 ### sendPostRequest
 
 Sends POST request to API.
 
 ```js
-I.sendPostRequest('/api/users.json', { "email": "user@user.com" });
+I.sendPostRequest('/api/users.json', { email: 'user@user.com' })
 
 // To mask the payload in logs
-I.sendPostRequest('/api/users.json', secret({ "email": "user@user.com" }));
+I.sendPostRequest('/api/users.json', secret({ email: 'user@user.com' }))
 ```
 
 #### Parameters
 
--   `url` **any** 
--   `payload` **any** the payload to be sent. By default, it is sent as an empty object 
--   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
+- `url` **any**&#x20;
+- `payload` **any** the payload to be sent. By default, it is sent as an empty object
+- `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
 ### sendPutRequest
 
 Sends PUT request to API.
 
 ```js
-I.sendPutRequest('/api/users.json', { "email": "user@user.com" });
+I.sendPutRequest('/api/users.json', { email: 'user@user.com' })
 
 // To mask the payload in logs
-I.sendPutRequest('/api/users.json', secret({ "email": "user@user.com" }));
+I.sendPutRequest('/api/users.json', secret({ email: 'user@user.com' }))
 ```
 
 #### Parameters
 
--   `url` **[string][3]** 
--   `payload` **any** the payload to be sent. By default it is sent as an empty object 
--   `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object 
+- `url` **[string][3]**&#x20;
+- `payload` **any** the payload to be sent. By default it is sent as an empty object
+- `headers` **[object][4]** the headers object to be sent. By default it is sent as an empty object
 
-Returns **[Promise][2]&lt;any>** response
+Returns **[Promise][2]<any>** response
 
 ### setRequestTimeout
 
 Set timeout for the request
 
 ```js
-I.setRequestTimeout(10000); // In milliseconds
+I.setRequestTimeout(10000) // In milliseconds
 ```
 
 #### Parameters
 
--   `newTimeout` **[number][5]** timeout in milliseconds
+- `newTimeout` **[number][5]** timeout in milliseconds
 
 [1]: https://github.com/axios/axios
-
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

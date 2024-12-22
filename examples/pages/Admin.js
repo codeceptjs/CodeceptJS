@@ -1,11 +1,9 @@
-/* eslint-disable */
-let I;
+let I
 
 module.exports = {
-
   _init() {
-    I = actor();
+    I = actor()
   },
 
   // insert your locators and methods here
-};
+}

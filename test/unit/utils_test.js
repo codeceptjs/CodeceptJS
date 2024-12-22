@@ -14,7 +14,7 @@ describe('utils', () => {
     it('not exists', () => expect(utils.fileExists('not_utils.js')).to.be.false)
     it('not exists if file used as directory', () => expect(utils.fileExists(`${__filename}/not_utils.js`)).to.be.false)
   })
-  /* eslint-disable no-unused-vars */
+
   describe('#getParamNames', () => {
     it('fn#1', () => expect(utils.getParamNames((a, b) => {})).eql(['a', 'b']))
     it('fn#2', () => expect(utils.getParamNames((I, userPage) => {})).eql(['I', 'userPage']))
@@ -23,7 +23,6 @@ describe('utils', () => {
     it('should handle trailing comma', () =>
       expect(utils.getParamNames((I, trailing, comma) => {})).eql(['I', 'trailing', 'comma']))
   })
-  /* eslint-enable no-unused-vars */
 
   describe('#methodsOfObject', () => {
     it('should get methods', () => {

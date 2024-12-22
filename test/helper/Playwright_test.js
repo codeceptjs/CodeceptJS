@@ -35,7 +35,7 @@ describe('Playwright', function () {
 
     I = new Playwright({
       url: siteUrl,
-      windowSize: '500x700',
+      // windowSize: '500x700',
       browser: process.env.BROWSER || 'chromium',
       show: false,
       waitForTimeout: 5000,
@@ -202,6 +202,17 @@ describe('Playwright', function () {
       })
 
       await I.waitToHide('h9')
+    })
+
+    it('should wait for invisible combined with dontseeElement', async () => {
+      await I.amOnPage('https://codecept.io/')
+      await I.waitForVisible('.frameworks')
+      await I.waitForVisible('[alt="React"]')
+      await I.waitForVisible('.mountains')
+      await I._withinBegin('.mountains', async () => {
+        await I.dontSeeElement('[alt="React"]')
+        await I.waitForInvisible('[alt="React"]', 2)
+      })
     })
   })
 

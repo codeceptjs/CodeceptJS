@@ -13,15 +13,15 @@ title: JSONResponse
 
 This helper allows performing assertions on JSON responses paired with following helpers:
 
--   REST
--   GraphQL
--   Playwright
+- REST
+- GraphQL
+- Playwright
 
 It can check status codes, response data, response structure.
 
 ## Configuration
 
--   `requestHelper` - a helper which will perform requests. `REST` by default, also `Playwright` or `GraphQL` can be used. Custom helpers must have `onResponse` hook in their config, which will be executed when request is performed.
+- `requestHelper` - a helper which will perform requests. `REST` by default, also `Playwright` or `GraphQL` can be used. Custom helpers must have `onResponse` hook in their config, which will be executed when request is performed.
 
 ### Examples
 
@@ -61,26 +61,26 @@ If you plan to add custom assertions it is recommended to create a helper that w
 
 ```js
 // inside custom helper
-const response = this.helpers.JSONResponse.response;
+const response = this.helpers.JSONResponse.response
 ```
 
 ## Methods
 
 ### Parameters
 
--   `config`   
+- `config`
 
 ### dontSeeResponseCodeIs
 
 Checks that response code is not equal to the provided one
 
 ```js
-I.dontSeeResponseCodeIs(500);
+I.dontSeeResponseCodeIs(500)
 ```
 
 #### Parameters
 
--   `code` **[number][1]** 
+- `code` **[number][1]**&#x20;
 
 ### dontSeeResponseContainsJson
 
@@ -89,7 +89,7 @@ Checks for deep inclusion of a provided json in a response data.
 ```js
 // response.data == { data: { user: 1 } }
 
-I.dontSeeResponseContainsJson({ user: 2 });
+I.dontSeeResponseContainsJson({ user: 2 })
 ```
 
 If an array is received, checks that no element of array contains json:
@@ -97,24 +97,24 @@ If an array is received, checks that no element of array contains json:
 ```js
 // response.data == [{ user: 1 }, { user: 3 }]
 
-I.dontSeeResponseContainsJson({ user: 2 });
+I.dontSeeResponseContainsJson({ user: 2 })
 ```
 
 #### Parameters
 
--   `json` **[object][2]**  
+- `json` **[object][2]**
 
 ### seeResponseCodeIs
 
 Checks that response code is equal to the provided one
 
 ```js
-I.seeResponseCodeIs(200);
+I.seeResponseCodeIs(200)
 ```
 
 #### Parameters
 
--   `code` **[number][1]** 
+- `code` **[number][1]**&#x20;
 
 ### seeResponseCodeIsClientError
 
@@ -134,7 +134,7 @@ Checks that the response code is 2xx
 Use it instead of seeResponseCodeIs(200) if server can return 204 instead.
 
 ```js
-I.seeResponseCodeIsSuccessful();
+I.seeResponseCodeIsSuccessful()
 ```
 
 ### seeResponseContainsJson
@@ -144,7 +144,7 @@ Checks for deep inclusion of a provided json in a response data.
 ```js
 // response.data == { user: { name: 'jon', email: 'jon@doe.com' } }
 
-I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } })
 ```
 
 If an array is received, checks that at least one element contains JSON
@@ -152,12 +152,12 @@ If an array is received, checks that at least one element contains JSON
 ```js
 // response.data == [{ user: { name: 'jon', email: 'jon@doe.com' } }]
 
-I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } });
+I.seeResponseContainsJson({ user: { email: 'jon@doe.com' } })
 ```
 
 #### Parameters
 
--   `json` **[object][2]**  
+- `json` **[object][2]**
 
 ### seeResponseContainsKeys
 
@@ -166,7 +166,7 @@ Checks for deep inclusion of a provided json in a response data.
 ```js
 // response.data == { user: { name: 'jon', email: 'jon@doe.com' } }
 
-I.seeResponseContainsKeys(['user']);
+I.seeResponseContainsKeys(['user'])
 ```
 
 If an array is received, check is performed for each element of array:
@@ -174,12 +174,12 @@ If an array is received, check is performed for each element of array:
 ```js
 // response.data == [{ user: 'jon' }, { user: 'matt'}]
 
-I.seeResponseContainsKeys(['user']);
+I.seeResponseContainsKeys(['user'])
 ```
 
 #### Parameters
 
--   `keys` **[array][3]**  
+- `keys` **[array][3]**
 
 ### seeResponseEquals
 
@@ -193,7 +193,7 @@ I.seeResponseEquals({ error: 'Not allowed' })
 
 #### Parameters
 
--   `resp` **[object][2]** 
+- `resp` **[object][2]**&#x20;
 
 ### seeResponseMatchesJsonSchema
 
@@ -223,7 +223,7 @@ I.seeResponseMatchesJsonSchema(joi.object({
 
 #### Parameters
 
--   `fnOrSchema` **any** 
+- `fnOrSchema` **any**&#x20;
 
 ### seeResponseValidByCallback
 
@@ -232,23 +232,18 @@ Use it to perform custom checks of response data
 
 ```js
 I.seeResponseValidByCallback(({ data, status, expect }) => {
-  expect(status).to.eql(200);
-  expect(data).keys.to.include(['user', 'company']);
-});
+  expect(status).to.eql(200)
+  expect(data).keys.to.include(['user', 'company'])
+})
 ```
 
 #### Parameters
 
--   `fn` **[function][6]** 
+- `fn` **[function][6]**&#x20;
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
 [4]: https://joi.dev
-
 [5]: https://joi.dev/api/
-
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
