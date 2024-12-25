@@ -5,13 +5,14 @@ const actor = require('../../lib/actor')
 const container = require('../../lib/container')
 const recorder = require('../../lib/recorder')
 const event = require('../../lib/event')
+const store = require('../../lib/store')
 
 global.codecept_dir = path.join(__dirname, '/..')
 let I
 let counter
 
 describe('Actor', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     counter = 0
     container.clear(
       {
@@ -35,17 +36,18 @@ describe('Actor', () => {
       undefined,
       undefined,
     )
+    store.actor = null
     container.translation().vocabulary.actions.hello = 'привет'
     I = actor()
+    await container.started()
     event.cleanDispatcher()
   })
 
   it('should init actor on store', () => {
-    const store = require('../../lib/store')
     expect(store.actor).toBeTruthy()
   })
 
-  it('should collect pageobject methods in actor', () => {
+  it('should collect pageobject methods in actor', async () => {
     const poI = actor({
       customStep: () => {},
     })
@@ -75,11 +77,12 @@ describe('Actor', () => {
     expect(I).toHaveProperty('привет')
   })
 
-  it('should correct add translation for step from PageObject', () => {
+  it('should correct add translation for step from PageObject', async () => {
     container.translation().vocabulary.actions.customStep = 'кастомный_шаг'
     actor({
       customStep: () => 3,
     })
+    await container.started()
     expect(I).toHaveProperty('кастомный_шаг')
   })
 

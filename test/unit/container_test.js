@@ -206,7 +206,7 @@ describe('Container', () => {
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
     })
 
-    it('should load DI and inject I into PO', () => {
+    it('should load DI and inject I into PO', async () => {
       container.create({
         include: {
           dummyPage: './data/dummy_page',

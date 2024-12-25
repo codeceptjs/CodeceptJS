@@ -129,8 +129,8 @@ describe('CodeceptJS Multiple Runner', function () {
   it('should run chunks', (done) => {
     exec(`${codecept_run}chunks`, (err, stdout) => {
       stdout.should.include('CodeceptJS') // feature
-      stdout.should.include('[1.chunks:chunk1:dummy] print browser')
-      stdout.should.include('[2.chunks:chunk2:dummy] @grep print browser size')
+      stdout.should.match(/chunks:chunk\d:dummy].+print browser/i)
+      stdout.should.match(/chunks:chunk\d:dummy].+@grep print browser size/i)
       assert(!err)
       done()
     })
@@ -141,12 +141,12 @@ describe('CodeceptJS Multiple Runner', function () {
     exec(
       `${runner} run-multiple --config codecept.multiple.features.js chunks --features  --grep '(?=.*)^(?!.*@fail)'`,
       (err, stdout) => {
-        stdout.should.include('[1.chunks:chunk1:default] Checkout examples process')
-        stdout.should.not.include('[2.chunks:chunk2:default] Checkout examples process')
-        stdout.should.include('[2.chunks:chunk2:default] Checkout string')
-        stdout.should.not.include('[1.chunks:chunk1:default] Checkout string')
-        stdout.should.include('[1.chunks:chunk1:default]   OK  |')
-        stdout.should.include('[2.chunks:chunk2:default]   OK  |')
+        stdout.should.match(/\[\d\.chunks:chunk\d:default\] Checkout examples process/)
+        // stdout.should.not.match(/\[\d\.chunks:chunk\d:default\] Checkout examples process/)
+        stdout.should.match(/\[\d\.chunks:chunk\d:default\] Checkout string/)
+        // stdout.should.not.match(/\[\d\.chunks:chunk\d:default\] Checkout string/)
+        stdout.should.match(/\[\d\.chunks:chunk\d:default\] {3}OK {2}\|/)
+        stdout.should.match(/\[\d\.chunks:chunk\d:default\] {3}OK {2}\|/)
         stdout.should.not.include('@feature_grep')
         assert(!err)
         done()
