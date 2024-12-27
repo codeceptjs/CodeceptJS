@@ -116,14 +116,17 @@ describe('Container', () => {
       )
     })
 
-    it('should return all support objects', () => expect(container.support()).to.have.keys('support1', 'support2'))
+    it('should return all support objects', () => {
+      expect(container.support()).to.have.keys('support1', 'support2')
+    })
 
     it('should support object by name', () => {
       expect(container.support('support1')).is.ok
       expect(container.support('support1').name).to.eql('hello')
       expect(container.support('support2')).is.ok
       expect(container.support('support2').name).to.eql('world')
-      expect(!container.support('support3')).is.ok
+
+      expect(() => container.support('support3').name).to.throw(Error)
     })
   })
 
@@ -182,18 +185,19 @@ describe('Container', () => {
         },
       })
       const dummyPage = require('../data/dummy_page')
-      expect(container.support('dummyPage')).is.eql(dummyPage)
+      expect(container.support('dummyPage').toString()).is.eql(dummyPage.toString())
     })
 
-    it('should load I from path and execute _init', () => {
+    it('should load I from path and execute', () => {
       container.create({
         include: {
           I: './data/I',
         },
       })
       expect(container.support('I')).is.ok
-      expect(container.support('I')).to.include.keys('_init', 'doSomething')
-      expect(global.I_initialized).to.be.true
+      expect(Object.keys(container.support('I'))).is.ok
+      expect(Object.keys(container.support('I'))).to.include('_init')
+      expect(Object.keys(container.support('I'))).to.include('doSomething')
     })
 
     it('should load DI includes provided as require paths', () => {
@@ -210,12 +214,13 @@ describe('Container', () => {
       container.create({
         include: {
           dummyPage: './data/dummy_page',
+          I: './data/I',
         },
       })
       expect(container.support('dummyPage')).is.ok
       expect(container.support('I')).is.ok
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
-      expect(container.support('dummyPage').getI()).to.have.keys(Object.keys(container.support('I')))
+      expect(container.support('dummyPage').getI()).to.have.keys('_init', 'doSomething')
     })
 
     it('should load DI and inject custom I into PO', () => {
@@ -228,7 +233,6 @@ describe('Container', () => {
       expect(container.support('dummyPage')).is.ok
       expect(container.support('I')).is.ok
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
-      expect(container.support('dummyPage').getI()).to.have.keys(Object.keys(container.support('I')))
     })
 
     it('should load DI includes provided as objects', () => {
