@@ -157,7 +157,7 @@ describe('CodeceptJS PageObject', () => {
     it('should inject page objects via proxy', (done) => {
       exec(`${config_run_config('../../../inject-fail-example')} --debug`, (err, stdout) => {
         expect(stdout).toContain('newdomain')
-        expect(stdout).toContain("[ 'veni', 'vedi', 'vici' ]", 'array objects work')
+        expect(stdout).toContain('veni,vedi,vici')
         expect(stdout).toContain('OK  | 1 passed')
         expect(err).toBeFalsy()
         done()
