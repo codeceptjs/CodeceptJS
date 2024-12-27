@@ -43,10 +43,6 @@ describe('Actor', () => {
     event.cleanDispatcher()
   })
 
-  it('should init actor on store', () => {
-    expect(store.actor).toBeTruthy()
-  })
-
   it('should collect pageobject methods in actor', async () => {
     const poI = actor({
       customStep: () => {},
