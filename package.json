@@ -164,7 +164,7 @@
     "ts-node": "10.9.2",
     "tsd": "^0.31.0",
     "tsd-jsdoc": "2.5.0",
-    "typedoc": "0.27.5",
+    "typedoc": "0.27.6",
     "typedoc-plugin-markdown": "4.3.3",
     "typescript": "5.7.2",
     "wdio-docker-service": "1.5.0",
