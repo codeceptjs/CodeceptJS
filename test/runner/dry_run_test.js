@@ -13,7 +13,7 @@ describe('dry-run command', () => {
     process.chdir(codecept_dir);
   });
 
-  it('should be executed with config path', (done) => {
+  it('should be executed with config path', done => {
     process.chdir(__dirname);
     exec(`${codecept_run_config('codecept.js')}`, (err, stdout) => {
       expect(stdout).toContain('Filesystem'); // feature
@@ -23,7 +23,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should list all tests', (done) => {
+  it('should list all tests', done => {
     process.chdir(__dirname);
     exec(`${codecept_run_config('codecept.js')}`, (err, stdout) => {
       expect(stdout).toContain('Filesystem'); // feature
@@ -34,7 +34,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should not run actual steps', (done) => {
+  it('should not run actual steps', done => {
     exec(`${codecept_run_config('codecept.flaky.js')}`, (err, stdout) => {
       expect(stdout).toContain('Flaky'); // feature
       expect(stdout).toContain('Not so flaky test'); // test name
@@ -45,7 +45,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should not run helper hooks', (done) => {
+  it('should not run helper hooks', done => {
     exec(`${codecept_run_config('codecept.testhooks.json')} --debug`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g);
 
@@ -62,7 +62,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should display meta steps and substeps', (done) => {
+  it('should display meta steps and substeps', done => {
     exec(`${codecept_run_config('configs/pageObjects/codecept.po.js')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(lines).toEqual(
@@ -84,7 +84,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should run feature files', (done) => {
+  it('should run feature files', done => {
     exec(codecept_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout) => {
       //eslint-disable-line
       expect(stdout).toContain('Checkout process'); // feature
@@ -103,7 +103,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should run feature files with regex grep', (done) => {
+  it('should run feature files with regex grep', done => {
     exec(codecept_run_config('codecept.bdd.js') + ' --steps --grep "(?=.*Checkout process)"', (err, stdout) => {
       //eslint-disable-line
       expect(stdout).toContain('Checkout process'); // feature
@@ -122,7 +122,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should print substeps in debug mode', (done) => {
+  it('should print substeps in debug mode', done => {
     exec(codecept_run_config('codecept.bdd.js') + ' --debug --grep "Checkout process @important"', (err, stdout) => {
       //eslint-disable-line
       expect(stdout).toContain('Checkout process'); // feature
@@ -142,7 +142,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should run tests with different data', (done) => {
+  it('should run tests with different data', done => {
     exec(`${codecept_run_config('codecept.ddt.js')} --debug`, (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '');
       expect(output).toContain('OK  | 11 passed');
@@ -151,7 +151,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should work with inject() keyword', (done) => {
+  it('should work with inject() keyword', done => {
     exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
       const lines = stdout.split('\n');
       expect(stdout).toContain('injected');
@@ -173,7 +173,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should inject page objects via proxy', (done) => {
+  it('should inject page objects via proxy', done => {
     exec(`${codecept_run_config('../inject-fail-example')} --debug`, (err, stdout) => {
       expect(stdout).toContain('newdomain');
       expect(stdout).toContain('veni,vedi,vici');
@@ -183,7 +183,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should enable all plugins in dry-mode when passing -p all', (done) => {
+  it('should enable all plugins in dry-mode when passing -p all', done => {
     exec(`${codecept_run_config('codecept.customLocator.js')} --verbose -p all`, (err, stdout) => {
       expect(stdout).toContain('Plugins: screenshotOnFail, customLocator');
       expect(stdout).toContain("I see element {xpath: .//*[@data-testid='COURSE']//a}");
@@ -194,7 +194,7 @@ describe('dry-run command', () => {
     });
   });
 
-  it('should enable a particular plugin in dry-mode when passing it to -p', (done) => {
+  it('should enable a particular plugin in dry-mode when passing it to -p', done => {
     exec(`${codecept_run_config('codecept.customLocator.js')} --verbose -p customLocator`, (err, stdout) => {
       expect(stdout).toContain('Plugins: customLocator');
       expect(stdout).toContain("I see element {xpath: .//*[@data-testid='COURSE']//a}");

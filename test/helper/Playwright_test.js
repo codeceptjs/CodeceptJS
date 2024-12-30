@@ -170,7 +170,7 @@ describe('Playwright', function () {
     });
 
     it('should pass arguments and wait for function returns true', () => {
-      return I.amOnPage('/form/wait_js').then(() => I.waitForFunction((varName) => window[varName], ['__waitJs'], 3));
+      return I.amOnPage('/form/wait_js').then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3));
     });
   });
 
@@ -240,7 +240,7 @@ describe('Playwright', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
         }));
 
@@ -251,7 +251,7 @@ describe('Playwright', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec');
         }));
 
@@ -284,19 +284,19 @@ describe('Playwright', function () {
       I.amOnPage('/')
         .then(() => I.wait(1))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 1)));
+        .then(numPages => assert.equal(numPages, 1)));
 
     it('should switch to next tab', () =>
       I.amOnPage('/info')
         .then(() => I.wait(1))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 1))
+        .then(numPages => assert.equal(numPages, 1))
         .then(() => I.click('New tab'))
         .then(() => I.switchToNextTab())
         .then(() => I.wait(2))
         .then(() => I.seeCurrentUrlEquals('/login'))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 2)));
+        .then(numPages => assert.equal(numPages, 2)));
 
     it('should assert when there is no ability to switch to next tab', () =>
       I.amOnPage('/')
@@ -305,7 +305,7 @@ describe('Playwright', function () {
         .then(() => I.switchToNextTab(2))
         .then(() => I.wait(2))
         .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
-        .catch((e) => {
+        .catch(e => {
           assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
         }));
 
@@ -316,12 +316,12 @@ describe('Playwright', function () {
         .then(() => I.wait(2))
         .then(() => I.seeInCurrentUrl('/login'))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 2))
+        .then(numPages => assert.equal(numPages, 2))
         .then(() => I.closeCurrentTab())
         .then(() => I.wait(1))
         .then(() => I.seeInCurrentUrl('/info'))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 1)));
+        .then(numPages => assert.equal(numPages, 1)));
 
     it('should close other tabs', () =>
       I.amOnPage('/')
@@ -335,7 +335,7 @@ describe('Playwright', function () {
         .then(() => I.waitForNumberOfTabs(1))
         .then(() => I.seeInCurrentUrl('/login'))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 1)));
+        .then(numPages => assert.equal(numPages, 1)));
 
     it('should open new tab', () =>
       I.amOnPage('/info')
@@ -343,7 +343,7 @@ describe('Playwright', function () {
         .then(() => I.wait(1))
         .then(() => I.seeInCurrentUrl('about:blank'))
         .then(() => I.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 2)));
+        .then(numPages => assert.equal(numPages, 2)));
 
     it('should switch to previous tab', () =>
       I.amOnPage('/info')
@@ -362,7 +362,7 @@ describe('Playwright', function () {
         .then(() => I.switchToPreviousTab(2))
         .then(() => I.wait(2))
         .then(() => I.waitInUrl('/info'))
-        .catch((e) => {
+        .catch(e => {
           assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
         }));
   });
@@ -400,12 +400,12 @@ describe('Playwright', function () {
         .then(() => I.amCancellingPopups())
         .then(() => I.click('Alert'))
         .then(() => I.grabPopupText())
-        .then((text) => assert.equal(text, 'Really?')));
+        .then(text => assert.equal(text, 'Really?')));
 
     it('should return null if no popup is visible (do not throw an error)', () =>
       I.amOnPage('/form/popup')
         .then(() => I.grabPopupText())
-        .then((text) => assert.equal(text, null)));
+        .then(text => assert.equal(text, null)));
   });
 
   describe('#seeNumberOfElements', () => {
@@ -423,7 +423,7 @@ describe('Playwright', function () {
     it('should return error if iframe selector is invalid', () =>
       I.amOnPage('/iframe')
         .then(() => I.switchTo('#invalidIframeSelector'))
-        .catch((e) => {
+        .catch(e => {
           e.should.be.instanceOf(Error);
           e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
         }));
@@ -431,7 +431,7 @@ describe('Playwright', function () {
     it('should return error if iframe selector is not iframe', () =>
       I.amOnPage('/iframe')
         .then(() => I.switchTo('h1'))
-        .catch((e) => {
+        .catch(e => {
           e.should.be.instanceOf(Error);
           e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath');
         }));
@@ -468,7 +468,7 @@ describe('Playwright', function () {
     it('should grab the source', () =>
       I.amOnPage('/')
         .then(() => I.grabSource())
-        .then((source) => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
+        .then(source => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
   describe('#seeTitleEquals', () => {
@@ -477,7 +477,7 @@ describe('Playwright', function () {
         .then(() => I.seeTitleEquals('TestEd Beta 2.0'))
         .then(() => I.seeTitleEquals('TestEd Beta 2.'))
         .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
-        .catch((e) => {
+        .catch(e => {
           e.should.be.instanceOf(Error);
           e.message.should.be.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."');
         }));
@@ -489,7 +489,7 @@ describe('Playwright', function () {
         .then(() => I.seeTextEquals('Welcome to test app!', 'h1'))
         .then(() => I.seeTextEquals('Welcome to test app', 'h1'))
         .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
-        .catch((e) => {
+        .catch(e => {
           e.should.be.instanceOf(Error);
           e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"');
         }));
@@ -508,40 +508,40 @@ describe('Playwright', function () {
     it('should locate a button to click', () =>
       I.amOnPage('/form/checkbox')
         .then(() => I._locateClickable('Submit'))
-        .then((res) => {
+        .then(res => {
           res.length.should.be.equal(1);
         }));
 
     it('should not locate a non-existing checkbox using _locateClickable', () =>
       I.amOnPage('/form/checkbox')
         .then(() => I._locateClickable('I disagree'))
-        .then((res) => res.length.should.be.equal(0)));
+        .then(res => res.length.should.be.equal(0)));
   });
 
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () =>
       I.amOnPage('/form/checkbox')
         .then(() => I._locateCheckable('I Agree'))
-        .then((res) => res.should.be.not.undefined));
+        .then(res => res.should.be.not.undefined));
   });
 
   describe('#_locateFields', () => {
     it('should locate a field', () =>
       I.amOnPage('/form/field')
         .then(() => I._locateFields('Name'))
-        .then((res) => res.length.should.be.equal(1)));
+        .then(res => res.length.should.be.equal(1)));
 
     it('should not locate a non-existing field', () =>
       I.amOnPage('/form/field')
         .then(() => I._locateFields('Mother-in-law'))
-        .then((res) => res.length.should.be.equal(0)));
+        .then(res => res.length.should.be.equal(0)));
   });
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should throw error if field is not empty', () =>
       I.amOnPage('/form/empty')
         .then(() => I.seeInField('#empty_input', 'Ayayay'))
-        .catch((e) => {
+        .catch(e => {
           e.should.be.instanceOf(AssertionFailedError);
           e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"');
         }));
@@ -749,7 +749,7 @@ describe('Playwright', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
         }));
 
@@ -782,23 +782,23 @@ describe('Playwright', function () {
     it('should grab inner html from an element using xpath query', () =>
       I.amOnPage('/')
         .then(() => I.grabHTMLFrom('//title'))
-        .then((html) => assert.equal(html, 'TestEd Beta 2.0')));
+        .then(html => assert.equal(html, 'TestEd Beta 2.0')));
 
     it('should grab inner html from an element using id query', () =>
       I.amOnPage('/')
         .then(() => I.grabHTMLFrom('#area1'))
-        .then((html) => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
+        .then(html => assert.equal(html.trim(), '<a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>')));
 
     it('should grab inner html from multiple elements', () =>
       I.amOnPage('/')
         .then(() => I.grabHTMLFromAll('//a'))
-        .then((html) => assert.equal(html.length, 5)));
+        .then(html => assert.equal(html.length, 5)));
 
     it('should grab inner html from within an iframe', () =>
       I.amOnPage('/iframe')
         .then(() => I.switchTo({ frame: 'iframe' }))
         .then(() => I.grabHTMLFrom('#new-tab'))
-        .then((html) => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
+        .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')));
   });
 
   describe('#grabBrowserLogs', () => {
@@ -810,8 +810,8 @@ describe('Playwright', function () {
           }),
         )
         .then(() => I.grabBrowserLogs())
-        .then((logs) => {
-          const matchingLogs = logs.filter((log) => log.text().indexOf('Test log entry') > -1);
+        .then(logs => {
+          const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
           assert.equal(matchingLogs.length, 1);
         }));
 
@@ -824,8 +824,8 @@ describe('Playwright', function () {
           }),
         )
         .then(() => I.grabBrowserLogs())
-        .then((logs) => {
-          const matchingLogs = logs.filter((log) => log.text().indexOf('Test log entry') > -1);
+        .then(logs => {
+          const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
           assert.equal(matchingLogs.length, 1);
         }));
 
@@ -843,8 +843,8 @@ describe('Playwright', function () {
           }),
         )
         .then(() => I.grabBrowserLogs())
-        .then((logs) => {
-          const matchingLogs = logs.filter((log) => log.text().includes('Test log entry'));
+        .then(logs => {
+          const matchingLogs = logs.filter(log => log.text().includes('Test log entry'));
           assert.equal(matchingLogs.length, 2);
         }));
 
@@ -858,8 +858,8 @@ describe('Playwright', function () {
           }),
         )
         .then(() => I.grabBrowserLogs())
-        .then((logs) => {
-          const matchingLogs = logs.filter((log) => log.text().indexOf('Test log entry') > -1);
+        .then(logs => {
+          const matchingLogs = logs.filter(log => log.text().indexOf('Test log entry') > -1);
           assert.equal(matchingLogs.length, 1);
         }));
   });
@@ -952,7 +952,7 @@ describe('Playwright', function () {
 
     it('should pass expected parameters', async () => {
       await I.amOnPage('/');
-      const params = await I.usePlaywrightTo('test', async (params) => {
+      const params = await I.usePlaywrightTo('test', async params => {
         return params;
       });
       expect(params.page).to.exist;
@@ -964,7 +964,7 @@ describe('Playwright', function () {
   describe('#mockRoute, #stopMockingRoute', () => {
     it('should mock a route', async () => {
       await I.amOnPage('/form/fetch_call');
-      await I.mockRoute('https://reqres.in/api/comments/1', (route) => {
+      await I.mockRoute('https://reqres.in/api/comments/1', route => {
         route.fulfill({
           status: 200,
           headers: { 'Access-Control-Allow-Origin': '*' },
@@ -995,7 +995,7 @@ describe('Playwright', function () {
 
     it('should convert to axios response with onResponse hook', async () => {
       let response;
-      I.config.onResponse = (resp) => (response = resp);
+      I.config.onResponse = resp => (response = resp);
       await I.makeApiRequest('get', 'https://reqres.in/api/users?page=2');
       expect(response).to.be.ok;
       expect(response.status).to.equal(200);

@@ -10,7 +10,7 @@ describe('Workers', function () {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox');
   });
 
-  it('should run simple worker', (done) => {
+  it('should run simple worker', done => {
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.workers.conf.js',
@@ -28,7 +28,7 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(status).equal(false);
       expect(passedCount).equal(5);
       expect(failedCount).equal(3);
@@ -36,7 +36,7 @@ describe('Workers', function () {
     });
   });
 
-  it('should create worker by function', (done) => {
+  it('should create worker by function', done => {
     const createTestGroups = () => {
       const files = [[path.join(codecept_dir, '/custom-worker/base_test.worker.js')], [path.join(codecept_dir, '/custom-worker/custom_test.worker.js')]];
 
@@ -63,14 +63,14 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(workers.getWorkers().length).equal(2);
       expect(status).equal(true);
       done();
     });
   });
 
-  it('should run worker with custom config', (done) => {
+  it('should run worker with custom config', done => {
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -93,14 +93,14 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.test.failed, (test) => {
+    workers.on(event.test.failed, test => {
       failedCount += 1;
     });
-    workers.on(event.test.passed, (test) => {
+    workers.on(event.test.passed, test => {
       passedCount += 1;
     });
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(status).equal(false);
       expect(passedCount).equal(3);
       expect(failedCount).equal(2);
@@ -108,7 +108,7 @@ describe('Workers', function () {
     });
   });
 
-  it('should able to add tests to each worker', (done) => {
+  it('should able to add tests to each worker', done => {
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -135,14 +135,14 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(workers.getWorkers().length).equal(2);
       expect(status).equal(true);
       done();
     });
   });
 
-  it('should able to add tests to using createGroupsOfTests', (done) => {
+  it('should able to add tests to using createGroupsOfTests', done => {
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -170,14 +170,14 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(workers.getWorkers().length).equal(2);
       expect(status).equal(true);
       done();
     });
   });
 
-  it('Should able to pass data from workers to main thread and vice versa', (done) => {
+  it('Should able to pass data from workers to main thread and vice versa', done => {
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.customworker.js',
@@ -199,13 +199,13 @@ describe('Workers', function () {
     workers.run();
     recorder.add(() => share({ fromMain: true }));
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(status).equal(true);
       done();
     });
   });
 
-  it('should propagate non test events', (done) => {
+  it('should propagate non test events', done => {
     const messages = [];
 
     const createTestGroups = () => {
@@ -223,7 +223,7 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on('message', (data) => {
+    workers.on('message', data => {
       messages.push(data);
     });
 
@@ -235,7 +235,7 @@ describe('Workers', function () {
     });
   });
 
-  it('should run worker with multiple config', (done) => {
+  it('should run worker with multiple config', done => {
     const workerConfig = {
       by: 'test',
       testConfig: './test/data/sandbox/codecept.multiple.js',
@@ -258,7 +258,7 @@ describe('Workers', function () {
 
     workers.run();
 
-    workers.on(event.all.result, (status) => {
+    workers.on(event.all.result, status => {
       expect(workers.getWorkers().length).equal(8);
       expect(status).equal(true);
       done();

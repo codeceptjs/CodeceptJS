@@ -59,7 +59,7 @@ describe('Actor', () => {
     });
     recorder.start();
     const promise = I.customStep();
-    return promise.then((val) => expect(val).toEqual('hello world'));
+    return promise.then(val => expect(val).toEqual('hello world'));
   });
 
   it('should init pageobject methods as metastep', () => {
@@ -83,7 +83,7 @@ describe('Actor', () => {
   });
 
   it('should take all methods from helpers and built in', () => {
-    ['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach((key) => {
+    ['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach(key => {
       expect(I).toHaveProperty(key);
     });
   });
@@ -92,7 +92,7 @@ describe('Actor', () => {
     recorder.start();
     const promise = I.hello();
     expect(promise).toBeInstanceOf(Promise);
-    return promise.then((val) => expect(val).toEqual('hello world'));
+    return promise.then(val => expect(val).toEqual('hello world'));
   });
 
   it('should produce step events', () => {
@@ -100,7 +100,7 @@ describe('Actor', () => {
     let listeners = 0;
     event.dispatcher.addListener(event.step.before, () => listeners++);
     event.dispatcher.addListener(event.step.after, () => listeners++);
-    event.dispatcher.addListener(event.step.passed, (step) => {
+    event.dispatcher.addListener(event.step.passed, step => {
       listeners++;
       expect(step.endTime).toBeTruthy();
       expect(step.startTime).toBeTruthy();
@@ -153,7 +153,7 @@ describe('Actor', () => {
     let listeners = 0;
     event.dispatcher.addListener(event.step.before, () => listeners++);
     event.dispatcher.addListener(event.step.after, () => listeners++);
-    event.dispatcher.addListener(event.step.failed, (step) => {
+    event.dispatcher.addListener(event.step.failed, step => {
       listeners++;
       expect(step.endTime).toBeTruthy();
       expect(step.startTime).toBeTruthy();

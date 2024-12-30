@@ -22,7 +22,7 @@ module.exports.init = function (testData) {
 };
 
 module.exports.tests = function () {
-  const isHelper = (helperName) => I.constructor.name === helperName;
+  const isHelper = helperName => I.constructor.name === helperName;
 
   beforeEach(() => {
     I = data.I;
@@ -456,7 +456,7 @@ module.exports.tests = function () {
 
     it('should return value from sync script', async () => {
       await I.amOnPage('/');
-      const val = await I.executeScript((a) => a + 5, 5);
+      const val = await I.executeScript(a => a + 5, 5);
       assert.equal(val, 10);
     });
 
@@ -1226,9 +1226,9 @@ module.exports.tests = function () {
         .then(() => I.dontSee('E-Mail'))
         .then(() => I.see('Hasło'))
         .then(() => I.grabTextFrom('label'))
-        .then((label) => assert.equal(label, 'Hasło'))
+        .then(label => assert.equal(label, 'Hasło'))
         .then(() => I.grabValueFrom('input'))
-        .then((input) => assert.equal(input, '12345'));
+        .then(input => assert.equal(input, '12345'));
     });
 
     it('within should respect context in see', async function () {

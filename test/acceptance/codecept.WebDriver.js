@@ -27,7 +27,7 @@ module.exports.config = {
   },
   include: {},
   bootstrap: async () =>
-    new Promise((done) => {
+    new Promise(done => {
       setTimeout(done, 5000);
     }), // let's wait for selenium
   mocha: {},

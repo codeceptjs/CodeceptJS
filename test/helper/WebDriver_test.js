@@ -44,7 +44,7 @@ describe('WebDriver', function () {
         },
       },
       customLocatorStrategies: {
-        customSelector: (selector) => ({ 'element-6066-11e4-a52e-4f735466cecf': `${selector}-foobar` }),
+        customSelector: selector => ({ 'element-6066-11e4-a52e-4f735466cecf': `${selector}-foobar` }),
       },
     });
   });
@@ -443,7 +443,7 @@ describe('WebDriver', function () {
 
     it('should pass arguments and wait for function returns true', async () => {
       await wd.amOnPage('/form/wait_js');
-      await wd.waitForFunction((varName) => window[varName], ['__waitJs'], 3);
+      await wd.waitForFunction(varName => window[varName], ['__waitJs'], 3);
     });
   });
 
@@ -521,7 +521,7 @@ describe('WebDriver', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec');
         });
     });
@@ -533,7 +533,7 @@ describe('WebDriver', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.not.include('[object Object]');
         });
     });
@@ -546,7 +546,7 @@ describe('WebDriver', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec');
         });
     });
@@ -568,7 +568,7 @@ describe('WebDriver', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.not.include('[object Object]');
         });
     });
@@ -582,7 +582,7 @@ describe('WebDriver', function () {
         .then(() => {
           throw Error('It should never get this far');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.not.include('[object Object]');
         });
     });
@@ -636,7 +636,7 @@ describe('WebDriver', function () {
         .then(() => wd.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
         .then(() => wd.switchToNextTab(2))
         .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
-        .catch((e) => {
+        .catch(e => {
           assert.equal(e.message, 'There is no ability to switch to next tab with offset 2');
         });
     });
@@ -648,7 +648,7 @@ describe('WebDriver', function () {
         .then(() => wd.switchToNextTab())
         .then(() => wd.seeInCurrentUrl('/login'))
         .then(() => wd.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 2))
+        .then(numPages => assert.equal(numPages, 2))
         .then(() => wd.closeCurrentTab())
         .then(() => wd.seeInCurrentUrl('/info'))
         .then(() => wd.grabNumberOfOpenTabs());
@@ -674,7 +674,7 @@ describe('WebDriver', function () {
         .then(() => wd.openNewTab())
         .then(() => wd.waitInUrl('about:blank'))
         .then(() => wd.grabNumberOfOpenTabs())
-        .then((numPages) => assert.equal(numPages, 2));
+        .then(numPages => assert.equal(numPages, 2));
     });
 
     it('should switch to previous tab', () => {
@@ -693,7 +693,7 @@ describe('WebDriver', function () {
         .then(() => wd.waitInUrl('about:blank'))
         .then(() => wd.switchToPreviousTab(2))
         .then(() => wd.waitInUrl('/info'))
-        .catch((e) => {
+        .catch(e => {
           assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2');
         });
     });
@@ -729,14 +729,14 @@ describe('WebDriver', function () {
         .amOnPage('/form/popup')
         .then(() => wd.click('Alert'))
         .then(() => wd.grabPopupText())
-        .then((text) => assert.equal(text, 'Really?'));
+        .then(text => assert.equal(text, 'Really?'));
     });
 
     it('should return null if no popup is visible (do not throw an error)', () => {
       return wd
         .amOnPage('/form/popup')
         .then(() => wd.grabPopupText())
-        .then((text) => assert.equal(text, null));
+        .then(text => assert.equal(text, null));
     });
   });
 
@@ -745,7 +745,7 @@ describe('WebDriver', function () {
       return wd
         .amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 1, '#text'))
-        .catch((e) => {
+        .catch(e => {
           e.message.should.be.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec');
         });
     });
@@ -754,7 +754,7 @@ describe('WebDriver', function () {
       return wd
         .amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.1))
-        .catch((e) => {
+        .catch(e => {
           e.message.should.be.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec');
         });
     });
@@ -837,8 +837,8 @@ describe('WebDriver', function () {
       return wd
         .amOnPage('/info')
         .then(() => wd._session())
-        .then((session) =>
-          session.start().then((browser) => ({
+        .then(session =>
+          session.start().then(browser => ({
             browser,
             session,
           })),
@@ -960,7 +960,7 @@ describe('WebDriver', function () {
       const logs = await wd.grabBrowserLogs();
       console.log('lololo', logs);
 
-      const matchingLogs = logs.filter((log) => log.message.indexOf('Test log entry') > -1);
+      const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
       assert.equal(matchingLogs.length, 1);
     });
 
@@ -977,7 +977,7 @@ describe('WebDriver', function () {
 
       const logs = await wd.grabBrowserLogs();
 
-      const matchingLogs = logs.filter((log) => log.message.indexOf('Test log entry') > -1);
+      const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1);
       assert.equal(matchingLogs.length, 2);
     });
   });
@@ -1125,10 +1125,10 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_for_clickable');
       await wd
         .waitForClickable({ css: '#button' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element #button still not clickable after 0.1 sec');
         });
     });
@@ -1137,10 +1137,10 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_for_clickable');
       await wd
         .waitForClickable({ xpath: './/button[@id="button"]' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element .//button[@id="button"] still not clickable after 0.1 sec');
         });
     });
@@ -1149,10 +1149,10 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_for_clickable');
       await wd
         .waitForClickable({ css: '#notInViewportTop' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element #notInViewportTop still not clickable after 0.1 sec');
         });
     });
@@ -1161,10 +1161,10 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_for_clickable');
       await wd
         .waitForClickable({ css: '#notInViewportBottom' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element #notInViewportBottom still not clickable after 0.1 sec');
         });
     });
@@ -1173,10 +1173,10 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_for_clickable');
       await wd
         .waitForClickable({ css: '#notInViewportLeft' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element #notInViewportLeft still not clickable after 0.1 sec');
         });
     });
@@ -1185,10 +1185,10 @@ describe('WebDriver', function () {
       await wd.amOnPage('/form/wait_for_clickable');
       await wd
         .waitForClickable({ css: '#notInViewportRight' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element #notInViewportRight still not clickable after 0.1 sec');
         });
     });
@@ -1198,10 +1198,10 @@ describe('WebDriver', function () {
       await wd.waitForClickable({ css: '#div2_button' }, 0.1);
       await wd
         .waitForClickable({ css: '#div1_button' }, 0.1)
-        .then((isClickable) => {
+        .then(isClickable => {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable');
         })
-        .catch((e) => {
+        .catch(e => {
           e.message.should.include('element #div1_button still not clickable after 0.1 sec');
         });
     });

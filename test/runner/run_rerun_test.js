@@ -14,7 +14,7 @@ describe('run-rerun command', () => {
     process.chdir(codecept_dir);
   });
 
-  it('should display count of attemps', (done) => {
+  it('should display count of attemps', done => {
     exec(`${codecept_run_config('codecept.conf.js')} --debug`, (err, stdout) => {
       const runs = stdout.split('Run Rerun - Command --');
       // check first run
@@ -38,7 +38,7 @@ describe('run-rerun command', () => {
     });
   });
 
-  it('should display 2 success count of attemps', (done) => {
+  it('should display 2 success count of attemps', done => {
     exec(`${codecept_run_config('codecept.conf.min_less_max.js')} --debug`, (err, stdout) => {
       const runs = stdout.split('Run Rerun - Command --');
 
@@ -59,7 +59,7 @@ describe('run-rerun command', () => {
     });
   });
 
-  it('should display error if minSuccess more than maxReruns', (done) => {
+  it('should display error if minSuccess more than maxReruns', done => {
     exec(`${codecept_run_config('codecept.conf.min_more_max.js')} --debug`, (err, stdout) => {
       expect(stdout).toContain('minSuccess must be less than maxReruns');
       expect(err.code).toBe(1);
@@ -67,7 +67,7 @@ describe('run-rerun command', () => {
     });
   });
 
-  it('should display errors if test is fail always', (done) => {
+  it('should display errors if test is fail always', done => {
     exec(`${codecept_run_config('codecept.conf.fail_test.js', '@RunRerun - Fail all attempt')} --debug`, (err, stdout) => {
       expect(stdout).toContain('Fail run 1 of max 3, success runs 0/2');
       expect(stdout).toContain('Fail run 2 of max 3, success runs 0/2');
@@ -78,7 +78,7 @@ describe('run-rerun command', () => {
     });
   });
 
-  it('should display success run if test was fail one time of two attempts and 3 reruns', (done) => {
+  it('should display success run if test was fail one time of two attempts and 3 reruns', done => {
     exec(`FAIL_ATTEMPT=0  ${codecept_run_config('codecept.conf.fail_test.js', '@RunRerun - fail second test')} --debug`, (err, stdout) => {
       expect(stdout).toContain('Process run 1 of max 3, success runs 1/2');
       expect(stdout).toContain('Fail run 2 of max 3, success runs 1/2');
@@ -89,7 +89,7 @@ describe('run-rerun command', () => {
     });
   });
 
-  it('should throw exit code 1 if all tests were supposed to pass', (done) => {
+  it('should throw exit code 1 if all tests were supposed to pass', done => {
     exec(`FAIL_ATTEMPT=0  ${codecept_run_config('codecept.conf.pass_all_test.js', '@RunRerun - fail second test')} --debug`, (err, stdout) => {
       expect(stdout).toContain('Process run 1 of max 3, success runs 1/3');
       expect(stdout).toContain('Fail run 2 of max 3, success runs 1/3');

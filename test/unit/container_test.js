@@ -1,5 +1,5 @@
 let expect;
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect;
 });
 const path = require('path');
@@ -17,7 +17,7 @@ describe('Container', () => {
 
   afterEach(() => {
     container.clear();
-    ['I', 'dummy_page'].forEach((po) => {
+    ['I', 'dummy_page'].forEach(po => {
       const name = require.resolve(path.join(__dirname, `../data/${po}`));
       delete require.cache[name];
     });

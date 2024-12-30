@@ -1,7 +1,7 @@
 const I = actor();
 const axios = require('axios');
 
-Given('I have products in my cart', (table) => {
+Given('I have products in my cart', table => {
   for (const id in table.rows) {
     if (id < 1) {
       continue;
@@ -11,24 +11,24 @@ Given('I have products in my cart', (table) => {
   }
 });
 
-Given(/I have product described as/, (text) => {
+Given(/I have product described as/, text => {
   I.addItem(text.content.length);
 });
 
 Given(/I have simple product/, async () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     I.addItem(10);
     setTimeout(resolve, 0);
   });
 });
 
-const sendRequest = async (requestConfig) => {
+const sendRequest = async requestConfig => {
   if (!requestConfig) throw JSON.stringify({ error: 'Request config is null or undefined.' });
   return axios({
     method: requestConfig.method || 'GET',
     timeout: requestConfig.timeout || 3000,
     ...requestConfig,
-  }).catch((error) => {
+  }).catch(error => {
     if (error.response) {
       error = {
         message: 'The request was made and the server responded with a status code.',

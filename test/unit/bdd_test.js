@@ -36,9 +36,9 @@ const text = `
     When I go to checkout process
 `;
 
-const checkTestForErrors = (test) => {
+const checkTestForErrors = test => {
   return new Promise((resolve, reject) => {
-    test.fn((err) => {
+    test.fn(err => {
       if (err) {
         return reject(err);
       }
@@ -103,7 +103,7 @@ describe('BDD', () => {
 
   it('should contain tags', async () => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)));
+    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)));
     When('I go to checkout process', () => (sum += 10));
     const suite = await run(text);
     suite.tests[0].fn(() => {});
@@ -111,9 +111,9 @@ describe('BDD', () => {
     expect('@super').is.equal(suite.tests[0].tags[0]);
   });
 
-  it('should load step definitions', (done) => {
+  it('should load step definitions', done => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)));
+    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)));
     When('I go to checkout process', () => (sum += 10));
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
@@ -126,7 +126,7 @@ describe('BDD', () => {
 
   it('should allow failed steps', async () => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)));
+    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)));
     When('I go to checkout process', () => expect(false).is.true);
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
@@ -141,7 +141,7 @@ describe('BDD', () => {
 
   it('handles errors in steps', async () => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)));
+    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)));
     When('I go to checkout process', () => {
       throw new Error('errored step');
     });
@@ -158,7 +158,7 @@ describe('BDD', () => {
 
   it('handles async errors in steps', async () => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)));
+    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)));
     When('I go to checkout process', () => Promise.reject(new Error('step failed')));
     const suite = run(text);
     expect('checkout process').is.equal(suite.title);
@@ -171,11 +171,11 @@ describe('BDD', () => {
     }
   });
 
-  it('should work with async functions', (done) => {
+  it('should work with async functions', done => {
     let sum = 0;
-    Given(/I have product with (\d+) price/, (param) => (sum += parseInt(param, 10)));
+    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)));
     When('I go to checkout process', async () => {
-      return new Promise((checkoutDone) => {
+      return new Promise(checkoutDone => {
         sum += 10;
         setTimeout(checkoutDone, 0);
       });
@@ -203,7 +203,7 @@ describe('BDD', () => {
     });
     I = actor();
     let sum = 0;
-    Given(/I have product with (\d+) price/, (price) => {
+    Given(/I have product with (\d+) price/, price => {
       I.do('add', (sum += parseInt(price, 10)));
     });
     When('I go to checkout process', () => {
@@ -233,12 +233,12 @@ describe('BDD', () => {
   });
 
   it('should match step with params', () => {
-    Given('I am a {word}', (param) => param);
+    Given('I am a {word}', param => param);
     const fn = matchStep('I am a bird');
     expect('bird').is.equal(fn.params[0]);
   });
 
-  it('should produce step events', (done) => {
+  it('should produce step events', done => {
     const text = `
     Feature: Emit step event
 
@@ -259,10 +259,10 @@ describe('BDD', () => {
 
   it('should use shortened form for step definitions', () => {
     let fn;
-    Given('I am a {word}', (params) => params[0]);
-    When('I have {int} wings and {int} eyes', (params) => params[0] + params[1]);
-    Given('I have ${int} in my pocket', (params) => params[0]); // eslint-disable-line no-template-curly-in-string
-    Given('I have also ${float} in my pocket', (params) => params[0]); // eslint-disable-line no-template-curly-in-string
+    Given('I am a {word}', params => params[0]);
+    When('I have {int} wings and {int} eyes', params => params[0] + params[1]);
+    Given('I have ${int} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
+    Given('I have also ${float} in my pocket', params => params[0]); // eslint-disable-line no-template-curly-in-string
     fn = matchStep('I am a bird');
     expect('bird').is.equal(fn(fn.params));
     fn = matchStep('I have 2 wings and 2 eyes');
@@ -273,7 +273,7 @@ describe('BDD', () => {
     expect(500.3).is.equal(fn(fn.params));
   });
 
-  it('should attach before hook for Background', (finish) => {
+  it('should attach before hook for Background', finish => {
     const text = `
     Feature: checkout process
 
@@ -292,14 +292,14 @@ describe('BDD', () => {
     const suite = run(text);
     const done = () => {};
 
-    suite._beforeEach.forEach((hook) => hook.run(done));
+    suite._beforeEach.forEach(hook => hook.run(done));
     suite.tests[0].fn(() => {
       expect(sum).is.equal(2);
       finish();
     });
   });
 
-  it('should execute scenario outlines', (done) => {
+  it('should execute scenario outlines', done => {
     const text = `
     @awesome @cool
     Feature: checkout process
@@ -322,13 +322,13 @@ describe('BDD', () => {
     `;
     let cart = 0;
     let sum = 0;
-    Given('I have product with price {int}$ in my cart', (price) => {
+    Given('I have product with price {int}$ in my cart', price => {
       cart = price;
     });
-    Given('discount is {int} %', (discount) => {
+    Given('discount is {int} %', discount => {
       cart -= (cart * discount) / 100;
     });
-    Then('I should see price is {string} $', (total) => {
+    Then('I should see price is {string} $', total => {
       sum = parseInt(total, 10);
     });
 
@@ -351,7 +351,7 @@ describe('BDD', () => {
     });
   });
 
-  it('should provide a parsed DataTable', (done) => {
+  it('should provide a parsed DataTable', done => {
     const text = `
     @awesome @cool
     Feature: checkout process
@@ -371,11 +371,11 @@ describe('BDD', () => {
     let givenParsedRows;
     let thenParsedRows;
 
-    Given('I have the following products :', (products) => {
+    Given('I have the following products :', products => {
       expect(products.rows.length).to.equal(3);
       givenParsedRows = products.parse();
     });
-    Then('I should see the following products :', (products) => {
+    Then('I should see the following products :', products => {
       expect(products.rows.length).to.equal(3);
       thenParsedRows = products.parse();
     });
@@ -395,14 +395,14 @@ describe('BDD', () => {
     });
   });
 
-  it('should match step with custom parameter type', (done) => {
+  it('should match step with custom parameter type', done => {
     const colorType = {
       name: 'color',
       regexp: /red|blue|yellow/,
-      transformer: (s) => new Color(s),
+      transformer: s => new Color(s),
     };
     defineParameterType(colorType);
-    Given('I have a {color} label', (color) => color);
+    Given('I have a {color} label', color => color);
     const fn = matchStep('I have a red label');
     expect('red').is.equal(fn.params[0].name);
     done();
@@ -412,10 +412,10 @@ describe('BDD', () => {
     const colorType = {
       name: 'async_color',
       regexp: /red|blue|yellow/,
-      transformer: async (s) => new Color(s),
+      transformer: async s => new Color(s),
     };
     defineParameterType(colorType);
-    Given('I have a {async_color} label', (color) => color);
+    Given('I have a {async_color} label', color => color);
     const fn = matchStep('I have a blue label');
     const color = await fn.params[0];
     expect('blue').is.equal(color.name);

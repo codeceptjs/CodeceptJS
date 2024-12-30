@@ -1,14 +1,14 @@
 const { notpage, arraypage } = inject();
 
 module.exports = {
-  type: (s) => {
+  type: s => {
     console.log('type => ', s);
     console.log('strategy', arraypage.toString());
     notpage.domainIds.push('newdomain');
     return notpage.domainIds;
   },
 
-  purgeDomains: (s) => {
+  purgeDomains: s => {
     console.log('purgeDomains');
     console.log(s);
   },

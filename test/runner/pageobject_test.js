@@ -13,7 +13,7 @@ describe('CodeceptJS PageObject', () => {
   });
 
   describe('Failed PageObject', () => {
-    it('should fail if page objects was failed', (done) => {
+    it('should fail if page objects was failed', done => {
       exec(`${config_run_config('codecept.fail_po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(lines).toEqual(
@@ -33,7 +33,7 @@ describe('CodeceptJS PageObject', () => {
   });
 
   describe('PageObject as Class', () => {
-    it('should inject page objects by class', (done) => {
+    it('should inject page objects by class', done => {
       exec(`${config_run_config('codecept.class.js', '@ClassPageObject')} --debug`, (err, stdout) => {
         expect(stdout).not.toContain('classpage.type is not a function');
         expect(stdout).toContain('On classpage: type "Class Page Type"');
@@ -47,7 +47,7 @@ describe('CodeceptJS PageObject', () => {
       });
     });
 
-    it('should inject page objects by class which nested base clas', (done) => {
+    it('should inject page objects by class which nested base clas', done => {
       exec(`${config_run_config('codecept.class.js', '@NestedClassPageObject')} --debug`, (err, stdout) => {
         expect(stdout).not.toContain('classnestedpage.type is not a function');
         expect(stdout).toContain('On classnestedpage: type "Nested Class Page Type"');
@@ -62,7 +62,7 @@ describe('CodeceptJS PageObject', () => {
       });
     });
 
-    it('should print pretty step log and pretty event log', (done) => {
+    it('should print pretty step log and pretty event log', done => {
       exec(`${config_run_config('codecept.logs.js', 'Print correct arg message')} --steps`, (err, stdout) => {
         expect(stdout).toContain('I get humanize args Logs Page Value');
         expect(stdout).toContain('Start event step: I get humanize args Logs Page Valu');
@@ -72,7 +72,7 @@ describe('CodeceptJS PageObject', () => {
       });
     });
 
-    it('should print pretty failed step log on stack trace', (done) => {
+    it('should print pretty failed step log on stack trace', done => {
       exec(`${config_run_config('codecept.logs.js', 'Error print correct arg message')} --steps`, (err, stdout) => {
         expect(stdout).toContain('I.errorMethodHumanizeArgs(Logs Page Value)');
         expect(stdout).toContain('FAIL  | 0 passed, 1 failed');
@@ -83,7 +83,7 @@ describe('CodeceptJS PageObject', () => {
   });
 
   describe('Show MetaSteps in Log', () => {
-    it('should display meta steps and substeps', (done) => {
+    it('should display meta steps and substeps', done => {
       exec(`${config_run_config('codecept.po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(lines).toEqual(
@@ -106,7 +106,7 @@ describe('CodeceptJS PageObject', () => {
   });
 
   describe('Inject PO in Test', () => {
-    it('should work with inject() keyword', (done) => {
+    it('should work with inject() keyword', done => {
       exec(`${config_run_config('codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(stdout).toContain('injected');
@@ -130,7 +130,7 @@ describe('CodeceptJS PageObject', () => {
   });
 
   describe('PageObject with context', () => {
-    it('should work when used "this" context on method', (done) => {
+    it('should work when used "this" context on method', done => {
       exec(`${config_run_config('codecept.inject.po.js', 'pageobject with context')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n');
         expect(lines).toEqual(
@@ -153,7 +153,7 @@ describe('CodeceptJS PageObject', () => {
   });
 
   describe('Inject PO in another PO', () => {
-    it('should inject page objects via proxy', (done) => {
+    it('should inject page objects via proxy', done => {
       exec(`${config_run_config('../../../inject-fail-example')} --debug`, (err, stdout) => {
         expect(stdout).toContain('newdomain');
         expect(stdout).toContain('veni,vedi,vici');
@@ -164,7 +164,7 @@ describe('CodeceptJS PageObject', () => {
     });
   });
 
-  it('built methods are still available custom I steps_file is added', (done) => {
+  it('built methods are still available custom I steps_file is added', done => {
     exec(`${config_run_config('codecept.class.js', '@CustomStepsBuiltIn')} --debug`, (err, stdout) => {
       expect(stdout).toContain('Built in say');
       expect(stdout).toContain('Say called from custom step');
