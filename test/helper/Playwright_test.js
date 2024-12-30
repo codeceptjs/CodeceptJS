@@ -123,9 +123,7 @@ describe('Playwright', function () {
         await I.amOnPage('https://codecept.io/helpers/Playwright/');
         await I.seeCssPropertiesOnElements('.navbar', { 'background-color': 'rgb(128, 90, 213)' });
       } catch (e) {
-        e.message.should.include(
-          "expected element (.navbar) to have CSS property { 'background-color': 'rgb(128, 90, 213)' }",
-        );
+        e.message.should.include("expected element (.navbar) to have CSS property { 'background-color': 'rgb(128, 90, 213)' }");
       }
     });
   });
@@ -470,9 +468,7 @@ describe('Playwright', function () {
     it('should grab the source', () =>
       I.amOnPage('/')
         .then(() => I.grabSource())
-        .then((source) =>
-          assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved'),
-        ));
+        .then((source) => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
   describe('#seeTitleEquals', () => {
@@ -636,12 +632,9 @@ describe('Playwright', function () {
     });
 
     xit('should clear contenteditable', async () => {
-      const isClearMethodPresent = await I.usePlaywrightTo(
-        'check if new Playwright .clear() method present',
-        async ({ page }) => {
-          return typeof page.locator().clear === 'function';
-        },
-      );
+      const isClearMethodPresent = await I.usePlaywrightTo('check if new Playwright .clear() method present', async ({ page }) => {
+        return typeof page.locator().clear === 'function';
+      });
       if (!isClearMethodPresent) {
         this.skip();
       }
@@ -741,14 +734,11 @@ describe('Playwright', function () {
   });
 
   describe('#waitForDisabled', () => {
-    it('should wait for input text field to be disabled', () =>
-      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)));
+    it('should wait for input text field to be disabled', () => I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)));
 
-    it('should wait for input text field to be enabled by xpath', () =>
-      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)));
+    it('should wait for input text field to be enabled by xpath', () => I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled("//*[@name = 'test']", 1)));
 
-    it('should wait for a button to be disabled', () =>
-      I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)));
+    it('should wait for a button to be disabled', () => I.amOnPage('/form/wait_disabled').then(() => I.waitForDisabled('#text', 1)));
   });
 
   describe('#waitForValue', () => {
@@ -760,9 +750,7 @@ describe('Playwright', function () {
           throw Error('It should never get this far');
         })
         .catch((e) => {
-          e.message.should.include(
-            'element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec',
-          );
+          e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
         }));
 
     it('should wait for expected value for given css locator', () =>

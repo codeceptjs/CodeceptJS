@@ -38,10 +38,7 @@ describe('Workers', function () {
 
   it('should create worker by function', (done) => {
     const createTestGroups = () => {
-      const files = [
-        [path.join(codecept_dir, '/custom-worker/base_test.worker.js')],
-        [path.join(codecept_dir, '/custom-worker/custom_test.worker.js')],
-      ];
+      const files = [[path.join(codecept_dir, '/custom-worker/base_test.worker.js')], [path.join(codecept_dir, '/custom-worker/custom_test.worker.js')]];
 
       return files;
     };

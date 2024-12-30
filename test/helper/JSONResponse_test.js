@@ -82,9 +82,7 @@ describe('JSONResponse', () => {
       I.seeResponseContainsJson({
         posts: [{ id: 1, author: 'davert' }],
       });
-      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw(
-        'expected { …(2) } to deeply match { Object (posts) }',
-      );
+      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('expected { …(2) } to deeply match { Object (posts) }');
     });
 
     it('should check for json inclusion - returned Array', () => {
@@ -96,9 +94,7 @@ describe('JSONResponse', () => {
       I.seeResponseContainsJson({
         posts: [{ id: 1, author: 'davert' }],
       });
-      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw(
-        'No elements in array matched {"posts":[{"id":2,"author":"boss"}]}',
-      );
+      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('No elements in array matched {"posts":[{"id":2,"author":"boss"}]}');
     });
 
     it('should check for json inclusion - returned Array of 2 items', () => {

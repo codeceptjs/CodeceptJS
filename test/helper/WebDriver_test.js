@@ -479,9 +479,7 @@ describe('WebDriver', function () {
         await wd.waitForValue('//input[@name= "rus"]', 'Верно3', 0.1);
         throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include(
-          'element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec',
-        );
+        e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
       }
     });
 
@@ -748,9 +746,7 @@ describe('WebDriver', function () {
         .amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .catch((e) => {
-          e.message.should.be.equal(
-            'element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec',
-          );
+          e.message.should.be.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec');
         });
     });
 
@@ -759,9 +755,7 @@ describe('WebDriver', function () {
         .amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.1))
         .catch((e) => {
-          e.message.should.be.equal(
-            'element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec',
-          );
+          e.message.should.be.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec');
         });
     });
   });
@@ -1089,11 +1083,7 @@ describe('WebDriver', function () {
       allHandlesBeforePopup.length.should.eql(1);
 
       await wd.executeScript(() => {
-        window.open(
-          'https://www.w3schools.com/',
-          'new window',
-          'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400',
-        );
+        window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400');
       });
 
       const allHandlesAfterPopup = await wd.grabAllWindowHandles();

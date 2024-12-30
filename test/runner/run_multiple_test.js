@@ -138,34 +138,28 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should run features in parallel', (done) => {
     process.chdir(codecept_dir);
-    exec(
-      `${runner} run-multiple --config codecept.multiple.features.js chunks --features  --grep '(?=.*)^(?!.*@fail)'`,
-      (err, stdout) => {
-        stdout.should.match(/\[\d\.chunks:chunk\d:default\] Checkout examples process/);
-        // stdout.should.not.match(/\[\d\.chunks:chunk\d:default\] Checkout examples process/)
-        stdout.should.match(/\[\d\.chunks:chunk\d:default\] Checkout string/);
-        // stdout.should.not.match(/\[\d\.chunks:chunk\d:default\] Checkout string/)
-        stdout.should.match(/\[\d\.chunks:chunk\d:default\] {3}OK {2}\|/);
-        stdout.should.match(/\[\d\.chunks:chunk\d:default\] {3}OK {2}\|/);
-        stdout.should.not.include('@feature_grep');
-        assert(!err);
-        done();
-      },
-    );
+    exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --features  --grep '(?=.*)^(?!.*@fail)'`, (err, stdout) => {
+      stdout.should.match(/\[\d\.chunks:chunk\d:default\] Checkout examples process/);
+      // stdout.should.not.match(/\[\d\.chunks:chunk\d:default\] Checkout examples process/)
+      stdout.should.match(/\[\d\.chunks:chunk\d:default\] Checkout string/);
+      // stdout.should.not.match(/\[\d\.chunks:chunk\d:default\] Checkout string/)
+      stdout.should.match(/\[\d\.chunks:chunk\d:default\] {3}OK {2}\|/);
+      stdout.should.match(/\[\d\.chunks:chunk\d:default\] {3}OK {2}\|/);
+      stdout.should.not.include('@feature_grep');
+      assert(!err);
+      done();
+    });
   });
 
   it('should run features & tests in parallel', (done) => {
     process.chdir(codecept_dir);
-    exec(
-      `${runner} run-multiple --config codecept.multiple.features.js chunks --grep '(?=.*)^(?!.*@fail)'`,
-      (err, stdout) => {
-        stdout.should.include('@feature_grep');
-        stdout.should.include('Checkout examples process');
-        stdout.should.include('Checkout string');
-        assert(!err);
-        done();
-      },
-    );
+    exec(`${runner} run-multiple --config codecept.multiple.features.js chunks --grep '(?=.*)^(?!.*@fail)'`, (err, stdout) => {
+      stdout.should.include('@feature_grep');
+      stdout.should.include('Checkout examples process');
+      stdout.should.include('Checkout string');
+      assert(!err);
+      done();
+    });
   });
 
   it('should run only tests in parallel', (done) => {

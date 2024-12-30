@@ -100,9 +100,7 @@ describe('Appium iOS Tests', function () {
       try {
         await app.hideDeviceKeyboard('pressKey', 'Done');
       } catch (e) {
-        e.message.should.include(
-          'An unknown server-side error occurred while processing the command. Original error: Soft keyboard not present, cannot hide keyboard',
-        );
+        e.message.should.include('An unknown server-side error occurred while processing the command. Original error: Soft keyboard not present, cannot hide keyboard');
       }
     });
   });
@@ -130,9 +128,7 @@ describe('Appium iOS Tests', function () {
       try {
         await app.waitForText('Nothing here', 1, '~IntegerA');
       } catch (e) {
-        e.message.should.contain(
-          'element (~IntegerA) is not in DOM or there is no element(~IntegerA) with text "Nothing here" after 1 sec',
-        );
+        e.message.should.contain('element (~IntegerA) is not in DOM or there is no element(~IntegerA) with text "Nothing here" after 1 sec');
       }
     });
   });

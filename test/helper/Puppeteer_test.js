@@ -414,9 +414,7 @@ describe('Puppeteer', function () {
     it('should grab the source', () =>
       I.amOnPage('/')
         .then(() => I.grabSource())
-        .then((source) =>
-          assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved'),
-        ));
+        .then((source) => assert.notEqual(source.indexOf('<title>TestEd Beta 2.0</title>'), -1, 'Source html should be retrieved')));
   });
 
   describe('#seeTitleEquals', () => {
@@ -732,9 +730,7 @@ describe('Puppeteer', function () {
           throw Error('It should never get this far');
         })
         .catch((e) => {
-          e.message.should.include(
-            'element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec',
-          );
+          e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec');
         }));
 
     it('should wait for expected value for given css locator', () =>
@@ -1113,9 +1109,7 @@ describe('Puppeteer (remote browser)', function () {
         await I._startBrowser();
         throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include(
-          'Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.',
-        );
+        e.message.should.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.');
       }
     });
 

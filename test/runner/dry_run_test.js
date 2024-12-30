@@ -5,8 +5,7 @@ const exec = require('child_process').exec;
 const runner = path.join(__dirname, '/../../bin/codecept.js');
 const codecept_dir = path.join(__dirname, '/../data/sandbox');
 const codecept_run = `${runner} dry-run`;
-const codecept_run_config = (config, grep) =>
-  `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
+const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`;
 const char = require('figures').checkboxOff;
 
 describe('dry-run command', () => {
@@ -51,23 +50,10 @@ describe('dry-run command', () => {
       const lines = stdout.match(/\S.+/g);
 
       expect(lines).not.toEqual(
-        expect.arrayContaining([
-          "Helper: I'm initialized",
-          "Helper: I'm simple BeforeSuite hook",
-          "Helper: I'm simple Before hook",
-          "Helper: I'm simple After hook",
-          "Helper: I'm simple AfterSuite hook",
-        ]),
+        expect.arrayContaining(["Helper: I'm initialized", "Helper: I'm simple BeforeSuite hook", "Helper: I'm simple Before hook", "Helper: I'm simple After hook", "Helper: I'm simple AfterSuite hook"]),
       );
 
-      expect(lines).toEqual(
-        expect.arrayContaining([
-          "Test: I'm simple BeforeSuite hook",
-          "Test: I'm simple Before hook",
-          "Test: I'm simple After hook",
-          "Test: I'm simple AfterSuite hook",
-        ]),
-      );
+      expect(lines).toEqual(expect.arrayContaining(["Test: I'm simple BeforeSuite hook", "Test: I'm simple Before hook", "Test: I'm simple After hook", "Test: I'm simple AfterSuite hook"]));
 
       expect(stdout).toContain('OK  | 1 passed');
       expect(stdout).toContain('No tests were executed');
@@ -166,28 +152,25 @@ describe('dry-run command', () => {
   });
 
   it('should work with inject() keyword', (done) => {
-    exec(
-      `${codecept_run_config('configs/pageObjects/codecept.inject.po.js', 'check current dir')} --debug`,
-      (err, stdout) => {
-        const lines = stdout.split('\n');
-        expect(stdout).toContain('injected');
-        expect(lines).toEqual(
-          expect.arrayContaining([
-            '  check current dir',
-            '    I open dir "aaa"',
-            '      I am in path "."',
-            '      I see file "codecept.class.js"',
-            '    On MyPage: has file "uu"',
-            '      I see file "codecept.class.js"',
-            '      I see file "codecept.po.js"',
-            '    I see file "codecept.po.js"',
-          ]),
-        );
-        expect(stdout).toContain('OK  | 1 passed');
-        expect(err).toBeFalsy();
-        done();
-      },
-    );
+    exec(`${codecept_run_config('configs/pageObjects/codecept.inject.po.js', 'check current dir')} --debug`, (err, stdout) => {
+      const lines = stdout.split('\n');
+      expect(stdout).toContain('injected');
+      expect(lines).toEqual(
+        expect.arrayContaining([
+          '  check current dir',
+          '    I open dir "aaa"',
+          '      I am in path "."',
+          '      I see file "codecept.class.js"',
+          '    On MyPage: has file "uu"',
+          '      I see file "codecept.class.js"',
+          '      I see file "codecept.po.js"',
+          '    I see file "codecept.po.js"',
+        ]),
+      );
+      expect(stdout).toContain('OK  | 1 passed');
+      expect(err).toBeFalsy();
+      done();
+    });
   });
 
   it('should inject page objects via proxy', (done) => {

@@ -40,11 +40,7 @@ module.exports.tests = function () {
       await I.seeElement("input[name='name']");
       const sec = new Date().getUTCMilliseconds();
       await I.saveElementScreenshot("input[name='name']", `element_screenshot_${sec}.png`);
-      assert.ok(
-        fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)),
-        null,
-        'file does not exists',
-      );
+      assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists');
     });
   });
 
@@ -1420,9 +1416,7 @@ module.exports.tests = function () {
           },
         );
       } catch (e) {
-        e.message.should.include(
-          'all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href":"/codeceptjs/CodeceptJS"}',
-        );
+        e.message.should.include('all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href":"/codeceptjs/CodeceptJS"}');
       }
     });
 
@@ -1460,9 +1454,7 @@ module.exports.tests = function () {
           },
         );
       } catch (e) {
-        e.message.should.include(
-          'expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"',
-        );
+        e.message.should.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"');
       }
     });
 
@@ -1524,9 +1516,7 @@ module.exports.tests = function () {
         });
         throw Error('It should never get this far');
       } catch (e) {
-        e.message.should.include(
-          'expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}',
-        );
+        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}');
       }
     });
 
@@ -1657,9 +1647,7 @@ module.exports.tests = function () {
         I.amOnPage('https://codecept.io/');
         await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' });
       } catch (e) {
-        expect(e.message).to.equal(
-          'Failure in test automation. You use "I.seeTraffic", but "I.startRecordingTraffic" was never called before.',
-        );
+        expect(e.message).to.equal('Failure in test automation. You use "I.seeTraffic", but "I.startRecordingTraffic" was never called before.');
       }
     });
 
@@ -1780,9 +1768,7 @@ module.exports.tests = function () {
         I.waitForText('Work for You!');
         I.grabWebSocketMessages();
       } catch (e) {
-        expect(e.message).to.equal(
-          'Failure in test automation. You use "I.grabWebSocketMessages", but "I.startRecordingWebSocketMessages" was never called before.',
-        );
+        expect(e.message).to.equal('Failure in test automation. You use "I.grabWebSocketMessages", but "I.startRecordingWebSocketMessages" was never called before.');
       }
     });
 
