@@ -2,8 +2,8 @@
 
 class FailureHelper extends Helper {
   constructor() {
-    throw new Error('Failed on FailureHelper')
+    throw new Error('Failed on FailureHelper');
   }
 }
 
-module.exports = FailureHelper
+module.exports = FailureHelper;

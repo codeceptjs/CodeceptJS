@@ -1,29 +1,29 @@
-const I = actor()
-const axios = require('axios')
+const I = actor();
+const axios = require('axios');
 
 Given('I have products in my cart', (table) => {
   for (const id in table.rows) {
     if (id < 1) {
-      continue
+      continue;
     }
-    const cells = table.rows[id].cells
-    I.addProduct(cells[0].value, parseInt(cells[2].value, 10))
+    const cells = table.rows[id].cells;
+    I.addProduct(cells[0].value, parseInt(cells[2].value, 10));
   }
-})
+});
 
 Given(/I have product described as/, (text) => {
-  I.addItem(text.content.length)
-})
+  I.addItem(text.content.length);
+});
 
 Given(/I have simple product/, async () => {
   return new Promise((resolve) => {
-    I.addItem(10)
-    setTimeout(resolve, 0)
-  })
-})
+    I.addItem(10);
+    setTimeout(resolve, 0);
+  });
+});
 
 const sendRequest = async (requestConfig) => {
-  if (!requestConfig) throw JSON.stringify({ error: 'Request config is null or undefined.' })
+  if (!requestConfig) throw JSON.stringify({ error: 'Request config is null or undefined.' });
   return axios({
     method: requestConfig.method || 'GET',
     timeout: requestConfig.timeout || 3000,
@@ -37,20 +37,20 @@ const sendRequest = async (requestConfig) => {
         headers: error.response.headers,
         request: error.config.data,
         url: error.response.config.url,
-      }
+      };
     } else if (error.request) {
       error = {
         message: 'The request was made but no response was received.',
         request: error.request,
-      }
+      };
     } else {
       error = {
         message: `Something happened in setting up the request that triggered an Error.\n${error.message}`,
-      }
+      };
     }
-    throw error
-  })
-}
+    throw error;
+  });
+};
 
 Given(/^I make a request \(and it fails\)$/, async () => {
   const requestPayload = {
@@ -61,11 +61,11 @@ Given(/^I make a request \(and it fails\)$/, async () => {
       'X-Requested-With': 'XMLHttpRequest',
     },
     timeout: 1,
-  }
+  };
 
-  return sendRequest(requestPayload)
-})
+  return sendRequest(requestPayload);
+});
 
 Then(/^my test execution gets stuck$/, async () => {
-  I.say('Test execution never gets here...')
-})
+  I.say('Test execution never gets here...');
+});

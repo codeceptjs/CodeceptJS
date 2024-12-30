@@ -4,8 +4,8 @@ class CustomHelper extends Helper {
   shouldDoSomething(s) {}
 
   fail() {
-    throw new Error('Failed from helper')
+    throw new Error('Failed from helper');
   }
 }
 
-module.exports = CustomHelper
+module.exports = CustomHelper;
