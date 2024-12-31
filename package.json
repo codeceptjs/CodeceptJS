@@ -123,7 +123,7 @@
     "@types/chai": "4.3.19",
     "@types/inquirer": "9.0.7",
     "@types/node": "22.10.2",
-    "@wdio/sauce-service": "9.4.5",
+    "@wdio/sauce-service": "9.5.0",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.4.4",
     "@xmldom/xmldom": "0.9.6",
