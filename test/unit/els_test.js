@@ -108,6 +108,7 @@ describe('els', () => {
         await els.eachElement('.selector', async el => {
           throw new Error(`failed on ${el}`);
         });
+        await recorder.promise();
         throw new Error('should have thrown error');
       } catch (e) {
         expect(e.message).to.equal('failed on el1');
@@ -127,9 +128,10 @@ describe('els', () => {
 
       try {
         await els.expectElement('.selector', async () => false);
+        await recorder.promise();
         throw new Error('should have thrown error');
       } catch (e) {
-        expect(e.message).to.include('element (.selector)');
+        expect(e.cliMessage()).to.include('element (.selector)');
       }
     });
   });
@@ -146,9 +148,10 @@ describe('els', () => {
 
       try {
         await els.expectAnyElement('.selector', async () => false);
+        await recorder.promise();
         throw new Error('should have thrown error');
       } catch (e) {
-        expect(e.message).to.include('any element of (.selector)');
+        expect(e.cliMessage()).to.include('any element of (.selector)');
       }
     });
   });
@@ -165,9 +168,10 @@ describe('els', () => {
 
       try {
         await els.expectAllElements('.selector', async el => el !== 'el2');
+        await recorder.promise();
         throw new Error('should have thrown error');
       } catch (e) {
-        expect(e.message).to.include('element #2 of (.selector)');
+        expect(e.cliMessage()).to.include('element #2 of (.selector)');
       }
     });
   });
