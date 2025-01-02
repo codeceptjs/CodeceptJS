@@ -749,6 +749,14 @@ module.exports.tests = function () {
       assert.equal(val, 'Welcome to test app!');
     });
 
+    it('should return empty string when the text of tag is an empty string', async function () {
+      if (isHelper('TestCafe')) this.skip();
+
+      await I.amOnPage('/info');
+      let val = await I.grabTextFrom('#p-no-text');
+      assert.equal(val, '');
+    });
+
     it('should grab html from page', async function () {
       if (isHelper('TestCafe')) this.skip();
 
