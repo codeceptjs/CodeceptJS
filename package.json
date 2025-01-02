@@ -29,6 +29,10 @@
     "docs/webapi/**"
   ],
   "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./els": "./lib/els.js"
+  },
   "types": "typings/index.d.ts",
   "bin": {
     "codeceptjs": "./bin/codecept.js"
