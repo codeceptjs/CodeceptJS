@@ -4,13 +4,12 @@ const { codecept_dir, codecept_run } = require('./consts')
 
 const debug_this_test = false
 
-const config_run_config = (config, grep, verbose = false) =>
-  `${codecept_run} ${verbose || debug_this_test ? '--verbose' : ''} --config ${codecept_dir}/configs/retryHooks/${config} ${grep ? `--grep "${grep}"` : ''}`
+const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose || debug_this_test ? '--verbose' : ''} --config ${codecept_dir}/configs/retryHooks/${config} ${grep ? `--grep "${grep}"` : ''}`
 
 describe('CodeceptJS Retry Hooks', function () {
   this.timeout(10000)
-  ;['#Async ', '#Before ', '#BeforeSuite ', '#Helper '].forEach((retryHook) => {
-    it(`run ${retryHook} config`, (done) => {
+  ;['#Async ', '#Before ', '#BeforeSuite ', '#Helper '].forEach(retryHook => {
+    it(`run ${retryHook} config`, done => {
       exec(config_run_config('codecept.conf.js', retryHook), (err, stdout) => {
         debug_this_test && console.log(stdout)
         expect(stdout).toContain('1 passed')
@@ -18,8 +17,8 @@ describe('CodeceptJS Retry Hooks', function () {
       })
     })
   })
-  ;['#Before ', '#BeforeSuite '].forEach((retryHook) => {
-    it(`should ${retryHook} set hook retries from global config`, (done) => {
+  ;['#Before ', '#BeforeSuite '].forEach(retryHook => {
+    it(`should ${retryHook} set hook retries from global config`, done => {
       exec(config_run_config('codecept.retry.obj.conf.js', retryHook), (err, stdout) => {
         debug_this_test && console.log(stdout)
         expect(stdout).toContain('1 passed')
@@ -28,7 +27,7 @@ describe('CodeceptJS Retry Hooks', function () {
     })
   })
 
-  it('should finish if retry has not happened', (done) => {
+  it('should finish if retry has not happened', done => {
     exec(config_run_config('codecept.conf.js', '#FailBefore '), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('-- FAILURES')
@@ -38,7 +37,7 @@ describe('CodeceptJS Retry Hooks', function () {
     })
   })
 
-  it('should set global retry', (done) => {
+  it('should set global retry', done => {
     exec(config_run_config('codecept.retry.global.conf.js', '#globalRetry'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('1 passed')
@@ -46,7 +45,7 @@ describe('CodeceptJS Retry Hooks', function () {
     })
   })
 
-  it('should set global scenario retry', (done) => {
+  it('should set global scenario retry', done => {
     exec(config_run_config('codecept.retry.global.scenario.conf.js', '#globalScenarioRetry'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('1 passed')

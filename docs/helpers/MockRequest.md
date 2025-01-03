@@ -184,7 +184,7 @@ Use `I.mockServer()` to customize which requests should be recorded and under wh
 
 ```js
 I.startMocking()
-I.mockServer((server) => {
+I.mockServer(server => {
   // mock request only from ap1.com and api2.com and
   // store recording into two different files
   server.any('https://api1.com/*').passthrough(false).recordingName('api1')
@@ -243,7 +243,7 @@ I.mockRequest('GET', ['/secrets', '/v2/secrets'], 403)
 Use PollyJS [Server Routes API][12] to declare mocks via callback function:
 
 ```js
-I.mockServer((server) => {
+I.mockServer(server => {
   // basic usage
   server.get('/api/v2/users').intercept((req, res) => {
     res.sendStatus(200).json({ users })
@@ -258,7 +258,7 @@ In record replay mode you can define which routes should be recorded and where t
 
 ```js
 I.startMocking('mock')
-I.mockServer((server) => {
+I.mockServer(server => {
   // record requests from cdn1.com and save them to data/recording/xml
   server.any('https://cdn1.com/*').passthrough(false).recordingName('xml')
 

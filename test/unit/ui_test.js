@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 const Mocha = require('mocha/lib/mocha')
@@ -22,7 +22,7 @@ describe('ui', () => {
   describe('basic constants', () => {
     const constants = ['Before', 'Background', 'BeforeAll', 'After', 'AfterAll', 'Scenario', 'xScenario']
 
-    constants.forEach((c) => {
+    constants.forEach(c => {
       it(`context should contain ${c}`, () => expect(context[c]).is.ok)
     })
   })

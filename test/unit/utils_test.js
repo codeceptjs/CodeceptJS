@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 const os = require('os')
@@ -18,10 +18,8 @@ describe('utils', () => {
   describe('#getParamNames', () => {
     it('fn#1', () => expect(utils.getParamNames((a, b) => {})).eql(['a', 'b']))
     it('fn#2', () => expect(utils.getParamNames((I, userPage) => {})).eql(['I', 'userPage']))
-    it('should handle single-param arrow functions with omitted parens', () =>
-      expect(utils.getParamNames((I) => {})).eql(['I']))
-    it('should handle trailing comma', () =>
-      expect(utils.getParamNames((I, trailing, comma) => {})).eql(['I', 'trailing', 'comma']))
+    it('should handle single-param arrow functions with omitted parens', () => expect(utils.getParamNames(I => {})).eql(['I']))
+    it('should handle trailing comma', () => expect(utils.getParamNames((I, trailing, comma) => {})).eql(['I', 'trailing', 'comma']))
   })
 
   describe('#methodsOfObject', () => {
@@ -44,8 +42,7 @@ describe('utils', () => {
 
   describe('#beautify', () => {
     it('should beautify JS code', () => {
-      expect(utils.beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};'))
-        .eql(`module.exports = function(a, b) {
+      expect(utils.beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {
   a++;
   b = a;
   if (a == b) {
@@ -322,13 +319,9 @@ describe('utils', () => {
     })
 
     it('returns the given filename for absolute one', () => {
-      const _path = utils.screenshotOutputFolder(
-        '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep),
-      )
+      const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep))
       if (os.platform() === 'win32') {
-        expect(_path).eql(
-          path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'),
-        )
+        expect(_path).eql(path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
       } else {
         expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')
       }
@@ -341,10 +334,7 @@ describe('utils', () => {
     })
 
     it('returns provide default require not found message', () => {
-      expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2')).to.throw(
-        Error,
-        'Cannot find modules unexisting-package,unexisting-package2',
-      )
+      expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2')).to.throw(Error, 'Cannot find modules unexisting-package,unexisting-package2')
     })
   })
 })

@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 const cheerio = require('cheerio')
@@ -10,22 +10,7 @@ const { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByC
 
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],
-  allowedAttrs: [
-    'id',
-    'for',
-    'class',
-    'name',
-    'type',
-    'value',
-    'aria-labelledby',
-    'aria-label',
-    'label',
-    'placeholder',
-    'title',
-    'alt',
-    'src',
-    'role',
-  ],
+  allowedAttrs: ['id', 'for', 'class', 'name', 'type', 'value', 'aria-labelledby', 'aria-label', 'label', 'placeholder', 'title', 'alt', 'src', 'role'],
   allowedRoles: ['button', 'checkbox', 'search', 'textbox', 'tab'],
   textElements: ['label'],
 }

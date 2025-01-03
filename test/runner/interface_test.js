@@ -5,14 +5,14 @@ const exec = require('child_process').exec
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} run`
-const config_run_config = (config) => `${codecept_run} --config ${codecept_dir}/${config}`
+const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`
 
 describe('CodeceptJS Interface', () => {
   before(() => {
     process.chdir(codecept_dir)
   })
 
-  it('should rerun flaky tests', (done) => {
+  it('should rerun flaky tests', done => {
     exec(config_run_config('codecept.flaky.js'), (err, stdout) => {
       expect(stdout).toContain('Flaky') // feature
       expect(stdout).toContain('Not so flaky test') // test name
@@ -25,7 +25,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should rerun retried steps', (done) => {
+  it('should rerun retried steps', done => {
     exec(`${config_run_config('codecept.retry.json')} --grep @test1`, (err, stdout) => {
       expect(stdout).toContain('Retry') // feature
       expect(stdout).toContain('Retries: 4') // test name
@@ -34,7 +34,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should not propagate retries to non retried steps', (done) => {
+  it('should not propagate retries to non retried steps', done => {
     exec(`${config_run_config('codecept.retry.json')} --grep @test2 --verbose`, (err, stdout) => {
       expect(stdout).toContain('Retry') // feature
       expect(stdout).toContain('Retries: 1') // test name
@@ -42,7 +42,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should use retryFailedStep plugin for failed steps', (done) => {
+  it('should use retryFailedStep plugin for failed steps', done => {
     exec(`${config_run_config('codecept.retryFailed.json')} --grep @test1`, (err, stdout) => {
       expect(stdout).toContain('Retry') // feature
       expect(stdout).toContain('Retries: 5') // test name
@@ -51,7 +51,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should not retry wait* steps in retryFailedStep plugin', (done) => {
+  it('should not retry wait* steps in retryFailedStep plugin', done => {
     exec(`${config_run_config('codecept.retryFailed.json')} --grep @test2`, (err, stdout) => {
       expect(stdout).toContain('Retry') // feature
       expect(stdout).not.toContain('Retries: 5')
@@ -61,7 +61,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should not retry steps if retryFailedStep plugin disabled', (done) => {
+  it('should not retry steps if retryFailedStep plugin disabled', done => {
     exec(`${config_run_config('codecept.retryFailed.json')} --grep @test3`, (err, stdout) => {
       expect(stdout).toContain('Retry') // feature
       expect(stdout).not.toContain('Retries: 5')
@@ -71,7 +71,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should include grep option tests', (done) => {
+  it('should include grep option tests', done => {
     exec(config_run_config('codecept.grep.js'), (err, stdout) => {
       expect(stdout).toContain('Got login davert and password') // feature
       expect(stdout).not.toContain('Got changed login') // test name
@@ -80,7 +80,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should run tests with different data', (done) => {
+  it('should run tests with different data', done => {
     exec(config_run_config('codecept.ddt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '')
       expect(output).toContain(`Got login davert and password 123456
@@ -121,7 +121,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should run all tests with data of array by only', (done) => {
+  it('should run all tests with data of array by only', done => {
     exec(config_run_config('codecept.addt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '')
       expect(output).toContain('Got array item 1')
@@ -135,7 +135,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should run all tests with data of generator by only', (done) => {
+  it('should run all tests with data of generator by only', done => {
     exec(config_run_config('codecept.gddt.js'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '')
       expect(output).toContain(`Got generator login nick
@@ -148,7 +148,7 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should provide skipped test for each entry of data', (done) => {
+  it('should provide skipped test for each entry of data', done => {
     exec(config_run_config('codecept.skip_ddt.json'), (err, stdout) => {
       const output = stdout.replace(/in [0-9]ms/g, '').replace(/\r/g, '')
       expect(output).toContain('S Should add skip entry for each item | {"user":"bob"}')
@@ -161,26 +161,26 @@ describe('CodeceptJS Interface', () => {
     })
   })
 
-  it('should execute expected promise chain', (done) => {
+  it('should execute expected promise chain', done => {
     exec(`${codecept_run} --debug`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g)
 
       // before hooks
       const beforeStep = ['I am in path "."']
 
-      lines.filter((l) => beforeStep.indexOf(l) > -1).should.eql(beforeStep, 'check step hooks execution order')
+      lines.filter(l => beforeStep.indexOf(l) > -1).should.eql(beforeStep, 'check step hooks execution order')
 
       // steps order
       const step = ['I am in path "."', 'hello world', 'I see file "codecept.js"']
 
-      lines.filter((l) => step.indexOf(l) > -1).should.eql(step, 'check steps execution order')
+      lines.filter(l => step.indexOf(l) > -1).should.eql(step, 'check steps execution order')
 
       expect(err).toBeFalsy()
       done()
     })
   })
 
-  it('should display steps and artifacts & error log', (done) => {
+  it('should display steps and artifacts & error log', done => {
     exec(`${config_run_config('./configs/testArtifacts')} --debug`, (err, stdout) => {
       stdout.should.include('Scenario Steps:')
       stdout.should.include('Artifacts')

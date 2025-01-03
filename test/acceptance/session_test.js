@@ -88,19 +88,13 @@ Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwrigh
   })
 
   const fileName = clearString(this.title)
-  const [original, failed] = await I.getSHA256Digests([
-    `${output_dir}/original.png`,
-    `${output_dir}/john_${fileName}.failed.png`,
-  ])
+  const [original, failed] = await I.getSHA256Digests([`${output_dir}/original.png`, `${output_dir}/john_${fileName}.failed.png`])
 
   // Assert that screenshots of same page in same session are equal
   await I.expectEqual(original, failed)
 
   // Assert that screenshots of sessions are created
-  const [main_original, session_failed] = await I.getSHA256Digests([
-    `${output_dir}/main_session.png`,
-    `${output_dir}/john_${fileName}.failed.png`,
-  ])
+  const [main_original, session_failed] = await I.getSHA256Digests([`${output_dir}/main_session.png`, `${output_dir}/john_${fileName}.failed.png`])
   await I.expectNotEqual(main_original, session_failed)
 })
 

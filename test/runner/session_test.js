@@ -13,7 +13,7 @@ describe('CodeceptJS session', function () {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox')
   })
 
-  it('should run with 3 sessions', (done) => {
+  it('should run with 3 sessions', done => {
     exec(`${codecept_run} --steps --grep "@1"`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g)
 
@@ -22,24 +22,14 @@ describe('CodeceptJS session', function () {
       testStatus = list.pop()
       testStatus.should.include('OK')
       list.should.eql(
-        [
-          'I do "writing"',
-          'davert: I do "reading"',
-          'I do "playing"',
-          'john: I do "crying"',
-          'davert: I do "smiling"',
-          'I do "laughing"',
-          'mike: I do "spying"',
-          'john: I do "lying"',
-          'I do "waving"',
-        ],
+        ['I do "writing"', 'davert: I do "reading"', 'I do "playing"', 'john: I do "crying"', 'davert: I do "smiling"', 'I do "laughing"', 'mike: I do "spying"', 'john: I do "lying"', 'I do "waving"'],
         'check steps execution order',
       )
       done()
     })
   })
 
-  it('should run session defined before executing', (done) => {
+  it('should run session defined before executing', done => {
     exec(`${codecept_run} --steps --grep "@2"`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g)
 
@@ -48,23 +38,12 @@ describe('CodeceptJS session', function () {
       testStatus = list.pop()
       testStatus.should.include('OK')
 
-      list.should.eql(
-        [
-          'I do "writing"',
-          'I do "playing"',
-          'john: I do "crying"',
-          'davert: I do "smiling"',
-          'I do "laughing"',
-          'davert: I do "singing"',
-          'I do "waving"',
-        ],
-        'check steps execution order',
-      )
+      list.should.eql(['I do "writing"', 'I do "playing"', 'john: I do "crying"', 'davert: I do "smiling"', 'I do "laughing"', 'davert: I do "singing"', 'I do "waving"'], 'check steps execution order')
       done()
     })
   })
 
-  it('should run all session tests', (done) => {
+  it('should run all session tests', done => {
     exec(`${codecept_run} --steps`, (err, stdout) => {
       const lines = stdout.match(/\S.+/g)
       const testStatus = lines.pop()

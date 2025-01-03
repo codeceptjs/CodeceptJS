@@ -146,7 +146,7 @@ delete: (id) => ({ method: 'delete', url: '/posts', data: { id } })
 Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
 
 ```js
-onRequest: async (request) => {
+onRequest: async request => {
   // using global codeceptjs instance
   let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session')
   request.headers = { Cookie: `session=${cookie.value}` }

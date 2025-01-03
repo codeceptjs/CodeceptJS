@@ -183,7 +183,7 @@ Also capabilities can be checked by a function.
 
 ```js
 I.runOnAndroid(
-  (caps) => {
+  caps => {
     // caps is current config of desiredCapabiliites
     return caps.platformVersion >= 6
   },
@@ -222,7 +222,7 @@ In this case, code will be executed only on Android >= 6.
 
 ```js
 I.runOnAndroid(
-  (caps) => {
+  caps => {
     // caps is current config of desiredCapabiliites
     return caps.platformVersion >= 6
   },

@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 const heal = require('../../lib/heal')
@@ -103,7 +103,7 @@ describe('heal', () => {
     heal.addRecipe('reload', {
       priority: 10,
       steps: ['click'],
-      fn: async (opts) => {
+      fn: async opts => {
         passedOpts = opts
         return () => {
           isHealed = true

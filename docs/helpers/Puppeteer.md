@@ -388,7 +388,7 @@ if none provided clears all cookies.
 
 ```js
 I.clearCookie()
-I.clearCookie('test') // Playwright currently doesn't support clear a particular cookie name
+I.clearCookie('test')
 ```
 
 #### Parameters
@@ -1270,7 +1270,7 @@ I.seeFile('avatar.jpg')
 Mocks network request using [`Request Interception`][19]
 
 ```js
-I.mockRoute(/(.png$)|(.jpg$)/, (route) => route.abort())
+I.mockRoute(/(.png$)|(.jpg$)/, route => route.abort())
 ```
 
 This method allows intercepting and mocking requests & responses. [Learn more about it][19]
@@ -2181,7 +2181,7 @@ I.waitForFunction(fn[, [args[, timeout]])
 ```js
 I.waitForFunction(() => window.requests == 0)
 I.waitForFunction(() => window.requests == 0, 5) // waits for 5 sec
-I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+I.waitForFunction(count => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 #### Parameters
@@ -2239,7 +2239,7 @@ Waits for a network request.
 
 ```js
 I.waitForRequest('http://example.com/resource')
-I.waitForRequest((request) => request.url() === 'http://example.com' && request.method() === 'GET')
+I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET')
 ```
 
 #### Parameters
@@ -2253,7 +2253,7 @@ Waits for a network response.
 
 ```js
 I.waitForResponse('http://example.com/resource')
-I.waitForResponse((response) => response.url() === 'http://example.com' && response.request().method() === 'GET')
+I.waitForResponse(response => response.url() === 'http://example.com' && response.request().method() === 'GET')
 ```
 
 #### Parameters

@@ -32,7 +32,7 @@ const commandFlags = {
 }
 
 const errorHandler =
-  (fn) =>
+  fn =>
   async (...args) => {
     try {
       await fn(...args)
@@ -286,7 +286,7 @@ program
 
   .action(require('../lib/command/run-rerun'))
 
-program.on('command:*', (cmd) => {
+program.on('command:*', cmd => {
   console.log(`\nUnknown command ${cmd}\n`)
   program.outputHelp()
 })

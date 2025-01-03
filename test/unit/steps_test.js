@@ -7,7 +7,7 @@ const { secret } = require('../../lib/secret')
 
 let expect
 
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
   chai.use(require('chai-as-promised'))
 })
@@ -92,7 +92,7 @@ describe('Steps', () => {
     })
 
     describe('#isBDD', () => {
-      ;['Given', 'When', 'Then', 'And'].forEach((key) => {
+      ;['Given', 'When', 'Then', 'And'].forEach(key => {
         it(`[${key}] #isBdd should return true if it BDD style`, () => {
           const metaStep = new MetaStep(key, 'I need to open Google')
           expect(metaStep.isBDD()).to.be.true
@@ -106,7 +106,7 @@ describe('Steps', () => {
     })
 
     describe('#toString', () => {
-      ;['Given', 'When', 'Then', 'And'].forEach((key) => {
+      ;['Given', 'When', 'Then', 'And'].forEach(key => {
         it(`[${key}] should correct print BDD step`, () => {
           const metaStep = new MetaStep(key, 'I need to open Google')
           expect(metaStep.toString()).to.include(`${key} I need to open Google`)
@@ -127,7 +127,7 @@ describe('Steps', () => {
         const metaStep = new MetaStep('MyPage', 'clickByName')
         const msg = 'first message'
         const msg2 = 'second message'
-        const fn = (msg) => `result from callback = ${msg}`
+        const fn = msg => `result from callback = ${msg}`
         metaStep.run.bind(metaStep, fn)(msg, msg2)
         expect(metaStep.toString()).eql(`On MyPage: click by name "${msg}", "${msg2}"`)
       })
@@ -148,8 +148,8 @@ describe('Steps', () => {
       beforeEach(() => {
         metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething')
         asyncMetaStep = new MetaStep({ metaStepDoSomething: asyncAction }, 'metaStepDoSomething')
-        fn = (msg) => `result from callback = ${msg}`
-        asyncFn = async (msg) => `result from callback = ${msg}`
+        fn = msg => `result from callback = ${msg}`
+        asyncFn = async msg => `result from callback = ${msg}`
         boundedRun = metaStep.run.bind(metaStep, fn)
         boundedAsyncRun = metaStep.run.bind(metaStep, asyncFn)
       })
