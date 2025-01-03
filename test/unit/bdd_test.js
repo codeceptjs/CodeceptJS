@@ -10,8 +10,8 @@ const builder = new Gherkin.AstBuilder(uuidFn);
 const matcher = new Gherkin.GherkinClassicTokenMatcher();
 
 const Config = require('../../lib/config');
-const { Given, When, And, Then, matchStep, clearSteps, defineParameterType } = require('../../lib/interfaces/bdd');
-const run = require('../../lib/interfaces/gherkin');
+const { Given, When, And, Then, matchStep, clearSteps, defineParameterType } = require('../../lib/mocha/bdd');
+const run = require('../../lib/mocha/gherkin');
 const recorder = require('../../lib/recorder');
 const container = require('../../lib/container');
 const actor = require('../../lib/actor');

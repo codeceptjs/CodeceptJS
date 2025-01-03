@@ -5,7 +5,7 @@ import('chai').then(chai => {
 const Mocha = require('mocha/lib/mocha');
 const Suite = require('mocha/lib/suite');
 
-const makeUI = require('../../../lib/ui');
+const makeUI = require('../../../lib/mocha/ui');
 const addData = require('../../../lib/data/context');
 const DataTable = require('../../../lib/data/table');
 const Secret = require('../../../lib/secret');
@@ -31,13 +31,11 @@ describe('ui', () => {
 
   describe('Data', () => {
     it('can add a tag to all scenarios', () => {
-      const dataScenarioConfig = context.Data(dataTable)
-        .Scenario('scenario', () => {
-        });
+      const dataScenarioConfig = context.Data(dataTable).Scenario('scenario', () => {});
 
       dataScenarioConfig.tag('@user');
 
-      dataScenarioConfig.scenarios.forEach((scenario) => {
+      dataScenarioConfig.scenarios.forEach(scenario => {
         expect(scenario.test.tags).to.include('@user');
       });
     });
@@ -89,7 +87,7 @@ describe('ui', () => {
 
     it("should shows object's toString() method in each scenario's name if the toString() method is overridden", () => {
       const data = [{ toString: () => 'test case title' }];
-      const dataScenarioConfig = context.Data(data).Scenario('scenario', () => { });
+      const dataScenarioConfig = context.Data(data).Scenario('scenario', () => {});
       expect('scenario | test case title').to.equal(dataScenarioConfig.scenarios[0].test.title);
     });
 
