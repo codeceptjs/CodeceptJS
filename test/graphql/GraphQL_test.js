@@ -23,7 +23,7 @@ const data = {
 }
 
 describe('GraphQL', () => {
-  before((done) => {
+  before(done => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data))
     } catch (err) {
@@ -32,7 +32,7 @@ describe('GraphQL', () => {
     setTimeout(done, 1500)
   })
 
-  beforeEach((done) => {
+  beforeEach(done => {
     I = new GraphQL({
       endpoint: graphql_url,
       defaultHeaders: {

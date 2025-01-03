@@ -2,7 +2,7 @@ const AiAssistant = require('../../lib/ai')
 const config = require('../../lib/config')
 
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 

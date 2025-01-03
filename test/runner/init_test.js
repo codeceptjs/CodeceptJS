@@ -36,10 +36,7 @@ describe('Init Command', function () {
   })
 
   it('should init Codecept with TypeScript REST JSONResponse English', async () => {
-    const result = await run(
-      [runner, 'init', codecept_dir],
-      ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, 'y', ENTER, codecept_dir, ENTER, ENTER, ENTER, ENTER],
-    )
+    const result = await run([runner, 'init', codecept_dir], ['Y', ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, 'y', ENTER, codecept_dir, ENTER, ENTER, ENTER, ENTER])
 
     result.should.include('Welcome to CodeceptJS initialization tool')
     result.should.include('It will prepare and configure a test environment for you')
@@ -59,10 +56,7 @@ describe('Init Command', function () {
   })
 
   it.skip('should init Codecept with JavaScript REST JSONResponse de-DE', async () => {
-    const result = await run(
-      [runner, 'init', codecept_dir],
-      [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, 'y', ENTER, codecept_dir, ENTER, DOWN, ENTER, ENTER, ENTER],
-    )
+    const result = await run([runner, 'init', codecept_dir], [ENTER, ENTER, DOWN, DOWN, DOWN, ENTER, 'y', ENTER, codecept_dir, ENTER, DOWN, ENTER, ENTER, ENTER])
 
     result.should.include('Welcome to CodeceptJS initialization tool')
     result.should.include('It will prepare and configure a test environment for you')

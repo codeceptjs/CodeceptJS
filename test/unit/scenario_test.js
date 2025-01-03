@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 const sinon = require('sinon')

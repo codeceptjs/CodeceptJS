@@ -77,33 +77,27 @@ Scenario('within on nested iframe depth 2 @WebDriverIO @Puppeteer @Playwright', 
   I.dontSee('Email Address')
 })
 
-Scenario(
-  'within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer @Playwright',
-  ({ I }) => {
-    I.amOnPage('/iframe_nested')
-    within({ frame: ['#wrapperId', '[name=content]'] }, () => {
-      I.fillField('rus', 'Updated')
-      I.click('Sign in!')
-      I.see('Email Address')
-    })
-    I.see('Nested Iframe test')
-    I.dontSee('Email Address')
-  },
-)
+Scenario('within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+  I.amOnPage('/iframe_nested')
+  within({ frame: ['#wrapperId', '[name=content]'] }, () => {
+    I.fillField('rus', 'Updated')
+    I.click('Sign in!')
+    I.see('Email Address')
+  })
+  I.see('Nested Iframe test')
+  I.dontSee('Email Address')
+})
 
-Scenario(
-  'within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer @Playwright',
-  ({ I }) => {
-    I.amOnPage('/iframe_nested')
-    within({ frame: ['.wrapperClass', '[name=content]'] }, () => {
-      I.fillField('rus', 'Updated')
-      I.click('Sign in!')
-      I.see('Email Address')
-    })
-    I.see('Nested Iframe test')
-    I.dontSee('Email Address')
-  },
-)
+Scenario('within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+  I.amOnPage('/iframe_nested')
+  within({ frame: ['.wrapperClass', '[name=content]'] }, () => {
+    I.fillField('rus', 'Updated')
+    I.click('Sign in!')
+    I.see('Email Address')
+  })
+  I.see('Nested Iframe test')
+  I.dontSee('Email Address')
+})
 
 Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
   I.amOnPage('/form/textarea')

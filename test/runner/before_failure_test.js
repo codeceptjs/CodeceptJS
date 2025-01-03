@@ -7,7 +7,7 @@ const codecept_run = `${runner} run --config ${codecept_dir}/codecept.beforetest
 
 describe('Failure in before', function () {
   this.timeout(40000)
-  it('should skip tests that are skipped because of failure in before hook', (done) => {
+  it('should skip tests that are skipped because of failure in before hook', done => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('First test will be passed @grep')
       stdout.should.include('Third test will be skipped @grep')
@@ -18,7 +18,7 @@ describe('Failure in before', function () {
     })
   })
 
-  it('should skip tests correctly with grep options', (done) => {
+  it('should skip tests correctly with grep options', done => {
     exec(`${codecept_run} --grep @grep`, (err, stdout) => {
       stdout.should.include('First test will be passed @grep')
       stdout.should.include('Third test will be skipped @grep')
@@ -28,7 +28,7 @@ describe('Failure in before', function () {
     })
   })
 
-  it('should trigger skipped events', (done) => {
+  it('should trigger skipped events', done => {
     exec(`DEBUG=codeceptjs:* ${codecept_run} --verbose`, (err, stdout, stderr) => {
       err.code.should.eql(1)
       stderr.should.include('Emitted | test.skipped')
