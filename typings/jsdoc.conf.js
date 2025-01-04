@@ -10,7 +10,6 @@ module.exports = {
       './lib/data/dataTableArgument.js',
       './lib/event.js',
       './lib/index.js',
-      './lib/interfaces',
       './lib/locator.js',
       './lib/output.js',
       './lib/pause.js',
@@ -19,7 +18,11 @@ module.exports = {
       './lib/session.js',
       './lib/step.js',
       './lib/store.js',
-      './lib/ui.js',
+      './lib/mocha/ui.js',
+      './lib/mocha/featureConfig.js',
+      './lib/mocha/scenarioConfig.js',
+      './lib/mocha/bdd.js',
+      './lib/mocha/hooks.js',
       './lib/within.js',
       require.resolve('@codeceptjs/detox-helper'),
       require.resolve('@codeceptjs/helper'),
@@ -31,4 +34,4 @@ module.exports = {
     destination: './typings/',
   },
   plugins: ['jsdoc.namespace.js', 'jsdoc-typeof-plugin'],
-};
+}

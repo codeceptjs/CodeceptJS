@@ -285,7 +285,7 @@ Scenario('login', async ({ I, login }) => {
 Add descriptive nested steps for your tests:
 
 ```js
-Scenario('project update test', async (I) => {
+Scenario('project update test', async I => {
   __`Given`
   const projectId = await I.have('project')
 
@@ -559,7 +559,7 @@ Example of usage:
 
 ```js
 // this example works with Playwright and Puppeteer helper
-await eachElement('click all checkboxes', 'form input[type=checkbox]', async (el) => {
+await eachElement('click all checkboxes', 'form input[type=checkbox]', async el => {
   await el.click()
 })
 ```
@@ -578,7 +578,7 @@ Check all elements for visibility:
 ```js
 // this example works with Playwright and Puppeteer helper
 const assert = require('assert')
-await eachElement('check all items are visible', '.item', async (el) => {
+await eachElement('check all items are visible', '.item', async el => {
   assert(await el.isVisible())
 })
 ```
@@ -750,7 +750,7 @@ Use scenario configuration to disable plugin for a test
 ```js
 Scenario('scenario tite', () => {
   // test goes here
-}).config((test) => (test.disableRetryFailedStep = true))
+}).config(test => (test.disableRetryFailedStep = true))
 ```
 
 ### Parameters
@@ -775,7 +775,7 @@ Use it in your tests:
 
 ```js
 // retry these steps 5 times before failing
-await retryTo((tryNum) => {
+await retryTo(tryNum => {
   I.switchTo('#editor frame')
   I.click('Open')
   I.see('Opened')
@@ -787,7 +787,7 @@ Set polling interval as 3rd argument (200ms by default):
 ```js
 // retry these steps 5 times before failing
 await retryTo(
-  (tryNum) => {
+  tryNum => {
     I.switchTo('#editor frame')
     I.click('Open')
     I.see('Opened')
