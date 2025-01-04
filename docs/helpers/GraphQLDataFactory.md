@@ -58,7 +58,7 @@ const { faker } = require('@faker-js/faker')
 
 // Used with a constructor function passed to Factory, so that the final build
 // object matches the necessary pattern to be sent as the variables object.
-module.exports = new Factory((buildObj) => ({
+module.exports = new Factory(buildObj => ({
   input: { ...buildObj },
 }))
   // 'attr'-id can be left out depending on the GraphQl resolvers
@@ -137,7 +137,7 @@ Each operation must have the following:
 Requests can be updated on the fly by using `onRequest` function. For instance, you can pass in current session from a cookie.
 
 ```js
-onRequest: async (request) => {
+onRequest: async request => {
   // using global codeceptjs instance
   let cookie = await codeceptjs.container.helpers('WebDriver').grabCookie('session')
   request.headers = { Cookie: `session=${cookie.value}` }

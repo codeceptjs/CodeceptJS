@@ -74,7 +74,7 @@ describe('TestCafe', function () {
     })
 
     it('should pass arguments and wait for function returns true', () => {
-      return I.amOnPage('/form/wait_js').then(() => I.waitForFunction((varName) => window[varName], ['__waitJs'], 3))
+      return I.amOnPage('/form/wait_js').then(() => I.waitForFunction(varName => window[varName], ['__waitJs'], 3))
     })
   })
 

@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 
@@ -21,7 +21,7 @@ describe('Config', () => {
   })
 
   it('should be completely reset', () => {
-    config.addHook((cfg) => {
+    config.addHook(cfg => {
       cfg.helpers.Puppeteer.show = true
     })
     config.create({
@@ -55,7 +55,7 @@ describe('Config', () => {
   })
 
   it('should use config hooks to enhance configs', () => {
-    config.addHook((cfg) => {
+    config.addHook(cfg => {
       cfg.additionalValue = true
     })
     const cfg = config.create({

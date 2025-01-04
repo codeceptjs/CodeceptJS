@@ -598,7 +598,7 @@ if none provided clears all cookies.
 
 ```js
 I.clearCookie()
-I.clearCookie('test') // Playwright currently doesn't support clear a particular cookie name
+I.clearCookie('test')
 ```
 
 #### Parameters
@@ -2262,7 +2262,7 @@ I.waitForFunction(fn[, [args[, timeout]])
 ```js
 I.waitForFunction(() => window.requests == 0)
 I.waitForFunction(() => window.requests == 0, 5) // waits for 5 sec
-I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+I.waitForFunction(count => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 #### Parameters

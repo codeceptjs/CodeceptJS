@@ -7,7 +7,7 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/skip')
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.conf.js `
 
 describe('Skip', () => {
-  it('should skip test with skip', (done) => {
+  it('should skip test with skip', done => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('S @skip')
       stdout.should.include('S @skip with opts')
@@ -18,7 +18,7 @@ describe('Skip', () => {
     })
   })
 
-  it('should correctly pass custom opts for skip test', (done) => {
+  it('should correctly pass custom opts for skip test', done => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('test @skip with opts was marked for skip with customOpts: "Custom options for skip"')
       assert(!err)

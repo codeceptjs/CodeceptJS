@@ -227,13 +227,14 @@ I.seeResponseMatchesJsonSchema(joi.object({
 
 ### seeResponseValidByCallback
 
-Executes a callback function passing in `response` object and chai assertions with `expect`
+Executes a callback function passing in `response` object and assert
 Use it to perform custom checks of response data
 
 ```js
-I.seeResponseValidByCallback(({ data, status, expect }) => {
-  expect(status).to.eql(200)
-  expect(data).keys.to.include(['user', 'company'])
+I.seeResponseValidByCallback(({ data, status }) => {
+  assert.strictEqual(status, 200)
+  assert('user' in data)
+  assert('company' in data)
 })
 ```
 

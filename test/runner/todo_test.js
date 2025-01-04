@@ -7,7 +7,7 @@ const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/todo')
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.conf.js `
 
 describe('Todo', () => {
-  it('should skip test with todo', (done) => {
+  it('should skip test with todo', done => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('S @todo')
       stdout.should.include('S @todo without function')
@@ -18,7 +18,7 @@ describe('Todo', () => {
     })
   })
 
-  it('should skip inject skipinfo to todo test', (done) => {
+  it('should skip inject skipinfo to todo test', done => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('test @todo was marked for todo with message: Test not implemented!')
       stdout.should.include('test @todo without function was marked for todo with message: Test not implemented!')
@@ -28,7 +28,7 @@ describe('Todo', () => {
     })
   })
 
-  it('should correctly pass custom opts for todo test', (done) => {
+  it('should correctly pass custom opts for todo test', done => {
     exec(`${codecept_run}`, (err, stdout) => {
       stdout.should.include('test @todo with opts was marked for todo with customOpts: "Custom options for todo"')
       assert(!err)

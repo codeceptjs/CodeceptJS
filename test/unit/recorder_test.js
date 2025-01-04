@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 
@@ -12,7 +12,7 @@ describe('Recorder', () => {
     expect(recorder.promise()).to.be.instanceof(Promise)
   })
 
-  it('should execute error handler on error', (done) => {
+  it('should execute error handler on error', done => {
     recorder.errHandler(() => done())
     recorder.throw(new Error('err'))
     recorder.catch()
@@ -74,13 +74,13 @@ describe('Recorder', () => {
       const errorText = 'noerror'
       recorder.retry({
         retries: 2,
-        when: (err) => {
+        when: err => {
           return err.message === errorText
         },
       })
       recorder.retry({
         retries: 2,
-        when: (err) => {
+        when: err => {
           return err.message === 'othererror'
         },
       })
@@ -105,7 +105,7 @@ describe('Recorder', () => {
       recorder.retry({ retries: 2 })
       recorder.retry({
         retries: 100,
-        when: (err) => {
+        when: err => {
           return err.message === errorText
         },
       })

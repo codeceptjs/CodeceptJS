@@ -38,7 +38,7 @@ describe('ApiDataFactory', function () {
     })
   })
 
-  beforeEach((done) => {
+  beforeEach(done => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data))
     } catch (err) {
@@ -85,7 +85,7 @@ describe('ApiDataFactory', function () {
     it('should update request with onRequest', async () => {
       const I = new ApiDataFactory({
         endpoint: api_url,
-        onRequest: (request) => (request.data.author = 'Vasya'),
+        onRequest: request => (request.data.author = 'Vasya'),
         factories: {
           post: {
             factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
@@ -108,7 +108,7 @@ describe('ApiDataFactory', function () {
               method: 'post',
               data: { author: 'Yorik', title: 'xxx', body: 'yyy' },
             }),
-            delete: (id) => ({ url: `/posts/${id}`, method: 'delete' }),
+            delete: id => ({ url: `/posts/${id}`, method: 'delete' }),
           },
         },
       })
@@ -135,13 +135,13 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts')
       resp.data.length.should.eql(1)
       await I.haveMultiple('post', 3)
-      await new Promise((done) => {
+      await new Promise(done => {
         setTimeout(done, 500)
       })
       resp = await I.restHelper.sendGetRequest('/posts')
       resp.data.length.should.eql(4)
       await I._after()
-      await new Promise((done) => {
+      await new Promise(done => {
         setTimeout(done, 500)
       })
       resp = await I.restHelper.sendGetRequest('/posts')
@@ -182,7 +182,7 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts')
       resp.data.length.should.eql(2)
       await I._after()
-      await new Promise((done) => {
+      await new Promise(done => {
         setTimeout(done, 500)
       })
       resp = await I.restHelper.sendGetRequest('/posts')

@@ -542,11 +542,12 @@ if none provided clears all cookies.
 
 ```js
 I.clearCookie()
-I.clearCookie('test') // Playwright currently doesn't support clear a particular cookie name
+I.clearCookie('test')
 ```
 
 #### Parameters
 
+- `cookieName` &#x20;
 - `cookie` **[string][9]?** (optional, `null` by default) cookie name
 
 ### clearField
@@ -1021,7 +1022,7 @@ Get JS log from browser.
 
 ```js
 const logs = await I.grabBrowserLogs()
-const errors = logs.map((l) => ({ type: l.type(), text: l.text() })).filter((l) => l.type === 'error')
+const errors = logs.map(l => ({ type: l.type(), text: l.text() })).filter(l => l.type === 'error')
 console.log(JSON.stringify(errors))
 ```
 
@@ -1499,7 +1500,7 @@ Returns **[Promise][22]<[object][6]>** response
 Mocks network request using [`browserContext.route`][30] of Playwright
 
 ```js
-I.mockRoute(/(.png$)|(.jpg$)/, (route) => route.abort())
+I.mockRoute(/(.png$)|(.jpg$)/, route => route.abort())
 ```
 
 This method allows intercepting and mocking requests & responses. [Learn more about it][31]
@@ -2495,7 +2496,7 @@ I.waitForFunction(fn[, [args[, timeout]])
 ```js
 I.waitForFunction(() => window.requests == 0)
 I.waitForFunction(() => window.requests == 0, 5) // waits for 5 sec
-I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and wait for 5 sec
+I.waitForFunction(count => window.requests == count, [3], 5) // pass args and wait for 5 sec
 ```
 
 #### Parameters
@@ -2553,7 +2554,7 @@ Waits for a network request.
 
 ```js
 I.waitForRequest('http://example.com/resource')
-I.waitForRequest((request) => request.url() === 'http://example.com' && request.method() === 'GET')
+I.waitForRequest(request => request.url() === 'http://example.com' && request.method() === 'GET')
 ```
 
 #### Parameters
@@ -2567,7 +2568,7 @@ Waits for a network response.
 
 ```js
 I.waitForResponse('http://example.com/resource')
-I.waitForResponse((response) => response.url() === 'https://example.com' && response.status() === 200)
+I.waitForResponse(response => response.url() === 'https://example.com' && response.status() === 200)
 ```
 
 #### Parameters

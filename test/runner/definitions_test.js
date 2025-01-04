@@ -13,7 +13,7 @@ const pathOfJSDocDefinitions = path.join(pathToRootOfProject, 'typings/types.d.t
 const pathToTests = path.resolve(pathToRootOfProject, 'test')
 const pathToTypings = path.resolve(pathToRootOfProject, 'typings')
 
-import('chai').then((chai) => {
+import('chai').then(chai => {
   chai.use(require('chai-subset'))
   /** @type {Chai.ChaiPlugin */
   chai.use((chai, utils) => {
@@ -23,7 +23,7 @@ import('chai').then((chai) => {
       new chai.Assertion(project).to.be.instanceof(Project)
 
       let diagnostics = project.getPreEmitDiagnostics()
-      diagnostics = diagnostics.filter((diagnostic) => {
+      diagnostics = diagnostics.filter(diagnostic => {
         const filePath = diagnostic.getSourceFile().getFilePath()
         return filePath.startsWith(pathToTests) || filePath.startsWith(pathToTypings)
       })
@@ -49,7 +49,7 @@ describe('Definitions', function () {
   })
 
   describe('Static files', () => {
-    it('should have internal object that is available as variable codeceptjs', (done) => {
+    it('should have internal object that is available as variable codeceptjs', done => {
       exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
         const types = typesFrom(`${codecept_dir}/steps.d.ts`)
         types.should.be.valid
@@ -63,17 +63,14 @@ describe('Definitions', function () {
           { declarations: [{ name: 'config', type: 'typeof CodeceptJS.Config' }] },
           { declarations: [{ name: 'container', type: 'typeof CodeceptJS.Container' }] },
         ])
-        const codeceptjs = types
-          .getSourceFileOrThrow(pathOfStaticDefinitions)
-          .getVariableDeclarationOrThrow('codeceptjs')
-          .getStructure()
+        const codeceptjs = types.getSourceFileOrThrow(pathOfStaticDefinitions).getVariableDeclarationOrThrow('codeceptjs').getStructure()
         codeceptjs.type.should.equal('typeof CodeceptJS.index')
         done()
       })
     })
   })
 
-  it('def should create definition file', (done) => {
+  it('def should create definition file', done => {
     exec(`${runner} def ${codecept_dir}`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts')
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
@@ -102,7 +99,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with correct page def', (done) => {
+  it('def should create definition file with correct page def', done => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts')
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
@@ -117,7 +114,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file given a config file', (done) => {
+  it('def should create definition file given a config file', done => {
     exec(`${runner} def --config ${codecept_dir}/../../codecept.ddt.js`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts')
       const types = typesFrom(`${codecept_dir}/../../steps.d.ts`)
@@ -127,7 +124,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with support object', (done) => {
+  it('def should create definition file with support object', done => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
       types.should.be.valid
@@ -157,7 +154,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with inject which contains support objects', (done) => {
+  it('def should create definition file with inject which contains support objects', done => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
       types.should.be.valid
@@ -176,8 +173,8 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with inject which contains I object', (done) => {
-    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, (err) => {
+  it('def should create definition file with inject which contains I object', done => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, err => {
       assert(!err)
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
       types.should.be.valid
@@ -196,7 +193,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with inject which contains I object from helpers', (done) => {
+  it('def should create definition file with inject which contains I object from helpers', done => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.powi.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
       types.should.be.valid
@@ -212,7 +209,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with callback params', (done) => {
+  it('def should create definition file with callback params', done => {
     exec(`${runner} def --config ${codecept_dir}/codecept.inject.po.js`, () => {
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
       types.should.be.valid
@@ -228,7 +225,7 @@ describe('Definitions', function () {
     })
   })
 
-  it('def should create definition file with promise-based feature', (done) => {
+  it('def should create definition file with promise-based feature', done => {
     exec(`${runner} def --config ${codecept_dir}/codecept.promise.based.js`, (err, stdout) => {
       stdout.should.include('Definitions were generated in steps.d.ts')
       const types = typesFrom(`${codecept_dir}/steps.d.ts`)
@@ -287,12 +284,7 @@ function resolutionHost(moduleResolutionHost, getCompilerOptions) {
             failedLookupLocations: [],
           }
         } else {
-          result = ts.resolveTypeReferenceDirective(
-            typeDirectiveName,
-            containingFile,
-            compilerOptions,
-            moduleResolutionHost,
-          )
+          result = ts.resolveTypeReferenceDirective(typeDirectiveName, containingFile, compilerOptions, moduleResolutionHost)
         }
         if (result.resolvedTypeReferenceDirective) {
           resolvedTypeReferenceDirectives.push(result.resolvedTypeReferenceDirective)
@@ -326,12 +318,12 @@ function getExtends(node) {
     /** @type {import('ts-morph').Type} */
     result.properties = result.properties || []
     result.methods = result.methods || []
-    node.getExtends().map((symbol) =>
+    node.getExtends().map(symbol =>
       symbol
         .getType()
         .getProperties()
-        .forEach((symbol) => {
-          symbol.getDeclarations().forEach((declaration) => {
+        .forEach(symbol => {
+          symbol.getDeclarations().forEach(declaration => {
             const structure = declaration.getStructure()
             if (structure.kind === StructureKind.Method || structure.kind === StructureKind.MethodSignature) {
               result.methods.push(structure)
@@ -353,7 +345,7 @@ function getReturnStructure(node) {
   /** @type {import('ts-morph').Type} */
   const returnType = node.getSignature().getReturnType()
   const nodes = returnType.getSymbol().getDeclarations()
-  return nodes.map((node) => node.getStructure())
+  return nodes.map(node => node.getStructure())
 }
 
 /**

@@ -12,14 +12,8 @@ describe('gherkin bdd commands', () => {
     const codecept_dir_ts = path.join(codecept_dir, 'config_ts')
 
     beforeEach(() => {
-      fs.copyFileSync(
-        path.join(codecept_dir_js, 'codecept.conf.init.js'),
-        path.join(codecept_dir_js, 'codecept.conf.js'),
-      )
-      fs.copyFileSync(
-        path.join(codecept_dir_ts, 'codecept.conf.init.ts'),
-        path.join(codecept_dir_ts, 'codecept.conf.ts'),
-      )
+      fs.copyFileSync(path.join(codecept_dir_js, 'codecept.conf.init.js'), path.join(codecept_dir_js, 'codecept.conf.js'))
+      fs.copyFileSync(path.join(codecept_dir_ts, 'codecept.conf.init.ts'), path.join(codecept_dir_ts, 'codecept.conf.ts'))
     })
 
     afterEach(() => {
@@ -56,7 +50,7 @@ describe('gherkin bdd commands', () => {
         extension: 'ts',
       },
     ].forEach(({ codecept_dir_test, extension }) => {
-      it(`prepare CodeceptJS to run feature files (codecept.conf.${extension})`, (done) => {
+      it(`prepare CodeceptJS to run feature files (codecept.conf.${extension})`, done => {
         exec(`${runner} gherkin:init ${codecept_dir_test}`, (err, stdout) => {
           let dir = path.join(codecept_dir_test, 'features')
 

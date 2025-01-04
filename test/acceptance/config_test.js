@@ -20,7 +20,7 @@ Scenario('change config 3 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
 Scenario('change config 4 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/')
   I.seeInCurrentUrl('codecept.io')
-}).config((test) => {
+}).config(test => {
   return { url: 'https://codecept.io/', capabilities: { 'moz:title': test.title } }
 })
 
@@ -40,7 +40,7 @@ Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/')
   I.seeInCurrentUrl('codecept.io')
 }).config(async () => {
-  await new Promise((r) => {
+  await new Promise(r => {
     setTimeout(r, 50)
   })
   return { url: 'https://codecept.io' }

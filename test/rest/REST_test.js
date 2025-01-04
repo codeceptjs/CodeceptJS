@@ -28,7 +28,7 @@ const data = {
 }
 
 describe('REST', () => {
-  beforeEach((done) => {
+  beforeEach(done => {
     I = new REST({
       endpoint: api_url,
       defaultHeaders: {
@@ -117,7 +117,7 @@ describe('REST', () => {
     })
 
     it('should update request with onRequest', async () => {
-      I.config.onRequest = (request) => (request.data = { name: 'Vasya' })
+      I.config.onRequest = request => (request.data = { name: 'Vasya' })
 
       const response = await I.sendPostRequest('/user', { name: 'john' })
       response.data.name.should.eql('Vasya')
@@ -306,7 +306,7 @@ describe('REST', () => {
 })
 
 describe('REST - Form upload', () => {
-  beforeEach((done) => {
+  beforeEach(done => {
     I = new REST({
       endpoint: 'http://the-internet.herokuapp.com/',
       maxUploadFileSize: 0.00008,

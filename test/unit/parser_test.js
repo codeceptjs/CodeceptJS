@@ -1,5 +1,5 @@
 let expect
-import('chai').then((chai) => {
+import('chai').then(chai => {
   expect = chai.expect
 })
 const parser = require('../../lib/parser')
@@ -17,12 +17,7 @@ class Obj {
 
   method5({ locator, sec }) {}
 }
-const fixturesDestructuredArgs = [
-  'function namedFn({locator, sec}) {}',
-  'function * namedFn({locator, sec}) {}',
-  '({locator, sec}) => {}',
-  '({locator, sec}) => {}',
-]
+const fixturesDestructuredArgs = ['function namedFn({locator, sec}) {}', 'function * namedFn({locator, sec}) {}', '({locator, sec}) => {}', '({locator, sec}) => {}']
 
 describe('parser', () => {
   const obj = new Obj()
@@ -35,19 +30,14 @@ describe('parser', () => {
     it('should get params for async function', () => {
       expect(parser.getParamsToString(obj.method4)).to.eql('locator, context')
     })
-    fixturesDestructuredArgs.forEach((arg) => {
+    fixturesDestructuredArgs.forEach(arg => {
       it(`should get params for anonymous function with destructured args | ${arg}`, () => {
         expect(parser.getParams(arg)).to.eql(['locator', 'sec'])
       })
     })
 
     it('should get params for anonymous function with destructured args', () => {
-      expect(parser.getParams(({ locator, sec }, { first, second }) => {})).to.eql([
-        'locator',
-        'sec',
-        'first',
-        'second',
-      ])
+      expect(parser.getParams(({ locator, sec }, { first, second }) => {})).to.eql(['locator', 'sec', 'first', 'second'])
     })
 
     it('should get params for class method with destructured args', () => {

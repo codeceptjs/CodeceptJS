@@ -1,6 +1,6 @@
 let chai
 let expect
-import('chai').then((_chai) => {
+import('chai').then(_chai => {
   chai = _chai
   expect = chai.expect
   chai.use(sinonChai)
