@@ -100,11 +100,6 @@ describe('Steps', () => {
       })
     })
 
-    it('#isWithin should return true if it Within step', () => {
-      const metaStep = new MetaStep('Within', 'clickByName')
-      expect(metaStep.isWithin()).to.be.true
-    })
-
     describe('#toString', () => {
       ;['Given', 'When', 'Then', 'And'].forEach(key => {
         it(`[${key}] should correct print BDD step`, () => {

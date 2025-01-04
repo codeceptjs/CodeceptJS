@@ -29,6 +29,10 @@
     "docs/webapi/**"
   ],
   "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./els": "./lib/els.js"
+  },
   "types": "typings/index.d.ts",
   "bin": {
     "codeceptjs": "./bin/codecept.js"
@@ -123,7 +127,7 @@
     "@types/chai": "4.3.19",
     "@types/inquirer": "9.0.7",
     "@types/node": "22.10.5",
-    "@wdio/sauce-service": "9.5.0",
+    "@wdio/sauce-service": "9.5.1",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.5.0",
     "@xmldom/xmldom": "0.9.6",
