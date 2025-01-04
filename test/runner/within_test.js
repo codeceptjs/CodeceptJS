@@ -23,7 +23,7 @@ describe('CodeceptJS within', function () {
       testStatus = withoutGeneratorList.pop()
       testStatus.should.include('OK')
       withoutGeneratorList.should.eql(
-        ['I small promise ', 'I small promise was finished ', 'I hey! i am within begin. i get blabla ', 'Within "blabla" ""', 'I small promise ', 'I small promise was finished ', 'I oh! i am within end( '],
+        ['I small promise ', 'I small promise was finished ', 'I hey! i am within begin. i get blabla ', 'Within "blabla"', 'I small promise ', 'I small promise was finished ', 'I oh! i am within end( '],
         'check steps execution order',
       )
       done()
@@ -44,7 +44,7 @@ describe('CodeceptJS within', function () {
           'I small yield ',
           'I am small yield string await',
           'I hey! i am within begin. i get blabla ',
-          'Within "blabla" ""',
+          'Within "blabla"',
           'I small yield ',
           'I am small yield string await',
           'I small promise ',
@@ -72,7 +72,7 @@ describe('CodeceptJS within', function () {
           'I small yield ',
           'I am small yield string await',
           'I hey! i am within begin. i get blabla ',
-          'Within "blabla" ""',
+          'Within "blabla"',
           'I small promise ',
           'I small promise was finished ',
           'I small yield ',
