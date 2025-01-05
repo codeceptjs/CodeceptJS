@@ -1,6 +1,6 @@
 const Gherkin = require('@cucumber/gherkin')
 const Messages = require('@cucumber/messages')
-
+const path = require('path')
 const chai = require('chai')
 
 const expect = chai.expect
@@ -16,6 +16,8 @@ const recorder = require('../../lib/recorder')
 const container = require('../../lib/container')
 const actor = require('../../lib/actor')
 const event = require('../../lib/event')
+
+global.codecept_dir = path.join(__dirname, '/..')
 
 class Color {
   constructor(name) {
@@ -111,7 +113,7 @@ describe('BDD', () => {
     expect('@super').is.equal(suite.tests[0].tags[0])
   })
 
-  it('should load step definitions', done => {
+  it('should load and run step definitions', done => {
     let sum = 0
     Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)))
     When('I go to checkout process', () => (sum += 10))
