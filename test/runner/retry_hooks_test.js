@@ -17,6 +17,14 @@ describe('CodeceptJS Retry Hooks', function () {
       })
     })
   })
+
+  it('run should load hook config from Before().retry()', done => {
+    exec(config_run_config('codecept.retry.hookconfig.conf.js', '#Async '), (err, stdout) => {
+      debug_this_test && console.log(stdout)
+      expect(stdout).toContain('1 passed')
+      done()
+    })
+  })
   ;['#Before ', '#BeforeSuite '].forEach(retryHook => {
     it(`should ${retryHook} set hook retries from global config`, done => {
       exec(config_run_config('codecept.retry.obj.conf.js', retryHook), (err, stdout) => {

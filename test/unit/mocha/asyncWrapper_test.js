@@ -4,9 +4,9 @@ import('chai').then(chai => {
 })
 const sinon = require('sinon')
 
-const scenario = require('../../lib/mocha/scenario')
-const recorder = require('../../lib/recorder')
-const event = require('../../lib/event')
+const { test: testWrapper, setup, teardown, suiteSetup, suiteTeardown } = require('../../../lib/mocha/asyncWrapper')
+const recorder = require('../../../lib/recorder')
+const event = require('../../../lib/event')
 
 let test
 let fn
@@ -17,7 +17,7 @@ let afterSuite
 let failed
 let started
 
-describe('Scenario', () => {
+describe('AsyncWrapper', () => {
   beforeEach(() => {
     test = { timeout: () => {} }
     fn = sinon.spy()
@@ -27,7 +27,7 @@ describe('Scenario', () => {
   afterEach(() => event.cleanDispatcher())
 
   it('should wrap test function', () => {
-    scenario.test(test).fn(() => {})
+    testWrapper(test).fn(() => {})
     expect(fn.called).is.ok
   })
 
@@ -42,8 +42,8 @@ describe('Scenario', () => {
       })
     }
 
-    scenario.setup()
-    scenario.test(test).fn(() => null)
+    setup()
+    testWrapper(test).fn(() => null)
     recorder.add('validation', () => expect(counter).to.eq(4))
     return recorder.promise()
   })
@@ -55,15 +55,15 @@ describe('Scenario', () => {
       event.dispatcher.on(event.test.started, (started = sinon.spy()))
       event.dispatcher.on(event.suite.before, (beforeSuite = sinon.spy()))
       event.dispatcher.on(event.suite.after, (afterSuite = sinon.spy()))
-      scenario.suiteSetup()
-      scenario.setup()
+      suiteSetup()
+      setup()
     })
 
     it('should fire events', () => {
-      scenario.test(test).fn(() => null)
+      testWrapper(test).fn(() => null)
       expect(started.called).is.ok
-      scenario.teardown()
-      scenario.suiteTeardown()
+      teardown()
+      suiteTeardown()
       return recorder
         .promise()
         .then(() => expect(beforeSuite.called).is.ok)
@@ -74,11 +74,11 @@ describe('Scenario', () => {
 
     it('should fire failed event on error', () => {
       event.dispatcher.on(event.test.failed, (failed = sinon.spy()))
-      scenario.setup()
+      setup()
       test.fn = () => {
         throw new Error('ups')
       }
-      scenario.test(test).fn(() => {})
+      testWrapper(test).fn(() => {})
       return recorder
         .promise()
         .then(() => expect(failed.called).is.ok)
@@ -89,7 +89,7 @@ describe('Scenario', () => {
       test.fn = () => {
         recorder.throw(new Error('ups'))
       }
-      scenario.test(test).fn(() => {})
+      testWrapper(test).fn(() => {})
       return recorder
         .promise()
         .then(() => expect(failed.called).is.ok)

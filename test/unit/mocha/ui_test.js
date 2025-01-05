@@ -5,9 +5,9 @@ import('chai').then(chai => {
 const Mocha = require('mocha/lib/mocha')
 const Suite = require('mocha/lib/suite')
 
-global.codeceptjs = require('../../lib')
-const makeUI = require('../../lib/mocha/ui')
-const container = require('../../lib/container')
+global.codeceptjs = require('../../../lib')
+const makeUI = require('../../../lib/mocha/ui')
+const container = require('../../../lib/container')
 
 describe('ui', () => {
   let suite
