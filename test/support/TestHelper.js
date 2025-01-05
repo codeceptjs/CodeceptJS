@@ -30,6 +30,12 @@ class TestHelper {
   static graphQLServerUrl() {
     return process.env.GRAPHQL_SERVER_URL || 'http://localhost:8020/graphql'
   }
+
+  static echo(...args) {
+    if (!process.env.DEBUG) return
+
+    console.log(...args)
+  }
 }
 
 module.exports = TestHelper

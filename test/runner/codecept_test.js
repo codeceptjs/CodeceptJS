@@ -5,6 +5,7 @@ import('chai').then(chai => {
 const assert = require('assert')
 const path = require('path')
 const exec = require('child_process').exec
+const debug = require('debug')('codeceptjs:test')
 const event = require('../../lib').event
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
@@ -69,6 +70,7 @@ describe('CodeceptJS Runner', () => {
     it('filter by scenario tags', done => {
       process.chdir(codecept_dir)
       exec(`${codecept_run} --grep @slow`, (err, stdout) => {
+        debug(stdout)
         stdout.should.include('Filesystem') // feature
         stdout.should.include('check current dir') // test name
         assert(!err)

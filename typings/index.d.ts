@@ -1,5 +1,6 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
+/// <reference path="../lib/mocha/types.d.ts" />
 /// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
@@ -455,9 +456,7 @@ declare namespace CodeceptJS {
   }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: (...args: any[]) => void }>(
-    customSteps?: T & ThisType<WithTranslation<Methods & T>>,
-  ) => WithTranslation<Methods & T>
+  type actor = <T extends { [action: string]: (...args: any[]) => void }>(customSteps?: T & ThisType<WithTranslation<Methods & T>>) => WithTranslation<Methods & T>
 
   type ILocator =
     | { id: string }

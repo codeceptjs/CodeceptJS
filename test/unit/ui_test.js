@@ -7,12 +7,14 @@ const Suite = require('mocha/lib/suite')
 
 global.codeceptjs = require('../../lib')
 const makeUI = require('../../lib/mocha/ui')
+const container = require('../../lib/container')
 
 describe('ui', () => {
   let suite
   let context
 
   beforeEach(() => {
+    container.clear()
     context = {}
     suite = new Suite('empty')
     makeUI(suite)

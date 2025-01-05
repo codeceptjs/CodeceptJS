@@ -1,6 +1,7 @@
 const assert = require('assert')
 const path = require('path')
 const exec = require('child_process').exec
+const debug = require('debug')('codeceptjs:test')
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/bootstrap')
@@ -12,6 +13,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
   it('should run bootstrap', done => {
     exec(codecept_run_config('bootstrap.conf.js', '@important'), (err, stdout) => {
+      debug(stdout)
       stdout.should.include('Filesystem') // feature
       stdout.should.include('I am bootstrap')
       stdout.should.include('I am teardown')
