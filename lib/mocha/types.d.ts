@@ -3,6 +3,7 @@ import { Test as MochaTest, Suite as MochaSuite } from 'mocha'
 declare global {
   namespace CodeceptJS {
     interface Test extends MochaTest {
+      uid: string
       title: string
       tags: string[]
       steps: string[]
