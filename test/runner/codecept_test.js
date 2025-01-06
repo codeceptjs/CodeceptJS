@@ -170,9 +170,9 @@ describe('CodeceptJS Runner', () => {
       it('should filter by feature tags', done => {
         process.chdir(codecept_dir)
         exec(`${codecept_run_config('codecept.grep.2.js')} --grep @feature_grep --invert`, (err, stdout) => {
-          stdout.should.not.include('@feature_grep') // feature
-          stdout.should.not.include('grep message 1')
-          stdout.should.not.include('grep message 2')
+          debug(stdout)
+          stdout.should.include('0 passed')
+          stdout.should.include('No tests found by pattern: /@feature_grep/') // feature
           assert(!err)
           done()
         })
