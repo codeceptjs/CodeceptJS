@@ -52,7 +52,6 @@ describe('WebDriver', function () {
   beforeEach(async () => {
     webApiTests.init({ I: wd, siteUrl })
     this.wdBrowser = await wd._before()
-    this.wdBrowser.on('dialog', dialog => {})
     return this.wdBrowser
   })
 
@@ -509,85 +508,73 @@ describe('WebDriver', function () {
   })
 
   describe('#waitNumberOfVisibleElements', () => {
-    it('should wait for a specified number of elements on the page', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3))
-        .then(() => wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1))
-        .then(() => {
-          throw Error('It should never get this far')
-        })
-        .catch(e => {
-          e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec')
-        })
+    it('should wait for a specified number of elements on the page', async () => {
+      try {
+        await wd.amOnPage('/info')
+        await wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)
+        await wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1)
+        throw new Error('It should never get this far')
+      } catch (e) {
+        e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec')
+      }
     })
 
-    it('should be no [object Object] in the error message', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.waitNumberOfVisibleElements({ css: '//div[@id = "grab-multiple"]//a' }, 3))
-        .then(() => {
-          throw Error('It should never get this far')
-        })
-        .catch(e => {
-          e.message.should.not.include('[object Object]')
-        })
+    it('should be no [object Object] in the error message', async () => {
+      try {
+        await wd.amOnPage('/info')
+        await wd.waitNumberOfVisibleElements({ css: '//div[@id = "grab-multiple"]//a' }, 3)
+        throw new Error('It should never get this far')
+      } catch (e) {
+        e.message.should.not.include('[object Object]')
+      }
     })
 
-    it('should wait for a specified number of elements on the page using a css selector', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.waitNumberOfVisibleElements('#grab-multiple > a', 3))
-        .then(() => wd.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1))
-        .then(() => {
-          throw Error('It should never get this far')
-        })
-        .catch(e => {
-          e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec')
-        })
+    it('should wait for a specified number of elements on the page using a css selector', async () => {
+      try {
+        await wd.amOnPage('/info')
+        await wd.waitNumberOfVisibleElements('#grab-multiple > a', 3)
+        await wd.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1)
+        throw new Error('It should never get this far')
+      } catch (e) {
+        e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec')
+      }
     })
 
-    it('should wait for a specified number of elements which are not yet attached to the DOM', () => {
-      return wd
-        .amOnPage('/form/wait_num_elements')
-        .then(() => wd.waitNumberOfVisibleElements('.title', 2, 3))
-        .then(() => wd.see('Hello'))
-        .then(() => wd.see('World'))
+    it('should wait for a specified number of elements which are not yet attached to the DOM', async () => {
+      await wd.amOnPage('/form/wait_num_elements')
+      await wd.waitNumberOfVisibleElements('.title', 2, 3)
+      await wd.see('Hello')
+      await wd.see('World')
     })
   })
 
   describe('#waitForVisible', () => {
-    it('should be no [object Object] in the error message', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.waitForVisible('//div[@id = "grab-multiple"]//a', 3))
-        .then(() => {
-          throw Error('It should never get this far')
-        })
-        .catch(e => {
-          e.message.should.not.include('[object Object]')
-        })
+    it('should be no [object Object] in the error message', async () => {
+      try {
+        await wd.amOnPage('/info')
+        await wd.waitForVisible('//div[@id = "grab-multiple"]//a', 3)
+        throw new Error('It should never get this far')
+      } catch (e) {
+        e.message.should.not.include('[object Object]')
+      }
     })
   })
 
   describe('#waitForInvisible', () => {
-    it('should be no [object Object] in the error message', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.waitForInvisible('//div[@id = "grab-multiple"]//a', 3))
-        .then(() => {
-          throw Error('It should never get this far')
-        })
-        .catch(e => {
-          e.message.should.not.include('[object Object]')
-        })
+    it('should be no [object Object] in the error message', async () => {
+      try {
+        await wd.amOnPage('/info')
+        await wd.waitForInvisible('//div[@id = "grab-multiple"]//a', 3)
+        throw new Error('It should never get this far')
+      } catch (e) {
+        e.message.should.not.include('[object Object]')
+      }
     })
 
-    it('should wait for a specified element to be invisible', () => {
-      return wd
-        .amOnPage('/form/wait_invisible')
-        .then(() => wd.waitForInvisible('#step1', 3))
-        .then(() => wd.dontSeeElement('#step1'))
+    it('should wait for a specified element to be invisible', async () => {
+      await wd.amOnPage('/form/wait_invisible')
+      await wd.waitForInvisible('#step1', 3)
+      await wd.dontSeeElement('#step1')
     })
   })
 
@@ -625,117 +612,105 @@ describe('WebDriver', function () {
       assert.equal(numPagesAfter, 2)
     })
 
-    it('should assert when there is no ability to switch to next tab', () => {
-      return wd
-        .amOnPage('/')
-        .then(() => wd.click('More info'))
-        .then(() => wd.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
-        .then(() => wd.switchToNextTab(2))
-        .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
-        .catch(e => {
-          assert.equal(e.message, 'There is no ability to switch to next tab with offset 2')
-        })
+    it('should assert when there is no ability to switch to next tab', async () => {
+      try {
+        await wd.amOnPage('/')
+        await wd.click('More info')
+        await wd.wait(1) // Wait is required because the url is changed by the previous statement (maybe related to #914)
+        await wd.switchToNextTab(2)
+        assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!')
+      } catch (e) {
+        assert.equal(e.message, 'There is no ability to switch to next tab with offset 2')
+      }
     })
 
-    it('should close current tab', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.click('New tab'))
-        .then(() => wd.switchToNextTab())
-        .then(() => wd.seeInCurrentUrl('/login'))
-        .then(() => wd.grabNumberOfOpenTabs())
-        .then(numPages => assert.equal(numPages, 2))
-        .then(() => wd.closeCurrentTab())
-        .then(() => wd.seeInCurrentUrl('/info'))
-        .then(() => wd.grabNumberOfOpenTabs())
+    it('should close current tab', async () => {
+      await wd.amOnPage('/info')
+      await wd.click('New tab')
+      await wd.switchToNextTab()
+      await wd.seeInCurrentUrl('/login')
+      const numPages = await wd.grabNumberOfOpenTabs()
+      assert.equal(numPages, 2)
+      await wd.closeCurrentTab()
+      await wd.seeInCurrentUrl('/info')
+      await wd.grabNumberOfOpenTabs()
     })
 
-    it('should close other tabs', () => {
-      return wd
-        .amOnPage('/')
-        .then(() => wd.openNewTab())
-        .then(() => wd.seeInCurrentUrl('about:blank'))
-        .then(() => wd.amOnPage('/info'))
-        .then(() => wd.click('New tab'))
-        .then(() => wd.switchToNextTab())
-        .then(() => wd.seeInCurrentUrl('/login'))
-        .then(() => wd.closeOtherTabs())
-        .then(() => wd.seeInCurrentUrl('/login'))
-        .then(() => wd.grabNumberOfOpenTabs())
+    it('should close other tabs', async () => {
+      await wd.amOnPage('/')
+      await wd.openNewTab()
+      await wd.seeInCurrentUrl('about:blank')
+      await wd.amOnPage('/info')
+      await wd.click('New tab')
+      await wd.switchToNextTab()
+      await wd.seeInCurrentUrl('/login')
+      await wd.closeOtherTabs()
+      await wd.seeInCurrentUrl('/login')
+      await wd.grabNumberOfOpenTabs()
     })
 
-    it('should open new tab', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.openNewTab())
-        .then(() => wd.waitInUrl('about:blank'))
-        .then(() => wd.grabNumberOfOpenTabs())
-        .then(numPages => assert.equal(numPages, 2))
+    it('should open new tab', async () => {
+      await wd.amOnPage('/info')
+      await wd.openNewTab()
+      await wd.waitInUrl('about:blank')
+      const numPages = await wd.grabNumberOfOpenTabs()
+      assert.equal(numPages, 2)
     })
 
-    it('should switch to previous tab', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.openNewTab())
-        .then(() => wd.waitInUrl('about:blank'))
-        .then(() => wd.switchToPreviousTab())
-        .then(() => wd.waitInUrl('/info'))
+    it('should switch to previous tab', async () => {
+      await wd.amOnPage('/info')
+      await wd.openNewTab()
+      await wd.waitInUrl('about:blank')
+      await wd.switchToPreviousTab()
+      await wd.waitInUrl('/info')
     })
 
-    it('should assert when there is no ability to switch to previous tab', () => {
-      return wd
-        .amOnPage('/info')
-        .then(() => wd.openNewTab())
-        .then(() => wd.waitInUrl('about:blank'))
-        .then(() => wd.switchToPreviousTab(2))
-        .then(() => wd.waitInUrl('/info'))
-        .catch(e => {
-          assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2')
-        })
+    it('should assert when there is no ability to switch to previous tab', async () => {
+      try {
+        await wd.amOnPage('/info')
+        await wd.openNewTab()
+        await wd.waitInUrl('about:blank')
+        await wd.switchToPreviousTab(2)
+        await wd.waitInUrl('/info')
+      } catch (e) {
+        assert.equal(e.message, 'There is no ability to switch to previous tab with offset 2')
+      }
     })
   })
 
-  // TO-DO: those tests are flaky so skipping them for now
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', async () => {
     it('should accept popup window', async () => {
       await wd.amOnPage('/form/popup')
-      await wd.waitForText('Confirm', 5)
       await wd.click('Confirm')
       await wd.acceptPopup()
-      await wd.waitForElement({ css: '#result' }, 5)
       await wd.see('Yes', '#result')
     })
 
     it('should cancel popup', async () => {
       await wd.amOnPage('/form/popup')
-      await wd.waitForText('Confirm', 5)
       await wd.click('Confirm')
       await wd.cancelPopup()
-      await wd.waitForElement({ css: '#result' }, 5)
       await wd.see('No', '#result')
     })
 
-    it('should check text in popup', () => {
-      return wd
-        .amOnPage('/form/popup')
-        .then(() => wd.click('Alert'))
-        .then(() => wd.seeInPopup('Really?'))
-        .then(() => wd.cancelPopup())
+    it('should check text in popup', async () => {
+      await wd.amOnPage('/form/popup')
+      await wd.click('Alert')
+      await wd.seeInPopup('Really?')
+      await wd.cancelPopup()
     })
 
-    it('should grab text from popup', () => {
-      return wd
-        .amOnPage('/form/popup')
-        .then(() => wd.click('Alert'))
-        .then(() => wd.grabPopupText())
-        .then(text => assert.equal(text, 'Really?'))
+    it('should grab text from popup', async () => {
+      await wd.amOnPage('/form/popup')
+      await wd.click('Alert')
+      const text = await wd.grabPopupText()
+      assert.equal(text, 'Really?')
     })
 
-    it('should return null if no popup is visible (do not throw an error)', () => {
-      return wd
-        .amOnPage('/form/popup')
-        .then(() => wd.grabPopupText())
-        .then(text => assert.equal(text, null))
+    it('should return null if no popup is visible (do not throw an error)', async () => {
+      await wd.amOnPage('/form/popup')
+      const text = await wd.grabPopupText()
+      assert.equal(text, null)
     })
   })
 
@@ -1296,7 +1271,6 @@ describe('WebDriver - Basic Authentication', () => {
 
   afterEach(() => wd._after())
 
-  // local run passed ✔ should be authenticated (443ms)
   describe('open page : #amOnPage', () => {
     it('should be authenticated', async () => {
       await wd.amOnPage('/basic_auth')

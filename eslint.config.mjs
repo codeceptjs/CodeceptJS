@@ -16,7 +16,6 @@ export default [
   {
     ignores: ['test/data/output', 'lib/css2xpath/*'],
   },
-  ...compat.extends('airbnb-base'),
   {
     languageOptions: {
       globals: {
@@ -24,7 +23,7 @@ export default [
       },
 
       ecmaVersion: 2020,
-      sourceType: 'commonjs',
+      sourceType: 'module',
     },
 
     rules: {

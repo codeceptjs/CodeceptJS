@@ -263,8 +263,8 @@ describe('BDD', () => {
     let fn
     Given('I am a {word}', params => params[0])
     When('I have {int} wings and {int} eyes', params => params[0] + params[1])
-    Given('I have ${int} in my pocket', params => params[0]) // eslint-disable-line no-template-curly-in-string
-    Given('I have also ${float} in my pocket', params => params[0]) // eslint-disable-line no-template-curly-in-string
+    Given('I have ${int} in my pocket', params => params[0])
+    Given('I have also ${float} in my pocket', params => params[0])
     fn = matchStep('I am a bird')
     expect('bird').is.equal(fn(fn.params))
     fn = matchStep('I have 2 wings and 2 eyes')
