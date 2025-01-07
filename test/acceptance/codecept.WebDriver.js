@@ -2,7 +2,7 @@ const TestHelper = require('../support/TestHelper')
 
 module.exports.config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 20,
   output: './output',
   helpers: {
     WebDriver: {
@@ -11,11 +11,11 @@ module.exports.config = {
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
       // disableScreenshots: true,
-      // desiredCapabilities: {
-      //   chromeOptions: {
-      //     args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
-      //   },
-      // },
+      desiredCapabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gpu', '--window-size=500,700'],
+        },
+      },
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',

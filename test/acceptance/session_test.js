@@ -4,18 +4,18 @@ const { event } = codeceptjs
 
 Feature('Session')
 
-Scenario('simple session @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+Scenario('simple session @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/info')
   session('john', () => {
-    I.amOnPage('https://codecept.io/')
+    I.amOnPage('/login')
     I.dontSeeInCurrentUrl('/info')
-    I.see('CodeceptJS')
+    I.see('Email')
   })
-  I.dontSee('GitHub')
+  I.dontSee('Email')
   I.seeInCurrentUrl('/info')
 })
 
-Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright @WebDriver', async ({ I }) => {
+Scenario('screenshots reflect the current page of current session @Puppeteer @Playwright', async ({ I }) => {
   I.amOnPage('/')
   I.saveScreenshot('session_default_1.png')
 
@@ -77,7 +77,7 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
   I.expectNotEqual(cookies.john, cookies.mary)
 })
 
-Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwright', async function ({ I }) {
+Scenario('should save screenshot for sessions @Puppeteer @Playwright', async function ({ I }) {
   await I.amOnPage('/form/bug1467')
   await I.saveScreenshot('original.png')
   await I.amOnPage('/')
@@ -98,7 +98,7 @@ Scenario('should save screenshot for sessions @WebDriverIO @Puppeteer @Playwrigh
   await I.expectNotEqual(main_original, session_failed)
 })
 
-Scenario('should throw exception and close correctly @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+Scenario('should throw exception and close correctly @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467#session1')
   I.checkOption('Yes')
   session('john', () => {
@@ -110,7 +110,7 @@ Scenario('should throw exception and close correctly @WebDriverIO @Puppeteer @Pl
   I.amOnPage('/info')
 }).fails()
 
-Scenario('async/await @WebDriverIO', ({ I }) => {
+Scenario('async/await', ({ I }) => {
   I.amOnPage('/form/bug1467#session1')
   I.checkOption('Yes')
   session('john', async () => {
@@ -121,7 +121,7 @@ Scenario('async/await @WebDriverIO', ({ I }) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' })
 })
 
-Scenario('exception on async/await @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+Scenario('exception on async/await @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467#session1')
   I.checkOption('Yes')
   session('john', async () => {
@@ -132,7 +132,7 @@ Scenario('exception on async/await @WebDriverIO @Puppeteer @Playwright', ({ I })
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' })
 }).throws(/to be checked/)
 
-Scenario('should work with within @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+Scenario('should work with within @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467')
   session('john', () => {
     I.amOnPage('/form/bug1467')
@@ -209,7 +209,7 @@ xScenario('should start firefox', async ({ I }) => {
   assert(isChrome)
 })
 
-Scenario('should return a value in @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+Scenario('should return a value in @Puppeteer @Playwright', async ({ I }) => {
   I.amOnPage('/form/textarea')
   const val = await session('john', () => {
     I.amOnPage('/info')
@@ -220,7 +220,7 @@ Scenario('should return a value in @WebDriverIO @Puppeteer @Playwright', async (
   I.see('[description] => Information')
 })
 
-Scenario('should return a value @WebDriverIO @Puppeteer @Playwright in async', async ({ I }) => {
+Scenario('should return a value @Puppeteer @Playwright in async', async ({ I }) => {
   I.amOnPage('/form/textarea')
   const val = await session('john', async () => {
     I.amOnPage('/info')

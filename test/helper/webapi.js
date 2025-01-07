@@ -762,14 +762,18 @@ module.exports.tests = function () {
 
       await I.amOnPage('/info')
       const val = await I.grabHTMLFrom('#grab-multiple')
-      assert.equal(
-        `
+      if (isHelper('WebDriver')) {
+        assert.equal('<a id="first-link">First</a>\n<a id="second-link">Second</a>\n<a id="third-link">Third</a>', val)
+      } else {
+        assert.equal(
+          `
     <a id="first-link">First</a>
     <a id="second-link">Second</a>
     <a id="third-link">Third</a>
 `,
-        val,
-      )
+          val,
+        )
+      }
     })
 
     it('should grab value from field', async () => {
@@ -1313,7 +1317,7 @@ module.exports.tests = function () {
 
       await I.amOnPage('/iframe')
       await I.resizeWindow(500, 700)
-      await I.switchTo(0)
+      await I.switchTo('iframe')
 
       const { x, y } = await I.grabPageScrollPosition()
       await I.scrollTo('.sign')

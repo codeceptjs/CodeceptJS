@@ -382,6 +382,7 @@ describe('WebDriver - No Selenium server started', function () {
     })
   })
 
+
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', async () => {
       await wd.amOnPage('/')
