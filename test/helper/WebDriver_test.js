@@ -52,7 +52,6 @@ describe('WebDriver', function () {
   beforeEach(async () => {
     webApiTests.init({ I: wd, siteUrl })
     this.wdBrowser = await wd._before()
-    this.wdBrowser.on('dialog', dialog => {})
     return this.wdBrowser
   })
 
@@ -695,47 +694,39 @@ describe('WebDriver', function () {
     })
   })
 
-  // TO-DO: those tests are flaky so skipping them for now
   describe('popup : #acceptPopup, #seeInPopup, #cancelPopup', async () => {
     it('should accept popup window', async () => {
       await wd.amOnPage('/form/popup')
-      await wd.waitForText('Confirm', 5)
       await wd.click('Confirm')
       await wd.acceptPopup()
-      await wd.waitForElement({ css: '#result' }, 5)
       await wd.see('Yes', '#result')
     })
 
     it('should cancel popup', async () => {
       await wd.amOnPage('/form/popup')
-      await wd.waitForText('Confirm', 5)
       await wd.click('Confirm')
       await wd.cancelPopup()
-      await wd.waitForElement({ css: '#result' }, 5)
       await wd.see('No', '#result')
     })
 
-    it('should check text in popup', () => {
-      return wd
-        .amOnPage('/form/popup')
-        .then(() => wd.click('Alert'))
-        .then(() => wd.seeInPopup('Really?'))
-        .then(() => wd.cancelPopup())
+    it('should check text in popup', async () => {
+      await wd.amOnPage('/form/popup')
+      await wd.click('Alert')
+      await wd.seeInPopup('Really?')
+      await wd.cancelPopup()
     })
 
-    it('should grab text from popup', () => {
-      return wd
-        .amOnPage('/form/popup')
-        .then(() => wd.click('Alert'))
-        .then(() => wd.grabPopupText())
-        .then(text => assert.equal(text, 'Really?'))
+    it('should grab text from popup', async () => {
+      await wd.amOnPage('/form/popup')
+      await wd.click('Alert')
+      const text = await wd.grabPopupText()
+      assert.equal(text, 'Really?')
     })
 
-    it('should return null if no popup is visible (do not throw an error)', () => {
-      return wd
-        .amOnPage('/form/popup')
-        .then(() => wd.grabPopupText())
-        .then(text => assert.equal(text, null))
+    it('should return null if no popup is visible (do not throw an error)', async () => {
+      await wd.amOnPage('/form/popup')
+      const text = await wd.grabPopupText()
+      assert.equal(text, null)
     })
   })
 
