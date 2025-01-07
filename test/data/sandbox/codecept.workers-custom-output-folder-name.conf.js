@@ -9,8 +9,7 @@ exports.config = {
     },
   },
   include: {},
-  // eslint-disable-next-line no-empty-function
   async bootstrap() {},
   mocha: {},
   name: 'sandbox',
-};
+}

@@ -1,9 +1,9 @@
-let event;
+let event
 try {
-  require.resolve('../../../lib');
-  event = require('../../../lib').event;
+  require.resolve('../../../lib')
+  event = require('../../../lib').event
 } catch (err) {
-  event = require('/codecept/lib').event; // eslint-disable-line
+  event = require('/codecept/lib').event
 }
 
 const eventTypes = [
@@ -22,32 +22,32 @@ const eventTypes = [
   event.test.passed,
   event.test.failed,
   event.test.after,
-];
+]
 
-let eventRecorder = [];
-let eventTypeCounter = {};
+let eventRecorder = []
+let eventTypeCounter = {}
 const options = {
   logToConsole: false,
-};
+}
 
-const newEventHandler = (name) => {
+const newEventHandler = name => {
   event.dispatcher.on(name, () => {
-    eventRecorder.push(name);
-    eventTypeCounter[name] = (eventTypeCounter[name] || 0) + 1;
+    eventRecorder.push(name)
+    eventTypeCounter[name] = (eventTypeCounter[name] || 0) + 1
     if (options.logToConsole) {
-      console.log(`Event:${name}`);
+      console.log(`Event:${name}`)
     }
-  });
-};
+  })
+}
 
-eventTypes.forEach(name => newEventHandler(name));
+eventTypes.forEach(name => newEventHandler(name))
 
 module.exports = {
   events: eventRecorder,
   counter: eventTypeCounter,
   clearEvents: () => {
-    eventRecorder = [];
-    eventTypeCounter = {};
+    eventRecorder = []
+    eventTypeCounter = {}
   },
-  setConsoleLogging: on => options.logToConsole = !!on,
-};
+  setConsoleLogging: on => (options.logToConsole = !!on),
+}
