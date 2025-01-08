@@ -3,9 +3,12 @@ import { Test as MochaTest, Suite as MochaSuite } from 'mocha'
 declare global {
   namespace CodeceptJS {
     interface Test extends MochaTest {
+      uid: string
       title: string
       tags: string[]
       steps: string[]
+      meta: Record<string, any>
+      notes: string[]
       config: Record<string, any>
       artifacts: string[]
       inject: Record<string, any>
