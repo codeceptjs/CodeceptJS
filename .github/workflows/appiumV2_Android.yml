@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 3.x
-      - improve-appium-workflow
 
 env:
   CI: true
