@@ -10,7 +10,8 @@ services:
         - node_modules:/codecept/node_modules
     command: test/rest
     depends_on:
-      - json_server
+      json_server:
+        condition: service_healthy
 
   test-acceptance.webdriverio:
     build: ..
@@ -70,8 +71,14 @@ services:
     <<: *test-service
     entrypoint: []
     command: npm run json-server
-    expose:
-      - 8010
+    ports:
+      - '8010:8010' # Expose to host
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8010/health']
+      interval: 10s # Check every 10 seconds
+      timeout: 5s # Timeout after 5 seconds
+      retries: 3 # Retry 3 times before marking as unhealthy
+      start_period: 10s # Wait 10 seconds before starting health checks
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
