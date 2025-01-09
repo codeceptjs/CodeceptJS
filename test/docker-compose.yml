@@ -79,6 +79,7 @@ services:
       timeout: 5s # Timeout after 5 seconds
       retries: 3 # Retry 3 times before marking as unhealthy
       start_period: 10s # Wait 10 seconds before starting health checks
+    restart: always # Automatically restart the container if it fails or becomes unhealthy
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
