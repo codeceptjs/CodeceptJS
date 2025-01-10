@@ -550,18 +550,9 @@ Hide the keyboard.
 ```js
 // taps outside to hide keyboard per default
 I.hideDeviceKeyboard();
-I.hideDeviceKeyboard('tapOutside');
-
-// or by pressing key
-I.hideDeviceKeyboard('pressKey', 'Done');
 ```
 
 Appium: support Android and iOS
-
-#### Parameters
-
-*   `strategy` **(`"tapOutside"` | `"pressKey"`)?** Desired strategy to close keyboard (‘tapOutside’ or ‘pressKey’)
-*   `key` **[string][5]?** Optional key
 
 ### sendDeviceKeyEvent
 

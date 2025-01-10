@@ -9,6 +9,8 @@ env:
   CI: true
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
 
 jobs:
   appium:
@@ -29,8 +31,12 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      - run: "npm run test:ios:appium-${{ matrix.test-suite }}"
-        env: # Or as an environment variable
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
 
+      - name: Upload APK to Sauce Labs
+        run: |
+          curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" \
+          --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' \
+          --form 'payload=@test/data/mobile/TestApp-iphonesimulator.zip' \
+          --form 'name="TestApp-iphonesimulator.zip"'
+
+      - run: 'npm run test:ios:appium-${{ matrix.test-suite }}'
