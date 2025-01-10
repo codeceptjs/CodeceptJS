@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.6.10",
+  "version": "3.7.0-beta.1",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
     "acceptance",
@@ -93,6 +93,7 @@
     "fn-args": "4.0.0",
     "fs-extra": "11.2.0",
     "glob": "^11.0.0",
+    "fuse.js": "^7.0.0",
     "html-minifier-terser": "7.2.0",
     "inquirer": "6.5.2",
     "invisi-data": "^1.0.0",

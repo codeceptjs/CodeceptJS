@@ -9,27 +9,42 @@ on:
       - '**'
 
 jobs:
-  build:
-
+  unit-tests:
+    name: Unit tests
     runs-on: ubuntu-22.04
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [20.x, 22.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm i --force
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - uses: nick-fields/retry@v3
-      with:
-        timeout_minutes: 6
-        max_attempts: 3
-        retry_on: error
-        command: npm test
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - run: npm run test:unit
+
+  runner-tests:
+    name: Runner tests
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - run: npm run test:runner

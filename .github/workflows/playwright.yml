@@ -15,7 +15,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,32 +22,34 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: 7.4
-    - name: npm install
-      run: |
-        npm i --force
-      env:
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - name: Install browsers and deps
-      run: npx playwright install && npx playwright install-deps
-    - name: start a server
-      run: "php -S 127.0.0.1:8000 -t test/data/app &"
-    - name: run chromium tests
-      run: "./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run chromium with restart==browser tests
-      run: "BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run chromium with restart==session tests
-      run: "BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run firefox tests
-      run: "BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run webkit tests
-      run: "BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"
-    - name: run chromium unit tests
-      run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+      - name: npm install
+        run: |
+          npm i --force
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: Install browsers and deps
+        run: npx playwright install && npx playwright install-deps
+      - name: check
+        run: './bin/codecept.js check -c test/acceptance/codecept.Playwright.js'
+      - name: start a server
+        run: 'php -S 127.0.0.1:8000 -t test/data/app &'
+      - name: run chromium tests
+        run: './bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+      - name: run chromium with restart==browser tests
+        run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+      - name: run chromium with restart==session tests
+        run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+      - name: run firefox tests
+        run: 'BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+      - name: run webkit tests
+        run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+      - name: run chromium unit tests
+        run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000
