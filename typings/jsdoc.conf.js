@@ -12,7 +12,7 @@ module.exports = {
       './lib/index.js',
       './lib/locator.js',
       './lib/output.js',
-      './lib/pause.js',
+      './lib/debug.js',
       './lib/recorder.js',
       './lib/secret.js',
       './lib/session.js',
