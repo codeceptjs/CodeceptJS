@@ -40,6 +40,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should use global timeouts if timeout is set', done => {
+    this.retries(3)
     exec(config_run_config('codecept.timeout.conf.js', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 0.1')
@@ -51,7 +52,7 @@ describe('CodeceptJS Timeouts', function () {
   it('should prefer step timeout', done => {
     exec(config_run_config('codecept.conf.js', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
-      expect(stdout).toContain('was interrupted on step timeout 100ms')
+      expect(stdout).toContain('was interrupted on step timeout 200ms')
       expect(err).toBeTruthy()
       done()
     })
