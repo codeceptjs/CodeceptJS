@@ -4,13 +4,12 @@ on:
   push:
     branches:
       - 3.x
-  release:
-    types: [published]
 
 jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-22.04
+    if: startsWith(github.event.ref_name, 'release-')
 
     steps:
       - name: Check out the repo with the latest code
@@ -27,7 +26,11 @@ jobs:
 
       - name: Get the current tag
         id: currentTag
-        run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG && echo "TAG="$TAG >> "$GITHUB_ENV"
+        run: |
+          git fetch --prune --unshallow
+          TAG=$(git describe --tags --abbrev=0)
+          echo $TAG
+          echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
