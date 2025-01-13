@@ -121,7 +121,7 @@
     "@codeceptjs/expect-helper": "^0.2.2",
     "@codeceptjs/mock-request": "0.3.1",
     "@eslint/eslintrc": "3.2.0",
-    "@eslint/js": "9.17.0",
+    "@eslint/js": "9.18.0",
     "@faker-js/faker": "9.3.0",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "5.1.0",
