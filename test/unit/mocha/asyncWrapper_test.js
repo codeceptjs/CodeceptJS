@@ -35,9 +35,9 @@ describe('AsyncWrapper', () => {
     let counter = 0
     test.fn = () => {
       recorder.add('test', async () => {
-        await counter++
-        await counter++
-        await counter++
+        counter++
+        counter++
+        counter++
         counter++
       })
     }
