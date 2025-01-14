@@ -607,7 +607,7 @@ describe('CodeceptJS ${featureName}', function () {
     console.log(`Created test files for feature: ${featureName}`)
 
     console.log('Run codecept tests with:')
-    console.log(`./bin/codecept.js run --config ${configDir}/codecept.${featureName}.conf.js`)
+    console.log(`./bin/codecept.js run --config ${configDir}/codecept.conf.js`)
 
     console.log('')
     console.log('Run tests with:')
