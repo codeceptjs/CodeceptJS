@@ -5,6 +5,7 @@ const recorder = require('../../lib/recorder')
 describe('effects', () => {
   describe('hopeThat', () => {
     beforeEach(() => {
+      recorder.reset()
       recorder.start()
     })
 
@@ -25,8 +26,32 @@ describe('effects', () => {
     })
   })
 
+  describe('tryTo', () => {
+    beforeEach(() => {
+      recorder.reset()
+      recorder.start()
+    })
+
+    it('should execute command on success', async () => {
+      const ok = await tryTo(() => recorder.add(() => 5))
+      expect(ok).to.be.equal(true)
+      return recorder.promise()
+    })
+
+    it('should execute command on fail', async () => {
+      const notOk = await tryTo(() =>
+        recorder.add(() => {
+          throw new Error('Ups')
+        }),
+      )
+      expect(false).is.equal(notOk)
+      return recorder.promise()
+    })
+  })
+
   describe('retryTo', () => {
     beforeEach(() => {
+      recorder.reset()
       recorder.start()
     })
 
@@ -64,28 +89,6 @@ describe('effects', () => {
       }
       expect(counter).to.equal(5)
       expect(errorCaught).is.true
-    })
-  })
-
-  describe('tryTo', () => {
-    beforeEach(() => {
-      recorder.start()
-    })
-
-    it('should execute command on success', async () => {
-      const ok = await tryTo(() => recorder.add(() => 5))
-      expect(true).is.equal(ok)
-      return recorder.promise()
-    })
-
-    it('should execute command on fail', async () => {
-      const notOk = await tryTo(() =>
-        recorder.add(() => {
-          throw new Error('Ups')
-        }),
-      )
-      expect(false).is.equal(notOk)
-      return recorder.promise()
     })
   })
 })
