@@ -30,7 +30,7 @@ describe('Appium', function () {
         recordVideo: 'false',
         recordScreenshots: 'false',
         platformName: 'Android',
-        platformVersion: '9.0',
+        platformVersion: '7.0',
         deviceName: 'Android GoogleAPI Emulator',
         androidInstallTimeout: 90000,
         appWaitDuration: 300000,
