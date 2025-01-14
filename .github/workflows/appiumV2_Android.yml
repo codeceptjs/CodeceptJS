@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 3.x
-      - update-device-appium
+      - updated-device-appium
 
 env:
   CI: true
