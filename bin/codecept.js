@@ -59,6 +59,13 @@ program
   .action(errorHandler(require('../lib/command/init')))
 
 program
+  .command('check')
+  .option(commandFlags.config.flag, commandFlags.config.description)
+  .description('Checks configuration and environment before running tests')
+  .option('-t, --timeout [ms]', 'timeout for checks in ms, 20000 by default')
+  .action(errorHandler(require('../lib/command/check')))
+
+program
   .command('migrate [path]')
   .description('Migrate json config to js config in current dir or [path]')
   .action(errorHandler(require('../lib/command/configMigrate')))

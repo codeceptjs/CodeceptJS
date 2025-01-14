@@ -7,6 +7,11 @@ declare global {
       title: string
       tags: string[]
       steps: string[]
+      meta: Record<string, any>
+      notes: Array<{
+        type: string
+        text: string
+      }>
       config: Record<string, any>
       artifacts: string[]
       inject: Record<string, any>
@@ -15,6 +20,7 @@ declare global {
       totalTimeout?: number
       addToSuite(suite: Mocha.Suite): void
       applyOptions(opts: Record<string, any>): void
+      addNote(type: string, note: string): void
       codeceptjs: boolean
     }
 

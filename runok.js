@@ -546,6 +546,73 @@ ${changelog}`
       process.exit(1)
     }
   },
+
+  async runnerCreateTests(featureName) {
+    // create runner tests for feature
+    const fs = require('fs').promises
+    const path = require('path')
+
+    // Create directories
+    const configDir = path.join('test/data/sandbox/configs', featureName)
+    await fs.mkdir(configDir, { recursive: true })
+
+    // Create codecept config file
+    const configContent = `exports.config = {
+    tests: './*_test.js',
+    output: './output',
+    helpers: {
+      FileSystem: {},
+    },
+    include: {},
+    bootstrap: false,
+    mocha: {},
+    name: '${featureName} tests'
+  }
+  `
+    await fs.writeFile(path.join(configDir, `codecept.conf.js`), configContent)
+
+    // Create feature test file
+    const testContent = `Feature('${featureName}');
+
+Scenario('test ${featureName}', ({ I }) => {
+  // Add test steps here
+});
+`
+    await fs.writeFile(path.join(configDir, `${featureName}_test.js`), testContent)
+
+    // Create runner test file
+    const runnerTestContent = `const { expect } = require('expect')
+const exec = require('child_process').exec
+const { codecept_dir, codecept_run } = require('./consts')
+const debug = require('debug')('codeceptjs:tests')
+
+const config_run_config = (config, grep, verbose = false) => 
+  \`\${codecept_run} \${verbose ? '--verbose' : ''} --config \${codecept_dir}/configs/${featureName}/\${config} \${grep ? \`--grep "\${grep}"\` : ''}\`
+
+describe('CodeceptJS ${featureName}', function () {
+  this.timeout(10000)
+
+  it('should run ${featureName} test', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+      expect(stdout).toContain('OK')
+      expect(err).toBeFalsy()
+      done()
+    })
+  })
+})
+`
+    await fs.writeFile(path.join('test/runner', `${featureName}_test.js`), runnerTestContent)
+
+    console.log(`Created test files for feature: ${featureName}`)
+
+    console.log('Run codecept tests with:')
+    console.log(`./bin/codecept.js run --config ${configDir}/codecept.${featureName}.conf.js`)
+
+    console.log('')
+    console.log('Run tests with:')
+    console.log(`npx mocha test/runner --grep ${featureName}`)
+  },
 }
 
 async function processChangelog() {

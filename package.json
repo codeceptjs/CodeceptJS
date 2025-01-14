@@ -31,7 +31,9 @@
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
-    "./els": "./lib/els.js"
+    "./els": "./lib/els.js",
+    "./effects": "./lib/effects.js",
+    "./steps": "./lib/steps.js"
   },
   "types": "typings/index.d.ts",
   "bin": {
@@ -114,14 +116,14 @@
     "uuid": "11.0.4"
   },
   "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.1.4"
+    "@codeceptjs/detox-helper": "1.1.5"
   },
   "devDependencies": {
     "@apollo/server": "^4",
     "@codeceptjs/expect-helper": "^0.2.2",
     "@codeceptjs/mock-request": "0.3.1",
     "@eslint/eslintrc": "3.2.0",
-    "@eslint/js": "9.17.0",
+    "@eslint/js": "9.18.0",
     "@faker-js/faker": "9.3.0",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "5.1.0",
@@ -166,7 +168,7 @@
     "tsd-jsdoc": "2.5.0",
     "typedoc": "0.27.6",
     "typedoc-plugin-markdown": "4.4.1",
-    "typescript": "5.7.2",
+    "typescript": "5.7.3",
     "wdio-docker-service": "1.5.0",
     "webdriverio": "^9.5.1",
     "xml2js": "0.6.2",

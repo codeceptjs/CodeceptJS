@@ -3,16 +3,15 @@
 [<img src="https://img.shields.io/badge/slack-@codeceptjs-purple.svg?logo=slack">](https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ) [<img src="https://img.shields.io/badge/discourse-codeceptjs-purple">](https://codecept.discourse.group) [![NPM version][npm-image]][npm-url] [<img src="https://img.shields.io/badge/dockerhub-images-blue.svg?logo=codeceptjs">](https://hub.docker.com/r/codeceptjs/codeceptjs)
 [![AI features](https://img.shields.io/badge/AI-features?logo=openai&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
-Build Status:
+## Build Status
 
-Appium Helper:
-[![Appium V2 Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml)
-
-Web Helper:
-[![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)
-[![Puppeteer Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml)
-[![WebDriver Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml)
-[![TestCafe Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml)
+| Type      | Engine     | Status                                                                                                                                                                                                     |
+| --------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 Web    | Playwright | [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)                      |
+| 🌐 Web    | Puppeteer  | [![Puppeteer Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml)                         |
+| 🌐 Web    | WebDriver  | [![WebDriver Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml)                         |
+| 🌐 Web    | TestCafe   | [![TestCafe Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml)                            |
+| 📱 Mobile | Appium     | [![Appium V2 Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appiumV2_Android.yml) |
 
 # CodeceptJS [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
 
@@ -292,7 +291,7 @@ When using Typescript, replace `module.exports` with `export` for autocompletion
 
 Thanks to our awesome contributors! 🎉
 <a href="https://github.com/codeceptjs/codeceptjs/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=codeceptjs/codeceptjs" />
+<img src="https://contrib.rocks/image?repo=codeceptjs/codeceptjs" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).

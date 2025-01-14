@@ -1,5 +1,5 @@
 const chai = require('chai')
-
+const store = require('../../lib/store')
 const expect = chai.expect
 const assert = chai.assert
 const path = require('path')
@@ -99,6 +99,17 @@ module.exports.tests = function () {
       await I.see('Welcome to test app!')
       await I.see('A wise man said: "debug!"')
       await I.dontSee('Info')
+    })
+
+    it('should check text on site with ignoreCase option', async () => {
+      if (isHelper('TestCafe')) return // It won't be implemented
+      await I.amOnPage('/')
+      await I.see('Welcome')
+      store.currentStep = { opts: { ignoreCase: true } }
+      await I.see('welcome to test app!')
+      await I.see('test link', 'a')
+      store.currentStep = {}
+      await I.dontSee('welcome')
     })
 
     it('should check text inside element', async () => {

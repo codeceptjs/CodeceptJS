@@ -58,7 +58,7 @@ describe('Appium', function () {
       it('should grab all available contexts for screen', async () => {
         await app.resetApp()
         await app.waitForElement('~buttonStartWebviewCD', smallWait)
-        await app.click('~buttonStartWebviewCD')
+        await app.tap('~buttonStartWebviewCD')
         const val = await app.grabAllContexts()
         assert.deepEqual(val, ['NATIVE_APP', 'WEBVIEW_io.selendroid.testapp'])
       })
@@ -164,7 +164,7 @@ describe('Appium', function () {
     it('should set device orientation', async () => {
       await app.resetApp()
       await app.waitForElement('~buttonStartWebviewCD', smallWait)
-      await app.click('~buttonStartWebviewCD')
+      await app.tap('~buttonStartWebviewCD')
       await app.setOrientation('LANDSCAPE')
       await app.seeOrientationIs('LANDSCAPE')
     })
@@ -174,7 +174,7 @@ describe('Appium', function () {
     it('should switch context', async () => {
       await app.resetApp()
       await app.waitForElement('~buttonStartWebviewCD', smallWait)
-      await app.click('~buttonStartWebviewCD')
+      await app.tap('~buttonStartWebviewCD')
       await app.switchToContext('WEBVIEW_io.selendroid.testapp')
       const val = await app.grabContext()
       return assert.equal(val, 'WEBVIEW_io.selendroid.testapp')
@@ -182,7 +182,7 @@ describe('Appium', function () {
 
     it('should switch to native and web contexts @quick', async () => {
       await app.resetApp()
-      await app.click('~buttonStartWebviewCD')
+      await app.tap('~buttonStartWebviewCD')
       await app.see('WebView location')
       await app.switchToWeb()
       let val = await app.grabContext()
@@ -219,14 +219,14 @@ describe('Appium', function () {
   describe('#hideDeviceKeyboard', () => {
     it('should hide device Keyboard @quick', async () => {
       await app.resetApp()
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       try {
-        await app.click('//android.widget.CheckBox')
+        await app.tap('//android.widget.CheckBox')
       } catch (e) {
-        e.message.should.include('element')
+        e.message.should.include('Request failed with status code 404')
       }
       await app.hideDeviceKeyboard('pressKey', 'Done')
-      await app.click('//android.widget.CheckBox')
+      await app.tap('//android.widget.CheckBox')
     })
 
     it('should assert if no keyboard', async () => {
@@ -268,7 +268,7 @@ describe('Appium', function () {
     })
 
     it('should react on swipe action', async () => {
-      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       await app.swipe("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800, 1200, 1000)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -280,7 +280,7 @@ describe('Appium', function () {
     })
 
     it('should react on swipeDown action', async () => {
-      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       await app.swipeDown("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -291,7 +291,7 @@ describe('Appium', function () {
 
     it('run simplified swipeDown @quick', async () => {
       await app.resetApp()
-      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       await app.swipeDown("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 120, 100)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -299,7 +299,7 @@ describe('Appium', function () {
     })
 
     it('should react on swipeUp action', async () => {
-      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       await app.swipeUp("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -309,7 +309,7 @@ describe('Appium', function () {
     })
 
     it('should react on swipeRight action', async () => {
-      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       await app.swipeRight("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800, 1000)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -319,7 +319,7 @@ describe('Appium', function () {
     })
 
     it('should react on swipeLeft action', async () => {
-      await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+      await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       await app.swipeLeft("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 800, 1000)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -346,7 +346,7 @@ describe('Appium', function () {
     it('should assert when you dont scroll the document anymore', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       try {
         await app.swipeTo('//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 500)
       } catch (e) {
@@ -357,13 +357,13 @@ describe('Appium', function () {
     it('should react on swipeTo action', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       await app.swipeTo('//android.widget.CheckBox', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
     })
 
     describe('#performTouchAction', () => {
       it('should react on swipeUp action @second', async () => {
-        await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+        await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -374,7 +374,7 @@ describe('Appium', function () {
 
       it('should react on swipeDown action @second', async () => {
         await app.resetApp()
-        await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+        await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -384,7 +384,7 @@ describe('Appium', function () {
       })
 
       it('should react on swipeLeft action', async () => {
-        await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+        await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeLeft("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -394,7 +394,7 @@ describe('Appium', function () {
       })
 
       it('should react on swipeRight action', async () => {
-        await app.click("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
+        await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeRight("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -423,7 +423,7 @@ describe('Appium', function () {
 
     it('should work inside web view as normally @quick', async () => {
       await app.resetApp()
-      await app.click('~buttonStartWebviewCD')
+      await app.tap('~buttonStartWebviewCD')
       await app.switchToWeb()
       await app.see('Prefered Car:')
     })
@@ -433,12 +433,12 @@ describe('Appium', function () {
     it('should be able to send special keys to element @second', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
-      await app.click('~email of the customer')
+      await app.tap('~startUserRegistrationCD')
+      await app.tap('~email of the customer')
       await app.appendField('~email of the customer', '1')
       await app.hideDeviceKeyboard('pressKey', 'Done')
       await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
-      await app.click('//android.widget.Button')
+      await app.tap('//android.widget.Button')
       await app.see('1', '#io.selendroid.testapp:id/label_email_data')
     })
   })
@@ -486,7 +486,7 @@ describe('Appium', function () {
 
     it('should click by xpath', async () => {
       await app.resetApp()
-      await app.click('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
+      await app.tap('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
       await app.seeElement('//android.widget.TextView[@content-desc="label_usernameCD"]')
     })
   })
@@ -495,34 +495,34 @@ describe('Appium', function () {
     it('should fill field by accessibility id', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       await app.fillField('~email of the customer', 'Nothing special')
       await app.hideDeviceKeyboard('pressKey', 'Done')
       await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
-      await app.click('//android.widget.Button')
+      await app.tap('//android.widget.Button')
       await app.see('Nothing special', '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]')
     })
 
     it('should fill field by xpath', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       await app.fillField('//android.widget.EditText[@content-desc="email of the customer"]', 'Nothing special')
       await app.hideDeviceKeyboard('pressKey', 'Done')
       await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
-      await app.click('//android.widget.Button')
+      await app.tap('//android.widget.Button')
       await app.see('Nothing special', '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]')
     })
 
     it('should append field value @second', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       await app.fillField('~email of the customer', 'Nothing special')
       await app.appendField('~email of the customer', 'blabla')
       await app.hideDeviceKeyboard('pressKey', 'Done')
       await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
-      await app.click('//android.widget.Button')
+      await app.tap('//android.widget.Button')
       await app.see('Nothing specialblabla', '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]')
     })
   })
@@ -531,7 +531,7 @@ describe('Appium', function () {
     it('should clear a given element', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click('~startUserRegistrationCD')
+      await app.tap('~startUserRegistrationCD')
       await app.fillField('~email of the customer', 'Nothing special')
       await app.see('Nothing special', '~email of the customer')
       await app.clearField('~email of the customer')
@@ -559,7 +559,7 @@ describe('Appium', function () {
       await app.appendField('//android.widget.EditText[@content-desc="email of the customer"]', '1')
       await app.hideDeviceKeyboard('pressKey', 'Done')
       await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
-      await app.click('//android.widget.Button')
+      await app.tap('//android.widget.Button')
       await app.see('1', '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]')
       const id = await app.grabNumberOfVisibleElements('//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]', 'contentDescription')
       assert.strictEqual(1, id)
@@ -582,7 +582,7 @@ describe('Appium', function () {
     it('should use Android locators', async () => {
       await app.resetApp()
       await app.waitForElement('~startUserRegistrationCD', smallWait)
-      await app.click({ android: '~startUserRegistrationCD', ios: 'fake-element' })
+      await app.tap({ android: '~startUserRegistrationCD', ios: 'fake-element' })
       await app.see('Welcome to register a new User')
     })
 

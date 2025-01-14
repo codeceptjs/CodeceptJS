@@ -70,8 +70,9 @@ services:
     <<: *test-service
     entrypoint: []
     command: npm run json-server
-    expose:
-      - 8010
+    ports:
+      - '8010:8010' # Expose to host
+    restart: always # Automatically restart the container if it fails or becomes unhealthy
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1

@@ -4,6 +4,7 @@ import('chai').then(chai => {
 })
 const Mocha = require('mocha/lib/mocha')
 const Suite = require('mocha/lib/suite')
+const { createTest } = require('../../../lib/mocha/test')
 
 global.codeceptjs = require('../../../lib')
 const makeUI = require('../../../lib/mocha/ui')
@@ -132,6 +133,19 @@ describe('ui', () => {
       suiteConfig = context.Feature('not skipped suite', { key: 'value' })
       expect(suiteConfig.suite.opts).to.deep.eq({ key: 'value' }, 'Features should have passed options')
     })
+
+    it('should be able to set metadata', () => {
+      suiteConfig = context.Feature('suite')
+      const test1 = createTest('test', () => {})
+      const test2 = createTest('test2', () => {})
+      test1.addToSuite(suiteConfig.suite)
+      test2.addToSuite(suiteConfig.suite)
+
+      suiteConfig.meta('key', 'value')
+
+      expect(test1.meta.key).eq('value')
+      expect(test2.meta.key).eq('value')
+    })
   })
 
   describe('Scenario', () => {
@@ -167,6 +181,12 @@ describe('ui', () => {
       scenarioConfig = context.Scenario('scenario')
       scenarioConfig.injectDependencies({ Data: 'data' })
       expect(scenarioConfig.test.inject.Data).eq('data')
+    })
+
+    it('should be able to set metadata', () => {
+      scenarioConfig = context.Scenario('scenario')
+      scenarioConfig.meta('key', 'value')
+      expect(scenarioConfig.test.meta.key).eq('value')
     })
 
     describe('todo', () => {

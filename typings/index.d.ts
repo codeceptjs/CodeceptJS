@@ -451,9 +451,6 @@ declare namespace CodeceptJS {
   }
 
   // Extending JSDoc generated typings
-  interface Step {
-    isMetaStep(): this is MetaStep
-  }
 
   // Types who are not be defined by JSDoc
   type actor = <T extends { [action: string]: (...args: any[]) => void }>(customSteps?: T & ThisType<WithTranslation<Methods & T>>) => WithTranslation<Methods & T>
@@ -502,7 +499,7 @@ declare namespace CodeceptJS {
     (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig
   }
   interface IHook {
-    (callback: HookCallback): void
+    (callback: HookCallback): HookConfig
   }
 
   interface Globals {
@@ -515,6 +512,10 @@ declare namespace CodeceptJS {
     transformer: (...match: string[]) => T
     useForSnippets?: boolean
     preferForRegexpMatch?: boolean
+  }
+
+  interface HookConfig {
+    retry(retries?: number): HookConfig
   }
 }
 

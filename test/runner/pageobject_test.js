@@ -1,7 +1,8 @@
 const path = require('path')
 const exec = require('child_process').exec
 const { expect } = require('expect')
-
+const figures = require('figures')
+const debug = require('debug')('codeceptjs:test')
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/pageObjects')
 const codecept_run = `${runner} run`
@@ -16,13 +17,14 @@ describe('CodeceptJS PageObject', () => {
     it('should fail if page objects was failed', done => {
       exec(`${config_run_config('codecept.fail_po.js')} --debug`, (err, stdout) => {
         const lines = stdout.split('\n')
+        debug(stdout)
         expect(lines).toEqual(
           expect.arrayContaining([
             expect.stringContaining('File notexistfile.js not found in'),
             expect.stringContaining('-- FAILURES'),
-            expect.stringContaining('- I.seeFile("notexistfile.js")'),
-            expect.stringContaining('- I.seeFile("codecept.class.js")'),
-            expect.stringContaining('- I.amInPath(".")'),
+            expect.stringContaining(figures.cross + ' I.seeFile("notexistfile.js")'),
+            expect.stringContaining(figures.tick + ' I.seeFile("codecept.class.js")'),
+            expect.stringContaining(figures.tick + ' I.amInPath(".")'),
           ]),
         )
         expect(stdout).toContain('FAIL  | 0 passed, 1 failed')
