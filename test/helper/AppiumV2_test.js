@@ -595,7 +595,7 @@ describe('Appium', function () {
         platform = 'android'
       })
       app.runOnAndroid({ platformVersion: '7.0' }, () => {
-        platform = 'android7'
+        platform = 'android'
       })
 
       assert.equal('android', platform)
