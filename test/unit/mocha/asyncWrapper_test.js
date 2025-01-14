@@ -60,6 +60,7 @@ describe('AsyncWrapper', () => {
     })
 
     it('should fire events', () => {
+      recorder.reset()
       testWrapper(test).fn(() => null)
       expect(started.called).is.ok
       teardown()
