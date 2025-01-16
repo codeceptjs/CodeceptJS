@@ -81,7 +81,6 @@ Scenario('should save screenshot for sessions @Puppeteer @Playwright', async fun
   await I.amOnPage('/form/bug1467')
   await I.saveScreenshot('original.png')
   await I.amOnPage('/')
-  await I.saveScreenshot('main_session.png')
   session('john', async () => {
     await I.amOnPage('/form/bug1467')
     event.dispatcher.emit(event.test.failed, this)
@@ -94,8 +93,8 @@ Scenario('should save screenshot for sessions @Puppeteer @Playwright', async fun
   await I.expectEqual(original, failed)
 
   // Assert that screenshots of sessions are created
-  const [main_original, session_failed] = await I.getSHA256Digests([`${output_dir}/main_session.png`, `${output_dir}/john_${fileName}.failed.png`])
-  await I.expectNotEqual(main_original, session_failed)
+  const [main_original] = await I.getSHA256Digests([`${output_dir}/${fileName}.failed.png`])
+  await I.expectNotEqual(main_original, failed)
 })
 
 Scenario('should throw exception and close correctly @Puppeteer @Playwright', ({ I }) => {
