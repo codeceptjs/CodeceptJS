@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 3.x
-      - appium-v2-cleanup
 
 env:
   CI: true
