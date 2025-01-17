@@ -33,7 +33,8 @@
     ".": "./lib/index.js",
     "./els": "./lib/els.js",
     "./effects": "./lib/effects.js",
-    "./steps": "./lib/steps.js"
+    "./steps": "./lib/steps.js",
+    "./step": "./lib/step.js"
   },
   "types": "typings/index.d.ts",
   "bin": {
