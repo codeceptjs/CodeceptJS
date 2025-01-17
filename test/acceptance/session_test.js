@@ -77,7 +77,7 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
   I.expectNotEqual(cookies.john, cookies.mary)
 })
 
-Scenario('should save screenshot for sessions @Puppeteer @Playwright @WebDriver', async function ({ I }) {
+Scenario('should save screenshot for sessions @Puppeteer @Playwright', async function ({ I }) {
   await I.amOnPage('/form/bug1467')
   await I.saveScreenshot('original.png')
   await I.amOnPage('/')
