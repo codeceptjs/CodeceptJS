@@ -1,9 +1,10 @@
-name: Appium V2 Tests - Android
+name: Appium Tests - Android
 
 on:
   push:
     branches:
       - 3.x
+      - appium-v2-cleanup
 
 env:
   CI: true
