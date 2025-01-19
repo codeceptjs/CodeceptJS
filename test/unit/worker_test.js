@@ -29,7 +29,7 @@ describe('Workers', function () {
     workers.run()
 
     workers.on(event.all.result, result => {
-      expect(result.hasFailed).equal(false)
+      expect(result.hasFailed).equal(true)
       expect(passedCount).equal(5)
       expect(failedCount).equal(3)
       done()
@@ -101,7 +101,7 @@ describe('Workers', function () {
     })
 
     workers.on(event.all.result, result => {
-      expect(result.hasFailed).equal(false)
+      expect(result.hasFailed).equal(true)
       expect(passedCount).equal(3)
       expect(failedCount).equal(2)
       done()
