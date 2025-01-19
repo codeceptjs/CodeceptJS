@@ -20,6 +20,8 @@ declare global {
       totalTimeout?: number
       addToSuite(suite: Mocha.Suite): void
       applyOptions(opts: Record<string, any>): void
+      simplify(): Record<string, any>
+      toFileName(): string
       addNote(type: string, note: string): void
       codeceptjs: boolean
     }

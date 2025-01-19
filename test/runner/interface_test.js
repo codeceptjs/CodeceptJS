@@ -156,7 +156,6 @@ describe('CodeceptJS Interface', () => {
       expect(output).toContain('OK')
       expect(output).toContain('0 passed')
       expect(output).toContain('2 skipped')
-      console.log(err)
       if (process.env.CI) {
         // we notify that no tests were executed, which is not expected on CI
         expect(err).toBeTruthy()
