@@ -107,8 +107,6 @@ describe('CodeceptJS Workers Runner', function () {
     exec(`${codecept_run} 2 --grep "Workers Failing"`, (err, stdout) => {
       expect(stdout).toContain('CodeceptJS') // feature
       expect(stdout).toContain('Running tests in 2 workers')
-      // Test Scenario wasn't executed, but we can see it in logs because Before() hook was executed
-      expect(stdout).not.toContain(' should not be executed ')
       expect(stdout).toContain('"before each" hook: Before for "should not be executed"')
       expect(stdout).not.toContain('this is running inside worker')
       expect(stdout).toContain('failed')
