@@ -32,7 +32,7 @@ Launch the daemon: `appium`
 
 This helper should be configured in codecept.conf.ts or codecept.conf.js
 
-*   `appiumV2`: set this to true if you want to run tests with AppiumV2. See more how to setup [here][3]
+*   `appiumV2`: by default is true, set this to false if you want to run tests with AppiumV1. See more how to setup [here][3]
 *   `app`: Application path. Local path or remote URL to an .ipa or .apk file, or a .zip containing one of these. Alias to desiredCapabilities.appPackage
 *   `host`: (default: 'localhost') Appium host
 *   `port`: (default: '4723') Appium port
@@ -112,7 +112,7 @@ Example Android App using AppiumV2 on BrowserStack:
 {
 helpers: {
   Appium: {
-        appiumV2: true,
+        appiumV2: true, // By default is true, set to false if you want to run against Appium v1
         host: "hub-cloud.browserstack.com",
         port: 4444,
         user: process.env.BROWSERSTACK_USER,
