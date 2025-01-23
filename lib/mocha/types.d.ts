@@ -18,6 +18,7 @@ declare global {
       opts: Record<string, any>
       throws?: Error | string | RegExp | Function
       totalTimeout?: number
+      relativeFile?: string
       addToSuite(suite: Mocha.Suite): void
       applyOptions(opts: Record<string, any>): void
       simplify(): Record<string, any>

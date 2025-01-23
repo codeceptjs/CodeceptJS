@@ -37,9 +37,6 @@ exports.config = {
     steps: ['./step_definitions/steps.js'],
   },
   plugins: {
-    tryTo: {
-      enabled: true,
-    },
     analyze: {
       enabled: true,
     },
@@ -61,9 +58,6 @@ exports.config = {
       enabled: false,
     },
     subtitles: {
-      enabled: true,
-    },
-    retryTo: {
       enabled: true,
     },
   },
