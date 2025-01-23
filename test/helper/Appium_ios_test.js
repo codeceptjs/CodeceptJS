@@ -21,7 +21,6 @@ describe('Appium iOS Tests', function () {
     global.codecept_dir = path.join(__dirname, '/../data')
     app = new Appium({
       app: apk_path,
-      appiumV2: true,
       desiredCapabilities: {
         'sauce:options': {
           appiumVersion: '2.0.0',

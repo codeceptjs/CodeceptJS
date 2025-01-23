@@ -1,4 +1,4 @@
-name: Appium V2 Tests - Android
+name: Appium Tests - iOS
 
 on:
   push:
@@ -23,13 +23,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - run: npm i
+      - run: npm i --force
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
@@ -38,7 +36,7 @@ jobs:
         run: |
           curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" \
           --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' \
-          --form 'payload=@test/data/mobile/selendroid-test-app-0.17.0.apk' \
-          --form 'name="selendroid-test-app-0.17.0.apk"'
+          --form 'payload=@test/data/mobile/TestApp-iphonesimulator.zip' \
+          --form 'name="TestApp-iphonesimulator.zip"'
 
-      - run: 'npm run test:appium-${{ matrix.test-suite }}'
+      - run: 'npm run test:ios:appium-${{ matrix.test-suite }}'

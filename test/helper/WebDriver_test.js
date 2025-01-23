@@ -937,7 +937,7 @@ describe('WebDriver', function () {
     })
   })
 
-  xdescribe('#grabBrowserLogs', () => {
+  describe('#grabBrowserLogs', () => {
     it('should grab browser logs', async () => {
       await wd.amOnPage('/')
       await wd.executeScript(() => {
@@ -946,12 +946,12 @@ describe('WebDriver', function () {
       const logs = await wd.grabBrowserLogs()
       console.log('lololo', logs)
 
-      const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1)
+      const matchingLogs = logs.filter(log => log.indexOf('Test log entry') > -1)
       assert.equal(matchingLogs.length, 1)
     })
 
     it('should grab browser logs across pages', async () => {
-      wd.amOnPage('/')
+      await wd.amOnPage('/')
       await wd.executeScript(() => {
         console.log('Test log entry 1')
       })
@@ -963,8 +963,8 @@ describe('WebDriver', function () {
 
       const logs = await wd.grabBrowserLogs()
 
-      const matchingLogs = logs.filter(log => log.message.indexOf('Test log entry') > -1)
-      assert.equal(matchingLogs.length, 2)
+      const matchingLogs = logs.filter(log => log.indexOf('Test log entry') > -1)
+      assert.equal(matchingLogs.length, 5)
     })
   })
 

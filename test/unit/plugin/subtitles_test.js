@@ -28,7 +28,7 @@ describe('subtitles', () => {
   it('should not capture subtitle as video artifact was missing', async () => {
     const fsMock = sinon.mock(fsPromises)
 
-    const test = {}
+    const test = { notes: [] }
 
     fsMock.expects('writeFile').never()
 
@@ -44,6 +44,7 @@ describe('subtitles', () => {
     const fsMock = sinon.mock(fsPromises)
 
     const test = {
+      notes: [],
       artifacts: {
         video: '../../lib/output/failedTest1.webm',
       },
@@ -71,6 +72,7 @@ describe('subtitles', () => {
     const fsMock = sinon.mock(fsPromises)
 
     const test = {
+      notes: [],
       artifacts: {
         video: '../../lib/output/failedTest1.webm',
       },
@@ -101,10 +103,11 @@ describe('subtitles', () => {
     fsMock.verify()
   })
 
-  it('should capture seperate steps for separate tests', async () => {
+  it('should capture separate steps for separate tests', async () => {
     const fsMock = sinon.mock(fsPromises)
 
     const test1 = {
+      notes: [],
       artifacts: {
         video: '../../lib/output/failedTest1.webm',
       },
@@ -149,6 +152,7 @@ describe('subtitles', () => {
         }),
       )
     const test2 = {
+      notes: [],
       artifacts: {
         video: '../../lib/output/failedTest2.webm',
       },
