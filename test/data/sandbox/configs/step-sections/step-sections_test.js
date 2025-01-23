@@ -1,4 +1,4 @@
-const { Section, SectionEnd } = require('codeceptjs/steps')
+const { Section, EndSection } = require('codeceptjs/steps')
 
 Feature('step-sections')
 
@@ -28,7 +28,7 @@ Scenario('test using of hidden step-sections', ({ I, userPage }) => {
   userPage.actOnPage()
   I.act('One more step')
 
-  SectionEnd()
+  EndSection()
 
   I.act('Nothing to say')
 })
