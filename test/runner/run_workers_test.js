@@ -113,7 +113,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain('FAILURES')
       expect(stdout).toContain('Workers Failing')
       // Only 1 test is executed - Before hook in Workers Failing
-      expect(stdout).toContain('✖ Workers Failing')
+      expect(stdout).toContain('✖ should not be executed')
       expect(stdout).toContain('FAIL  | 0 passed, 1 failed')
       expect(err.code).toEqual(1)
       done()

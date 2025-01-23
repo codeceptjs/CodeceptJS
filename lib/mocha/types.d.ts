@@ -12,6 +12,8 @@ declare global {
         type: string
         text: string
       }>
+      state: string
+      err?: Error
       config: Record<string, any>
       artifacts: string[]
       inject: Record<string, any>
