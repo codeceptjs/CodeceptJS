@@ -28,7 +28,7 @@ Scenario('test using of hidden step-sections', ({ I, userPage }) => {
   userPage.actOnPage()
   I.act('One more step')
 
-  SectionEnd()
+  EndSection()
 
   I.act('Nothing to say')
 })
