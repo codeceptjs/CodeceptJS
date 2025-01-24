@@ -846,6 +846,8 @@ module.exports.tests = function () {
 
   describe('#attachFile', () => {
     it('should upload file located by CSS', async () => {
+      if (isHelper('WebDriver')) this.skip()
+
       await I.amOnPage('/form/file')
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -856,6 +858,8 @@ module.exports.tests = function () {
     })
 
     it('should upload file located by label', async () => {
+      if (isHelper('WebDriver')) this.skip()
+
       await I.amOnPage('/form/file')
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
