@@ -33,7 +33,8 @@ describe('CodeceptJS Timeouts', function () {
   it('should ignore timeouts if no timeout', done => {
     exec(config_run_config('codecept.conf.js', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout)
-      expect(stdout).not.toContain('Timeout')
+      expect(stdout).not.toContain('TimeoutError')
+      expect(stdout).not.toContain('was interrupted on')
       expect(err).toBeFalsy()
       done()
     })
@@ -52,7 +53,7 @@ describe('CodeceptJS Timeouts', function () {
   it('should prefer step timeout', done => {
     exec(config_run_config('codecept.conf.js', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
-      expect(stdout).toContain('was interrupted on step timeout 200ms')
+      expect(stdout).toContain('was interrupted on timeout 200ms')
       expect(err).toBeTruthy()
       done()
     })
@@ -61,7 +62,7 @@ describe('CodeceptJS Timeouts', function () {
   it('should keep timeout with steps', done => {
     exec(config_run_config('codecept.timeout.conf.js', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
-      expect(stdout).toContain('was interrupted on step timeout 100ms')
+      expect(stdout).toContain('was interrupted on timeout 100ms')
       expect(err).toBeTruthy()
       done()
     })
