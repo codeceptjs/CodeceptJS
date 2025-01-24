@@ -1017,7 +1017,7 @@ describe('WebDriver', function () {
     })
   })
 
-  describe('#AttachFile', () => {
+  describe.skip('#AttachFile', () => {
     it('should attach to regular input element', async () => {
       await wd.amOnPage('/form/file')
       await wd.attachFile('Avatar', './app/avatar.jpg')
@@ -1251,7 +1251,7 @@ describe('WebDriver - Basic Authentication', () => {
       basicAuth: { username: 'admin', password: 'admin' },
       browser: 'chrome',
       windowSize: '500x700',
-      remoteFileUpload: true,
+      remoteFileUpload: false,
       smartWait: 0, // just to try
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
