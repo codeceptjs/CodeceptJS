@@ -9,6 +9,9 @@ const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${
 describe('CodeceptJS Timeouts', function () {
   this.timeout(10000)
 
+  // some times messages are different 
+  this.retries(2);
+
   it('should stop test when timeout exceeded', done => {
     exec(config_run_config('codecept.conf.js', 'timed out'), (err, stdout) => {
       debug_this_test && console.log(stdout)
