@@ -10,7 +10,7 @@ Scenario('timeout test in 0.5 #second', { timeout: 0.5 }, ({ I }) => {
   I.waitForSleep(1000)
 })
 
-Scenario('timeout step in 0.5', ({ I }) => {
+Scenario('timeout step in 0.5 old syntax', ({ I }) => {
   I.limitTime(0.2).waitForSleep(100)
   I.limitTime(0.2).waitForSleep(3000)
 })

@@ -28,8 +28,8 @@ describe('Workers', function () {
 
     workers.run()
 
-    workers.on(event.all.result, status => {
-      expect(status).equal(false)
+    workers.on(event.all.result, result => {
+      expect(result.hasFailed).equal(true)
       expect(passedCount).equal(5)
       expect(failedCount).equal(3)
       done()
@@ -63,9 +63,9 @@ describe('Workers', function () {
 
     workers.run()
 
-    workers.on(event.all.result, status => {
+    workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
-      expect(status).equal(true)
+      expect(result.hasFailed).equal(false)
       done()
     })
   })
@@ -100,8 +100,8 @@ describe('Workers', function () {
       passedCount += 1
     })
 
-    workers.on(event.all.result, status => {
-      expect(status).equal(false)
+    workers.on(event.all.result, result => {
+      expect(result.hasFailed).equal(true)
       expect(passedCount).equal(3)
       expect(failedCount).equal(2)
       done()
@@ -135,9 +135,9 @@ describe('Workers', function () {
 
     workers.run()
 
-    workers.on(event.all.result, status => {
+    workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
-      expect(status).equal(true)
+      expect(result.hasFailed).equal(false)
       done()
     })
   })
@@ -170,9 +170,9 @@ describe('Workers', function () {
 
     workers.run()
 
-    workers.on(event.all.result, status => {
+    workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
-      expect(status).equal(true)
+      expect(result.hasFailed).equal(false)
       done()
     })
   })
@@ -199,8 +199,8 @@ describe('Workers', function () {
     workers.run()
     recorder.add(() => share({ fromMain: true }))
 
-    workers.on(event.all.result, status => {
-      expect(status).equal(true)
+    workers.on(event.all.result, result => {
+      expect(result.hasFailed).equal(false)
       done()
     })
   })
@@ -258,9 +258,9 @@ describe('Workers', function () {
 
     workers.run()
 
-    workers.on(event.all.result, status => {
+    workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(8)
-      expect(status).equal(true)
+      expect(result.hasFailed).equal(false)
       done()
     })
   })

@@ -12,14 +12,19 @@ declare global {
         type: string
         text: string
       }>
+      state: string
+      err?: Error
       config: Record<string, any>
       artifacts: string[]
       inject: Record<string, any>
       opts: Record<string, any>
       throws?: Error | string | RegExp | Function
       totalTimeout?: number
+      relativeFile?: string
       addToSuite(suite: Mocha.Suite): void
       applyOptions(opts: Record<string, any>): void
+      simplify(): Record<string, any>
+      toFileName(): string
       addNote(type: string, note: string): void
       codeceptjs: boolean
     }

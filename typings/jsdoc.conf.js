@@ -5,6 +5,7 @@ module.exports = {
       './lib/actor.js',
       './lib/codecept.js',
       './lib/config.js',
+      './lib/result.js',
       './lib/container.js',
       './lib/data/table.js',
       './lib/data/dataTableArgument.js',

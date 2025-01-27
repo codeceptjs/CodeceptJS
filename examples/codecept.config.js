@@ -1,4 +1,4 @@
-require('./heal_recipes');
+require('./heal_recipes')
 
 exports.config = {
   output: './output',
@@ -34,22 +34,21 @@ exports.config = {
   },
   gherkin: {
     features: './features/*.feature',
-    steps: [
-      './step_definitions/steps.js',
-    ],
+    steps: ['./step_definitions/steps.js'],
   },
   plugins: {
-    tryTo: {
+    analyze: {
       enabled: true,
     },
-    heal: {
-      enabled: true,
-    },
+    // heal: {
+    //   enabled: true,
+    // },
+    // customReporter: {
+    //   enabled: true,
+    // },
     wdio: {
       enabled: false,
-      services: [
-        'selenium-standalone',
-      ],
+      services: ['selenium-standalone'],
     },
     stepByStepReport: {},
     autoDelay: {
@@ -61,10 +60,8 @@ exports.config = {
     subtitles: {
       enabled: true,
     },
-    retryTo: {
-      enabled: true,
-    },
   },
+
   tests: './*_test.js',
   // timeout: 100,
   multiple: {
@@ -73,11 +70,8 @@ exports.config = {
     },
     default: {
       grep: 'signin',
-      browsers: [
-        'chrome',
-        'firefox',
-      ],
+      browsers: ['chrome', 'firefox'],
     },
   },
   name: 'tests',
-};
+}

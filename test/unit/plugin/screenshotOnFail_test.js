@@ -49,14 +49,17 @@ describe('screenshotOnFail', () => {
 
   it('should create screenshot with unique name', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
-    event.dispatcher.emit(event.test.failed, { title: 'test1', uuid: 1 })
+
+    const test = { title: 'test1', uid: 1 }
+    event.dispatcher.emit(event.test.failed, test)
     await recorder.promise()
     expect(screenshotSaved.called).is.ok
-    expect('test1_1.failed.png').is.equal(screenshotSaved.getCall(0).args[0])
+    expect(`test1_${test.uid}.failed.png`).is.equal(screenshotSaved.getCall(0).args[0])
   })
 
-  it('should create screenshot with unique name when uuid is null', async () => {
+  it('should create screenshot with unique name when uid is null', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
+
     event.dispatcher.emit(event.test.failed, { title: 'test1' })
     await recorder.promise()
     expect(screenshotSaved.called).is.ok
@@ -67,14 +70,14 @@ describe('screenshotOnFail', () => {
 
   it('should not save screenshot in BeforeSuite', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
-    event.dispatcher.emit(event.test.failed, { title: 'test1', ctx: { _runnable: { title: 'hook: BeforeSuite' } } })
+    event.dispatcher.emit(event.test.failed, { title: 'test1' }, null, 'BeforeSuite')
     await recorder.promise()
     expect(!screenshotSaved.called).is.ok
   })
 
   it('should not save screenshot in AfterSuite', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
-    event.dispatcher.emit(event.test.failed, { title: 'test1', ctx: { _runnable: { title: 'hook: AfterSuite' } } })
+    event.dispatcher.emit(event.test.failed, { title: 'test1' }, null, 'AfterSuite')
     await recorder.promise()
     expect(!screenshotSaved.called).is.ok
   })

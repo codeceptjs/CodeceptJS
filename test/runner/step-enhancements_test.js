@@ -26,7 +26,7 @@ describe('CodeceptJS step-enhancements', function () {
       debug(stdout)
       expect(err).toBeTruthy()
       expect(stdout).not.toContain('OK')
-      expect(stdout).toContain('was interrupted on step timeout 100ms')
+      expect(stdout).toContain('was interrupted on timeout 100ms')
       done()
     })
   })
