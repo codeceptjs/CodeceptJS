@@ -46,7 +46,7 @@ describe('Container', () => {
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('io')
-      expect(container.translation().value('contexts').Feature).to.eql('Caratteristica')
+      expect(container.translation().value('contexts').Feature).to.eql('Funzionalità')
     })
 
     it('should create French translation', () => {
