@@ -1,7 +1,7 @@
 const { gherkinTranslations } = require('./utils')
 const langCode = 'de'
 
-const deTranslations = {
+module.exports = {
   I: 'Ich',
   contexts: {
     ...gherkinTranslations(langCode),
@@ -74,5 +74,3 @@ const deTranslations = {
     switchTo: 'wechlse_in_iframe',
   },
 }
-
-module.exports = deTranslations
