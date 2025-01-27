@@ -1,9 +1,12 @@
+const gherkinTranslations = require('@cucumber/gherkin/src/gherkin-languages.json')
+const langCode = 'zh-CN'
+
 module.exports = {
   I: '我',
   contexts: {
-    Feature: '功能',
-    Scenario: '场景',
-    ScenarioOutline: '场景大纲',
+    Feature: gherkinTranslations[langCode].feature[0],
+    Scenario: gherkinTranslations[langCode].scenario[0],
+    ScenarioOutline: gherkinTranslations[langCode].scenarioOutline[0],
   },
   actions: {
     amOutsideAngularApp: '在Angular应用外',

@@ -1,9 +1,12 @@
+const gherkinTranslations = require('@cucumber/gherkin/src/gherkin-languages.json')
+const langCode = 'it'
+
 module.exports = {
   I: 'io',
   contexts: {
-    Feature: 'Caratteristica',
-    Scenario: 'lo_scenario',
-    ScenarioOutline: 'Schema dello scenario',
+    Feature: gherkinTranslations[langCode].feature[0],
+    Scenario: gherkinTranslations[langCode].scenario[0],
+    ScenarioOutline: gherkinTranslations[langCode].scenarioOutline[0],
     Before: 'Prima',
     After: 'Dopo',
     BeforeSuite: 'Prima_della_suite',
