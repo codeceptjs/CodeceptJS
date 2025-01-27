@@ -1,12 +1,10 @@
-const gherkinTranslations = require('@cucumber/gherkin/src/gherkin-languages.json')
+const { gherkinTranslations } = require('./utils')
 const langCode = 'de'
 
-module.exports = {
+const deTranslations = {
   I: 'Ich',
   contexts: {
-    Feature: gherkinTranslations[langCode].feature[0],
-    Scenario: gherkinTranslations[langCode].scenario[0],
-    ScenarioOutline: gherkinTranslations[langCode].scenarioOutline[0],
+    ...gherkinTranslations(langCode),
   },
   actions: {
     amOutsideAngularApp: 'befinde_mich_außerhalb_der_angular_app',
@@ -76,3 +74,5 @@ module.exports = {
     switchTo: 'wechlse_in_iframe',
   },
 }
+
+module.exports = deTranslations
