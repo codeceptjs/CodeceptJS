@@ -78,7 +78,7 @@
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "18",
     "@cucumber/gherkin": "30",
-    "@cucumber/messages": "27.0.2",
+    "@cucumber/messages": "27.1.0",
     "@xmldom/xmldom": "0.9.7",
     "acorn": "8.14.0",
     "arrify": "3.0.0",
