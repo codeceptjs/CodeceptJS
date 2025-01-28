@@ -74,7 +74,7 @@
     "publish-beta": "./runok.js publish:next-beta-version"
   },
   "dependencies": {
-    "@codeceptjs/configure": "1.0.1",
+    "@codeceptjs/configure": "1.0.2",
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "18",
     "@cucumber/gherkin": "30",
@@ -130,7 +130,7 @@
     "@pollyjs/core": "5.1.0",
     "@types/chai": "4.3.19",
     "@types/inquirer": "9.0.7",
-    "@types/node": "22.10.7",
+    "@types/node": "22.12.0",
     "@wdio/sauce-service": "9.7.1",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.5.0",
@@ -155,7 +155,7 @@
     "json-server": "0.17.4",
     "playwright": "1.49.1",
     "prettier": "^3.3.2",
-    "puppeteer": "24.1.0",
+    "puppeteer": "24.1.1",
     "qrcode-terminal": "0.12.0",
     "rosie": "2.1.1",
     "runok": "0.9.3",
