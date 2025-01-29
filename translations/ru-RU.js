@@ -1,9 +1,10 @@
+const { gherkinTranslations } = require('./utils')
+const langCode = 'ru'
+
 module.exports = {
   I: 'Я',
   contexts: {
-    Feature: 'Цель',
-    Scenario: 'Сценарий',
-    ScenarioOutline: 'Структура сценария',
+    ...gherkinTranslations(langCode),
     Before: 'Начало',
     After: 'Конец',
     BeforeSuite: 'Перед_всем',

@@ -38,10 +38,8 @@ describe('els', function () {
       let elementUsed
 
       await els.element('my test', '.selector', async el => {
-        elementUsed = el
+        elementUsed = await el
       })
-
-      await recorder.promise()
 
       assert.equal(elementUsed, 'el1')
     })
@@ -51,7 +49,7 @@ describe('els', function () {
       let elementUsed
 
       await els.element('.selector', async el => {
-        elementUsed = el
+        elementUsed = await el
       })
 
       assert.equal(elementUsed, 'el1')
@@ -77,7 +75,6 @@ describe('els', function () {
           },
           new StepConfig().timeout(0.01),
         )
-        await recorder.promise()
         throw new Error('should have thrown error')
       } catch (e) {
         recorder.catch()
@@ -147,7 +144,6 @@ describe('els', function () {
         await els.eachElement('.selector', async el => {
           throw new Error(`failed on ${el}`)
         })
-        await recorder.promise()
         throw new Error('should have thrown error')
       } catch (e) {
         expect(e.message).to.equal('failed on el1')
@@ -167,7 +163,6 @@ describe('els', function () {
 
       try {
         await els.expectElement('.selector', async () => false)
-        await recorder.promise()
         throw new Error('should have thrown error')
       } catch (e) {
         expect(e.cliMessage()).to.include('element (.selector)')
@@ -187,7 +182,6 @@ describe('els', function () {
 
       try {
         await els.expectAnyElement('.selector', async () => false)
-        await recorder.promise()
         throw new Error('should have thrown error')
       } catch (e) {
         expect(e.cliMessage()).to.include('any element of (.selector)')
@@ -207,7 +201,6 @@ describe('els', function () {
 
       try {
         await els.expectAllElements('.selector', async el => el !== 'el2')
-        await recorder.promise()
         throw new Error('should have thrown error')
       } catch (e) {
         expect(e.cliMessage()).to.include('element #2 of (.selector)')
