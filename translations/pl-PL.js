@@ -1,9 +1,10 @@
+const { gherkinTranslations } = require('./utils')
+const langCode = 'pl'
+
 module.exports = {
   I: 'Ja',
   contexts: {
-    Feature: 'Funkcja',
-    Scenario: 'Scenariusz',
-    ScenarioOutline: 'Szablon scenariusza',
+    ...gherkinTranslations(langCode),
   },
   actions: {
     amOutsideAngularApp: 'jestem_poza_aplikacją_angular',

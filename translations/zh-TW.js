@@ -1,9 +1,10 @@
+const { gherkinTranslations } = require('./utils')
+const langCode = 'zh-TW'
+
 module.exports = {
   I: '我',
   contexts: {
-    Feature: '功能',
-    Scenario: '場景',
-    ScenarioOutline: '場景大綱',
+    ...gherkinTranslations(langCode),
   },
   actions: {
     amOutsideAngularApp: '在Angular應用外',
