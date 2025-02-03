@@ -158,7 +158,7 @@
     "qrcode-terminal": "0.12.0",
     "rosie": "2.1.1",
     "runok": "0.9.3",
-    "semver": "7.6.3",
+    "semver": "7.7.0",
     "sinon": "19.0.2",
     "sinon-chai": "3.7.0",
     "testcafe": "3.7.1",
