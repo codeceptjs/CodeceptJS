@@ -169,7 +169,7 @@
     "typedoc": "0.27.6",
     "typedoc-plugin-markdown": "4.4.1",
     "typescript": "5.7.3",
-    "wdio-docker-service": "1.5.0",
+    "wdio-docker-service": "3.2.1",
     "webdriverio": "9.7.2",
     "xml2js": "0.6.2",
     "xpath": "0.0.34"
