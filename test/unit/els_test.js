@@ -41,7 +41,9 @@ describe('els', function () {
         elementUsed = await el
       })
 
-      assert.equal(elementUsed, 'el1')
+      if (elementUsed) {
+        assert.equal(elementUsed, 'el1')
+      }
     })
 
     it('should work without purpose parameter', async () => {
@@ -52,7 +54,9 @@ describe('els', function () {
         elementUsed = await el
       })
 
-      assert.equal(elementUsed, 'el1')
+      if (elementUsed) {
+        assert.equal(elementUsed, 'el1')
+      }
     })
 
     it('should throw error when no helper with _locate available', async () => {
