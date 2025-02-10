@@ -4,6 +4,7 @@ const fsPromises = require('fs').promises
 const subtitles = require('../../../lib/plugin/subtitles')
 const container = require('../../../lib/container')
 const event = require('../../../lib/event')
+const { createTest } = require('../../../lib/mocha/test')
 const recorder = require('../../../lib/recorder')
 
 function sleep(ms) {
@@ -28,7 +29,7 @@ describe('subtitles', () => {
   it('should not capture subtitle as video artifact was missing', async () => {
     const fsMock = sinon.mock(fsPromises)
 
-    const test = { notes: [] }
+    const test = createTest('test')
 
     fsMock.expects('writeFile').never()
 
@@ -43,12 +44,8 @@ describe('subtitles', () => {
   it('should capture subtitle as video artifact is present', async () => {
     const fsMock = sinon.mock(fsPromises)
 
-    const test = {
-      notes: [],
-      artifacts: {
-        video: '../../lib/output/failedTest1.webm',
-      },
-    }
+    const test = createTest('test')
+    test.artifacts.video = '../../lib/output/failedTest1.webm'
 
     fsMock
       .expects('writeFile')
@@ -71,12 +68,8 @@ describe('subtitles', () => {
   it('should capture mutiple steps as subtitle', async () => {
     const fsMock = sinon.mock(fsPromises)
 
-    const test = {
-      notes: [],
-      artifacts: {
-        video: '../../lib/output/failedTest1.webm',
-      },
-    }
+    const test = createTest('test')
+    test.artifacts.video = '../../lib/output/failedTest1.webm'
 
     fsMock
       .expects('writeFile')
@@ -106,12 +99,8 @@ describe('subtitles', () => {
   it('should capture separate steps for separate tests', async () => {
     const fsMock = sinon.mock(fsPromises)
 
-    const test1 = {
-      notes: [],
-      artifacts: {
-        video: '../../lib/output/failedTest1.webm',
-      },
-    }
+    const test1 = createTest('test')
+    test1.artifacts.video = '../../lib/output/failedTest1.webm'
 
     fsMock
       .expects('writeFile')
@@ -151,12 +140,8 @@ describe('subtitles', () => {
           return value.match(/^1\n[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}\s-->\s[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}\nI\.click\(Login\)\n\n$/gm)
         }),
       )
-    const test2 = {
-      notes: [],
-      artifacts: {
-        video: '../../lib/output/failedTest2.webm',
-      },
-    }
+    const test2 = createTest('test')
+    test2.artifacts.video = '../../lib/output/failedTest2.webm'
 
     event.dispatcher.emit(event.test.before, test2)
     const step3 = { name: 'click', actor: 'I', args: ['Login'] }
