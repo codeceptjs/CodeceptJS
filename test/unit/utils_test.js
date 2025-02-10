@@ -38,6 +38,10 @@ describe('utils', () => {
     it('should capitalize first letter', () => {
       expect(utils.ucfirst('hello')).equal('Hello')
     })
+
+    it('should handle the undefined', () => {
+      expect(utils.ucfirst()).to.be.undefined
+    })
   })
 
   describe('#beautify', () => {
