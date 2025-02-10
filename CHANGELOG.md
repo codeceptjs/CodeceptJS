@@ -256,7 +256,7 @@ I.see('SIGN IN', stepOpts({ ignoreCase: true }))
 Currently this works only on `see` and only with `ignoreCase` param.
 However, this syntax will be extended in next versions.
 
-#### Test object can be injected into Scenario
+### Test object can be injected into Scenario
 
 API for direct access to test object inside Scenario or hooks to add metadata or artifacts:
 
