@@ -101,7 +101,7 @@
     "inquirer": "8.2.6",
     "invisi-data": "^1.0.0",
     "joi": "17.13.3",
-    "js-beautify": "1.15.1",
+    "js-beautify": "1.15.2",
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
     "mkdirp": "3.0.1",
