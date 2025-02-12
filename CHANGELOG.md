@@ -1,3 +1,24 @@
+## 3.7.2
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ _Features_
+
+- feat(playwright): Clear cookie by name (#4693) - by @ngraf
+
+🐛 _Bug Fixes_
+
+- fix(stepByStepReport): no records html is generated when running with run-workers (#4638)
+- fix(webdriver): bidi error in log with webdriver (#4850)
+- fix(types): TS types of methods (Feature|Scenario)Config.config (#4851)
+- fix: redundant popup log (#4830)
+- fix(webdriver): grab browser logs using bidi protocol (#4754)
+- fix(webdriver): screenshots for sessions (#4748)
+
+📖 _Documentation_
+
+- fix(docs): mask sensitive data (#4636) - by @gkushang
+
 ## 3.7.1
 
 - Fixed `reading charAt` error in `asyncWrapper.js`
