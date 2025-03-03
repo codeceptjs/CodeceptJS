@@ -1,0 +1,67 @@
+{
+  "hasFailed": true,
+  "stats": {
+    "passes": 0,
+    "failures": 1,
+    "tests": 1,
+    "pending": 0,
+    "failedHooks": 0,
+    "start": "2025-03-03T04:55:55.785Z",
+    "end": "2025-03-03T04:55:55.796Z",
+    "duration": 11
+  },
+  "duration": 21,
+  "tests": [
+    {
+      "opts": {},
+      "tags": [],
+      "uid": "7NxSU6hWX0tj5d6GGxCtwSpDCOTsK3ggAD33fv7kzE",
+      "retries": -1,
+      "title": "test custom-reporter-plugin",
+      "state": "failed",
+      "notes": [],
+      "meta": {},
+      "artifacts": [],
+      "duration": 1,
+      "err": {
+        "stack": "AssertionError [ERR_ASSERTION]: \n    at FileSystem.seeFile (/Volumes/dev/external-repos/CodeceptJS/lib/helper/FileSystem.js:70:12)\n    at HelperStep.run (/Volumes/dev/external-repos/CodeceptJS/lib/step/helper.js:28:49)\n\n\n◯ File: /Volumes/dev/external-repos/CodeceptJS/test/data/sandbox/configs/custom-reporter-plugin/custom-reporter-plugin_test.js\n\n◯ Scenario Steps:\n✖ I.seeFile(\"this-file-should-not-exist.txt\") at Test.<anonymous> (./custom-reporter-plugin_test.js:13:5)\n✔ I.amInPath(\".\") at Test.<anonymous> (./custom-reporter-plugin_test.js:12:5)\n",
+        "message": "\n  File this-file-should-not-exist.txt not found in /Volumes/dev/external-repos/CodeceptJS/test/data/sandbox/configs/custom-reporter-plugin",
+        "actual": "false",
+        "expected": "true"
+      },
+      "parent": {
+        "title": "custom-reporter-plugin"
+      },
+      "steps": [
+        {
+          "opts": {},
+          "title": "seeFile",
+          "args": ["this-file-should-not-exist.txt"],
+          "status": "failed",
+          "startTime": 1740977755792,
+          "endTime": 1740977755793,
+          "parent": {}
+        },
+        {
+          "opts": {},
+          "title": "amInPath",
+          "args": ["."],
+          "status": "success",
+          "startTime": 1740977755792,
+          "endTime": 1740977755792,
+          "parent": {}
+        }
+      ]
+    }
+  ],
+  "failures": [
+    [],
+    [
+      "  %s) %s:\n%s\n%s\n",
+      1,
+      "custom-reporter-plugin\n       test custom-reporter-plugin",
+      "\n      \n  File this-file-should-not-exist.txt not found in /Volumes/dev/external-repos/CodeceptJS/test/data/sandbox/configs/custom-reporter-plugin\n      + expected - actual\n\n      -false\n      +true\n      ",
+      "  AssertionError [ERR_ASSERTION]: \n      at FileSystem.seeFile (/Volumes/dev/external-repos/CodeceptJS/lib/helper/FileSystem.js:70:12)\n      at HelperStep.run (/Volumes/dev/external-repos/CodeceptJS/lib/step/helper.js:28:49)\n  \n  \n  ◯ File: /Volumes/dev/external-repos/CodeceptJS/test/data/sandbox/configs/custom-reporter-plugin/custom-reporter-plugin_test.js\n  \n  ◯ Scenario Steps:\n  ✖ I.seeFile(\"this-file-should-not-exist.txt\") at Test.<anonymous> (./custom-reporter-plugin_test.js:13:5)\n  ✔ I.amInPath(\".\") at Test.<anonymous> (./custom-reporter-plugin_test.js:12:5)\n  "
+    ]
+  ]
+}
