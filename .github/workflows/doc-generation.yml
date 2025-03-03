@@ -7,11 +7,11 @@ on:
 
 jobs:
   update-documentation:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [ 20.x ]
+        node-version: [20.x]
 
     steps:
       - name: Check out the repo
