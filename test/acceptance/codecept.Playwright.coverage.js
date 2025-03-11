@@ -24,7 +24,7 @@ module.exports.config = {
       outputPath: 'test/acceptance/output',
     },
     Expect: {
-      import: '@codeceptjs/expect-helper/index.cjs',
+      require: '@codeceptjs/expect-helper',
     },
   },
   include: {},
