@@ -68,7 +68,7 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
     cookies.mary = (await I.grabCookie(cookieName)).value
     I.say(`${cookieName}: ${cookies.mary}`)
   })
-  await I.seeInCurrentUrl('en-au')
+  await I.seeInCurrentUrl('google.com')
   assert(cookies.default)
   assert(cookies.john)
   assert(cookies.mary)
