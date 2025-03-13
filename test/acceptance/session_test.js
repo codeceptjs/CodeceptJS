@@ -46,8 +46,8 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
 })
 
 Scenario('Different cookies for different sessions @Playwright @Puppeteer', async ({ I }) => {
-  const cookiePage = 'https://www.microsoft.com/en-au/'
-  const cookieName = 'MUID'
+  const cookiePage = 'https://google.com/'
+  const cookieName = 'AEC'
   const cookies = {}
 
   I.amOnPage(cookiePage)
@@ -68,7 +68,7 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
     cookies.mary = (await I.grabCookie(cookieName)).value
     I.say(`${cookieName}: ${cookies.mary}`)
   })
-  await I.seeInCurrentUrl('en-au')
+  await I.seeInCurrentUrl('google.com')
   assert(cookies.default)
   assert(cookies.john)
   assert(cookies.mary)
