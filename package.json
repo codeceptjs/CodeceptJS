@@ -75,7 +75,7 @@
     "publish-beta": "./runok.js publish:next-beta-version"
   },
   "dependencies": {
-    "@codeceptjs/configure": "1.0.2",
+    "@codeceptjs/configure": "1.0.3",
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "18",
     "@cucumber/gherkin": "32",
