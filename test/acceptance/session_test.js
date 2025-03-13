@@ -54,6 +54,9 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
   session('john', () => {
     I.amOnPage(cookiePage)
   })
+  session('mary', () => {
+    I.amOnPage(cookiePage)
+  })
 
   cookies.default = (await I.grabCookie(cookieName)).value
   I.say(`${cookieName}: ${cookies.default}`)
@@ -61,12 +64,6 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
     cookies.john = (await I.grabCookie(cookieName)).value
     I.say(`${cookieName}: ${cookies.john}`)
   })
-
-  session('mary', () => {
-    I.amOnPage(cookiePage)
-  })
-  cookies.default = (await I.grabCookie(cookieName)).value
-  I.say(`${cookieName}: ${cookies.default}`)
   session('mary', async () => {
     cookies.mary = (await I.grabCookie(cookieName)).value
     I.say(`${cookieName}: ${cookies.mary}`)
