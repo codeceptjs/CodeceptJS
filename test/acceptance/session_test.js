@@ -47,7 +47,7 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
 
 Scenario('Different cookies for different sessions @Playwright @Puppeteer', async ({ I }) => {
   const cookiePage = 'https://google.com/'
-  const cookieName = 'SSID'
+  const cookieName = 'AEC'
   const cookies = {}
 
   I.amOnPage(cookiePage)
