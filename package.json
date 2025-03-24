@@ -168,7 +168,7 @@
     "tsd": "^0.31.0",
     "tsd-jsdoc": "2.5.0",
     "typedoc": "0.28.0",
-    "typedoc-plugin-markdown": "4.5.0",
+    "typedoc-plugin-markdown": "4.6.0",
     "typescript": "5.8.2",
     "wdio-docker-service": "3.2.1",
     "webdriverio": "9.12.0",
