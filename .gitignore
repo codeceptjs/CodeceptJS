@@ -16,6 +16,7 @@ examples/output
 examples/selenoid-example/output
 test/data/app/db
 test/data/sandbox/steps.d.ts
+test/data/sandbox/configs/custom-reporter-plugin/output/result.json
 testpullfilecache*
 .DS_Store
 package-lock.json
