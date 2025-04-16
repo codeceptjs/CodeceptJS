@@ -10,6 +10,8 @@ const event = require('../../../lib/event')
 const recorder = require('../../../lib/recorder')
 const { createTest } = require('../../../lib/mocha/test')
 const { deserializeSuite } = require('../../../lib/mocha/suite')
+const MochawesomeHelper = require('../../../lib/helper/Mochawesome')
+
 let screenshotSaved
 
 describe('screenshotOnFail', () => {
@@ -100,6 +102,37 @@ describe('screenshotOnFail', () => {
     event.dispatcher.emit(event.test.failed, test, null, 'AfterSuite')
     await recorder.promise()
     expect(!screenshotSaved.called).is.ok
+  })
+
+  it('should have the same unique file name as the mochawesome helper when the uuid is present', async () => {
+    screenshotOnFail({ uniqueScreenshotNames: true })
+    const test = createTest('test1')
+    test.uid = '1234'
+
+    const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
+    const spy = sinon.spy(helper, '_addContext')
+    helper._failed(test)
+
+    event.dispatcher.emit(event.test.failed, test)
+    await recorder.promise()
+
+    const screenshotFileName = screenshotSaved.getCall(0).args[0]
+    expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
+  })
+
+  it('should have the same unique file name as the mochawesome helper when the uuid is not present', async () => {
+    screenshotOnFail({ uniqueScreenshotNames: true })
+    const test = createTest('test1')
+
+    const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
+    const spy = sinon.spy(helper, '_addContext')
+    helper._failed(test)
+
+    event.dispatcher.emit(event.test.failed, test)
+    await recorder.promise()
+
+    const screenshotFileName = screenshotSaved.getCall(0).args[0]
+    expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
   })
   // TODO: write more tests for different options
 })
