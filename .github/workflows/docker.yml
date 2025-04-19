@@ -9,7 +9,6 @@ jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-22.04
-    if: startsWith(github.event.ref_name, 'release-')
 
     steps:
       - name: Check out the repo with the latest code
@@ -29,10 +28,17 @@ jobs:
         run: |
           git fetch --prune --unshallow
           TAG=$(git describe --tags --abbrev=0)
-          echo $TAG
           echo "TAG=$TAG" >> $GITHUB_ENV
 
+      - name: Check if Docker tag exists
+        id: tagCheck
+        run: |
+          REPO="${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}"
+          TAG_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/")
+          echo "TAG_EXISTS=$TAG_EXISTS" >> $GITHUB_ENV
+
       - name: Build and push Docker image
+        if: env.TAG_EXISTS != '200'
         uses: docker/build-push-action@v6
         with:
           context: .
