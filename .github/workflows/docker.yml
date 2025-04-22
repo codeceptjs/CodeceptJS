@@ -9,10 +9,24 @@ jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-22.04
+    env:
+      DOCKER_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}
 
     steps:
-      - name: Check out the repo with the latest code
+      - name: Fetch full Git history and tags
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get the latest tag
+        id: get_tag
+        run: |
+          TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "::set-output name=tag::$TAG"
+
+      - name: Checkout latest tag
+        run: git checkout tags/${{ env.TAG }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -23,26 +37,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Get the current tag
-        id: currentTag
-        run: |
-          git fetch --prune --unshallow
-          TAG=$(git describe --tags --abbrev=0)
-          echo "TAG=$TAG" >> $GITHUB_ENV
-
       - name: Check if Docker tag exists
-        id: tagCheck
+        id: tag_check
         run: |
-          REPO="${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}"
-          TAG_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}/")
-          echo "TAG_EXISTS=$TAG_EXISTS" >> $GITHUB_ENV
+          TAG_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" \
+            https://hub.docker.com/v2/repositories/${DOCKER_REPO}/tags/${TAG}/)
+          echo "exists=$TAG_EXISTS" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
-        if: env.TAG_EXISTS != '200'
+        if: steps.tag_check.outputs.exists != '200'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_REPOSITORY }}:latest
-            ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ env.TAG }}
+            ${{ env.DOCKER_REPO }}:latest
+            ${{ env.DOCKER_REPO }}:${{ env.TAG }}
