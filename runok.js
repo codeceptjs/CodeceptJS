@@ -45,8 +45,6 @@ module.exports = {
 
   async docsPlugins() {
     // generate documentation for plugins
-    // broken for now
-    return
 
     await npx(`documentation build lib/plugin/*.js -o docs/plugins.md ${documentjsCliArgs}`)
     await replaceInFile('docs/plugins.md', cfg => {
