@@ -29,6 +29,7 @@ jobs:
       # Install Docker Compose
       - name: Install Docker Compose
         run: |
+          sudo apt-get update --allow-releaseinfo-change
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
