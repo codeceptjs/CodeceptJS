@@ -30,7 +30,6 @@ jobs:
       - name: Install Docker Compose
         run: |
           sudo apt-get update --allow-releaseinfo-change
-          sudo apt-get update
           sudo apt-get install -y docker-compose
 
       # Run rest tests using docker-compose
