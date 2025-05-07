@@ -35,6 +35,9 @@ jobs:
           npm i --force
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: Allow Release info Change
+        run: |
+          sudo apt-get update --allow-releaseinfo-change
       - name: Install browsers and deps
         run: npx playwright install && npx playwright install-deps
       - name: check

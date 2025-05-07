@@ -2,6 +2,8 @@
 FROM mcr.microsoft.com/playwright:v1.48.1-noble
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
+RUN apt-get update --allow-releaseinfo-change
+
 # Installing the pre-required packages and libraries
 RUN apt-get update && \
       apt-get install -y libgtk2.0-0 \
