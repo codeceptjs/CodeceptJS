@@ -7,7 +7,7 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && mkdir -p /home/pptruser/Downloads /codecept /tests \
     && chown -R pptruser:pptruser /home/pptruser /codecept /tests
 
-# Install dependencies in a single layer to reduce image size
+# Install dependencies and set up Google Chrome repository
 RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install-recommends \
     libgtk2.0-0 \
     libxtst6 \
@@ -16,11 +16,11 @@ RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install
     xvfb \
     gnupg \
     wget \
-    google-chrome-stable \
+    ca-certificates \
     fonts-noto \
     fonts-freefont-ttf \
-    && wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && wget --quiet -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable --no-install-recommends \
     && apt-get clean \
