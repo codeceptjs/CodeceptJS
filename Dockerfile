@@ -1,61 +1,57 @@
-# Download Playwright and its dependencies
+# Use a specific Playwright base image for reproducibility
 FROM mcr.microsoft.com/playwright:v1.48.1-noble
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
-RUN apt-get update --allow-releaseinfo-change
-
-# Installing the pre-required packages and libraries
-RUN apt-get update && \
-      apt-get install -y libgtk2.0-0 \
-      libxtst6 libxss1 libnss3 xvfb
-
-# Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
-# Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
-# installs, work.
-RUN apt-get update && apt-get install -y gnupg wget && \
-  wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
-  echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-  apt-get update && \
-  apt-get install -y google-chrome-stable --no-install-recommends && \
-  rm -rf /var/lib/apt/lists/*
-
-
-# Add pptr user.
+# Set non-root user early for security
 RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-    && mkdir -p /home/pptruser/Downloads \
-    && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /home/pptruser
+    && mkdir -p /home/pptruser/Downloads /codecept /tests \
+    && chown -R pptruser:pptruser /home/pptruser /codecept /tests
 
-#RUN mkdir /home/codecept
+# Install dependencies in a single layer to reduce image size
+RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install-recommends \
+    libgtk2.0-0 \
+    libxtst6 \
+    libxss1 \
+    libnss3 \
+    xvfb \
+    gnupg \
+    wget \
+    google-chrome-stable \
+    fonts-noto \
+    fonts-freefont-ttf \
+    && wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable --no-install-recommends \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY . /codecept
+# Set working directory
+WORKDIR /codecept
 
-RUN chown -R pptruser:pptruser /codecept
-RUN runuser -l pptruser -c 'npm i --loglevel=warn --prefix /codecept'
+# Copy project files
+COPY . .
 
-RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
-RUN mkdir /tests
-WORKDIR /tests
-# Install puppeteer so it's available in the container.
-RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
+# Install Node.js dependencies as non-root user
+RUN runuser -u pptruser -- npm install --loglevel=warn --prefix /codecept \
+    && npm install puppeteer@$(npm view puppeteer version) \
+    && npx puppeteer browsers install chrome \
+    && npx playwright install \
+    && ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
+
+# Verify Chrome installation
 RUN google-chrome --version
 
-# Install playwright browsers
-RUN npx playwright install
-
-# Allow to pass argument to codecept run via env variable
+# Environment variables
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
 ENV NO_OF_WORKERS=""
-
-# Set HOST ENV variable for Selenium Server
 ENV HOST=selenium
+ENV NODE_ENV=production
 
-# Run user as non privileged.
-# USER pptruser
+# Switch to non-root user
+USER pptruser
 
-# Set the entrypoint
+# Set entrypoint and command
 ENTRYPOINT ["/codecept/docker/entrypoint"]
-
-# Run tests
 CMD ["bash", "/codecept/docker/run.sh"]
