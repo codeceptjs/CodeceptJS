@@ -32,6 +32,8 @@ WORKDIR /codecept
 # Copy project files
 COPY . .
 
+WORKDIR /tests
+
 # Install Node.js dependencies as non-root user
 RUN runuser -u pptruser -- npm install --loglevel=warn --prefix /codecept \
     && npm install puppeteer@$(npm view puppeteer version) \
