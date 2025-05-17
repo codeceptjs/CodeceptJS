@@ -1,5 +1,5 @@
 # Use a specific Playwright base image for reproducibility
-FROM mcr.microsoft.com/playwright:v1.48.1-noble
+FROM mcr.microsoft.com/playwright:v1.52.0-noble
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 # Set non-root user early for security
