@@ -35,11 +35,11 @@ COPY . .
 WORKDIR /tests
 
 # Install Node.js dependencies as non-root user
-RUN runuser -u pptruser -- npm install --loglevel=warn --prefix /codecept \
-    && npm install puppeteer@$(npm view puppeteer version) \
-    && npx puppeteer browsers install chrome \
-    && npx playwright install \
-    && ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
+RUN runuser -u pptruser -- npm install --loglevel=warn --prefix /codecept
+RUN runuser -u pptruser -- npm install puppeteer@$(npm view puppeteer version)
+RUN runuser -u pptruser -- npx puppeteer browsers install chrome
+RUN runuser -u pptruser -- npx playwright install
+RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 
 # Verify Chrome installation
 RUN google-chrome --version
