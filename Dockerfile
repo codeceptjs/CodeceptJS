@@ -29,11 +29,12 @@ RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install
 # Copy project files
 COPY . /codecept
 
+# Install Node.js dependencies as non-root user
+RUN runuser -u pptruser -- npm install --loglevel=warn --prefix /codecept
+
 # Set working directory
 WORKDIR /tests
 
-# Install Node.js dependencies as non-root user
-RUN runuser -u pptruser -- npm install --loglevel=warn --prefix /codecept
 RUN runuser -u pptruser -- npm install puppeteer@$(npm view puppeteer version)
 RUN runuser -u pptruser -- npx puppeteer browsers install chrome
 RUN runuser -u pptruser -- npx playwright install
