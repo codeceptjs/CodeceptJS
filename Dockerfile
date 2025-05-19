@@ -26,12 +26,10 @@ RUN apt-get update --allow-releaseinfo-change && apt-get install -y --no-install
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /codecept
-
 # Copy project files
-COPY . .
+COPY . /codecept
 
+# Set working directory
 WORKDIR /tests
 
 # Install Node.js dependencies as non-root user
