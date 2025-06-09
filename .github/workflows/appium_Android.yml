@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 3.x
-      - kobenguyen-patch-2
+      - kobenguyent-patch-2
 
 env:
   CI: true
