@@ -10,7 +10,7 @@ jobs:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-22.04
     env:
-      DOCKER_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}
+      DOCKER_REPO: ${{ secrets.DOCKERHUB_REPOSITORY }}
 
     steps:
       - name: Checkout code
