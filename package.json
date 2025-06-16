@@ -164,7 +164,7 @@
     "sinon": "20.0.0",
     "sinon-chai": "3.7.0",
     "testcafe": "3.7.2",
-    "ts-morph": "25.0.1",
+    "ts-morph": "26.0.0",
     "ts-node": "10.9.2",
     "tsd": "^0.32.0",
     "tsd-jsdoc": "2.5.0",
