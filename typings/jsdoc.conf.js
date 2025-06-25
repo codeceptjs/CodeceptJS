@@ -28,6 +28,7 @@ module.exports = {
       './lib/mocha/bdd.js',
       './lib/mocha/hooks.js',
       './lib/within.js',
+      './lib/effects.js'
       require.resolve('@codeceptjs/detox-helper'),
       require.resolve('@codeceptjs/helper'),
     ],
