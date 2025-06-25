@@ -83,3 +83,13 @@ expectType<void>(AfterSuite((args) => {
   // @ts-ignore
   expectType<CodeceptJS.I>(args.I)
 }))
+
+// @ts-ignore
+expectType<Promise<boolean | any>>(tryTo(() => {
+  return 123;
+}));
+
+// @ts-ignore
+expectType<Promise<boolean | any>>(tryTo(async () => {
+  return 'async result';
+}));
