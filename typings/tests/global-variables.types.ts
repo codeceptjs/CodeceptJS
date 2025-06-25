@@ -85,11 +85,11 @@ expectType<void>(AfterSuite((args) => {
 }))
 
 // @ts-ignore
-expectType<Promise<boolean | any>>(tryTo(() => {
-  return 123;
+expectType<Promise<boolean>>(tryTo(() => {
+  return true;
 }));
 
 // @ts-ignore
-expectType<Promise<boolean | any>>(tryTo(async () => {
-  return 'async result';
+expectType<Promise<boolean>>(tryTo(async () => {
+  return false;
 }));
