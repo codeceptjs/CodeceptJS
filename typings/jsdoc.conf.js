@@ -9,6 +9,7 @@ module.exports = {
       './lib/container.js',
       './lib/data/table.js',
       './lib/data/dataTableArgument.js',
+      './lib/effects.js',
       './lib/event.js',
       './lib/index.js',
       './lib/locator.js',
