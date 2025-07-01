@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 3.x
+      - '**'
 
 env:
   CI: true
