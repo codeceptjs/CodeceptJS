@@ -469,7 +469,7 @@ describe('Appium', function () {
 
   describe('see element : #seeElement, #dontSeeElement', () => {
     it('should check visible elements on page @quick', async () => {
-      //await app.resetApp()
+      await app.resetApp()
       await app.seeElement('//android.widget.Button[@content-desc = "buttonTestCD"]')
       await app.dontSeeElement('#something-beyond')
       await app.dontSeeElement('//input[@id="something-beyond"]')
@@ -478,13 +478,13 @@ describe('Appium', function () {
 
   describe('#click @quick', () => {
     it('should click by accessibility id', async () => {
-      //await app.resetApp()
+      await app.resetApp()
       await app.tap('~startUserRegistrationCD')
       await app.seeElement('//android.widget.TextView[@content-desc="label_usernameCD"]')
     })
 
     it('should click by xpath', async () => {
-      //await app.resetApp()
+      await app.resetApp()
       await app.tap('//android.widget.ImageButton[@content-desc = "startUserRegistrationCD"]')
       await app.seeElement('//android.widget.TextView[@content-desc="label_usernameCD"]')
     })
