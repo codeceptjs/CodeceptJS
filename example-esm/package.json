@@ -1,0 +1,18 @@
+{
+  "name": "codeceptjs-esm-example",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Example project for testing CodeceptJS ESM migration",
+  "scripts": {
+    "test": "codeceptjs run",
+    "test:debug": "codeceptjs run --debug",
+    "test:verbose": "codeceptjs run --verbose"
+  },
+  "dependencies": {
+    "codeceptjs": "file:.."
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
