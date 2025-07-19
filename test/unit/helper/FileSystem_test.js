@@ -5,7 +5,8 @@ import('chai').then(chai => {
   expect = chai.expect
 })
 
-const FileSystem = require('../../../lib/helper/FileSystem')
+const fileSystemModule = require('../../../lib/helper/FileSystem')
+const FileSystem = fileSystemModule.default || fileSystemModule
 
 global.codeceptjs = require('../../../lib')
 

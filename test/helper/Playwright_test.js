@@ -1,25 +1,33 @@
-const chai = require('chai')
+import chai from 'chai'
 
 const assert = chai.assert
 const expect = chai.expect
 
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
 
-const playwright = require('playwright')
+import playwright from 'playwright'
 
-const TestHelper = require('../support/TestHelper')
-const Playwright = require('../../lib/helper/Playwright')
+import TestHelper from '../support/TestHelper.js'
+import Playwright from '../../lib/helper/Playwright.js'
 
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const FileSystem = require('../../lib/helper/FileSystem')
-const { deleteDir } = require('../../lib/utils')
-const Secret = require('../../lib/secret')
-global.codeceptjs = require('../../lib')
+import AssertionFailedError from '../../lib/assert/error.js'
+import * as webApiTests from './webapi.js'
+import FileSystem from '../../lib/helper/FileSystem.js'
+import { deleteDir } from '../../lib/utils.js'
+import Secret from '../../lib/secret.js'
+import codeceptjsModule from '../../lib/index.js'
+global.codeceptjs = codeceptjsModule.default || codeceptjsModule
+
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-const formContents = require('../../lib/utils').test.submittedData(dataFile)
+import { test as testUtils } from '../../lib/utils.js'
+const formContents = testUtils.submittedData(dataFile)
 
 let I
 let page

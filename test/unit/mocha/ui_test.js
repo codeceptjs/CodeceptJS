@@ -8,7 +8,8 @@ const { createTest } = require('../../../lib/mocha/test')
 
 global.codeceptjs = require('../../../lib')
 const makeUI = require('../../../lib/mocha/ui')
-const container = require('../../../lib/container')
+const containerModule = require('../../../lib/container')
+const container = containerModule.default || containerModule
 
 describe('ui', () => {
   let suite

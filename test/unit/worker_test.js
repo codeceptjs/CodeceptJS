@@ -1,8 +1,14 @@
-const path = require('path')
-const expect = require('chai').expect
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import { expect } from 'chai'
 
-const { Workers, event, recorder } = require('../../lib/index')
-const Container = require('../../lib/container')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+import indexModule from '../../lib/index.js'
+const index = indexModule.default || indexModule
+const { Workers, event, recorder } = index
 
 describe('Workers', function () {
   this.timeout(40000)

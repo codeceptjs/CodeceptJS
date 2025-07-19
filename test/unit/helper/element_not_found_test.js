@@ -3,7 +3,7 @@ import('chai').then(chai => {
   expect = chai.expect
 })
 
-const ElementNotFound = require('../../../lib/helper/errors/ElementNotFound')
+import ElementNotFound from '../../../lib/helper/errors/ElementNotFound.js'
 
 const locator = '#invalidSelector'
 

@@ -1,6 +1,4 @@
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
-const { Helper } = require('codeceptjs')
+import Helper from '@codeceptjs/helper'
 import assert from 'assert'
 
 class CustomHelper extends Helper {

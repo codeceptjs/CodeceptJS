@@ -3,7 +3,8 @@ import('chai').then(chai => {
   expect = chai.expect
 })
 
-const config = require('../../lib/config')
+const configModule = require('../../lib/config')
+const config = configModule.default || configModule
 
 describe('Config', () => {
   beforeEach(() => config.reset())

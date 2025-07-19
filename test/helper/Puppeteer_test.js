@@ -1,20 +1,24 @@
-const chai = require('chai')
+import chai from 'chai'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import puppeteer from 'puppeteer'
+import fs from 'fs'
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
 
-const puppeteer = require('puppeteer')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-const fs = require('fs')
-const TestHelper = require('../support/TestHelper')
-const Puppeteer = require('../../lib/helper/Puppeteer')
-
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const Secret = require('../../lib/secret')
-const { deleteDir } = require('../../lib/utils')
-global.codeceptjs = require('../../lib')
+import TestHelper from '../support/TestHelper.js'
+import Puppeteer from '../../lib/helper/Puppeteer.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import * as webApiTests from './webapi.js'
+import Secret from '../../lib/secret.js'
+import { deleteDir } from '../../lib/utils.js'
+import codeceptjsModule from '../../lib/index.js'
+global.codeceptjs = codeceptjsModule.default || codeceptjsModule
 
 let I
 let browser

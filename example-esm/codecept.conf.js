@@ -5,6 +5,11 @@ export const config = {
     CustomHelper: {
       require: './helpers/CustomHelper.js',
     },
+    FileSystem: {},
+    REST: {
+      endpoint: 'https://jsonplaceholder.typicode.com',
+      prettyPrintJson: true,
+    },
   },
   name: 'codeceptjs-esm-example',
 }
