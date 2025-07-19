@@ -9,13 +9,19 @@ const uuidFn = Messages.IdGenerator.uuid()
 const builder = new Gherkin.AstBuilder(uuidFn)
 const matcher = new Gherkin.GherkinClassicTokenMatcher()
 
-const Config = require('../../lib/config')
+const ConfigModule = require('../../lib/config')
+const Config = ConfigModule.default || ConfigModule
 const { Given, When, And, Then, matchStep, clearSteps, defineParameterType } = require('../../lib/mocha/bdd')
-const run = require('../../lib/mocha/gherkin')
-const recorder = require('../../lib/recorder')
-const container = require('../../lib/container')
-const actor = require('../../lib/actor')
-const event = require('../../lib/event')
+const runModule = require('../../lib/mocha/gherkin')
+const run = runModule.default || runModule
+const recorderModule = require('../../lib/recorder')
+const recorder = recorderModule.default || recorderModule
+const containerModule = require('../../lib/container')
+const container = containerModule.default || containerModule
+const actorModule = require('../../lib/actor')
+const actor = actorModule.default || actorModule
+const eventModule = require('../../lib/event')
+const event = eventModule.default || eventModule
 
 global.codecept_dir = path.join(__dirname, '/..')
 
@@ -203,7 +209,7 @@ describe('BDD', () => {
         },
       },
     })
-    I = actor()
+    I = actor({}, container)
     let sum = 0
     Given(/I have product with (\d+) price/, price => {
       I.do('add', (sum += parseInt(price, 10)))

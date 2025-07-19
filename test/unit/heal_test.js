@@ -1,15 +1,22 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const heal = require('../../lib/heal')
-const recorder = require('../../lib/recorder')
-const Step = require('../../lib/step')
+const chai = require('chai')
+const { expect } = chai
+const healModule = require('../../lib/heal')
+const heal = healModule.default || healModule
+const recorderModule = require('../../lib/recorder')
+const recorder = recorderModule.default || recorderModule
+const stepModule = require('../../lib/step')
+const Step = stepModule.default || stepModule
 
 describe('heal', () => {
   beforeEach(() => {
     heal.clear()
     recorder.reset()
+    recorder.start()
+    global.inject = () => ({}) // Mock inject function for heal tests
+    global.container = {
+      // Mock container for heal tests
+      support: name => ({}),
+    }
   })
 
   it('should collect recipes', () => {
@@ -78,7 +85,7 @@ describe('heal', () => {
       },
     })
 
-    await heal.healStep(new Step(null, 'click'))
+    await heal.healStep(new Step('click'), new Error('test error'))
 
     expect(isHealed).to.be.true
   })
@@ -111,7 +118,7 @@ describe('heal', () => {
       },
     })
 
-    await heal.healStep(new Step(null, 'click'), new Error('Ups'), { test: { title: 'test' } })
+    await heal.healStep(new Step('click'), new Error('Ups'), { test: { title: 'test' } })
 
     expect(isHealed).to.be.true
     expect(passedOpts).to.haveOwnProperty('test')

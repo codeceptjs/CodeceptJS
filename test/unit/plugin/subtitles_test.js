@@ -2,8 +2,10 @@ const sinon = require('sinon')
 
 const fsPromises = require('fs').promises
 const subtitles = require('../../../lib/plugin/subtitles')
-const container = require('../../../lib/container')
-const event = require('../../../lib/event')
+const containerModule = require('../../../lib/container')
+const container = containerModule.default || containerModule
+const eventModule = require('../../../lib/event')
+const event = eventModule.default || eventModule
 const { createTest } = require('../../../lib/mocha/test')
 const recorder = require('../../../lib/recorder')
 

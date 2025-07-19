@@ -1,5 +1,7 @@
-const AiAssistant = require('../../lib/ai')
-const config = require('../../lib/config')
+const aiModule = require('../../lib/ai')
+const AiAssistant = aiModule.default || aiModule
+const configModule = require('../../lib/config')
+const config = configModule.default || configModule
 
 let expect
 import('chai').then(chai => {

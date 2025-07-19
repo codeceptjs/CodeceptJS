@@ -5,8 +5,10 @@ import('chai').then(chai => {
 const sinon = require('sinon')
 
 const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail')
-const container = require('../../../lib/container')
-const event = require('../../../lib/event')
+const containerModule = require('../../../lib/container')
+const container = containerModule.default || containerModule
+const eventModule = require('../../../lib/event')
+const event = eventModule.default || eventModule
 const recorder = require('../../../lib/recorder')
 const { createTest } = require('../../../lib/mocha/test')
 const { deserializeSuite } = require('../../../lib/mocha/suite')

@@ -4,9 +4,12 @@ import('chai').then(chai => {
 })
 const path = require('path')
 
-const FileSystem = require('../../lib/helper/FileSystem')
-const actor = require('../../lib/actor')
-const container = require('../../lib/container')
+const fileSystemModule = require('../../lib/helper/FileSystem')
+const FileSystem = fileSystemModule.default || fileSystemModule
+const actorModule = require('../../lib/actor')
+const actor = actorModule.default || actorModule
+const containerModule = require('../../lib/container')
+const container = containerModule.default || containerModule
 
 describe('Container', () => {
   before(() => {
@@ -24,7 +27,8 @@ describe('Container', () => {
   })
 
   describe('#translation', () => {
-    const Translation = require('../../lib/translation')
+    const translationModule = require('../../lib/translation')
+    const Translation = translationModule.default || translationModule
 
     it('should create empty translation', () => {
       container.create({})
@@ -154,7 +158,7 @@ describe('Container', () => {
   })
 
   describe('#create', () => {
-    it('should create container with helpers', () => {
+    it('should create container with helpers', async () => {
       const config = {
         helpers: {
           MyHelper: {
@@ -164,6 +168,7 @@ describe('Container', () => {
         },
       }
       container.create(config)
+      await container.started()
       // custom helpers
       expect(container.helpers('MyHelper')).is.ok
       expect(container.helpers('MyHelper').method()).to.eql('hello world')
@@ -261,13 +266,14 @@ describe('Container', () => {
   })
 
   describe('#append', () => {
-    it('should be able to add new helper', () => {
+    it('should be able to add new helper', async () => {
       const config = {
         helpers: {
           FileSystem: {},
         },
       }
       container.create(config)
+      await container.started()
       container.append({
         helpers: {
           AnotherHelper: { method: () => 'executed' },

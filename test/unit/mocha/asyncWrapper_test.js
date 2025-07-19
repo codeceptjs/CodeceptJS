@@ -6,7 +6,8 @@ const sinon = require('sinon')
 
 const { test: testWrapper, setup, teardown, suiteSetup, suiteTeardown } = require('../../../lib/mocha/asyncWrapper')
 const recorder = require('../../../lib/recorder')
-const event = require('../../../lib/event')
+const eventModule = require('../../../lib/event')
+const event = eventModule.default || eventModule
 
 let test
 let fn

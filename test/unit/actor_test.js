@@ -1,11 +1,16 @@
 const path = require('path')
 const { expect } = require('expect')
 
-const actor = require('../../lib/actor')
-const container = require('../../lib/container')
-const recorder = require('../../lib/recorder')
-const event = require('../../lib/event')
-const store = require('../../lib/store')
+const actorModule = require('../../lib/actor')
+const actor = actorModule.default || actorModule
+const containerModule = require('../../lib/container')
+const container = containerModule.default || containerModule
+const recorderModule = require('../../lib/recorder')
+const recorder = recorderModule.default || recorderModule
+const eventModule = require('../../lib/event')
+const event = eventModule.default || eventModule
+const storeModule = require('../../lib/store')
+const store = storeModule.default || storeModule
 
 global.codecept_dir = path.join(__dirname, '/..')
 let I
@@ -38,34 +43,43 @@ describe('Actor', () => {
     )
     store.actor = null
     container.translation().vocabulary.actions.hello = 'привет'
-    I = actor()
+    I = actor({}, container)
     await container.started()
     event.cleanDispatcher()
   })
 
   it('should collect pageobject methods in actor', async () => {
-    const poI = actor({
-      customStep: () => {},
-    })
+    const poI = actor(
+      {
+        customStep: () => {},
+      },
+      container,
+    )
     expect(poI).toHaveProperty('customStep')
     expect(I).toHaveProperty('customStep')
   })
 
   it('should correct run step from Helper inside PageObject', () => {
-    actor({
-      customStep() {
-        return this.hello()
+    actor(
+      {
+        customStep() {
+          return this.hello()
+        },
       },
-    })
+      container,
+    )
     recorder.start()
     const promise = I.customStep()
     return promise.then(val => expect(val).toEqual('hello world'))
   })
 
   it('should init pageobject methods as metastep', () => {
-    actor({
-      customStep: () => 3,
-    })
+    actor(
+      {
+        customStep: () => 3,
+      },
+      container,
+    )
     expect(I.customStep()).toEqual(3)
   })
 
@@ -75,9 +89,12 @@ describe('Actor', () => {
 
   it('should correct add translation for step from PageObject', async () => {
     container.translation().vocabulary.actions.customStep = 'кастомный_шаг'
-    actor({
-      customStep: () => 3,
-    })
+    actor(
+      {
+        customStep: () => 3,
+      },
+      container,
+    )
     await container.started()
     expect(I).toHaveProperty('кастомный_шаг')
   })

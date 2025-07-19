@@ -1,8 +1,10 @@
 const sinon = require('sinon')
 
-const Step = require('../../lib/step')
-const { MetaStep } = require('../../lib/step')
-const event = require('../../lib/event')
+const stepModule = require('../../lib/step')
+const Step = stepModule.default || stepModule
+const { MetaStep } = stepModule
+const eventModule = require('../../lib/event')
+const event = eventModule.default || eventModule
 const { secret } = require('../../lib/secret')
 
 let expect

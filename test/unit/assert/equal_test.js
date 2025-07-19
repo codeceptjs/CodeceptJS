@@ -3,8 +3,8 @@ import('chai').then(chai => {
   expect = chai.expect
 })
 
-const { Assertion } = require('../../../lib/assert/equal')
-const AssertionError = require('../../../lib/assert/error')
+import { Assertion } from '../../../lib/assert/equal.js'
+import AssertionError from '../../../lib/assert/error.js'
 
 let equal
 

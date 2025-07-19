@@ -2,8 +2,8 @@ let expect
 import('chai').then(chai => {
   expect = chai.expect
 })
-const customLocatorPlugin = require('../../../lib/plugin/customLocator')
-const Locator = require('../../../lib/locator')
+import customLocatorPlugin from '../../../lib/plugin/customLocator.js'
+import Locator from '../../../lib/locator.js'
 
 describe('customLocator', () => {
   beforeEach(() => {

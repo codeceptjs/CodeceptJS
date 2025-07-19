@@ -1,27 +1,33 @@
-const chai = require('chai')
-const store = require('../../lib/store')
+import chai from 'chai'
+import storeModule from '../../lib/store.js'
+const store = storeModule.default || storeModule
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-const formContents = require('../../lib/utils').test.submittedData(dataFile)
-const fileExists = require('../../lib/utils').fileExists
-const secret = require('../../lib/secret').secret
+import { test as testUtils, fileExists } from '../../lib/utils.js'
+const formContents = testUtils.submittedData(dataFile)
+import { secret } from '../../lib/secret.js'
 
-const Locator = require('../../lib/locator')
-const customLocators = require('../../lib/plugin/customLocator')
+import Locator from '../../lib/locator.js'
+import customLocators from '../../lib/plugin/customLocator.js'
 
 let originalLocators
 let I
 let data
 let siteUrl
 
-module.exports.init = function (testData) {
+export function init(testData) {
   data = testData
 }
 
-module.exports.tests = function () {
+export function tests() {
   const isHelper = helperName => I.constructor.name === helperName
 
   beforeEach(() => {

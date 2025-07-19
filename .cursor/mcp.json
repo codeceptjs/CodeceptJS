@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "codeceptjs": {
-      "command": "node",
-      "args": ["/home/davert/projects/CodeceptJS/bin/codecept-mcp.js", "/home/davert/projects/CodeceptJS/examples"],
-      "cwd": "/home/davert/projects/CodeceptJS/examples"
-    }
-  }
-}

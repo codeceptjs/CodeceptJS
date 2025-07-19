@@ -9,7 +9,8 @@ const sinonChai = require('sinon-chai')
 
 const sinon = require('sinon')
 
-const originalOutput = require('../../lib/output')
+const outputModule = require('../../lib/output')
+const originalOutput = outputModule.default || outputModule
 
 let output
 

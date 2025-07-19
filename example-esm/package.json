@@ -9,7 +9,9 @@
     "test:verbose": "codeceptjs run --verbose"
   },
   "dependencies": {
-    "codeceptjs": "file:.."
+    "codeceptjs": "file:..",
+    "axios": "^1.6.0",
+    "joi": "^17.11.0"
   },
   "devDependencies": {},
   "engines": {
