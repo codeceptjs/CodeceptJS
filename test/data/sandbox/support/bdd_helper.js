@@ -1,5 +1,6 @@
-const assert = require('assert');
-const Helper = require('../../../../lib/helper');
+import assert from 'assert';
+import helperModule from '../../../../lib/helper.js';
+const Helper = helperModule.default || helperModule;
 
 class CheckoutHelper extends Helper {
   _before() {
@@ -42,4 +43,4 @@ class CheckoutHelper extends Helper {
   login() {}
 }
 
-module.exports = CheckoutHelper;
+export default CheckoutHelper;

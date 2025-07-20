@@ -1,8 +1,10 @@
-const { DOWN, ENTER } = require('inquirer-test')
-const run = require('inquirer-test')
-const path = require('path')
-const fs = require('fs')
-const mkdirp = require('mkdirp')
+import chai from 'chai';
+chai.should();
+import { DOWN, ENTER } from 'inquirer-test';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init')

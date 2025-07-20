@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './before_suite_test_failed.js',
   timeout: 10000,
   output: './output/failed',

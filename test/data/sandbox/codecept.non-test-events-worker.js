@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './non-test-events-worker/*.js',
   timeout: 10000,
   output: './output',

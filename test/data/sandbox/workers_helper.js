@@ -1,8 +1,8 @@
-const assert = require('assert')
-const { isMainThread } = require('worker_threads')
+import assert from 'assert';
+import { isMainThread } from 'worker_threads';
 
-const HelperModule = require('@codeceptjs/helper')
-const Helper = HelperModule.default || HelperModule
+import HelperModule from '@codeceptjs/helper';
+const Helper = HelperModule.default || HelperModule;
 
 class Workers extends Helper {
   seeThisIsWorker() {
@@ -10,4 +10,4 @@ class Workers extends Helper {
   }
 }
 
-module.exports = Workers
+export default Workers;

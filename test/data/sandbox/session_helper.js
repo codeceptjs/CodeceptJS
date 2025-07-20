@@ -1,4 +1,4 @@
-const Helper = require('../../../lib/helper');
+import Helper from '../../../lib/helper.js';
 
 let uniqueSessions = 0;
 
@@ -35,4 +35,4 @@ class Session extends Helper {
   }
 }
 
-module.exports = Session;
+export default Session;

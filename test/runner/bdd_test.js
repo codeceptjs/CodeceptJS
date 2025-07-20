@@ -1,6 +1,13 @@
-const assert = require('assert')
-const path = require('path')
-const exec = require('child_process').exec
+import chai from 'chai';
+chai.should();
+import assert from 'assert';
+import path from 'path';
+import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -14,6 +21,13 @@ describe('BDD Gherkin', () => {
 
   it('should run feature files', done => {
     exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => {
+      console.log('=== ACTUAL OUTPUT ===')
+      console.log(stdout)
+      console.log('=== STDERR ===')
+      console.log(stderr)
+      console.log('=== ERROR ===')
+      console.log(err)
+      console.log('=== END ===')
       stdout.should.include('Checkout process') // feature
       stdout.should.include('-- before checkout --')
       stdout.should.include('-- after checkout --')
