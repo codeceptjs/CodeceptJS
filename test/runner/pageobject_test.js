@@ -1,8 +1,14 @@
-const path = require('path')
-const exec = require('child_process').exec
-const { expect } = require('expect')
-const figures = require('figures')
-const debug = require('debug')('codeceptjs:test')
+import chai from 'chai';
+chai.should();
+import path from 'path';
+import { exec } from 'child_process';
+import { expect } from 'expect';
+import debugFactory from 'debug';
+import figures from 'figures';
+const debug = debugFactory('codeceptjs:test');
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/pageObjects')
 const codecept_run = `${runner} run`

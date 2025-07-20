@@ -4,8 +4,7 @@ const program = new Command()
 import Codecept from '../lib/codecept.js'
 import output from '../lib/output.js'
 const { print, error } = output
-import commandUtils from '../lib/command/utils.js'
-const { printError } = commandUtils
+import { printError } from '../lib/command/utils.js'
 
 const commandFlags = {
   ai: {

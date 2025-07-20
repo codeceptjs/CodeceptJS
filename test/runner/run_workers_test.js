@@ -1,7 +1,13 @@
-const { expect } = require('expect')
-const path = require('path')
-const exec = require('child_process').exec
-const semver = require('semver')
+import chai from 'chai';
+chai.should();
+import { expect } from 'expect';
+import path from 'path';
+import fs from 'fs';
+import semver from 'semver';
+import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -169,7 +175,6 @@ describe('CodeceptJS Workers Runner', function () {
   })
 
   it('should create output folder with custom name', function (done) {
-    const fs = require('fs')
     const customName = 'thisIsCustomOutputFolderName'
     const outputDir = `${codecept_dir}/${customName}`
     let createdOutput = false

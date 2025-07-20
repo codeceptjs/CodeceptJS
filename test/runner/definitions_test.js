@@ -1,9 +1,16 @@
-const fs = require('fs')
-const assert = require('assert')
-const path = require('path')
-const { exec, execSync } = require('child_process')
-
-const { Project, StructureKind, ts } = require('ts-morph')
+import chai from 'chai';
+chai.should();
+import assert from 'assert';
+import path from 'path';
+import { exec, execSync } from 'child_process';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import { Project, StructureKind, ts } from 'ts-morph';
+import chaiSubset from 'chai-subset';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions')
@@ -13,22 +20,20 @@ const pathOfJSDocDefinitions = path.join(pathToRootOfProject, 'typings/types.d.t
 const pathToTests = path.resolve(pathToRootOfProject, 'test')
 const pathToTypings = path.resolve(pathToRootOfProject, 'typings')
 
-import('chai').then(chai => {
-  chai.use(require('chai-subset'))
-  /** @type {Chai.ChaiPlugin */
-  chai.use((chai, utils) => {
-    utils.addProperty(chai.Assertion.prototype, 'valid', function () {
-      /** @type {import('ts-morph').Project} */
-      const project = utils.flag(this, 'object')
-      new chai.Assertion(project).to.be.instanceof(Project)
+chai.use(chaiSubset)
+/** @type {Chai.ChaiPlugin */
+chai.use((chai, utils) => {
+  utils.addProperty(chai.Assertion.prototype, 'valid', function () {
+    /** @type {import('ts-morph').Project} */
+    const project = utils.flag(this, 'object')
+    new chai.Assertion(project).to.be.instanceof(Project)
 
-      let diagnostics = project.getPreEmitDiagnostics()
-      diagnostics = diagnostics.filter(diagnostic => {
-        const filePath = diagnostic.getSourceFile().getFilePath()
-        return filePath.startsWith(pathToTests) || filePath.startsWith(pathToTypings)
-      })
-      if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics))
+    let diagnostics = project.getPreEmitDiagnostics()
+    diagnostics = diagnostics.filter(diagnostic => {
+      const filePath = diagnostic.getSourceFile().getFilePath()
+      return filePath.startsWith(pathToTests) || filePath.startsWith(pathToTypings)
     })
+    if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics))
   })
 })
 

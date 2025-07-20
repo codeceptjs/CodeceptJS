@@ -1,12 +1,18 @@
-const path = require('path')
-const { expect } = require('expect')
-const exec = require('child_process').exec
+import chai from 'chai';
+chai.should();
+import path from 'path';
+import { expect } from 'expect';
+import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
+import figures from 'figures';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} dry-run`
 const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`
-const char = require('figures').checkboxOff
+const char = figures.checkboxOff
 
 describe('dry-run command', () => {
   before(() => {

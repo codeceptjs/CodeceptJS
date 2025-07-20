@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert';
 
 let tries = 0;
 let tries2 = 0;

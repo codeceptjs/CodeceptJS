@@ -22,4 +22,4 @@ class PagesStore {
   }
 }
 
-module.exports = new PagesStore();
+export default new PagesStore();
