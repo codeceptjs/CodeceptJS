@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { actor } from '../../../../../lib/index.js'
+import { Given, Then } from '../../../../../lib/mocha/bdd.js'
 
 Given('I have products in my cart', table => {
   const I = actor();

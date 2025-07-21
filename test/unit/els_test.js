@@ -1,17 +1,12 @@
-const assert = require('assert')
-const { expect } = require('chai')
-const elsModule = require('../../lib/els')
-const els = elsModule.default || elsModule
-const recorderModule = require('../../lib/recorder')
-const recorder = recorderModule.default || recorderModule
-const ContainerModule = require('../../lib/container')
-const Container = ContainerModule.default || ContainerModule
-const StepConfigModule = require('../../lib/step/config')
-const StepConfig = StepConfigModule.default || StepConfigModule
+import assert from 'assert'
+import { expect } from 'chai'
+import els from '../../lib/els.js'
+import recorder from '../../lib/recorder.js'
+import Container from '../../lib/container.js'
+import StepConfig from '../../lib/step/config.js'
 
 // Import Helper from @codeceptjs/helper directly for tests
-const HelperModule = require('@codeceptjs/helper')
-const Helper = HelperModule.default || HelperModule
+import Helper from '@codeceptjs/helper'
 
 class TestHelper extends Helper {
   constructor() {

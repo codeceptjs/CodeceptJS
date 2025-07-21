@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { expect } from 'chai'
+import { fileURLToPath } from 'url'
+import * as cheerio from 'cheerio'
+import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks } from '../../lib/html.js'
 
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const cheerio = require('cheerio')
-const { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks } = require('../../lib/html')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],

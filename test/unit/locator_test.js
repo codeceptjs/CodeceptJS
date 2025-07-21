@@ -1,7 +1,4 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import { expect } from 'chai'
 import { DOMParser } from '@xmldom/xmldom'
 import xpath from 'xpath'
 

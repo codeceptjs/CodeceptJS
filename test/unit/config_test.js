@@ -1,10 +1,5 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-
-const configModule = require('../../lib/config')
-const config = configModule.default || configModule
+import { expect } from 'chai'
+import config from '../../lib/config.js'
 
 describe('Config', () => {
   beforeEach(() => config.reset())

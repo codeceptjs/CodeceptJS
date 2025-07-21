@@ -1,11 +1,7 @@
-const chai = require('chai')
-const { expect } = chai
-const healModule = require('../../lib/heal')
-const heal = healModule.default || healModule
-const recorderModule = require('../../lib/recorder')
-const recorder = recorderModule.default || recorderModule
-const stepModule = require('../../lib/step')
-const Step = stepModule.default || stepModule
+import { expect } from 'chai'
+import heal from '../../lib/heal.js'
+import recorder from '../../lib/recorder.js'
+import Step from '../../lib/step.js'
 
 describe('heal', () => {
   beforeEach(() => {

@@ -1,18 +1,12 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const sinon = require('sinon')
-
-const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail')
-const containerModule = require('../../../lib/container')
-const container = containerModule.default || containerModule
-const eventModule = require('../../../lib/event')
-const event = eventModule.default || eventModule
-const recorder = require('../../../lib/recorder')
-const { createTest } = require('../../../lib/mocha/test')
-const { deserializeSuite } = require('../../../lib/mocha/suite')
-const MochawesomeHelper = require('../../../lib/helper/Mochawesome')
+import { expect } from 'chai'
+import sinon from 'sinon'
+import screenshotOnFail from '../../../lib/plugin/screenshotOnFail.js'
+import container from '../../../lib/container.js'
+import event from '../../../lib/event.js'
+import recorder from '../../../lib/recorder.js'
+import { createTest } from '../../../lib/mocha/test.js'
+import { deserializeSuite } from '../../../lib/mocha/suite.js'
+import MochawesomeHelper from '../../../lib/helper/Mochawesome.js'
 
 let screenshotSaved
 

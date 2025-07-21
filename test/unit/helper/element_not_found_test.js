@@ -1,7 +1,4 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import { expect } from 'chai'
 
 import ElementNotFound from '../../../lib/helper/errors/ElementNotFound.js'
 

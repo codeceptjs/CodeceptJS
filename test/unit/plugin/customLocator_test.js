@@ -1,7 +1,4 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import { expect } from 'chai'
 import customLocatorPlugin from '../../../lib/plugin/customLocator.js'
 import Locator from '../../../lib/locator.js'
 

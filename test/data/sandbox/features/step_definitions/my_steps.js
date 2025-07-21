@@ -1,3 +1,7 @@
+import { actor } from '../../../../../lib/index.js'
+import { secret } from '../../../../../lib/secret.js'
+import { Given, When, Then } from '../../../../../lib/mocha/bdd.js'
+
 Given(/I have product with \$(\d+) price/, price => {
   const I = actor()
   I.addItem(parseInt(price, 10))

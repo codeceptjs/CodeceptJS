@@ -1,16 +1,11 @@
-let chai
-let expect
-import('chai').then(_chai => {
-  chai = _chai
-  expect = chai.expect
+import { expect } from 'chai'
+import sinonChai from 'sinon-chai'
+import sinon from 'sinon'
+import originalOutput from '../../lib/output.js'
+
+import('chai').then(chai => {
   chai.use(sinonChai)
 })
-const sinonChai = require('sinon-chai')
-
-const sinon = require('sinon')
-
-const outputModule = require('../../lib/output')
-const originalOutput = outputModule.default || outputModule
 
 let output
 

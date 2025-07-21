@@ -1,21 +1,23 @@
-const sinon = require('sinon')
-
-const stepModule = require('../../lib/step')
-const Step = stepModule.default || stepModule
-const { MetaStep } = stepModule
-const eventModule = require('../../lib/event')
-const event = eventModule.default || eventModule
-const { secret } = require('../../lib/secret')
-
-let expect
+import sinon from 'sinon'
+import Step, { MetaStep } from '../../lib/step.js'
+import event from '../../lib/event.js'
+import { secret } from '../../lib/secret.js'
+import { expect } from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 
 import('chai').then(chai => {
-  expect = chai.expect
-  chai.use(require('chai-as-promised'))
+  chai.use(chaiAsPromised)
 })
 
 let step
 let action
+let asyncAction
+let asyncMetaStep
+let metaStep
+let fn
+let asyncFn
+let boundedRun
+let boundedAsyncRun
 
 describe('Steps', () => {
   describe('Step', () => {
@@ -138,10 +140,6 @@ describe('Steps', () => {
     })
 
     describe('#run', () => {
-      let metaStep
-      let fn
-      let boundedRun
-      let boundedAsyncRun
       beforeEach(() => {
         metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething')
         asyncMetaStep = new MetaStep({ metaStepDoSomething: asyncAction }, 'metaStepDoSomething')
