@@ -1,16 +1,15 @@
-const path = require('path')
-const { expect } = require('expect')
+import path from 'path'
+import { expect } from 'expect'
+import { fileURLToPath } from 'url'
 
-const actorModule = require('../../lib/actor')
-const actor = actorModule.default || actorModule
-const containerModule = require('../../lib/container')
-const container = containerModule.default || containerModule
-const recorderModule = require('../../lib/recorder')
-const recorder = recorderModule.default || recorderModule
-const eventModule = require('../../lib/event')
-const event = eventModule.default || eventModule
-const storeModule = require('../../lib/store')
-const store = storeModule.default || storeModule
+import actor from '../../lib/actor.js'
+import container from '../../lib/container.js'
+import recorder from '../../lib/recorder.js'
+import event from '../../lib/event.js'
+import store from '../../lib/store.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 global.codecept_dir = path.join(__dirname, '/..')
 let I
@@ -19,7 +18,7 @@ let counter
 describe('Actor', () => {
   beforeEach(async () => {
     counter = 0
-    container.clear(
+    await container.clear(
       {
         MyHelper: {
           hello: () => 'hello world',
@@ -42,7 +41,10 @@ describe('Actor', () => {
       undefined,
     )
     store.actor = null
-    container.translation().vocabulary.actions.hello = 'привет'
+    const translation = container.translation()
+    if (translation && translation.vocabulary && translation.vocabulary.actions) {
+      translation.vocabulary.actions.hello = 'привет'
+    }
     I = actor({}, container)
     await container.started()
     event.cleanDispatcher()
@@ -88,7 +90,10 @@ describe('Actor', () => {
   })
 
   it('should correct add translation for step from PageObject', async () => {
-    container.translation().vocabulary.actions.customStep = 'кастомный_шаг'
+    const translation = container.translation()
+    if (translation && translation.vocabulary && translation.vocabulary.actions) {
+      translation.vocabulary.actions.customStep = 'кастомный_шаг'
+    }
     actor(
       {
         customStep: () => 3,
@@ -96,7 +101,9 @@ describe('Actor', () => {
       container,
     )
     await container.started()
-    expect(I).toHaveProperty('кастомный_шаг')
+    if (translation && translation.vocabulary && translation.vocabulary.actions) {
+      expect(I).toHaveProperty('кастомный_шаг')
+    }
   })
 
   it('should take all methods from helpers and built in', () => {

@@ -1,13 +1,10 @@
-const sinon = require('sinon')
-
-const fsPromises = require('fs').promises
-const subtitles = require('../../../lib/plugin/subtitles')
-const containerModule = require('../../../lib/container')
-const container = containerModule.default || containerModule
-const eventModule = require('../../../lib/event')
-const event = eventModule.default || eventModule
-const { createTest } = require('../../../lib/mocha/test')
-const recorder = require('../../../lib/recorder')
+import sinon from 'sinon'
+import { promises as fsPromises } from 'fs'
+import subtitles from '../../../lib/plugin/subtitles.js'
+import container from '../../../lib/container.js'
+import event from '../../../lib/event.js'
+import { createTest } from '../../../lib/mocha/test.js'
+import recorder from '../../../lib/recorder.js'
 
 function sleep(ms) {
   return new Promise(resolve => {

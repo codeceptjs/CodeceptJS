@@ -1,15 +1,14 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const path = require('path')
+import { expect } from 'chai'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const fileSystemModule = require('../../lib/helper/FileSystem')
-const FileSystem = fileSystemModule.default || fileSystemModule
-const actorModule = require('../../lib/actor')
-const actor = actorModule.default || actorModule
-const containerModule = require('../../lib/container')
-const container = containerModule.default || containerModule
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+import FileSystem from '../../lib/helper/FileSystem.js'
+import actor from '../../lib/actor.js'
+import container from '../../lib/container.js'
+import Translation from '../../lib/translation.js'
 
 describe('Container', () => {
   before(() => {
@@ -18,71 +17,68 @@ describe('Container', () => {
     global.actor = actor
   })
 
-  afterEach(() => {
-    container.clear()
+  afterEach(async () => {
+    await container.clear()
     ;['I', 'dummy_page'].forEach(po => {
-      const name = require.resolve(path.join(__dirname, `../data/${po}`))
-      delete require.cache[name]
+      // Note: ESM modules cannot be deleted from cache like CommonJS
     })
   })
 
   describe('#translation', () => {
-    const translationModule = require('../../lib/translation')
-    const Translation = translationModule.default || translationModule
 
-    it('should create empty translation', () => {
-      container.create({})
+    it('should create empty translation', async () => {
+      await container.create({})
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.false
       expect(container.translation().actionAliasFor('see')).to.eql('see')
     })
 
-    it('should create Russian translation', () => {
-      container.create({ translation: 'ru-RU' })
+    it('should create Russian translation', async () => {
+      await container.create({ translation: 'ru-RU' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('Я')
       expect(container.translation().actionAliasFor('see')).to.eql('вижу')
     })
 
-    it('should create Italian translation', () => {
-      container.create({ translation: 'it-IT' })
+    it('should create Italian translation', async () => {
+      await container.create({ translation: 'it-IT' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('io')
       expect(container.translation().value('contexts').Feature).to.eql('Funzionalità')
     })
 
-    it('should create French translation', () => {
-      container.create({ translation: 'fr-FR' })
+    it('should create French translation', async () => {
+      await container.create({ translation: 'fr-FR' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('Je')
       expect(container.translation().value('contexts').Feature).to.eql('Fonctionnalité')
     })
 
-    it('should create Portuguese translation', () => {
-      container.create({ translation: 'pt-BR' })
+    it('should create Portuguese translation', async () => {
+      await container.create({ translation: 'pt-BR' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('Eu')
       expect(container.translation().value('contexts').Feature).to.eql('Funcionalidade')
     })
 
-    it('should load custom translation', () => {
-      container.create({ translation: 'my' })
+    it('should load custom translation', async () => {
+      await container.create({ translation: 'my' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
     })
 
-    it('should load no translation', () => {
-      container.create({})
+    it('should load no translation', async () => {
+      await container.create({})
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.false
     })
 
-    it('should load custom translation with vocabularies', () => {
-      container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] })
+    it('should load custom translation with vocabularies', async () => {
+      await container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       const translation = container.translation()
@@ -91,8 +87,8 @@ describe('Container', () => {
   })
 
   describe('#helpers', () => {
-    beforeEach(() => {
-      container.clear({
+    beforeEach(async () => {
+      await container.clear({
         helper1: { name: 'hello' },
         helper2: { name: 'world' },
       })
@@ -110,8 +106,8 @@ describe('Container', () => {
   })
 
   describe('#support', () => {
-    beforeEach(() => {
-      container.clear(
+    beforeEach(async () => {
+      await container.clear(
         {},
         {
           support1: { name: 'hello' },
@@ -135,8 +131,8 @@ describe('Container', () => {
   })
 
   describe('#plugins', () => {
-    beforeEach(() => {
-      container.clear(
+    beforeEach(async () => {
+      await container.clear(
         {},
         {},
         {
@@ -178,23 +174,23 @@ describe('Container', () => {
       expect(container.helpers('FileSystem')).to.be.instanceOf(FileSystem)
     })
 
-    it('should always create I', () => {
-      container.create({})
+    it('should always create I', async () => {
+      await container.create({})
       expect(container.support('I')).is.ok
     })
 
-    it('should load DI and return a reference to the module', () => {
-      container.create({
+    it('should load DI and return a reference to the module', async () => {
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
         },
       })
-      const dummyPage = require('../data/dummy_page')
-      expect(container.support('dummyPage').toString()).is.eql(dummyPage.toString())
+      const dummyPage = await import('../data/dummy_page.js')
+      expect(container.support('dummyPage').toString()).is.eql((dummyPage.default || dummyPage).toString())
     })
 
-    it('should load I from path and execute', () => {
-      container.create({
+    it('should load I from path and execute', async () => {
+      await container.create({
         include: {
           I: './data/I',
         },
@@ -205,8 +201,8 @@ describe('Container', () => {
       expect(Object.keys(container.support('I'))).to.include('doSomething')
     })
 
-    it('should load DI includes provided as require paths', () => {
-      container.create({
+    it('should load DI includes provided as require paths', async () => {
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
         },
@@ -216,7 +212,7 @@ describe('Container', () => {
     })
 
     it('should load DI and inject I into PO', async () => {
-      container.create({
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
           I: './data/I',
@@ -228,8 +224,8 @@ describe('Container', () => {
       expect(container.support('dummyPage').getI()).to.have.keys('_init', 'doSomething')
     })
 
-    it('should load DI and inject custom I into PO', () => {
-      container.create({
+    it('should load DI and inject custom I into PO', async () => {
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
           I: './data/I',
@@ -240,8 +236,8 @@ describe('Container', () => {
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
     })
 
-    it('should load DI includes provided as objects', () => {
-      container.create({
+    it('should load DI includes provided as objects', async () => {
+      await container.create({
         include: {
           dummyPage: {
             openDummyPage: () => 'dummy page opened',
@@ -252,8 +248,8 @@ describe('Container', () => {
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
     })
 
-    it('should load DI includes provided as objects', () => {
-      container.create({
+    it('should load DI includes provided as objects', async () => {
+      await container.create({
         include: {
           dummyPage: {
             openDummyPage: () => 'dummy page opened',
@@ -286,8 +282,8 @@ describe('Container', () => {
       expect(container.helpers('AnotherHelper').method()).is.eql('executed')
     })
 
-    it('should be able to add new support object', () => {
-      container.create({})
+    it('should be able to add new support object', async () => {
+      await container.create({})
       container.append({ support: { userPage: { login: '#login' } } })
       expect(container.support('I')).is.ok
       expect(container.support('userPage')).is.ok

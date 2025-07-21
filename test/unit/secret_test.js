@@ -1,9 +1,5 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const secretModule = require('../../lib/secret')
-const Secret = secretModule.default || secretModule
+import { expect } from 'chai'
+import Secret from '../../lib/secret.js'
 
 describe('Secret tests', () => {
   it('should be the Secret instance', () => {

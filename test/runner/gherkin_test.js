@@ -2,6 +2,7 @@ import chai from 'chai';
 chai.should();
 import assert from 'assert';
 import path from 'path';
+import fs from 'fs';
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);

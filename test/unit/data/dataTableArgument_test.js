@@ -1,9 +1,5 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const { it } = require('mocha')
-const DataTableArgument = require('../../../lib/data/dataTableArgument')
+import { expect } from 'chai'
+import DataTableArgument from '../../../lib/data/dataTableArgument.js'
 
 describe('DataTableArgument', () => {
   const gherkinDataTable = {

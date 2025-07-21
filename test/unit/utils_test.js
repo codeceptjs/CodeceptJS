@@ -1,12 +1,13 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const os = require('os')
-const path = require('path')
-const sinon = require('sinon')
+import { expect } from 'chai'
+import os from 'os'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import sinon from 'sinon'
+import * as utils from '../../lib/utils.js'
+import playwright from 'playwright'
 
-const utils = require('../../lib/utils')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -334,7 +335,7 @@ describe('utils', () => {
 
   describe('#requireWithFallback', () => {
     it('returns the fallback package', () => {
-      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(require('playwright'))
+      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(playwright)
     })
 
     it('returns provide default require not found message', () => {

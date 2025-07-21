@@ -1,12 +1,6 @@
-const aiModule = require('../../lib/ai')
-const AiAssistant = aiModule.default || aiModule
-const configModule = require('../../lib/config')
-const config = configModule.default || configModule
-
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import { expect } from 'chai'
+import AiAssistant from '../../lib/ai.js'
+import config from '../../lib/config.js'
 
 describe('AI module', () => {
   beforeEach(() => {
