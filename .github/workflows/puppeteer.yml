@@ -22,34 +22,26 @@ jobs:
         node-version: [20.x]
 
     steps:
-      - uses: actions/checkout@v5
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v5
-        with:
-          node-version: ${{ matrix.node-version }}
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 7.4
-      - name: npm install
-        run: |
-          npm i --force && npm i puppeteer --force
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-      - name: Start mock server
-        run: nohup npm run mock-server:start &
-      - name: Wait for mock server
-        run: |
-          for i in {1..20}; do
-            curl -sSf http://localhost:3001/api/users && break
-            sleep 1
-          done
-      - name: start a server
-        run: 'php -S 127.0.0.1:8000 -t test/data/app &'
-      - uses: browser-actions/setup-chrome@v2
-      - run: chrome --version
-      - name: run tests
-        run: './bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug'
-      - name: run unit tests
-        run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js
-      - name: Stop mock server
-        run: npm run mock-server:stop
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+    - name: npm install
+      run: |
+        npm i --force && npm i puppeteer --force
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+    - name: start a server
+      run: "php -S 127.0.0.1:8000 -t test/data/app &"
+    - uses: browser-actions/setup-chrome@v1
+    - run: chrome --version
+    - name: run tests
+      run:  "./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
+    - name: run unit tests
+      run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js --reporter @testomatio/reporter/mocha
+      env:
+        GH_PAT: ${{ github.token }}

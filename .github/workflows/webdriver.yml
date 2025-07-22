@@ -49,7 +49,9 @@ jobs:
       - name: check
         run: './bin/codecept.js check -c test/acceptance/codecept.WebDriver.js'
       - name: run unit tests
-        run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit
+        run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit --reporter @testomatio/reporter/mocha
+        env:
+          GH_PAT: ${{ github.token }}
       - name: run tests
         run: './bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug'
       - name: Stop mock server
