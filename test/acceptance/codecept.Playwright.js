@@ -32,7 +32,7 @@ export const config = {
     screenshotOnFail: {
       enabled: true,
     },
-    retryTo: {
+    retryFailedStep: {
       enabled: true,
     },
   },
