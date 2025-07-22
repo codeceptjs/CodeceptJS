@@ -43,4 +43,6 @@ jobs:
     - name: run tests
       run:  "./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"
     - name: run unit tests
-      run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js
+      run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js --reporter @testomatio/reporter/mocha
+      env:
+        GH_PAT: ${{ github.token }}
