@@ -534,7 +534,7 @@ declare const within: typeof CodeceptJS.within
 declare const session: typeof CodeceptJS.session
 declare const DataTable: typeof CodeceptJS.DataTable
 declare const DataTableArgument: typeof CodeceptJS.DataTableArgument
-declare const codeceptjs: typeof CodeceptJS.index
+declare const codeceptjs: typeof CodeceptJS
 declare const locate: typeof CodeceptJS.Locator.build
 declare function inject(): CodeceptJS.SupportObject
 declare function inject<T extends keyof CodeceptJS.SupportObject>(name: T): CodeceptJS.SupportObject[T]

@@ -37,10 +37,10 @@ module.exports = {
   async defTypings() {
     console.log('Generate TypeScript definition')
     // Generate definitions for promised-based helper methods
-    await npx('jsdoc -c typings/jsdocPromiseBased.conf.js')
+    await npx('jsdoc -c typings/jsdocPromiseBased.conf.json')
     fs.renameSync('typings/types.d.ts', 'typings/promiseBasedTypes.d.ts')
     // Generate all other regular definitions
-    await npx('jsdoc -c typings/jsdoc.conf.js')
+    await npx('jsdoc -c typings/jsdoc.conf.json')
   },
 
   async docsPlugins() {
@@ -176,6 +176,31 @@ Our community prepared some valuable recipes for setting up CI systems with Code
           cfg.replace(/LocatorOrString/g, 'string | object')
           cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object')
         }
+        // Convert ESM imports to require() for JSDoc compatibility
+        cfg.replace(/^import\s+([^'"`\s{]+)\s+from\s+['"`]([^'"`]+)['"`]/gm, "const $1 = require('$2')")
+        cfg.replace(/^import\s*\{\s*([^}]+)\s*\}\s*from\s+['"`]([^'"`]+)['"`]/gm, (match, imports, path) => {
+          // Handle destructuring imports with aliases - convert to simple require and assign
+          if (imports.includes(' as ')) {
+            const parts = imports.split(',').map(i => i.trim())
+            const assignments = parts.map(part => {
+              if (part.includes(' as ')) {
+                const [original, alias] = part.split(' as ').map(s => s.trim())
+                return `const ${alias} = require('${path}').${original}`
+              } else {
+                return `const ${part} = require('${path}').${part}`
+              }
+            })
+            return assignments.join(';\n')
+          }
+          return `const { ${imports} } = require('${path}')`
+        })
+        cfg.replace(/^import\s+\*\s+as\s+([^'"`]+)\s+from\s+['"`]([^'"`]+)['"`]/gm, "const $1 = require('$2')")
+
+        // Convert ESM exports to module.exports for JSDoc compatibility
+        cfg.replace(/^export\s*\{\s*([^}]+)\s+as\s+default\s*\}/gm, 'module.exports = $1')
+        cfg.replace(/^export\s+default\s+(.+)/gm, 'module.exports = $1')
+        cfg.replace(/^export\s*\{\s*([^}]+)\s*\}/gm, 'module.exports = { $1 }')
+        cfg.replace(/^export\s+(class|function|const|let|var)\s+([^\s=]+)/gm, '$1 $2')
       })
     }
   },
@@ -215,6 +240,32 @@ Our community prepared some valuable recipes for setting up CI systems with Code
         cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object')
         cfg.replace(/LocatorOrString/g, 'string | object')
         cfg.replace(/CodeceptJS.StringOrSecret/g, 'string | object')
+
+        // Convert ESM imports to require() for JSDoc compatibility
+        cfg.replace(/^import\s+([^'"`\s{]+)\s+from\s+['"`]([^'"`]+)['"`]/gm, "const $1 = require('$2')")
+        cfg.replace(/^import\s*\{\s*([^}]+)\s*\}\s*from\s+['"`]([^'"`]+)['"`]/gm, (match, imports, path) => {
+          // Handle destructuring imports with aliases - convert to simple require and assign
+          if (imports.includes(' as ')) {
+            const parts = imports.split(',').map(i => i.trim())
+            const assignments = parts.map(part => {
+              if (part.includes(' as ')) {
+                const [original, alias] = part.split(' as ').map(s => s.trim())
+                return `const ${alias} = require('${path}').${original}`
+              } else {
+                return `const ${part} = require('${path}').${part}`
+              }
+            })
+            return assignments.join(';\n')
+          }
+          return `const { ${imports} } = require('${path}')`
+        })
+        cfg.replace(/^import\s+\*\s+as\s+([^'"`]+)\s+from\s+['"`]([^'"`]+)['"`]/gm, "const $1 = require('$2')")
+
+        // Convert ESM exports to module.exports for JSDoc compatibility
+        cfg.replace(/^export\s*\{\s*([^}]+)\s+as\s+default\s*\}/gm, 'module.exports = $1')
+        cfg.replace(/^export\s+default\s+(.+)/gm, 'module.exports = $1')
+        cfg.replace(/^export\s*\{\s*([^}]+)\s*\}/gm, 'module.exports = { $1 }')
+        cfg.replace(/^export\s+(class|function|const|let|var)\s+([^\s=]+)/gm, '$1 $2')
       })
 
       await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md ${documentjsCliArgs}`)
