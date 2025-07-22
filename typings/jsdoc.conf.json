@@ -1,0 +1,41 @@
+{
+  "source": {
+    "include": [
+      "./docs/build",
+      "./lib/actor.js",
+      "./lib/codecept.js",
+      "./lib/config.js",
+      "./lib/result.js",
+      "./lib/container.js",
+      "./lib/data/table.js",
+      "./lib/data/dataTableArgument.js",
+      "./lib/effects.js",
+      "./lib/event.js",
+      "./lib/index.js",
+      "./lib/locator.js",
+      "./lib/output.js",
+      "./lib/pause.js",
+      "./lib/recorder.js",
+      "./lib/secret.js",
+      "./lib/session.js",
+      "./lib/step/config.js",
+      "./lib/step/base.js",
+      "./lib/step/helper.js",
+      "./lib/step/meta.js",
+      "./lib/store.js",
+      "./lib/mocha/ui.js",
+      "./lib/mocha/featureConfig.js",
+      "./lib/mocha/scenarioConfig.js",
+      "./lib/mocha/bdd.js",
+      "./lib/mocha/hooks.js",
+      "./node_modules/@codeceptjs/detox-helper/Detox.js",
+      "./node_modules/@codeceptjs/helper/dist/index.js"
+    ]
+  },
+  "opts": {
+    "template": "node_modules/tsd-jsdoc/dist",
+    "recurse": true,
+    "destination": "./typings/"
+  },
+  "plugins": ["jsdoc.namespace.cjs", "jsdoc-typeof-plugin"]
+}
