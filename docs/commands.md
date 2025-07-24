@@ -47,6 +47,12 @@ Run single test with steps printed
 npx codeceptjs run github_test.js --steps
 ```
 
+Run test files in shuffled order
+
+```sh
+npx codeceptjs run --shuffle
+```
+
 Run single test in debug mode (see more in [debugging](#Debugging) section)
 
 ```sh
