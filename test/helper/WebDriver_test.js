@@ -1,16 +1,22 @@
-const chai = require('chai')
+import chai from 'chai'
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
-const fs = require('fs')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-const TestHelper = require('../support/TestHelper')
-const WebDriver = require('../../lib/helper/WebDriver')
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const Secret = require('../../lib/secret')
-global.codeceptjs = require('../../lib')
+import TestHelper from '../support/TestHelper.js'
+import WebDriver from '../../lib/helper/WebDriver.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import * as webApiTests from './webapi.js'
+import { secret as Secret } from '../../lib/secret.js'
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs
+
+const dataFile = path.join(__dirname, '/../data/app/db')
 
 const siteUrl = TestHelper.siteUrl()
 let wd
