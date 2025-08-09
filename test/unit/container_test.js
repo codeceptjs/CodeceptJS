@@ -25,7 +25,6 @@ describe('Container', () => {
   })
 
   describe('#translation', () => {
-
     it('should create empty translation', async () => {
       await container.create({})
       expect(container.translation()).to.be.instanceOf(Translation)
@@ -158,7 +157,7 @@ describe('Container', () => {
       const config = {
         helpers: {
           MyHelper: {
-            require: './data/helper',
+            require: './data/helper.js',
           },
           FileSystem: {},
         },
@@ -182,7 +181,7 @@ describe('Container', () => {
     it('should load DI and return a reference to the module', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page',
+          dummyPage: './data/dummy_page.js',
         },
       })
       const dummyPage = await import('../data/dummy_page.js')
@@ -192,7 +191,7 @@ describe('Container', () => {
     it('should load I from path and execute', async () => {
       await container.create({
         include: {
-          I: './data/I',
+          I: './data/I.js',
         },
       })
       expect(container.support('I')).is.ok
@@ -214,8 +213,8 @@ describe('Container', () => {
     it('should load DI and inject I into PO', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page',
-          I: './data/I',
+          dummyPage: './data/dummy_page.js',
+          I: './data/I.js',
         },
       })
       expect(container.support('dummyPage')).is.ok
@@ -227,8 +226,8 @@ describe('Container', () => {
     it('should load DI and inject custom I into PO', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page',
-          I: './data/I',
+          dummyPage: './data/dummy_page.js',
+          I: './data/I.js',
         },
       })
       expect(container.support('dummyPage')).is.ok
