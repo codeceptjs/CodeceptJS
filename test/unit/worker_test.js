@@ -69,7 +69,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       })
@@ -141,7 +141,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       })
@@ -176,7 +176,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       })
@@ -204,7 +204,7 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper',
+            require: './custom_worker_helper.js',
           },
         },
       })
