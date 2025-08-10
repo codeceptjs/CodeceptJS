@@ -226,7 +226,7 @@ describe('Workers', function () {
       testConfig: './test/data/sandbox/codecept.non-test-events-worker.js',
     }
 
-    workers = new Workers(2, workerConfig)
+  let workers = new Workers(2, workerConfig)
 
     workers.run()
 
