@@ -1,17 +1,17 @@
-let I
-
 const MyPage = {
   _init() {
-    I = actor()
+    // Legacy method - not needed with inject pattern
   },
 
   hasFile(arg) {
-    I.seeFile('codecept.class.js')
-    I.seeFile('codecept.po.js')
+    const { I } = inject();
+    I.seeFile('codecept.class.js');
+    I.seeFile('codecept.po.js');
   },
 
   failedMethod() {
-    I.seeFile('notexistfile.js')
+    const { I } = inject();
+    I.seeFile('notexistfile.js');
   },
 }
 
