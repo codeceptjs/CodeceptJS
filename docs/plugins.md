@@ -1,6 +1,6 @@
 ---
 permalink: plugins
-sidebarDepth:
+sidebarDepth: 
 sidebar: auto
 title: Plugins
 ---
@@ -24,42 +24,42 @@ exports.config = {
       enabled: true,
       clusterize: 5,
       analyze: 2,
-      vision: false,
-    },
-  },
+      vision: false
+    }
+  }
 }
 ```
 
 #### Configuration
 
-- `clusterize` (number) - minimum number of failures to trigger clustering analysis. Default: 5
-- `analyze` (number) - maximum number of individual test failures to analyze in detail. Default: 2
-- `vision` (boolean) - enables visual analysis of test screenshots. Default: false
-- `categories` (array) - list of failure categories for classification. Defaults to:
-  - Browser connection error / browser crash
-  - Network errors (server error, timeout, etc)
-  - HTML / page elements (not found, not visible, etc)
-  - Navigation errors (404, etc)
-  - Code errors (syntax error, JS errors, etc)
-  - Library & framework errors
-  - Data errors (password incorrect, invalid format, etc)
-  - Assertion failures
-  - Other errors
-- `prompts` (object) - customize AI prompts for analysis
-  - `clusterize` - prompt for clustering analysis
-  - `analyze` - prompt for individual test analysis
+*   `clusterize` (number) - minimum number of failures to trigger clustering analysis. Default: 5
+*   `analyze` (number) - maximum number of individual test failures to analyze in detail. Default: 2
+*   `vision` (boolean) - enables visual analysis of test screenshots. Default: false
+*   `categories` (array) - list of failure categories for classification. Defaults to:
+    *   Browser connection error / browser crash
+    *   Network errors (server error, timeout, etc)
+    *   HTML / page elements (not found, not visible, etc)
+    *   Navigation errors (404, etc)
+    *   Code errors (syntax error, JS errors, etc)
+    *   Library & framework errors
+    *   Data errors (password incorrect, invalid format, etc)
+    *   Assertion failures
+    *   Other errors
+*   `prompts` (object) - customize AI prompts for analysis
+    *   `clusterize` - prompt for clustering analysis
+    *   `analyze` - prompt for individual test analysis
 
 #### Features
 
-- Groups similar failures when number of failures >= clusterize value
-- Provides detailed analysis of individual failures
-- Analyzes screenshots if vision=true and screenshots are available
-- Classifies failures into predefined categories
-- Suggests possible causes and solutions
+*   Groups similar failures when number of failures >= clusterize value
+*   Provides detailed analysis of individual failures
+*   Analyzes screenshots if vision=true and screenshots are available
+*   Classifies failures into predefined categories
+*   Suggests possible causes and solutions
 
 ### Parameters
 
-- `config` **[Object][1]** Plugin configuration (optional, default `{}`)
+*   `config` **[Object][1]** Plugin configuration (optional, default `{}`)
 
 Returns **void**&#x20;
 
@@ -81,28 +81,28 @@ If a session expires automatically logs in again.
 ```js
 // inside a test file
 // use login to inject auto-login function
-Feature('Login')
+Feature('Login');
 
 Before(({ login }) => {
-  login('user') // login using user session
-})
+   login('user'); // login using user session
+});
 
 // Alternatively log in for one scenario.
-Scenario('log me in', ({ I, login }) => {
-  login('admin')
-  I.see('I am logged in')
-})
+Scenario('log me in', ( { I, login } ) => {
+   login('admin');
+   I.see('I am logged in');
+});
 ```
 
 #### Configuration
 
-- `saveToFile` (default: false) - save cookies to file. Allows to reuse session between execution.
-- `inject` (default: `login`) - name of the login function to use
-- `users` - an array containing different session names and functions to:
-  - `login` - sign in into the system
-  - `check` - check that user is logged in
-  - `fetch` - to get current cookies (by default `I.grabCookie()`)
-  - `restore` - to set cookies (by default `I.amOnPage('/'); I.setCookie(cookie)`)
+*   `saveToFile` (default: false) - save cookies to file. Allows to reuse session between execution.
+*   `inject` (default: `login`) - name of the login function to use
+*   `users` - an array containing different session names and functions to:
+    *   `login` - sign in into the system
+    *   `check` - check that user is logged in
+    *   `fetch` - to get current cookies (by default `I.grabCookie()`)
+    *   `restore` - to set cookies (by default `I.amOnPage('/'); I.setCookie(cookie)`)
 
 #### How It Works
 
@@ -253,7 +253,7 @@ auth: {
 ```
 
 ```js
-Scenario('login', async ({ I, login }) => {
+Scenario('login', async ( {I, login} ) => {
   await login('admin') // you should use `await`
 })
 ```
@@ -287,14 +287,14 @@ auth: {
 ```
 
 ```js
-Scenario('login', async ({ I, login }) => {
+Scenario('login', async ( {I, login} ) => {
   await login('admin') // you should use `await`
 })
 ```
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## autoDelay
 
@@ -309,32 +309,32 @@ It puts a tiny delay for before and after action commands.
 
 Commands affected (by default):
 
-- `click`
-- `fillField`
-- `checkOption`
-- `pressKey`
-- `doubleClick`
-- `rightClick`
+*   `click`
+*   `fillField`
+*   `checkOption`
+*   `pressKey`
+*   `doubleClick`
+*   `rightClick`
 
 #### Configuration
 
 ```js
 plugins: {
-  autoDelay: {
-    enabled: true
-  }
+   autoDelay: {
+     enabled: true
+   }
 }
 ```
 
 Possible config options:
 
-- `methods`: list of affected commands. Can be overridden
-- `delayBefore`: put a delay before a command. 100ms by default
-- `delayAfter`: put a delay after a command. 200ms by default
+*   `methods`: list of affected commands. Can be overridden
+*   `delayBefore`: put a delay before a command. 100ms by default
+*   `delayAfter`: put a delay after a command. 200ms by default
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## coverage
 
@@ -355,15 +355,15 @@ plugins: {
 
 Possible config options, More could be found at [monocart-coverage-reports][2]
 
-- `debug`: debug info. By default, false.
-- `name`: coverage report name.
-- `outputDir`: path to coverage report.
-- `sourceFilter`: filter the source files.
-- `sourcePath`: option to resolve a custom path.
+*   `debug`: debug info. By default, false.
+*   `name`: coverage report name.
+*   `outputDir`: path to coverage report.
+*   `sourceFilter`: filter the source files.
+*   `sourcePath`: option to resolve a custom path.
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## customLocator
 
@@ -383,11 +383,11 @@ This plugin will create a valid XPath locator for you.
 
 #### Configuration
 
-- `enabled` (default: `false`) should a locator be enabled
-- `prefix` (default: `$`) sets a prefix for a custom locator.
-- `attribute` (default: `data-test-id`) to set an attribute to be matched.
-- `strategy` (default: `xpath`) actual locator strategy to use in query (`css` or `xpath`).
-- `showActual` (default: false) show in the output actually produced XPath or CSS locator. By default shows custom locator value.
+*   `enabled` (default: `false`) should a locator be enabled
+*   `prefix` (default: `$`) sets a prefix for a custom locator.
+*   `attribute` (default: `data-test-id`) to set an attribute to be matched.
+*   `strategy` (default: `xpath`) actual locator strategy to use in query (`css` or `xpath`).
+*   `showActual` (default: false) show in the output actually produced XPath or CSS locator. By default shows custom locator value.
 
 #### Examples:
 
@@ -406,8 +406,8 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('$user') // matches => [data-test=user]
-I.click('$sign-up') // matches => [data-test=sign-up]
+I.seeElement('$user'); // matches => [data-test=user]
+I.click('$sign-up'); // matches => [data-test=sign-up]
 ```
 
 Using `data-qa` attribute with `=` prefix:
@@ -426,8 +426,8 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('=user') // matches => [data-qa=user]
-I.click('=sign-up') // matches => [data-qa=sign-up]
+I.seeElement('=user'); // matches => [data-qa=user]
+I.click('=sign-up'); // matches => [data-qa=sign-up]
 ```
 
 Using `data-qa` OR `data-test` attribute with `=` prefix:
@@ -447,8 +447,8 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('=user') // matches => //*[@data-qa=user or @data-test=user]
-I.click('=sign-up') // matches => //*[data-qa=sign-up or @data-test=sign-up]
+I.seeElement('=user'); // matches => //*[@data-qa=user or @data-test=user]
+I.click('=sign-up'); // matches => //*[data-qa=sign-up or @data-test=sign-up]
 ```
 
 ```js
@@ -466,13 +466,13 @@ plugins: {
 In a test:
 
 ```js
-I.seeElement('=user') // matches => [data-qa=user],[data-test=user]
-I.click('=sign-up') // matches => [data-qa=sign-up],[data-test=sign-up]
+I.seeElement('=user'); // matches => [data-qa=user],[data-test=user]
+I.click('=sign-up'); // matches => [data-qa=sign-up],[data-test=sign-up]
 ```
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## customReporter
 
@@ -480,7 +480,7 @@ Sample custom reporter for CodeceptJS.
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## heal
 
@@ -498,11 +498,11 @@ plugins: {
 
 More config options are available:
 
-- `healLimit` - how many steps can be healed in a single test (default: 2)
+*   `healLimit` - how many steps can be healed in a single test (default: 2)
 
 ### Parameters
 
-- `config` (optional, default `{}`)
+*   `config`   (optional, default `{}`)
 
 ## pageInfo
 
@@ -523,12 +523,12 @@ plugins: {
 
 Additional config options:
 
-- `errorClasses` - list of classes to search for errors (default: `['error', 'warning', 'alert', 'danger']`)
-- `browserLogs` - list of types of errors to search for in browser logs (default: `['error']`)
+*   `errorClasses` - list of classes to search for errors (default: `['error', 'warning', 'alert', 'danger']`)
+*   `browserLogs` - list of types of errors to search for in browser logs (default: `['error']`)
 
 ### Parameters
 
-- `config` (optional, default `{}`)
+*   `config`   (optional, default `{}`)
 
 ## pauseOnFail
 
@@ -556,9 +556,9 @@ Add this plugin to config file:
 
 ```js
 plugins: {
-  retryFailedStep: {
-    enabled: true
-  }
+    retryFailedStep: {
+       enabled: true
+    }
 }
 ```
 
@@ -568,22 +568,22 @@ Run tests with plugin enabled:
 
 #### Configuration:
 
-- `retries` - number of retries (by default 3),
-- `when` - function, when to perform a retry (accepts error as parameter)
-- `factor` - The exponential factor to use. Default is 1.5.
-- `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
-- `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
-- `randomize` - Randomizes the timeouts by multiplying with a factor from 1 to 2. Default is false.
-- `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
-  - `amOnPage`
-  - `wait*`
-  - `send*`
-  - `execute*`
-  - `run*`
-  - `have*`
-- `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
-  You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
-  To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
+*   `retries` - number of retries (by default 3),
+*   `when` - function, when to perform a retry (accepts error as parameter)
+*   `factor` - The exponential factor to use. Default is 1.5.
+*   `minTimeout` - The number of milliseconds before starting the first retry. Default is 1000.
+*   `maxTimeout` - The maximum number of milliseconds between two retries. Default is Infinity.
+*   `randomize` - Randomizes the timeouts by multiplying with a factor from 1 to 2. Default is false.
+*   `defaultIgnoredSteps` - an array of steps to be ignored for retry. Includes:
+    *   `amOnPage`
+    *   `wait*`
+    *   `send*`
+    *   `execute*`
+    *   `run*`
+    *   `have*`
+*   `ignoredSteps` - an array for custom steps to ignore on retry. Use it to append custom steps to ignored list.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+    To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 
 #### Example
 
@@ -607,13 +607,13 @@ Use scenario configuration to disable plugin for a test
 
 ```js
 Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
-  // test goes here
+   // test goes here
 })
 ```
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## screenshotOnFail
 
@@ -629,20 +629,20 @@ Configuration can either be taken from a corresponding helper (deprecated) or a 
 
 ```js
 plugins: {
-  screenshotOnFail: {
-    enabled: true
-  }
+   screenshotOnFail: {
+     enabled: true
+   }
 }
 ```
 
 Possible config options:
 
-- `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
-- `fullPageScreenshots`: make full page screenshots. Default: false.
+*   `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
+*   `fullPageScreenshots`: make full page screenshots. Default: false.
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## stepByStepReport
 
@@ -668,17 +668,17 @@ Run tests with plugin enabled:
 
 Possible config options:
 
-- `deleteSuccessful`: do not save screenshots for successfully executed tests. Default: true.
-- `animateSlides`: should animation for slides to be used. Default: true.
-- `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
-- `fullPageScreenshots`: should full page screenshots be used. Default: false.
-- `output`: a directory where reports should be stored. Default: `output`.
-- `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
-- \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
+*   `deleteSuccessful`: do not save screenshots for successfully executed tests. Default: true.
+*   `animateSlides`: should animation for slides to be used. Default: true.
+*   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
+*   `fullPageScreenshots`: should full page screenshots be used. Default: false.
+*   `output`: a directory where reports should be stored. Default: `output`.
+*   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
+*   \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
 
 ### Parameters
 
-- `config` **any**&#x20;
+*   `config` **any**&#x20;
 
 ## stepTimeout
 
@@ -688,9 +688,9 @@ Add this plugin to config file:
 
 ```js
 plugins: {
-  stepTimeout: {
-    enabled: true
-  }
+    stepTimeout: {
+       enabled: true
+    }
 }
 ```
 
@@ -700,18 +700,19 @@ Run tests with plugin enabled:
 
 #### Configuration:
 
-- `timeout` - global step timeout, default 150 seconds
+*   `timeout` - global step timeout, default 150 seconds
 
-- `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
+*   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
 
-- `noTimeoutSteps` - an array of steps with no timeout. Default:
-  - `amOnPage`
-  - `wait*`
+*   `noTimeoutSteps` - an array of steps with no timeout. Default:
 
-  you could set your own noTimeoutSteps which would replace the default one.
+    *   `amOnPage`
+    *   `wait*`
 
-- `customTimeoutSteps` - an array of step actions with custom timeout. Use it to override or extend noTimeoutSteps.
-  You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
+    you could set your own noTimeoutSteps which would replace the default one.
+
+*   `customTimeoutSteps` - an array of step actions with custom timeout. Use it to override or extend noTimeoutSteps.
+    You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
 
 #### Example
 
@@ -734,7 +735,7 @@ plugins: {
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## subtitles
 
@@ -744,15 +745,20 @@ Automatically captures steps as subtitle, and saves it as an artifact when a vid
 
 ```js
 plugins: {
-  subtitles: {
-    enabled: true
-  }
+ subtitles: {
+   enabled: true
+ }
 }
 ```
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
 [2]: https://github.com/cenfun/monocart-coverage-reports?tab=readme-ov-file#default-options
+
 [3]: https://codecept.io/locators#custom-locators
+
 [4]: https://codecept.io/heal/
+
 [5]: /basics/#pause
+
 [6]: https://codecept.io/img/codeceptjs-slideshow.gif
