@@ -113,7 +113,7 @@ describe('Definitions', function () {
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`)
       const extend = definitionFile.getFullText()
 
-      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js');")
+      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js')['default'];")
       assert(!err)
       done()
     })
