@@ -1,6 +1,6 @@
-import assert from 'assert';
-import helperModule from '../../../../lib/helper.js';
-const Helper = helperModule.default || helperModule;
+import assert from 'assert'
+import helperModule from '../../../../lib/helper.js'
+const Helper = helperModule.default || helperModule
 
 class CheckoutHelper extends Helper {
   _before() {
@@ -10,15 +10,19 @@ class CheckoutHelper extends Helper {
   }
 
   addItem(price) {
+    if (typeof this.num !== 'number') this.num = 0
+    if (typeof this.sum !== 'number') this.sum = 0
     this.num++
     this.sum += price
   }
 
   seeNum(num) {
+    if (typeof this.num !== 'number') this.num = 0
     assert.equal(num, this.num)
   }
 
   seeSum(sum) {
+    if (typeof this.sum !== 'number') this.sum = 0
     assert.equal(sum, this.sum)
   }
 
@@ -55,4 +59,4 @@ class CheckoutHelper extends Helper {
   }
 }
 
-export default CheckoutHelper;
+export default CheckoutHelper
