@@ -1,17 +1,18 @@
-let I;
+let I
 
-module.exports = {
-
+const MyPage = {
   _init() {
-    I = actor();
+    I = actor()
   },
 
   hasFile(arg) {
-    I.seeFile('codecept.class.js');
-    I.seeFile('codecept.po.js');
+    I.seeFile('codecept.class.js')
+    I.seeFile('codecept.po.js')
   },
 
   failedMethod() {
-    I.seeFile('notexistfile.js');
+    I.seeFile('notexistfile.js')
   },
-};
+}
+
+export default MyPage
