@@ -1,10 +1,15 @@
-import chai from 'chai';
-chai.should();
-import { DOWN, ENTER } from 'inquirer-test';
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import chai from 'chai'
+chai.should()
+import { DOWN, ENTER } from 'inquirer-test'
+import inquirerTest from 'inquirer-test'
+import path from 'path'
+import fs from 'fs'
+import { mkdirp } from 'mkdirp'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const run = inquirerTest
 
 const runner = path.join(__dirname, '../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/init')

@@ -1,6 +1,6 @@
 const { I } = inject()
 
-module.exports = {
+export default {
   actOnPage: () => {
     I.act('actOnPage')
     I.act('see on this page')
