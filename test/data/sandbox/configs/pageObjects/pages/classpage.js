@@ -1,5 +1,3 @@
-const { I } = inject()
-
 class PageObject {
   constructor() {
     this.method1 = () => {
@@ -8,10 +6,12 @@ class PageObject {
   }
 
   async type(s) {
+    const { I } = inject()
     await I.printMessage(s)
   }
 
   purgeDomains() {
+    const { I } = inject()
     I.printMessage('purgeDomains')
   }
 }

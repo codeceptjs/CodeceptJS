@@ -35,6 +35,9 @@ class CheckoutHelper extends Helper {
   }
 
   addProduct(name, price) {
+    if (typeof this.num !== 'number') this.num = 0
+    if (typeof this.sum !== 'number') this.sum = 0
+    this.num++
     this.sum += price
   }
 
