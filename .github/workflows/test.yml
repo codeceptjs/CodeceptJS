@@ -12,6 +12,7 @@ jobs:
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
 
     strategy:
       matrix:
@@ -28,12 +29,14 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - run: npm run test:unit
+        timeout-minutes: 10
         env:
           GH_PAT: ${{ github.token }}
 
   runner-tests:
     name: Runner tests
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
 
     strategy:
       matrix:
@@ -50,5 +53,6 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - run: npm run test:runner
+        timeout-minutes: 10
         env:
           GH_PAT: ${{ github.token }}
