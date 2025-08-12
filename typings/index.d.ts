@@ -517,6 +517,8 @@ declare namespace CodeceptJS {
   interface HookConfig {
     retry(retries?: number): HookConfig
   }
+
+  function addStep(step: string, fn: Function): Promise<void>
 }
 
 // Globals

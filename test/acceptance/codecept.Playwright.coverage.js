@@ -10,7 +10,7 @@ export const config = {
       url: TestHelper.siteUrl(),
       show: false,
       restart: process.env.BROWSER_RESTART || false,
-      browser: process.env.BROWSER || 'chromium',
+      browser: ['chromium', 'webkit', 'firefox', 'electron'].includes(process.env.BROWSER) ? process.env.BROWSER : 'chromium',
       ignoreHTTPSErrors: true,
       webkit: {
         ignoreHTTPSErrors: true,
