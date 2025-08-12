@@ -16,6 +16,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     strategy:
       matrix:
         node-version: [20.x]
@@ -48,11 +49,12 @@ jobs:
         run: 'php -S 127.0.0.1:8000 -t test/data/app &'
       - name: check
         run: './bin/codecept.js check -c test/acceptance/codecept.WebDriver.js'
+        timeout-minutes: 2
       - name: run unit tests
         run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit --reporter @testomatio/reporter/mocha
+        timeout-minutes: 5
         env:
           GH_PAT: ${{ github.token }}
       - name: run tests
-        run: './bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug'
-      - name: Stop mock server
-        run: npm run mock-server:stop
+        run: 'timeout 600 bash -c "./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug"'
+        timeout-minutes: 12

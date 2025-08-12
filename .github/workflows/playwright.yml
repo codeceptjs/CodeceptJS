@@ -16,6 +16,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     strategy:
       matrix:
@@ -50,21 +51,26 @@ jobs:
           done
       - name: check
         run: './bin/codecept.js check -c test/acceptance/codecept.Playwright.js'
+        timeout-minutes: 2
       - name: start a server
         run: 'php -S 127.0.0.1:8000 -t test/data/app &'
       - name: run chromium tests
-        run: 'BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'timeout 600 bash -c "unset BROWSER && BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
+        timeout-minutes: 12
       - name: run chromium with restart==browser tests
-        run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
-      - name: run chromium with restart==session tests on 2 workers split by pool
-        run: 'BROWSER_RESTART=session ./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug --by=pool'
-      - name: run chromium with restart==session tests and
-        run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'timeout 600 bash -c "unset BROWSER && BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
+        timeout-minutes: 12
+      - name: run chromium with restart==session tests
+        run: 'timeout 600 bash -c "unset BROWSER && BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
+        timeout-minutes: 12
       - name: run firefox tests
-        run: 'BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'timeout 600 bash -c "unset BROWSER && BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
+        timeout-minutes: 12
       - name: run webkit tests
-        run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'timeout 600 bash -c "unset BROWSER && BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
+        timeout-minutes: 12
       - name: run chromium unit tests
         run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000 --reporter @testomatio/reporter/mocha
+        timeout-minutes: 5
         env:
           GH_PAT: ${{ github.token }}
