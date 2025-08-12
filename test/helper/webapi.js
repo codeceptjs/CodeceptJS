@@ -4,6 +4,7 @@ const store = storeModule.default || storeModule
 const expect = chai.expect
 const assert = chai.assert
 import path from 'path'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
@@ -33,7 +34,7 @@ export function tests() {
   beforeEach(() => {
     I = data.I
     siteUrl = data.siteUrl
-    if (fileExists(dataFile)) require('fs').unlinkSync(dataFile)
+    if (fileExists(dataFile)) fs.unlinkSync(dataFile)
   })
 
   describe('#saveElementScreenshot', () => {
