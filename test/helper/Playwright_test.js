@@ -6,7 +6,8 @@ const expect = chai.expect
 import path from 'path'
 import fs from 'fs'
 
-import playwright from 'playwright'
+import playwright, { devices } from 'playwright'
+import electron from 'electron'
 
 import TestHelper from '../support/TestHelper.js'
 import Playwright from '../../lib/helper/Playwright.js'
@@ -31,6 +32,7 @@ const formContents = testUtils.submittedData(dataFile)
 
 let I
 let page
+let browser
 let FS
 const siteUrl = TestHelper.siteUrl()
 
@@ -1248,7 +1250,6 @@ describe('Playwright - BasicAuth', function () {
 
 describe('Playwright - Emulation', () => {
   before(() => {
-    const { devices } = require('playwright')
     global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
@@ -1333,7 +1334,7 @@ describe('Playwright - Electron', () => {
       restart: true,
       browser: 'electron',
       electron: {
-        executablePath: require('electron'),
+        executablePath: electron,
         args: [path.join(codecept_dir, '/electron/')],
       },
     })

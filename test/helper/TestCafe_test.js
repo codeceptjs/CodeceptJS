@@ -1,28 +1,34 @@
-const path = require('path')
-const assert = require('assert')
+import path from 'path'
+import assert from 'assert'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
-const TestHelper = require('../support/TestHelper')
-const TestCafe = require('../../lib/helper/TestCafe')
-const webApiTests = require('./webapi')
-global.codeceptjs = require('../../lib')
+import TestHelper from '../support/TestHelper.js'
+import TestCafe from '../../lib/helper/TestCafe.js'
+import * as webApiTests from './webapi.js'
+import codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 let I
 const siteUrl = TestHelper.siteUrl()
 
 describe('TestCafe', function () {
-  this.timeout(35000)
+  this.timeout(120000) // Increased timeout for TestCafe browser setup
   this.retries(1)
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(__dirname, '/../data/output')
-    global.codeceptjs = require('../../lib/index')
+    global.codeceptjs = codeceptjs
 
     I = new TestCafe({
       url: siteUrl,
       windowSize: '1000x700',
       show: false,
-      browser: 'chromium',
+      browser: 'chrome',
       restart: false,
       waitForTimeout: 5000,
     })
