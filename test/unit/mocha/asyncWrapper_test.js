@@ -22,9 +22,9 @@ describe('AsyncWrapper', () => {
     await Container.create({
       helpers: {
         TestHelper: {
-          testMethod: () => 'test result'
-        }
-      }
+          testMethod: () => 'test result',
+        },
+      },
     })
   })
   beforeEach(() => recorder.reset())
@@ -33,7 +33,7 @@ describe('AsyncWrapper', () => {
   it('should wrap test function', () => {
     testWrapper(test).fn(() => {})
     // Return a promise that resolves when the recorder promise resolves
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // Use setImmediate to allow the wrapped function to execute
       setImmediate(() => {
         try {
@@ -42,10 +42,13 @@ describe('AsyncWrapper', () => {
         } catch (err) {
           // If the recorder is running, wait for it
           if (recorder.isRunning()) {
-            recorder.promise().then(() => {
-              expect(fn.called).is.ok
-              resolve()
-            }).catch(resolve)
+            recorder
+              .promise()
+              .then(() => {
+                expect(fn.called).is.ok
+                resolve()
+              })
+              .catch(resolve)
           } else {
             throw err
           }
@@ -78,29 +81,37 @@ describe('AsyncWrapper', () => {
       event.dispatcher.on(event.test.started, (started = sinon.spy()))
       event.dispatcher.on(event.suite.before, (beforeSuite = sinon.spy()))
       event.dispatcher.on(event.suite.after, (afterSuite = sinon.spy()))
-      await suiteSetup()
-      await setup()
+      await suiteSetup()()
+      await setup()()
     })
 
     it('should fire events', async () => {
       recorder.reset()
-      testWrapper(test).fn(() => null)
-      await teardown()
-      await suiteTeardown()
-      return recorder
-        .promise()
-        .then(() => {
-          expect(started.called).is.ok
-          expect(beforeSuite.called).is.ok
-          expect(afterSuite.called).is.ok
-          expect(before.called).is.ok
-          expect(after.called).is.ok
+      const wrappedTest = testWrapper(test)
+
+      // Execute the wrapped test function with a mock done callback
+      return new Promise((resolve, reject) => {
+        wrappedTest.fn(async err => {
+          try {
+            await teardown()()
+            await suiteTeardown()()
+
+            if (err) {
+              reject(err)
+              return
+            }
+
+            expect(started.called).is.ok
+            expect(beforeSuite.called).is.ok
+            expect(afterSuite.called).is.ok
+            expect(before.called).is.ok
+            expect(after.called).is.ok
+            resolve()
+          } catch (testErr) {
+            reject(testErr)
+          }
         })
-        .catch((err) => {
-          console.error('Recorder promise error:', err)
-          // Re-throw to fail the test properly
-          throw err
-        })
+      })
     })
 
     it('should fire failed event on error', async () => {
