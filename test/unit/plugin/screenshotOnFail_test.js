@@ -10,7 +10,7 @@ import MochawesomeHelper from '../../../lib/helper/Mochawesome.js'
 
 let screenshotSaved
 
-describe.only('screenshotOnFail', () => {
+describe('screenshotOnFail', () => {
   beforeEach(() => {
     recorder.reset()
     screenshotSaved = sinon.spy()
