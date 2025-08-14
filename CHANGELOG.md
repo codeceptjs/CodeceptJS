@@ -1,3 +1,11 @@
+## 4.0
+
+- **feat: ESM (ECMAScript Modules) support** - Full migration to ESM format with backward compatibility
+
+📖 _Documentation_
+
+- **[ESM Migration Guide](docs/esm-migration.md)** - Comprehensive guide for migrating to ESM format, including information about execution order changes in `session()` and `within()` blocks
+
 ## 3.7.3
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
@@ -481,7 +489,6 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
 ```
 
 - feat(cli): print failed hooks (#4476) - by @kobenguyent
-
   - run command
     ![Screenshot 2024-09-02 at 15 25 20](https://github.com/user-attachments/assets/625c6b54-03f6-41c6-9d0c-cd699582404a)
 
@@ -744,7 +751,6 @@ heal.addRecipe('reloadPageIfModalIsNotVisisble', {
 ```
 
 - **Breaking Change** **AI** features refactored. Read updated [AI guide](./ai):
-
   - **removed dependency on `openai`**
   - added support for **Azure OpenAI**, **Claude**, **Mistal**, or any AI via custom request function
   - `--ai` option added to explicitly enable AI features
@@ -755,7 +761,6 @@ heal.addRecipe('reloadPageIfModalIsNotVisisble', {
   - `OpenAI` helper renamed to `AI`
 
 - feat(puppeteer): network traffic manipulation. See #4263 by @KobeNguyenT
-
   - `startRecordingTraffic`
   - `grabRecordedNetworkTraffics`
   - `flushNetworkTraffics`
@@ -2096,7 +2101,6 @@ await I.seeTraffic({
 
 - **🪄 [AI Powered Test Automation](/ai)** - use OpenAI as a copilot for test automation. #3713 By @davertmik
   ![](https://user-images.githubusercontent.com/220264/250418764-c382709a-3ccb-4eb5-b6bc-538f3b3b3d35.png)
-
   - [AI guide](/ai) added
   - added support for OpenAI in `pause()`
   - added [`heal` plugin](/plugins#heal) for self-healing tests
@@ -2107,7 +2111,6 @@ await I.seeTraffic({
 ![](https://user-images.githubusercontent.com/220264/250415226-a7620418-56a4-4837-b790-b15e91e5d1f0.png)
 
 - [Playwright] Support for APIs in Playwright (#3665) - by Egor Bodnar
-
   - `clearField` replaced to use new Playwright API
   - `blur` added
   - `focus` added
@@ -3519,9 +3522,7 @@ I.seeFile(fileName)
 ## 2.0.0
 
 - [WebDriver] **Breaking Change.** Updated to webdriverio v5. New helper **WebDriver** helper introduced.
-
   - **Upgrade plan**:
-
     1. Install latest webdriverio
 
     ```
@@ -3538,9 +3539,7 @@ I.seeFile(fileName)
 
 - [Appium] **Breaking Change.** Updated to use webdriverio v5 as well. See upgrade plan ↑
 - [REST] **Breaking Change.** Replaced `unirest` library with `axios`.
-
   - **Upgrade plan**:
-
     1. Refer to [axios API](https://github.com/axios/axios).
     2. If you were using `unirest` requests/responses in your tests change them to axios format.
 
