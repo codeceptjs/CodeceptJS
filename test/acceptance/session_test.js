@@ -1,8 +1,7 @@
 import assert from 'assert'
 import { devices } from 'playwright'
 import { within } from 'codeceptjs/effects'
-
-const { event } = codeceptjs
+import event from '../../lib/event.js'
 
 Feature('Session')
 
