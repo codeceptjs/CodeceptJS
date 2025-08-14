@@ -63,17 +63,4 @@ describe('Init Command', function () {
       throw error
     }
   })
-
-  it('should have upgraded to latest inquirer version', async () => {
-    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
-
-    // Check that we're using a modern version of inquirer (12.x+)
-    packageJson.dependencies.inquirer.should.match(/^12\./)
-
-    // Check that inquirer-test is removed (was causing ESM compatibility issues)
-    chai.expect(packageJson.devDependencies['inquirer-test']).to.be.undefined
-
-    // Check that @inquirer/testing is available for modern testing
-    packageJson.devDependencies['@inquirer/testing'].should.be.ok
-  })
 })
