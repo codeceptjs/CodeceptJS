@@ -124,7 +124,7 @@ describe('BDD', () => {
     await When('I go to checkout process', () => (sum += 10))
     const suite = await run(text)
     expect('checkout process').is.equal(suite.title)
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         expect(suite.tests[0].steps).is.ok
         expect(1610).is.equal(sum)
@@ -191,7 +191,7 @@ describe('BDD', () => {
     })
     const suite = await run(text)
     expect('checkout process').is.equal(suite.title)
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         expect(suite.tests[0].steps).is.ok
         expect(1610).is.equal(sum)
@@ -201,7 +201,7 @@ describe('BDD', () => {
   })
 
   it('should execute scenarios step-by-step ', async () => {
-    recorder.start()
+    await recorder.start()
     printed = []
     container.append({
       helpers: {
@@ -221,7 +221,7 @@ describe('BDD', () => {
       I.do('add finish checkout')
     })
     const suite = await run(text)
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         recorder.promise().then(() => {
           printed.should.include.members(['add 600', 'add 1600', 'add finish checkout'])
@@ -264,7 +264,7 @@ describe('BDD', () => {
     event.dispatcher.addListener(event.bddStep.after, () => listeners++)
 
     const suite = await run(text)
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         listeners.should.eql(2)
         resolve()
@@ -308,7 +308,7 @@ describe('BDD', () => {
     const done = () => {}
 
     suite._beforeEach.forEach(hook => hook.run(done))
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         expect(sum).is.equal(2)
         resolve()
@@ -356,7 +356,7 @@ describe('BDD', () => {
     expect(['@awesome', '@cool', '@super', '@exampleTag1', '@exampleTag2']).is.deep.equal(suite.tests[1].tags)
 
     expect(2).is.equal(suite.tests.length)
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         expect(9).is.equal(cart)
         expect(9).is.equal(sum)
@@ -407,7 +407,7 @@ describe('BDD', () => {
       ['cookies', '12'],
     ]
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       suite.tests[0].fn(() => {
         expect(givenParsedRows.rawData).is.deep.equal(expectedParsedDataTable)
         expect(thenParsedRows.rawData).is.deep.equal(expectedParsedDataTable)
