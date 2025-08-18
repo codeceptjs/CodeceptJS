@@ -3,6 +3,8 @@ import { devices } from 'playwright'
 import { within } from 'codeceptjs/effects'
 import event from '../../lib/event.js'
 
+const output_dir = global.output_dir || './output'
+
 Feature('Session')
 
 Scenario('simple session @Puppeteer @Playwright', ({ I }) => {
@@ -59,14 +61,16 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
     I.amOnPage(cookiePage)
   })
 
-  cookies.default = (await I.grabCookie(cookieName)).value
+  cookies.default = (await I.grabCookie(cookieName))?.value
   I.say(`${cookieName}: ${cookies.default}`)
   session('john', async () => {
-    cookies.john = (await I.grabCookie(cookieName)).value
+    const cookie = await I.grabCookie(cookieName)
+    cookies.john = cookie?.value
     I.say(`${cookieName}: ${cookies.john}`)
   })
   session('mary', async () => {
-    cookies.mary = (await I.grabCookie(cookieName)).value
+    const cookie = await I.grabCookie(cookieName)
+    cookies.mary = cookie?.value
     I.say(`${cookieName}: ${cookies.mary}`)
   })
   await I.seeInCurrentUrl('google.com')
