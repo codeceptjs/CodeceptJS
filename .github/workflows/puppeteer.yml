@@ -40,11 +40,11 @@ jobs:
         run: 'php -S 127.0.0.1:8000 -t test/data/app &'
       - uses: browser-actions/setup-chrome@v1
       - run: chrome --version
-      - name: run tests
-        run: 'timeout 600 bash -c "./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"'
-        timeout-minutes: 12
       - name: run unit tests
         run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js --reporter @testomatio/reporter/mocha
         timeout-minutes: 5
+      - name: run tests
+        run: 'timeout 600 bash -c "./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"'
+        timeout-minutes: 12
         env:
           GH_PAT: ${{ github.token }}

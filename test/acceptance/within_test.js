@@ -24,9 +24,9 @@ Scenario('switch iframe manually @WebDriverIO @Puppeteer @Playwright', ({ I }) =
   I.dontSee('Email Address')
 })
 
-Scenario('within on iframe @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+Scenario('within on iframe @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
   I.amOnPage('/iframe')
-  within({ frame: 'iframe' }, async () => {
+  await within({ frame: 'iframe' }, async () => {
     await I.fillField('rus', 'Updated')
     await I.click('Sign in!')
     await I.waitForText('Email Address')
