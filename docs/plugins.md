@@ -1032,7 +1032,6 @@ Run tests with plugin enabled:
 - `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
 
 - `noTimeoutSteps` - an array of steps with no timeout. Default:
-
   - `amOnPage`
   - `wait*`
 

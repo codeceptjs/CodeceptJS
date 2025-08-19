@@ -7,6 +7,184 @@ layout: Section
 
 # Releases
 
+## 3.7.4
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ _Features_
+
+- **Test Suite Shuffling**: Randomize test execution order to discover test dependencies and improve test isolation ([#5051](https://github.com/codeceptjs/CodeceptJS/issues/5051)) - by **[NivYarmus](https://github.com/NivYarmus)**
+
+  ```bash
+  # Shuffle tests to find order-dependent failures using lodash.shuffle algorithm
+  npx codeceptjs run --shuffle
+
+  # Combined with grep and other options
+  npx codeceptjs run --shuffle --grep "@smoke" --steps
+  ```
+
+- **Enhanced Interactive Debugging**: Better logging for `I.grab*` methods in live interactive mode for clearer debugging output ([#4986](https://github.com/codeceptjs/CodeceptJS/issues/4986)) - by **[owenizedd](https://github.com/owenizedd)**
+
+  ```js
+  // Interactive pause() now shows detailed grab results with JSON formatting
+  I.amOnPage('/checkout')
+  pause()  // Interactive shell started
+  > I.grabTextFrom('.price')
+  Result $res= "Grabbed text: $29.99"  // Pretty-printed JSON output
+  > I.grabValueFrom('input[name="email"]')
+  {"value":"user@example.com"}  // Structured JSON response
+  ```
+
+  🐛 _Bug Fixes_
+
+- **Playwright Session Traces**: Fixed trace file naming convention and improved error handling for multi-session test scenarios ([#5073](https://github.com/codeceptjs/CodeceptJS/issues/5073)) - by **[julien-ft-64](https://github.com/julien-ft-64)** **[kobenguyent](https://github.com/kobenguyent)**
+
+  ```js
+  // Example outputs:
+  // - a1b2c3d4-e5f6_checkout_login_test.failed.zip
+  // - b2c3d4e5-f6g7_admin_dashboard_test.failed.zip
+  ```
+
+  _Trace files use UUID prefixes with `sessionName_testTitle.status.zip` format_
+
+- **Worker Data Injection**: Resolved proxy object serialization preventing data sharing between parallel test workers ([#5072](https://github.com/codeceptjs/CodeceptJS/issues/5072)) - by **[kobenguyent](https://github.com/kobenguyent)**
+
+  ```js
+  // Fixed: Complex objects can now be properly shared and injected between workers
+  // Bootstrap data sharing in codecept.conf.js:
+  exports.config = {
+    bootstrap() {
+      share({
+        userData: { id: 123, preferences: { theme: 'dark' } },
+        apiConfig: { baseUrl: 'https://api.test.com', timeout: 5000 },
+      })
+    },
+  }
+
+  // In tests across different workers:
+  const testData = inject()
+  console.log(testData.userData.preferences.theme) // 'dark' - deep nesting works
+  console.log(Object.keys(testData)) // ['userData', 'apiConfig'] - key enumeration works
+
+  // Dynamic sharing during test execution:
+  share({ newData: 'shared across workers' })
+  ```
+
+- **Hook Exit Codes**: Fixed improper exit codes when test hooks fail, ensuring CI/CD pipelines properly detect failures ([#5058](https://github.com/codeceptjs/CodeceptJS/issues/5058)) - by **[kobenguyent](https://github.com/kobenguyent)**
+
+  ```bash
+  # Before: Exit code 0 even when beforeEach/afterEach failed
+  # After: Exit code 1 when any hook fails, properly failing CI builds
+  ```
+
+- **TypeScript Effects Support**: Added complete TypeScript definitions for effects functionality ([#5027](https://github.com/codeceptjs/CodeceptJS/issues/5027)) - by **[kobenguyent](https://github.com/kobenguyent)**
+
+  ```typescript
+  // Import effects with full TypeScript type definitions
+  import { tryTo, retryTo, within } from 'codeceptjs/effects'
+
+  // tryTo returns Promise<boolean> for conditional actions
+  const success: boolean = await tryTo(async () => {
+    await I.see('Cookie banner')
+    await I.click('Accept')
+  })
+
+  // retryTo with typed parameters for reliability
+  await retryTo(() => {
+    I.click('Submit')
+    I.see('Success')
+  }, 3) // retry up to 3 times
+  ```
+
+  _Note: Replaces deprecated global plugins - import from 'codeceptjs/effects' module_
+
+- **Mochawesome Screenshot Uniqueness**: Fixed screenshot naming to prevent test failures from being overwritten when multiple tests run at the same time ([#4959](https://github.com/codeceptjs/CodeceptJS/issues/4959)) - by **[Lando1n](https://github.com/Lando1n)**
+
+  ```js
+  // Problem: When tests run in parallel, screenshots had identical names
+  // This caused later test screenshots to overwrite earlier ones
+
+  // Before: All failed tests saved as "screenshot.png"
+  // Result: Only the last failure screenshot was kept
+
+  // After: Each screenshot gets a unique name with timestamp
+  // Examples:
+  // - "login_test_1645123456.failed.png"
+  // - "checkout_test_1645123789.failed.png"
+  // - "profile_test_1645124012.failed.png"
+
+  // Configuration in codecept.conf.js:
+  helpers: {
+    Mochawesome: {
+      uniqueScreenshotNames: true // Enable unique naming
+    }
+  }
+  ```
+
+  _Ensures every failed test keeps its own screenshot for easier debugging_
+
+📖 _Documentation_
+
+- Fixed Docker build issues and improved container deployment process ([#4980](https://github.com/codeceptjs/CodeceptJS/issues/4980)) - by **[thomashohn](https://github.com/thomashohn)**
+- Updated dependency versions to maintain security and compatibility ([#4957](https://github.com/codeceptjs/CodeceptJS/issues/4957), [#4950](https://github.com/codeceptjs/CodeceptJS/issues/4950), [#4943](https://github.com/codeceptjs/CodeceptJS/issues/4943)) - by **[thomashohn](https://github.com/thomashohn)**
+- Fixed automatic documentation generation system for custom plugins ([#4973](https://github.com/codeceptjs/CodeceptJS/issues/4973)) - by **[Lando1n](https://github.com/Lando1n)**
+
+## 3.7.3
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ _Features_
+
+- feat(cli): improve info command to return installed browsers ([#4890](https://github.com/codeceptjs/CodeceptJS/issues/4890)) - by **[kobenguyent](https://github.com/kobenguyent)**
+
+```
+➜  helloworld npx codeceptjs info
+Environment information:
+
+codeceptVersion:  "3.7.2"
+nodeInfo:  18.19.0
+osInfo:  macOS 14.4
+cpuInfo:  (8) x64 Apple M1 Pro
+osBrowsers:  "chrome: 133.0.6943.143, edge: 133.0.3065.92, firefox: not installed, safari: 17.4"
+playwrightBrowsers:  "chromium: 133.0.6943.16, firefox: 134.0, webkit: 18.2"
+helpers:  {
+"Playwright": {
+"url": "http://localhost",
+...
+```
+
+🐛 _Bug Fixes_
+
+- fix: resolving path inconsistency in container.js and appium.js ([#4866](https://github.com/codeceptjs/CodeceptJS/issues/4866)) - by **[mjalav](https://github.com/mjalav)**
+- fix: broken screenshot links in mochawesome reports ([#4889](https://github.com/codeceptjs/CodeceptJS/issues/4889)) - by **[kobenguyent](https://github.com/kobenguyent)**
+- some internal fixes to make UTs more stable by **[thomashohn](https://github.com/thomashohn)**
+- dependencies upgrades by **[thomashohn](https://github.com/thomashohn)**
+
+## 3.7.2
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+🛩️ _Features_
+
+- feat(playwright): Clear cookie by name ([#4693](https://github.com/codeceptjs/CodeceptJS/issues/4693)) - by **[ngraf](https://github.com/ngraf)**
+
+🐛 _Bug Fixes_
+
+- fix(stepByStepReport): no records html is generated when running with run-workers ([#4638](https://github.com/codeceptjs/CodeceptJS/issues/4638))
+- fix(webdriver): bidi error in log with webdriver ([#4850](https://github.com/codeceptjs/CodeceptJS/issues/4850))
+- fix(types): TS types of methods (Feature|Scenario)Config.config ([#4851](https://github.com/codeceptjs/CodeceptJS/issues/4851))
+- fix: redundant popup log ([#4830](https://github.com/codeceptjs/CodeceptJS/issues/4830))
+- fix(webdriver): grab browser logs using bidi protocol ([#4754](https://github.com/codeceptjs/CodeceptJS/issues/4754))
+- fix(webdriver): screenshots for sessions ([#4748](https://github.com/codeceptjs/CodeceptJS/issues/4748))
+
+📖 _Documentation_
+
+- fix(docs): mask sensitive data ([#4636](https://github.com/codeceptjs/CodeceptJS/issues/4636)) - by **[gkushang](https://github.com/gkushang)**
+
+## 3.7.1
+
+- Fixed `reading charAt` error in `asyncWrapper.js`
+
 ## 3.7.0
 
 This release introduces major new features and internal refactoring. It is an important step toward the 4.0 release planned soon, which will remove all deprecations introduced in 3.7.
@@ -434,7 +612,6 @@ I.flushSoftAssertions() // Throws an error if any soft assertions have failed. T
 ```
 
 - feat(cli): print failed hooks ([#4476](https://github.com/codeceptjs/CodeceptJS/issues/4476)) - by **[kobenguyent](https://github.com/kobenguyent)**
-
   - run command
     ![Screenshot 2024-09-02 at 15 25 20](https://github.com/user-attachments/assets/625c6b54-03f6-41c6-9d0c-cd699582404a)
 
@@ -694,7 +871,6 @@ heal.addRecipe('reloadPageIfModalIsNotVisisble', {
 ```
 
 - **Breaking Change** **AI** features refactored. Read updated [AI guide](./ai):
-
   - **removed dependency on `openai`**
   - added support for **Azure OpenAI**, **Claude**, **Mistal**, or any AI via custom request function
   - `--ai` option added to explicitly enable AI features
@@ -705,7 +881,6 @@ heal.addRecipe('reloadPageIfModalIsNotVisisble', {
   - `OpenAI` helper renamed to `AI`
 
 - feat(puppeteer): network traffic manipulation. See [#4263](https://github.com/codeceptjs/CodeceptJS/issues/4263) by **[KobeNguyenT](https://github.com/KobeNguyenT)**
-
   - `startRecordingTraffic`
   - `grabRecordedNetworkTraffics`
   - `flushNetworkTraffics`
@@ -2043,7 +2218,6 @@ await I.seeTraffic({
 
 - **🪄 [AI Powered Test Automation](/ai)** - use OpenAI as a copilot for test automation. [#3713](https://github.com/codeceptjs/CodeceptJS/issues/3713) By **[davertmik](https://github.com/davertmik)**
   ![](https://user-images.githubusercontent.com/220264/250418764-c382709a-3ccb-4eb5-b6bc-538f3b3b3d35.png)
-
   - [AI guide](/ai) added
   - added support for OpenAI in `pause()`
   - added [`heal` plugin](/plugins#heal) for self-healing tests
@@ -2054,7 +2228,6 @@ await I.seeTraffic({
 ![](https://user-images.githubusercontent.com/220264/250415226-a7620418-56a4-4837-b790-b15e91e5d1f0.png)
 
 - **[Playwright]** Support for APIs in Playwright ([#3665](https://github.com/codeceptjs/CodeceptJS/issues/3665)) - by Egor Bodnar
-
   - `clearField` replaced to use new Playwright API
   - `blur` added
   - `focus` added
@@ -3465,9 +3638,7 @@ I.seeFile(fileName)
 ## 2.0.0
 
 - **[WebDriver]** **Breaking Change.** Updated to webdriverio v5. New helper **WebDriver** helper introduced.
-
   - **Upgrade plan**:
-
     1. Install latest webdriverio
 
     ```
@@ -3484,9 +3655,7 @@ I.seeFile(fileName)
 
 - **[Appium]** **Breaking Change.** Updated to use webdriverio v5 as well. See upgrade plan ↑
 - **[REST]** **Breaking Change.** Replaced `unirest` library with `axios`.
-
   - **Upgrade plan**:
-
     1. Refer to [axios API](https://github.com/axios/axios).
     2. If you were using `unirest` requests/responses in your tests change them to axios format.
 
