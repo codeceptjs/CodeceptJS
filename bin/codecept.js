@@ -164,6 +164,7 @@ program
   .option('--tests', 'run only JS test files and skip features')
   .option('--no-timeouts', 'disable all timeouts')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
+  .option('--shuffle', 'Shuffle the order in which test files run')
 
   // mocha options
   .option('--colors', 'force enabling of colors')

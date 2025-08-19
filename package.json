@@ -103,6 +103,7 @@
     "joi": "17.13.3",
     "js-beautify": "1.15.4",
     "lodash.clonedeep": "4.5.0",
+    "lodash.shuffle": "4.2.0",
     "lodash.merge": "4.6.2",
     "mkdirp": "3.0.1",
     "mocha": "11.6.0",
