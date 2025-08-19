@@ -4,7 +4,7 @@
 
 🛩️ _Features_
 
-- **Test Suite Shuffling**: Randomize test execution order to discover test dependencies and improve test isolation (#5051) - by @Niv Yarmus
+- **Test Suite Shuffling**: Randomize test execution order to discover test dependencies and improve test isolation (#5051) - by @NivYarmus
 
   ```bash
   # Shuffle tests to find order-dependent failures using lodash.shuffle algorithm
@@ -14,7 +14,7 @@
   npx codeceptjs run --shuffle --grep "@smoke" --steps
   ```
 
-- **Enhanced Interactive Debugging**: Better logging for `I.grab*` methods in live interactive mode for clearer debugging output (#4986) - by @Ryan Owen Thionanda
+- **Enhanced Interactive Debugging**: Better logging for `I.grab*` methods in live interactive mode for clearer debugging output (#4986) - by @owenizedd
 
   ```js
   // Interactive pause() now shows detailed grab results with JSON formatting
