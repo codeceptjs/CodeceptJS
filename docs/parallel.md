@@ -364,37 +364,78 @@ workers.on(event.all.result, (status, completedTests, workerStats) => {
 
 ## Sharing Data Between Workers
 
-NodeJS Workers can communicate between each other via messaging system. It may happen that you want to pass some data from one of the workers to other. For instance, you may want to share user credentials accross all tests. Data will be appended to a container.
+NodeJS Workers can communicate between each other via messaging system. CodeceptJS allows you to share data between different worker processes using the `share()` and `inject()` functions.
 
-However, you can't access uninitialized data from a container, so to start, you need to initialize data first. Inside `bootstrap` function of the config we execute the `share` to initialize value:
+### Basic Usage
 
+You can share data directly using the `share()` function and access it using `inject()`:
+
+```js
+// In one test or worker
+share({ userData: { name: 'user', password: '123456' } });
+
+// In another test or worker
+const testData = inject();
+console.log(testData.userData.name); // 'user'
+console.log(testData.userData.password); // '123456'
+```
+
+### Initializing Data in Bootstrap
+
+For complex scenarios where you need to initialize shared data before tests run, you can use the bootstrap function:
 
 ```js
 // inside codecept.conf.js
 exports.config = {
   bootstrap() {
-    // append empty userData to container
-    share({ userData: false });
+    // Initialize shared data container
+    share({ userData: null, config: { retries: 3 } });
   }
 }
 ```
 
-Now each worker has `userData` inside a container. However, it is empty.
-When you obtain real data in one of the tests you can now `share` this data accross tests. Use `inject` function to access data inside a container:
+Then in your tests, you can check and update the shared data:
 
 ```js
-// get current value of userData
-let { userData } = inject();
-// if userData is still empty - update it
-if (!userData) {
-  userData = { name: 'user', password: '123456' };
-  // now new userData will be shared accross all workers
-  share({userData : userData});
+const testData = inject();
+if (!testData.userData) {
+  // Update shared data - both approaches work:
+  share({ userData: { name: 'user', password: '123456' } });
+  // or mutate the injected object:
+  testData.userData = { name: 'user', password: '123456' };
 }
 ```
 
-If you want to share data only within same worker, and not across all workers, you need to add option `local: true` every time you run `share` 
+### Working with Proxy Objects
+
+Since CodeceptJS 3.7.0+, shared data uses Proxy objects for synchronization between workers. The proxy system works seamlessly for most use cases:
 
 ```js
-share({ userData: false }, {local: true });
+// ✅ All of these work correctly:
+const data = inject();
+console.log(data.userData.name);           // Access nested properties
+console.log(Object.keys(data));            // Enumerate shared keys  
+data.newProperty = 'value';                // Add new properties
+Object.assign(data, { more: 'data' });     // Merge objects
+```
+
+**Important Note:** Avoid reassigning the entire injected object:
+
+```js
+// ❌ AVOID: This breaks the proxy reference
+let testData = inject();
+testData = someOtherObject; // This will NOT work as expected!
+
+// ✅ PREFERRED: Use share() to replace data or mutate properties
+share({ userData: someOtherObject }); // This works!
+// or
+Object.assign(inject(), someOtherObject); // This works!
+```
+
+### Local Data (Worker-Specific)
+
+If you want to share data only within the same worker (not across all workers), use the `local` option:
+
+```js
+share({ localData: 'worker-specific' }, { local: true });
 ```
