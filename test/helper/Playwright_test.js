@@ -1489,6 +1489,172 @@ describe('Playwright - Video & Trace & HAR', () => {
     expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'))
     expect(test.artifacts.har).to.include(path.join(global.output_dir, 'har'))
   })
+
+  it('checks that video and trace are recorded for sessions', async () => {
+    // Reset test artifacts
+    test.artifacts = {}
+
+    await I.amOnPage('about:blank')
+    await I.executeScript(() => (document.title = 'Main Session'))
+
+    // Create a session and perform actions
+    const session = I._session()
+    const sessionName = 'test_session'
+    I.activeSessionName = sessionName
+
+    // Start session and get context
+    const sessionContext = await session.start(sessionName, {})
+    I.sessionPages[sessionName] = (await sessionContext.pages())[0]
+
+    // Simulate session actions
+    await I.sessionPages[sessionName].goto('about:blank')
+    await I.sessionPages[sessionName].evaluate(() => (document.title = 'Session Test'))
+
+    // Trigger failure to save artifacts
+    await I._failed(test)
+
+    // Check main session artifacts
+    assert(test.artifacts)
+    expect(Object.keys(test.artifacts)).to.include('trace')
+    expect(Object.keys(test.artifacts)).to.include('video')
+
+    // Check session-specific artifacts with correct naming convention
+    const sessionVideoKey = `video_${sessionName}`
+    const sessionTraceKey = `trace_${sessionName}`
+
+    expect(Object.keys(test.artifacts)).to.include(sessionVideoKey)
+    expect(Object.keys(test.artifacts)).to.include(sessionTraceKey)
+
+    // Verify file naming convention: session name comes first
+    // The file names should contain the session name at the beginning
+    expect(test.artifacts[sessionVideoKey]).to.include(sessionName)
+    expect(test.artifacts[sessionTraceKey]).to.include(sessionName)
+
+    // Cleanup
+    await sessionContext.close()
+    delete I.sessionPages[sessionName]
+  })
+
+  it('handles sessions with long test titles correctly', async () => {
+    // Create a test with a very long title to test truncation behavior
+    const longTest = {
+      title:
+        'this_is_a_very_long_test_title_that_would_cause_issues_with_file_naming_when_session_names_are_appended_at_the_end_instead_of_the_beginning_which_could_lead_to_collisions_between_different_sessions_writing_to_the_same_file_path_due_to_truncation',
+      artifacts: {},
+    }
+
+    await I.amOnPage('about:blank')
+
+    // Create multiple sessions with different names
+    const session1 = I._session()
+    const session2 = I._session()
+    const sessionName1 = 'session_one'
+    const sessionName2 = 'session_two'
+
+    I.activeSessionName = sessionName1
+    const sessionContext1 = await session1.start(sessionName1, {})
+    I.sessionPages[sessionName1] = (await sessionContext1.pages())[0]
+
+    I.activeSessionName = sessionName2
+    const sessionContext2 = await session2.start(sessionName2, {})
+    I.sessionPages[sessionName2] = (await sessionContext2.pages())[0]
+
+    // Trigger failure to save artifacts
+    await I._failed(longTest)
+
+    // Check that different sessions have different file paths
+    const session1VideoKey = `video_${sessionName1}`
+    const session2VideoKey = `video_${sessionName2}`
+    const session1TraceKey = `trace_${sessionName1}`
+    const session2TraceKey = `trace_${sessionName2}`
+
+    expect(longTest.artifacts[session1VideoKey]).to.not.equal(longTest.artifacts[session2VideoKey])
+    expect(longTest.artifacts[session1TraceKey]).to.not.equal(longTest.artifacts[session2TraceKey])
+
+    // Verify that session names are present in filenames (indicating the naming fix works)
+    expect(longTest.artifacts[session1VideoKey]).to.include(sessionName1)
+    expect(longTest.artifacts[session2VideoKey]).to.include(sessionName2)
+    expect(longTest.artifacts[session1TraceKey]).to.include(sessionName1)
+    expect(longTest.artifacts[session2TraceKey]).to.include(sessionName2)
+
+    // Cleanup
+    await sessionContext1.close()
+    await sessionContext2.close()
+    delete I.sessionPages[sessionName1]
+    delete I.sessionPages[sessionName2]
+  })
+
+  it('skips main session in session artifacts processing', async () => {
+    // Reset test artifacts
+    test.artifacts = {}
+
+    await I.amOnPage('about:blank')
+
+    // Simulate having a main session (empty string name) in sessionPages
+    I.sessionPages[''] = I.page
+
+    // Create a regular session
+    const session = I._session()
+    const sessionName = 'regular_session'
+    I.activeSessionName = sessionName
+    const sessionContext = await session.start(sessionName, {})
+    I.sessionPages[sessionName] = (await sessionContext.pages())[0]
+
+    // Trigger failure to save artifacts
+    await I._failed(test)
+
+    // Check that main session artifacts are present (not duplicated)
+    expect(Object.keys(test.artifacts)).to.include('trace')
+    expect(Object.keys(test.artifacts)).to.include('video')
+
+    // Check that regular session artifacts are present
+    expect(Object.keys(test.artifacts)).to.include(`video_${sessionName}`)
+    expect(Object.keys(test.artifacts)).to.include(`trace_${sessionName}`)
+
+    // Check that there are no duplicate main session artifacts with empty key
+    expect(Object.keys(test.artifacts)).to.not.include('video_')
+    expect(Object.keys(test.artifacts)).to.not.include('trace_')
+
+    // Cleanup
+    await sessionContext.close()
+    delete I.sessionPages[sessionName]
+    delete I.sessionPages['']
+  })
+
+  it('gracefully handles tracing errors for invalid session contexts', async () => {
+    // Reset test artifacts
+    test.artifacts = {}
+
+    await I.amOnPage('about:blank')
+
+    // Create a real session that we can manipulate
+    const session = I._session()
+    const sessionName = 'error_session'
+    I.activeSessionName = sessionName
+    const sessionContext = await session.start(sessionName, {})
+    I.sessionPages[sessionName] = (await sessionContext.pages())[0]
+
+    // Manually stop tracing to create the error condition
+    try {
+      await sessionContext.tracing.stop()
+    } catch (e) {
+      // This may fail if tracing wasn't started, which is fine
+    }
+
+    // Now when _failed is called, saveTraceForContext should handle the tracing error gracefully
+    await I._failed(test)
+
+    // Main artifacts should still be created
+    expect(Object.keys(test.artifacts)).to.include('trace')
+    expect(Object.keys(test.artifacts)).to.include('video')
+
+    // Session video should still be created despite tracing error
+    expect(Object.keys(test.artifacts)).to.include(`video_${sessionName}`)
+
+    // Cleanup
+    await sessionContext.close()
+    delete I.sessionPages[sessionName]
+  })
 })
 describe('Playwright - HAR', () => {
   before(() => {
