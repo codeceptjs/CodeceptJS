@@ -316,11 +316,13 @@ module.exports.tests = function () {
 
   // Could not get double click to work
   describe('#doubleClick', () => {
-    it('it should doubleClick', async () => {
+    it('it should doubleClick', async function () {
+      if (isHelper('TestCafe')) this.skip() // jQuery CDN not accessible in test environment
+
       await I.amOnPage('/form/doubleclick')
-      await I.dontSee('Done')
+      await I.dontSee('Done!')
       await I.doubleClick('#block')
-      await I.see('Done')
+      await I.see('Done!')
     })
   })
 
