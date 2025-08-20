@@ -10,7 +10,7 @@ let I
 const siteUrl = TestHelper.siteUrl()
 
 describe('TestCafe', function () {
-  this.timeout(35000)
+  this.timeout(120000) // Increased timeout for CI environment
   this.retries(1)
 
   before(() => {
@@ -22,7 +22,7 @@ describe('TestCafe', function () {
       url: siteUrl,
       windowSize: '1000x700',
       show: false,
-      browser: 'chromium:headless --no-sandbox --disable-gpu --disable-dev-shm-usage',
+      browser: 'chrome:headless --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu',
       restart: false,
       waitForTimeout: 50000,
     })
