@@ -22,7 +22,7 @@ describe('TestCafe', function () {
       url: siteUrl,
       windowSize: '1000x700',
       show: false,
-      browser: 'chromium',
+      browser: 'chrome',
       restart: false,
       waitForTimeout: 5000,
     })
