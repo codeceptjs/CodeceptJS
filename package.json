@@ -28,6 +28,7 @@
     "typings/**/*.d.ts",
     "docs/webapi/**"
   ],
+  "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
