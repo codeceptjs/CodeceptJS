@@ -269,29 +269,73 @@ describe('Workers', function () {
     const path = require('path')
 
     // Mock the stepByStep directory resolution logic
-    function getStepByStepReportDir(config, isWorker, globalCodeceptDir) {
+    function getStepByStepReportDir(config, isRunningWithWorkers, isRunMultipleChild, globalCodeceptDir) {
+      const needsConsolidation = isRunningWithWorkers || isRunMultipleChild
       let reportDir
-      if (isWorker && globalCodeceptDir) {
+
+      if (needsConsolidation && globalCodeceptDir) {
         const currentOutputDir = config.output ? path.resolve(globalCodeceptDir, config.output) : '/default-output'
-        const workerDirPattern = /[/\\][^/\\]+$/
-        const baseOutputDir = currentOutputDir.replace(workerDirPattern, '')
+        
+        let baseOutputDir = currentOutputDir
+        
+        // For mixed scenario (run-multiple + workers), we need to strip both worker and run directory segments
+        // For run-workers only, strip worker directory segment  
+        // For run-multiple only, strip run directory segment
+        if (isRunningWithWorkers) {
+          // Strip worker directory: /output/smoke_chrome_hash_1/worker1 -> /output/smoke_chrome_hash_1 or /output/worker1 -> /output
+          const workerDirPattern = /[/\\][^/\\]+$/ // Match the last directory segment (worker name)
+          baseOutputDir = baseOutputDir.replace(workerDirPattern, '')
+        }
+        
+        if (isRunMultipleChild) {
+          // Strip run directory: /output/smoke_chrome_hash_1 -> /output
+          const runDirPattern = /[/\\][^/\\]+$/ // Match the last directory segment (run name)
+          baseOutputDir = baseOutputDir.replace(runDirPattern, '')
+        }
+        
         reportDir = path.join(baseOutputDir, 'stepByStepReport')
       } else {
         reportDir = config.output ? path.resolve(globalCodeceptDir, config.output) : '/default-output'
       }
+      
       return reportDir
     }
 
     const globalCodeceptDir = '/tmp/test'
 
-    // Test regular (non-worker) mode
+    // Test regular (non-worker) mode with default directory
     const regularConfig = { output: './output' }
-    const regularDir = getStepByStepReportDir(regularConfig, false, globalCodeceptDir)
+    const regularDir = getStepByStepReportDir(regularConfig, false, false, globalCodeceptDir)
     expect(regularDir).equal('/tmp/test/output')
 
-    // Test worker mode
+    // Test regular (non-worker) mode with custom directory
+    const customConfig = { output: './custom-output' }
+    const customDir = getStepByStepReportDir(customConfig, false, false, globalCodeceptDir)
+    expect(customDir).equal('/tmp/test/custom-output')
+
+    // Test run-workers mode with default directory
     const workerConfig = { output: './output/worker1' }
-    const workerDir = getStepByStepReportDir(workerConfig, true, globalCodeceptDir)
+    const workerDir = getStepByStepReportDir(workerConfig, true, false, globalCodeceptDir)
     expect(workerDir).equal('/tmp/test/output/stepByStepReport')
+
+    // Test run-workers mode with custom directory
+    const workerCustomConfig = { output: './custom-output/worker2' }
+    const workerCustomDir = getStepByStepReportDir(workerCustomConfig, true, false, globalCodeceptDir)
+    expect(workerCustomDir).equal('/tmp/test/custom-output/stepByStepReport')
+
+    // Test run-multiple mode with default directory
+    const multipleConfig = { output: './output/smoke_chrome_hash_1' }
+    const multipleDir = getStepByStepReportDir(multipleConfig, false, true, globalCodeceptDir)
+    expect(multipleDir).equal('/tmp/test/output/stepByStepReport')
+
+    // Test run-multiple mode with custom directory
+    const multipleCustomConfig = { output: './custom-output/regression_firefox_hash_2' }
+    const multipleCustomDir = getStepByStepReportDir(multipleCustomConfig, false, true, globalCodeceptDir)
+    expect(multipleCustomDir).equal('/tmp/test/custom-output/stepByStepReport')
+
+    // Test mixed run-multiple + workers mode
+    const mixedConfig = { output: './output/smoke_chrome_hash_1/worker1' }
+    const mixedDir = getStepByStepReportDir(mixedConfig, true, true, globalCodeceptDir)
+    expect(mixedDir).equal('/tmp/test/output/stepByStepReport')
   })
 })
