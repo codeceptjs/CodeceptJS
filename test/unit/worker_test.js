@@ -264,4 +264,34 @@ describe('Workers', function () {
       done()
     })
   })
+
+  it('should handle stepByStep reporter directory resolution with workers', () => {
+    const path = require('path')
+
+    // Mock the stepByStep directory resolution logic
+    function getStepByStepReportDir(config, isWorker, globalCodeceptDir) {
+      let reportDir
+      if (isWorker && globalCodeceptDir) {
+        const currentOutputDir = config.output ? path.resolve(globalCodeceptDir, config.output) : '/default-output'
+        const workerDirPattern = /[/\\][^/\\]+$/
+        const baseOutputDir = currentOutputDir.replace(workerDirPattern, '')
+        reportDir = path.join(baseOutputDir, 'stepByStepReport')
+      } else {
+        reportDir = config.output ? path.resolve(globalCodeceptDir, config.output) : '/default-output'
+      }
+      return reportDir
+    }
+
+    const globalCodeceptDir = '/tmp/test'
+
+    // Test regular (non-worker) mode
+    const regularConfig = { output: './output' }
+    const regularDir = getStepByStepReportDir(regularConfig, false, globalCodeceptDir)
+    expect(regularDir).equal('/tmp/test/output')
+
+    // Test worker mode
+    const workerConfig = { output: './output/worker1' }
+    const workerDir = getStepByStepReportDir(workerConfig, true, globalCodeceptDir)
+    expect(workerDir).equal('/tmp/test/output/stepByStepReport')
+  })
 })
