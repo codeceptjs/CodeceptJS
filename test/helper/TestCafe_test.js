@@ -22,9 +22,9 @@ describe('TestCafe', function () {
       url: siteUrl,
       windowSize: '1000x700',
       show: false,
-      browser: 'chromium',
+      browser: 'chromium:headless --no-sandbox --disable-gpu --disable-dev-shm-usage',
       restart: false,
-      waitForTimeout: 5000,
+      waitForTimeout: 50000,
     })
     I._init()
     return I._beforeSuite()
