@@ -1,95 +1,123 @@
-import { expectError, expectType } from 'tsd';
+import { expectError, expectType } from 'tsd'
 
-
-expectError(Feature());
-expectError(Scenario());
-expectError(Before());
-expectError(BeforeSuite());
-expectError(After());
-expectError(AfterSuite());
+expectError(Feature())
+expectError(Scenario())
+expectError(Before())
+expectError(BeforeSuite())
+expectError(After())
+expectError(AfterSuite())
 
 // @ts-ignore
 expectType<CodeceptJS.FeatureConfig>(Feature('feature'))
 
 // @ts-ignore
+expectType<CodeceptJS.FeatureConfig>(Feature.only('feature'))
+
+// @ts-ignore
+expectType<CodeceptJS.FeatureConfig>(Feature.only('feature', {}))
+
+// @ts-ignore
+expectType<CodeceptJS.FeatureConfig>(Feature.skip('feature'))
+
+// @ts-ignore
 expectType<CodeceptJS.ScenarioConfig>(Scenario('scenario'))
 
 // @ts-ignore
-expectType<CodeceptJS.ScenarioConfig>(Scenario(
-  'scenario',
-  {}, // $ExpectType {}
-  () => {} // $ExpectType () => void
-))
+expectType<CodeceptJS.ScenarioConfig>(
+  Scenario(
+    'scenario',
+    {}, // $ExpectType {}
+    () => {}, // $ExpectType () => void
+  ),
+)
 
 // @ts-ignore
-expectType<CodeceptJS.ScenarioConfig>(Scenario(
-  'scenario',
-  () => {} // $ExpectType () => void
-))
+expectType<CodeceptJS.ScenarioConfig>(
+  Scenario(
+    'scenario',
+    () => {}, // $ExpectType () => void
+  ),
+)
 
 // @ts-ignore
 const callback: CodeceptJS.HookCallback = () => {}
 
 // @ts-ignore
-expectType<CodeceptJS.ScenarioConfig>(Scenario(
-  'scenario',
-  callback // $ExpectType HookCallback
-))
+expectType<CodeceptJS.ScenarioConfig>(
+  Scenario(
+    'scenario',
+    callback, // $ExpectType HookCallback
+  ),
+)
 
 // @ts-ignore
-expectType<CodeceptJS.ScenarioConfig>(Scenario('scenario',
-  (args) => {
+expectType<CodeceptJS.ScenarioConfig>(
+  Scenario('scenario', args => {
     // @ts-ignore
     expectType<CodeceptJS.SupportObject>(args)
     // @ts-ignore
     expectType<CodeceptJS.I>(args.I) // $ExpectType I
-  }
-))
+  }),
+)
 
 // @ts-ignore
-expectType<CodeceptJS.ScenarioConfig>(Scenario(
-  'scenario',
-  async () => {} // $ExpectType () => Promise<void>
-))
+expectType<CodeceptJS.ScenarioConfig>(
+  Scenario(
+    'scenario',
+    async () => {}, // $ExpectType () => Promise<void>
+  ),
+)
 
 // @ts-ignore
-expectType<void>(Before((args) => {
-  // @ts-ignore
-  expectType<CodeceptJS.SupportObject>(args)
-  // @ts-ignore
-  expectType<CodeceptJS.I>(args.I)
-}))
+expectType<void>(
+  Before(args => {
+    // @ts-ignore
+    expectType<CodeceptJS.SupportObject>(args)
+    // @ts-ignore
+    expectType<CodeceptJS.I>(args.I)
+  }),
+)
 
 // @ts-ignore
-expectType<void>(BeforeSuite((args) => {
-  // @ts-ignore
-  expectType<CodeceptJS.SupportObject>(args)
-  // @ts-ignore
-  expectType<CodeceptJS.I>(args.I)
-}))
+expectType<void>(
+  BeforeSuite(args => {
+    // @ts-ignore
+    expectType<CodeceptJS.SupportObject>(args)
+    // @ts-ignore
+    expectType<CodeceptJS.I>(args.I)
+  }),
+)
 
 // @ts-ignore
-expectType<void>(After((args) => {
-  // @ts-ignore
-  expectType<CodeceptJS.SupportObject>(args)
-  // @ts-ignore
-  expectType<CodeceptJS.I>(args.I)
-}))
+expectType<void>(
+  After(args => {
+    // @ts-ignore
+    expectType<CodeceptJS.SupportObject>(args)
+    // @ts-ignore
+    expectType<CodeceptJS.I>(args.I)
+  }),
+)
 
 // @ts-ignore
-expectType<void>(AfterSuite((args) => {
-  // @ts-ignore
-  expectType<CodeceptJS.SupportObject>(args)
-  // @ts-ignore
-  expectType<CodeceptJS.I>(args.I)
-}))
+expectType<void>(
+  AfterSuite(args => {
+    // @ts-ignore
+    expectType<CodeceptJS.SupportObject>(args)
+    // @ts-ignore
+    expectType<CodeceptJS.I>(args.I)
+  }),
+)
 
 // @ts-ignore
-expectType<Promise<boolean>>(tryTo(() => {
-  return true;
-}));
+expectType<Promise<boolean>>(
+  tryTo(() => {
+    return true
+  }),
+)
 
 // @ts-ignore
-expectType<Promise<boolean>>(tryTo(async () => {
-  return false;
-}));
+expectType<Promise<boolean>>(
+  tryTo(async () => {
+    return false
+  }),
+)
