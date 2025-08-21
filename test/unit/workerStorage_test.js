@@ -3,8 +3,6 @@ import chai from 'chai'
 import WorkerStorage from '../../lib/workerStorage.js'
 import { Worker  } from 'worker_threads'
 import event from '../../lib/event.js'
-const { expect } = chai
-
 describe('WorkerStorage', () => {
   it('should handle share message correctly without circular dependency', (done) => {
     // Create a mock worker to test the functionality

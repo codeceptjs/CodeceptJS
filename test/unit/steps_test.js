@@ -1,14 +1,11 @@
 import sinon from 'sinon'
-
 import Step from '../../lib/step.js'
 import { MetaStep  } from '../../lib/step.js'
 import event from '../../lib/event.js'
-import { secret  } from '../../lib/secret.js'
-
+import Secret from '../../lib/secret.js'
 import chai from 'chai'
+
 const { expect } = chai
-
-
 let step
 let action
 
@@ -41,7 +38,7 @@ describe('Steps', () => {
       step.args = [testUndefined, 'undefined']
       expect(step.humanizeArgs()).eql(', "undefined"')
 
-      step.args = [secret('word'), 1]
+      step.args = [new Secret('word'), 1]
       expect(step.humanizeArgs()).eql('*****, 1')
     })
 

@@ -1,8 +1,8 @@
 import { it  } from 'mocha'
 import chai from 'chai'
 import DataTableArgument from '../../../lib/data/dataTableArgument.js'
-const { expect } = chai
 
+const { expect } = chai
 describe('DataTableArgument', () => {
   const gherkinDataTable = {
     rows: [

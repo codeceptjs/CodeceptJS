@@ -1,7 +1,7 @@
 import chai from 'chai'
-const { expect } = chai
 import parser from '../../lib/parser.js'
 
+const { expect } = chai
 class Obj {
   method1(locator, sec) {}
 

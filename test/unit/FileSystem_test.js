@@ -1,12 +1,9 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
-
-
-
 import FileSystem from '../../lib/helper/FileSystem.js'
 
+const { expect } = chai
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
 

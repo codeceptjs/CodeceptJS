@@ -1,12 +1,11 @@
 import chai from 'chai'
-const { expect } = chai
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import sinon from 'sinon'
-
 import * as utils from '../../lib/utils.js'
 
+const { expect } = chai
 const __filename = fileURLToPath(import.meta.url)
 
 describe('utils', () => {

@@ -1,8 +1,8 @@
 import chai from 'chai'
-const { expect } = chai
-
 import Assertion from '../../lib/assert.js'
 import AssertionError from '../../lib/assert/error.js'
+
+const { expect } = chai
 
 const comparator = (a, b) => a === b
 

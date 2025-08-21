@@ -1,9 +1,8 @@
 import AiAssistant from '../../lib/ai.js'
 import config from '../../lib/config.js'
-
 import chai from 'chai'
-const { expect } = chai
 
+const { expect } = chai
 describe('AI module', () => {
   beforeEach(() => {
     AiAssistant.enable({}) // clean up config

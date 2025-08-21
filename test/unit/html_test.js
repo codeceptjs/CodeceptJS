@@ -1,13 +1,11 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-
 import fs from 'fs'
-
 import chai from 'chai'
-const { expect } = chai
 import * as cheerio from 'cheerio'
 import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks  } from '../../lib/html.js'
 
+const { expect } = chai
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],

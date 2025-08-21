@@ -1,23 +1,14 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-
 import Gherkin from '@cucumber/gherkin'
 import * as Messages from '@cucumber/messages'
 import chai from 'chai'
-
 
 const { expect } = chai
 const uuidFn = Messages.IdGenerator.uuid()
 const builder = new Gherkin.AstBuilder(uuidFn)
 const matcher = new Gherkin.GherkinClassicTokenMatcher()
 
-import Config from '../../lib/config.js'
-import { Given, When, And, Then, matchStep, clearSteps, defineParameterType  } from '../../lib/mocha/bdd.js'
-import run from '../../lib/mocha/gherkin.js'
-import recorder from '../../lib/recorder.js'
-import container from '../../lib/container.js'
-import actor from '../../lib/actor.js'
-import event from '../../lib/event.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')

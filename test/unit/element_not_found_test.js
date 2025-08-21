@@ -1,8 +1,7 @@
-
 import ElementNotFound from '../../lib/helper/errors/ElementNotFound.js'
 import chai from 'chai'
-const { expect } = chai
 
+const { expect } = chai
 const locator = '#invalidSelector'
 
 describe('ElementNotFound error', () => {

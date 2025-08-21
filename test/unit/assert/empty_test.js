@@ -1,9 +1,8 @@
 import chai from 'chai'
-const { expect } = chai
-
 import { Assertion, empty } from '../../../lib/assert/empty.js'
 import AssertionError from '../../../lib/assert/error.js'
 
+const { expect } = chai
 let emptyAssertion
 
 describe('empty assertion', () => {

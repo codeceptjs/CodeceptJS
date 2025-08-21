@@ -1,7 +1,5 @@
 import sinon from 'sinon'
 import chai from 'chai'
-const { expect } = chai
-
 import screenshotOnFail from '../../../lib/plugin/screenshotOnFail.js'
 import container from '../../../lib/container.js'
 import event from '../../../lib/event.js'
@@ -10,6 +8,7 @@ import { createTest  } from '../../../lib/mocha/test.js'
 import { deserializeSuite  } from '../../../lib/mocha/suite.js'
 import MochawesomeHelper from '../../../lib/helper/Mochawesome.js'
 
+const { expect } = chai
 let screenshotSaved
 
 describe('screenshotOnFail', () => {

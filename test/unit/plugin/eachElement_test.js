@@ -1,13 +1,11 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
-
-
 import container from '../../../lib/container.js'
 import eachElement from '../../../lib/plugin/eachElement.js'
 import recorder from '../../../lib/recorder.js'
 
+const { expect } = chai
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
 describe('eachElement plugin', () => {

@@ -1,14 +1,13 @@
 import chai from 'chai'
-const { expect } = chai
 import path from 'path'
 import { fileURLToPath } from 'url'
-
 import FileSystem from '../../lib/helper/FileSystem.js'
 import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import Translation from '../../lib/translation.js'
 import dummyPage from '../data/dummy_page.js'
 
+const { expect } = chai
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('Container', () => {

@@ -1,8 +1,7 @@
 import chai from 'chai'
-const { expect } = chai
-
 import recorder from '../../lib/recorder.js'
 
+const { expect } = chai
 describe('Recorder', () => {
   beforeEach(() => recorder.start())
 

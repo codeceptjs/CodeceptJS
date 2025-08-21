@@ -3,7 +3,6 @@ import customLocatorPlugin from '../../../lib/plugin/customLocator.js'
 import Locator from '../../../lib/locator.js'
 
 const { expect } = chai
-
 describe('customLocator', () => {
   beforeEach(() => {
     Locator.filters = []

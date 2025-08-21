@@ -1,9 +1,9 @@
 import chai from 'chai'
-const { expect } = chai
 import { DOMParser  } from '@xmldom/xmldom'
 import xpath from 'xpath'
-
 import Locator from '../../lib/locator.js'
+
+const { expect } = chai
 
 let doc
 const xml = `<body>

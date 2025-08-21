@@ -1,11 +1,10 @@
 import sinon from 'sinon'
 import chai from 'chai'
-const { expect } = chai
-
-import { test: testWrapper, setup, teardown, suiteSetup, suiteTeardown  } from '../../../lib/mocha/asyncWrapper.js'
+import { test as testWrapper, setup, teardown, suiteSetup, suiteTeardown  } from '../../../lib/mocha/asyncWrapper.js'
 import recorder from '../../../lib/recorder.js'
 import event from '../../../lib/event.js'
 
+const { expect } = chai
 let test
 let fn
 let before

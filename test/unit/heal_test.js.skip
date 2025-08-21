@@ -1,9 +1,9 @@
 import chai from 'chai'
-const { expect } = chai
 import heal from '../../lib/heal.js'
 import recorder from '../../lib/recorder.js'
 import Step from '../../lib/step.js'
 
+const { expect } = chai
 describe('heal', () => {
   beforeEach(() => {
     heal.clear()

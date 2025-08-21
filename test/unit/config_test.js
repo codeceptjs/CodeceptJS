@@ -1,8 +1,7 @@
 import chai from 'chai'
-const { expect } = chai
-
 import config from '../../lib/config.js'
 
+const { expect } = chai
 describe('Config', () => {
   beforeEach(() => config.reset())
 
