@@ -16,12 +16,14 @@ env:
 
 jobs:
   build:
-
-    runs-on: ubuntu-24.04
-
     strategy:
       matrix:
-        node-version: [22.x]
+        os: [ubuntu-22.04, macos-13, windows-2022]
+        php-version: ['8.1', '8.2']
+        node-version: [20.x]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v5
@@ -31,7 +33,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.4
+        php-version: ${{ matrix.php-version }}
     - name: npm install
       run: |
         npm i --force
@@ -39,6 +41,13 @@ jobs:
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     - name: start a server
-      run: "php -S 127.0.0.1:8000 -t test/data/app &"
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          start /B php -S 127.0.0.1:8000 -t test/data/app
+        else
+          php -S 127.0.0.1:8000 -t test/data/app &
+        fi
+        sleep 3
+      shell: bash
     - name: run unit tests
       run: npm run test:unit:webbapi:testCafe

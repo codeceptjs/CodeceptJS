@@ -10,7 +10,7 @@ let I
 const siteUrl = TestHelper.siteUrl()
 
 describe('TestCafe', function () {
-  this.timeout(120000) // Increased timeout for CI environment
+  this.timeout(60000) // Reduced timeout from 120s to 60s for faster feedback
   this.retries(1)
 
   before(() => {
