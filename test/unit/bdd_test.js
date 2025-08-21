@@ -6,7 +6,7 @@ import chai from 'chai'
 import recorder from '../../lib/recorder.js'
 import container from '../../lib/container.js'
 import Config from '../../lib/config.js'
-import { clearSteps } from '../../lib/mocha/bdd.js'
+import { clearSteps, Given, When, Then, And, matchStep } from '../../lib/mocha/bdd.js'
 
 const { expect } = chai
 const uuidFn = Messages.IdGenerator.uuid()
