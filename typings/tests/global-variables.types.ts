@@ -69,7 +69,7 @@ expectType<CodeceptJS.ScenarioConfig>(
 )
 
 // @ts-ignore
-expectType<void>(
+expectType<CodeceptJS.HookConfig>(
   Before(args => {
     // @ts-ignore
     expectType<CodeceptJS.SupportObject>(args)
@@ -79,7 +79,7 @@ expectType<void>(
 )
 
 // @ts-ignore
-expectType<void>(
+expectType<CodeceptJS.HookConfig>(
   BeforeSuite(args => {
     // @ts-ignore
     expectType<CodeceptJS.SupportObject>(args)
@@ -89,7 +89,7 @@ expectType<void>(
 )
 
 // @ts-ignore
-expectType<void>(
+expectType<CodeceptJS.HookConfig>(
   After(args => {
     // @ts-ignore
     expectType<CodeceptJS.SupportObject>(args)
@@ -99,7 +99,7 @@ expectType<void>(
 )
 
 // @ts-ignore
-expectType<void>(
+expectType<CodeceptJS.HookConfig>(
   AfterSuite(args => {
     // @ts-ignore
     expectType<CodeceptJS.SupportObject>(args)
