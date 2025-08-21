@@ -3,6 +3,10 @@ import { fileURLToPath } from 'url'
 import Gherkin from '@cucumber/gherkin'
 import * as Messages from '@cucumber/messages'
 import chai from 'chai'
+import recorder from '../../lib/recorder.js'
+import container from '../../lib/container.js'
+import Config from '../../lib/config.js'
+import { clearSteps } from '../../lib/mocha/bdd.js'
 
 const { expect } = chai
 const uuidFn = Messages.IdGenerator.uuid()

@@ -1,6 +1,6 @@
 import event from '../../../lib/event.js'
 
-exports.config = {
+export const config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',

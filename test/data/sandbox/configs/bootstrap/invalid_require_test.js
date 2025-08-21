@@ -1,4 +1,4 @@
-require('invalidRequire');
+await import('invalidRequire');
 
 Feature('Filesystem');
 

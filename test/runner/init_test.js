@@ -1,27 +1,10 @@
 import path from 'path'
 import chai from 'chai'
-
-chai.should()
 import { fileURLToPath } from 'url'
-import chai from 'chai'
-
-chai.should()
-
 import { DOWN, ENTER  } from 'inquirer-test'
-import chai from 'chai'
-
-chai.should()
 import run from 'inquirer-test'
-import chai from 'chai'
-
-chai.should()
 import fs from 'fs'
-import chai from 'chai'
-
-chai.should()
 import { mkdirp } from 'mkdirp'
-import chai from 'chai'
-
 chai.should()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

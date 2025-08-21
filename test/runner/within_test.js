@@ -1,20 +1,10 @@
 import path from 'path'
 import chai from 'chai'
-
-chai.should()
 import { fileURLToPath } from 'url'
-import chai from 'chai'
-
-chai.should()
-
 import { exec } from 'child_process'
-import chai from 'chai'
-
-chai.should()
 import { test } from '../../lib/utils.js'
-import chai from 'chai'
-
 chai.should()
+
 const { grepLines } = test
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

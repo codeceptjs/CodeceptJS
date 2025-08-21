@@ -3,7 +3,7 @@ require('../fake_driver');
 
 eventHandlers.setConsoleLogging(true);
 
-module.exports.config = {
+module.export const config = {
   tests: './*_test.testevents.js',
   timeout: 10000,
   output: './output',

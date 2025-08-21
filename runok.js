@@ -4,11 +4,8 @@ import path from 'path'
 import axios from 'axios'
 import { execSync } from 'node:child_process'
 import semver from 'semver'
-import runok, {
-  stopOnFail,
-  chdir,
-  tasks: { git, copy, exec, replaceInFile, npmRun, npx, writeToFile },
-} from 'runok'
+import runok, { stopOnFail, chdir, tasks } from 'runok'
+const { git, copy, exec, replaceInFile, npmRun, npx, writeToFile } = tasks
 
 let documentation
 

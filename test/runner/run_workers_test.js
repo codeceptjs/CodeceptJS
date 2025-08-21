@@ -1,11 +1,12 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect: chaiExpect } = chai
-
 import { expect  } from 'expect'
 import { exec } from 'child_process'
 import semver from 'semver'
+
+const { expect: chaiExpect } = chai
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')

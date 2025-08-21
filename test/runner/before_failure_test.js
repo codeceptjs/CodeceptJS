@@ -1,18 +1,8 @@
 import path from 'path'
 import chai from 'chai'
-
-chai.should()
 import { fileURLToPath } from 'url'
-import chai from 'chai'
-
-chai.should()
-
 import { exec } from 'child_process'
-import chai from 'chai'
-
-chai.should()
 import debug from 'debug'
-import chai from 'chai'
 
 chai.should()
 

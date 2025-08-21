@@ -1,22 +1,9 @@
 import path from 'path'
 import chai from 'chai'
-
-chai.should()
 import { fileURLToPath } from 'url'
-import chai from 'chai'
-
-chai.should()
-
 import assert from 'assert'
-import chai from 'chai'
-
-chai.should()
 import fs from 'fs'
-import chai from 'chai'
-
-chai.should()
 import { exec } from 'child_process'
-import chai from 'chai'
 
 chai.should()
 

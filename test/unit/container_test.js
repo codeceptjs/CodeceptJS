@@ -22,59 +22,59 @@ describe('Container', () => {
   })
 
   describe('#translation', () => {
-    it('should create empty translation', () => {
-      container.create({})
+    it('should create empty translation', async () => {
+      await container.create({})
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.false
       expect(container.translation().actionAliasFor('see')).to.eql('see')
     })
 
-    it('should create Russian translation', () => {
-      container.create({ translation: 'ru-RU' })
+    it('should create Russian translation', async () => {
+      await container.create({ translation: 'ru-RU' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('Я')
       expect(container.translation().actionAliasFor('see')).to.eql('вижу')
     })
 
-    it('should create Italian translation', () => {
-      container.create({ translation: 'it-IT' })
+    it('should create Italian translation', async () => {
+      await container.create({ translation: 'it-IT' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('io')
       expect(container.translation().value('contexts').Feature).to.eql('Funzionalità')
     })
 
-    it('should create French translation', () => {
-      container.create({ translation: 'fr-FR' })
+    it('should create French translation', async () => {
+      await container.create({ translation: 'fr-FR' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('Je')
       expect(container.translation().value('contexts').Feature).to.eql('Fonctionnalité')
     })
 
-    it('should create Portuguese translation', () => {
-      container.create({ translation: 'pt-BR' })
+    it('should create Portuguese translation', async () => {
+      await container.create({ translation: 'pt-BR' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       expect(container.translation().I).to.eql('Eu')
       expect(container.translation().value('contexts').Feature).to.eql('Funcionalidade')
     })
 
-    it('should load custom translation', () => {
-      container.create({ translation: 'my' })
+    it('should load custom translation', async () => {
+      await container.create({ translation: 'my' })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
     })
 
-    it('should load no translation', () => {
-      container.create({})
+    it('should load no translation', async () => {
+      await container.create({})
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.false
     })
 
-    it('should load custom translation with vocabularies', () => {
-      container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] })
+    it('should load custom translation with vocabularies', async () => {
+      await container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       const translation = container.translation()
@@ -169,13 +169,13 @@ describe('Container', () => {
       expect(container.helpers('FileSystem')).to.be.instanceOf(FileSystem)
     })
 
-    it('should always create I', () => {
-      container.create({})
+    it('should always create I', async () => {
+      await container.create({})
       expect(container.support('I')).is.ok
     })
 
-    it('should load DI and return a reference to the module', () => {
-      container.create({
+    it('should load DI and return a reference to the module', async () => {
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
         },
@@ -184,8 +184,8 @@ describe('Container', () => {
       global.codecept_dir = path.join(__dirname, '/..')
     })
 
-    it('should load I from path and execute', () => {
-      container.create({
+    it('should load I from path and execute', async () => {
+      await container.create({
         include: {
           I: './data/I',
         },

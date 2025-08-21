@@ -1,12 +1,13 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
-
 import assert from 'assert'
 import { exec } from 'child_process'
 import debug from 'debug'
 import event from '../../lib/event.js'
+
+const { expect } = chai
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
