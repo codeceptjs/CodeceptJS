@@ -440,7 +440,7 @@ declare namespace CodeceptJS {
   interface IHook {}
   interface IScenario {}
   interface IFeature {
-    (title: string): FeatureConfig
+    (title: string, opts?: { [key: string]: any }): FeatureConfig
   }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
@@ -486,6 +486,7 @@ declare namespace CodeceptJS {
     todo: IScenario
   }
   interface Feature extends IFeature {
+    only: IFeature
     skip: IFeature
   }
   interface IData {
@@ -545,7 +546,7 @@ declare const Given: typeof CodeceptJS.addStep
 declare const When: typeof CodeceptJS.addStep
 declare const Then: typeof CodeceptJS.addStep
 
-declare const Feature: typeof CodeceptJS.Feature
+declare const Feature: CodeceptJS.Feature
 declare const Scenario: CodeceptJS.Scenario
 declare const xScenario: CodeceptJS.IScenario
 declare const xFeature: CodeceptJS.IFeature
