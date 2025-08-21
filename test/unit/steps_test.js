@@ -4,7 +4,9 @@ import { MetaStep  } from '../../lib/step.js'
 import event from '../../lib/event.js'
 import Secret from '../../lib/secret.js'
 import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 
+chai.use(chaiAsPromised)
 const { expect } = chai
 let step
 let action

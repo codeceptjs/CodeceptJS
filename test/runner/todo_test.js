@@ -1,8 +1,11 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import exec from 'child_process'
+import { exec } from 'child_process'
 import assert from 'assert'
+import chai from 'chai'
+
+chai.should()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')

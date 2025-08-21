@@ -1,11 +1,29 @@
 import path from 'path'
+import chai from 'chai'
+
+chai.should()
 import { fileURLToPath } from 'url'
+import chai from 'chai'
+
+chai.should()
 
 import fs from 'fs'
+import chai from 'chai'
+
+chai.should()
 import assert from 'assert'
+import chai from 'chai'
+
+chai.should()
 import { exec, execSync  } from 'child_process'
+import chai from 'chai'
+
+chai.should()
 
 import { Project, StructureKind, ts  } from 'ts-morph'
+import chai from 'chai'
+
+chai.should()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')

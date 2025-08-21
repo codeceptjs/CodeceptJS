@@ -1,16 +1,14 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const path = require('path')
-const axios = require('axios')
-
-const {
+import fs from 'fs'
+import path from 'path'
+import axios from 'axios'
+import { execSync } from 'node:child_process'
+import semver from 'semver'
+import runok, {
   stopOnFail,
   chdir,
   tasks: { git, copy, exec, replaceInFile, npmRun, npx, writeToFile },
-  runok,
-} = require('runok')
-const { execSync } = require('node:child_process')
-const semver = require('semver')
+} from 'runok'
 
 let documentation
 
@@ -23,7 +21,7 @@ const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alp
 
 stopOnFail()
 
-module.exports = {
+const runokExports = {
   async docs() {
     // generate all docs (runs all docs:* commands in parallel)
     await Promise.all([this.docsHelpers(), this.docsPlugins(), this.docsExternalHelpers()])
@@ -406,7 +404,7 @@ title: ${name}
     const semver = require('semver')
 
     if (fs.existsSync('./package.json')) {
-      const packageFile = require('./package.json')
+    const packageFile = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
       const currentVersion = packageFile.version
       let type = process.argv[3]
       if (!['major', 'minor', 'patch'].includes(type)) {
@@ -550,12 +548,11 @@ ${changelog}`
 
   async runnerCreateTests(featureName) {
     // create runner tests for feature
-    const fs = require('fs').promises
-    const path = require('path')
+    const fsPromises = fs.promises
 
     // Create directories
     const configDir = path.join('test/data/sandbox/configs', featureName)
-    await fs.mkdir(configDir, { recursive: true })
+    await fsPromises.mkdir(configDir, { recursive: true })
 
     // Create codecept config file
     const configContent = `exports.config = {
@@ -570,7 +567,7 @@ ${changelog}`
     name: '${featureName} tests'
   }
   `
-    await fs.writeFile(path.join(configDir, `codecept.conf.js`), configContent)
+    await fsPromises.writeFile(path.join(configDir, `codecept.conf.js`), configContent)
 
     // Create feature test file
     const testContent = `Feature('${featureName}');
@@ -579,7 +576,7 @@ Scenario('test ${featureName}', ({ I }) => {
   // Add test steps here
 });
 `
-    await fs.writeFile(path.join(configDir, `${featureName}_test.js`), testContent)
+    await fsPromises.writeFile(path.join(configDir, `${featureName}_test.js`), testContent)
 
     // Create runner test file
     const runnerTestContent = `const { expect } = require('expect')
@@ -603,7 +600,7 @@ describe('CodeceptJS ${featureName}', function () {
   })
 })
 `
-    await fs.writeFile(path.join('test/runner', `${featureName}_test.js`), runnerTestContent)
+    await fsPromises.writeFile(path.join('test/runner', `${featureName}_test.js`), runnerTestContent)
 
     console.log(`Created test files for feature: ${featureName}`)
 
@@ -643,4 +640,8 @@ async function processChangelog() {
   })
 }
 
-if (require.main === module) runok(module.exports)
+if (import.meta.url === new URL(process.argv[1], 'file:').href) {
+  await runok(runokExports)
+}
+
+export default runokExports
