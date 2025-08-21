@@ -3,10 +3,9 @@ import { fileURLToPath } from 'url'
 
 import chai from 'chai'
 
+const { expect } = chai
 const assert = chai.assert
-const expect = chai.expect
 
-import path from 'path'
 import fs from 'fs'
 
 import playwright from 'playwright'
@@ -22,7 +21,6 @@ import Secret from '../../lib/secret.js'
 global.codeceptjs = require('../../lib')
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-import formContents from '../../lib/utils.js'
 
 let I
 let page
@@ -1240,7 +1238,6 @@ describe('Playwright - BasicAuth', function () {
 
 describe('Playwright - Emulation', () => {
   before(() => {
-    import { devices  } from 'playwright'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')

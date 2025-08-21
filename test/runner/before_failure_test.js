@@ -1,7 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
 import exec from 'child_process'
 import debug from 'debug'
 

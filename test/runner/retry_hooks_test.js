@@ -1,6 +1,8 @@
 import { expect  } from 'expect'
+import chai from 'chai'
 import exec from 'child_process'
 import { codecept_dir, codecept_run  } from './consts.js'
+const { expect } = chai
 
 const debug_this_test = false
 

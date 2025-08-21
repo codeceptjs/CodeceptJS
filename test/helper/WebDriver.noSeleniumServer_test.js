@@ -5,15 +5,14 @@ import assert from 'assert'
 
 import chai from 'chai'
 
-const expect = chai.expect
 
-import path from 'path'
 import fs from 'fs'
 
 import TestHelper from '../support/TestHelper.js'
 import WebDriver from '../../lib/helper/WebDriver.js'
 import AssertionFailedError from '../../lib/assert/error.js'
 import Secret from '../../lib/secret.js'
+const { expect } = chai
 global.codeceptjs = require('../../lib')
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')

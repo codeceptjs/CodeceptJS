@@ -1,16 +1,10 @@
-let chai
 import chai from 'chai'
-const { expect } = chai
-import('chai').then(_chai => {
-  chai = _chai
-  expect = chai.expect
-  chai.use(sinonChai)
-})
 import sinonChai from 'sinon-chai'
-
 import sinon from 'sinon'
-
 import originalOutput from '../../lib/output.js'
+
+const { expect } = chai
+chai.use(sinonChai)
 
 let output
 

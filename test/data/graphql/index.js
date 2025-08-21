@@ -1,7 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
 import jsonServer from 'json-server'
 import { ApolloServer  } from '@apollo/server'
 import { startStandaloneServer  } from '@apollo/server/standalone'

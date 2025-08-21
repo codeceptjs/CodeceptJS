@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url'
 
 import { DOWN, ENTER  } from 'inquirer-test'
 import run from 'inquirer-test'
-import path from 'path'
 import fs from 'fs'
 import mkdirp from 'mkdirp'
 

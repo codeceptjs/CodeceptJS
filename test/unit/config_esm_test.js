@@ -2,7 +2,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { expect  } from 'chai'
-import path from 'path'
 import fs from 'fs'
 import Config from '../../lib/config.js'
 const { mkdirSync, rmSync } = fs

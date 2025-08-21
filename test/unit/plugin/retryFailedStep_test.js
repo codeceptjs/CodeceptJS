@@ -1,9 +1,6 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 
 import retryFailedStep from '../../../lib/plugin/retryFailedStep.js'
+import chai from 'chai'
 import { tryTo, within  } from '../../../lib/effects.js'
 import { createTest  } from '../../../lib/mocha/test.js'
 import session from '../../../lib/session.js'
@@ -11,6 +8,7 @@ import store from '../../../lib/store.js'
 import container from '../../../lib/container.js'
 import event from '../../../lib/event.js'
 import recorder from '../../../lib/recorder.js'
+const { expect } = chai
 
 describe('retryFailedStep', () => {
   beforeEach(() => {

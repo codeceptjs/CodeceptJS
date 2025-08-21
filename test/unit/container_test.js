@@ -3,11 +3,13 @@ const { expect } = chai
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
-
 import FileSystem from '../../lib/helper/FileSystem.js'
 import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
+import Translation from '../../lib/translation.js'
+import dummyPage from '../data/dummy_page.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('Container', () => {
   before(() => {
@@ -17,15 +19,10 @@ describe('Container', () => {
 
   afterEach(() => {
     container.clear()
-    ;['I', 'dummy_page'].forEach(po => {
-      const name = require.resolve(path.join(__dirname, `../data/${po}`))
-      delete require.cache[name]
-    })
+    // Note: require.cache not available in ESM
   })
 
   describe('#translation', () => {
-    import Translation from '../../lib/translation.js'
-
     it('should create empty translation', () => {
       container.create({})
       expect(container.translation()).to.be.instanceOf(Translation)
@@ -184,10 +181,8 @@ describe('Container', () => {
           dummyPage: './data/dummy_page',
         },
       })
-      import dummyPage from '../data/dummy_page.js'
       expect(container.support('dummyPage').toString()).is.eql(dummyPage.toString())
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-global.codecept_dir = path.join(__dirname, '/..')
+      global.codecept_dir = path.join(__dirname, '/..')
     })
 
     it('should load I from path and execute', () => {

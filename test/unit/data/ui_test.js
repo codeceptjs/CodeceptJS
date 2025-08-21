@@ -1,9 +1,7 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 import Mocha from 'mocha/lib/mocha'
+import chai from 'chai'
 import Suite from 'mocha/lib/suite'
+const { expect } = chai
 
 import makeUI from '../../../lib/mocha/ui.js'
 import addData from '../../../lib/data/context.js'

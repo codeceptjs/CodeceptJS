@@ -2,7 +2,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import assert from 'assert'
-import path from 'path'
 import exec from 'child_process'
 import debug from 'debug'
 

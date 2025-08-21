@@ -1,7 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
 import expect from 'chai'
 
 import { Workers, event, recorder  } from '../../lib/index.js'

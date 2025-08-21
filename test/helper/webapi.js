@@ -5,7 +5,6 @@ import chai from 'chai'
 import store from '../../lib/store.js'
 const expect = chai.expect
 const assert = chai.assert
-import path from 'path'
 
 const dataFile = path.join(__dirname, '/../data/app/db')
 import formContents from '../../lib/utils.js'

@@ -1,7 +1,8 @@
 import path from 'path'
+import chai from 'chai'
 import { fileURLToPath } from 'url'
+const { expect } = chai
 
-import path from 'path'
 import { expect  } from 'expect'
 import fs from 'fs'
 

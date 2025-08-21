@@ -1,8 +1,9 @@
 import path from 'path'
+import chai from 'chai'
 import { fileURLToPath } from 'url'
+const { expect } = chai
 
 import { expect  } from 'expect'
-import path from 'path'
 import exec from 'child_process'
 import semver from 'semver'
 
@@ -171,7 +172,6 @@ describe('CodeceptJS Workers Runner', function () {
   })
 
   it('should create output folder with custom name', function (done) {
-    import fs from 'fs'
     const customName = 'thisIsCustomOutputFolderName'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')

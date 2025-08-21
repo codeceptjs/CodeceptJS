@@ -1,12 +1,9 @@
 import path from 'path'
+import chai from 'chai'
 import { fileURLToPath } from 'url'
+const { expect } = chai
 
-import path from 'path'
 
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 import container from '../../../lib/container.js'
 import eachElement from '../../../lib/plugin/eachElement.js'
 import recorder from '../../../lib/recorder.js'

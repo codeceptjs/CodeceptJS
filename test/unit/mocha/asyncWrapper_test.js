@@ -1,8 +1,6 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 import sinon from 'sinon'
+import chai from 'chai'
+const { expect } = chai
 
 import { test: testWrapper, setup, teardown, suiteSetup, suiteTeardown  } from '../../../lib/mocha/asyncWrapper.js'
 import recorder from '../../../lib/recorder.js'

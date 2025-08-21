@@ -154,7 +154,6 @@ Scenario('should work with within @Puppeteer @Playwright', ({ I }) => {
 })
 
 Scenario('change page emulation @Playwright', async ({ I }) => {
-  import assert from 'assert'
   I.amOnPage('/')
   session(
     'mobile user',
@@ -170,9 +169,7 @@ Scenario('change page emulation @Playwright', async ({ I }) => {
 })
 
 Scenario('emulate iPhone @Playwright', async ({ I }) => {
-  import { devices  } from 'playwright'
   if (process.env.BROWSER === 'firefox') return
-  import assert from 'assert'
   I.amOnPage('/')
   session('mobile user', devices['iPhone 6'], async () => {
     I.amOnPage('/')

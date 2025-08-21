@@ -1,10 +1,8 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 import Mocha from 'mocha/lib/mocha'
+import chai from 'chai'
 import Suite from 'mocha/lib/suite'
 import { createTest  } from '../../../lib/mocha/test.js'
+const { expect } = chai
 
 global.codeceptjs = require('../../../lib')
 import makeUI from '../../../lib/mocha/ui.js'

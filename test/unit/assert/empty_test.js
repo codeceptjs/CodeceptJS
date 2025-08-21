@@ -28,8 +28,8 @@ describe('empty assertion', () => {
   })
 
   it('should provide nice negate error message', () => {
-    empty.params.value = '/nothing'
-    const err = empty.getFailedNegation()
+    emptyAssertion.params.value = '/nothing'
+    const err = emptyAssertion.getFailedNegation()
     expect(err.inspect()).to.equal("expected web page '/nothing' not to be empty")
   })
 })

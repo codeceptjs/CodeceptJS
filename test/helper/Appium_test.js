@@ -3,9 +3,8 @@ import { fileURLToPath } from 'url'
 
 import chai from 'chai'
 
-const expect = chai.expect
+const { expect } = chai
 const assert = chai.assert
-import path from 'path'
 
 import Appium from '../../lib/helper/Appium.js'
 import AssertionFailedError from '../../lib/assert/error.js'

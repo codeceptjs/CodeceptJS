@@ -2,7 +2,6 @@ require('../support/setup')
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
 import fs from 'fs'
 
 import TestHelper from '../support/TestHelper.js'

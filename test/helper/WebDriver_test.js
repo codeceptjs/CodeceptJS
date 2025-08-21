@@ -3,9 +3,8 @@ import { fileURLToPath } from 'url'
 
 import chai from 'chai'
 
-const expect = chai.expect
+const { expect } = chai
 const assert = chai.assert
-import path from 'path'
 import fs from 'fs'
 
 import TestHelper from '../support/TestHelper.js'

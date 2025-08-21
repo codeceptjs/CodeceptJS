@@ -1,4 +1,5 @@
 import path from 'path'
+import chai from 'chai'
 import { expect } from 'expect'
 import { fileURLToPath } from 'url'
 

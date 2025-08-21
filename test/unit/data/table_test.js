@@ -1,9 +1,7 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 
 import DataTable from '../../../lib/data/table.js'
+import chai from 'chai'
+const { expect } = chai
 
 describe('DataTable', () => {
   it('should take an array for creation', () => {

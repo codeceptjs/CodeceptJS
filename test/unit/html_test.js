@@ -2,7 +2,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import fs from 'fs'
-import path from 'path'
 
 import chai from 'chai'
 const { expect } = chai

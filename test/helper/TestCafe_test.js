@@ -1,7 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
 import assert from 'assert'
 
 import TestHelper from '../support/TestHelper.js'

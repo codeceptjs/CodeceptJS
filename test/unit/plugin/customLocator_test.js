@@ -1,9 +1,8 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import chai from 'chai'
 import customLocatorPlugin from '../../../lib/plugin/customLocator.js'
 import Locator from '../../../lib/locator.js'
+
+const { expect } = chai
 
 describe('customLocator', () => {
   beforeEach(() => {

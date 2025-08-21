@@ -1,9 +1,9 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-import path from 'path'
-import exec from 'child_process'
-import { grepLines  } from '../../lib/utils.js'
+import { exec } from 'child_process'
+import { test } from '../../lib/utils.js'
+const { grepLines } = test
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')

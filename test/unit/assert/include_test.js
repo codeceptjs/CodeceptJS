@@ -1,9 +1,5 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-
-import Assertion from '../../../lib/assert/include.js'
+import { expect } from 'chai'
+import { Assertion } from '../../../lib/assert/include.js'
 import AssertionError from '../../../lib/assert/error.js'
 
 let equal

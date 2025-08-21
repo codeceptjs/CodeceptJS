@@ -2,11 +2,12 @@ import chai from 'chai'
 const { expect } = chai
 import os from 'os'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import sinon from 'sinon'
 
-import { fileExists, getParamNames, methodsOfObject, ucfirst } from '../../lib/utils.js'
+import * as utils from '../../lib/utils.js'
 
-const utils = { fileExists, getParamNames, methodsOfObject, ucfirst }
+const __filename = fileURLToPath(import.meta.url)
 
 describe('utils', () => {
   describe('#fileExists', () => {

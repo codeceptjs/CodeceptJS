@@ -1,7 +1,9 @@
 import { expect  } from 'expect'
+import chai from 'chai'
 import exec from 'child_process'
 import { codecept_dir, codecept_run  } from './consts.js'
 import figures from 'figures'
+const { expect } = chai
 const debug_this_test = false
 
 const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose || debug_this_test ? '--verbose' : ''} --config ${codecept_dir}/configs/step_timeout/${config} ${grep ? `--grep "${grep}"` : ''}`

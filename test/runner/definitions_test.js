@@ -3,7 +3,6 @@ import { fileURLToPath } from 'url'
 
 import fs from 'fs'
 import assert from 'assert'
-import path from 'path'
 import { exec, execSync  } from 'child_process'
 
 import { Project, StructureKind, ts  } from 'ts-morph'
@@ -16,20 +15,6 @@ const pathOfJSDocDefinitions = path.join(pathToRootOfProject, 'typings/types.d.t
 const pathToTests = path.resolve(pathToRootOfProject, 'test')
 const pathToTypings = path.resolve(pathToRootOfProject, 'typings')
 
-import('chai').then(chai => {
-  chai.use(require('chai-subset'))
-  /** @type {Chai.ChaiPlugin */
-  chai.use((chai, utils) => {
-    utils.addProperty(chai.Assertion.prototype, 'valid', function () {
-      /** @type {import('ts-morph').Project} */
-      const project = utils.flag(this, 'object')
-      new chai.Assertion(project).to.be.instanceof(Project)
-
-      let diagnostics = project.getPreEmitDiagnostics()
-      diagnostics = diagnostics.filter(diagnostic => {
-        const filePath = diagnostic.getSourceFile().getFilePath()
-        return filePath.startsWith(pathToTests) || filePath.startsWith(pathToTypings)
-      })
       if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics))
     })
   })
@@ -264,7 +249,6 @@ describe('Definitions', function () {
  * @type {import('ts-morph').ResolutionHostFactory}
  */
 function resolutionHost(moduleResolutionHost, getCompilerOptions) {
-  import packageJson from '../../package.json.js'
   return {
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
     resolveTypeReferenceDirectives: (typeDirectiveNames, containingFile) => {

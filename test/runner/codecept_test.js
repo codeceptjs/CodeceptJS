@@ -1,12 +1,9 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
 import path from 'path'
+import chai from 'chai'
 import { fileURLToPath } from 'url'
+const { expect } = chai
 
 import assert from 'assert'
-import path from 'path'
 import exec from 'child_process'
 import debug from 'debug'
 import event from '../../lib.js'

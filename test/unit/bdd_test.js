@@ -2,12 +2,11 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import Gherkin from '@cucumber/gherkin'
-import Messages from '@cucumber/messages'
-import path from 'path'
+import * as Messages from '@cucumber/messages'
 import chai from 'chai'
 
-const expect = chai.expect
 
+const { expect } = chai
 const uuidFn = Messages.IdGenerator.uuid()
 const builder = new Gherkin.AstBuilder(uuidFn)
 const matcher = new Gherkin.GherkinClassicTokenMatcher()
