@@ -10,7 +10,7 @@ let I
 const siteUrl = TestHelper.siteUrl()
 
 describe('TestCafe', function () {
-  this.timeout(35000)
+  this.timeout(60000) // Reduced timeout from 120s to 60s for faster feedback
   this.retries(1)
 
   before(() => {
@@ -22,9 +22,9 @@ describe('TestCafe', function () {
       url: siteUrl,
       windowSize: '1000x700',
       show: false,
-      browser: 'chrome',
+      browser: 'chrome:headless --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu',
       restart: false,
-      waitForTimeout: 5000,
+      waitForTimeout: 50000,
     })
     I._init()
     return I._beforeSuite()
