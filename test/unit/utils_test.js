@@ -334,7 +334,8 @@ describe('utils', () => {
   describe('#requireWithFallback', () => {
     it('returns the fallback package', async () => {
       const result = await utils.requireWithFallback('unexisting-package', 'playwright')
-      expect(result).to.deep.equal(require('playwright'))
+      const playwrightModule = await import('playwright')
+      expect(result).to.deep.equal(playwrightModule.default || playwrightModule)
     })
 
     it('returns provide default require not found message', async () => {

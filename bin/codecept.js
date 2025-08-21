@@ -118,7 +118,7 @@ program
   .option(commandFlags.config.flag, commandFlags.config.description)
   .action(errorHandler(async (...args) => {
     const { default: cmd } = await import('../lib/command/gherkin/init.js')
-    return cmd(...args)
+    return await cmd(...args)
   }))
 
 program

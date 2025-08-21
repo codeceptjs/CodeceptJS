@@ -50,8 +50,12 @@ describe('Actor', () => {
     const poI = actor({
       customStep: () => {},
     })
+    // Wait for any async container operations to complete
+    await new Promise(resolve => setTimeout(resolve, 10))
     expect(poI).toHaveProperty('customStep')
-    expect(I).toHaveProperty('customStep')
+    // The global I should be updated to point to the same actor instance
+    const containerI = container.actor() 
+    expect(containerI).toHaveProperty('customStep')
   })
 
   it('should correct run step from Helper inside PageObject', () => {

@@ -63,7 +63,7 @@ describe('Config ESM Support', () => {
     })
 
     it('should load CommonJS config asynchronously', async () => {
-      const configPath = path.join(testConfigDir, 'cjs-config-async.js')
+      const configPath = path.join(testConfigDir, 'cjs-config-async.cjs')
 
       fs.writeFileSync(
         configPath,

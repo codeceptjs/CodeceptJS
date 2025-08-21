@@ -117,16 +117,31 @@ describe('BDD', () => {
     expect('@super').is.equal(suite.tests[0].tags[0])
   })
 
-  it('should load and run step definitions', done => {
+  it('should load and run step definitions', async () => {
     let sum = 0
-    Given(/I have product with (\d+) price/, param => (sum += parseInt(param, 10)))
-    When('I go to checkout process', () => (sum += 10))
-    const suite = run(text)
+    Given(/I have product with (\d+) price/, param => {
+      sum += parseInt(param, 10)
+    })
+    When('I go to checkout process', () => {
+      sum += 10
+    })
+    const suite = await run(text)
     expect('checkout process').is.equal(suite.title)
-    suite.tests[0].fn(() => {
-      expect(suite.tests[0].steps).is.ok
-      expect(1610).is.equal(sum)
-      done()
+    
+    // Execute the test properly using the same pattern as other tests
+    await new Promise((resolve, reject) => {
+      suite.tests[0].fn((err) => {
+        if (err) {
+          return reject(err)
+        }
+        try {
+          expect(suite.tests[0].steps).is.ok
+          expect(1610).is.equal(sum)
+          resolve()
+        } catch (assertionErr) {
+          reject(assertionErr)
+        }
+      })
     })
   })
 
