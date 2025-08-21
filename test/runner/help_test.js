@@ -1,7 +1,11 @@
-const assert = require('assert')
-const path = require('path')
-const exec = require('child_process').exec
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+import assert from 'assert'
+import path from 'path'
+import exec from 'child_process'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 
 describe('help option', () => {

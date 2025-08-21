@@ -1,9 +1,7 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import chai from 'chai'
+const { expect } = chai
 
-const recorder = require('../../lib/recorder')
+import recorder from '../../lib/recorder.js'
 
 describe('Recorder', () => {
   beforeEach(() => recorder.start())

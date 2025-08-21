@@ -1,8 +1,12 @@
-const { expect } = require('chai')
-const path = require('path')
-const fs = require('fs')
-const Config = require('../../lib/config')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import { expect  } from 'chai'
+import path from 'path'
+import fs from 'fs'
+import Config from '../../lib/config.js'
 const { mkdirSync, rmSync } = fs
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const testConfigDir = path.join(__dirname, '../data/esm-config-test')
 

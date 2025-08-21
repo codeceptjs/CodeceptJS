@@ -1,4 +1,4 @@
-const Appium = require('../../lib/helper/Appium')
+import Appium from '../../lib/helper/Appium.js'
 global.codeceptjs = require('../../lib')
 
 let I

@@ -1,10 +1,15 @@
-const path = require('path')
-const assert = require('assert')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const TestHelper = require('../support/TestHelper')
-const TestCafe = require('../../lib/helper/TestCafe')
-const webApiTests = require('./webapi')
+import path from 'path'
+import assert from 'assert'
+
+import TestHelper from '../support/TestHelper.js'
+import TestCafe from '../../lib/helper/TestCafe.js'
+import webApiTests from './webapi.js'
 global.codeceptjs = require('../../lib')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 
 let I
 const siteUrl = TestHelper.siteUrl()
@@ -14,7 +19,6 @@ describe('TestCafe', function () {
   this.retries(1)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(__dirname, '/../data/output')
     global.codeceptjs = require('../../lib/index')
 

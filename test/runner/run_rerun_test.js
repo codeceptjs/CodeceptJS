@@ -1,9 +1,13 @@
-const { expect } = require('expect')
-const { describe } = require('mocha')
-const path = require('path')
-const exec = require('child_process').exec
-const semver = require('semver')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+import { expect  } from 'expect'
+import { describe  } from 'mocha'
+import path from 'path'
+import exec from 'child_process'
+import semver from 'semver'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/run-rerun/')
 const codecept_run = `${runner} run-rerun`

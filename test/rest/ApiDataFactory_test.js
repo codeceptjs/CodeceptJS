@@ -1,10 +1,14 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import path from 'path'
+import fs from 'fs'
 
 require('../support/setup')
-const TestHelper = require('../support/TestHelper')
-const ApiDataFactory = require('../../lib/helper/ApiDataFactory')
+import TestHelper from '../support/TestHelper.js'
+import ApiDataFactory from '../../lib/helper/ApiDataFactory.js'
 global.codeceptjs = require('../../lib')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const api_url = TestHelper.jsonServerUrl()
 

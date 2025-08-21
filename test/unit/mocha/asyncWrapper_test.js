@@ -2,11 +2,11 @@ let expect
 import('chai').then(chai => {
   expect = chai.expect
 })
-const sinon = require('sinon')
+import sinon from 'sinon'
 
-const { test: testWrapper, setup, teardown, suiteSetup, suiteTeardown } = require('../../../lib/mocha/asyncWrapper')
-const recorder = require('../../../lib/recorder')
-const event = require('../../../lib/event')
+import { test: testWrapper, setup, teardown, suiteSetup, suiteTeardown  } from '../../../lib/mocha/asyncWrapper.js'
+import recorder from '../../../lib/recorder.js'
+import event from '../../../lib/event.js'
 
 let test
 let fn

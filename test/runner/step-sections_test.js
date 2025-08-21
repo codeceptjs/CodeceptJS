@@ -1,7 +1,7 @@
-const { expect } = require('expect')
-const exec = require('child_process').exec
-const { codecept_dir, codecept_run } = require('./consts')
-const debug = require('debug')('codeceptjs:tests')
+import { expect  } from 'expect'
+import exec from 'child_process'
+import { codecept_dir, codecept_run  } from './consts.js'
+import debug from 'debug'
 
 const config_run_config = (config, grep) => `${codecept_run} --steps --config ${codecept_dir}/configs/step-sections/${config} ${grep ? `--grep "${grep}"` : ''}`
 

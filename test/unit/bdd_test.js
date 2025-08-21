@@ -1,7 +1,10 @@
-const Gherkin = require('@cucumber/gherkin')
-const Messages = require('@cucumber/messages')
-const path = require('path')
-const chai = require('chai')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import Gherkin from '@cucumber/gherkin'
+import Messages from '@cucumber/messages'
+import path from 'path'
+import chai from 'chai'
 
 const expect = chai.expect
 
@@ -9,14 +12,15 @@ const uuidFn = Messages.IdGenerator.uuid()
 const builder = new Gherkin.AstBuilder(uuidFn)
 const matcher = new Gherkin.GherkinClassicTokenMatcher()
 
-const Config = require('../../lib/config')
-const { Given, When, And, Then, matchStep, clearSteps, defineParameterType } = require('../../lib/mocha/bdd')
-const run = require('../../lib/mocha/gherkin')
-const recorder = require('../../lib/recorder')
-const container = require('../../lib/container')
-const actor = require('../../lib/actor')
-const event = require('../../lib/event')
+import Config from '../../lib/config.js'
+import { Given, When, And, Then, matchStep, clearSteps, defineParameterType  } from '../../lib/mocha/bdd.js'
+import run from '../../lib/mocha/gherkin.js'
+import recorder from '../../lib/recorder.js'
+import container from '../../lib/container.js'
+import actor from '../../lib/actor.js'
+import event from '../../lib/event.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
 
 class Color {

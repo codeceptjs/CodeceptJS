@@ -1,20 +1,25 @@
-const chai = require('chai')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import chai from 'chai'
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
+import path from 'path'
 
-const puppeteer = require('puppeteer')
+import puppeteer from 'puppeteer'
 
-const fs = require('fs')
-const TestHelper = require('../support/TestHelper')
-const Puppeteer = require('../../lib/helper/Puppeteer')
+import fs from 'fs'
+import TestHelper from '../support/TestHelper.js'
+import Puppeteer from '../../lib/helper/Puppeteer.js'
 
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const Secret = require('../../lib/secret')
-const { deleteDir } = require('../../lib/utils')
+import AssertionFailedError from '../../lib/assert/error.js'
+import webApiTests from './webapi.js'
+import Secret from '../../lib/secret.js'
+import { deleteDir  } from '../../lib/utils.js'
 global.codeceptjs = require('../../lib')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 
 let I
 let browser
@@ -26,7 +31,6 @@ describe('Puppeteer - BasicAuth', function () {
   this.timeout(10000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Puppeteer({
       url: siteUrl,
@@ -76,7 +80,6 @@ describe('Puppeteer', function () {
   this.retries(1)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Puppeteer({
       url: siteUrl,
@@ -1079,7 +1082,6 @@ describe('Puppeteer (remote browser)', function () {
   this.retries(1)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     I = new Puppeteer(helperConfig)
     I._init()
     return I._beforeSuite()
@@ -1146,7 +1148,6 @@ describe('Puppeteer (remote browser)', function () {
 describe('Puppeteer - Trace', () => {
   const test = { title: 'a failed test', artifacts: {} }
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
     I = new Puppeteer({

@@ -1,7 +1,12 @@
-const path = require('path')
-const exec = require('child_process').exec
-const { grepLines } = require('../../lib/utils').test
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+import path from 'path'
+import exec from 'child_process'
+import { grepLines  } from '../../lib/utils.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.session.json `
@@ -10,7 +15,6 @@ describe('CodeceptJS session', function () {
   this.timeout(40000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox')
   })
 
   it('should run with 3 sessions', done => {

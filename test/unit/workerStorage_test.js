@@ -1,7 +1,7 @@
-const { expect } = require('expect');
-const WorkerStorage = require('../../lib/workerStorage');
-const { Worker } = require('worker_threads');
-const event = require('../../lib/event');
+import { expect  } from 'expect'
+import WorkerStorage from '../../lib/workerStorage.js'
+import { Worker  } from 'worker_threads'
+import event from '../../lib/event.js'
 
 describe('WorkerStorage', () => {
   it('should handle share message correctly without circular dependency', (done) => {

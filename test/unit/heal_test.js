@@ -1,10 +1,8 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const heal = require('../../lib/heal')
-const recorder = require('../../lib/recorder')
-const Step = require('../../lib/step')
+import chai from 'chai'
+const { expect } = chai
+import heal from '../../lib/heal.js'
+import recorder from '../../lib/recorder.js'
+import Step from '../../lib/step.js'
 
 describe('heal', () => {
   beforeEach(() => {

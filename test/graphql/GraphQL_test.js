@@ -1,10 +1,14 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const TestHelper = require('../support/TestHelper')
-const GraphQL = require('../../lib/helper/GraphQL')
-const Container = require('../../lib/container')
+import path from 'path'
+import fs from 'fs'
+
+import TestHelper from '../support/TestHelper.js'
+import GraphQL from '../../lib/helper/GraphQL.js'
+import Container from '../../lib/container.js'
 global.codeceptjs = require('../../lib')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const graphql_url = TestHelper.graphQLServerUrl()
 

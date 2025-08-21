@@ -2,13 +2,13 @@ let expect
 import('chai').then(chai => {
   expect = chai.expect
 })
-const Mocha = require('mocha/lib/mocha')
-const Suite = require('mocha/lib/suite')
-const { createTest } = require('../../../lib/mocha/test')
+import Mocha from 'mocha/lib/mocha'
+import Suite from 'mocha/lib/suite'
+import { createTest  } from '../../../lib/mocha/test.js'
 
 global.codeceptjs = require('../../../lib')
-const makeUI = require('../../../lib/mocha/ui')
-const container = require('../../../lib/container')
+import makeUI from '../../../lib/mocha/ui.js'
+import container from '../../../lib/container.js'
 
 describe('ui', () => {
   let suite

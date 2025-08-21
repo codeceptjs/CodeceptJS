@@ -1,4 +1,4 @@
-const assert = require('assert')
+import assert from 'assert'
 
 const { event } = codeceptjs
 
@@ -154,7 +154,7 @@ Scenario('should work with within @Puppeteer @Playwright', ({ I }) => {
 })
 
 Scenario('change page emulation @Playwright', async ({ I }) => {
-  const assert = require('assert')
+  import assert from 'assert'
   I.amOnPage('/')
   session(
     'mobile user',
@@ -170,9 +170,9 @@ Scenario('change page emulation @Playwright', async ({ I }) => {
 })
 
 Scenario('emulate iPhone @Playwright', async ({ I }) => {
-  const { devices } = require('playwright')
+  import { devices  } from 'playwright'
   if (process.env.BROWSER === 'firefox') return
-  const assert = require('assert')
+  import assert from 'assert'
   I.amOnPage('/')
   session('mobile user', devices['iPhone 6'], async () => {
     I.amOnPage('/')

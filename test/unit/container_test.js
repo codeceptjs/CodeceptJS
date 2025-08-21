@@ -1,16 +1,16 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const path = require('path')
+import chai from 'chai'
+const { expect } = chai
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const FileSystem = require('../../lib/helper/FileSystem')
-const actor = require('../../lib/actor')
-const container = require('../../lib/container')
+import path from 'path'
+
+import FileSystem from '../../lib/helper/FileSystem.js'
+import actor from '../../lib/actor.js'
+import container from '../../lib/container.js'
 
 describe('Container', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/..')
     global.inject = container.support
     global.actor = actor
   })
@@ -24,7 +24,7 @@ describe('Container', () => {
   })
 
   describe('#translation', () => {
-    const Translation = require('../../lib/translation')
+    import Translation from '../../lib/translation.js'
 
     it('should create empty translation', () => {
       container.create({})
@@ -184,8 +184,10 @@ describe('Container', () => {
           dummyPage: './data/dummy_page',
         },
       })
-      const dummyPage = require('../data/dummy_page')
+      import dummyPage from '../data/dummy_page.js'
       expect(container.support('dummyPage').toString()).is.eql(dummyPage.toString())
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
     })
 
     it('should load I from path and execute', () => {

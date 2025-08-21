@@ -1,6 +1,6 @@
-const gql = require('graphql-tag');
+import gql from 'graphql-tag'
 
-const { userModel } = require('./models');
+import { userModel  } from './models.js'
 
 exports.typeDefs = gql`
   type User {

@@ -1,7 +1,7 @@
-const { expect } = require('chai')
-const { createTest, cloneTest } = require('../../../lib/mocha/test')
-const { createSuite } = require('../../../lib/mocha/suite')
-const MochaSuite = require('mocha/lib/suite')
+import { expect  } from 'chai'
+import { createTest, cloneTest  } from '../../../lib/mocha/test.js'
+import { createSuite  } from '../../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite'
 
 describe('Test cloning for retries', function () {
   it('should maintain consistent fullTitle format after cloning', function () {

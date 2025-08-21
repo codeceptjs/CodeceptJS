@@ -1,12 +1,14 @@
-const path = require('path')
-const { expect } = require('expect')
+import path from 'path'
+import { expect } from 'expect'
+import { fileURLToPath } from 'url'
 
-const actor = require('../../lib/actor')
-const container = require('../../lib/container')
-const recorder = require('../../lib/recorder')
-const event = require('../../lib/event')
-const store = require('../../lib/store')
+import actor from '../../lib/actor.js'
+import container from '../../lib/container.js'
+import recorder from '../../lib/recorder.js'
+import event from '../../lib/event.js'
+import store from '../../lib/store.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
 let I
 let counter

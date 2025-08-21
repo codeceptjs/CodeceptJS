@@ -1,4 +1,4 @@
-const eventHandlers = require('./eventHandlers');
+import eventHandlers from './eventHandlers.js'
 require('../fake_driver');
 
 eventHandlers.setConsoleLogging(true);

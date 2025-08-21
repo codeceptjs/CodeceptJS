@@ -1,9 +1,12 @@
-const fs = require('fs')
-const assert = require('assert')
-const path = require('path')
-const { exec, execSync } = require('child_process')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const { Project, StructureKind, ts } = require('ts-morph')
+import fs from 'fs'
+import assert from 'assert'
+import path from 'path'
+import { exec, execSync  } from 'child_process'
+
+import { Project, StructureKind, ts  } from 'ts-morph'
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions')
@@ -261,8 +264,9 @@ describe('Definitions', function () {
  * @type {import('ts-morph').ResolutionHostFactory}
  */
 function resolutionHost(moduleResolutionHost, getCompilerOptions) {
-  const packageJson = require('../../package.json')
+  import packageJson from '../../package.json.js'
   return {
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
     resolveTypeReferenceDirectives: (typeDirectiveNames, containingFile) => {
       const compilerOptions = getCompilerOptions()
       const resolvedTypeReferenceDirectives = []

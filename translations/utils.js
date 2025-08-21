@@ -1,5 +1,6 @@
-module.exports.gherkinTranslations = function (langCode) {
-  const gherkinLanguages = require('@cucumber/gherkin/src/gherkin-languages.json')
+import gherkinLanguages from '@cucumber/gherkin/src/gherkin-languages.json' with { type: 'json' }
+
+export function gherkinTranslations(langCode) {
   const { feature, scenario, scenarioOutline } = gherkinLanguages[langCode]
   return {
     Feature: feature[0],

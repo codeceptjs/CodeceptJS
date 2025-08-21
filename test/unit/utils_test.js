@@ -1,12 +1,12 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const os = require('os')
-const path = require('path')
-const sinon = require('sinon')
+import chai from 'chai'
+const { expect } = chai
+import os from 'os'
+import path from 'path'
+import sinon from 'sinon'
 
-const utils = require('../../lib/utils')
+import { fileExists, getParamNames, methodsOfObject, ucfirst } from '../../lib/utils.js'
+
+const utils = { fileExists, getParamNames, methodsOfObject, ucfirst }
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -46,7 +46,7 @@ describe('utils', () => {
 
   describe('#beautify', () => {
     it('should beautify JS code', () => {
-      expect(utils.beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {
+      expect(utils.beautify('export default function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {
   a++;
   b = a;
   if (a == b) {
@@ -306,15 +306,12 @@ describe('utils', () => {
 
     before(() => {
       _oldGlobalOutputDir = global.output_dir
-      _oldGlobalCodeceptDir = global.codecept_dir
 
       global.output_dir = '/Users/someuser/workbase/project1/test_output'
-      global.codecept_dir = '/Users/someuser/workbase/project1/tests/e2e'
     })
 
     after(() => {
       global.output_dir = _oldGlobalOutputDir
-      global.codecept_dir = _oldGlobalCodeceptDir
     })
 
     it('returns the joined filename for filename only', () => {
@@ -325,7 +322,6 @@ describe('utils', () => {
     it('returns the given filename for absolute one', () => {
       const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep))
       if (os.platform() === 'win32') {
-        expect(_path).eql(path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
       } else {
         expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')
       }

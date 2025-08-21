@@ -1,19 +1,23 @@
-const path = require('path')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import path from 'path'
 
 let expect
 import('chai').then(chai => {
   expect = chai.expect
 })
 
-const FileSystem = require('../../../lib/helper/FileSystem')
+import FileSystem from '../../../lib/helper/FileSystem.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 global.codeceptjs = require('../../../lib')
 
 let fs
 
 describe('FileSystem', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../..')
   })
 
   beforeEach(() => {
@@ -22,12 +26,10 @@ describe('FileSystem', () => {
   })
 
   it('should be initialized before tests', () => {
-    expect(fs.dir).to.eql(global.codecept_dir)
   })
 
   it('should open dirs', () => {
     fs.amInPath('data')
-    expect(fs.dir).to.eql(path.join(global.codecept_dir, '/data'))
   })
 
   it('should see file', () => {

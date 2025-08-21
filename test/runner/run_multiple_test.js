@@ -1,8 +1,13 @@
-const assert = require('assert')
-const { expect } = require('expect')
-const path = require('path')
-const exec = require('child_process').exec
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+import assert from 'assert'
+import { expect  } from 'expect'
+import path from 'path'
+import exec from 'child_process'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} run-multiple --config ${codecept_dir}/codecept.multiple.js `
@@ -11,7 +16,6 @@ describe('CodeceptJS Multiple Runner', function () {
   this.timeout(40000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox')
   })
 
   it('should execute one suite with browser', done => {

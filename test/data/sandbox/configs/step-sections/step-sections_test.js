@@ -1,4 +1,4 @@
-const { Section, EndSection } = require('codeceptjs/steps')
+import { Section, EndSection  } from 'codeceptjs/steps'
 
 Feature('step-sections')
 

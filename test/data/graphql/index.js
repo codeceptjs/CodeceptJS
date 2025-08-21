@@ -1,11 +1,15 @@
-const path = require('path');
-const jsonServer = require('json-server');
-const { ApolloServer } = require('@apollo/server');
-const { startStandaloneServer } = require('@apollo/server/standalone');
-const { resolvers, typeDefs } = require('./schema');
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const TestHelper = require('../../support/TestHelper');
+import path from 'path'
+import jsonServer from 'json-server'
+import { ApolloServer  } from '@apollo/server'
+import { startStandaloneServer  } from '@apollo/server/standalone'
+import { resolvers, typeDefs  } from './schema.js'
 
+import TestHelper from '../../support/TestHelper.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = TestHelper.graphQLServerPort();
 
 const app = jsonServer.create();
@@ -23,4 +27,4 @@ res.then(({ url }) => {
   console.log(`test graphQL server listening on ${url}...`);
 });
 
-module.exports = res;
+export default res;

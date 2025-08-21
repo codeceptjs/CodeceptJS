@@ -1,10 +1,10 @@
-const assert = require('assert')
-const { expect } = require('chai')
-const els = require('../../lib/els')
-const recorder = require('../../lib/recorder')
-const Container = require('../../lib/container')
-const Helper = require('../../lib/helper')
-const StepConfig = require('../../lib/step/config')
+import assert from 'assert'
+import { expect  } from 'chai'
+import els from '../../lib/els.js'
+import recorder from '../../lib/recorder.js'
+import Container from '../../lib/container.js'
+import Helper from '../../lib/helper.js'
+import StepConfig from '../../lib/step/config.js'
 
 class TestHelper extends Helper {
   constructor() {

@@ -1,9 +1,9 @@
-const chai = require('chai')
+import chai from 'chai'
 
 const expect = chai.expect
-const joi = require('joi')
-const JSONResponse = require('../../lib/helper/JSONResponse')
-const Container = require('../../lib/container')
+import joi from 'joi'
+import JSONResponse from '../../lib/helper/JSONResponse.js'
+import Container from '../../lib/container.js'
 global.codeceptjs = require('../../lib')
 
 const data = {

@@ -1,12 +1,16 @@
-const path = require('path')
-const { expect } = require('expect')
-const fs = require('fs')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const TestHelper = require('../support/TestHelper')
-const REST = require('../../lib/helper/REST')
-const Container = require('../../lib/container')
-const Secret = require('../../lib/secret')
+import path from 'path'
+import { expect  } from 'expect'
+import fs from 'fs'
 
+import TestHelper from '../support/TestHelper.js'
+import REST from '../../lib/helper/REST.js'
+import Container from '../../lib/container.js'
+import Secret from '../../lib/secret.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const api_url = TestHelper.jsonServerUrl()
 global.codeceptjs = require('../../lib')
 

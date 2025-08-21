@@ -3,14 +3,14 @@ import('chai').then(chai => {
   expect = chai.expect
 })
 
-const retryFailedStep = require('../../../lib/plugin/retryFailedStep')
-const { tryTo, within } = require('../../../lib/effects')
-const { createTest } = require('../../../lib/mocha/test')
-const session = require('../../../lib/session')
-const store = require('../../../lib/store')
-const container = require('../../../lib/container')
-const event = require('../../../lib/event')
-const recorder = require('../../../lib/recorder')
+import retryFailedStep from '../../../lib/plugin/retryFailedStep.js'
+import { tryTo, within  } from '../../../lib/effects.js'
+import { createTest  } from '../../../lib/mocha/test.js'
+import session from '../../../lib/session.js'
+import store from '../../../lib/store.js'
+import container from '../../../lib/container.js'
+import event from '../../../lib/event.js'
+import recorder from '../../../lib/recorder.js'
 
 describe('retryFailedStep', () => {
   beforeEach(() => {

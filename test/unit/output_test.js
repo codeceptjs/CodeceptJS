@@ -1,15 +1,16 @@
 let chai
-let expect
+import chai from 'chai'
+const { expect } = chai
 import('chai').then(_chai => {
   chai = _chai
   expect = chai.expect
   chai.use(sinonChai)
 })
-const sinonChai = require('sinon-chai')
+import sinonChai from 'sinon-chai'
 
-const sinon = require('sinon')
+import sinon from 'sinon'
 
-const originalOutput = require('../../lib/output')
+import originalOutput from '../../lib/output.js'
 
 let output
 

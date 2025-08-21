@@ -1,4 +1,4 @@
-const event = require('../../../lib/event');
+import event from '../../../lib/event.js'
 
 exports.config = {
   tests: './*_test.js',

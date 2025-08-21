@@ -1,13 +1,17 @@
-const path = require('path')
-const expect = require('chai').expect
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const { Workers, event, recorder } = require('../../lib/index')
+import path from 'path'
+import expect from 'chai'
 
+import { Workers, event, recorder  } from '../../lib/index.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 describe('Workers', function () {
   this.timeout(40000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox')
   })
 
   it('should run simple worker', done => {

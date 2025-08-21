@@ -1,16 +1,20 @@
-const path = require('path')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import path from 'path'
 
 let expect
 import('chai').then(chai => {
   expect = chai.expect
 })
-const container = require('../../../lib/container')
-const eachElement = require('../../../lib/plugin/eachElement')()
-const recorder = require('../../../lib/recorder')
+import container from '../../../lib/container.js'
+import eachElement from '../../../lib/plugin/eachElement.js'
+import recorder from '../../../lib/recorder.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 describe('eachElement plugin', () => {
   beforeEach(() => {
-    global.codecept_dir = path.join(__dirname, '/../..')
     recorder.start()
     container.create({
       helpers: {

@@ -1,31 +1,29 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+import chai from 'chai'
+const { expect } = chai
 
-const { Assertion } = require('../../../lib/assert/empty')
-const AssertionError = require('../../../lib/assert/error')
+import { Assertion, empty } from '../../../lib/assert/empty.js'
+import AssertionError from '../../../lib/assert/error.js'
 
-let empty
+let emptyAssertion
 
 describe('empty assertion', () => {
   beforeEach(() => {
-    empty = new Assertion({ subject: 'web page' })
+    emptyAssertion = new Assertion({ subject: 'web page' })
   })
 
   it('should check for something to be empty', () => {
-    empty.assert(null)
-    expect(() => empty.negate(null)).to.throw(AssertionError)
+    emptyAssertion.assert(null)
+    expect(() => emptyAssertion.negate(null)).to.throw(AssertionError)
   })
 
   it('should check for something not to be empty', () => {
-    empty.negate('something')
-    expect(() => empty.assert('something')).to.throw(AssertionError)
+    emptyAssertion.negate('something')
+    expect(() => emptyAssertion.assert('something')).to.throw(AssertionError)
   })
 
   it('should provide nice assert error message', () => {
-    empty.params.value = '/nothing'
-    const err = empty.getFailedAssertion()
+    emptyAssertion.params.value = '/nothing'
+    const err = emptyAssertion.getFailedAssertion()
     expect(err.inspect()).to.equal("expected web page '/nothing' to be empty")
   })
 

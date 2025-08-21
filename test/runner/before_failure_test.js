@@ -1,7 +1,11 @@
-const path = require('path')
-const exec = require('child_process').exec
-const debug = require('debug')('codeceptjs:test')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+import path from 'path'
+import exec from 'child_process'
+import debug from 'debug'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} run --config ${codecept_dir}/codecept.beforetest.failure.js `

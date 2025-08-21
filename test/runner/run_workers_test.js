@@ -1,7 +1,10 @@
-const { expect } = require('expect')
-const path = require('path')
-const exec = require('child_process').exec
-const semver = require('semver')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import { expect  } from 'expect'
+import path from 'path'
+import exec from 'child_process'
+import semver from 'semver'
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -12,7 +15,6 @@ describe('CodeceptJS Workers Runner', function () {
   this.timeout(40000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data/sandbox')
   })
 
   it('should run tests in 3 workers', function (done) {
@@ -169,8 +171,10 @@ describe('CodeceptJS Workers Runner', function () {
   })
 
   it('should create output folder with custom name', function (done) {
-    const fs = require('fs')
+    import fs from 'fs'
     const customName = 'thisIsCustomOutputFolderName'
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
     const outputDir = `${codecept_dir}/${customName}`
     let createdOutput = false
 

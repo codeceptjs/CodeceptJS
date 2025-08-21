@@ -1,8 +1,6 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const parser = require('../../lib/parser')
+import chai from 'chai'
+const { expect } = chai
+import parser from '../../lib/parser.js'
 
 class Obj {
   method1(locator, sec) {}

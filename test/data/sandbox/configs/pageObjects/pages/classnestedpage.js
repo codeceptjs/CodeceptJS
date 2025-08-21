@@ -19,4 +19,4 @@ class PageObject extends Base {
   }
 }
 
-module.exports = new PageObject();
+export default new PageObject();

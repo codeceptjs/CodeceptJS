@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert'
 
 Feature('Fix for issue #5066: Unable to inject data between workers because of proxy object');
 

@@ -1,16 +1,13 @@
-const sinon = require('sinon')
+import sinon from 'sinon'
 
-const Step = require('../../lib/step')
-const { MetaStep } = require('../../lib/step')
-const event = require('../../lib/event')
-const { secret } = require('../../lib/secret')
+import Step from '../../lib/step.js'
+import { MetaStep  } from '../../lib/step.js'
+import event from '../../lib/event.js'
+import { secret  } from '../../lib/secret.js'
 
-let expect
+import chai from 'chai'
+const { expect } = chai
 
-import('chai').then(chai => {
-  expect = chai.expect
-  chai.use(require('chai-as-promised'))
-})
 
 let step
 let action

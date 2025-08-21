@@ -1,6 +1,6 @@
 let I;
 
-module.exports = {
+export default {
   _init() {
     I = actor();
     this.value = 'Logs Page Value';

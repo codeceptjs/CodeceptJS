@@ -1,25 +1,28 @@
-const chai = require('chai')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import chai from 'chai'
 
 const assert = chai.assert
 const expect = chai.expect
 
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
 
-const playwright = require('playwright')
+import playwright from 'playwright'
 
-const TestHelper = require('../support/TestHelper')
-const Playwright = require('../../lib/helper/Playwright')
+import TestHelper from '../support/TestHelper.js'
+import Playwright from '../../lib/helper/Playwright.js'
 
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const FileSystem = require('../../lib/helper/FileSystem')
-const { deleteDir } = require('../../lib/utils')
-const Secret = require('../../lib/secret')
+import AssertionFailedError from '../../lib/assert/error.js'
+import webApiTests from './webapi.js'
+import FileSystem from '../../lib/helper/FileSystem.js'
+import { deleteDir  } from '../../lib/utils.js'
+import Secret from '../../lib/secret.js'
 global.codeceptjs = require('../../lib')
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-const formContents = require('../../lib/utils').test.submittedData(dataFile)
+import formContents from '../../lib/utils.js'
 
 let I
 let page
@@ -31,7 +34,6 @@ describe('Playwright', function () {
   this.retries(1)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
       url: siteUrl,
@@ -1120,7 +1122,6 @@ describe('Playwright (remote browser) websocket', function () {
   }
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     I = new Playwright(helperConfig)
     I._init()
   })
@@ -1196,7 +1197,6 @@ describe('Playwright - BasicAuth', function () {
   this.timeout(35000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
       url: 'http://localhost:8000',
@@ -1240,9 +1240,10 @@ describe('Playwright - BasicAuth', function () {
 
 describe('Playwright - Emulation', () => {
   before(() => {
-    const { devices } = require('playwright')
-    global.codecept_dir = path.join(__dirname, '/../data')
+    import { devices  } from 'playwright'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
     I = new Playwright({
       url: 'http://localhost:8000',
       browser: 'chromium',
@@ -1280,7 +1281,6 @@ describe('Playwright - Emulation', () => {
 
 describe('Playwright - PERSISTENT', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
       url: 'http://localhost:8000',
@@ -1317,7 +1317,6 @@ describe('Playwright - PERSISTENT', () => {
 
 describe('Playwright - Electron', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
       waitForTimeout: 5000,
@@ -1391,7 +1390,6 @@ describe('Playwright - Electron', () => {
 
 describe('Playwright - Performance Metrics', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
     I = new Playwright({
@@ -1432,7 +1430,6 @@ describe('Playwright - Video & Trace & HAR', () => {
   const test = { title: 'a failed test', artifacts: {} }
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
     I = new Playwright({
@@ -1658,7 +1655,6 @@ describe('Playwright - Video & Trace & HAR', () => {
 })
 describe('Playwright - HAR', () => {
   before(() => {
-    global.codecept_dir = path.join(process.cwd())
 
     I = new Playwright({
       url: siteUrl,
@@ -1722,7 +1718,6 @@ describe('Playwright - HAR', () => {
 
 describe('using data-testid attribute', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
     I = new Playwright({

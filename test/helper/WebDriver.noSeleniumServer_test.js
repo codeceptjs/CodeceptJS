@@ -1,17 +1,22 @@
-const assert = require('assert')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-const chai = require('chai')
+import assert from 'assert'
+
+import chai from 'chai'
 
 const expect = chai.expect
 
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
 
-const TestHelper = require('../support/TestHelper')
-const WebDriver = require('../../lib/helper/WebDriver')
-const AssertionFailedError = require('../../lib/assert/error')
-const Secret = require('../../lib/secret')
+import TestHelper from '../support/TestHelper.js'
+import WebDriver from '../../lib/helper/WebDriver.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import Secret from '../../lib/secret.js'
 global.codeceptjs = require('../../lib')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 
 const siteUrl = TestHelper.siteUrl()
 let wd
@@ -21,7 +26,6 @@ describe('WebDriver - No Selenium server started', function () {
   this.timeout(35000)
 
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     try {
       fs.unlinkSync(dataFile)
     } catch (err) {
@@ -1241,7 +1245,6 @@ describe('WebDriver - No Selenium server started', function () {
 
 describe('WebDriver - Basic Authentication', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     try {
       fs.unlinkSync(dataFile)
     } catch (err) {

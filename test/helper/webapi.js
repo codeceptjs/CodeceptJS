@@ -1,17 +1,22 @@
-const chai = require('chai')
-const store = require('../../lib/store')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import chai from 'chai'
+import store from '../../lib/store.js'
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
+import path from 'path'
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-const formContents = require('../../lib/utils').test.submittedData(dataFile)
-const fileExists = require('../../lib/utils').fileExists
-const secret = require('../../lib/secret').secret
+import formContents from '../../lib/utils.js'
+import fileExists from '../../lib/utils.js'
+import secret from '../../lib/secret.js'
 
-const Locator = require('../../lib/locator')
-const customLocators = require('../../lib/plugin/customLocator')
+import Locator from '../../lib/locator.js'
+import customLocators from '../../lib/plugin/customLocator.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 let originalLocators
 let I
 let data
@@ -32,7 +37,6 @@ module.exports.tests = function () {
 
   describe('#saveElementScreenshot', () => {
     beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
     it('should create a screenshot file in output dir of element', async () => {
@@ -868,7 +872,6 @@ module.exports.tests = function () {
 
   describe('#saveScreenshot', () => {
     beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
     it('should create a screenshot file in output dir', async () => {

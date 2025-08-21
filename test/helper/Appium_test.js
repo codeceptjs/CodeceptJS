@@ -1,13 +1,18 @@
-const chai = require('chai')
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+import chai from 'chai'
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
+import path from 'path'
 
-const Appium = require('../../lib/helper/Appium')
-const AssertionFailedError = require('../../lib/assert/error')
-const fileExists = require('../../lib/utils').fileExists
+import Appium from '../../lib/helper/Appium.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import fileExists from '../../lib/utils.js'
 global.codeceptjs = require('../../lib')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+global.codecept_dir = path.join(__dirname, '/..')
 
 let app
 const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk'
@@ -18,7 +23,6 @@ describe('Appium', function () {
   this.timeout(0)
 
   before(async () => {
-    global.codecept_dir = path.join(__dirname, '/../data')
     app = new Appium({
       app: apk_path,
       desiredCapabilities: {
@@ -567,7 +571,6 @@ describe('Appium', function () {
 
   describe('#saveScreenshot @quick', () => {
     beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
     it('should create a screenshot file in output dir', async () => {

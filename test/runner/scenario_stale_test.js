@@ -1,7 +1,11 @@
-const { expect } = require('expect')
-const path = require('path')
-const { exec } = require('child_process')
+import path from 'path'
+import { fileURLToPath } from 'url'
 
+import { expect  } from 'expect'
+import path from 'path'
+import { exec  } from 'child_process'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} run`
