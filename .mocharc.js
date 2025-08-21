@@ -1,3 +1,4 @@
 export default {
-  "require": "./test/support/setup.js"
+  "timeout": 10000,
+  "recursive": true
 }

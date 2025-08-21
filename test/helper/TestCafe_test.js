@@ -6,7 +6,8 @@ import assert from 'assert'
 import TestHelper from '../support/TestHelper.js'
 import TestCafe from '../../lib/helper/TestCafe.js'
 import webApiTests from './webapi.js'
-global.codeceptjs = require('../../lib')
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
 
@@ -19,7 +20,7 @@ describe('TestCafe', function () {
 
   before(() => {
     global.output_dir = path.join(__dirname, '/../data/output')
-    global.codeceptjs = require('../../lib/index')
+    global.codeceptjs = codeceptjs
 
     I = new TestCafe({
       url: siteUrl,

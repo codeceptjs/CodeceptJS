@@ -5,7 +5,7 @@ import fs from 'fs'
 
 import chai from 'chai'
 const { expect } = chai
-import cheerio from 'cheerio'
+import * as cheerio from 'cheerio'
 import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks  } from '../../lib/html.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
