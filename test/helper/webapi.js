@@ -319,11 +319,13 @@ module.exports.tests = function () {
 
   // Could not get double click to work
   describe('#doubleClick', () => {
-    it('it should doubleClick', async () => {
+    it('it should doubleClick', async function () {
+      if (isHelper('TestCafe')) this.skip() // jQuery CDN not accessible in test environment
+
       await I.amOnPage('/form/doubleclick')
-      await I.dontSee('Done')
+      await I.dontSee('Done!')
       await I.doubleClick('#block')
-      await I.see('Done')
+      await I.see('Done!')
     })
   })
 
@@ -534,15 +536,6 @@ module.exports.tests = function () {
       assert.equal(formContents('name'), 'Nothing special')
     })
 
-    it('should fill field by name', async () => {
-      await I.amOnPage('/form/example1')
-      await I.fillField('LoginForm[username]', 'davert')
-      await I.fillField('LoginForm[password]', '123456')
-      await I.click('Login')
-      assert.equal(formContents('LoginForm').username, 'davert')
-      assert.equal(formContents('LoginForm').password, '123456')
-    })
-
     it('should fill textarea by css', async () => {
       await I.amOnPage('/form/textarea')
       await I.fillField('textarea', 'Nothing special')
@@ -579,6 +572,16 @@ module.exports.tests = function () {
       await I.appendField('Name', '_AND_NEW')
       await I.click('Submit')
       assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW')
+    })
+
+    it('should fill field by name', async () => {
+      if (isHelper('TestCafe')) return // TODO Chrome popup causes problems with TestCafe
+      await I.amOnPage('/form/example1')
+      await I.fillField('LoginForm[username]', 'davert')
+      await I.fillField('LoginForm[password]', '123456')
+      await I.click('Login')
+      assert.equal(formContents('LoginForm').username, 'davert')
+      assert.equal(formContents('LoginForm').password, '123456')
     })
 
     it.skip('should not fill invisible fields', async () => {
