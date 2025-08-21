@@ -1,11 +1,11 @@
 import { expect  } from 'expect'
 import chai from 'chai'
-import exec from 'child_process'
+import { exec } from 'child_process'
 import { codecept_dir, codecept_run  } from './consts.js'
 import debug from 'debug'
 import fs from 'fs'
 import path from 'path'
-const { expect } = chai
+const { expect: chaiExpect } = chai
 
 const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose ? '--verbose' : ''} --config ${codecept_dir}/configs/custom-reporter-plugin/${config} ${grep ? `--grep "${grep}"` : ''}`
 

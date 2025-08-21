@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url'
 import { DOWN, ENTER  } from 'inquirer-test'
 import run from 'inquirer-test'
 import fs from 'fs'
-import mkdirp from 'mkdirp'
+import { mkdirp } from 'mkdirp'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '../../bin/codecept.js')

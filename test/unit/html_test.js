@@ -6,6 +6,7 @@ import * as cheerio from 'cheerio'
 import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks  } from '../../lib/html.js'
 
 const { expect } = chai
+chai.should()
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],

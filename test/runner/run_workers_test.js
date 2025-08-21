@@ -1,12 +1,13 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
+const { expect: chaiExpect } = chai
 
 import { expect  } from 'expect'
-import exec from 'child_process'
+import { exec } from 'child_process'
 import semver from 'semver'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
 const codecept_run = `${runner} run-workers --config ${codecept_dir}/codecept.workers.conf.js `
@@ -173,7 +174,6 @@ describe('CodeceptJS Workers Runner', function () {
 
   it('should create output folder with custom name', function (done) {
     const customName = 'thisIsCustomOutputFolderName'
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
     const outputDir = `${codecept_dir}/${customName}`
     let createdOutput = false

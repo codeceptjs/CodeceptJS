@@ -7,6 +7,7 @@ import { exec, execSync  } from 'child_process'
 
 import { Project, StructureKind, ts  } from 'ts-morph'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/definitions')
 const pathToRootOfProject = path.join(__dirname, '../../')
@@ -14,11 +15,6 @@ const pathOfStaticDefinitions = path.join(pathToRootOfProject, 'typings/index.d.
 const pathOfJSDocDefinitions = path.join(pathToRootOfProject, 'typings/types.d.ts')
 const pathToTests = path.resolve(pathToRootOfProject, 'test')
 const pathToTypings = path.resolve(pathToRootOfProject, 'typings')
-
-      if (diagnostics.length > 0) throw new Error(project.formatDiagnosticsWithColorAndContext(diagnostics))
-    })
-  })
-})
 
 describe('Definitions', function () {
   this.timeout(30000)
@@ -250,7 +246,6 @@ describe('Definitions', function () {
  */
 function resolutionHost(moduleResolutionHost, getCompilerOptions) {
   return {
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
     resolveTypeReferenceDirectives: (typeDirectiveNames, containingFile) => {
       const compilerOptions = getCompilerOptions()
       const resolvedTypeReferenceDirectives = []

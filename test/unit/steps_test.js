@@ -8,6 +8,9 @@ import chai from 'chai'
 const { expect } = chai
 let step
 let action
+let asyncAction
+let asyncMetaStep
+let asyncFn
 
 describe('Steps', () => {
   describe('Step', () => {

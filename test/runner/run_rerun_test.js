@@ -1,11 +1,11 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
+const { expect: chaiExpect } = chai
 
 import { expect  } from 'expect'
 import { describe  } from 'mocha'
-import exec from 'child_process'
+import { exec } from 'child_process'
 import semver from 'semver'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

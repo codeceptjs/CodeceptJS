@@ -1,14 +1,14 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
-
-import exec from 'child_process'
+import { exec } from 'child_process'
 import { expect  } from 'expect'
 import figures from 'figures'
 import debug from 'debug'
-const runner = path.join(__dirname, '/../../bin/codecept.js')
+
+const { expect: chaiExpect } = chai
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/pageObjects')
 const codecept_run = `${runner} run`
 const config_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep "${grep}"` : ''}`

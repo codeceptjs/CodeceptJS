@@ -1,9 +1,9 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
+const { expect: chaiExpect } = chai
 
-import exec from 'child_process'
+import { exec } from 'child_process'
 import { expect  } from 'expect'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

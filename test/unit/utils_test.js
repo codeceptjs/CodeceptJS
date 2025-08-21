@@ -2,11 +2,14 @@ import chai from 'chai'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
 import sinon from 'sinon'
 import * as utils from '../../lib/utils.js'
 
 const { expect } = chai
+chai.should()
 const __filename = fileURLToPath(import.meta.url)
+const require = createRequire(import.meta.url)
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -46,7 +49,7 @@ describe('utils', () => {
 
   describe('#beautify', () => {
     it('should beautify JS code', () => {
-      expect(utils.beautify('export default function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {
+      expect(utils.beautify('export default function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`export default function(a, b) {
   a++;
   b = a;
   if (a == b) {
@@ -329,12 +332,18 @@ describe('utils', () => {
   })
 
   describe('#requireWithFallback', () => {
-    it('returns the fallback package', () => {
-      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(require('playwright'))
+    it('returns the fallback package', async () => {
+      const result = await utils.requireWithFallback('unexisting-package', 'playwright')
+      expect(result).to.deep.equal(require('playwright'))
     })
 
-    it('returns provide default require not found message', () => {
-      expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2')).to.throw(Error, 'Cannot find modules unexisting-package,unexisting-package2')
+    it('returns provide default require not found message', async () => {
+      try {
+        await utils.requireWithFallback('unexisting-package', 'unexisting-package2')
+        expect.fail('Should have thrown an error')
+      } catch (error) {
+        expect(error.message).to.include('Cannot find modules unexisting-package,unexisting-package2')
+      }
     })
   })
 })

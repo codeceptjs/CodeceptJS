@@ -1,7 +1,7 @@
 import path from 'path'
 import chai from 'chai'
 import { fileURLToPath } from 'url'
-const { expect } = chai
+const { expect: chaiExpect } = chai
 
 import { expect  } from 'expect'
 import { exec  } from 'child_process'
