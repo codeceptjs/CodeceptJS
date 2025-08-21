@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('Container', () => {
   before(() => {
+    global.codecept_dir = path.join(__dirname, '/..')
     global.inject = container.support
     global.actor = actor
   })
@@ -150,7 +151,7 @@ describe('Container', () => {
   })
 
   describe('#create', () => {
-    it('should create container with helpers', () => {
+    it('should create container with helpers', async () => {
       const config = {
         helpers: {
           MyHelper: {
@@ -159,7 +160,7 @@ describe('Container', () => {
           FileSystem: {},
         },
       }
-      container.create(config)
+      await container.create(config)
       // custom helpers
       expect(container.helpers('MyHelper')).is.ok
       expect(container.helpers('MyHelper').method()).to.eql('hello world')
@@ -196,8 +197,8 @@ describe('Container', () => {
       expect(Object.keys(container.support('I'))).to.include('doSomething')
     })
 
-    it('should load DI includes provided as require paths', () => {
-      container.create({
+    it('should load DI includes provided as require paths', async () => {
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
         },
@@ -207,7 +208,7 @@ describe('Container', () => {
     })
 
     it('should load DI and inject I into PO', async () => {
-      container.create({
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
           I: './data/I',
@@ -219,8 +220,8 @@ describe('Container', () => {
       expect(container.support('dummyPage').getI()).to.have.keys('_init', 'doSomething')
     })
 
-    it('should load DI and inject custom I into PO', () => {
-      container.create({
+    it('should load DI and inject custom I into PO', async () => {
+      await container.create({
         include: {
           dummyPage: './data/dummy_page',
           I: './data/I',
@@ -231,8 +232,8 @@ describe('Container', () => {
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
     })
 
-    it('should load DI includes provided as objects', () => {
-      container.create({
+    it('should load DI includes provided as objects', async () => {
+      await container.create({
         include: {
           dummyPage: {
             openDummyPage: () => 'dummy page opened',
@@ -243,8 +244,8 @@ describe('Container', () => {
       expect(container.support('dummyPage')).to.include.keys('openDummyPage')
     })
 
-    it('should load DI includes provided as objects', () => {
-      container.create({
+    it('should load DI includes provided as objects', async () => {
+      await container.create({
         include: {
           dummyPage: {
             openDummyPage: () => 'dummy page opened',
@@ -257,14 +258,14 @@ describe('Container', () => {
   })
 
   describe('#append', () => {
-    it('should be able to add new helper', () => {
+    it('should be able to add new helper', async () => {
       const config = {
         helpers: {
           FileSystem: {},
         },
       }
-      container.create(config)
-      container.append({
+      await container.create(config)
+      await container.append({
         helpers: {
           AnotherHelper: { method: () => 'executed' },
         },
@@ -276,9 +277,9 @@ describe('Container', () => {
       expect(container.helpers('AnotherHelper').method()).is.eql('executed')
     })
 
-    it('should be able to add new support object', () => {
-      container.create({})
-      container.append({ support: { userPage: { login: '#login' } } })
+    it('should be able to add new support object', async () => {
+      await container.create({})
+      await container.append({ support: { userPage: { login: '#login' } } })
       expect(container.support('I')).is.ok
       expect(container.support('userPage')).is.ok
       expect(container.support('userPage').login).is.eql('#login')

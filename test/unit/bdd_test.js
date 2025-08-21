@@ -6,7 +6,10 @@ import chai from 'chai'
 import recorder from '../../lib/recorder.js'
 import container from '../../lib/container.js'
 import Config from '../../lib/config.js'
-import { clearSteps, Given, When, Then, And, matchStep } from '../../lib/mocha/bdd.js'
+import { clearSteps, Given, When, Then, And, matchStep, defineParameterType } from '../../lib/mocha/bdd.js'
+import run from '../../lib/mocha/gherkin.js'
+import actor from '../../lib/actor.js'
+import event from '../../lib/event.js'
 
 const { expect } = chai
 const uuidFn = Messages.IdGenerator.uuid()
@@ -16,6 +19,9 @@ const matcher = new Gherkin.GherkinClassicTokenMatcher()
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
+
+let printed = []
+let I
 
 class Color {
   constructor(name) {
