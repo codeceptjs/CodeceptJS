@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-const program = require('commander')
-const Codecept = require('../lib/codecept')
-const { print, error } = require('../lib/output')
-const { printError } = require('../lib/command/utils')
+import { program } from 'commander'
+import Codecept from '../lib/codecept.js'
+import { print, error } from '../lib/output.js'
+import { printError } from '../lib/command/utils.js'
 
 const commandFlags = {
   ai: {
@@ -56,19 +56,28 @@ program.version(Codecept.version())
 program
   .command('init [path]')
   .description('Creates dummy config in current dir or [path]')
-  .action(errorHandler(require('../lib/command/init')))
+  .action(errorHandler(async (...args) => {
+    const { default: initCmd } = await import('../lib/command/init.js')
+    return initCmd(...args)
+  }))
 
 program
   .command('check')
   .option(commandFlags.config.flag, commandFlags.config.description)
   .description('Checks configuration and environment before running tests')
   .option('-t, --timeout [ms]', 'timeout for checks in ms, 50000 by default')
-  .action(errorHandler(require('../lib/command/check')))
+  .action(errorHandler(async (...args) => {
+    const { default: checkCmd } = await import('../lib/command/check.js')
+    return checkCmd(...args)
+  }))
 
 program
   .command('migrate [path]')
   .description('Migrate json config to js config in current dir or [path]')
-  .action(errorHandler(require('../lib/command/configMigrate')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/configMigrate.js')
+    return cmd(...args)
+  }))
 
 program
   .command('shell [path]')
@@ -78,34 +87,49 @@ program
   .option(commandFlags.profile.flag, commandFlags.profile.description)
   .option(commandFlags.ai.flag, commandFlags.ai.description)
   .option(commandFlags.config.flag, commandFlags.config.description)
-  .action(errorHandler(require('../lib/command/interactive')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/interactive.js')
+    return cmd(...args)
+  }))
 
 program
   .command('list [path]')
   .alias('l')
   .description('List all actions for I.')
-  .action(errorHandler(require('../lib/command/list')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/list.js')
+    return cmd(...args)
+  }))
 
 program
   .command('def [path]')
   .description('Generates TypeScript definitions for all I actions.')
   .option(commandFlags.config.flag, commandFlags.config.description)
   .option('-o, --output [folder]', 'target folder to paste definitions')
-  .action(errorHandler(require('../lib/command/definitions')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/definitions.js')
+    return cmd(...args)
+  }))
 
 program
   .command('gherkin:init [path]')
   .alias('bdd:init')
   .description('Prepare CodeceptJS to run feature files.')
   .option(commandFlags.config.flag, commandFlags.config.description)
-  .action(errorHandler(require('../lib/command/gherkin/init')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/gherkin/init.js')
+    return cmd(...args)
+  }))
 
 program
   .command('gherkin:steps [path]')
   .alias('bdd:steps')
   .description('Prints all defined gherkin steps.')
   .option(commandFlags.config.flag, commandFlags.config.description)
-  .action(errorHandler(require('../lib/command/gherkin/steps')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/gherkin/steps.js')
+    return cmd(...args)
+  }))
 
 program
   .command('gherkin:snippets [path]')
@@ -115,38 +139,56 @@ program
   .option(commandFlags.config.flag, commandFlags.config.description)
   .option('--feature [file]', 'feature files(s) to scan')
   .option('--path [file]', 'file in which to place the new snippets')
-  .action(errorHandler(require('../lib/command/gherkin/snippets')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/gherkin/snippets.js')
+    return cmd(...args)
+  }))
 
 program
   .command('generate:test [path]')
   .alias('gt')
   .description('Generates an empty test')
-  .action(errorHandler(require('../lib/command/generate').test))
+  .action(errorHandler(async (...args) => {
+    const { test } = await import('../lib/command/generate.js')
+    return test(...args)
+  }))
 
 program
   .command('generate:pageobject [path]')
   .alias('gpo')
   .description('Generates an empty page object')
-  .action(errorHandler(require('../lib/command/generate').pageObject))
+  .action(errorHandler(async (...args) => {
+    const { pageObject } = await import('../lib/command/generate.js')
+    return pageObject(...args)
+  }))
 
 program
   .command('generate:object [path]')
   .alias('go')
   .option('--type, -t [kind]', 'type of object to be created')
   .description('Generates an empty support object (page/step/fragment)')
-  .action(errorHandler(require('../lib/command/generate').pageObject))
+  .action(errorHandler(async (...args) => {
+    const { pageObject } = await import('../lib/command/generate.js')
+    return pageObject(...args)
+  }))
 
 program
   .command('generate:helper [path]')
   .alias('gh')
   .description('Generates a new helper')
-  .action(errorHandler(require('../lib/command/generate').helper))
+  .action(errorHandler(async (...args) => {
+    const { helper } = await import('../lib/command/generate.js')
+    return helper(...args)
+  }))
 
 program
   .command('generate:heal [path]')
   .alias('gr')
   .description('Generates basic heal recipes')
-  .action(errorHandler(require('../lib/command/generate').heal))
+  .action(errorHandler(async (...args) => {
+    const { heal } = await import('../lib/command/generate.js')
+    return heal(...args)
+  }))
 
 program
   .command('run [test]')
@@ -186,7 +228,10 @@ program
   .option('--recursive', 'include sub directories')
   .option('--trace', 'trace function calls')
   .option('--child <string>', 'option for child processes')
-  .action(errorHandler(require('../lib/command/run')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/run.js')
+    return cmd(...args)
+  }))
 
 program
   .command('run-workers <workers> [selectedRuns...]')
@@ -205,7 +250,10 @@ program
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
-  .action(errorHandler(require('../lib/command/run-workers')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/run-workers.js')
+    return cmd(...args)
+  }))
 
 program
   .command('run-multiple [suites...]')
@@ -231,13 +279,19 @@ program
   // mocha options
   .option('--colors', 'force enabling of colors')
 
-  .action(errorHandler(require('../lib/command/run-multiple')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/run-multiple.js')
+    return cmd(...args)
+  }))
 
 program
   .command('info [path]')
   .description('Print debugging information concerning the local environment')
   .option('-c, --config', 'your config file path')
-  .action(errorHandler(require('../lib/command/info')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/info.js')
+    return cmd(...args)
+  }))
 
 program
   .command('dry-run [test]')
@@ -254,7 +308,10 @@ program
   .option(commandFlags.steps.flag, commandFlags.steps.description)
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option(commandFlags.debug.flag, commandFlags.debug.description)
-  .action(errorHandler(require('../lib/command/dryRun')))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/dryRun.js')
+    return cmd(...args)
+  }))
 
 program
   .command('run-rerun [test]')
@@ -292,7 +349,10 @@ program
   .option('--trace', 'trace function calls')
   .option('--child <string>', 'option for child processes')
 
-  .action(require('../lib/command/run-rerun'))
+  .action(errorHandler(async (...args) => {
+    const { default: cmd } = await import('../lib/command/run-rerun.js')
+    return cmd(...args)
+  }))
 
 program.on('command:*', cmd => {
   console.log(`\nUnknown command ${cmd}\n`)
