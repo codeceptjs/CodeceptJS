@@ -5,12 +5,10 @@ const { expect } = chai
 
 
 
-import FileSystem from '../../../lib/helper/FileSystem.js'
+import FileSystem from '../../lib/helper/FileSystem.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 global.codecept_dir = path.join(__dirname, '/..')
-import * as codeceptjs from '../../../lib/index.js'
-global.codeceptjs = codeceptjs
 
 let fs
 

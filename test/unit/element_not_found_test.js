@@ -1,5 +1,5 @@
 
-import ElementNotFound from '../../../lib/helper/errors/ElementNotFound.js'
+import ElementNotFound from '../../lib/helper/errors/ElementNotFound.js'
 import chai from 'chai'
 const { expect } = chai
 
