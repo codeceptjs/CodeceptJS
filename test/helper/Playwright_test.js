@@ -800,6 +800,40 @@ describe('Playwright', function () {
         assert.ok(error.message.includes('was not found on page after'), `Expected error message about text not found, got: ${error.message}`)
       }
     })
+
+    it('should return quickly when text is found', async function () {
+      this.timeout(5000)
+
+      const startTime = Date.now()
+
+      await I.amOnPage('/')
+      await I.waitForText('TestEd', 10) // This text should exist on the test page
+
+      const elapsedTime = Date.now() - startTime
+      // Should find text quickly, within 2 seconds
+      assert.ok(elapsedTime < 2000, `Expected to find text quickly but took ${elapsedTime}ms`)
+    })
+
+    it('should work correctly with context parameter and proper timeout', async function () {
+      this.timeout(8000)
+
+      const startTime = Date.now()
+      const timeoutSeconds = 2
+
+      try {
+        await I.amOnPage('/')
+        await I.waitForText('NonExistentTextInBody', timeoutSeconds, 'body')
+        throw new Error('Should have thrown timeout error')
+      } catch (error) {
+        const elapsedTime = Date.now() - startTime
+        const expectedTimeout = timeoutSeconds * 1000
+
+        // Verify proper timeout behavior with context
+        assert.ok(elapsedTime >= expectedTimeout - 500, `Expected to wait at least ${expectedTimeout - 500}ms, but waited ${elapsedTime}ms`)
+        assert.ok(elapsedTime <= expectedTimeout + 1000, `Expected to wait at most ${expectedTimeout + 1000}ms, but waited ${elapsedTime}ms`)
+        assert.ok(error.message.includes('was not found on page after'), `Expected timeout error message, got: ${error.message}`)
+      }
+    })
   })
 
   describe('#grabHTMLFrom', () => {
