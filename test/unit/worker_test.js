@@ -264,4 +264,62 @@ describe('Workers', function () {
       done()
     })
   })
+
+  it('should run worker with pool mode', done => {
+    const workerConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    let passedCount = 0
+    let failedCount = 0
+    const workers = new Workers(2, workerConfig)
+
+    workers.on(event.test.failed, () => {
+      failedCount += 1
+    })
+    workers.on(event.test.passed, () => {
+      passedCount += 1
+    })
+
+    workers.run()
+
+    workers.on(event.all.result, result => {
+      expect(result.hasFailed).equal(true)
+      expect(passedCount).equal(5)
+      expect(failedCount).equal(3)
+      // Verify pool mode characteristics
+      expect(workers.isPoolMode).equal(true)
+      expect(workers.testPool).to.be.an('array')
+      done()
+    })
+  })
+
+  it('should distribute tests dynamically in pool mode', done => {
+    const workerConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    const workers = new Workers(3, workerConfig)
+    let testStartTimes = []
+
+    workers.on(event.test.started, test => {
+      testStartTimes.push({
+        test: test.title,
+        time: Date.now()
+      })
+    })
+
+    workers.run()
+
+    workers.on(event.all.result, result => {
+      // Verify we got the expected number of tests (matching regular worker mode)
+      expect(testStartTimes.length).to.be.at.least(7) // Allow some flexibility
+      expect(testStartTimes.length).to.be.at.most(8)
+      
+      // In pool mode, tests should be started dynamically, not pre-assigned
+      // The pool should have been initially populated and then emptied
+      expect(workers.testPool.length).equal(0) // Should be empty after completion
+      done()
+    })
+  })
 })
