@@ -333,4 +333,39 @@ describe('Workers', function () {
     expect('pool').not.equal('test')
     expect('pool').not.equal('suite')
   })
+
+  it('should handle pool mode result accumulation correctly', (done) => {
+    const workerConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    
+    let resultEventCount = 0
+    const workers = new Workers(2, workerConfig)
+
+    // Mock Container.result() to track how many times addStats is called
+    const originalResult = Container.result()
+    const mockStats = { passes: 0, failures: 0, tests: 0 }
+    const originalAddStats = originalResult.addStats.bind(originalResult)
+    
+    originalResult.addStats = (newStats) => {
+      resultEventCount++
+      mockStats.passes += newStats.passes || 0
+      mockStats.failures += newStats.failures || 0  
+      mockStats.tests += newStats.tests || 0
+      return originalAddStats(newStats)
+    }
+
+    workers.on(event.all.result, (result) => {
+      // In pool mode, we should receive consolidated results, not individual test results
+      // The number of result events should be limited (one per worker, not per test)
+      expect(resultEventCount).to.be.lessThan(10) // Should be much less than total number of tests
+      
+      // Restore original method
+      originalResult.addStats = originalAddStats
+      done()
+    })
+
+    workers.run()
+  })
 })
