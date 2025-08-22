@@ -3,11 +3,12 @@ const { config } = require('../acceptance/codecept.Playwright')
 // Extend the base Playwright configuration to add custom locator strategies
 const customLocatorConfig = {
   ...config,
+  grep: null, // Remove grep filter to run custom locator tests
   helpers: {
     ...config.helpers,
     Playwright: {
       ...config.helpers.Playwright,
-      browser: process.env.BROWSER || 'chrome',
+      browser: process.env.BROWSER || 'chromium',
       customLocatorStrategies: {
         byRole: (selector, root) => {
           return root.querySelector(`[role="${selector}"]`)
