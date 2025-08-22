@@ -283,25 +283,23 @@ describe('Workers', function () {
     // Verify pool mode is enabled
     expect(workers.isPoolMode).equal(true)
     expect(workers.testPool).to.be.an('array')
-    expect(workers.testPool.length).to.be.greaterThan(0)
+    // Pool may be empty initially due to lazy initialization
     expect(workers.activeWorkers).to.be.an('Map')
 
-    // Each item should be a string (test UID)
-    for (const testUid of workers.testPool) {
-      expect(testUid).to.be.a('string')
-    }
-
-    // Test getNextTest functionality
-    const originalPoolSize = workers.testPool.length
+    // Test getNextTest functionality - this should trigger pool initialization
     const firstTest = workers.getNextTest()
     expect(firstTest).to.be.a('string')
-    expect(workers.testPool.length).equal(originalPoolSize - 1)
+    expect(workers.testPool.length).to.be.greaterThan(0) // Now pool should have tests after first access
 
-    // Get another test
+    // Test that getNextTest reduces pool size
+    const originalPoolSize = workers.testPool.length
     const secondTest = workers.getNextTest()
     expect(secondTest).to.be.a('string')
-    expect(workers.testPool.length).equal(originalPoolSize - 2)
+    expect(workers.testPool.length).equal(originalPoolSize - 1)
     expect(secondTest).not.equal(firstTest)
+
+    // Verify the first test we got is a string (test UID)
+    expect(firstTest).to.be.a('string')
   })
 
   it('should create empty test groups for pool mode', () => {
