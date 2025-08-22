@@ -778,6 +778,30 @@ describe('Playwright', function () {
         .then(() => I.seeInField('#text2', 'London')))
   })
 
+  describe('#waitForText timeout fix', () => {
+    it('should wait for the full timeout duration when text is not found', async function () {
+      this.timeout(10000) // Allow up to 10 seconds for this test
+
+      const startTime = Date.now()
+      const timeoutSeconds = 3 // 3 second timeout
+
+      try {
+        await I.amOnPage('/')
+        await I.waitForText('ThisTextDoesNotExistAnywhere12345', timeoutSeconds)
+        // Should not reach here
+        throw new Error('waitForText should have thrown an error')
+      } catch (error) {
+        const elapsedTime = Date.now() - startTime
+        const expectedTimeout = timeoutSeconds * 1000
+
+        // Verify it waited close to the full timeout (allow 500ms tolerance)
+        assert.ok(elapsedTime >= expectedTimeout - 500, `Expected to wait at least ${expectedTimeout - 500}ms, but waited ${elapsedTime}ms`)
+        assert.ok(elapsedTime <= expectedTimeout + 1000, `Expected to wait at most ${expectedTimeout + 1000}ms, but waited ${elapsedTime}ms`)
+        assert.ok(error.message.includes('was not found on page after'), `Expected error message about text not found, got: ${error.message}`)
+      }
+    })
+  })
+
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () =>
       I.amOnPage('/')
