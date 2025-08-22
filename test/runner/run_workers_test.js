@@ -202,4 +202,78 @@ describe('CodeceptJS Workers Runner', function () {
       done()
     })
   })
+
+  it('should run tests with pool mode', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 2 --by pool`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 2 workers')
+      expect(stdout).toContain('glob current dir')
+      expect(stdout).toContain('From worker @1_grep print message 1')
+      expect(stdout).toContain('From worker @2_grep print message 2')
+      expect(stdout).not.toContain('this is running inside worker')
+      expect(stdout).toContain('failed')
+      expect(stdout).toContain('File notafile not found')
+      expect(stdout).toContain('Scenario Steps:')
+      expect(err.code).toEqual(1)
+      done()
+    })
+  })
+
+  it('should run tests with pool mode and grep', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 2 --by pool --grep "grep"`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).not.toContain('glob current dir')
+      expect(stdout).toContain('From worker @1_grep print message 1')
+      expect(stdout).toContain('From worker @2_grep print message 2')
+      expect(stdout).toContain('Running tests in 2 workers')
+      expect(stdout).not.toContain('this is running inside worker')
+      expect(stdout).not.toContain('failed')
+      expect(stdout).not.toContain('File notafile not found')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should run tests with pool mode in debug mode', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 1 --by pool --grep "grep" --debug`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 1 workers')
+      expect(stdout).toContain('bootstrap b1+b2')
+      expect(stdout).toContain('message 1')
+      expect(stdout).toContain('message 2')
+      expect(stdout).toContain('see this is worker')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should handle pool mode with single worker', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 1 --by pool`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 1 workers')
+      expect(stdout).toContain('glob current dir')
+      expect(stdout).toContain('failed')
+      expect(stdout).toContain('File notafile not found')
+      expect(err.code).toEqual(1)
+      done()
+    })
+  })
+
+  it('should handle pool mode with multiple workers', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 3 --by pool`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 3 workers')
+      expect(stdout).toContain('glob current dir')
+      expect(stdout).toContain('failed')
+      expect(stdout).toContain('File notafile not found')
+      expect(stdout).toContain('5 passed, 2 failed, 1 failedHooks')
+      expect(err.code).toEqual(1)
+      done()
+    })
+  })
 })
