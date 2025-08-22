@@ -196,7 +196,7 @@ program
   .option('-i, --invert', 'inverts --grep matches')
   .option('-o, --override [value]', 'override current config options')
   .option('--suites', 'parallel execution of suites not single tests')
-  .option('--by <strategy>', 'split tests by "test", "suite", or "pool" (default: test)')
+  .option('--by <strategy>', 'test distribution strategy: "test" (pre-assign individual tests), "suite" (pre-assign test suites), or "pool" (dynamic distribution for optimal load balancing, recommended)')
   .option(commandFlags.debug.flag, commandFlags.debug.description)
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option('--features', 'run only *.feature files and skip tests')

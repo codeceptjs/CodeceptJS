@@ -32,6 +32,88 @@ By default, the tests are assigned one by one to the available workers this may 
 npx codeceptjs run-workers --suites 2
 ```
 
+### Test Distribution Strategies
+
+CodeceptJS supports three different strategies for distributing tests across workers:
+
+#### Default Strategy (`--by test`)
+Tests are pre-assigned to workers at startup, distributing them evenly across all workers. Each worker gets a predetermined set of tests to run.
+
+```sh
+npx codeceptjs run-workers 3 --by test
+```
+
+#### Suite Strategy (`--by suite`)
+Test suites are pre-assigned to workers, with all tests in a suite running on the same worker. This ensures better test isolation but may lead to uneven load distribution.
+
+```sh
+npx codeceptjs run-workers 3 --by suite
+```
+
+#### Pool Strategy (`--by pool`) - **Recommended for optimal performance**
+Tests are maintained in a shared pool and distributed dynamically to workers as they become available. This provides the best load balancing and resource utilization.
+
+```sh
+npx codeceptjs run-workers 3 --by pool
+```
+
+## Dynamic Test Pooling Mode
+
+The pool mode enables dynamic test distribution for improved worker load balancing. Instead of pre-assigning tests to workers at startup, tests are stored in a shared pool and distributed on-demand as workers become available.
+
+### Benefits of Pool Mode
+
+* **Better load balancing**: Workers never sit idle while others are still running long tests
+* **Improved performance**: Especially beneficial when tests have varying execution times
+* **Optimal resource utilization**: All CPU cores stay busy until the entire test suite is complete
+* **Automatic scaling**: Workers continuously process tests until the pool is empty
+
+### When to Use Pool Mode
+
+Pool mode is particularly effective in these scenarios:
+
+* **Uneven test execution times**: When some tests take significantly longer than others
+* **Large test suites**: With hundreds or thousands of tests where load balancing matters
+* **Mixed test types**: When combining unit tests, integration tests, and end-to-end tests
+* **CI/CD pipelines**: For consistent and predictable test execution times
+
+### Usage Examples
+
+```bash
+# Basic pool mode with 4 workers
+npx codeceptjs run-workers 4 --by pool
+
+# Pool mode with grep filtering
+npx codeceptjs run-workers 3 --by pool --grep "@smoke"
+
+# Pool mode in debug mode  
+npx codeceptjs run-workers 2 --by pool --debug
+
+# Pool mode with specific configuration
+npx codeceptjs run-workers 3 --by pool -c codecept.conf.js
+```
+
+### How Pool Mode Works
+
+1. **Pool Creation**: All tests are collected into a shared pool of test identifiers
+2. **Worker Initialization**: The specified number of workers are spawned
+3. **Dynamic Assignment**: Workers request tests from the pool when they're ready
+4. **Continuous Processing**: Each worker runs one test, then immediately requests the next
+5. **Automatic Completion**: Workers exit when the pool is empty and no more tests remain
+
+### Performance Comparison
+
+```bash
+# Traditional mode - tests pre-assigned, some workers may finish early
+npx codeceptjs run-workers 3 --by test   # ✓ Good for uniform test times
+
+# Suite mode - entire suites assigned to workers  
+npx codeceptjs run-workers 3 --by suite  # ✓ Good for test isolation
+
+# Pool mode - tests distributed dynamically
+npx codeceptjs run-workers 3 --by pool   # ✓ Best for mixed test execution times
+```
+
 ## Test stats with Parallel Execution by Workers
 
 ```js
