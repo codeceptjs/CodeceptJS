@@ -7,6 +7,7 @@ const customLocatorConfig = {
     ...config.helpers,
     Playwright: {
       ...config.helpers.Playwright,
+      browser: process.env.BROWSER || 'chrome',
       customLocatorStrategies: {
         byRole: (selector, root) => {
           return root.querySelector(`[role="${selector}"]`)

@@ -1,6 +1,8 @@
+const { I } = inject()
+
 Feature('Custom Locator Strategies - @Playwright')
 
-Before(I => {
+Before(() => {
   // Create test HTML with various attributes for custom locator testing
   I.amOnPage('/form/empty')
   I.executeScript(() => {
@@ -71,7 +73,7 @@ Before(I => {
   })
 })
 
-Scenario('should find elements using byRole custom locator', I => {
+Scenario('should find elements using byRole custom locator', ({ I }) => {
   I.see('Custom Locator Test Page', { byRole: 'main' })
   I.seeElement({ byRole: 'form' })
   I.seeElement({ byRole: 'button' })
@@ -79,7 +81,7 @@ Scenario('should find elements using byRole custom locator', I => {
   I.seeElement({ byRole: 'complementary' })
 })
 
-Scenario('should find elements using byTestId custom locator', I => {
+Scenario('should find elements using byTestId custom locator', ({ I }) => {
   I.see('Custom Locator Test Page', { byTestId: 'page-title' })
   I.seeElement({ byTestId: 'username-input' })
   I.seeElement({ byTestId: 'password-input' })
@@ -88,7 +90,7 @@ Scenario('should find elements using byTestId custom locator', I => {
   I.seeElement({ byTestId: 'info-text' })
 })
 
-Scenario('should find elements using byDataQa custom locator', I => {
+Scenario('should find elements using byDataQa custom locator', ({ I }) => {
   I.seeElement({ byDataQa: 'test-form' })
   I.seeElement({ byDataQa: 'form-section' })
   I.seeElement({ byDataQa: 'submit-btn' })
@@ -97,7 +99,7 @@ Scenario('should find elements using byDataQa custom locator', I => {
   I.seeElement({ byDataQa: 'nav-section' })
 })
 
-Scenario('should find elements using byAriaLabel custom locator', I => {
+Scenario('should find elements using byAriaLabel custom locator', ({ I }) => {
   I.see('Custom Locator Test Page', { byAriaLabel: 'Welcome Message' })
   I.seeElement({ byAriaLabel: 'Username field' })
   I.seeElement({ byAriaLabel: 'Password field' })
@@ -106,12 +108,12 @@ Scenario('should find elements using byAriaLabel custom locator', I => {
   I.seeElement({ byAriaLabel: 'Information message' })
 })
 
-Scenario('should find elements using byPlaceholder custom locator', I => {
+Scenario('should find elements using byPlaceholder custom locator', ({ I }) => {
   I.seeElement({ byPlaceholder: 'Enter your username' })
   I.seeElement({ byPlaceholder: 'Enter your password' })
 })
 
-Scenario('should interact with elements using custom locators', I => {
+Scenario('should interact with elements using custom locators', ({ I }) => {
   I.fillField({ byTestId: 'username-input' }, 'testuser')
   I.fillField({ byPlaceholder: 'Enter your password' }, 'password123')
 
@@ -122,7 +124,7 @@ Scenario('should interact with elements using custom locators', I => {
   // Form submission would normally happen here
 })
 
-Scenario('should handle multiple elements with byDataQa locator', I => {
+Scenario('should handle multiple elements with byDataQa locator', ({ I }) => {
   // byDataQa returns all matching elements, but interactions use the first one
   I.seeElement({ byDataQa: 'form-section' })
 
@@ -135,7 +137,7 @@ Scenario('should handle multiple elements with byDataQa locator', I => {
   })
 })
 
-Scenario('should work with complex selectors and mixed locator types', I => {
+Scenario('should work with complex selectors and mixed locator types', ({ I }) => {
   // Test that custom locators work alongside standard ones
   within({ byRole: 'form' }, () => {
     I.seeElement({ byTestId: 'username-input' })
@@ -150,7 +152,7 @@ Scenario('should work with complex selectors and mixed locator types', I => {
   })
 })
 
-Scenario('should fail gracefully for non-existent custom locators', I => {
+Scenario('should fail gracefully for non-existent custom locators', ({ I }) => {
   // This should throw an error about undefined custom locator strategy
   try {
     I.seeElement({ byCustomUndefined: 'test' })
@@ -162,19 +164,19 @@ Scenario('should fail gracefully for non-existent custom locators', I => {
   }
 })
 
-Scenario('should work with grabbing methods', I => {
+Scenario('should work with grabbing methods', ({ I }) => {
   const titleText = I.grabTextFrom({ byTestId: 'page-title' })
-  I.assertEqual(titleText, 'Custom Locator Test Page')
+  I.expectEqual(titleText, 'Custom Locator Test Page')
 
   const usernameValue = I.grabValueFrom({ byAriaLabel: 'Username field' })
-  I.assertEqual(usernameValue, '')
+  I.expectEqual(usernameValue, '')
 
   I.fillField({ byPlaceholder: 'Enter your username' }, 'grabtest')
   const newUsernameValue = I.grabValueFrom({ byTestId: 'username-input' })
-  I.assertEqual(newUsernameValue, 'grabtest')
+  I.expectEqual(newUsernameValue, 'grabtest')
 })
 
-Scenario('should work with waiting methods', I => {
+Scenario('should work with waiting methods', ({ I }) => {
   I.waitForElement({ byRole: 'main' }, 2)
   I.waitForVisible({ byTestId: 'submit-button' }, 2)
   I.waitForText('Custom Locator Test Page', 2, { byAriaLabel: 'Welcome Message' })
