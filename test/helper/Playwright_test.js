@@ -1707,7 +1707,8 @@ describe('Playwright - HAR', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElements = await I.grabWebElements('#button')
-      assert.equal(webElements[0], "locator('#button').first()")
+      assert.equal(webElements[0].constructor.name, 'WebElement')
+      assert.equal(webElements[0].getNativeElement(), "locator('#button').first()")
       assert.isAbove(webElements.length, 0)
     })
 
@@ -1715,7 +1716,8 @@ describe('Playwright - HAR', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElement = await I.grabWebElement('#button')
-      assert.equal(webElement, "locator('#button').first()")
+      assert.equal(webElement.constructor.name, 'WebElement')
+      assert.equal(webElement.getNativeElement(), "locator('#button').first()")
     })
   })
 })
@@ -1751,7 +1753,8 @@ describe('using data-testid attribute', () => {
     await I.amOnPage('/')
 
     const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' })
-    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0')
+    assert.equal(webElements[0].constructor.name, 'WebElement')
+    assert.equal(webElements[0].getNativeElement()._selector, '[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
 
@@ -1759,7 +1762,8 @@ describe('using data-testid attribute', () => {
     await I.amOnPage('/')
 
     const webElements = await I.grabWebElements('h1[data-testid="welcome"]')
-    assert.equal(webElements[0]._selector, 'h1[data-testid="welcome"] >> nth=0')
+    assert.equal(webElements[0].constructor.name, 'WebElement')
+    assert.equal(webElements[0].getNativeElement()._selector, 'h1[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
 })
