@@ -152,27 +152,36 @@ Scenario('should work with complex selectors and mixed locator types', ({ I }) =
   })
 })
 
-Scenario('should fail gracefully for non-existent custom locators', ({ I }) => {
+Scenario('should fail gracefully for non-existent custom locators', async ({ I }) => {
   // This should throw an error about undefined custom locator strategy
+  let errorThrown = false
+  let errorMessage = ''
+
   try {
-    I.seeElement({ byCustomUndefined: 'test' })
-    throw new Error('Should have thrown an error for undefined custom locator')
+    await I.seeElement({ byCustomUndefined: 'test' })
   } catch (error) {
-    if (!error.message.includes('Please define "customLocatorStrategies"')) {
-      throw new Error('Wrong error message: ' + error.message)
-    }
+    errorThrown = true
+    errorMessage = error.message
+  }
+
+  if (!errorThrown) {
+    throw new Error('Should have thrown an error for undefined custom locator')
+  }
+
+  if (!errorMessage.includes('Please define "customLocatorStrategies"')) {
+    throw new Error('Wrong error message: ' + errorMessage)
   }
 })
 
-Scenario('should work with grabbing methods', ({ I }) => {
-  const titleText = I.grabTextFrom({ byTestId: 'page-title' })
+Scenario('should work with grabbing methods', async ({ I }) => {
+  const titleText = await I.grabTextFrom({ byTestId: 'page-title' })
   I.expectEqual(titleText, 'Custom Locator Test Page')
 
-  const usernameValue = I.grabValueFrom({ byAriaLabel: 'Username field' })
+  const usernameValue = await I.grabValueFrom({ byAriaLabel: 'Username field' })
   I.expectEqual(usernameValue, '')
 
   I.fillField({ byPlaceholder: 'Enter your username' }, 'grabtest')
-  const newUsernameValue = I.grabValueFrom({ byTestId: 'username-input' })
+  const newUsernameValue = await I.grabValueFrom({ byTestId: 'username-input' })
   I.expectEqual(newUsernameValue, 'grabtest')
 })
 
