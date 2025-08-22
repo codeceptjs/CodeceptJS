@@ -1193,7 +1193,8 @@ describe('Puppeteer - Trace', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElements = await I.grabWebElements('#button')
-      assert.include(webElements[0].constructor.name, 'CdpElementHandle')
+      assert.equal(webElements[0].constructor.name, 'WebElement')
+      assert.include(webElements[0].getNativeElement().constructor.name, 'CdpElementHandle')
       assert.isAbove(webElements.length, 0)
     })
   })
