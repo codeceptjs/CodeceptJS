@@ -302,6 +302,11 @@ describe('Workers', function () {
     const workers = new Workers(3, workerConfig)
     let testStartTimes = []
 
+    // Add timeout to ensure test completes
+    const timeout = setTimeout(() => {
+      done(new Error('Test timed out after 20 seconds'))
+    }, 20000)
+
     workers.on(event.test.started, test => {
       testStartTimes.push({
         test: test.title,
@@ -312,6 +317,8 @@ describe('Workers', function () {
     workers.run()
 
     workers.on(event.all.result, result => {
+      clearTimeout(timeout)
+      
       // Verify we got the expected number of tests (matching regular worker mode)
       expect(testStartTimes.length).to.be.at.least(7) // Allow some flexibility
       expect(testStartTimes.length).to.be.at.most(8)
