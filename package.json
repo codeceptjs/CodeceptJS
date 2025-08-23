@@ -42,7 +42,7 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
-    "json-server": "json-server test/data/rest/db.json --host 0.0.0.0 -p 8010 --watch -m test/data/rest/headers.js",
+    "test-server": "node bin/test-server.js test/data/rest/db.json --host 0.0.0.0 -p 8010",
     "json-server:graphql": "node test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ runok.js",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.js --fix",
