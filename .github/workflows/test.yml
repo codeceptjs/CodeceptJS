@@ -48,3 +48,5 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - run: npm run test:runner
+        # Note: Runner tests are mocha-based, so sharding doesn't apply here.
+        # For CodeceptJS sharding examples, see sharding-demo.yml workflow.
