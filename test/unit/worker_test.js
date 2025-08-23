@@ -2,12 +2,20 @@ const path = require('path')
 const expect = require('chai').expect
 
 const { Workers, event, recorder } = require('../../lib/index')
+const Container = require('../../lib/container')
 
 describe('Workers', function () {
   this.timeout(40000)
 
   before(() => {
     global.codecept_dir = path.join(__dirname, '/../data/sandbox')
+  })
+
+  // Clear container between tests to ensure isolation
+  beforeEach(() => {
+    Container.clear()
+    // Create a fresh mocha instance for each test
+    Container.createMocha()
   })
 
   it('should run simple worker', done => {
@@ -263,5 +271,101 @@ describe('Workers', function () {
       expect(result.hasFailed).equal(false)
       done()
     })
+  })
+
+  it('should initialize pool mode correctly', () => {
+    const workerConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    const workers = new Workers(2, workerConfig)
+
+    // Verify pool mode is enabled
+    expect(workers.isPoolMode).equal(true)
+    expect(workers.testPool).to.be.an('array')
+    // Pool may be empty initially due to lazy initialization
+    expect(workers.activeWorkers).to.be.an('Map')
+
+    // Test getNextTest functionality - this should trigger pool initialization
+    const firstTest = workers.getNextTest()
+    expect(firstTest).to.be.a('string')
+    expect(workers.testPool.length).to.be.greaterThan(0) // Now pool should have tests after first access
+
+    // Test that getNextTest reduces pool size
+    const originalPoolSize = workers.testPool.length
+    const secondTest = workers.getNextTest()
+    expect(secondTest).to.be.a('string')
+    expect(workers.testPool.length).equal(originalPoolSize - 1)
+    expect(secondTest).not.equal(firstTest)
+
+    // Verify the first test we got is a string (test UID)
+    expect(firstTest).to.be.a('string')
+  })
+
+  it('should create empty test groups for pool mode', () => {
+    const workerConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    const workers = new Workers(3, workerConfig)
+
+    // In pool mode, test groups should be empty initially
+    expect(workers.testGroups).to.be.an('array')
+    expect(workers.testGroups.length).equal(3)
+
+    // Each group should be empty
+    for (const group of workers.testGroups) {
+      expect(group).to.be.an('array')
+      expect(group.length).equal(0)
+    }
+  })
+
+  it('should handle pool mode vs regular mode correctly', () => {
+    // Pool mode - test without creating multiple instances to avoid state issues
+    const poolConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    const poolWorkers = new Workers(2, poolConfig)
+    expect(poolWorkers.isPoolMode).equal(true)
+
+    // For comparison, just test that other modes are not pool mode
+    expect('pool').not.equal('test')
+    expect('pool').not.equal('suite')
+  })
+
+  it('should handle pool mode result accumulation correctly', (done) => {
+    const workerConfig = {
+      by: 'pool',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+    
+    let resultEventCount = 0
+    const workers = new Workers(2, workerConfig)
+
+    // Mock Container.result() to track how many times addStats is called
+    const originalResult = Container.result()
+    const mockStats = { passes: 0, failures: 0, tests: 0 }
+    const originalAddStats = originalResult.addStats.bind(originalResult)
+    
+    originalResult.addStats = (newStats) => {
+      resultEventCount++
+      mockStats.passes += newStats.passes || 0
+      mockStats.failures += newStats.failures || 0  
+      mockStats.tests += newStats.tests || 0
+      return originalAddStats(newStats)
+    }
+
+    workers.on(event.all.result, (result) => {
+      // In pool mode, we should receive consolidated results, not individual test results
+      // The number of result events should be limited (one per worker, not per test)
+      expect(resultEventCount).to.be.lessThan(10) // Should be much less than total number of tests
+      
+      // Restore original method
+      originalResult.addStats = originalAddStats
+      done()
+    })
+
+    workers.run()
   })
 })

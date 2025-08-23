@@ -64,6 +64,7 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 - Also plays nice with TypeScript.
 - </> Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 - 🌐 Interactive debugging shell: pause test at any point and try different commands in a browser.
+- ⚡ **Parallel testing** with dynamic test pooling for optimal load balancing and performance.
 - Easily create tests, pageobjects, stepobjects with CLI generators.
 
 ## Installation

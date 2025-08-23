@@ -102,11 +102,31 @@ DEBUG=codeceptjs:* npx codeceptjs run
 
 ## Run Workers
 
-Run tests in parallel threads.
+Run tests in parallel threads. CodeceptJS supports different distribution strategies for optimal performance.
 
-```
+```bash
+# Run with 3 workers using default strategy (pre-assign tests)
 npx codeceptjs run-workers 3
+
+# Run with pool mode for dynamic test distribution (recommended)
+npx codeceptjs run-workers 3 --by pool
+
+# Run with suite distribution
+npx codeceptjs run-workers 3 --by suite
+
+# Pool mode with filtering
+npx codeceptjs run-workers 4 --by pool --grep "@smoke"
 ```
+
+**Test Distribution Strategies:**
+
+- `--by test` (default): Pre-assigns individual tests to workers
+- `--by suite`: Pre-assigns entire test suites to workers  
+- `--by pool`: Dynamic distribution for optimal load balancing (recommended for best performance)
+
+The pool mode provides the best load balancing by maintaining tests in a shared pool and distributing them dynamically as workers become available. This prevents workers from sitting idle and ensures optimal CPU utilization, especially when tests have varying execution times.
+
+See [Parallel Execution](/parallel) documentation for more details.
 
 ## Run Rerun <Badge text="Since 3.3.6" type="warning"/>
 
