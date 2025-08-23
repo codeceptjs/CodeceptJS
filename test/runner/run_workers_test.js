@@ -330,4 +330,186 @@ describe('CodeceptJS Workers Runner', function () {
       done()
     })
   })
+
+  it('should report accurate test statistics in pool mode', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    // Run regular workers mode first to get baseline counts
+    exec(`${codecept_run} 2`, (err, stdout) => {
+      const regularStats = stdout.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?(?:,\s+(\d+) failedHooks)?/)
+      if (!regularStats) return done(new Error('Could not parse regular mode statistics'))
+
+      const expectedPassed = parseInt(regularStats[2])
+      const expectedFailed = parseInt(regularStats[3] || '0')
+      const expectedFailedHooks = parseInt(regularStats[4] || '0')
+
+      // Now run pool mode and compare
+      exec(`${codecept_run} 2 --by pool`, (err2, stdout2) => {
+        expect(stdout2).toContain('CodeceptJS')
+        expect(stdout2).toContain('Running tests in 2 workers')
+
+        // Extract pool mode statistics
+        const poolStats = stdout2.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?(?:,\s+(\d+) failedHooks)?/)
+        expect(poolStats).toBeTruthy()
+
+        const actualPassed = parseInt(poolStats[2])
+        const actualFailed = parseInt(poolStats[3] || '0')
+        const actualFailedHooks = parseInt(poolStats[4] || '0')
+
+        // Pool mode should report exactly the same statistics as regular mode
+        expect(actualPassed).toEqual(expectedPassed)
+        expect(actualFailed).toEqual(expectedFailed)
+        expect(actualFailedHooks).toEqual(expectedFailedHooks)
+
+        // Both should have same exit code
+        expect(err?.code || 0).toEqual(err2?.code || 0)
+        done()
+      })
+    })
+  })
+
+  it('should report correct test counts with grep filtering in pool mode', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    // Run regular workers mode with grep first
+    exec(`${codecept_run} 2 --grep "grep"`, (err, stdout) => {
+      const regularStats = stdout.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+      if (!regularStats) return done(new Error('Could not parse regular mode grep statistics'))
+
+      const expectedPassed = parseInt(regularStats[2])
+      const expectedFailed = parseInt(regularStats[3] || '0')
+
+      // Now run pool mode with grep and compare
+      exec(`${codecept_run} 2 --by pool --grep "grep"`, (err2, stdout2) => {
+        const poolStats = stdout2.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+        expect(poolStats).toBeTruthy()
+
+        const actualPassed = parseInt(poolStats[2])
+        const actualFailed = parseInt(poolStats[3] || '0')
+
+        // Should match exactly
+        expect(actualPassed).toEqual(expectedPassed)
+        expect(actualFailed).toEqual(expectedFailed)
+        expect(err?.code || 0).toEqual(err2?.code || 0)
+        done()
+      })
+    })
+  })
+
+  it('should handle single vs multiple workers statistics consistently in pool mode', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    // Run pool mode with 1 worker
+    exec(`${codecept_run} 1 --by pool --grep "grep"`, (err, stdout) => {
+      const singleStats = stdout.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+      if (!singleStats) return done(new Error('Could not parse single worker statistics'))
+
+      const singlePassed = parseInt(singleStats[2])
+      const singleFailed = parseInt(singleStats[3] || '0')
+
+      // Run pool mode with multiple workers
+      exec(`${codecept_run} 3 --by pool --grep "grep"`, (err2, stdout2) => {
+        const multiStats = stdout2.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+        expect(multiStats).toBeTruthy()
+
+        const multiPassed = parseInt(multiStats[2])
+        const multiFailed = parseInt(multiStats[3] || '0')
+
+        // Statistics should be identical regardless of worker count
+        expect(multiPassed).toEqual(singlePassed)
+        expect(multiFailed).toEqual(singleFailed)
+        expect(err?.code || 0).toEqual(err2?.code || 0)
+        done()
+      })
+    })
+  })
+
+  it('should exit with correct code in pool mode for failing tests', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 2 --by pool --grep "Workers Failing"`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 2 workers')
+      expect(stdout).toContain('FAILURES')
+      expect(stdout).toContain('worker has failed')
+      expect(stdout).toContain('FAIL  | 0 passed, 1 failed')
+      expect(err.code).toEqual(1) // Should exit with failure code
+      done()
+    })
+  })
+
+  it('should exit with correct code in pool mode for passing tests', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    exec(`${codecept_run} 2 --by pool --grep "grep"`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 2 workers')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null) // Should exit with success code (0)
+      done()
+    })
+  })
+
+  it('should accurately count tests with mixed results in pool mode', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    // Use a specific test that has mixed results
+    exec(`${codecept_run} 2 --by pool --grep "Workers|retry"`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 2 workers')
+
+      // Should have some passing and some failing tests
+      const stats = stdout.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?(?:,\s+(\d+) failedHooks)?/)
+      expect(stats).toBeTruthy()
+
+      const passed = parseInt(stats[2])
+      const failed = parseInt(stats[3] || '0')
+      const failedHooks = parseInt(stats[4] || '0')
+
+      // Should have at least some passing and failing
+      expect(passed).toBeGreaterThan(0)
+      expect(failed + failedHooks).toBeGreaterThan(0)
+      expect(err.code).toEqual(1) // Should fail due to failures
+      done()
+    })
+  })
+
+  it('should maintain consistency across multiple pool mode runs', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    // Run pool mode first time
+    exec(`${codecept_run} 2 --by pool --grep "grep"`, (err, stdout) => {
+      const firstStats = stdout.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+      if (!firstStats) return done(new Error('Could not parse first run statistics'))
+
+      const firstPassed = parseInt(firstStats[2])
+      const firstFailed = parseInt(firstStats[3] || '0')
+
+      // Run pool mode second time
+      exec(`${codecept_run} 2 --by pool --grep "grep"`, (err2, stdout2) => {
+        const secondStats = stdout2.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+        expect(secondStats).toBeTruthy()
+
+        const secondPassed = parseInt(secondStats[2])
+        const secondFailed = parseInt(secondStats[3] || '0')
+
+        // Results should be consistent across runs
+        expect(secondPassed).toEqual(firstPassed)
+        expect(secondFailed).toEqual(firstFailed)
+        expect(err?.code || 0).toEqual(err2?.code || 0)
+        done()
+      })
+    })
+  })
+
+  it('should handle large worker count without inflating statistics', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    // Test with more workers than tests to ensure no inflation
+    exec(`${codecept_run} 8 --by pool --grep "grep"`, (err, stdout) => {
+      expect(stdout).toContain('CodeceptJS')
+      expect(stdout).toContain('Running tests in 8 workers')
+
+      const stats = stdout.match(/(FAIL|OK)\s+\|\s+(\d+) passed(?:,\s+(\d+) failed)?/)
+      expect(stats).toBeTruthy()
+
+      const passed = parseInt(stats[2])
+      // Should only be 2 tests matching "grep", not more due to worker count
+      expect(passed).toEqual(2)
+      expect(err).toEqual(null)
+      done()
+    })
+  })
 })
