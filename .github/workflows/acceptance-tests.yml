@@ -52,7 +52,7 @@ jobs:
   # New sharded acceptance tests using CodeceptJS directly
   sharded-acceptance-tests:
     runs-on: ubuntu-latest
-    name: "Sharded Tests: ${{ matrix.config }} (Shard ${{ matrix.shard }})"
+    name: 'Sharded Tests: ${{ matrix.config }} (Shard ${{ matrix.shard }})'
 
     strategy:
       fail-fast: false
@@ -64,23 +64,39 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
-        
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+
       - name: Install dependencies
         run: npm install --ignore-scripts
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
 
+      - name: Install Puppeteer Browser
+        if: contains(matrix.config, 'Puppeteer')
+        run: npx puppeteer browsers install chrome
+
+      - name: Install Playwright Browsers
+        if: contains(matrix.config, 'Playwright')
+        run: npx playwright install chromium && npx playwright install-deps
+
+      - name: Start PHP Server
+        run: php -S 127.0.0.1:8000 -t test/data/app &
+
       - name: Run Acceptance Tests with Sharding
         run: npx codeceptjs run --config ./test/acceptance/${{ matrix.config }} --shard ${{ matrix.shard }} --verbose
         env:
           FORCE_COLOR: 1
-          
+
       - name: Display Test Info
         run: |
           echo "Configuration: ${{ matrix.config }}"
