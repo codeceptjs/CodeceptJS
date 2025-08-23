@@ -49,4 +49,4 @@ jobs:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - run: npm run test:runner
         # Note: Runner tests are mocha-based, so sharding doesn't apply here.
-        # Sharding is specifically for CodeceptJS tests (see sharding-demo.yml for examples)
+        # For CodeceptJS sharding examples, see sharding-demo.yml workflow.
