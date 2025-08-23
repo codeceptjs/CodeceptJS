@@ -165,6 +165,7 @@ program
   .option('--no-timeouts', 'disable all timeouts')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('--shuffle', 'Shuffle the order in which test files run')
+  .option('--shard <index/total>', 'run only a fraction of tests (e.g., --shard 1/4)')
 
   // mocha options
   .option('--colors', 'force enabling of colors')

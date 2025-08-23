@@ -1,0 +1,39 @@
+name: Minimal Sharding Test
+
+on:
+  push:
+    branches:
+      - '3.x'
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+
+jobs:
+  test-sharding:
+    runs-on: ubuntu-latest
+    name: 'Shard ${{ matrix.shard }}'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['1/2', '2/2']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Run tests with sharding
+        run: npx codeceptjs run --config ./codecept.js --shard ${{ matrix.shard }}
+        working-directory: test/data/sandbox
