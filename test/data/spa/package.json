@@ -1,0 +1,21 @@
+{
+  "name": "codeceptjs-test-spa",
+  "version": "1.0.0",
+  "description": "React SPA for CodeceptJS testing",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.0"
+  },
+  "scripts": {
+    "build": "npm run build-js && npm run copy-assets",
+    "build-js": "npx esbuild src/index.js --bundle --outfile=dist/bundle.js --jsx=automatic --format=iife --global-name=CodeceptApp --target=es2018 --loader:.js=jsx",
+    "copy-assets": "cp src/index.html dist/ && cp -r src/assets/* dist/ 2>/dev/null || true",
+    "start": "npm run build && cd dist && python3 -m http.server 8000",
+    "dev": "npm run build && cd dist && python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.0"
+  }
+}
