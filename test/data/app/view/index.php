@@ -101,7 +101,8 @@
 </head>
 <body>
     <div class="container">
-        <h1 data-testid="welcome">CodeceptJS Test Application</h1>
+        <h1 data-testid="welcome">Welcome to test app!</h1>
+        <h2>With&nbsp;special&nbsp;space chars</h2>
         <p class="subtitle">A comprehensive testing sandbox for learning and practicing web automation</p>
         
         <div class="notice" qa-id="test">
@@ -233,7 +234,7 @@
         <div class="section">
             <h2>General Test Pages</h2>
             <div class="form-grid">
-                <a href="/info" class="form-link utility" id="link" qa-id="test" qa-link="test">Information Page</a>
+                <a href="/info" class="form-link utility" id="link" qa-id="test" qa-link="test">More info</a>
                 <a href="/login" class="form-link utility">Login Page</a>
                 <a href="/cookies" class="form-link utility">Cookies Test</a>
                 <a href="/search" class="form-link utility">Search Page</a>
@@ -245,13 +246,33 @@
             </div>
         </div>
 
+        <!-- Original Test Areas for Backward Compatibility -->
+        <div style="display: none;">
+            <div id="area1" qa-id="test">
+                <a href="/form/file" qa-id="test" qa-link="test"> Test Link </a>
+            </div>
+            <div id="area2" qa-id="test">
+                <a href="/form/hidden" qa-id="test" qa-link="test">Test</a>
+            </div>
+            <div id="area3" qa-id="test">
+                <a href="info" qa-id="test" qa-link="test">Document-Relative Link</a>
+            </div>
+            <div id="area4" qa-id="test">
+                <a href="/spinner" qa-id="test" qa-link="test">Spinner</a>
+            </div>
+            <div id="area5" qa-id="test">
+                <input qa-id="test" qa-link="test" disabled>Hidden input</input>
+            </div>
+        </div>
+
         <div class="footer">
             <p>CodeceptJS Test Application - A comprehensive testing sandbox</p>
             <p>Inspired by <a href="https://the-internet.herokuapp.com" target="_blank">the-internet.herokuapp.com</a></p>
         </div>
 
         <div class="debug">
-            <strong>Debug Info:</strong>
+            A wise man said: "debug!"
+            <br><strong>Debug Info:</strong>
             <?php if (!empty($_POST)): ?>
                 <pre><?php print_r($_POST); ?></pre>
             <?php else: ?>
