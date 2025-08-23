@@ -2,13 +2,12 @@ services:
   test-rest:
     <<: &test-service
       build: ..
-      entrypoint: /codecept/node_modules/.bin/mocha
+      entrypoint: ['']
       working_dir: /codecept
       env_file: .env
       volumes:
-        - ..:/codecept
-        - node_modules:/codecept/node_modules
-    command: test/rest
+        - ./:/codecept/test
+    command: ['/codecept/node_modules/.bin/mocha', 'test/rest']
     depends_on:
       - json_server
 

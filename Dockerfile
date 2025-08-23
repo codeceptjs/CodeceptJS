@@ -27,17 +27,23 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
 COPY . /codecept
 
 RUN chown -R pptruser:pptruser /codecept
-RUN runuser -l pptruser -c 'npm i --loglevel=warn --prefix /codecept'
+# Set environment variables to skip browser downloads during npm install
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+# Install as root to ensure proper bin links are created
+RUN cd /codecept && npm install --loglevel=warn
+# Fix ownership after install
+RUN chown -R pptruser:pptruser /codecept
 
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
-# Install puppeteer so it's available in the container.
-RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
+# Skip the redundant Puppeteer installation step since we're using Playwright browsers
+# RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
 # RUN chromium-browser --version
 
-# Install playwright browsers
-RUN npx playwright install
+# Skip the playwright browser installation step since base image already has browsers
+# RUN npx playwright install
 
 # Allow to pass argument to codecept run via env variable
 ENV CODECEPT_ARGS=""
