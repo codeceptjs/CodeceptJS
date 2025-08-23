@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeceptJS Test Report</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.report-header {
+    background: #2c3e50;
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.report-header h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+}
+
+.report-meta {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.report-meta span {
+    margin: 0 1rem;
+}
+
+.report-content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.stats-section, .tests-section, .failures-section {
+    background: white;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.stats-section h2, .tests-section h2, .failures-section h2 {
+    background: #34495e;
+    color: white;
+    padding: 1rem;
+    margin: 0;
+}
+
+.stats-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 150px;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 4px;
+    color: white;
+}
+
+.stat-card.total { background: #3498db; }
+.stat-card.passed { background: #27ae60; }
+.stat-card.failed { background: #e74c3c; }
+.stat-card.pending { background: #f39c12; }
+
+.stat-card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.test-item {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+}
+
+.test-item:last-child {
+    border-bottom: none;
+}
+
+.test-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.test-header:hover {
+    background-color: #f8f9fa;
+}
+
+.test-status {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.test-status.passed { color: #27ae60; }
+.test-status.failed { color: #e74c3c; }
+.test-status.pending { color: #f39c12; }
+.test-status.skipped { color: #95a5a6; }
+
+.test-title {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.test-feature {
+    background: #ecf0f1;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #34495e;
+    margin-right: 0.5rem;
+}
+
+.test-duration {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+.test-details {
+    display: none;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.error-message {
+    background: #fee;
+    border: 1px solid #fcc;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.error-message pre {
+    color: #c0392b;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.steps-section, .artifacts-section {
+    margin-top: 1rem;
+}
+
+.steps-section h4, .artifacts-section h4 {
+    color: #34495e;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.step-item:last-child {
+    border-bottom: none;
+}
+
+.step-status {
+    margin-right: 0.5rem;
+}
+
+.step-status.success { color: #27ae60; }
+.step-status.failed { color: #e74c3c; }
+
+.step-title {
+    flex: 1;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.step-duration {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+.artifacts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.artifact-image {
+    max-width: 200px;
+    max-height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.artifact-image:hover {
+    transform: scale(1.05);
+}
+
+.artifact-item {
+    background: #ecf0f1;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    cursor: pointer;
+}
+
+.modal img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 4px;
+}
+
+.failure-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #fcc;
+    border-radius: 4px;
+    background: #fee;
+}
+
+.failure-item h4 {
+    color: #c0392b;
+    margin-bottom: 0.5rem;
+}
+
+.failure-details {
+    color: #333;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+    .stats-cards {
+        flex-direction: column;
+    }
+    
+    .test-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .test-feature, .test-duration {
+        align-self: flex-start;
+    }
+}
+    </style>
+</head>
+<body>
+    <header class="report-header">
+        <h1>CodeceptJS Test Report</h1>
+        <div class="report-meta">
+            <span>Generated: 2025-08-23T16:02:47.301Z</span>
+            <span>Duration: 27ms</span>
+        </div>
+    </header>
+
+    <main class="report-content">
+        <section class="stats-section">
+            <h2>Test Statistics</h2>
+            
+      <div class="stats-cards">
+        <div class="stat-card total">
+          <h3>Total</h3>
+          <span class="stat-number">3</span>
+        </div>
+        <div class="stat-card passed">
+          <h3>Passed</h3>
+          <span class="stat-number">1</span>
+        </div>
+        <div class="stat-card failed">
+          <h3>Failed</h3>
+          <span class="stat-number">2</span>
+        </div>
+        <div class="stat-card pending">
+          <h3>Pending</h3>
+          <span class="stat-number">0</span>
+        </div>
+      </div>
+    
+        </section>
+
+        <section class="tests-section">
+            <h2>Test Results</h2>
+            <div class="tests-container">
+                
+        <div class="test-item failed" id="test-3bed687b">
+          <div class="test-header" onclick="toggleTestDetails('test-3bed687b')">
+            <span class="test-status failed">●</span>
+            <h3 class="test-title">test with multiple steps</h3>
+            <span class="test-feature">HTML Reporter Test</span>
+            <span class="test-duration">0ms</span>
+          </div>
+          <div class="test-details" id="details-test-3bed687b">
+            <div class="error-message"><pre>
+  File package.json not found in /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin</pre></div>
+            
+      <div class="steps-section">
+        <h4>Steps:</h4>
+        <div class="steps-list">
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.amInPath(".")</span>
+          <span class="step-duration">1ms</span>
+        </div>
+      
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.seeFile("package.json")</span>
+          <span class="step-duration">1ms</span>
+        </div>
+      </div>
+      </div>
+    
+            
+          </div>
+        </div>
+      
+        <div class="test-item failed" id="test-851625f0">
+          <div class="test-header" onclick="toggleTestDetails('test-851625f0')">
+            <span class="test-status failed">●</span>
+            <h3 class="test-title">test that will fail</h3>
+            <span class="test-feature">HTML Reporter Test</span>
+            <span class="test-duration">0ms</span>
+          </div>
+          <div class="test-details" id="details-test-851625f0">
+            <div class="error-message"><pre>
+  File this-file-should-not-exist.txt not found in /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin</pre></div>
+            
+      <div class="steps-section">
+        <h4>Steps:</h4>
+        <div class="steps-list">
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.amInPath(".")</span>
+          <span class="step-duration">0ms</span>
+        </div>
+      
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.seeFile("this-file-should-not-exist.txt")</span>
+          <span class="step-duration">0ms</span>
+        </div>
+      </div>
+      </div>
+    
+            
+          </div>
+        </div>
+      
+        <div class="test-item passed" id="test-494d0c75">
+          <div class="test-header" onclick="toggleTestDetails('test-494d0c75')">
+            <span class="test-status passed">●</span>
+            <h3 class="test-title">test that will pass</h3>
+            <span class="test-feature">HTML Reporter Test</span>
+            <span class="test-duration">0ms</span>
+          </div>
+          <div class="test-details" id="details-test-494d0c75">
+            
+            
+      <div class="steps-section">
+        <h4>Steps:</h4>
+        <div class="steps-list">
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.amInPath(".")</span>
+          <span class="step-duration">0ms</span>
+        </div>
+      
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.seeFile("codecept.conf.js")</span>
+          <span class="step-duration">0ms</span>
+        </div>
+      </div>
+      </div>
+    
+            
+          </div>
+        </div>
+      
+            </div>
+        </section>
+
+        <section class="failures-section" style="display: ;">
+            <h2>Failures</h2>
+            <div class="failures-container">
+                
+        <div class="failure-item">
+          <h4>Failure 1</h4>
+          <pre class="failure-details">  %s) %s:
+%s
+%s
+,1,HTML Reporter Test
+       test with multiple steps,
+      
+  File package.json not found in /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin
+      + expected - actual
+
+      -false
+      +true
+      ,  AssertionError [ERR_ASSERTION]: 
+      at FileSystem.seeFile (lib/helper/FileSystem.js:70:12)
+      at HelperStep.run (lib/step/helper.js:28:49)
+  
+  
+  ◯ File: file:///home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin/html-reporter_test.js
+  
+  ◯ Scenario Steps:
+  ✖ I.seeFile(&quot;package.json&quot;) at Test.&lt;anonymous&gt; (./html-reporter_test.js:5:5)
+  ✔ I.amInPath(&quot;.&quot;) at Test.&lt;anonymous&gt; (./html-reporter_test.js:4:5)
+  </pre>
+        </div>
+      
+        <div class="failure-item">
+          <h4>Failure 2</h4>
+          <pre class="failure-details">  %s) %s:
+%s
+%s
+,2,HTML Reporter Test
+       test that will fail,
+      
+  File this-file-should-not-exist.txt not found in /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin
+      + expected - actual
+
+      -false
+      +true
+      ,  AssertionError [ERR_ASSERTION]: 
+      at FileSystem.seeFile (lib/helper/FileSystem.js:70:12)
+      at HelperStep.run (lib/step/helper.js:28:49)
+  
+  
+  ◯ File: file:///home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin/html-reporter_test.js
+  
+  ◯ Scenario Steps:
+  ✖ I.seeFile(&quot;this-file-should-not-exist.txt&quot;) at Test.&lt;anonymous&gt; (./html-reporter_test.js:10:5)
+  ✔ I.amInPath(&quot;.&quot;) at Test.&lt;anonymous&gt; (./html-reporter_test.js:9:5)
+  </pre>
+        </div>
+      
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for images -->
+    <div id="imageModal" class="modal" onclick="closeImageModal()">
+        <img id="modalImage" src="" alt="Enlarged screenshot"/>
+    </div>
+
+    <script>
+function toggleTestDetails(testId) {
+    const details = document.getElementById('details-' + testId);
+    if (details.style.display === 'none' || details.style.display === '') {
+        details.style.display = 'block';
+    } else {
+        details.style.display = 'none';
+    }
+}
+
+function openImageModal(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modalImg.src = src;
+    modal.style.display = 'block';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+}
+
+// Initialize - hide failures section if no failures
+document.addEventListener('DOMContentLoaded', function() {
+    const failuresSection = document.querySelector('.failures-section');
+    const failureItems = document.querySelectorAll('.failure-item');
+    if (failureItems.length === 0) {
+        failuresSection.style.display = 'none';
+    }
+});
+    </script>
+</body>
+</html>
+    
