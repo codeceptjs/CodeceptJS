@@ -12,12 +12,8 @@ RUN apt-get update && \
 # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
 # Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
 # installs, work.
-RUN apt-get update && apt-get install -y gnupg wget && \
-  wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
-  echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-  apt-get update && \
-  apt-get install -y google-chrome-stable --no-install-recommends && \
-  rm -rf /var/lib/apt/lists/*
+# Skip Chrome installation for now as Playwright image already has browsers
+RUN echo "Skipping Chrome installation - using Playwright browsers"
 
 
 # Add pptr user.
@@ -38,7 +34,7 @@ RUN mkdir /tests
 WORKDIR /tests
 # Install puppeteer so it's available in the container.
 RUN npm i puppeteer@$(npm view puppeteer version) && npx puppeteer browsers install chrome
-RUN google-chrome --version
+# RUN chromium-browser --version
 
 # Install playwright browsers
 RUN npx playwright install
