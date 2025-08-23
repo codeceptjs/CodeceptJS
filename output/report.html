@@ -295,8 +295,8 @@ body {
     <header class="report-header">
         <h1>CodeceptJS Test Report</h1>
         <div class="report-meta">
-            <span>Generated: 2025-08-23T16:02:47.301Z</span>
-            <span>Duration: 27ms</span>
+            <span>Generated: 2025-08-23T16:04:41.601Z</span>
+            <span>Duration: 29ms</span>
         </div>
     </header>
 
@@ -307,7 +307,7 @@ body {
       <div class="stats-cards">
         <div class="stat-card total">
           <h3>Total</h3>
-          <span class="stat-number">3</span>
+          <span class="stat-number">4</span>
         </div>
         <div class="stat-card passed">
           <h3>Passed</h3>
@@ -315,7 +315,7 @@ body {
         </div>
         <div class="stat-card failed">
           <h3>Failed</h3>
-          <span class="stat-number">2</span>
+          <span class="stat-number">3</span>
         </div>
         <div class="stat-card pending">
           <h3>Pending</h3>
@@ -346,7 +346,7 @@ body {
         <div class="step-item success">
           <span class="step-status success">●</span>
           <span class="step-title">I.amInPath(".")</span>
-          <span class="step-duration">1ms</span>
+          <span class="step-duration">0ms</span>
         </div>
       
         <div class="step-item success">
@@ -402,6 +402,43 @@ body {
           </div>
           <div class="test-details" id="details-test-494d0c75">
             
+            
+      <div class="steps-section">
+        <h4>Steps:</h4>
+        <div class="steps-list">
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.amInPath(".")</span>
+          <span class="step-duration">0ms</span>
+        </div>
+      
+        <div class="step-item success">
+          <span class="step-status success">●</span>
+          <span class="step-title">I.seeFile("codecept.conf.js")</span>
+          <span class="step-duration">0ms</span>
+        </div>
+      </div>
+      </div>
+    
+            
+          </div>
+        </div>
+      
+        <div class="test-item failed" id="test-77e3208b">
+          <div class="test-header" onclick="toggleTestDetails('test-77e3208b')">
+            <span class="test-status failed">●</span>
+            <h3 class="test-title">test with artifacts</h3>
+            <span class="test-feature">HTML Reporter with Artifacts Test</span>
+            <span class="test-duration">0ms</span>
+          </div>
+          <div class="test-details" id="details-test-77e3208b">
+            <div class="error-message"><pre>
+  Cannot find module &#039;../../../../lib/container&#039;
+  Require stack:
+  - /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin/artifacts_test.js
+  - /home/runner/work/CodeceptJS/CodeceptJS/node_modules/mocha/lib/mocha.js
+  - /home/runner/work/CodeceptJS/CodeceptJS/node_modules/mocha/index.js
+  ...</pre></div>
             
       <div class="steps-section">
         <h4>Steps:</h4>
@@ -480,6 +517,27 @@ body {
   ◯ Scenario Steps:
   ✖ I.seeFile(&quot;this-file-should-not-exist.txt&quot;) at Test.&lt;anonymous&gt; (./html-reporter_test.js:10:5)
   ✔ I.amInPath(&quot;.&quot;) at Test.&lt;anonymous&gt; (./html-reporter_test.js:9:5)
+  </pre>
+        </div>
+      
+        <div class="failure-item">
+          <h4>Failure 3</h4>
+          <pre class="failure-details">  %s) %s:
+     %s
+%s
+,3,HTML Reporter with Artifacts Test
+       test with artifacts,
+  Cannot find module &#039;../../../../lib/container&#039;
+  Require stack:
+  - /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin/artifacts_test.js
+  - /home/runner/work/CodeceptJS/CodeceptJS/node_modules/mocha/lib/mocha.js
+  - /home/runner/work/CodeceptJS/CodeceptJS/node_modules/mocha/index.js
+  ...,  Error: Cannot find module &#039;../../../../lib/container&#039;
+  Require stack:
+  - /home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin/artifacts_test.js
+  
+  
+  ◯ File: file:///home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/configs/html-reporter-plugin/artifacts_test.js
   </pre>
         </div>
       
