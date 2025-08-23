@@ -1,0 +1,89 @@
+name: Test Sharding Demonstration
+
+on:
+  push:
+    branches:
+      - '3.x'
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+
+jobs:
+  # Demonstrate sharding with a larger test suite (sandbox tests)
+  sharded-sandbox-tests:
+    runs-on: ubuntu-latest
+    name: "Sandbox Tests (Shard ${{ matrix.shard }})"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x]
+        # Split 38 sandbox tests across 4 shards for demonstration
+        shard: ['1/4', '2/4', '3/4', '4/4']
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - name: Install dependencies
+        run: npm install
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Run Sandbox Tests with Sharding
+        run: npx codeceptjs run --config ./test/data/sandbox/codecept.js --shard ${{ matrix.shard }} --verbose
+        working-directory: test/data/sandbox
+        env:
+          FORCE_COLOR: 1
+          
+      - name: Display Shard Info
+        run: |
+          echo "This shard (${{ matrix.shard }}) ran a subset of the total sandbox tests"
+          echo "All shards together cover the complete test suite without duplication"
+
+  # Show combination with shuffle option
+  sharded-shuffled-tests:
+    runs-on: ubuntu-latest  
+    name: "Shuffled + Sharded Tests (Shard ${{ matrix.shard }})"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x]
+        shard: ['1/2', '2/2']
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - name: Install dependencies
+        run: npm install
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Run Tests with Shuffle + Sharding
+        run: npx codeceptjs run --config ./test/data/sandbox/codecept.js --shuffle --shard ${{ matrix.shard }} --verbose
+        working-directory: test/data/sandbox
+        env:
+          FORCE_COLOR: 1
+          
+      - name: Display Combined Options Info
+        run: |
+          echo "This demonstrates sharding combined with shuffle option"
+          echo "Tests are first shuffled, then sharded for this worker (${{ matrix.shard }})"
