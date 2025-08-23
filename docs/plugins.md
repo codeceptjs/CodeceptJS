@@ -587,6 +587,67 @@ Sample custom reporter for CodeceptJS.
 
 - `config` &#x20;
 
+## htmlReporter
+
+Generates comprehensive HTML reports showing:
+
+- Test statistics with interactive pie chart
+- Feature/Scenario details with collapsible sections
+- Individual step results with execution timing
+- Hook execution details (Before/After hooks)
+- Test artifacts (screenshots, etc.) with modal viewing
+- Clean, formatted error messages with ANSI color code stripping
+
+The HTML reporter provides a modern, responsive interface that works across all screen sizes and can be easily shared with stakeholders.
+
+#### Configuration
+
+```js
+exports.config = {
+  plugins: {
+    htmlReporter: {
+      enabled: true,
+      output: './output', // Directory for the report
+      reportFileName: 'report.html', // Name of the HTML file
+      includeArtifacts: true, // Include screenshots/artifacts
+      showSteps: true, // Show individual test steps
+      showSkipped: true, // Show skipped tests
+    },
+  },
+}
+```
+
+#### Features
+
+- **Interactive Test Results**: Click-to-expand test details with comprehensive information
+- **Step-by-Step Details**: Shows individual test steps with proper method names (e.g., `I.seeFile()`, `I.amInPath()`), status indicators, and timing
+- **Test Statistics**: Visual cards displaying totals, passed, failed, and pending test counts with pie chart visualization
+- **Hook Information**: Displays Before/After hook execution details with timing and status
+- **Error Information**: Clean, formatted error messages for failed tests with ANSI color code stripping
+- **Artifacts Support**: Display screenshots and other test artifacts with modal viewing capability
+- **Responsive Design**: Mobile-friendly layout that works across all screen sizes
+- **Professional Styling**: Modern, clean interface with color-coded status indicators
+
+#### Usage
+
+Run tests normally and the HTML report will be automatically generated at the specified output location (default: `output/report.html`).
+
+The generated HTML includes embedded CSS and JavaScript for a self-contained, interactive report that can be easily shared with stakeholders.
+
+#### Example Report Features
+
+- Click on any test to see detailed steps and timing information
+- Visual pie chart shows test distribution at a glance
+- Hook execution details show Before/After operations
+- Screenshots and artifacts display in modal overlays
+- Mobile-responsive design works on all devices
+
+![HTML Reporter Example](./shared/html-reporter-screenshot.png)
+
+### Parameters
+
+- `config` **[Object][1]** Plugin configuration (optional, default `{}`)
+
 ## eachElement
 
 Provides `eachElement` global function to iterate over found elements to perform actions on them.

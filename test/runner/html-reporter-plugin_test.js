@@ -23,7 +23,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
       expect(reportContent).toContain('CodeceptJS Test Report')
       expect(reportContent).toContain('Test Statistics')
       expect(reportContent).toContain('Test Results')
-      
+
       // Check for specific test features
       expect(reportContent).toContain('HTML Reporter Test') // Feature name
       expect(reportContent).toContain('test with multiple steps') // Scenario name
@@ -32,13 +32,23 @@ describe('CodeceptJS html-reporter-plugin', function () {
 
       // Validate that stats are included
       expect(reportContent).toMatch(/Total.*Passed.*Failed/s)
-      
+
+      // Check for pie chart functionality
+      expect(reportContent).toContain('pie-chart-container')
+      expect(reportContent).toContain('statsChart')
+      expect(reportContent).toContain('drawPieChart')
+      expect(reportContent).toMatch(/window\.chartData\s*=/)
+
+      // Check for hooks styles (even if not used in this test)
+      expect(reportContent).toContain('hooks-section')
+      expect(reportContent).toContain('hook-item')
+
       // Check basic HTML structure
       expect(reportContent).toContain('<!DOCTYPE html>')
       expect(reportContent).toContain('<head>')
       expect(reportContent).toContain('<body>')
       expect(reportContent).toContain('</html>')
-      
+
       // Should contain CSS and JS
       expect(reportContent).toContain('<style>')
       expect(reportContent).toContain('<script>')
