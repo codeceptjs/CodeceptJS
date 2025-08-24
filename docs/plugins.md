@@ -720,10 +720,22 @@ HTML Reporter Plugin for CodeceptJS
 
 Generates comprehensive HTML reports showing:
 
-- Test statistics
-- Feature/Scenario details
-- Individual step results
-- Test artifacts (screenshots, etc.)
+- **Interactive Test Results**: Click-to-expand test details with comprehensive information
+- **Step-by-Step Details**: Shows individual test steps with proper method names (e.g., `I.seeFile()`, `I.amInPath()`), status indicators, and timing
+- **Test Statistics**: Visual cards displaying totals, passed, failed, and pending test counts with interactive pie chart
+- **Error Information**: Clean, formatted error messages for failed tests with ANSI color code stripping
+- **Artifacts Support**: Display screenshots and other test artifacts with modal viewing capability
+- **Responsive Design**: Mobile-friendly layout that works across all screen sizes
+- **Professional Styling**: Modern, clean interface with color-coded status indicators
+- **Enhanced Features**:
+  - **Metadata Display**: Shows test metadata, options, and custom properties
+  - **Tags Support**: Display and filter by test tags (@smoke, @critical, etc.)
+  - **Retry Tracking**: Shows retry attempts and final test status
+  - **Test Notes**: Display test notes and comments
+  - **Interactive Filters**: Filter tests by status, feature, tags, and retry status
+  - **Test History**: Track test results across multiple runs with visual charts
+  - **Stats Export**: Export test statistics in JSON format for integration with external tools (Grafana, etc.)
+  - **Worker Support**: Compatible with run-workers and run-multiple commands
 
 ## Configuration
 
@@ -731,14 +743,77 @@ Generates comprehensive HTML reports showing:
 "plugins": {
    "htmlReporter": {
      "enabled": true,
-     "output": "./output",
-     "reportFileName": "report.html",
-     "includeArtifacts": true,
-     "showSteps": true,
-     "showSkipped": true
+     "output": "./output",              // Directory for the report
+     "reportFileName": "report.html",   // Name of the HTML file
+     "includeArtifacts": true,          // Include screenshots/artifacts
+     "showSteps": true,                 // Show individual test steps
+     "showSkipped": true,               // Show skipped tests
+     "showMetadata": true,              // Show test metadata and options
+     "showTags": true,                  // Show test tags
+     "showRetries": true,               // Show retry information
+     "exportStats": false,              // Export stats to JSON file
+     "exportStatsPath": "./stats.json", // Path for stats export
+     "keepHistory": false,              // Track test history
+     "historyPath": "./test-history.json", // Path for history file
+     "maxHistoryEntries": 50            // Max history entries to keep
    }
 }
 ```
+
+### Usage
+
+Run tests normally and the HTML report will be automatically generated:
+
+```bash
+npx codeceptjs run
+```
+
+The generated HTML report includes:
+
+- **Filter Controls**: Interactive filtering by status, feature, tags, and retry status
+- **Test History Chart**: Visual representation of test results over time (when history is enabled)
+- **Detailed Test Information**: Expandable sections showing steps, hooks, metadata, and artifacts
+- **Export Integration**: JSON stats export for external analysis tools
+
+### Stats Export for Grafana Integration
+
+Enable stats export to integrate with monitoring tools:
+
+```js
+"htmlReporter": {
+  "enabled": true,
+  "exportStats": true,
+  "exportStatsPath": "./test-stats.json"
+}
+```
+
+The exported JSON contains structured data perfect for Grafana dashboards:
+
+- Test execution metrics
+- Pass/fail rates over time
+- Individual test performance data
+- Retry statistics
+- Test metadata for grouping and filtering
+
+### History Tracking
+
+Track test trends across multiple runs:
+
+```js
+"htmlReporter": {
+  "enabled": true,
+  "keepHistory": true,
+  "historyPath": "./test-history.json",
+  "maxHistoryEntries": 100
+}
+```
+
+History tracking provides:
+
+- Test result trends over time
+- Performance regression detection
+- Visual charts in the HTML report
+- JSON data for external analysis
 
 ### Parameters
 

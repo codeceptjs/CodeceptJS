@@ -39,6 +39,21 @@ describe('CodeceptJS html-reporter-plugin', function () {
       expect(reportContent).toContain('drawPieChart')
       expect(reportContent).toMatch(/window\.chartData\s*=/)
 
+      // Check for enhanced features
+      expect(reportContent).toContain('filter-controls')
+      expect(reportContent).toContain('statusFilter')
+      expect(reportContent).toContain('featureFilter')
+      expect(reportContent).toContain('tagFilter')
+      expect(reportContent).toContain('retryFilter')
+      expect(reportContent).toContain('applyFilters')
+      expect(reportContent).toContain('resetFilters')
+
+      // Check for metadata and tags support
+      expect(reportContent).toContain('metadata-section')
+      expect(reportContent).toContain('tags-section')
+      expect(reportContent).toContain('notes-section')
+      expect(reportContent).toContain('retry-section')
+
       // Check for hooks styles (even if not used in this test)
       expect(reportContent).toContain('hooks-section')
       expect(reportContent).toContain('hook-item')
@@ -52,6 +67,56 @@ describe('CodeceptJS html-reporter-plugin', function () {
       // Should contain CSS and JS
       expect(reportContent).toContain('<style>')
       expect(reportContent).toContain('<script>')
+
+      done()
+    })
+  })
+
+  it('should export test stats when configured', done => {
+    exec(config_run_config('codecept-with-stats.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      // Check if stats export file exists
+      const statsFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'test-stats.json')
+      expect(fs.existsSync(statsFile)).toBe(true)
+
+      // Read and validate stats export content
+      const statsContent = JSON.parse(fs.readFileSync(statsFile, 'utf8'))
+      expect(statsContent).toHaveProperty('timestamp')
+      expect(statsContent).toHaveProperty('duration')
+      expect(statsContent).toHaveProperty('stats')
+      expect(statsContent).toHaveProperty('tests')
+      expect(statsContent.tests).toBeInstanceOf(Array)
+      expect(statsContent.tests.length).toBeGreaterThan(0)
+
+      // Validate test data structure
+      const testData = statsContent.tests[0]
+      expect(testData).toHaveProperty('id')
+      expect(testData).toHaveProperty('title')
+      expect(testData).toHaveProperty('state')
+      expect(testData).toHaveProperty('duration')
+
+      done()
+    })
+  })
+
+  it('should track history when configured', done => {
+    exec(config_run_config('codecept-with-history.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      // Check if history file exists
+      const historyFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'test-history.json')
+      expect(fs.existsSync(historyFile)).toBe(true)
+
+      // Read and validate history content
+      const historyContent = JSON.parse(fs.readFileSync(historyFile, 'utf8'))
+      expect(historyContent).toBeInstanceOf(Array)
+      expect(historyContent.length).toBeGreaterThan(0)
+
+      const historyEntry = historyContent[0]
+      expect(historyEntry).toHaveProperty('timestamp')
+      expect(historyEntry).toHaveProperty('duration')
+      expect(historyEntry).toHaveProperty('stats')
 
       done()
     })

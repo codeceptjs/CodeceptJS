@@ -1,0 +1,65 @@
+{
+  "timestamp": "2025-08-24T04:44:29.809Z",
+  "duration": 30,
+  "stats": {
+    "passes": 1,
+    "failures": 3,
+    "tests": 4,
+    "pending": 0,
+    "failedHooks": 0,
+    "start": "2025-08-24T04:44:29.785Z",
+    "end": "2025-08-24T04:44:29.805Z",
+    "duration": 20
+  },
+  "retries": [],
+  "testCount": 4,
+  "passedTests": 1,
+  "failedTests": 3,
+  "pendingTests": 0,
+  "tests": [
+    {
+      "id": "3bed687b",
+      "title": "test with multiple steps",
+      "feature": "HTML Reporter Test",
+      "state": "failed",
+      "duration": 0,
+      "tags": [],
+      "meta": {},
+      "retryAttempts": 0,
+      "uid": "wMUVf8gGXfvdJuFZpZLpHqWsSloUrGsfe1jkhlhi8W"
+    },
+    {
+      "id": "851625f0",
+      "title": "test that will fail",
+      "feature": "HTML Reporter Test",
+      "state": "failed",
+      "duration": 0,
+      "tags": [],
+      "meta": {},
+      "retryAttempts": 0,
+      "uid": "aSiHH58JFT47Yhs6WutjsIlCUhY9oyeAIhrj2XW3Hx"
+    },
+    {
+      "id": "494d0c75",
+      "title": "test that will pass",
+      "feature": "HTML Reporter Test",
+      "state": "passed",
+      "duration": 0,
+      "tags": [],
+      "meta": {},
+      "retryAttempts": 0,
+      "uid": "RsmmIVWoew3I96UDEDwSaCKU6ursIlnacmsslF6aWA"
+    },
+    {
+      "id": "77e3208b",
+      "title": "test with artifacts",
+      "feature": "HTML Reporter with Artifacts Test",
+      "state": "failed",
+      "duration": 0,
+      "tags": [],
+      "meta": {},
+      "retryAttempts": 0,
+      "uid": "8h8Wb2vBKAGKgtMERAsjfrSW_sV10eapYE+YhXG0uK"
+    }
+  ]
+}
