@@ -1,13 +1,19 @@
-const chai = require('chai')
+import chai from 'chai'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+import { Appium } from '../../lib/helper/Appium.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import { fileExists } from '../../lib/utils.js'
+import * as codeceptjs from '../../lib/index.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
-
-const Appium = require('../../lib/helper/Appium')
-const AssertionFailedError = require('../../lib/assert/error')
-const fileExists = require('../../lib/utils').fileExists
-global.codeceptjs = require('../../lib')
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 let app
 const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk'
