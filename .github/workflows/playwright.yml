@@ -48,7 +48,7 @@ jobs:
         run: 'php -S 127.0.0.1:8000 -t test/data/app &'
       - name: run chromium unit tests
         run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000 --reporter @testomatio/reporter/mocha
-        timeout-minutes: 5
+        timeout-minutes: 10
       - name: run chromium tests
         run: 'timeout 600 bash -c "unset BROWSER && BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
         timeout-minutes: 12

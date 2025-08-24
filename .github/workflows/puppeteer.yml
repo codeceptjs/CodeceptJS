@@ -42,7 +42,7 @@ jobs:
       - run: chrome --version
       - name: run unit tests
         run: ./node_modules/.bin/mocha test/helper/Puppeteer_test.js --reporter @testomatio/reporter/mocha
-        timeout-minutes: 5
+        timeout-minutes: 10
       - name: run tests
         run: 'timeout 600 bash -c "./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Puppeteer.js --grep @Puppeteer --debug"'
         timeout-minutes: 12
