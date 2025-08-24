@@ -776,6 +776,28 @@ The generated HTML report includes:
 - **Detailed Test Information**: Expandable sections showing steps, hooks, metadata, and artifacts
 - **Export Integration**: JSON stats export for external analysis tools
 
+### Screenshots
+
+#### Main Dashboard
+
+![HTML Reporter Main Dashboard](shared/html-reporter-main-dashboard.png)
+_Interactive dashboard with test statistics, pie chart visualization, and comprehensive filtering options_
+
+#### Test Details View
+
+![HTML Reporter Test Details](shared/html-reporter-test-details.png)
+_Expandable test details showing step-by-step execution with timing, status indicators, and comprehensive test information_
+
+#### Advanced Filtering
+
+![HTML Reporter Filtering](shared/html-reporter-filtering.png)
+_Real-time filtering capabilities allowing users to filter by status, features, tags, retry status, and test type_
+
+#### BDD/Gherkin Support
+
+![HTML Reporter BDD Details](shared/html-reporter-bdd-details.png)
+_Comprehensive BDD/Gherkin support with feature information, scenario formatting, proper step keywords (Given, When, Then, And), hooks, and visual indicators_
+
 ### Stats Export for Grafana Integration
 
 Enable stats export to integrate with monitoring tools:
@@ -839,33 +861,36 @@ No special configuration required - BDD support is automatically enabled when us
 exports.config = {
   gherkin: {
     features: './features/*.feature',
-    steps: './step_definitions/*.js'
+    steps: './step_definitions/*.js',
   },
   plugins: {
     htmlReporter: {
       enabled: true,
       output: './output',
-      reportFileName: 'report.html'
-    }
-  }
+      reportFileName: 'report.html',
+    },
+  },
 }
 ```
 
 #### BDD Report Features
 
 **Feature Display:**
+
 - Feature name and description prominently displayed
 - Feature-level tags shown with purple styling
 - File path information for traceability
 - Language support for internationalized Gherkin
 
 **Scenario Formatting:**
+
 - Clear "Scenario:" prefix for test titles
 - "Feature:" prefix for feature grouping
 - Purple "Gherkin" badge for easy identification
 - Visual left border styling for BDD tests
 
 **Step Visualization:**
+
 - Proper Gherkin keywords: Given, When, Then, And
 - Step text displayed with original Gherkin formatting
 - Execution timing for each step
@@ -873,6 +898,7 @@ exports.config = {
 - Support for data tables and docstrings in step comments
 
 **Enhanced Filtering:**
+
 - Test Type filter to show BDD-only or regular tests
 - All existing filters (tags, status, feature) work with BDD tests
 - Combined filtering for complex test selection
