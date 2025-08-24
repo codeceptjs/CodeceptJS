@@ -48,10 +48,7 @@
   },
   "repository": "Codeception/codeceptjs",
   "scripts": {
-    "test-server": "node bin/test-server.js test/data/rest/db.json --host 0.0.0.0 -p 8010",
-    "mock-server:start": "node test/mock-server/start-mock-server.js",
-    "mock-server:stop": "kill -9 $(lsof -t -i:3001)",
-    "test:with-mock-server": "npm run mock-server:start && npm test",
+    "json-server": "json-server test/data/rest/db.json --host 0.0.0.0 -p 8010 --watch -m test/data/rest/headers.cjs",
     "json-server:graphql": "node test/data/graphql/index.js",
     "lint": "eslint bin/ examples/ lib/ test/ translations/ runok.cjs",
     "lint-fix": "eslint bin/ examples/ lib/ test/ translations/ runok.cjs --fix",
