@@ -228,6 +228,66 @@ Result will be located at `output/result.xml` file.
 
 ## Html
 
+### Built-in HTML Reporter
+
+CodeceptJS includes a built-in HTML reporter plugin that generates comprehensive HTML reports with detailed test information.
+
+#### Features
+
+- **Interactive Test Results**: Click on tests to expand and view detailed information
+- **Step-by-Step Details**: Shows individual test steps with status indicators and timing
+- **Test Statistics**: Visual cards showing totals, passed, failed, and pending test counts
+- **Error Information**: Detailed error messages for failed tests with clean formatting
+- **Artifacts Support**: Display screenshots and other test artifacts with modal viewing
+- **Responsive Design**: Mobile-friendly layout that works on all screen sizes
+- **Professional Styling**: Modern, clean interface with color-coded status indicators
+
+#### Configuration
+
+Add the `htmlReporter` plugin to your `codecept.conf.js`:
+
+```js
+exports.config = {
+  // ... your other configuration
+  plugins: {
+    htmlReporter: {
+      enabled: true,
+      output: './output',              // Directory for the report
+      reportFileName: 'report.html',   // Name of the HTML file
+      includeArtifacts: true,          // Include screenshots/artifacts
+      showSteps: true,                 // Show individual test steps
+      showSkipped: true                // Show skipped tests
+    }
+  }
+}
+```
+
+#### Configuration Options
+
+- `output` (optional, default: `./output`) - Directory where the HTML report will be saved
+- `reportFileName` (optional, default: `'report.html'`) - Name of the generated HTML file
+- `includeArtifacts` (optional, default: `true`) - Whether to include screenshots and other artifacts
+- `showSteps` (optional, default: `true`) - Whether to display individual test steps
+- `showSkipped` (optional, default: `true`) - Whether to include skipped tests in the report
+
+#### Usage
+
+Run your tests normally and the HTML report will be automatically generated:
+
+```sh
+npx codeceptjs run
+```
+
+The report will be saved to `output/report.html` (or your configured location) and includes:
+
+- Overview statistics with visual cards
+- Expandable test details showing steps and timing
+- Error messages for failed tests
+- Screenshots and artifacts (if available)
+- Interactive failures section
+
+### Mochawesome
+
 Best HTML reports could be produced with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
 
 ![mochawesome](/img/mochawesome.png)
