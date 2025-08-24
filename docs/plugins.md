@@ -720,23 +720,10 @@ HTML Reporter Plugin for CodeceptJS
 
 Generates comprehensive HTML reports showing:
 
-- **Interactive Test Results**: Click-to-expand test details with comprehensive information
-- **Step-by-Step Details**: Shows individual test steps with proper method names (e.g., `I.seeFile()`, `I.amInPath()`), status indicators, and timing
-- **BDD/Gherkin Support**: Full support for Gherkin feature files with proper scenario formatting, step keywords, and feature information
-- **Test Statistics**: Visual cards displaying totals, passed, failed, and pending test counts with interactive pie chart
-- **Error Information**: Clean, formatted error messages for failed tests with ANSI color code stripping
-- **Artifacts Support**: Display screenshots and other test artifacts with modal viewing capability
-- **Responsive Design**: Mobile-friendly layout that works across all screen sizes
-- **Professional Styling**: Modern, clean interface with color-coded status indicators
-- **Enhanced Features**:
-  - **Metadata Display**: Shows test metadata, options, and custom properties
-  - **Tags Support**: Display and filter by test tags (@smoke, @critical, etc.)
-  - **Retry Tracking**: Shows retry attempts and final test status
-  - **Test Notes**: Display test notes and comments
-  - **Interactive Filters**: Filter tests by status, feature, tags, retry status, and test type (BDD vs Regular)
-  - **Test History**: Track test results across multiple runs with visual charts
-  - **Stats Export**: Export test statistics in JSON format for integration with external tools (Grafana, etc.)
-  - **Worker Support**: Compatible with run-workers and run-multiple commands
+- Test statistics
+- Feature/Scenario details
+- Individual step results
+- Test artifacts (screenshots, etc.)
 
 ## Configuration
 
@@ -744,166 +731,22 @@ Generates comprehensive HTML reports showing:
 "plugins": {
    "htmlReporter": {
      "enabled": true,
-     "output": "./output",              // Directory for the report
-     "reportFileName": "report.html",   // Name of the HTML file
-     "includeArtifacts": true,          // Include screenshots/artifacts
-     "showSteps": true,                 // Show individual test steps
-     "showSkipped": true,               // Show skipped tests
-     "showMetadata": true,              // Show test metadata and options
-     "showTags": true,                  // Show test tags
-     "showRetries": true,               // Show retry information
-     "exportStats": false,              // Export stats to JSON file
-     "exportStatsPath": "./stats.json", // Path for stats export
-     "keepHistory": false,              // Track test history
-     "historyPath": "./test-history.json", // Path for history file
-     "maxHistoryEntries": 50            // Max history entries to keep
+     "output": "./output",
+     "reportFileName": "report.html",
+     "includeArtifacts": true,
+     "showSteps": true,
+     "showSkipped": true,
+     "showMetadata": true,
+     "showTags": true,
+     "showRetries": true,
+     "exportStats": false,
+     "exportStatsPath": "./stats.json",
+     "keepHistory": false,
+     "historyPath": "./test-history.json",
+     "maxHistoryEntries": 50
    }
 }
 ```
-
-### Usage
-
-Run tests normally and the HTML report will be automatically generated:
-
-```bash
-npx codeceptjs run
-```
-
-The generated HTML report includes:
-
-- **Filter Controls**: Interactive filtering by status, feature, tags, and retry status
-- **Test History Chart**: Visual representation of test results over time (when history is enabled)
-- **Detailed Test Information**: Expandable sections showing steps, hooks, metadata, and artifacts
-- **Export Integration**: JSON stats export for external analysis tools
-
-### Screenshots
-
-#### Main Dashboard
-
-![HTML Reporter Main Dashboard](shared/html-reporter-main-dashboard.png)
-_Interactive dashboard with test statistics, pie chart visualization, and comprehensive filtering options_
-
-#### Test Details View
-
-![HTML Reporter Test Details](shared/html-reporter-test-details.png)
-_Expandable test details showing step-by-step execution with timing, status indicators, and comprehensive test information_
-
-#### Advanced Filtering
-
-![HTML Reporter Filtering](shared/html-reporter-filtering.png)
-_Real-time filtering capabilities allowing users to filter by status, features, tags, retry status, and test type_
-
-#### BDD/Gherkin Support
-
-![HTML Reporter BDD Details](shared/html-reporter-bdd-details.png)
-_Comprehensive BDD/Gherkin support with feature information, scenario formatting, proper step keywords (Given, When, Then, And), hooks, and visual indicators_
-
-### Stats Export for Grafana Integration
-
-Enable stats export to integrate with monitoring tools:
-
-```js
-"htmlReporter": {
-  "enabled": true,
-  "exportStats": true,
-  "exportStatsPath": "./test-stats.json"
-}
-```
-
-The exported JSON contains structured data perfect for Grafana dashboards:
-
-- Test execution metrics
-- Pass/fail rates over time
-- Individual test performance data
-- Retry statistics
-- Test metadata for grouping and filtering
-
-### History Tracking
-
-Track test trends across multiple runs:
-
-```js
-"htmlReporter": {
-  "enabled": true,
-  "keepHistory": true,
-  "historyPath": "./test-history.json",
-  "maxHistoryEntries": 100
-}
-```
-
-History tracking provides:
-
-- Test result trends over time
-- Performance regression detection
-- Visual charts in the HTML report
-- JSON data for external analysis
-
-### BDD/Gherkin Support
-
-The HTML reporter provides comprehensive support for BDD/Gherkin feature files with enhanced formatting and visualization:
-
-#### Key BDD Features
-
-- **Automatic Detection**: Automatically detects BDD/Gherkin tests based on `.feature` files and Gherkin syntax
-- **Scenario Formatting**: Displays scenarios with proper "Scenario:" prefix and visual distinction from regular tests
-- **Feature Information**: Shows complete feature details including name, description, and file path
-- **Gherkin Steps**: Displays steps with proper keywords (Given, When, Then, And) in a BDD-friendly format
-- **BDD Badge**: Visual indicator distinguishing Gherkin tests from regular CodeceptJS tests
-- **Feature Tags**: Supports both feature-level and scenario-level tags with proper inheritance
-- **Test Type Filtering**: Filter reports to show only BDD tests, only regular tests, or both
-
-#### BDD Configuration
-
-No special configuration required - BDD support is automatically enabled when using Gherkin feature files:
-
-```js
-// codecept.conf.js
-exports.config = {
-  gherkin: {
-    features: './features/*.feature',
-    steps: './step_definitions/*.js',
-  },
-  plugins: {
-    htmlReporter: {
-      enabled: true,
-      output: './output',
-      reportFileName: 'report.html',
-    },
-  },
-}
-```
-
-#### BDD Report Features
-
-**Feature Display:**
-
-- Feature name and description prominently displayed
-- Feature-level tags shown with purple styling
-- File path information for traceability
-- Language support for internationalized Gherkin
-
-**Scenario Formatting:**
-
-- Clear "Scenario:" prefix for test titles
-- "Feature:" prefix for feature grouping
-- Purple "Gherkin" badge for easy identification
-- Visual left border styling for BDD tests
-
-**Step Visualization:**
-
-- Proper Gherkin keywords: Given, When, Then, And
-- Step text displayed with original Gherkin formatting
-- Execution timing for each step
-- Status indicators (pass/fail) for individual steps
-- Support for data tables and docstrings in step comments
-
-**Enhanced Filtering:**
-
-- Test Type filter to show BDD-only or regular tests
-- All existing filters (tags, status, feature) work with BDD tests
-- Combined filtering for complex test selection
-
-The BDD support seamlessly integrates with all existing HTML reporter features including retry tracking, history, stats export, and artifact display.
 
 ### Parameters
 
