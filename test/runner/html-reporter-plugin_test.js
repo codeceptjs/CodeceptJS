@@ -121,4 +121,49 @@ describe('CodeceptJS html-reporter-plugin', function () {
       done()
     })
   })
+
+  it('should support BDD/Gherkin scenarios', done => {
+    exec(config_run_config('codecept-bdd.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      // Check if HTML report file exists
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'bdd-report.html')
+      expect(fs.existsSync(reportFile)).toBe(true)
+
+      // Read and validate HTML report content for BDD features
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check for BDD-specific elements
+      expect(reportContent).toContain('bdd-test') // CSS class for BDD tests
+      expect(reportContent).toContain('Scenario:') // BDD scenario prefix
+      expect(reportContent).toContain('Feature:') // BDD feature prefix
+      expect(reportContent).toContain('Gherkin') // BDD badge
+      
+      // Check for BDD steps styling
+      expect(reportContent).toContain('bdd-steps-section')
+      expect(reportContent).toContain('bdd-step-item')
+      expect(reportContent).toContain('bdd-keyword')
+      expect(reportContent).toContain('bdd-step-text')
+      
+      // Check for feature information section
+      expect(reportContent).toContain('bdd-feature-section')
+      expect(reportContent).toContain('feature-info')
+      expect(reportContent).toContain('HTML Reporter BDD Test') // Feature name
+      
+      // Check for BDD-specific CSS styles
+      expect(reportContent).toContain('bdd-badge')
+      expect(reportContent).toContain('feature-name')
+      expect(reportContent).toContain('feature-description')
+      
+      // Check for test type filter
+      expect(reportContent).toContain('typeFilter')
+      expect(reportContent).toContain('BDD/Gherkin')
+      expect(reportContent).toContain('data-type=')
+      
+      // Should contain scenario steps with proper keywords
+      expect(reportContent).toMatch(/Given|When|Then|And/)
+
+      done()
+    })
+  })
 })
