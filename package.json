@@ -139,7 +139,7 @@
     "@wdio/utils": "9.15.0",
     "@xmldom/xmldom": "0.9.8",
     "chai": "^4.0.0",
-    "chai-as-promised": "7.1.2",
+    "chai-as-promised": "8.0.2",
     "chai-subset": "1.6.0",
     "documentation": "14.0.3",
     "electron": "37.2.3",
