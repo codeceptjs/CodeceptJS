@@ -1,10 +1,13 @@
-const { expect } = require('expect')
-const exec = require('child_process').exec
+const { exec } = require('child_process')
 const { assert } = require('chai')
+const path = require('path')
+
+const runner = path.join(__dirname, '/../../bin/codecept.js')
+const codecept_dir = path.join(__dirname, '/../data/sandbox')
+const codecept_run = `${runner} run`
+const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`
 
 describe('Custom Masking Integration Tests', () => {
-  const config_run_config = config => `node ./bin/codecept.js run --config test/data/sandbox/${config}`
-
   it('should mask custom patterns in debug mode', done => {
     exec(config_run_config('codecept.bdd.masking.js') + ' --debug --grep "Custom Data Masking"', (err, stdout, stderr) => {
       console.log('STDOUT:', stdout)
