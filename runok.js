@@ -373,7 +373,7 @@ title: ${name}
 
   async server() {
     // run test server. Warning! PHP required!
-    await Promise.all([exec('php -S 127.0.0.1:8000 -t test/data/app'), npmRun('json-server')])
+    await Promise.all([exec('php -S 127.0.0.1:8000 -t test/data/app'), npmRun('test-server')])
   },
 
   async release(releaseType = null) {

@@ -713,6 +713,44 @@ More config options are available:
 
 *   `config`   (optional, default `{}`)
 
+## htmlReporter
+
+HTML Reporter Plugin for CodeceptJS
+
+Generates comprehensive HTML reports showing:
+
+- Test statistics
+- Feature/Scenario details
+- Individual step results
+- Test artifacts (screenshots, etc.)
+
+## Configuration
+
+```js
+"plugins": {
+   "htmlReporter": {
+     "enabled": true,
+     "output": "./output",
+     "reportFileName": "report.html",
+     "includeArtifacts": true,
+     "showSteps": true,
+     "showSkipped": true,
+     "showMetadata": true,
+     "showTags": true,
+     "showRetries": true,
+     "exportStats": false,
+     "exportStatsPath": "./stats.json",
+     "keepHistory": false,
+     "historyPath": "./test-history.json",
+     "maxHistoryEntries": 50
+   }
+}
+```
+
+### Parameters
+
+- `config` &#x20;
+
 ## pageInfo
 
 Collects information from web page after each failed test and adds it to the test as an artifact.

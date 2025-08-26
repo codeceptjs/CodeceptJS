@@ -520,11 +520,17 @@ declare namespace CodeceptJS {
   }
 }
 
+type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>;
+type HopeThat = <T>(fn: () => Promise<T> | T) => Promise<T | false>;
+type RetryTo = <T>(fn: () => Promise<T> | T, retries?: number) => Promise<T>;
+
+
 // Globals
 declare const codecept_dir: string
 declare const output_dir: string
-declare function tryTo(...fn): Promise<boolean>
-declare function retryTo(...fn): Promise<null>
+declare const tryTo: TryTo;
+declare const retryTo: RetryTo;
+declare const hopeThat: HopeThat;
 
 declare const actor: CodeceptJS.actor
 declare const codecept_actor: CodeceptJS.actor
@@ -634,4 +640,10 @@ declare module 'codeceptjs' {
 
 declare module '@codeceptjs/helper' {
   export = CodeceptJS.Helper
+}
+
+declare module 'codeceptjs/effects' {
+  export const tryTo: TryTo;
+  export const retryTo: RetryTo;
+  export const hopeThat: HopeThat;
 }

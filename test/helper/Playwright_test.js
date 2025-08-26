@@ -778,6 +778,64 @@ describe('Playwright', function () {
         .then(() => I.seeInField('#text2', 'London')))
   })
 
+  describe('#waitForText timeout fix', () => {
+    it('should wait for the full timeout duration when text is not found', async function () {
+      this.timeout(10000) // Allow up to 10 seconds for this test
+
+      const startTime = Date.now()
+      const timeoutSeconds = 3 // 3 second timeout
+
+      try {
+        await I.amOnPage('/')
+        await I.waitForText('ThisTextDoesNotExistAnywhere12345', timeoutSeconds)
+        // Should not reach here
+        throw new Error('waitForText should have thrown an error')
+      } catch (error) {
+        const elapsedTime = Date.now() - startTime
+        const expectedTimeout = timeoutSeconds * 1000
+
+        // Verify it waited close to the full timeout (allow 500ms tolerance)
+        assert.ok(elapsedTime >= expectedTimeout - 500, `Expected to wait at least ${expectedTimeout - 500}ms, but waited ${elapsedTime}ms`)
+        assert.ok(elapsedTime <= expectedTimeout + 1000, `Expected to wait at most ${expectedTimeout + 1000}ms, but waited ${elapsedTime}ms`)
+        assert.ok(error.message.includes('was not found on page after'), `Expected error message about text not found, got: ${error.message}`)
+      }
+    })
+
+    it('should return quickly when text is found', async function () {
+      this.timeout(5000)
+
+      const startTime = Date.now()
+
+      await I.amOnPage('/')
+      await I.waitForText('TestEd', 10) // This text should exist on the test page
+
+      const elapsedTime = Date.now() - startTime
+      // Should find text quickly, within 2 seconds
+      assert.ok(elapsedTime < 2000, `Expected to find text quickly but took ${elapsedTime}ms`)
+    })
+
+    it('should work correctly with context parameter and proper timeout', async function () {
+      this.timeout(8000)
+
+      const startTime = Date.now()
+      const timeoutSeconds = 2
+
+      try {
+        await I.amOnPage('/')
+        await I.waitForText('NonExistentTextInBody', timeoutSeconds, 'body')
+        throw new Error('Should have thrown timeout error')
+      } catch (error) {
+        const elapsedTime = Date.now() - startTime
+        const expectedTimeout = timeoutSeconds * 1000
+
+        // Verify proper timeout behavior with context
+        assert.ok(elapsedTime >= expectedTimeout - 500, `Expected to wait at least ${expectedTimeout - 500}ms, but waited ${elapsedTime}ms`)
+        assert.ok(elapsedTime <= expectedTimeout + 1000, `Expected to wait at most ${expectedTimeout + 1000}ms, but waited ${elapsedTime}ms`)
+        assert.ok(error.message.includes('was not found on page after'), `Expected timeout error message, got: ${error.message}`)
+      }
+    })
+  })
+
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () =>
       I.amOnPage('/')
@@ -1862,7 +1920,8 @@ describe('Playwright - HAR', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElements = await I.grabWebElements('#button')
-      assert.equal(webElements[0], "locator('#button').first()")
+      assert.equal(webElements[0].constructor.name, 'WebElement')
+      assert.equal(webElements[0].getNativeElement(), "locator('#button').first()")
       assert.isAbove(webElements.length, 0)
     })
 
@@ -1870,7 +1929,8 @@ describe('Playwright - HAR', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElement = await I.grabWebElement('#button')
-      assert.equal(webElement, "locator('#button').first()")
+      assert.equal(webElement.constructor.name, 'WebElement')
+      assert.equal(webElement.getNativeElement(), "locator('#button').first()")
     })
   })
 })
@@ -1906,7 +1966,8 @@ describe('using data-testid attribute', () => {
     await I.amOnPage('/')
 
     const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' })
-    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0')
+    assert.equal(webElements[0].constructor.name, 'WebElement')
+    assert.equal(webElements[0].getNativeElement()._selector, '[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
 
@@ -1914,7 +1975,8 @@ describe('using data-testid attribute', () => {
     await I.amOnPage('/')
 
     const webElements = await I.grabWebElements('h1[data-testid="welcome"]')
-    assert.equal(webElements[0]._selector, 'h1[data-testid="welcome"] >> nth=0')
+    assert.equal(webElements[0].constructor.name, 'WebElement')
+    assert.equal(webElements[0].getNativeElement()._selector, 'h1[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
 })

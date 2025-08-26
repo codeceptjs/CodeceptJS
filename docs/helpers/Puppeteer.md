@@ -60,6 +60,30 @@ Type: [object][4]
 *   `chrome` **[object][4]?** pass additional [Puppeteer run options][28].
 *   `highlightElement` **[boolean][23]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
+## findElement
+
+Find a single element using Puppeteer's native element discovery methods
+Note: Puppeteer Locator API doesn't have .first() method like Playwright
+
+### Parameters
+
+*   `matcher` **[Object][4]** Puppeteer context to search within
+*   `locator` **([Object][4] | [string][6])** Locator specification
+
+Returns **[Promise][14]<[Object][4]>** Single ElementHandle object
+
+## findElements
+
+Find elements using Puppeteer's native element discovery methods
+Note: Unlike Playwright, Puppeteer's Locator API doesn't have .all() method for multiple elements
+
+### Parameters
+
+*   `matcher` **[Object][4]** Puppeteer context to search within
+*   `locator` **([Object][4] | [string][6])** Locator specification
+
+Returns **[Promise][14]<[Array][16]>** Array of ElementHandle objects
+
 
 
 #### Trace Recording Customization
@@ -230,6 +254,25 @@ Find a clickable element by providing human-readable text:
 ```js
 this.helpers['Puppeteer']._locateClickable('Next page').then // ...
 ```
+
+#### Parameters
+
+*   `locator` &#x20;
+
+### _locateElement
+
+Get single element by different locator types, including strict locator
+Should be used in custom helpers:
+
+```js
+const element = await this.helpers['Puppeteer']._locateElement({name: 'password'});
+```
+
+
+
+
+This action supports [React locators](https://codecept.io/react#locators)
+
 
 #### Parameters
 
@@ -1265,6 +1308,21 @@ let inputs = await I.grabValueFromAll('//form/input');
 *   `locator` **([string][6] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][14]<[Array][16]<[string][6]>>** attribute value
+
+### grabWebElement
+
+Grab WebElement for given locator
+Resumes test execution, so **should be used inside an async function with `await`** operator.
+
+```js
+const webElement = await I.grabWebElement('#button');
+```
+
+#### Parameters
+
+*   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][14]<any>** WebElement of being used Web helper
 
 ### grabWebElements
 

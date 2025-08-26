@@ -165,6 +165,7 @@ program
   .option('--no-timeouts', 'disable all timeouts')
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('--shuffle', 'Shuffle the order in which test files run')
+  .option('--shard <index/total>', 'run only a fraction of tests (e.g., --shard 1/4)')
 
   // mocha options
   .option('--colors', 'force enabling of colors')
@@ -196,6 +197,7 @@ program
   .option('-i, --invert', 'inverts --grep matches')
   .option('-o, --override [value]', 'override current config options')
   .option('--suites', 'parallel execution of suites not single tests')
+  .option('--by <strategy>', 'test distribution strategy: "test" (pre-assign individual tests), "suite" (pre-assign test suites), or "pool" (dynamic distribution for optimal load balancing, recommended)')
   .option(commandFlags.debug.flag, commandFlags.debug.description)
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option('--features', 'run only *.feature files and skip tests')
