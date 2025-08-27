@@ -130,6 +130,52 @@ I.fillField({name: 'user[email]'},'miles@davis.com');
 I.seeElement({xpath: '//body/header'});
 ```
 
+### Custom Locator Strategies
+
+CodeceptJS with Playwright supports custom locator strategies, allowing you to define your own element finding logic. Custom locator strategies are JavaScript functions that receive a selector value and return DOM elements.
+
+To use custom locator strategies, configure them in your `codecept.conf.js`:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      url: 'http://localhost',
+      browser: 'chromium',
+      customLocatorStrategies: {
+        byRole: (selector, root) => {
+          return root.querySelector(`[role="${selector}"]`);
+        },
+        byTestId: (selector, root) => {
+          return root.querySelector(`[data-testid="${selector}"]`);
+        },
+        byDataQa: (selector, root) => {
+          const elements = root.querySelectorAll(`[data-qa="${selector}"]`);
+          return Array.from(elements); // Return array for multiple elements
+        }
+      }
+    }
+  }
+}
+```
+
+Once configured, you can use these custom locator strategies in your tests:
+
+```js
+I.click({byRole: 'button'});           // Find by role attribute
+I.see('Welcome', {byTestId: 'title'}); // Find by data-testid
+I.fillField({byDataQa: 'email'}, 'test@example.com');
+```
+
+**Custom Locator Function Guidelines:**
+- Functions receive `(selector, root)` parameters where `selector` is the value and `root` is the DOM context
+- Return a single DOM element for finding the first match
+- Return an array of DOM elements for finding all matches
+- Return `null` or empty array if no elements found
+- Functions execute in the browser context, so only browser APIs are available
+
+This feature provides the same functionality as WebDriver's custom locator strategies but leverages Playwright's native selector engine system.
+
 ### Interactive Pause
 
 It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
