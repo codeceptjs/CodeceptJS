@@ -22,6 +22,9 @@ Reference: [Helpers API](https://github.com/codeceptjs/CodeceptJS/tree/master/do
 CodeceptJS is a new testing framework for end-to-end testing with WebDriver (or others).
 It abstracts browser interaction to simple steps that are written from a user's perspective.
 A simple test that verifies the "Welcome" text is present on a main page of a site will look like:
+```
+ Commit test
+```
 
 ```js
 Feature('CodeceptJS demo')
