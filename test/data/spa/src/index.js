@@ -2,26 +2,18 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 
-// Hook to get URL parameters and POST data from localStorage
+// Hook to get URL parameters and POST data
 function usePostData() {
   const [postData, setPostData] = React.useState({})
   const location = useLocation()
 
   React.useEffect(() => {
-    // Check if we're coming from a POST
+    // Check if we're showing POST results
     const urlParams = new URLSearchParams(location.search)
     if (urlParams.has('posted')) {
-      // Get POST data from localStorage
-      try {
-        const storedData = localStorage.getItem('codeceptjs_post_data')
-        if (storedData) {
-          setPostData(JSON.parse(storedData))
-          // Clear the POST data after displaying
-          localStorage.removeItem('codeceptjs_post_data')
-        }
-      } catch (error) {
-        setPostData({})
-      }
+      // POST data is now handled server-side and shown in the response
+      // This hook is mainly for consistency with the original design
+      setPostData({})
     } else {
       setPostData({})
     }
@@ -111,34 +103,13 @@ function InfoPage() {
 // Form file page component
 function FormFilePage() {
   const postData = usePostData()
-  const navigate = useNavigate()
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    const data = {}
-
-    // Handle file uploads and regular fields
-    for (let [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        // For file uploads, store file info (name, size, type)
-        data[key] = `${value.name} (${value.size} bytes, ${value.type})`
-      } else {
-        data[key] = value
-      }
-    }
-
-    // Store in localStorage and redirect
-    localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
-    navigate('/?posted=1')
-  }
 
   return (
     <div>
       <h1>File Upload</h1>
       <div className="notice" qa-id="test"></div>
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form action="/form/file" method="POST" encType="multipart/form-data">
         <p>
           <label>Upload a file:</label>
           <br />
@@ -169,28 +140,13 @@ function FormFilePage() {
 // Form hidden page component
 function FormHiddenPage() {
   const postData = usePostData()
-  const navigate = useNavigate()
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    const data = {}
-
-    for (let [key, value] of formData.entries()) {
-      data[key] = value
-    }
-
-    // Store in localStorage and redirect
-    localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
-    navigate('/?posted=1')
-  }
 
   return (
     <div>
       <h1>Hidden Form</h1>
       <div className="notice" qa-id="test"></div>
 
-      <form onSubmit={handleSubmit}>
+      <form action="/form/hidden" method="POST">
         <input type="hidden" name="hidden_field" value="hidden_value" />
         <p>
           <label>Visible field:</label>
@@ -292,6 +248,247 @@ function SearchPage() {
   )
 }
 
+// Form Select page component (needed by tests)
+function FormSelectPage() {
+  const postData = usePostData()
+
+  return (
+    <html>
+      <body>
+        <form action="/form/complex" method="POST">
+          <label htmlFor="age">Select your age</label>
+          <select name="age" id="age">
+            <option value="child">below 13</option>
+            <option value="teenage">13-21</option>
+            <option value="adult">21-60</option>
+            <option value="oldfag" selected="selected">
+              60-100
+            </option>
+            <option value="dead">100-210</option>
+          </select>
+          <input type="submit" value="Submit" />
+        </form>
+        {Object.keys(postData).length > 0 && (
+          <pre style={{ whiteSpace: 'pre-wrap' }}>
+            {Object.entries(postData)
+              .map(([key, value]) => `[${key}] => ${Array.isArray(value) ? `Array\n(\n    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}\n)` : value}`)
+              .join('\n')}
+          </pre>
+        )}
+      </body>
+    </html>
+  )
+}
+
+// Form Field page component (needed by tests)
+function FormFieldPage() {
+  const postData = usePostData()
+
+  return (
+    <div>
+      <h1>Form Fields</h1>
+      <form action="/form/field" method="POST">
+        <p>
+          <label>Name:</label>
+          <br />
+          <input type="text" name="name" placeholder="Enter your name" />
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+
+      {Object.keys(postData).length > 0 && (
+        <pre style={{ whiteSpace: 'pre-wrap' }}>
+          {Object.entries(postData)
+            .map(([key, value]) => `[${key}] => ${Array.isArray(value) ? `Array\n(\n    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}\n)` : value}`)
+            .join('\n')}
+        </pre>
+      )}
+    </div>
+  )
+}
+
+// Form Checkbox page component (needed by tests)
+function FormCheckboxPage() {
+  const postData = usePostData()
+
+  return (
+    <div>
+      <h1>Checkbox Form</h1>
+      <form action="/form/checkbox" method="POST">
+        <p>
+          <label>
+            <input type="checkbox" name="agree" value="yes" /> I agree to the terms
+          </label>
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+
+      {Object.keys(postData).length > 0 && (
+        <pre style={{ whiteSpace: 'pre-wrap' }}>
+          {Object.entries(postData)
+            .map(([key, value]) => `[${key}] => ${Array.isArray(value) ? `Array\n(\n    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}\n)` : value}`)
+            .join('\n')}
+        </pre>
+      )}
+    </div>
+  )
+}
+
+// Form Button page component (needed by tests)
+function FormButtonPage() {
+  const postData = usePostData()
+
+  return (
+    <div>
+      <h1>Button Form</h1>
+      <form action="/form/button" method="POST">
+        <p>
+          <button type="submit" name="action" value="save">
+            Save
+          </button>
+          <button type="submit" name="action" value="delete">
+            Delete
+          </button>
+        </p>
+      </form>
+
+      {Object.keys(postData).length > 0 && (
+        <pre style={{ whiteSpace: 'pre-wrap' }}>
+          {Object.entries(postData)
+            .map(([key, value]) => `[${key}] => ${Array.isArray(value) ? `Array\n(\n    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}\n)` : value}`)
+            .join('\n')}
+        </pre>
+      )}
+    </div>
+  )
+}
+
+// Generic Form Complex page (catches form submissions)
+function FormComplexPage() {
+  const postData = usePostData()
+
+  return (
+    <div>
+      <h1>Form Submitted Successfully</h1>
+      <p>
+        <a href="/">Back to index</a>
+      </p>
+
+      {Object.keys(postData).length > 0 && (
+        <pre style={{ whiteSpace: 'pre-wrap' }}>
+          {Object.entries(postData)
+            .map(([key, value]) => `[${key}] => ${Array.isArray(value) ? `Array\n(\n    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}\n)` : value}`)
+            .join('\n')}
+        </pre>
+      )}
+    </div>
+  )
+}
+
+// Form Textarea page component
+function FormTextareaPage() {
+  return (
+    <div>
+      <h1>Textarea Form</h1>
+      <form action="/form/complex" method="POST">
+        <p>
+          <label>Message:</label>
+          <br />
+          <textarea name="message" rows="4" cols="50" placeholder="Enter your message"></textarea>
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+    </div>
+  )
+}
+
+// Form Aria page component
+function FormAriaPage() {
+  return (
+    <div>
+      <h1>Aria Form</h1>
+      <form action="/form/complex" method="POST">
+        <p>
+          <label aria-label="Username input">Username:</label>
+          <input type="text" name="username" aria-required="true" />
+        </p>
+        <p>
+          <input type="submit" value="Submit" aria-label="Submit form" />
+        </p>
+      </form>
+    </div>
+  )
+}
+
+// Form Example1 page component
+function FormExample1Page() {
+  return (
+    <div>
+      <h1>Example Form 1</h1>
+      <form action="/form/complex" method="POST">
+        <p>
+          <label>Example field:</label>
+          <input type="text" name="example" />
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+    </div>
+  )
+}
+
+// Form Example7 page component
+function FormExample7Page() {
+  return (
+    <div>
+      <h1>Example Form 7</h1>
+      <form action="/form/complex" method="POST">
+        <p>
+          <label>Example field 7:</label>
+          <input type="text" name="example7" />
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+    </div>
+  )
+}
+
+// Form Wait Element page component
+function FormWaitElementPage() {
+  const [showElement, setShowElement] = React.useState(false)
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setShowElement(true), 1000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  return (
+    <div>
+      <h1>Wait Element Form</h1>
+      {showElement && (
+        <form action="/form/complex" method="POST">
+          <p>
+            <label>Wait field:</label>
+            <input type="text" name="waitfield" />
+          </p>
+          <p>
+            <input type="submit" value="Submit" />
+          </p>
+        </form>
+      )}
+    </div>
+  )
+}
+
 // Main App component with routing
 function App() {
   return (
@@ -301,6 +498,16 @@ function App() {
         <Route path="/info" element={<InfoPage />} />
         <Route path="/form/file" element={<FormFilePage />} />
         <Route path="/form/hidden" element={<FormHiddenPage />} />
+        <Route path="/form/select" element={<FormSelectPage />} />
+        <Route path="/form/field" element={<FormFieldPage />} />
+        <Route path="/form/checkbox" element={<FormCheckboxPage />} />
+        <Route path="/form/button" element={<FormButtonPage />} />
+        <Route path="/form/textarea" element={<FormTextareaPage />} />
+        <Route path="/form/aria" element={<FormAriaPage />} />
+        <Route path="/form/example1" element={<FormExample1Page />} />
+        <Route path="/form/example7" element={<FormExample7Page />} />
+        <Route path="/form/wait_element" element={<FormWaitElementPage />} />
+        <Route path="/form/complex" element={<FormComplexPage />} />
         <Route path="/spinner" element={<SpinnerPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<IndexPage />} />

@@ -27232,15 +27232,7 @@ var CodeceptApp = (() => {
     import_react.default.useEffect(() => {
       const urlParams = new URLSearchParams(location.search)
       if (urlParams.has('posted')) {
-        try {
-          const storedData = localStorage.getItem('codeceptjs_post_data')
-          if (storedData) {
-            setPostData(JSON.parse(storedData))
-            localStorage.removeItem('codeceptjs_post_data')
-          }
-        } catch (error) {
-          setPostData({})
-        }
+        setPostData({})
       } else {
         setPostData({})
       }
@@ -27329,27 +27321,13 @@ var CodeceptApp = (() => {
   }
   function FormFilePage() {
     const postData = usePostData()
-    const navigate = useNavigate()
-    const handleSubmit = e => {
-      e.preventDefault()
-      const formData = new FormData(e.target)
-      const data = {}
-      for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          data[key] = `${value.name} (${value.size} bytes, ${value.type})`
-        } else {
-          data[key] = value
-        }
-      }
-      localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
-      navigate('/?posted=1')
-    }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'File Upload' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', { className: 'notice', 'qa-id': 'test' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
-          onSubmit: handleSubmit,
+          action: '/form/file',
+          method: 'POST',
           encType: 'multipart/form-data',
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
@@ -27385,23 +27363,13 @@ var CodeceptApp = (() => {
   }
   function FormHiddenPage() {
     const postData = usePostData()
-    const navigate = useNavigate()
-    const handleSubmit = e => {
-      e.preventDefault()
-      const formData = new FormData(e.target)
-      const data = {}
-      for (let [key, value] of formData.entries()) {
-        data[key] = value
-      }
-      localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
-      navigate('/?posted=1')
-    }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Hidden Form' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', { className: 'notice', 'qa-id': 'test' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
-          onSubmit: handleSubmit,
+          action: '/form/hidden',
+          method: 'POST',
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'hidden', name: 'hidden_field', value: 'hidden_value' }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
@@ -27509,6 +27477,286 @@ var CodeceptApp = (() => {
       ],
     })
   }
+  function FormSelectPage() {
+    const postData = usePostData()
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)('html', {
+      children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('body', {
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+            action: '/form/complex',
+            method: 'POST',
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { htmlFor: 'age', children: 'Select your age' }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('select', {
+                name: 'age',
+                id: 'age',
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)('option', { value: 'child', children: 'below 13' }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)('option', { value: 'teenage', children: '13-21' }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)('option', { value: 'adult', children: '21-60' }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)('option', { value: 'oldfag', selected: 'selected', children: '60-100' }),
+                  /* @__PURE__ */ (0, import_jsx_runtime.jsx)('option', { value: 'dead', children: '100-210' }),
+                ],
+              }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }),
+            ],
+          }),
+          Object.keys(postData).length > 0 &&
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('pre', {
+              style: { whiteSpace: 'pre-wrap' },
+              children: Object.entries(postData)
+                .map(
+                  ([key, value]) =>
+                    `[${key}] => ${
+                      Array.isArray(value)
+                        ? `Array
+(
+    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}
+)`
+                        : value
+                    }`,
+                )
+                .join('\n'),
+            }),
+        ],
+      }),
+    })
+  }
+  function FormFieldPage() {
+    const postData = usePostData()
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Form Fields' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/form/field',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Name:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('br', {}),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'name', placeholder: 'Enter your name' }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+        Object.keys(postData).length > 0 &&
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)('pre', {
+            style: { whiteSpace: 'pre-wrap' },
+            children: Object.entries(postData)
+              .map(
+                ([key, value]) =>
+                  `[${key}] => ${
+                    Array.isArray(value)
+                      ? `Array
+(
+    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}
+)`
+                      : value
+                  }`,
+              )
+              .join('\n'),
+          }),
+      ],
+    })
+  }
+  function FormCheckboxPage() {
+    const postData = usePostData()
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Checkbox Form' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/form/checkbox',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', {
+              children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('label', {
+                children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'checkbox', name: 'agree', value: 'yes' }), ' I agree to the terms'],
+              }),
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+        Object.keys(postData).length > 0 &&
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)('pre', {
+            style: { whiteSpace: 'pre-wrap' },
+            children: Object.entries(postData)
+              .map(
+                ([key, value]) =>
+                  `[${key}] => ${
+                    Array.isArray(value)
+                      ? `Array
+(
+    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}
+)`
+                      : value
+                  }`,
+              )
+              .join('\n'),
+          }),
+      ],
+    })
+  }
+  function FormButtonPage() {
+    const postData = usePostData()
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Button Form' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('form', {
+          action: '/form/button',
+          method: 'POST',
+          children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)('button', { type: 'submit', name: 'action', value: 'save', children: 'Save' }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)('button', { type: 'submit', name: 'action', value: 'delete', children: 'Delete' }),
+            ],
+          }),
+        }),
+        Object.keys(postData).length > 0 &&
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)('pre', {
+            style: { whiteSpace: 'pre-wrap' },
+            children: Object.entries(postData)
+              .map(
+                ([key, value]) =>
+                  `[${key}] => ${
+                    Array.isArray(value)
+                      ? `Array
+(
+    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}
+)`
+                      : value
+                  }`,
+              )
+              .join('\n'),
+          }),
+      ],
+    })
+  }
+  function FormComplexPage() {
+    const postData = usePostData()
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Form Submitted Successfully' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', children: 'Back to index' }) }),
+        Object.keys(postData).length > 0 &&
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)('pre', {
+            style: { whiteSpace: 'pre-wrap' },
+            children: Object.entries(postData)
+              .map(
+                ([key, value]) =>
+                  `[${key}] => ${
+                    Array.isArray(value)
+                      ? `Array
+(
+    ${value.map((item, index) => `[${index}] => ${item}`).join('\n    ')}
+)`
+                      : value
+                  }`,
+              )
+              .join('\n'),
+          }),
+      ],
+    })
+  }
+  function FormTextareaPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Textarea Form' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/form/complex',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Message:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('br', {}),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('textarea', { name: 'message', rows: '4', cols: '50', placeholder: 'Enter your message' }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+      ],
+    })
+  }
+  function FormAriaPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Aria Form' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/form/complex',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { 'aria-label': 'Username input', children: 'Username:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'username', 'aria-required': 'true' }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit', 'aria-label': 'Submit form' }) }),
+          ],
+        }),
+      ],
+    })
+  }
+  function FormExample1Page() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Example Form 1' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/form/complex',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Example field:' }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'example' })],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+      ],
+    })
+  }
+  function FormExample7Page() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Example Form 7' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/form/complex',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Example field 7:' }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'example7' })],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+      ],
+    })
+  }
+  function FormWaitElementPage() {
+    const [showElement, setShowElement] = import_react.default.useState(false)
+    import_react.default.useEffect(() => {
+      const timer = setTimeout(() => setShowElement(true), 1e3)
+      return () => clearTimeout(timer)
+    }, [])
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Wait Element Form' }),
+        showElement &&
+          /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+            action: '/form/complex',
+            method: 'POST',
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+                children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Wait field:' }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'waitfield' })],
+              }),
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+            ],
+          }),
+      ],
+    })
+  }
   function App() {
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
       children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, {
@@ -27517,6 +27765,16 @@ var CodeceptApp = (() => {
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/info', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(InfoPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/file', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormFilePage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/hidden', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormHiddenPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/select', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormSelectPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/field', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormFieldPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/checkbox', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormCheckboxPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/button', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormButtonPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/textarea', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormTextareaPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/aria', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormAriaPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/example1', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormExample1Page, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/example7', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormExample7Page, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/wait_element', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormWaitElementPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/complex', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormComplexPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/spinner', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpinnerPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/search', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SearchPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '*', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IndexPage, {}) }),

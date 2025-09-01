@@ -2,9 +2,11 @@ const http = require('http')
 const fs = require('fs')
 const path = require('path')
 const url = require('url')
+const querystring = require('querystring')
 
 const PORT = 8000
 const DIST_DIR = path.join(__dirname, 'dist')
+const DATA_FILE = path.join(__dirname, '../app/db')
 
 // MIME types for different file extensions
 const mimeTypes = {
@@ -19,7 +21,49 @@ const mimeTypes = {
   '.ico': 'image/x-icon',
 }
 
-const server = http.createServer((req, res) => {
+// Parse POST data from request
+function parsePostData(req) {
+  return new Promise((resolve, reject) => {
+    let body = ''
+    req.on('data', chunk => {
+      body += chunk.toString()
+    })
+    req.on('end', () => {
+      try {
+        const contentType = req.headers['content-type'] || ''
+        if (contentType.includes('application/x-www-form-urlencoded')) {
+          resolve(querystring.parse(body))
+        } else {
+          resolve({})
+        }
+      } catch (err) {
+        reject(err)
+      }
+    })
+  })
+}
+
+// Write form data to file in format expected by tests
+function writeFormData(formData) {
+  try {
+    const data = {
+      form: formData,
+      timestamp: new Date().toISOString(),
+    }
+
+    // Ensure the directory exists
+    const dir = path.dirname(DATA_FILE)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2))
+  } catch (error) {
+    console.error('Error writing form data:', error)
+  }
+}
+
+const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true)
   const pathname = parsedUrl.pathname
 
@@ -33,6 +77,30 @@ const server = http.createServer((req, res) => {
     res.writeHead(200)
     res.end()
     return
+  }
+
+  // Handle POST requests
+  if (req.method === 'POST') {
+    try {
+      const postData = await parsePostData(req)
+
+      // Write form data to file for tests
+      if (Object.keys(postData).length > 0) {
+        writeFormData(postData)
+      }
+
+      // Redirect to success page or back to form
+      res.writeHead(302, {
+        Location: pathname.includes('/form/') ? '/?posted=1' : '/',
+      })
+      res.end()
+      return
+    } catch (error) {
+      console.error('Error handling POST:', error)
+      res.writeHead(500, { 'Content-Type': 'text/plain' })
+      res.end('Error processing form data')
+      return
+    }
   }
 
   // Check if it's a static file request
