@@ -11,7 +11,7 @@ describe('Failed Tests Feature', function () {
 
   afterEach(() => {
     try {
-      fs.unlinkSync(`${codecept_dir}/failed-tests.json`)
+      fs.unlinkSync(`${codecept_dir}/_output/failed-tests.json`)
     } catch (e) {
       // continue regardless of error
     }
@@ -19,7 +19,7 @@ describe('Failed Tests Feature', function () {
 
   it('should save failed tests to JSON file', done => {
     exec(`${runner} run --config ${codecept_dir}/codecept.conf.js --save-failed-tests`, (err, stdout) => {
-      const failedTestsFile = `${codecept_dir}/failed-tests.json`
+      const failedTestsFile = `${codecept_dir}/_output/failed-tests.json`
 
       // Should have failed tests
       assert(err, 'Expected tests to fail')
@@ -49,7 +49,7 @@ describe('Failed Tests Feature', function () {
         {
           uid: 'should fail test 1',
           title: 'should fail test 1',
-          fullTitle: 'Failed Tests should fail test 1',
+          fullTitle: 'Failed Tests: should fail test 1',
           file: `${codecept_dir}/failed_test.js`,
           parent: { title: 'Failed Tests' },
         },
@@ -72,7 +72,7 @@ describe('Failed Tests Feature', function () {
 
   it('should work with run-workers command', done => {
     exec(`${runner} run-workers 2 --config ${codecept_dir}/codecept.conf.js --save-failed-tests`, (err, stdout) => {
-      const failedTestsFile = `${codecept_dir}/failed-tests.json`
+      const failedTestsFile = `${codecept_dir}/_output/failed-tests.json`
 
       // Should have failed tests
       assert(err, 'Expected tests to fail')
