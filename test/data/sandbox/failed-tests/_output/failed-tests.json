@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-09-01T10:50:29.507Z",
+  "count": 2,
+  "tests": [
+    {
+      "uid": "C0uxqLs4sLKEfa1MEDU+po0rPDVlBYfsJ6mo+t+JFd",
+      "title": "should fail test 2",
+      "fullTitle": "Failed Tests: should fail test 2",
+      "parent": {
+        "title": "Failed Tests"
+      }
+    },
+    {
+      "uid": "ntF6L532vjAvaxtPjflIelk2fgAok0BIrfw8WnsxEg",
+      "title": "should fail test 1",
+      "fullTitle": "Failed Tests: should fail test 1",
+      "parent": {
+        "title": "Failed Tests"
+      }
+    }
+  ]
+}

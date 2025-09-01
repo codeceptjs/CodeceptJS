@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const exec = require('child_process').exec
+const assert = require('assert')
 
 const runner = path.join(__dirname, '../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/failed-tests')
@@ -21,18 +22,18 @@ describe('Failed Tests Feature', function () {
       const failedTestsFile = `${codecept_dir}/failed-tests.json`
 
       // Should have failed tests
-      expect(err).toBeTruthy()
-      expect(stdout).toMatch(/Failed tests saved to/)
+      assert(err, 'Expected tests to fail')
+      assert(stdout.match(/Failed tests saved to/), 'Expected failed tests message in stdout')
 
       // Check if failed tests file was created
-      expect(fs.existsSync(failedTestsFile)).toBeTruthy()
+      assert(fs.existsSync(failedTestsFile), 'Expected failed tests file to be created')
 
       const failedTests = JSON.parse(fs.readFileSync(failedTestsFile, 'utf8'))
-      expect(failedTests).toHaveProperty('timestamp')
-      expect(failedTests).toHaveProperty('count')
-      expect(failedTests).toHaveProperty('tests')
-      expect(failedTests.tests).toBeInstanceOf(Array)
-      expect(failedTests.tests.length).toBeGreaterThan(0)
+      assert(failedTests.hasOwnProperty('timestamp'), 'Expected timestamp property')
+      assert(failedTests.hasOwnProperty('count'), 'Expected count property')
+      assert(failedTests.hasOwnProperty('tests'), 'Expected tests property')
+      assert(Array.isArray(failedTests.tests), 'Expected tests to be an array')
+      assert(failedTests.tests.length > 0, 'Expected at least one failed test')
 
       done()
     })
@@ -59,9 +60,9 @@ describe('Failed Tests Feature', function () {
 
     exec(`${runner} run --config ${codecept_dir}/codecept.conf.js --failed-tests ${failedTestsFile}`, (err, stdout) => {
       // Should still fail but only run the specific failed test
-      expect(err).toBeTruthy()
-      expect(stdout).toMatch(/should fail test 1/)
-      expect(stdout).not.toMatch(/should pass test/)
+      assert(err, 'Expected test to fail')
+      assert(stdout.match(/should fail test 1/), 'Expected specific failed test to run')
+      assert(!stdout.match(/should pass test/), 'Should not run passing tests')
 
       // Clean up
       fs.unlinkSync(failedTestsFile)
@@ -74,15 +75,15 @@ describe('Failed Tests Feature', function () {
       const failedTestsFile = `${codecept_dir}/failed-tests.json`
 
       // Should have failed tests
-      expect(err).toBeTruthy()
-      expect(stdout).toMatch(/Failed tests saved to/)
+      assert(err, 'Expected tests to fail')
+      assert(stdout.match(/Failed tests saved to/), 'Expected failed tests message in stdout')
 
       // Check if failed tests file was created
-      expect(fs.existsSync(failedTestsFile)).toBeTruthy()
+      assert(fs.existsSync(failedTestsFile), 'Expected failed tests file to be created')
 
       const failedTests = JSON.parse(fs.readFileSync(failedTestsFile, 'utf8'))
-      expect(failedTests.tests).toBeInstanceOf(Array)
-      expect(failedTests.tests.length).toBeGreaterThan(0)
+      assert(Array.isArray(failedTests.tests), 'Expected tests to be an array')
+      assert(failedTests.tests.length > 0, 'Expected at least one failed test')
 
       done()
     })
