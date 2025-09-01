@@ -1,0 +1,60 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches:
+      - 3.x
+  pull_request:
+    branches:
+      - '**'
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+        php-version: ['8.1']
+        node-version: [22.x]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+      - name: npm install
+        run: |
+          npm i --force
+          npm install cypress --save-dev
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: start a server
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            start /B php -S 127.0.0.1:8000 -t test/data/app
+          else
+            php -S 127.0.0.1:8000 -t test/data/app &
+          fi
+          sleep 3
+        shell: bash
+      - name: run unit tests
+        run: ./node_modules/.bin/mocha test/helper/Cypress_test.js --timeout 10000
+      - name: run acceptance tests
+        run: |
+          if [ -f test/acceptance/codecept.Cypress.js ]; then
+            ./bin/codecept.js run --config test/acceptance/codecept.Cypress.js --steps
+          else
+            echo "Cypress acceptance tests not yet implemented"
+          fi
