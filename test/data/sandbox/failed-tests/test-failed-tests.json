@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-09-01T07:42:32.537Z",
+  "count": 1,
+  "tests": [
+    {
+      "uid": "should fail test 1",
+      "title": "should fail test 1",
+      "fullTitle": "Failed Tests should fail test 1",
+      "file": "/home/runner/work/CodeceptJS/CodeceptJS/test/data/sandbox/failed-tests/failed_test.js",
+      "parent": {
+        "title": "Failed Tests"
+      }
+    }
+  ]
+}

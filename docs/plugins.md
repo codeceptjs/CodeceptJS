@@ -440,6 +440,14 @@ I.see('new title', 'h1');
 
 *   `config` &#x20;
 
+## consolidateWorkerJsonResults
+
+Consolidates JSON reports from multiple workers into a single HTML report
+
+### Parameters
+
+*   `config` &#x20;
+
 ## coverage
 
 Dumps code coverage from Playwright/Puppeteer after every test.
@@ -651,6 +659,17 @@ const eachElement = codeceptjs.container.plugins('eachElement');
 
 Returns **([Promise][9]\<any> | [undefined][10])**&#x20;
 
+## enhancedRetryFailedStep
+
+Enhanced retryFailedStep plugin that coordinates with other retry mechanisms
+
+This plugin provides step-level retries and coordinates with global retry settings
+to avoid conflicts and provide predictable behavior.
+
+### Parameters
+
+*   `config` &#x20;
+
 ## fakerTransform
 
 Use the `@faker-js/faker` package to generate fake data inside examples on your gherkin tests
@@ -719,10 +738,10 @@ HTML Reporter Plugin for CodeceptJS
 
 Generates comprehensive HTML reports showing:
 
-- Test statistics
-- Feature/Scenario details
-- Individual step results
-- Test artifacts (screenshots, etc.)
+*   Test statistics
+*   Feature/Scenario details
+*   Individual step results
+*   Test artifacts (screenshots, etc.)
 
 ## Configuration
 
@@ -749,7 +768,7 @@ Generates comprehensive HTML reports showing:
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## pageInfo
 
@@ -861,6 +880,14 @@ Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
 ### Parameters
 
 *   `config` &#x20;
+
+## safeJsonStringify
+
+Safely serialize data to JSON, handling circular references
+
+### Parameters
+
+*   `data` &#x20;
 
 ## screenshotOnFail
 

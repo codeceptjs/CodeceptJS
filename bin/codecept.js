@@ -166,6 +166,8 @@ program
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('--shuffle', 'Shuffle the order in which test files run')
   .option('--shard <index/total>', 'run only a fraction of tests (e.g., --shard 1/4)')
+  .option('--save-failed-tests [path]', 'save failed tests to JSON file (default: failed-tests.json)')
+  .option('--failed-tests <path>', 'run only tests from failed tests JSON file')
 
   // mocha options
   .option('--colors', 'force enabling of colors')
@@ -207,6 +209,8 @@ program
   .option('-p, --plugins <k=v,k2=v2,...>', 'enable plugins, comma-separated')
   .option('-O, --reporter-options <k=v,k2=v2,...>', 'reporter-specific options')
   .option('-R, --reporter <name>', 'specify the reporter to use')
+  .option('--save-failed-tests [path]', 'save failed tests to JSON file (default: failed-tests.json)')
+  .option('--failed-tests <path>', 'run only tests from failed tests JSON file')
   .action(errorHandler(require('../lib/command/run-workers')))
 
 program
