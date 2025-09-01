@@ -1703,6 +1703,16 @@ module.exports.tests = function () {
       expect(traffics.length).to.equal(0)
     })
 
+    it('should stop the network recording', async () => {
+      await I.startRecordingTraffic()
+      await I.amOnPage('https://codecept.io/')
+      await I.stopRecordingTraffic()
+      const traffics1 = await I.grabRecordedNetworkTraffics()
+      await I.amOnPage('https://codecept.io/')
+      const traffics2 = await I.grabRecordedNetworkTraffics()
+      expect(traffics2.length).to.equal(traffics1.length)
+    })
+
     it('should see recording traffics', async () => {
       I.startRecordingTraffic()
       I.amOnPage('https://codecept.io/')
