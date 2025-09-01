@@ -2,7 +2,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 
-// Hook to get URL parameters and POST data from session
+// Hook to get URL parameters and POST data from localStorage
 function usePostData() {
   const [postData, setPostData] = React.useState({})
   const location = useLocation()
@@ -11,11 +11,17 @@ function usePostData() {
     // Check if we're coming from a POST
     const urlParams = new URLSearchParams(location.search)
     if (urlParams.has('posted')) {
-      // Fetch POST data from PHP session
-      fetch('/api/post-data.php')
-        .then(response => response.json())
-        .then(data => setPostData(data))
-        .catch(() => setPostData({}))
+      // Get POST data from localStorage
+      try {
+        const storedData = localStorage.getItem('codeceptjs_post_data')
+        if (storedData) {
+          setPostData(JSON.parse(storedData))
+          // Clear the POST data after displaying
+          localStorage.removeItem('codeceptjs_post_data')
+        }
+      } catch (error) {
+        setPostData({})
+      }
     } else {
       setPostData({})
     }
@@ -105,13 +111,34 @@ function InfoPage() {
 // Form file page component
 function FormFilePage() {
   const postData = usePostData()
+  const navigate = useNavigate()
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const data = {}
+
+    // Handle file uploads and regular fields
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        // For file uploads, store file info (name, size, type)
+        data[key] = `${value.name} (${value.size} bytes, ${value.type})`
+      } else {
+        data[key] = value
+      }
+    }
+
+    // Store in localStorage and redirect
+    localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
+    navigate('/?posted=1')
+  }
 
   return (
     <div>
       <h1>File Upload</h1>
       <div className="notice" qa-id="test"></div>
 
-      <form method="POST" action="/" encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <p>
           <label>Upload a file:</label>
           <br />
@@ -142,13 +169,28 @@ function FormFilePage() {
 // Form hidden page component
 function FormHiddenPage() {
   const postData = usePostData()
+  const navigate = useNavigate()
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const data = {}
+
+    for (let [key, value] of formData.entries()) {
+      data[key] = value
+    }
+
+    // Store in localStorage and redirect
+    localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
+    navigate('/?posted=1')
+  }
 
   return (
     <div>
       <h1>Hidden Form</h1>
       <div className="notice" qa-id="test"></div>
 
-      <form method="POST" action="/">
+      <form onSubmit={handleSubmit}>
         <input type="hidden" name="hidden_field" value="hidden_value" />
         <p>
           <label>Visible field:</label>

@@ -27232,10 +27232,15 @@ var CodeceptApp = (() => {
     import_react.default.useEffect(() => {
       const urlParams = new URLSearchParams(location.search)
       if (urlParams.has('posted')) {
-        fetch('/api/post-data.php')
-          .then(response => response.json())
-          .then(data => setPostData(data))
-          .catch(() => setPostData({}))
+        try {
+          const storedData = localStorage.getItem('codeceptjs_post_data')
+          if (storedData) {
+            setPostData(JSON.parse(storedData))
+            localStorage.removeItem('codeceptjs_post_data')
+          }
+        } catch (error) {
+          setPostData({})
+        }
       } else {
         setPostData({})
       }
@@ -27256,7 +27261,7 @@ var CodeceptApp = (() => {
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', {
           id: 'area1',
           'qa-id': 'test',
-          children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/form/file', 'qa-id': 'test', 'qa-link': 'test', children: ' Test Link ' }),
+          children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('a', { href: '/form/file', 'qa-id': 'test', 'qa-link': 'test', children: [' ', 'Test Link', ' '] }),
         }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', {
           id: 'area2',
@@ -27324,13 +27329,27 @@ var CodeceptApp = (() => {
   }
   function FormFilePage() {
     const postData = usePostData()
+    const navigate = useNavigate()
+    const handleSubmit = e => {
+      e.preventDefault()
+      const formData = new FormData(e.target)
+      const data = {}
+      for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          data[key] = `${value.name} (${value.size} bytes, ${value.type})`
+        } else {
+          data[key] = value
+        }
+      }
+      localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
+      navigate('/?posted=1')
+    }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'File Upload' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', { className: 'notice', 'qa-id': 'test' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
-          method: 'POST',
-          action: '/',
+          onSubmit: handleSubmit,
           encType: 'multipart/form-data',
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
@@ -27366,13 +27385,23 @@ var CodeceptApp = (() => {
   }
   function FormHiddenPage() {
     const postData = usePostData()
+    const navigate = useNavigate()
+    const handleSubmit = e => {
+      e.preventDefault()
+      const formData = new FormData(e.target)
+      const data = {}
+      for (let [key, value] of formData.entries()) {
+        data[key] = value
+      }
+      localStorage.setItem('codeceptjs_post_data', JSON.stringify(data))
+      navigate('/?posted=1')
+    }
     return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Hidden Form' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', { className: 'notice', 'qa-id': 'test' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
-          method: 'POST',
-          action: '/',
+          onSubmit: handleSubmit,
           children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'hidden', name: 'hidden_field', value: 'hidden_value' }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
