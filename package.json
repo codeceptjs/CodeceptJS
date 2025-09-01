@@ -157,7 +157,7 @@
     "jsdoc-typeof-plugin": "1.0.0",
     "json-server": "0.17.4",
     "mochawesome": "^7.1.3",
-    "playwright": "1.54.1",
+    "playwright": "1.55.0",
     "prettier": "^3.3.2",
     "puppeteer": "24.15.0",
     "qrcode-terminal": "0.12.0",
