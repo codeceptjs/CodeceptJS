@@ -27299,6 +27299,23 @@ var CodeceptApp = (() => {
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Information' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', { className: 'notice', 'qa-id': 'test' }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', id: 'link', 'qa-id': 'test', 'qa-link': 'test', children: 'Back to index' }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+          id: 'grab-multiple',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', id: 'first-link', children: 'First' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/info', id: 'second-link', children: 'Second' }),
+          ],
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/info',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Rus:' }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'rus' })],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
         Object.keys(postData).length > 0 &&
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)('pre', {
             style: { whiteSpace: 'pre-wrap' },
@@ -27677,6 +27694,13 @@ var CodeceptApp = (() => {
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
           ],
         }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+          id: 'grab-multiple',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', id: 'first-link', children: 'First' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/info', id: 'second-link', children: 'Second' }),
+          ],
+        }),
       ],
     })
   }
@@ -27757,12 +27781,225 @@ var CodeceptApp = (() => {
       ],
     })
   }
+  function CustomLocatorStrategiesPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      role: 'main',
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('nav', {
+          role: 'navigation',
+          'data-qa': 'nav-section',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', 'aria-label': 'Home link', children: 'Home' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/about', 'aria-label': 'About link', children: 'About' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/contact', 'aria-label': 'Contact link', children: 'Contact' }),
+          ],
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { 'data-testid': 'page-title', 'aria-label': 'Welcome Message', children: 'Custom Locator Test Page' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('div', {
+          role: 'complementary',
+          'data-qa': 'info-section',
+          children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { 'data-testid': 'info-text', 'aria-label': 'Information message', children: 'This is a test page for custom locators.' }),
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          role: 'form',
+          'data-qa': 'test-form',
+          action: '/form/complex',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+              'data-qa': 'form-section',
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { htmlFor: 'username', children: 'Username:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', {
+                  type: 'text',
+                  id: 'username',
+                  name: 'username',
+                  'data-testid': 'username-input',
+                  'aria-label': 'Username field',
+                  placeholder: 'Enter your username',
+                }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+              'data-qa': 'form-section',
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { htmlFor: 'password', children: 'Password:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', {
+                  type: 'password',
+                  id: 'password',
+                  name: 'password',
+                  'data-testid': 'password-input',
+                  'aria-label': 'Password field',
+                  placeholder: 'Enter your password',
+                }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('button', {
+                  type: 'submit',
+                  role: 'button',
+                  'data-testid': 'submit-button',
+                  'data-qa': 'submit-btn',
+                  'aria-label': 'Submit form',
+                  children: 'Submit',
+                }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('button', {
+                  type: 'button',
+                  'data-testid': 'cancel-button',
+                  'data-qa': 'cancel-btn',
+                  'aria-label': 'Cancel form',
+                  children: 'Cancel',
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    })
+  }
+  function LoginPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Login' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          action: '/login',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { htmlFor: 'email', children: 'Email:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('br', {}),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'email', id: 'email', name: 'email', placeholder: 'Enter your email' }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { htmlFor: 'password', children: 'Password:' }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('br', {}),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'password', id: 'password', name: 'password', placeholder: 'Enter your password' }),
+              ],
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Login' }) }),
+          ],
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', children: 'Back to index' }) }),
+      ],
+    })
+  }
+  function FormBug1467Page() {
+    const location = useLocation()
+    const sessionTag = location.hash ? location.hash.substring(1) : 'default'
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('h1', { children: ['Bug 1467 Form (', sessionTag, ')'] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: 'TEST TEST' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          name: 'form1',
+          action: '/form/bug1467',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h3', { children: 'Form 1' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', {
+              children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('label', { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'checkbox', name: 'first_test_radio', value: 'Yes' }), ' Yes'] }),
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', {
+              children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('label', { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'checkbox', name: 'first_test_radio', value: 'No' }), ' No'] }),
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+          name: 'form2',
+          action: '/form/bug1467',
+          method: 'POST',
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h3', { children: 'Form 2' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', {
+              children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('label', { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'checkbox', name: 'first_test_radio', value: 'Yes' }), ' Yes'] }),
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', {
+              children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('label', { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'checkbox', name: 'first_test_radio', value: 'No' }), ' No'] }),
+            }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Submit' }) }),
+          ],
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', children: 'Back to index' }) }),
+      ],
+    })
+  }
+  function IframePage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Iframe Test Page' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('iframe', { name: 'content', src: '/iframe_content', width: '400', height: '300', title: 'Test iframe' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', children: 'Back to index' }) }),
+      ],
+    })
+  }
+  function IframeNestedPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('div', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Nested Iframe Test Page' }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('iframe', {
+          name: 'wrapper',
+          id: 'wrapperId',
+          className: 'wrapperClass',
+          src: '/iframe_wrapper',
+          width: '500',
+          height: '400',
+          title: 'Wrapper iframe',
+        }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('a', { href: '/', children: 'Back to index' }) }),
+      ],
+    })
+  }
+  function IframeContentPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('html', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('head', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('title', { children: 'Iframe Content' }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('body', {
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Inside Iframe' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('form', {
+              action: '/iframe_content',
+              method: 'POST',
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('p', {
+                  children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)('label', { children: 'Rus:' }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'text', name: 'rus' })],
+                }),
+                /* @__PURE__ */ (0, import_jsx_runtime.jsx)('p', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('input', { type: 'submit', value: 'Sign in!' }) }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    })
+  }
+  function IframeWrapperPage() {
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('html', {
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)('head', { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)('title', { children: 'Iframe Wrapper' }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)('body', {
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('h1', { children: 'Wrapper Iframe' }),
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)('iframe', { name: 'content', src: '/iframe_content', width: '300', height: '200', title: 'Inner iframe' }),
+          ],
+        }),
+      ],
+    })
+  }
   function App() {
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
       children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, {
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IndexPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/info', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(InfoPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/login', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoginPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/iframe', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IframePage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/iframe_nested', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IframeNestedPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/iframe_content', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IframeContentPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/iframe_wrapper', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IframeWrapperPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/file', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormFilePage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/hidden', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormHiddenPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/select', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormSelectPage, {}) }),
@@ -27774,6 +28011,8 @@ var CodeceptApp = (() => {
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/example1', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormExample1Page, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/example7', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormExample7Page, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/wait_element', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormWaitElementPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/custom_locator_strategies', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CustomLocatorStrategiesPage, {}) }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/bug1467', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormBug1467Page, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/form/complex', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FormComplexPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/spinner', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpinnerPage, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, { path: '/search', element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SearchPage, {}) }),

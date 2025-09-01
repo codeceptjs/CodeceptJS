@@ -89,6 +89,26 @@ function InfoPage() {
           Back to index
         </a>
       </p>
+
+      <div id="grab-multiple">
+        <a href="/" id="first-link">
+          First
+        </a>
+        <a href="/info" id="second-link">
+          Second
+        </a>
+      </div>
+
+      <form action="/info" method="POST">
+        <p>
+          <label>Rus:</label>
+          <input type="text" name="rus" />
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+
       {Object.keys(postData).length > 0 && (
         <pre style={{ whiteSpace: 'pre-wrap' }}>
           {Object.entries(postData)
@@ -404,6 +424,15 @@ function FormTextareaPage() {
           <input type="submit" value="Submit" />
         </p>
       </form>
+
+      <div id="grab-multiple">
+        <a href="/" id="first-link">
+          First
+        </a>
+        <a href="/info" id="second-link">
+          Second
+        </a>
+      </div>
     </div>
   )
 }
@@ -489,6 +518,198 @@ function FormWaitElementPage() {
   )
 }
 
+// Custom Locator Strategies test page
+function CustomLocatorStrategiesPage() {
+  return (
+    <div role="main">
+      <nav role="navigation" data-qa="nav-section">
+        <a href="/" aria-label="Home link">
+          Home
+        </a>
+        <a href="/about" aria-label="About link">
+          About
+        </a>
+        <a href="/contact" aria-label="Contact link">
+          Contact
+        </a>
+      </nav>
+
+      <h1 data-testid="page-title" aria-label="Welcome Message">
+        Custom Locator Test Page
+      </h1>
+
+      <div role="complementary" data-qa="info-section">
+        <p data-testid="info-text" aria-label="Information message">
+          This is a test page for custom locators.
+        </p>
+      </div>
+
+      <form role="form" data-qa="test-form" action="/form/complex" method="POST">
+        <div data-qa="form-section">
+          <label htmlFor="username">Username:</label>
+          <input type="text" id="username" name="username" data-testid="username-input" aria-label="Username field" placeholder="Enter your username" />
+        </div>
+
+        <div data-qa="form-section">
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" data-testid="password-input" aria-label="Password field" placeholder="Enter your password" />
+        </div>
+
+        <div>
+          <button type="submit" role="button" data-testid="submit-button" data-qa="submit-btn" aria-label="Submit form">
+            Submit
+          </button>
+          <button type="button" data-testid="cancel-button" data-qa="cancel-btn" aria-label="Cancel form">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+// Login page component
+function LoginPage() {
+  return (
+    <div>
+      <h1>Login</h1>
+      <form action="/login" method="POST">
+        <p>
+          <label htmlFor="email">Email:</label>
+          <br />
+          <input type="email" id="email" name="email" placeholder="Enter your email" />
+        </p>
+        <p>
+          <label htmlFor="password">Password:</label>
+          <br />
+          <input type="password" id="password" name="password" placeholder="Enter your password" />
+        </p>
+        <p>
+          <input type="submit" value="Login" />
+        </p>
+      </form>
+      <p>
+        <a href="/">Back to index</a>
+      </p>
+    </div>
+  )
+}
+
+// Bug 1467 form page component
+function FormBug1467Page() {
+  const location = useLocation()
+  const sessionTag = location.hash ? location.hash.substring(1) : 'default'
+
+  return (
+    <div>
+      <h1>Bug 1467 Form ({sessionTag})</h1>
+      <p>TEST TEST</p>
+
+      <form name="form1" action="/form/bug1467" method="POST">
+        <h3>Form 1</h3>
+        <p>
+          <label>
+            <input type="checkbox" name="first_test_radio" value="Yes" /> Yes
+          </label>
+        </p>
+        <p>
+          <label>
+            <input type="checkbox" name="first_test_radio" value="No" /> No
+          </label>
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+
+      <form name="form2" action="/form/bug1467" method="POST">
+        <h3>Form 2</h3>
+        <p>
+          <label>
+            <input type="checkbox" name="first_test_radio" value="Yes" /> Yes
+          </label>
+        </p>
+        <p>
+          <label>
+            <input type="checkbox" name="first_test_radio" value="No" /> No
+          </label>
+        </p>
+        <p>
+          <input type="submit" value="Submit" />
+        </p>
+      </form>
+
+      <p>
+        <a href="/">Back to index</a>
+      </p>
+    </div>
+  )
+}
+
+// Iframe page component
+function IframePage() {
+  return (
+    <div>
+      <h1>Iframe Test Page</h1>
+      <iframe name="content" src="/iframe_content" width="400" height="300" title="Test iframe"></iframe>
+      <p>
+        <a href="/">Back to index</a>
+      </p>
+    </div>
+  )
+}
+
+// Iframe nested page component
+function IframeNestedPage() {
+  return (
+    <div>
+      <h1>Nested Iframe Test Page</h1>
+      <iframe name="wrapper" id="wrapperId" className="wrapperClass" src="/iframe_wrapper" width="500" height="400" title="Wrapper iframe"></iframe>
+      <p>
+        <a href="/">Back to index</a>
+      </p>
+    </div>
+  )
+}
+
+// Iframe content component (for the simple iframe)
+function IframeContentPage() {
+  return (
+    <html>
+      <head>
+        <title>Iframe Content</title>
+      </head>
+      <body>
+        <h1>Inside Iframe</h1>
+        <form action="/iframe_content" method="POST">
+          <p>
+            <label>Rus:</label>
+            <input type="text" name="rus" />
+          </p>
+          <p>
+            <input type="submit" value="Sign in!" />
+          </p>
+        </form>
+      </body>
+    </html>
+  )
+}
+
+// Iframe wrapper component (for nested iframe)
+function IframeWrapperPage() {
+  return (
+    <html>
+      <head>
+        <title>Iframe Wrapper</title>
+      </head>
+      <body>
+        <h1>Wrapper Iframe</h1>
+        <iframe name="content" src="/iframe_content" width="300" height="200" title="Inner iframe"></iframe>
+      </body>
+    </html>
+  )
+}
+
 // Main App component with routing
 function App() {
   return (
@@ -496,6 +717,11 @@ function App() {
       <Routes>
         <Route path="/" element={<IndexPage />} />
         <Route path="/info" element={<InfoPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/iframe" element={<IframePage />} />
+        <Route path="/iframe_nested" element={<IframeNestedPage />} />
+        <Route path="/iframe_content" element={<IframeContentPage />} />
+        <Route path="/iframe_wrapper" element={<IframeWrapperPage />} />
         <Route path="/form/file" element={<FormFilePage />} />
         <Route path="/form/hidden" element={<FormHiddenPage />} />
         <Route path="/form/select" element={<FormSelectPage />} />
@@ -507,6 +733,8 @@ function App() {
         <Route path="/form/example1" element={<FormExample1Page />} />
         <Route path="/form/example7" element={<FormExample7Page />} />
         <Route path="/form/wait_element" element={<FormWaitElementPage />} />
+        <Route path="/form/custom_locator_strategies" element={<CustomLocatorStrategiesPage />} />
+        <Route path="/form/bug1467" element={<FormBug1467Page />} />
         <Route path="/form/complex" element={<FormComplexPage />} />
         <Route path="/spinner" element={<SpinnerPage />} />
         <Route path="/search" element={<SearchPage />} />
