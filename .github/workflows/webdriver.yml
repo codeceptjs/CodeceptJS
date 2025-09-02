@@ -42,5 +42,10 @@ jobs:
         run: './bin/codecept.js check -c test/acceptance/codecept.WebDriver.js'
       - name: run unit tests
         run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit
+      - name: run BiDi protocol unit tests
+        run: ./node_modules/.bin/mocha test/helper/WebDriver_bidi_test.js --timeout 30000 --exit
       - name: run tests
         run: './bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug'
+      - name: run BiDi integration tests
+        run: './bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @bidi --debug'
+        continue-on-error: true

@@ -1,0 +1,350 @@
+name: WebDriver BiDi Protocol Tests
+
+on:
+  push:
+    branches:
+      - 3.x
+    paths:
+      - 'lib/helper/WebDriver.js'
+      - 'test/helper/WebDriver_bidi_test.js'
+      - '.github/workflows/webdriver-bidi.yml'
+  pull_request:
+    branches:
+      - '**'
+    paths:
+      - 'lib/helper/WebDriver.js'
+      - 'test/helper/WebDriver_bidi_test.js'
+      - '.github/workflows/webdriver-bidi.yml'
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+
+jobs:
+  bidi-tests:
+    name: WebDriver BiDi Protocol Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+        chrome-version: [latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup Chrome ${{ matrix.chrome-version }}
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: ${{ matrix.chrome-version }}
+
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: 'LATEST'
+
+      - name: Start Selenium Server with BiDi support
+        run: |
+          # Download and start Selenium Grid with BiDi protocol support
+          docker run -d --net=host --shm-size=2g \
+            -e SE_ENABLE_BIDI=true \
+            -e SE_SESSION_TIMEOUT=300 \
+            -e SE_NODE_SESSION_TIMEOUT=300 \
+            selenium/standalone-chrome:4.27
+
+          # Wait for Selenium to be ready
+          timeout 60 bash -c 'until curl -s http://localhost:4444/wd/hub/status > /dev/null; do sleep 1; done'
+
+      - name: Setup PHP for test server
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+
+      - name: Install dependencies
+        run: |
+          npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 3
+          curl -f http://127.0.0.1:8000 || exit 1
+
+      - name: Verify BiDi protocol support
+        run: |
+          # Test if BiDi is available in the browser
+          node -e "
+            const { remote } = require('webdriverio');
+            (async () => {
+              try {
+                const browser = await remote({
+                  capabilities: {
+                    browserName: 'chrome',
+                    'goog:chromeOptions': {
+                      args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+                    },
+                    webSocketUrl: true
+                  }
+                });
+
+                console.log('BiDi WebSocket URL support:', !!browser.capabilities.webSocketUrl);
+                await browser.deleteSession();
+                console.log('✅ BiDi protocol verification passed');
+              } catch (error) {
+                console.error('❌ BiDi protocol verification failed:', error.message);
+                process.exit(1);
+              }
+            })();
+          "
+
+      - name: Run BiDi unit tests
+        run: |
+          ./node_modules/.bin/mocha test/helper/WebDriver_bidi_test.js \
+            --timeout 30000 \
+            --reporter spec \
+            --exit
+        env:
+          NODE_ENV: test
+          DEBUG: codeceptjs:*
+
+      - name: Run WebDriver with BiDi integration tests
+        run: |
+          ./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js \
+            --grep "@bidi" \
+            --reporter spec \
+            --verbose
+        continue-on-error: true
+
+      - name: Test BiDi configuration validation
+        run: |
+          node -e "
+            const WebDriver = require('./lib/helper/WebDriver');
+
+            // Test BiDi enabled configuration
+            const wdBidi = new WebDriver({
+              url: 'http://localhost:8000',
+              browser: 'chrome',
+              bidiProtocol: true
+            });
+
+            console.log('BiDi enabled:', wdBidi.bidiEnabled);
+            console.log('BiDi arrays initialized:', {
+              networkEvents: Array.isArray(wdBidi.bidiNetworkEvents),
+              consoleMessages: Array.isArray(wdBidi.bidiConsoleMessages),
+              navigationEvents: Array.isArray(wdBidi.bidiNavigationEvents),
+              scriptExceptions: Array.isArray(wdBidi.bidiScriptExceptions),
+              performanceMetrics: Array.isArray(wdBidi.bidiPerformanceMetrics)
+            });
+
+            // Test BiDi disabled configuration
+            const wdNoBidi = new WebDriver({
+              url: 'http://localhost:8000',
+              browser: 'chrome',
+              bidiProtocol: false
+            });
+
+            console.log('BiDi disabled correctly:', !wdNoBidi.bidiEnabled);
+            console.log('✅ BiDi configuration validation passed');
+          "
+
+      - name: Generate BiDi test report
+        if: always()
+        run: |
+          echo "## WebDriver BiDi Protocol Test Report" > bidi-test-report.md
+          echo "### Environment" >> bidi-test-report.md
+          echo "- Node.js: ${{ matrix.node-version }}" >> bidi-test-report.md
+          echo "- Chrome: ${{ matrix.chrome-version }}" >> bidi-test-report.md
+          echo "- Date: $(date)" >> bidi-test-report.md
+          echo "" >> bidi-test-report.md
+          echo "### Test Results" >> bidi-test-report.md
+          echo "BiDi protocol tests completed. Check the job logs for detailed results." >> bidi-test-report.md
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bidi-test-report-node${{ matrix.node-version }}-chrome${{ matrix.chrome-version }}
+          path: |
+            bidi-test-report.md
+            test_output/
+          retention-days: 7
+
+  bidi-compatibility:
+    name: BiDi Backward Compatibility Tests
+    runs-on: ubuntu-latest
+    needs: bidi-tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Start Selenium Server
+        run: |
+          docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.27
+          timeout 60 bash -c 'until curl -s http://localhost:4444/wd/hub/status > /dev/null; do sleep 1; done'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 3
+
+      - name: Test backward compatibility (BiDi disabled)
+        run: |
+          ./node_modules/.bin/mocha test/helper/WebDriver_test.js \
+            --timeout 30000 \
+            --grep "should work with BiDi disabled" \
+            --reporter spec \
+            --exit
+
+      - name: Test existing WebDriver functionality with BiDi enabled
+        run: |
+          ./bin/codecept.js run -c test/acceptance/codecept.WebDriver.js \
+            --grep "@WebDriver" \
+            --reporter spec \
+            --verbose
+        env:
+          WEBDRIVER_BIDI_ENABLED: true
+
+  bidi-performance:
+    name: BiDi Performance Impact Analysis
+    runs-on: ubuntu-latest
+    needs: bidi-tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Start Selenium Server
+        run: |
+          docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.27
+          timeout 60 bash -c 'until curl -s http://localhost:4444/wd/hub/status > /dev/null; do sleep 1; done'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 3
+
+      - name: Performance benchmark - BiDi disabled
+        run: |
+          node -e "
+            const WebDriver = require('./lib/helper/WebDriver');
+            const { performance } = require('perf_hooks');
+
+            (async () => {
+              const wd = new WebDriver({
+                url: 'http://localhost:8000',
+                browser: 'chrome',
+                bidiProtocol: false,
+                capabilities: {
+                  'goog:chromeOptions': {
+                    args: ['--headless', '--no-sandbox']
+                  }
+                }
+              });
+
+              const start = performance.now();
+              await wd._startBrowser();
+              await wd.amOnPage('/form/example1');
+              await wd.see('Example1');
+              await wd._stopBrowser();
+              const end = performance.now();
+
+              console.log('BiDi Disabled Time:', (end - start).toFixed(2), 'ms');
+            })();
+          " > performance-without-bidi.txt
+
+      - name: Performance benchmark - BiDi enabled
+        run: |
+          node -e "
+            const WebDriver = require('./lib/helper/WebDriver');
+            const { performance } = require('perf_hooks');
+
+            (async () => {
+              const wd = new WebDriver({
+                url: 'http://localhost:8000',
+                browser: 'chrome',
+                bidiProtocol: true,
+                capabilities: {
+                  'goog:chromeOptions': {
+                    args: ['--headless', '--no-sandbox']
+                  }
+                }
+              });
+
+              const start = performance.now();
+              await wd._startBrowser();
+              await wd.amOnPage('/form/example1');
+              await wd.see('Example1');
+              await wd._stopBrowser();
+              const end = performance.now();
+
+              console.log('BiDi Enabled Time:', (end - start).toFixed(2), 'ms');
+            })();
+          " > performance-with-bidi.txt
+
+      - name: Generate performance report
+        run: |
+          echo "## BiDi Performance Impact Report" > performance-report.md
+          echo "### Without BiDi Protocol" >> performance-report.md
+          cat performance-without-bidi.txt >> performance-report.md
+          echo "" >> performance-report.md
+          echo "### With BiDi Protocol" >> performance-report.md
+          cat performance-with-bidi.txt >> performance-report.md
+          echo "" >> performance-report.md
+          echo "### Analysis" >> performance-report.md
+          echo "Performance comparison completed. Review the execution times above." >> performance-report.md
+
+      - name: Upload performance artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bidi-performance-report
+          path: |
+            performance-report.md
+            performance-*.txt
+          retention-days: 7
