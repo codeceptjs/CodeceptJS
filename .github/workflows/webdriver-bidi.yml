@@ -47,15 +47,9 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0
-      - name: npm install
-        run: |
-          npm i
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - name: Install dependencies
         run: |
-          npm ci
+          npm i
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
