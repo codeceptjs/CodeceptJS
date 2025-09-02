@@ -280,4 +280,39 @@ describe('retryFailedStep', () => {
     expect(counter).to.equal(1)
     expect(res).to.equal(false)
   })
+
+  it('should retry failed step when debugMode is enabled', async () => {
+    // This test ensures that the retryFailedStep plugin works correctly
+    // when store.debugMode is true, which happens with --verbose or --debug flags
+    store.debugMode = true
+
+    try {
+      retryFailedStep({ retries: 3, minTimeout: 1 })
+      event.dispatcher.emit(event.test.before, createTest('test'))
+      event.dispatcher.emit(event.step.started, { name: 'seeElement' })
+
+      let counter = 0
+      await recorder.add(
+        () => {
+          counter++
+          if (counter < 4) {
+            throw new Error('Element not found')
+          }
+          return 'success'
+        },
+        undefined,
+        undefined,
+        true,
+      )
+
+      const result = await recorder.promise()
+
+      // Should retry 3 times and succeed on 4th attempt
+      expect(counter).to.equal(4)
+      expect(result).to.equal('success')
+    } finally {
+      // Reset to default value
+      store.debugMode = false
+    }
+  })
 })
