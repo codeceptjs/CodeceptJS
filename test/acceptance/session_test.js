@@ -63,12 +63,12 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
 
   cookies.default = (await I.grabCookie(cookieName))?.value
   I.say(`${cookieName}: ${cookies.default}`)
-  session('john', async () => {
+  await session('john', async () => {
     const cookie = await I.grabCookie(cookieName)
     cookies.john = cookie?.value
     I.say(`${cookieName}: ${cookies.john}`)
   })
-  session('mary', async () => {
+  await session('mary', async () => {
     const cookie = await I.grabCookie(cookieName)
     cookies.mary = cookie?.value
     I.say(`${cookieName}: ${cookies.mary}`)
@@ -87,7 +87,7 @@ Scenario('should save screenshot for sessions @Puppeteer @Playwright', async fun
   await I.saveScreenshot('original.png')
   await I.amOnPage('/')
   await I.saveScreenshot('main_session.png')
-  session('john', async () => {
+  await session('john', async () => {
     await I.amOnPage('/form/bug1467')
     event.dispatcher.emit(event.test.failed, this)
   })
