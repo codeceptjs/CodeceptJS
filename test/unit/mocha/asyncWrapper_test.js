@@ -59,7 +59,7 @@ describe('AsyncWrapper', () => {
 
   it('should work with async func', async () => {
     let counter = 0
-    test.fn = () => {
+    test.fn = async () => {
       recorder.add('test', async () => {
         counter++
         counter++
@@ -69,7 +69,9 @@ describe('AsyncWrapper', () => {
     }
 
     await setup()
-    testWrapper(test).fn(() => null)
+    const wrappedTest = testWrapper(test)
+    // Wait for the wrapped function to complete
+    await new Promise(resolve => wrappedTest.fn(resolve))
     recorder.add('validation', () => expect(counter).to.eq(4))
     return recorder.promise()
   })
@@ -81,8 +83,8 @@ describe('AsyncWrapper', () => {
       event.dispatcher.on(event.test.started, (started = sinon.spy()))
       event.dispatcher.on(event.suite.before, (beforeSuite = sinon.spy()))
       event.dispatcher.on(event.suite.after, (afterSuite = sinon.spy()))
-      await suiteSetup()()
-      await setup()()
+      await new Promise(r => suiteSetup()(r))
+      await new Promise(r => setup()(r))
     })
 
     it('should fire events', async () => {
@@ -91,25 +93,27 @@ describe('AsyncWrapper', () => {
 
       // Execute the wrapped test function with a mock done callback
       return new Promise((resolve, reject) => {
-        wrappedTest.fn(async err => {
-          try {
-            await teardown()()
-            await suiteTeardown()()
+        wrappedTest.fn(err => {
+          ;(async () => {
+            try {
+              await new Promise(r => teardown()(r))
+              await new Promise(r => suiteTeardown()(r))
 
-            if (err) {
-              reject(err)
-              return
+              if (err) {
+                reject(err)
+                return
+              }
+
+              expect(started.called).is.ok
+              expect(beforeSuite.called).is.ok
+              expect(afterSuite.called).is.ok
+              expect(before.called).is.ok
+              expect(after.called).is.ok
+              resolve()
+            } catch (testErr) {
+              reject(testErr)
             }
-
-            expect(started.called).is.ok
-            expect(beforeSuite.called).is.ok
-            expect(afterSuite.called).is.ok
-            expect(before.called).is.ok
-            expect(after.called).is.ok
-            resolve()
-          } catch (testErr) {
-            reject(testErr)
-          }
+          })()
         })
       })
     })
