@@ -1,18 +1,21 @@
-const I = actor();
-const loginPage = require('./Login');
+import { actor } from 'codeceptjs'
+import loginPage from './Login.js'
+
+const I = actor()
 
 class Smth {}
 
-module.exports = {
-
+const smthMethods = {
   openGitHub() {
-    I.amOnPage('https://github.com');
+    I.amOnPage('https://github.com')
   },
 
   openAndLogin() {
-    this.openGitHub();
-    loginPage.login('something@totest.com', '1234356');
+    this.openGitHub()
+    loginPage.login('something@totest.com', '1234356')
   },
-};
+}
 
-Object.setPrototypeOf(module.exports, Smth.prototype);
+Object.setPrototypeOf(smthMethods, Smth.prototype)
+
+export default smthMethods
