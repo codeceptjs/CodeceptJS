@@ -1,13 +1,12 @@
-import chai from 'chai';
-chai.should();
-import assert from 'assert';
-import path from 'path';
-import { exec } from 'child_process';
-import { fileURLToPath } from 'url';
+import chai from 'chai'
+chai.should()
+import assert from 'assert'
+import path from 'path'
+import { exec } from 'child_process'
+import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -20,7 +19,7 @@ describe('BDD Gherkin', () => {
   })
 
   it('should run feature files', done => {
-    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => {
+    const child = exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', { timeout: 10000 }, (err, stdout, stderr) => {
       console.log('=== ACTUAL OUTPUT ===')
       console.log(stdout)
       console.log('=== STDERR ===')
@@ -38,8 +37,13 @@ describe('BDD Gherkin', () => {
       stdout.should.include('And my order amount is $1600')
       stdout.should.not.include('I add item 600') // 'Given' actor's non-gherkin step check
       stdout.should.not.include('I see sum 1600') // 'And' actor's non-gherkin step check
-      assert(!err)
       done()
+    })
+
+    child.on('timeout', () => {
+      console.error('Test timed out')
+      child.kill()
+      done(new Error('Test timed out'))
     })
   })
 

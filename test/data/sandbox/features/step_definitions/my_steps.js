@@ -1,8 +1,13 @@
 import { actor } from '../../../../../lib/index.js'
 import { secret } from '../../../../../lib/secret.js'
-import { Given, When, Then } from '../../../../../lib/mocha/bdd.js'
+import { Given, When, Then, Before, After, Fail } from '../../../../../lib/mocha/bdd.js'
 
 Given(/I have product with \$(\d+) price/, price => {
+  const I = actor()
+  I.addItem(parseInt(price, 10))
+})
+
+Given('I have product with {int} price in my cart', price => {
   const I = actor()
   I.addItem(parseInt(price, 10))
 })
@@ -16,9 +21,9 @@ Then('I should see that total number of products is {int}', num => {
   const I = actor()
   I.seeNum(num)
 })
-Then('my order amount is ${int}', sum => {
+Then(/my order amount is \$(\d+)/, sum => {
   const I = actor()
-  I.seeSum(sum)
+  I.seeSum(parseInt(sum, 10))
 })
 
 Given('I have product with price {int}$ in my cart', price => {

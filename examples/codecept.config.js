@@ -37,9 +37,9 @@ export const config = {
     steps: ['./step_definitions/steps.js'],
   },
   plugins: {
-    analyze: {
-      enabled: true,
-    },
+    // analyze: {
+    //   enabled: true,
+    // },
     // heal: {
     //   enabled: true,
     // },
