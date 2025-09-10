@@ -3,7 +3,18 @@ import helperModule from '../../../../lib/helper.js'
 const Helper = helperModule.default || helperModule
 
 class CheckoutHelper extends Helper {
+  constructor(config) {
+    super(config)
+    console.log('DEBUG: CheckoutHelper constructor called')
+  }
+
+  _init() {
+    console.log('DEBUG: CheckoutHelper._init called')
+  }
+
   _before() {
+    console.log('DEBUG: CheckoutHelper._before called, resetting state')
+    console.log('DEBUG: Current state before reset:', { num: this.num, sum: this.sum })
     this.num = 0
     this.sum = 0
     this.discountCalc = null
