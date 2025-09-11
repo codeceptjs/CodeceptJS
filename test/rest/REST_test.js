@@ -138,13 +138,14 @@ describe('REST', () => {
   describe('JSONResponse integration', () => {
     let jsonResponse
 
-    beforeEach(() => {
+    beforeEach(async () => {
       Container.create({
         helpers: {
           REST: {},
           JSONResponse: {},
         },
       })
+      await Container.started()
       I = Container.helpers('REST')
       jsonResponse = Container.helpers('JSONResponse')
       jsonResponse._beforeSuite()
