@@ -81,7 +81,7 @@
     "@cucumber/gherkin": "32.1.2",
     "@cucumber/messages": "27.2.0",
     "@xmldom/xmldom": "0.9.8",
-    "acorn": "8.14.1",
+    "acorn": "8.15.0",
     "arrify": "3.0.0",
     "axios": "1.12.0",
     "chalk": "4.1.2",
@@ -107,8 +107,8 @@
     "lodash.merge": "4.6.2",
     "lodash.shuffle": "4.2.0",
     "mkdirp": "3.0.1",
-    "mocha": "11.6.0",
-    "monocart-coverage-reports": "2.12.6",
+    "mocha": "11.7.2",
+    "monocart-coverage-reports": "2.12.8",
     "ms": "2.1.3",
     "multer": "^2.0.2",
     "ora-classic": "5.4.2",
@@ -117,7 +117,7 @@
     "promise-retry": "1.1.1",
     "resq": "1.11.0",
     "sprintf-js": "1.1.3",
-    "uuid": "11.1.0"
+    "uuid": "13.0.0"
   },
   "optionalDependencies": {
     "@codeceptjs/detox-helper": "1.1.11"
@@ -127,7 +127,7 @@
     "@codeceptjs/expect-helper": "^1.0.2",
     "@codeceptjs/mock-request": "0.3.1",
     "@eslint/eslintrc": "3.3.1",
-    "@eslint/js": "9.34.0",
+    "@eslint/js": "9.35.0",
     "@faker-js/faker": "9.8.0",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "6.0.6",
