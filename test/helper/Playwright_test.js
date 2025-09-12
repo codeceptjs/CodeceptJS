@@ -927,7 +927,9 @@ describe('Playwright', function () {
         .then(() => I.dontSee('Information', 'h1'))
         .then(() => I.switchTo(0))
         .then(() => I.see('Information', 'h1'))
-        .then(() => I.dontSee('Iframe test', 'h1')))
+        .then(() => I.dontSee('Iframe test', 'h1'))
+        .then(() => I.switchTo())
+        .then(() => I.see('Iframe test', 'h1')))
   })
 
   describe('#dragSlider', () => {

@@ -109,7 +109,6 @@ export function tests() {
     })
 
     it('should check text on site with ignoreCase option', async () => {
-      if (isHelper('TestCafe')) return // It won't be implemented
       await I.amOnPage('/')
       await I.see('Welcome')
       store.currentStep = { opts: { ignoreCase: true } }
@@ -136,7 +135,7 @@ export function tests() {
     })
 
     it('should verify text with &nbsp', async () => {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) return
+      if (isHelper('WebDriver')) return
       await I.amOnPage('/')
       await I.see('With special space chars')
     })
@@ -288,10 +287,6 @@ export function tests() {
   })
 
   describe('#forceClick', () => {
-    beforeEach(function () {
-      if (isHelper('TestCafe')) this.skip()
-    })
-
     it('should forceClick by inner text', async () => {
       await I.amOnPage('/')
       await I.forceClick('More info')
@@ -387,13 +382,7 @@ export function tests() {
       assert.equal(formContents('terms'), 'agree')
     })
 
-    // TODO Having problems with functional style selectors in testcafe
-    // cannot do Selector(css).find(elementByXPath(xpath))
-    // testcafe always says "xpath is not defined"
-    // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
-    it.skip('should check option by context', async () => {
-      if (isHelper('TestCafe')) this.skip()
-
+    it('should check option by context', async () => {
       await I.amOnPage('/form/example1')
       await I.checkOption('Remember me next time', '.rememberMe')
       await I.click('Login')
@@ -445,10 +434,7 @@ export function tests() {
       assert.equal(formContents('select'), 'option2')
     })
 
-    // Could not get multiselect to work with testcafe
-    it('should select multiple options', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
+    it('should select multiple options', async () => {
       await I.amOnPage('/form/select_multiple')
       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex'])
       await I.click('Submit')
@@ -479,9 +465,6 @@ export function tests() {
     })
 
     it('should return value from sync script in iframe', async function () {
-      // TODO Not yet implemented
-      if (isHelper('TestCafe')) this.skip() // TODO Not yet implemented
-
       await I.amOnPage('/iframe')
       await I.switchTo({ css: 'iframe' })
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText)
@@ -489,7 +472,6 @@ export function tests() {
     })
 
     it('should execute async script', async function () {
-      if (isHelper('TestCafe')) this.skip() // TODO Not yet implemented
       if (isHelper('Playwright')) return // It won't be implemented
 
       await I.amOnPage('/')
@@ -621,8 +603,7 @@ export function tests() {
   })
 
   describe('#type', () => {
-    it('should type into a field', async function () {
-      if (isHelper('TestCafe')) this.skip()
+    it('should type into a field', async () => {
       await I.amOnPage('/form/field')
       await I.click('Name')
 
@@ -635,8 +616,7 @@ export function tests() {
       await I.seeInField('Name', 'Type2')
     })
 
-    it('should use delay to slow down typing', async function () {
-      if (isHelper('TestCafe')) this.skip()
+    it('should use delay to slow down typing', async () => {
       await I.amOnPage('/form/field')
       await I.fillField('Name', '')
       const time = Date.now()
@@ -704,8 +684,6 @@ export function tests() {
     })
 
     it('should grab multiple html from page', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/info')
       let vals = await I.grabHTMLFromAll('#grab-multiple a')
       assert.equal(vals[0], 'First')
@@ -768,16 +746,12 @@ export function tests() {
     })
 
     it('should return empty string when the text of tag is an empty string', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/info')
       let val = await I.grabTextFrom('#p-no-text')
       assert.equal(val, '')
     })
 
     it('should grab html from page', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/info')
       const val = await I.grabHTMLFrom('#grab-multiple')
       if (isHelper('WebDriver')) {
@@ -833,8 +807,6 @@ export function tests() {
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
     it('should check page title', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/')
       await I.seeInTitle('TestEd Beta 2.0')
       await I.dontSeeInTitle('Welcome to test app')
@@ -843,8 +815,6 @@ export function tests() {
     })
 
     it('should grab page title', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/')
       const val = await I.grabTitle()
       assert.equal(val, 'TestEd Beta 2.0')
@@ -942,8 +912,6 @@ export function tests() {
     })
 
     it('should wait for cookie and throw error when cookie not found', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('https://google.com')
       try {
         await I.waitForCookie('auth', 2)
@@ -953,8 +921,6 @@ export function tests() {
     })
 
     it('should wait for cookie', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
@@ -981,8 +947,6 @@ export function tests() {
     })
 
     it('should fail if no context', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       let failed = false
       await I.amOnPage('/dynamic')
       await I.dontSee('Dynamic text')
@@ -995,8 +959,6 @@ export function tests() {
     })
 
     it("should fail if text doesn't contain", async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       let failed = false
       await I.amOnPage('/dynamic')
       try {
@@ -1008,8 +970,6 @@ export function tests() {
     })
 
     it('should fail if text is not in element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       let failed = false
       await I.amOnPage('/dynamic')
       try {
@@ -1156,8 +1116,6 @@ export function tests() {
 
   describe('#waitForDetached', () => {
     it('should throw an error if the element still exists in DOM', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.see('Step One Button')
       await I.seeElement('#step_1')
@@ -1171,8 +1129,6 @@ export function tests() {
     })
 
     it('should throw an error if the element still exists in DOM by XPath', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.see('Step One Button')
       await I.seeElement('#step_1')
@@ -1186,8 +1142,6 @@ export function tests() {
     })
 
     it('should wait for element to be removed from DOM', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.see('Step Two Button')
       await I.seeElement('#step_2')
@@ -1196,8 +1150,6 @@ export function tests() {
     })
 
     it('should wait for element to be removed from DOM by XPath', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.seeElement('//div[@id="step_2"]')
       await I.waitForDetached('//div[@id="step_2"]')
@@ -1262,8 +1214,6 @@ export function tests() {
     })
 
     it('within should respect context in see', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/example4')
       await I.see('Rejestracja', 'fieldset')
       I._withinBegin({ css: '.navbar-header' })
@@ -1272,8 +1222,6 @@ export function tests() {
     })
 
     it('within should respect context in see when using nested frames', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe_nested')
       await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
@@ -1299,8 +1247,6 @@ export function tests() {
     })
 
     it('within should respect context in see when using frame', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: '#number-frame-1234',
@@ -1314,8 +1260,6 @@ export function tests() {
     })
 
     it('within should respect context in see when using frame with strict locator', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: { css: '#number-frame-1234' },
@@ -1331,8 +1275,6 @@ export function tests() {
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     it('should scroll inside an iframe', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe')
       await I.resizeWindow(500, 700)
       await I.switchTo('iframe')
@@ -1391,24 +1333,18 @@ export function tests() {
 
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'height')
       assert.equal(css, '100px')
     })
 
     it('should grab camelcased css properies', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'user-select')
       assert.equal(css, 'text')
     })
 
     it('should grab multiple values if more than one matching element found', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('/info')
       const css = await I.grabCssPropertyFromAll('.span', 'height')
       assert.equal(css[0], '12px')
@@ -1418,7 +1354,7 @@ export function tests() {
 
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('/info')
@@ -1435,7 +1371,7 @@ export function tests() {
     })
 
     it('should check href with slash', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/')
@@ -1451,8 +1387,6 @@ export function tests() {
     })
 
     it('should check attributes values for several elements', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       try {
         await I.amOnPage('/')
         await I.seeAttributesOnElements('a', {
@@ -1473,7 +1407,7 @@ export function tests() {
     })
 
     it('should return error when using non existing attribute', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/')
@@ -1489,7 +1423,7 @@ export function tests() {
     })
 
     it('should verify the boolean attribute', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('/')
@@ -1504,8 +1438,6 @@ export function tests() {
 
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       try {
         await I.amOnPage('/info')
         await I.seeCssPropertiesOnElements('h4', {
@@ -1525,7 +1457,7 @@ export function tests() {
     })
 
     it('should check css property for several elements', async function () {
-      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox') this.skip()
+      if (process.env.BROWSER === 'firefox') this.skip()
 
       try {
         await I.amOnPage('/')
@@ -1551,8 +1483,6 @@ export function tests() {
     })
 
     it('should normalize css color properties for given element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/css_colors')
       await I.seeCssPropertiesOnElements('#namedColor', {
         'background-color': 'purple',
@@ -1669,7 +1599,7 @@ export function tests() {
 
   describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     beforeEach(function () {
-      if (isHelper('TestCafe') || process.env.isSelenium === 'true') this.skip()
+      if (process.env.isSelenium === 'true') this.skip()
     })
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
@@ -1789,7 +1719,7 @@ export function tests() {
   // the WS test website is not so stable. So we skip those tests for now.
   describe.skip('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
     beforeEach(function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver') || process.env.BROWSER === 'firefox') this.skip()
+      if (isHelper('WebDriver') || process.env.BROWSER === 'firefox') this.skip()
     })
 
     it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
