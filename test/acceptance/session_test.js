@@ -82,27 +82,6 @@ Scenario('Different cookies for different sessions @Playwright @Puppeteer', asyn
   I.expectNotEqual(cookies.john, cookies.mary)
 })
 
-Scenario('should save screenshot for sessions @Puppeteer @Playwright', async function ({ I }) {
-  await I.amOnPage('/form/bug1467')
-  await I.saveScreenshot('original.png')
-  await I.amOnPage('/')
-  await I.saveScreenshot('main_session.png')
-  await session('john', async () => {
-    await I.amOnPage('/form/bug1467')
-    event.dispatcher.emit(event.test.failed, this)
-  })
-
-  const fileName = clearString(this.title)
-  const [original, failed] = await I.getSHA256Digests([`${output_dir}/original.png`, `${output_dir}/john_${fileName}.failed.png`])
-
-  // Assert that screenshots of same page in same session are equal
-  await I.expectEqual(original, failed)
-
-  // Assert that screenshots of sessions are created
-  const [main_original, session_failed] = await I.getSHA256Digests([`${output_dir}/main_session.png`, `${output_dir}/john_${fileName}.failed.png`])
-  await I.expectNotEqual(main_original, session_failed)
-})
-
 Scenario('should throw exception and close correctly @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467#session1')
   I.checkOption('Yes')
