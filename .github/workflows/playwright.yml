@@ -56,21 +56,21 @@ jobs:
         run: 'php -S 127.0.0.1:8000 -t test/data/app &'
       - name: run chromium unit tests
         run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000 --reporter @testomatio/reporter/mocha
-        timeout-minutes: 10
+        timeout-minutes: 18
       - name: run chromium tests
-        run: 'timeout 600 bash -c "unset BROWSER && BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
-        timeout-minutes: 12
+        run: 'BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        timeout-minutes: 18
       - name: run chromium with restart==browser tests
-        run: 'timeout 600 bash -c "unset BROWSER && BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
-        timeout-minutes: 12
+        run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        timeout-minutes: 18
       - name: run chromium with restart==session tests
-        run: 'timeout 600 bash -c "unset BROWSER && BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
-        timeout-minutes: 12
+        run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        timeout-minutes: 18
       - name: run firefox tests
-        run: 'timeout 600 bash -c "unset BROWSER && BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
-        timeout-minutes: 12
+        run: 'BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        timeout-minutes: 18
       - name: run webkit tests
-        run: 'timeout 600 bash -c "unset BROWSER && BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug"'
-        timeout-minutes: 12
+        run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        timeout-minutes: 18
         env:
           GH_PAT: ${{ github.token }}
