@@ -1,6 +1,6 @@
 class TestHelper {
   static siteUrl() {
-    return process.env.SITE_URL || 'http://localhost:8000'
+    return process.env.SITE_URL || 'http://0.0.0.0:8000'
   }
 
   static angularSiteUrl() {
@@ -12,7 +12,7 @@ class TestHelper {
   }
 
   static seleniumHost() {
-    return process.env.SELENIUM_HOST || 'localhost'
+    return process.env.SELENIUM_HOST || '0.0.0.0'
   }
 
   static seleniumPort() {
@@ -20,7 +20,7 @@ class TestHelper {
   }
 
   static jsonServerUrl() {
-    return process.env.JSON_SERVER_URL || 'http://localhost:8010'
+    return process.env.JSON_SERVER_URL || 'http://0.0.0.0:8010'
   }
 
   static graphQLServerPort() {
@@ -28,7 +28,7 @@ class TestHelper {
   }
 
   static graphQLServerUrl() {
-    return process.env.GRAPHQL_SERVER_URL || 'http://localhost:8020/graphql'
+    return process.env.GRAPHQL_SERVER_URL || 'http://0.0.0.0:8020/graphql'
   }
 
   static echo(...args) {

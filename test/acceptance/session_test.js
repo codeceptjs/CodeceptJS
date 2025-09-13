@@ -22,14 +22,16 @@ Scenario('screenshots reflect the current page of current session @Puppeteer @Pl
   I.amOnPage('/')
   I.saveScreenshot('session_default_1.png')
 
-  session('john', () => {
+  await session('john', () => {
     I.amOnPage('/info')
     I.saveScreenshot('session_john_1.png')
+    I.say('John is first')
   })
 
+  I.say('Me is second')
   I.saveScreenshot('session_default_2.png')
 
-  session('john', () => {
+  await session('john', () => {
     I.saveScreenshot('session_john_2.png')
   })
 
