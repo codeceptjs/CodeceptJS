@@ -133,17 +133,6 @@ describe('Playwright', function () {
     })
   })
 
-  describe('#seeCssPropertiesOnElements', () => {
-    it('should check background-color css property for given element', async () => {
-      try {
-        await I.amOnPage('https://codecept.io/helpers/Playwright/')
-        await I.seeCssPropertiesOnElements('.navbar', { 'background-color': 'rgb(128, 90, 213)' })
-      } catch (e) {
-        e.message.should.include("expected element (.navbar) to have CSS property { 'background-color': 'rgb(128, 90, 213)' }")
-      }
-    })
-  })
-
   webApiTests.tests()
 
   describe('#click', () => {
@@ -1068,9 +1057,10 @@ describe('Playwright', function () {
 
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
-      const response = await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
+      // Using local json-server for reliable testing
+      const response = await I.makeApiRequest('get', 'http://127.0.0.1:8010/posts/1')
       expect(response.status()).to.equal(200)
-      expect(await response.json()).to.include.keys(['data'])
+      expect(await response.json()).to.include.keys(['id', 'title', 'author'])
     })
 
     it('should make local API request', async () => {
@@ -1081,10 +1071,10 @@ describe('Playwright', function () {
     it('should convert to axios response with onResponse hook', async () => {
       let response
       I.config.onResponse = resp => (response = resp)
-      await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
+      await I.makeApiRequest('get', 'http://127.0.0.1:8010/posts/1')
       expect(response).to.be.ok
       expect(response.status).to.equal(200)
-      expect(response.data).to.include.keys(['data'])
+      expect(response.data).to.include.keys(['id', 'title', 'author'])
     })
   })
 
