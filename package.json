@@ -120,7 +120,7 @@
     "uuid": "11.1.0"
   },
   "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.1.8"
+    "@codeceptjs/detox-helper": "1.1.11"
   },
   "devDependencies": {
     "@apollo/server": "^4",
