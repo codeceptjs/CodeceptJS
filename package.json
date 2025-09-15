@@ -189,5 +189,8 @@
     "compilerOptions": {
       "strict": false
     }
+  },
+  "overrides": {
+    "tmp": "0.2.5"
   }
 }
