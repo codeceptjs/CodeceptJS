@@ -83,7 +83,7 @@
     "@xmldom/xmldom": "0.9.8",
     "acorn": "8.14.1",
     "arrify": "3.0.0",
-    "axios": "1.11.0",
+    "axios": "1.12.1",
     "chalk": "4.1.2",
     "cheerio": "^1.0.0",
     "chokidar": "^4.0.3",
@@ -95,7 +95,7 @@
     "escape-string-regexp": "4.0.0",
     "figures": "3.2.0",
     "fn-args": "4.0.0",
-    "fs-extra": "11.3.0",
+    "fs-extra": "11.3.1",
     "fuse.js": "^7.0.0",
     "glob": ">=9.0.0 <12",
     "html-minifier-terser": "7.2.0",
@@ -108,7 +108,7 @@
     "lodash.shuffle": "4.2.0",
     "mkdirp": "3.0.1",
     "mocha": "11.6.0",
-    "monocart-coverage-reports": "2.12.6",
+    "monocart-coverage-reports": "2.12.9",
     "ms": "2.1.3",
     "multer": "^2.0.2",
     "ora-classic": "5.4.2",
@@ -120,7 +120,7 @@
     "uuid": "11.1.0"
   },
   "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.1.8"
+    "@codeceptjs/detox-helper": "1.1.11"
   },
   "devDependencies": {
     "@apollo/server": "^5",
@@ -133,7 +133,7 @@
     "@pollyjs/core": "6.0.6",
     "@types/chai": "5.2.2",
     "@types/inquirer": "9.0.7",
-    "@types/node": "24.0.10",
+    "@types/node": "24.4.0",
     "@wdio/sauce-service": "9.12.5",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.15.0",
@@ -143,7 +143,7 @@
     "chai-subset": "1.6.0",
     "documentation": "14.0.3",
     "electron": "38.0.0",
-    "eslint": "^9.24.0",
+    "eslint": "^9.35.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-mocha": "11.1.0",
     "expect": "30.0.5",
@@ -171,7 +171,7 @@
     "ts-node": "10.9.2",
     "tsd": "^0.33.0",
     "tsd-jsdoc": "2.5.0",
-    "typedoc": "0.28.10",
+    "typedoc": "0.28.13",
     "typedoc-plugin-markdown": "4.8.1",
     "typescript": "5.8.3",
     "wdio-docker-service": "3.2.1",
@@ -189,5 +189,8 @@
     "compilerOptions": {
       "strict": false
     }
+  },
+  "overrides": {
+    "tmp": "0.2.5"
   }
 }
