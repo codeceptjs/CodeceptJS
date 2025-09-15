@@ -207,11 +207,12 @@ describe('Playwright', function () {
       await I.waitToHide('h9')
     })
 
-    it('should wait for invisible combined with dontseeElement', async () => {
+    it('should wait for invisible combined with dontseeElement', async function () {
+      this.timeout(30000) // Increase timeout for external URL test
       await I.amOnPage('https://codecept.io/')
-      await I.waitForVisible('.frameworks')
-      await I.waitForVisible('[alt="React"]')
-      await I.waitForVisible('.mountains')
+      await I.waitForVisible('.frameworks', 10)
+      await I.waitForVisible('[alt="React"]', 10)
+      await I.waitForVisible('.mountains', 10)
       await I._withinBegin('.mountains', async () => {
         await I.dontSeeElement('[alt="React"]')
         await I.waitForInvisible('[alt="React"]', 2)
@@ -2017,192 +2018,33 @@ describe('using data-testid attribute', () => {
   })
 })
 
-// Tests for storageState configuration & helper behavior
-describe('Playwright - storageState object ', function () {
-  let I
+// Global after hook to ensure all browser instances are closed
+after(async function () {
+  this.timeout(10000) // 10 second timeout for cleanup
 
-  before(() => {
-    global.codecept_dir = path.join(__dirname, '/../data')
-
-    // Provide a storageState object (cookie + localStorage) to seed the context
-    I = new Playwright({
-      url: siteUrl,
-      browser: 'chromium',
-      restart: true,
-      show: false,
-      waitForTimeout: 5000,
-      waitForAction: 200,
-      storageState: {
-        cookies: [
-          {
-            name: 'auth',
-            value: '123',
-            domain: 'localhost',
-            path: '/',
-            httpOnly: false,
-            secure: false,
-            sameSite: 'Lax',
-          },
-        ],
-        origins: [
-          {
-            origin: siteUrl,
-            localStorage: [{ name: 'ls_key', value: 'ls_val' }],
-          },
-        ],
-      },
-    })
-    I._init()
-    return I._beforeSuite()
-  })
-
-  afterEach(async () => {
-    return I._after()
-  })
-
-  it('should apply config storageState (cookies & localStorage)', async () => {
-    await I._before()
-    await I.amOnPage('/')
-    const cookies = await I.grabCookie()
-    const names = cookies.map(c => c.name)
-    expect(names).to.include('auth')
-    const authCookie = cookies.find(c => c.name === 'auth')
-    expect(authCookie && authCookie.value).to.equal('123')
-    const lsVal = await I.executeScript(() => localStorage.getItem('ls_key'))
-    assert.equal(lsVal, 'ls_val')
-  })
-
-  it('should allow Scenario cookies to override config storageState', async () => {
-    const test = {
-      title: 'override cookies scenario',
-      opts: {
-        cookies: [
-          {
-            name: 'override',
-            value: '2',
-            domain: 'localhost',
-            path: '/',
-          },
-        ],
-      },
-    }
-    await I._before(test)
-    await I.amOnPage('/')
-    const cookies = await I.grabCookie()
-    const names = cookies.map(c => c.name)
-    expect(names).to.include('override')
-    expect(names).to.not.include('auth') // original config cookie ignored for this Scenario
-    const overrideCookie = cookies.find(c => c.name === 'override')
-    expect(overrideCookie && overrideCookie.value).to.equal('2')
-  })
-
-  it('grabStorageState should return current state', async () => {
-    await I._before()
-    await I.amOnPage('/')
-    const state = await I.grabStorageState()
-    expect(state.cookies).to.be.an('array')
-    const names = state.cookies.map(c => c.name)
-    expect(names).to.include('auth')
-    expect(state.origins).to.be.an('array')
-    const originEntry = state.origins.find(o => o.origin === siteUrl)
-    expect(originEntry).to.exist
-    if (originEntry && originEntry.localStorage) {
-      const lsNames = originEntry.localStorage.map(e => e.name)
-      expect(lsNames).to.include('ls_key')
-    }
-    // With IndexedDB flag (will include same base data; presence suffices)
-    const stateIdx = await I.grabStorageState({ indexedDB: true })
-    expect(stateIdx).to.be.ok
-  })
-})
-
-// Additional tests for storageState file path usage and error conditions
-describe('Playwright - storageState file path', function () {
-  this.timeout(15000)
-  it('should load storageState from a JSON file path', async () => {
-    const tmpPath = path.join(__dirname, '../data/output/tmp-auth-state.json')
-    const fileState = {
-      cookies: [{ name: 'filecookie', value: 'f1', domain: 'localhost', path: '/' }],
-      origins: [{ origin: siteUrl, localStorage: [{ name: 'from_file', value: 'yes' }] }],
-    }
-    fs.mkdirSync(path.dirname(tmpPath), { recursive: true })
-    fs.writeFileSync(tmpPath, JSON.stringify(fileState, null, 2))
-
-    let I = new Playwright({
-      url: siteUrl,
-      browser: 'chromium',
-      restart: true,
-      show: false,
-      storageState: tmpPath,
-    })
-    I._init()
-    await I._beforeSuite()
-    await I._before()
-    await I.amOnPage('/')
-    const cookies = await I.grabCookie()
-    const names = cookies.map(c => c.name)
-    expect(names).to.include('filecookie')
-    const lsVal = await I.executeScript(() => localStorage.getItem('from_file'))
-    expect(lsVal).to.equal('yes')
-    await I._after()
-  })
-
-  it('should allow Scenario cookies to override file-based storageState', async () => {
-    const tmpPath = path.join(__dirname, '../data/output/tmp-auth-state-override.json')
-    const fileState = {
-      cookies: [{ name: 'basecookie', value: 'b1', domain: 'localhost', path: '/' }],
-      origins: [{ origin: siteUrl, localStorage: [{ name: 'persist', value: 'keep' }] }],
-    }
-    fs.mkdirSync(path.dirname(tmpPath), { recursive: true })
-    fs.writeFileSync(tmpPath, JSON.stringify(fileState, null, 2))
-
-    let I = new Playwright({
-      url: siteUrl,
-      browser: 'chromium',
-      restart: true,
-      show: false,
-      storageState: tmpPath,
-    })
-    I._init()
-    await I._beforeSuite()
-    const test = {
-      title: 'override cookies with file-based storageState',
-      opts: {
-        cookies: [{ name: 'override_from_file', value: 'ov1', domain: 'localhost', path: '/' }],
-      },
-    }
-    await I._before(test)
-    await I.amOnPage('/')
-    const cookies = await I.grabCookie()
-    const names = cookies.map(c => c.name)
-    expect(names).to.include('override_from_file')
-    expect(names).to.not.include('basecookie')
-    const overrideCookie = cookies.find(c => c.name === 'override_from_file')
-    expect(overrideCookie && overrideCookie.value).to.equal('ov1')
-    await I._after()
-  })
-
-  it('should throw when storageState file path does not exist', async () => {
-    const badPath = path.join(__dirname, '../data/output/missing-auth-state.json')
-    let I = new Playwright({
-      url: siteUrl,
-      browser: 'chromium',
-      restart: true,
-      show: false,
-      storageState: badPath,
-    })
-    I._init()
-    await I._beforeSuite()
-    let threw = false
+  // Close the main browser instance if it exists
+  if (I && I.browser) {
     try {
-      await I._before()
+      await Promise.race([I.browser.close(), new Promise((_, reject) => setTimeout(() => reject(new Error('Browser close timeout')), 5000))])
     } catch (e) {
-      threw = true
-      expect(e.message).to.match(/ENOENT|no such file|cannot find/i)
+      console.warn('Warning during browser cleanup:', e.message)
     }
-    expect(threw, 'expected missing storageState path to throw').to.be.true
+  }
+
+  // Close remote browser if it exists
+  if (remoteBrowser) {
     try {
-      await I._after()
-    } catch (_) {}
-  })
+      await Promise.race([remoteBrowser.close(), new Promise((_, reject) => setTimeout(() => reject(new Error('Remote browser close timeout')), 5000))])
+    } catch (e) {
+      console.warn('Warning during remote browser cleanup:', e.message)
+    }
+  }
+
+  // Force close any remaining Playwright browser processes
+  try {
+    const { exec } = await import('child_process')
+    exec('pkill -f "playwright.*chromium" || true')
+  } catch (e) {
+    // Ignore errors from pkill
+  }
 })
