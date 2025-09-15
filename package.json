@@ -81,7 +81,7 @@
     "@cucumber/gherkin": "35.0.0",
     "@cucumber/messages": "29.0.1",
     "@xmldom/xmldom": "0.9.8",
-    "acorn": "8.14.1",
+    "acorn": "8.15.0",
     "arrify": "3.0.0",
     "axios": "1.12.2",
     "chalk": "4.1.2",
