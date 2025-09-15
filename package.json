@@ -83,7 +83,7 @@
     "@xmldom/xmldom": "0.9.8",
     "acorn": "8.14.1",
     "arrify": "3.0.0",
-    "axios": "1.11.0",
+    "axios": "1.12.1",
     "chalk": "4.1.2",
     "cheerio": "^1.0.0",
     "chokidar": "^4.0.3",
@@ -120,7 +120,7 @@
     "uuid": "11.1.0"
   },
   "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.1.8"
+    "@codeceptjs/detox-helper": "1.1.11"
   },
   "devDependencies": {
     "@apollo/server": "^4",
@@ -189,5 +189,8 @@
     "compilerOptions": {
       "strict": false
     }
+  },
+  "overrides": {
+    "tmp": "0.2.5"
   }
 }
