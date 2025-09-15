@@ -690,6 +690,7 @@ module.exports.tests = function () {
     it('should grab multiple texts from page', async () => {
       await I.amOnPage('/info')
       let vals = await I.grabTextFromAll('#grab-multiple a')
+      console.log(vals)
       assert.equal(vals[0], 'First')
       assert.equal(vals[1], 'Second')
       assert.equal(vals[2], 'Third')
