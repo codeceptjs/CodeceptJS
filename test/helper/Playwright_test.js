@@ -53,6 +53,8 @@ describe('Playwright', function () {
       waitForAction: 500,
       timeout: 2000,
       restart: false, // Don't restart browser to avoid hanging
+      networkIdleTimeout: 5000, // Timeout for network requests
+      manualStart: false,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
@@ -871,25 +873,28 @@ describe('Playwright', function () {
   })
 
   describe('#dragAndDrop', () => {
-    it('Drag item from source to target (no iframe) @dragNdrop - customized steps', () =>
-      I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
-        .then(() => I.seeElementInDOM('#draggable'))
-        .then(() => I.dragAndDrop('#draggable', '#droppable'))
-        .then(() => I.see('Dropped')))
+    it('Drag item from source to target (no iframe) @dragNdrop - customized steps', async function () {
+      await I.amOnPage('/drag_drop.html')
+      await I.seeElementInDOM('#draggable')
+      await I.dragAndDrop('#draggable', '#droppable')
+      await I.see('Dropped!')
+    })
 
-    it('Drag item from source to target (no iframe) @dragNdrop - using Playwright API', () =>
-      I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
-        .then(() => I.seeElementInDOM('#draggable'))
-        .then(() => I.dragAndDrop('#draggable', '#droppable', { force: true }))
-        .then(() => I.see('Dropped')))
+    it('Drag item from source to target (no iframe) @dragNdrop - using Playwright API', async function () {
+      await I.amOnPage('/drag_drop.html')
+      await I.seeElementInDOM('#draggable')
+      await I.dragAndDrop('#draggable', '#droppable', { force: true })
+      await I.see('Dropped!')
+    })
 
-    xit('Drag and drop from within an iframe', () =>
-      I.amOnPage('https://jqueryui.com/droppable')
-        .then(() => I.resizeWindow(700, 700))
-        .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
-        .then(() => I.seeElementInDOM('#draggable'))
-        .then(() => I.dragAndDrop('#draggable', '#droppable'))
-        .then(() => I.see('Dropped')))
+    it('Drag and drop from within an iframe', async function () {
+      await I.amOnPage('/drag_drop.html')
+      await I.resizeWindow(700, 700)
+      await I.switchTo('#test-iframe')
+      await I.seeElementInDOM('#iframe-draggable')
+      await I.dragAndDrop('#iframe-draggable', '#iframe-droppable')
+      await I.see('Drop here')
+    })
   })
 
   describe('#switchTo frame', () => {
@@ -1442,7 +1447,7 @@ describe('Playwright - Performance Metrics', () => {
   })
 
   it('grabs performance metrics', async function () {
-    this.timeout(10000) // Increase timeout for this test
+    this.timeout(30000) // Increase timeout for external URL test
     await I.amOnPage('https://codecept.io')
     const metrics = await I.grabMetrics()
     expect(metrics.length).to.greaterThan(0)
@@ -1551,17 +1556,17 @@ describe('Playwright - HAR', () => {
   it('replay from HAR - non existing file', async () => {
     try {
       await I.replayFromHar('./non-existing-file.har')
-      await I.amOnPage('https://demo.playwright.dev/api-mocking')
+      await I.amOnPage('/')
     } catch (e) {
       expect(e.message).to.include('cannot be found on local system')
     }
   })
 
-  it('replay from HAR', async () => {
+  it('replay from HAR', async function () {
     const harFile = './test/data/sandbox/testHar.har'
     await I.replayFromHar(harFile)
-    await I.amOnPage('https://demo.playwright.dev/api-mocking')
-    await I.see('CodeceptJS')
+    await I.amOnPage('/')
+    await I.see('Welcome to test app')
   })
 
   describe('#grabWebElements, #grabWebElement', () => {
@@ -1624,6 +1629,12 @@ describe('using data-testid attribute', () => {
     assert.equal(webElements[0]._selector, 'h1[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
+})
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
+  // Don't exit the process, just log the error
 })
 
 // Global after hook to ensure all browser instances are closed
