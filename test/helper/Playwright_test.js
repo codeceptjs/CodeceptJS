@@ -207,11 +207,12 @@ describe('Playwright', function () {
       await I.waitToHide('h9')
     })
 
-    it('should wait for invisible combined with dontseeElement', async () => {
+    it('should wait for invisible combined with dontseeElement', async function () {
+      this.timeout(30000) // Increase timeout for external URL test
       await I.amOnPage('https://codecept.io/')
-      await I.waitForVisible('.frameworks')
-      await I.waitForVisible('[alt="React"]')
-      await I.waitForVisible('.mountains')
+      await I.waitForVisible('.frameworks', 10)
+      await I.waitForVisible('[alt="React"]', 10)
+      await I.waitForVisible('.mountains', 10)
       await I._withinBegin('.mountains', async () => {
         await I.dontSeeElement('[alt="React"]')
         await I.waitForInvisible('[alt="React"]', 2)
@@ -1623,4 +1624,35 @@ describe('using data-testid attribute', () => {
     assert.equal(webElements[0]._selector, 'h1[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
+})
+
+// Global after hook to ensure all browser instances are closed
+after(async function () {
+  this.timeout(10000) // 10 second timeout for cleanup
+
+  // Close the main browser instance if it exists
+  if (I && I.browser) {
+    try {
+      await Promise.race([I.browser.close(), new Promise((_, reject) => setTimeout(() => reject(new Error('Browser close timeout')), 5000))])
+    } catch (e) {
+      console.warn('Warning during browser cleanup:', e.message)
+    }
+  }
+
+  // Close remote browser if it exists
+  if (remoteBrowser) {
+    try {
+      await Promise.race([remoteBrowser.close(), new Promise((_, reject) => setTimeout(() => reject(new Error('Remote browser close timeout')), 5000))])
+    } catch (e) {
+      console.warn('Warning during remote browser cleanup:', e.message)
+    }
+  }
+
+  // Force close any remaining Playwright browser processes
+  try {
+    const { exec } = await import('child_process')
+    exec('pkill -f "playwright.*chromium" || true')
+  } catch (e) {
+    // Ignore errors from pkill
+  }
 })
