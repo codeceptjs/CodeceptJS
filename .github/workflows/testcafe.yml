@@ -13,7 +13,6 @@ env:
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
 
-
 jobs:
   build:
     strategy:
@@ -26,28 +25,28 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v5
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-version }}
-    - name: npm install
-      run: |
-        npm i --force
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - name: start a server
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          start /B php -S 127.0.0.1:8000 -t test/data/app
-        else
-          php -S 127.0.0.1:8000 -t test/data/app &
-        fi
-        sleep 3
-      shell: bash
-    - name: run unit tests
-      run: npm run test:unit:webbapi:testCafe
+      - uses: actions/checkout@v5
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+      - name: npm install
+        run: |
+          npm i --force
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: start a server
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            start /B php -S 127.0.0.1:8000 -t test/data/app
+          else
+            php -S 127.0.0.1:8000 -t test/data/app &
+          fi
+          sleep 3
+        shell: bash
+      - name: run unit tests
+        run: npm run test:unit:webbapi:testCafe
