@@ -864,6 +864,10 @@ export function tests() {
   })
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie, #waitForCookie', () => {
+    beforeEach(function () {
+      // Skip in CI to avoid timeouts from external URLs
+      if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
+    })
     it('should do all cookie stuff', async () => {
       await I.amOnPage('/')
       await I.setCookie({
@@ -1600,6 +1604,8 @@ export function tests() {
   describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     beforeEach(function () {
       if (process.env.isSelenium === 'true') this.skip()
+      // Skip in CI to avoid timeouts from external URLs
+      if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
     })
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
