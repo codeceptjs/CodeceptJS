@@ -134,7 +134,7 @@
     "@types/chai": "5.2.2",
     "@types/inquirer": "9.0.9",
     "@types/node": "24.4.0",
-    "@wdio/sauce-service": "9.14.0",
+    "@wdio/sauce-service": "9.15.0",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.15.0",
     "@xmldom/xmldom": "0.9.8",
@@ -175,7 +175,7 @@
     "typedoc-plugin-markdown": "4.8.1",
     "typescript": "5.8.3",
     "wdio-docker-service": "3.2.1",
-    "webdriverio": "9.15.0",
+    "webdriverio": "9.14.0",
     "xml2js": "0.6.2",
     "xpath": "0.0.34"
   },
