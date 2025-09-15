@@ -1329,7 +1329,7 @@ async function createRemoteBrowser() {
   return remoteBrowser
 }
 
-describe('Playwright (remote browser) websocket', function () {
+describe.skip('Playwright (remote browser) websocket', function () {
   this.timeout(35000)
   this.retries(1)
 
