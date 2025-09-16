@@ -138,7 +138,7 @@
     "@inquirer/testing": "^2.1.49",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "6.0.6",
-    "@testomatio/reporter": "^2.3.0",
+    "@testomatio/reporter": "^2.3.1",
     "@types/chai": "5.2.2",
     "@types/inquirer": "9.0.9",
     "@types/node": "^24.6.2",
