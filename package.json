@@ -99,7 +99,7 @@
     "fuse.js": "^7.0.0",
     "glob": ">=9.0.0 <12",
     "html-minifier-terser": "7.2.0",
-    "inquirer": "^8.2.7",
+    "inquirer": "^9.3.8",
     "invisi-data": "^1.0.0",
     "joi": "18.0.1",
     "js-beautify": "1.15.4",
