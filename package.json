@@ -95,7 +95,7 @@
     "escape-string-regexp": "4.0.0",
     "figures": "3.2.0",
     "fn-args": "4.0.0",
-    "fs-extra": "11.3.1",
+    "fs-extra": "11.3.2",
     "fuse.js": "^7.0.0",
     "glob": ">=9.0.0 <12",
     "html-minifier-terser": "7.2.0",
@@ -120,7 +120,7 @@
     "uuid": "11.1.0"
   },
   "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.1.11"
+    "@codeceptjs/detox-helper": "1.1.12"
   },
   "devDependencies": {
     "@apollo/server": "^5",
@@ -133,7 +133,7 @@
     "@pollyjs/core": "6.0.6",
     "@types/chai": "5.2.2",
     "@types/inquirer": "9.0.9",
-    "@types/node": "24.4.0",
+    "@types/node": "24.5.0",
     "@wdio/sauce-service": "9.12.5",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.15.0",
