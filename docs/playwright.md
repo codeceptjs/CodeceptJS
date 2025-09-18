@@ -664,3 +664,48 @@ Playwright can be added to GitHub Actions using [official action](https://github
 - name: run CodeceptJS tests
   run: npx codeceptjs run
 ```
+
+## Reusing Auth State (storageState) <Badge text="Since 3.7.5" type="warning"/>
+
+Use Playwright's native `storageState` to start tests already authenticated.
+Pass either a JSON file path or a state object to the Playwright helper; CodeceptJS forwards it directly to Playwright (no pre-checks).
+
+**Sensitive**: A storage state contains session cookies, auth tokens and may contain localStorage / IndexedDB application data. Treat it like a secret: do not commit it to git, encrypt or store it in a secure CI artifact store.
+
+Reference: https://playwright.dev/docs/auth#reuse-authentication-state
+
+**Limitation**: If a Scenario is declared with a `cookies` option (e.g. `Scenario('My test', { cookies: [...] }, ({ I }) => { ... })`), those cookies are used to initialize the context and any helper-level `storageState` is ignored (no merge). Choose one mechanism per Scenario.
+
+Minimal examples:
+
+```js
+// File path
+helpers: { Playwright: { url: 'http://localhost', browser: 'chromium', storageState: 'authState.json' } }
+
+// Inline object
+const state = require('./authState.json');
+helpers: { Playwright: { url: 'http://localhost', browser: 'chromium', storageState: state } }
+```
+
+Scenario with explicit cookies (bypasses configured storageState):
+
+```js
+const authCookies = [{ name: 'session', value: 'abc123', domain: 'localhost', path: '/', httpOnly: true, secure: false, sameSite: 'Lax' }]
+Scenario('Dashboard (authenticated)', { cookies: authCookies }, ({ I }) => {
+  I.amOnPage('/dashboard')
+  I.see('Welcome')
+})
+```
+
+Helper snippet:
+
+```js
+// Grab current state as object
+const state = await I.grabStorageState()
+// Persist manually (sensitive file!)
+require('fs').writeFileSync('authState.json', JSON.stringify(state))
+
+// Include IndexedDB (Playwright >= 1.51) if your app relies on it (e.g. Firebase Auth persistence)
+const stateWithIDB = await I.grabStorageState({ indexedDB: true })
+require('fs').writeFileSync('authState-with-idb.json', JSON.stringify(stateWithIDB))
+```
