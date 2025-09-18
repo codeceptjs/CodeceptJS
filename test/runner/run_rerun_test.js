@@ -78,6 +78,23 @@ describe('run-rerun command', () => {
     })
   })
 
+  it('should emit correct result object and not show OK when tests fail', done => {
+    exec(`${codecept_run_config('codecept.conf.fail_test.js', '@RunRerun - Fail all attempt')}`, (err, stdout) => {
+      // Should show individual run failures correctly
+      expect(stdout).toContain('FAIL  |')
+      expect(stdout).toContain('failed')
+      
+      // Should not show "OK  | 0 passed" when tests actually failed  
+      expect(stdout).not.toContain('OK  | 0 passed')
+      
+      // Should show the expected error message for flaky tests
+      expect(stdout).toContain('Flaky tests detected!')
+      
+      expect(err.code).toBe(1)
+      done()
+    })
+  })
+
   it('should display success run if test was fail one time of two attempts and 3 reruns', done => {
     exec(`FAIL_ATTEMPT=0  ${codecept_run_config('codecept.conf.fail_test.js', '@RunRerun - fail second test')} --debug`, (err, stdout) => {
       expect(stdout).toContain('Process run 1 of max 3, success runs 1/2')
