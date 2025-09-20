@@ -217,7 +217,6 @@ Scenario('should return a value in @Puppeteer @Playwright', async ({ I }) => {
   })
   I.fillField('Description', val)
   I.click('Submit')
-  I.wait(2)
   I.see('[description] => Information')
 })
 
@@ -229,7 +228,6 @@ Scenario('should return a value @Puppeteer @Playwright in async', async ({ I }) 
   })
   I.fillField('Description', val)
   I.click('Submit')
-  I.wait(2)
   I.see('[description] => Information')
 })
 
