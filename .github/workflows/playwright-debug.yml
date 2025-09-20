@@ -55,9 +55,3 @@ jobs:
         run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.${{ matrix.test-file }}.js --grep @Playwright --debug --verbose'
         timeout-minutes: 3
         continue-on-error: true
-      - name: Upload screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: screenshots-${{ matrix.test-file }}
-          path: test/acceptance/output/
