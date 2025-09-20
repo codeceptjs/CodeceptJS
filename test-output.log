@@ -1,0 +1,1562 @@
+=== Testing Playwright with browser restart ===
+Starting servers...
+Creating config files...
+=== Testing within_test.js ===
+***************************************
+nodeInfo:  22.12.0
+osInfo:  Linux 6.14 Ubuntu 25.04 25.04 (Plucky Puffin)
+cpuInfo:  (16) x64 AMD Ryzen 7 PRO 8840HS w/ Radeon 780M Graphics
+chromeInfo:  138.0.7204.157
+edgeInfo:  "N/A"
+firefoxInfo:  undefined
+safariInfo:  N/A
+playwrightBrowsers:  "chromium: 138.0.7204.15, firefox: 139.0, webkit: 18.5"
+If you need more detailed info, just run this: npx codeceptjs info
+***************************************
+CodeceptJS v3.7.3 #StandWithUkraine
+Using test root "/home/davert/projects/CodeceptJS/test/acceptance"
+Helpers: Playwright, JSONResponse, ScreenshotSessionHelper, @codeceptjs/expect-helper
+Plugins: screenshotOnFail, retryFailedStep
+
+within --
+/home/davert/projects/CodeceptJS/test/acceptance/within_test.js
+    [1]  Starting recording promises
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  within on form @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    I see "TEST TEST"
+    Within "{"css":"[name=form2]"}"
+      I check option "Yes"
+      I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    I see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+    I dont see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+  ✔ OK in 1091ms
+
+  switch iframe manually @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I switch to "iframe"
+    I fill field "rus", "Updated"
+    › [Focused] <input type="text" name="rus" value="Верно">...
+    I click "Sign in!"
+    › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+    › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+    I wait for text "Email Address"
+    I switch to 
+    I see "Iframe test"
+    I dont see "Email Address"
+  ✔ OK in 1774ms
+
+  within on iframe @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    Within "{"frame":"iframe"}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I wait for text "Email Address"
+    I see "Iframe test"
+    I dont see "Email Address"
+  ✔ OK in 1766ms
+
+  within on iframe without iframe navigation @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Iframe test"
+    I dont see "Sign in!"
+    Within "{"frame":"iframe"}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I see "Sign in!"
+  ✔ OK in 1195ms
+
+  within on nested iframe without iframe navigation depth 2 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    I see "Nested Iframe test"
+    I dont see "Sign in!"
+    Within "{"frame":["[name=wrapper]","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I see "Sign in!"
+  ✔ OK in 1229ms
+
+  within on nested iframe depth 1 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    I see "Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I wait for text "Email Address"
+  ✔ OK in 1755ms
+
+  within on nested iframe depth 2 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["[name=wrapper]","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1804ms
+
+  within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["#wrapperId","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1792ms
+
+  within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":[".wrapperClass","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1800ms
+
+  should throw exception if element not found @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+    Within "#grab-multiple"
+      I grab text from "#first-link"
+         [1] <within>  Error (Non-Terminated) | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+         [1] <within> Error | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [1] <within> Error | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath undefined...
+    [1] <teardown>  Stopping recording promises
+  ✔ OK in 5534ms
+
+    [2]  Starting recording promises
+  should return a value @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I wait for element "#grab-multiple", 5
+    Within "#grab-multiple"
+      I grab text from "#first-link"
+      › [Text] First
+    I fill field "rus", "First"
+    › [Element] <input type="text" name="rus" value="Верно">...
+    › [Focused] <input type="text" name="rus" value="Верно">...
+    I press key "Enter"
+    I see "[rus] => First"
+  ✔ OK in 1708ms
+
+Session --
+/home/davert/projects/CodeceptJS/test/acceptance/session_test.js
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  simple session @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    I dont see "Email"
+    I see in current url "/info"
+ › [New Context] {}
+    john: I am on page "/login"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/login
+    john: I dont see in current url "/info"
+    john: I see "Email"
+  ✔ OK in 1708ms
+
+  screenshots reflect the current page of current session @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    I save screenshot "session_default_1.png"
+    › [Screenshot] output/session_default_1.png
+    › [Screenshot] john - output/john_session_default_1.png
+    › Cannot take session screenshot: session page for 'john' is closed or undefined
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I save screenshot "session_john_1.png"
+    › [Screenshot] output/session_john_1.png
+    › [Screenshot] john - output/john_session_john_1.png
+    john: I say "John is first"
+   John is first
+    I say "Me is second"
+   Me is second
+    I save screenshot "session_default_2.png"
+    › [Screenshot] output/session_default_2.png
+    › [Screenshot] john - output/john_session_default_2.png
+    john: I save screenshot "session_john_2.png"
+    › [Screenshot] output/session_john_2.png
+    › [Screenshot] john - output/john_session_john_2.png
+    › [Screenshot]  - output/_session_john_2.png
+    I get sha256digests ["/home/davert/projects/CodeceptJS/test/acceptance/output/session_default_1.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_default_2.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_john_1.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_john_2.png"]
+    I expect equal "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk=", "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk="
+    I expect equal "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk=", "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk="
+    I expect not equal "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk=", "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk="
+  ✔ OK in 2751ms
+
+  Different cookies for different sessions @Playwright @Puppeteer
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://google.com/"
+    I grab cookie "AEC"
+ › [New Context] {}
+    john: I am on page "https://google.com/"
+ › [New Context] {}
+    mary: I am on page "https://google.com/"
+    I say "AEC: AaJma5unzJ-iwg3Nr-nhIeu1nDvy_ZTHHCT2SFVg6ZZB42oQeDKF3xpOz70"
+   AEC: AaJma5unzJ-iwg3Nr-nhIeu1nDvy_ZTHHCT2SFVg6ZZB42oQeDKF3xpOz70
+    john: I grab cookie "AEC"
+    john: I say "AEC: AaJma5tRG9200s6dXUXnU4pocpPne9v4UkKS45nreoqVp3Qun4HaILOlBg"
+   AEC: AaJma5tRG9200s6dXUXnU4pocpPne9v4UkKS45nreoqVp3Qun4HaILOlBg
+    mary: I grab cookie "AEC"
+    mary: I say "AEC: AaJma5uEX2ws8xZ2c-NCZ56sW23-kisVOfsKq016oBrTPSyw9ZAjrLQ2Ylw"
+   AEC: AaJma5uEX2ws8xZ2c-NCZ56sW23-kisVOfsKq016oBrTPSyw9ZAjrLQ2Ylw
+    I see in current url "google.com"
+    I expect not equal "AaJma5unzJ-iwg3Nr-nhIeu1nDvy_ZTHHCT2SFVg6ZZB42oQeDKF3xpOz70", "AaJma5tRG9200s6dXUXnU4pocpPne9v4UkKS45nreoqVp3Qun4HaILOlBg"
+    I expect not equal "AaJma5unzJ-iwg3Nr-nhIeu1nDvy_ZTHHCT2SFVg6ZZB42oQeDKF3xpOz70", "AaJma5uEX2ws8xZ2c-NCZ56sW23-kisVOfsKq016oBrTPSyw9ZAjrLQ2Ylw"
+    I expect not equal "AaJma5tRG9200s6dXUXnU4pocpPne9v4UkKS45nreoqVp3Qun4HaILOlBg", "AaJma5uEX2ws8xZ2c-NCZ56sW23-kisVOfsKq016oBrTPSyw9ZAjrLQ2Ylw"
+  ✔ OK in 8090ms
+
+  should throw exception and close correctly @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467#session1"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session1
+    I check option "Yes"
+    I see checkbox is checked {"css":"input[value=Yes]"}
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+ › [New Context] {}
+    john: I am on page "/form/bug1467#session2"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session2
+    john: I check option "No1"
+       [2] <session:john>  Error (Non-Terminated) | Error: Checkbox or radio "No1" was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+       [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [2] <session:john>  Error (Non-Terminated) | Error: Checkbox or radio "No1" was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+    [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath e => { session.restoreVars(sessionName) output.ste...
+    [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath undefined...
+    [2] <teardown>  Stopping recording promises
+  ✔ OK in 2221ms
+
+    [3]  Starting recording promises
+  exception on async/await @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467#session1"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session1
+    I check option "Yes"
+    I see checkbox is checked {"css":"input[value=Yes]"}
+ › [New Context] {}
+    john: I am on page "/form/bug1467#session2"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session2
+    john: I check option "No"
+    john: I see checkbox is checked {"css":"input[value=Yes]"}
+       [3] <session:john>  Error (Non-Terminated) | Error | err => { // we wrap timeout errors in a StepTimeou...
+       [3] <session:john> Error | Error err => { step.status = 'failed' step.endTime = +Da...
+    [3] <session:john> Error | Error undefined...
+    [3] <teardown>  Stopping recording promises
+  ✔ OK in 2193ms
+
+    [4]  Starting recording promises
+  should work with within @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    Within "{"css":"[name=form2]"}"
+      I check option "Yes"
+      I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    I see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+    I dont see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+ › [New Context] {}
+    john: I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    Within "{"css":"[name=form1]"}"
+      john: I check option "Yes"
+      john: I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    john: I see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+    john: I dont see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+  ✔ OK in 3224ms
+
+  change page emulation @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+ › [New Context] {"viewport":{"width":300,"height":500}}
+    mobile user: I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    mobile user: I execute script "window.innerWidth"
+    mobile user: I expect equal 300, 300
+  ✔ OK in 1655ms
+
+  emulate iPhone @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+ › [New Context] {"userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/18.5 Mobile/15A372 Safari/604.1","viewport":{"width":375,"height":667},"deviceScaleFactor":2,"isMobile":true,"hasTouch":true,"defaultBrowserType":"webkit"}
+    mobile user: I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    mobile user: I execute script "window.innerWidth"
+  ✔ OK in 1642ms
+
+  S should use different base URL @Puppeteer @Playwright
+  should return a value in @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I grab text from {"css":"h1"}
+    › [Text] Information
+    I fill field "Description", "Information"
+    › [Element] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    › [Focused] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    I click "Submit"
+    › [Clicked] <input type="submit" value="Submit">...
+    I see "[description] => Information"
+  ✔ OK in 2864ms
+
+  should return a value @Puppeteer @Playwright in async
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I grab text from {"css":"h1"}
+    › [Text] Information
+    I fill field "Description", "Information"
+    › [Element] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    › [Focused] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    I click "Submit"
+    › [Clicked] <input type="submit" value="Submit">...
+    I see "[description] => Information"
+  ✔ OK in 2894ms
+
+React Selectors --
+/home/davert/projects/CodeceptJS/test/acceptance/react_test.js
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  props @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://codecept.io/test-react-calculator/"
+    I click "7"
+    › [Clicked] <button>7</button>...
+    I click {"react":"t","props":{"name":"="}}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"react":"t","props":{"value":"7"}}
+    › [Element] <div class="component-display"><div>7</div></div>...
+    I click {"react":"t","props":{"name":"+"}}
+    › [Clicked] <div class="component-button orange"><button>+</button></div>...
+    I click {"react":"t","props":{"name":"3"}}
+    › [Clicked] <div class="component-button"><button>3</button></div>...
+    I click {"react":"t","props":{"name":"="}}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"react":"t","props":{"value":"10"}}
+    › [Element] <div class="component-display"><div>10</div></div>...
+  ✔ OK in 4352ms
+
+  component name @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "http://negomi.github.io/react-burger-menu/"
+    › [Browser:Info] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+    I click {"react":"BurgerIcon"}
+    › [Clicked] <div class="bm-burger-button" style="z-index: 1000;"><button type="button" id="react-burger-menu-btn...
+    I wait for visible "#slide", 10
+    I click "Alerts"
+    › [Clicked] <a href="" class="bm-item" style="display: block;"><i class="fa fa-fw fa-bell-o"></i><span>Alerts</s...
+    I see element {"react":"Demo"}
+    › [Element] <div id="outer-container" style="height: 100%;"><div class="left"><div><div class="bm-overlay" style...
+  ✔ OK in 2778ms
+
+  using playwright locator @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://codecept.io/test-react-calculator/"
+    I click "7"
+    › [Clicked] <button>7</button>...
+    I click {"pw":"_react=t[name = \"=\"]"}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"pw":"_react=t[value = \"7\"]"}
+    › [Element] <div class="component-display"><div>7</div></div>...
+    I click {"pw":"_react=t[name = \"+\"]"}
+    › [Clicked] <div class="component-button orange"><button>+</button></div>...
+    I click {"pw":"_react=t[name = \"3\"]"}
+    › [Clicked] <div class="component-button"><button>3</button></div>...
+    I click {"pw":"_react=t[name = \"=\"]"}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"pw":"_react=t[value = \"10\"]"}
+    › [Element] <div class="component-display"><div>10</div></div>...
+  ✔ OK in 3514ms
+
+Dynamic Config --
+/home/davert/projects/CodeceptJS/test/acceptance/config_test.js
+ › [Suite Config] Playwright {"url":"https://google.com"}
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  change config 1 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "github.com"
+    I see in current url "google.com"
+  ✔ OK in 2013ms
+
+  change config 2 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io"}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io/
+    I see in current url "codecept.io"
+  ✔ OK in 4242ms
+
+ › [Test Config] Reverted for Playwright
+  change config 3 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "codecept.io"
+    I see in current url "google.com"
+  ✔ OK in 2045ms
+
+  change config 4 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io/","capabilities":{"moz:title":"change config 4 @WebDriverIO @Puppeteer @Playwright"}}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io///
+    › [Browser:Error] SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https:' cannot be created in a document with origin 'https://codecept.io' and URL 'https://codecept.io///'.
+    at no (https://codecept.io/assets/js/app.6cba3458.js:16:84706)
+    at t.setupListeners (https://codecept.io/assets/js/app.6cba3458.js:16:92082)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:96482)
+    at https://codecept.io/assets/js/app.6cba3458.js:16:89603
+    at s (https://codecept.io/assets/js/app.6cba3458.js:16:89919)
+    at f (https://codecept.io/assets/js/app.6cba3458.js:16:91066)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:87309)
+    at Co (https://codecept.io/assets/js/app.6cba3458.js:16:87346)
+    at jo.confirmTransition (https://codecept.io/assets/js/app.6cba3458.js:16:91073)
+    at jo.transitionTo (https://codecept.io/assets/js/app.6cba3458.js:16:89398)SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https:' cannot be created in a document with origin 'https://codecept.io' and URL 'https://codecept.io///'.
+    at no (https://codecept.io/assets/js/app.6cba3458.js:16:84706)
+    at t.setupListeners (https://codecept.io/assets/js/app.6cba3458.js:16:92082)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:96482)
+    at https://codecept.io/assets/js/app.6cba3458.js:16:89603
+    at s (https://codecept.io/assets/js/app.6cba3458.js:16:89919)
+    at f (https://codecept.io/assets/js/app.6cba3458.js:16:91066)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:87309)
+    at Co (https://codecept.io/assets/js/app.6cba3458.js:16:87346)
+    at jo.confirmTransition (https://codecept.io/assets/js/app.6cba3458.js:16:91073)
+    at jo.transitionTo (https://codecept.io/assets/js/app.6cba3458.js:16:89398)
+    I see in current url "codecept.io"
+  ✔ OK in 2803ms
+
+ › [Test Config] Reverted for Playwright
+  change config 5 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "codecept.io"
+    I see in current url "google.com"
+  ✔ OK in 1915ms
+
+  make API call and check response @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I make api request "get", "http://127.0.0.1:8010/posts/1"
+    › [Status] 200
+    › [Response] {
+  "id": 1,
+  "title": "json-server",
+  "author": "davert"
+}
+    I see response code is successful 
+  ✔ OK in 1797ms
+
+  change config 6 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io"}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io/
+    I see in current url "codecept.io"
+  ✔ OK in 3775ms
+
+ › [Test Config] Reverted for Playwright
+ › [Suite Config] Reverted for Playwright
+
+  OK  | 31 passed, 1 skipped   // 1m
+
+=== Testing config_test.js ===
+***************************************
+nodeInfo:  22.12.0
+osInfo:  Linux 6.14 Ubuntu 25.04 25.04 (Plucky Puffin)
+cpuInfo:  (16) x64 AMD Ryzen 7 PRO 8840HS w/ Radeon 780M Graphics
+chromeInfo:  138.0.7204.157
+edgeInfo:  "N/A"
+firefoxInfo:  undefined
+safariInfo:  N/A
+playwrightBrowsers:  "chromium: 138.0.7204.15, firefox: 139.0, webkit: 18.5"
+If you need more detailed info, just run this: npx codeceptjs info
+***************************************
+CodeceptJS v3.7.3 #StandWithUkraine
+Using test root "/home/davert/projects/CodeceptJS/test/acceptance"
+Helpers: Playwright, JSONResponse, ScreenshotSessionHelper, @codeceptjs/expect-helper
+Plugins: screenshotOnFail, retryFailedStep
+
+within --
+/home/davert/projects/CodeceptJS/test/acceptance/within_test.js
+    [1]  Starting recording promises
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  within on form @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    I see "TEST TEST"
+    Within "{"css":"[name=form2]"}"
+      I check option "Yes"
+      I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    I see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+    I dont see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+  ✔ OK in 1097ms
+
+  switch iframe manually @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I switch to "iframe"
+    I fill field "rus", "Updated"
+    › [Focused] <input type="text" name="rus" value="Верно">...
+    I click "Sign in!"
+    › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+    › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+    I wait for text "Email Address"
+    I switch to 
+    I see "Iframe test"
+    I dont see "Email Address"
+  ✔ OK in 1879ms
+
+  within on iframe @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    Within "{"frame":"iframe"}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I wait for text "Email Address"
+    I see "Iframe test"
+    I dont see "Email Address"
+  ✔ OK in 1792ms
+
+  within on iframe without iframe navigation @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Iframe test"
+    I dont see "Sign in!"
+    Within "{"frame":"iframe"}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I see "Sign in!"
+  ✔ OK in 1204ms
+
+  within on nested iframe without iframe navigation depth 2 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    I see "Nested Iframe test"
+    I dont see "Sign in!"
+    Within "{"frame":["[name=wrapper]","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I see "Sign in!"
+  ✔ OK in 1237ms
+
+  within on nested iframe depth 1 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    I see "Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I wait for text "Email Address"
+  ✔ OK in 1844ms
+
+  within on nested iframe depth 2 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["[name=wrapper]","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1946ms
+
+  within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["#wrapperId","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1836ms
+
+  within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":[".wrapperClass","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1921ms
+
+  should throw exception if element not found @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+    Within "#grab-multiple"
+      I grab text from "#first-link"
+         [1] <within>  Error (Non-Terminated) | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+         [1] <within> Error | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [1] <within> Error | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath undefined...
+    [1] <teardown>  Stopping recording promises
+  ✔ OK in 5562ms
+
+    [2]  Starting recording promises
+  should return a value @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I wait for element "#grab-multiple", 5
+    Within "#grab-multiple"
+      I grab text from "#first-link"
+      › [Text] First
+    I fill field "rus", "First"
+    › [Element] <input type="text" name="rus" value="Верно">...
+    › [Focused] <input type="text" name="rus" value="Верно">...
+    I press key "Enter"
+    I see "[rus] => First"
+  ✔ OK in 1685ms
+
+Session --
+/home/davert/projects/CodeceptJS/test/acceptance/session_test.js
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  simple session @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    I dont see "Email"
+    I see in current url "/info"
+ › [New Context] {}
+    john: I am on page "/login"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/login
+    john: I dont see in current url "/info"
+    john: I see "Email"
+  ✔ OK in 1686ms
+
+  screenshots reflect the current page of current session @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    I save screenshot "session_default_1.png"
+    › [Screenshot] output/session_default_1.png
+    › [Screenshot] john - output/john_session_default_1.png
+    › Cannot take session screenshot: session page for 'john' is closed or undefined
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I save screenshot "session_john_1.png"
+    › [Screenshot] output/session_john_1.png
+    › [Screenshot] john - output/john_session_john_1.png
+    john: I say "John is first"
+   John is first
+    I say "Me is second"
+   Me is second
+    I save screenshot "session_default_2.png"
+    › [Screenshot] output/session_default_2.png
+    › [Screenshot] john - output/john_session_default_2.png
+    john: I save screenshot "session_john_2.png"
+    › [Screenshot] output/session_john_2.png
+    › [Screenshot] john - output/john_session_john_2.png
+    › [Screenshot]  - output/_session_john_2.png
+    I get sha256digests ["/home/davert/projects/CodeceptJS/test/acceptance/output/session_default_1.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_default_2.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_john_1.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_john_2.png"]
+    I expect equal "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk=", "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk="
+    I expect equal "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk=", "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk="
+    I expect not equal "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk=", "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk="
+  ✔ OK in 3038ms
+
+  Different cookies for different sessions @Playwright @Puppeteer
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://google.com/"
+    I grab cookie "AEC"
+ › [New Context] {}
+    john: I am on page "https://google.com/"
+ › [New Context] {}
+    mary: I am on page "https://google.com/"
+    I say "AEC: AaJma5uhorGClCgp2n6gtHKTXojlKzzamucfQhwFHVor9F1kC4NKfa-UEAU"
+   AEC: AaJma5uhorGClCgp2n6gtHKTXojlKzzamucfQhwFHVor9F1kC4NKfa-UEAU
+    john: I grab cookie "AEC"
+    john: I say "AEC: AaJma5vEHiVyvGutAHiLr3r-7H15Uf6aD2eDOQzypoqI1-k7KYXCkdpGgMs"
+   AEC: AaJma5vEHiVyvGutAHiLr3r-7H15Uf6aD2eDOQzypoqI1-k7KYXCkdpGgMs
+    mary: I grab cookie "AEC"
+    mary: I say "AEC: AaJma5vk4ZnlpGjc_L5ATrCLj3y9LTYb4qqOT-4wyClKHpWT81iuHcATPfI"
+   AEC: AaJma5vk4ZnlpGjc_L5ATrCLj3y9LTYb4qqOT-4wyClKHpWT81iuHcATPfI
+    I see in current url "google.com"
+    I expect not equal "AaJma5uhorGClCgp2n6gtHKTXojlKzzamucfQhwFHVor9F1kC4NKfa-UEAU", "AaJma5vEHiVyvGutAHiLr3r-7H15Uf6aD2eDOQzypoqI1-k7KYXCkdpGgMs"
+    I expect not equal "AaJma5uhorGClCgp2n6gtHKTXojlKzzamucfQhwFHVor9F1kC4NKfa-UEAU", "AaJma5vk4ZnlpGjc_L5ATrCLj3y9LTYb4qqOT-4wyClKHpWT81iuHcATPfI"
+    I expect not equal "AaJma5vEHiVyvGutAHiLr3r-7H15Uf6aD2eDOQzypoqI1-k7KYXCkdpGgMs", "AaJma5vk4ZnlpGjc_L5ATrCLj3y9LTYb4qqOT-4wyClKHpWT81iuHcATPfI"
+  ✔ OK in 8276ms
+
+  should throw exception and close correctly @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467#session1"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session1
+    I check option "Yes"
+    I see checkbox is checked {"css":"input[value=Yes]"}
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+ › [New Context] {}
+    john: I am on page "/form/bug1467#session2"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session2
+    john: I check option "No1"
+       [2] <session:john>  Error (Non-Terminated) | Error: Checkbox or radio "No1" was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+       [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [2] <session:john>  Error (Non-Terminated) | Error: Checkbox or radio "No1" was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+    [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath e => { session.restoreVars(sessionName) output.ste...
+    [2] <session:john> Error | Error: Checkbox or radio "No1" was not found by text|CSS|XPath undefined...
+    [2] <teardown>  Stopping recording promises
+  ✔ OK in 2228ms
+
+    [3]  Starting recording promises
+  exception on async/await @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467#session1"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session1
+    I check option "Yes"
+    I see checkbox is checked {"css":"input[value=Yes]"}
+ › [New Context] {}
+    john: I am on page "/form/bug1467#session2"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467#session2
+    john: I check option "No"
+    john: I see checkbox is checked {"css":"input[value=Yes]"}
+       [3] <session:john>  Error (Non-Terminated) | Error | err => { // we wrap timeout errors in a StepTimeou...
+       [3] <session:john> Error | Error err => { step.status = 'failed' step.endTime = +Da...
+    [3] <session:john> Error | Error undefined...
+    [3] <teardown>  Stopping recording promises
+  ✔ OK in 2194ms
+
+    [4]  Starting recording promises
+  should work with within @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    Within "{"css":"[name=form2]"}"
+      I check option "Yes"
+      I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    I see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+    I dont see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+ › [New Context] {}
+    john: I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    Within "{"css":"[name=form1]"}"
+      john: I check option "Yes"
+      john: I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    john: I see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+    john: I dont see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+  ✔ OK in 3220ms
+
+  change page emulation @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+ › [New Context] {"viewport":{"width":300,"height":500}}
+    mobile user: I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    mobile user: I execute script "window.innerWidth"
+    mobile user: I expect equal 300, 300
+  ✔ OK in 1661ms
+
+  emulate iPhone @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+ › [New Context] {"userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/18.5 Mobile/15A372 Safari/604.1","viewport":{"width":375,"height":667},"deviceScaleFactor":2,"isMobile":true,"hasTouch":true,"defaultBrowserType":"webkit"}
+    mobile user: I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    mobile user: I execute script "window.innerWidth"
+  ✔ OK in 1643ms
+
+  S should use different base URL @Puppeteer @Playwright
+  should return a value in @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I grab text from {"css":"h1"}
+    › [Text] Information
+    I fill field "Description", "Information"
+    › [Element] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    › [Focused] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    I click "Submit"
+    › [Clicked] <input type="submit" value="Submit">...
+    I see "[description] => Information"
+  ✔ OK in 2854ms
+
+  should return a value @Puppeteer @Playwright in async
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I grab text from {"css":"h1"}
+    › [Text] Information
+    I fill field "Description", "Information"
+    › [Element] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    › [Focused] <textarea name="description" id="description" cols="30" rows="10">sunrise</textarea>...
+    I click "Submit"
+    › [Clicked] <input type="submit" value="Submit">...
+    I see "[description] => Information"
+  ✔ OK in 2922ms
+
+React Selectors --
+/home/davert/projects/CodeceptJS/test/acceptance/react_test.js
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  props @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://codecept.io/test-react-calculator/"
+    I click "7"
+    › [Clicked] <button>7</button>...
+    I click {"react":"t","props":{"name":"="}}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"react":"t","props":{"value":"7"}}
+    › [Element] <div class="component-display"><div>7</div></div>...
+    I click {"react":"t","props":{"name":"+"}}
+    › [Clicked] <div class="component-button orange"><button>+</button></div>...
+    I click {"react":"t","props":{"name":"3"}}
+    › [Clicked] <div class="component-button"><button>3</button></div>...
+    I click {"react":"t","props":{"name":"="}}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"react":"t","props":{"value":"10"}}
+    › [Element] <div class="component-display"><div>10</div></div>...
+  ✔ OK in 3823ms
+
+  component name @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "http://negomi.github.io/react-burger-menu/"
+    › [Browser:Info] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+    I click {"react":"BurgerIcon"}
+    › [Clicked] <div class="bm-burger-button" style="z-index: 1000;"><button type="button" id="react-burger-menu-btn...
+    I wait for visible "#slide", 10
+    I click "Alerts"
+    › [Clicked] <a href="" class="bm-item" style="display: block;"><i class="fa fa-fw fa-bell-o"></i><span>Alerts</s...
+    I see element {"react":"Demo"}
+    › [Element] <div id="outer-container" style="height: 100%;"><div class="left"><div><div class="bm-overlay" style...
+  ✔ OK in 2775ms
+
+  using playwright locator @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://codecept.io/test-react-calculator/"
+    I click "7"
+    › [Clicked] <button>7</button>...
+    I click {"pw":"_react=t[name = \"=\"]"}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"pw":"_react=t[value = \"7\"]"}
+    › [Element] <div class="component-display"><div>7</div></div>...
+    I click {"pw":"_react=t[name = \"+\"]"}
+    › [Clicked] <div class="component-button orange"><button>+</button></div>...
+    I click {"pw":"_react=t[name = \"3\"]"}
+    › [Clicked] <div class="component-button"><button>3</button></div>...
+    I click {"pw":"_react=t[name = \"=\"]"}
+    › [Clicked] <div class="component-button orange"><button>=</button></div>...
+    I see element {"pw":"_react=t[value = \"10\"]"}
+    › [Element] <div class="component-display"><div>10</div></div>...
+  ✔ OK in 3674ms
+
+Dynamic Config --
+/home/davert/projects/CodeceptJS/test/acceptance/config_test.js
+ › [Suite Config] Playwright {"url":"https://google.com"}
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  change config 1 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "github.com"
+    I see in current url "google.com"
+  ✔ OK in 2121ms
+
+  change config 2 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io"}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io/
+    I see in current url "codecept.io"
+  ✔ OK in 4481ms
+
+ › [Test Config] Reverted for Playwright
+  change config 3 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "codecept.io"
+    I see in current url "google.com"
+  ✔ OK in 1866ms
+
+  change config 4 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io/","capabilities":{"moz:title":"change config 4 @WebDriverIO @Puppeteer @Playwright"}}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io///
+    › [Browser:Error] SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https:' cannot be created in a document with origin 'https://codecept.io' and URL 'https://codecept.io///'.
+    at no (https://codecept.io/assets/js/app.6cba3458.js:16:84706)
+    at t.setupListeners (https://codecept.io/assets/js/app.6cba3458.js:16:92082)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:96482)
+    at https://codecept.io/assets/js/app.6cba3458.js:16:89603
+    at s (https://codecept.io/assets/js/app.6cba3458.js:16:89919)
+    at f (https://codecept.io/assets/js/app.6cba3458.js:16:91066)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:87309)
+    at Co (https://codecept.io/assets/js/app.6cba3458.js:16:87346)
+    at jo.confirmTransition (https://codecept.io/assets/js/app.6cba3458.js:16:91073)
+    at jo.transitionTo (https://codecept.io/assets/js/app.6cba3458.js:16:89398)SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https:' cannot be created in a document with origin 'https://codecept.io' and URL 'https://codecept.io///'.
+    at no (https://codecept.io/assets/js/app.6cba3458.js:16:84706)
+    at t.setupListeners (https://codecept.io/assets/js/app.6cba3458.js:16:92082)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:96482)
+    at https://codecept.io/assets/js/app.6cba3458.js:16:89603
+    at s (https://codecept.io/assets/js/app.6cba3458.js:16:89919)
+    at f (https://codecept.io/assets/js/app.6cba3458.js:16:91066)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:87309)
+    at Co (https://codecept.io/assets/js/app.6cba3458.js:16:87346)
+    at jo.confirmTransition (https://codecept.io/assets/js/app.6cba3458.js:16:91073)
+    at jo.transitionTo (https://codecept.io/assets/js/app.6cba3458.js:16:89398)
+    I see in current url "codecept.io"
+  ✔ OK in 2851ms
+
+ › [Test Config] Reverted for Playwright
+  change config 5 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "codecept.io"
+    I see in current url "google.com"
+  ✔ OK in 2435ms
+
+  make API call and check response @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I make api request "get", "http://127.0.0.1:8010/posts/1"
+    › [Status] 200
+    › [Response] {
+  "id": 1,
+  "title": "json-server",
+  "author": "davert"
+}
+    I see response code is successful 
+  ✔ OK in 2113ms
+
+  change config 6 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io"}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io/
+    I see in current url "codecept.io"
+  ✔ OK in 3757ms
+
+ › [Test Config] Reverted for Playwright
+ › [Suite Config] Reverted for Playwright
+
+  OK  | 31 passed, 1 skipped   // 1m
+
+=== Testing both files together ===
+***************************************
+nodeInfo:  22.12.0
+osInfo:  Linux 6.14 Ubuntu 25.04 25.04 (Plucky Puffin)
+cpuInfo:  (16) x64 AMD Ryzen 7 PRO 8840HS w/ Radeon 780M Graphics
+chromeInfo:  138.0.7204.157
+edgeInfo:  "N/A"
+firefoxInfo:  undefined
+safariInfo:  N/A
+playwrightBrowsers:  "chromium: 138.0.7204.15, firefox: 139.0, webkit: 18.5"
+If you need more detailed info, just run this: npx codeceptjs info
+***************************************
+CodeceptJS v3.7.3 #StandWithUkraine
+Using test root "/home/davert/projects/CodeceptJS/test/acceptance"
+Helpers: Playwright, JSONResponse, ScreenshotSessionHelper, @codeceptjs/expect-helper
+Plugins: screenshotOnFail, retryFailedStep
+
+within --
+/home/davert/projects/CodeceptJS/test/acceptance/within_test.js
+    [1]  Starting recording promises
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  within on form @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    I see "TEST TEST"
+    Within "{"css":"[name=form2]"}"
+      I check option "Yes"
+      I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    I see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+    I dont see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+  ✔ OK in 1086ms
+
+Dynamic Config --
+/home/davert/projects/CodeceptJS/test/acceptance/config_test.js
+ › [Suite Config] Playwright {"url":"https://google.com"}
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  change config 1 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "github.com"
+    I see in current url "google.com"
+  ✔ OK in 2128ms
+
+  change config 2 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io"}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io/
+    I see in current url "codecept.io"
+  ✔ OK in 4649ms
+
+ › [Test Config] Reverted for Playwright
+  change config 3 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "codecept.io"
+    I see in current url "google.com"
+  ✔ OK in 1994ms
+
+  change config 4 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io/","capabilities":{"moz:title":"change config 4 @WebDriverIO @Puppeteer @Playwright"}}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io///
+    › [Browser:Error] SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https:' cannot be created in a document with origin 'https://codecept.io' and URL 'https://codecept.io///'.
+    at no (https://codecept.io/assets/js/app.6cba3458.js:16:84706)
+    at t.setupListeners (https://codecept.io/assets/js/app.6cba3458.js:16:92082)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:96482)
+    at https://codecept.io/assets/js/app.6cba3458.js:16:89603
+    at s (https://codecept.io/assets/js/app.6cba3458.js:16:89919)
+    at f (https://codecept.io/assets/js/app.6cba3458.js:16:91066)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:87309)
+    at Co (https://codecept.io/assets/js/app.6cba3458.js:16:87346)
+    at jo.confirmTransition (https://codecept.io/assets/js/app.6cba3458.js:16:91073)
+    at jo.transitionTo (https://codecept.io/assets/js/app.6cba3458.js:16:89398)SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https:' cannot be created in a document with origin 'https://codecept.io' and URL 'https://codecept.io///'.
+    at no (https://codecept.io/assets/js/app.6cba3458.js:16:84706)
+    at t.setupListeners (https://codecept.io/assets/js/app.6cba3458.js:16:92082)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:96482)
+    at https://codecept.io/assets/js/app.6cba3458.js:16:89603
+    at s (https://codecept.io/assets/js/app.6cba3458.js:16:89919)
+    at f (https://codecept.io/assets/js/app.6cba3458.js:16:91066)
+    at r (https://codecept.io/assets/js/app.6cba3458.js:16:87309)
+    at Co (https://codecept.io/assets/js/app.6cba3458.js:16:87346)
+    at jo.confirmTransition (https://codecept.io/assets/js/app.6cba3458.js:16:91073)
+    at jo.transitionTo (https://codecept.io/assets/js/app.6cba3458.js:16:89398)
+    I see in current url "codecept.io"
+  ✔ OK in 2880ms
+
+ › [Test Config] Reverted for Playwright
+  change config 5 @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://google.com/
+    I dont see in current url "codecept.io"
+    I see in current url "google.com"
+  ✔ OK in 1927ms
+
+  change config 6 @WebDriverIO @Puppeteer @Playwright
+ › [Test Config] Playwright {"url":"https://codecept.io"}
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: https://codecept.io/
+    I see in current url "codecept.io"
+  ✔ OK in 4083ms
+
+ › [Test Config] Reverted for Playwright
+ › [Suite Config] Reverted for Playwright
+
+  OK  | 7 passed   // 20s
+
+=== Testing all Playwright tests ===
+***************************************
+nodeInfo:  22.12.0
+osInfo:  Linux 6.14 Ubuntu 25.04 25.04 (Plucky Puffin)
+cpuInfo:  (16) x64 AMD Ryzen 7 PRO 8840HS w/ Radeon 780M Graphics
+chromeInfo:  138.0.7204.157
+edgeInfo:  "N/A"
+firefoxInfo:  undefined
+safariInfo:  N/A
+playwrightBrowsers:  "chromium: 138.0.7204.15, firefox: 139.0, webkit: 18.5"
+If you need more detailed info, just run this: npx codeceptjs info
+***************************************
+CodeceptJS v3.7.3 #StandWithUkraine
+Using test root "/home/davert/projects/CodeceptJS/test/acceptance"
+Helpers: Playwright, JSONResponse, ScreenshotSessionHelper, @codeceptjs/expect-helper
+Plugins: screenshotOnFail, retryFailedStep
+
+within --
+/home/davert/projects/CodeceptJS/test/acceptance/within_test.js
+    [1]  Starting recording promises
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  within on form @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/bug1467"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/bug1467
+    I see "TEST TEST"
+    Within "{"css":"[name=form2]"}"
+      I check option "Yes"
+      I see checkbox is checked {"css":"input[name=first_test_radio]"}
+    I see checkbox is checked {"css":"form[name=form2] input[name=first_test_radio]"}
+    I dont see checkbox is checked {"css":"form[name=form1] input[name=first_test_radio]"}
+  ✔ OK in 1094ms
+
+  switch iframe manually @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I switch to "iframe"
+    I fill field "rus", "Updated"
+    › [Focused] <input type="text" name="rus" value="Верно">...
+    I click "Sign in!"
+    › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+    › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+    I wait for text "Email Address"
+    I switch to 
+    I see "Iframe test"
+    I dont see "Email Address"
+  ✔ OK in 1803ms
+
+  within on iframe @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    Within "{"frame":"iframe"}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I wait for text "Email Address"
+    I see "Iframe test"
+    I dont see "Email Address"
+  ✔ OK in 1799ms
+
+  within on iframe without iframe navigation @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Iframe test"
+    I dont see "Sign in!"
+    Within "{"frame":"iframe"}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I see "Sign in!"
+  ✔ OK in 1275ms
+
+  within on nested iframe without iframe navigation depth 2 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    I see "Nested Iframe test"
+    I dont see "Sign in!"
+    Within "{"frame":["[name=wrapper]","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I see "Sign in!"
+  ✔ OK in 1299ms
+
+  within on nested iframe depth 1 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe
+    I see "Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I wait for text "Email Address"
+  ✔ OK in 1768ms
+
+  within on nested iframe depth 2 @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["[name=wrapper]","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1888ms
+
+  within on nested iframe depth 2 and mixed id and xpath selector @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":["#wrapperId","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1921ms
+
+  within on nested iframe depth 2 and mixed class and xpath selector @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/iframe_nested"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/iframe_nested
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I see "Nested Iframe test"
+    I dont see "Email Address"
+    Within "{"frame":[".wrapperClass","[name=content]"]}"
+      I fill field "rus", "Updated"
+      › [Focused] <input type="text" name="rus" value="Верно">...
+      I click "Sign in!"
+      › [Clicked] <a href="/login" class="sign">Sign in!</a>...
+      › [Browser:Info] Autofocus processing was blocked because a document already has a focused element.
+      I see "Email Address"
+  ✔ OK in 1845ms
+
+  should throw exception if element not found @WebDriverIO @Puppeteer @Playwright
+  › Test Timeout: 10s
+  › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/form/textarea"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/form/textarea
+    Within "#grab-multiple"
+      I grab text from "#first-link"
+         [1] <within>  Error (Non-Terminated) | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath | err => { // we wrap timeout errors in a StepTimeou...
+         [1] <within> Error | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath err => { step.status = 'failed' step.endTime = +Da...
+    [1] <within> Error | Error: Element #grab-multiple >> #first-link was not found by text|CSS|XPath undefined...
+    [1] <teardown>  Stopping recording promises
+  ✔ OK in 5544ms
+
+    [2]  Starting recording promises
+  should return a value @WebDriverIO @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    › [Browser:Error] Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+    I wait for element "#grab-multiple", 5
+    Within "#grab-multiple"
+      I grab text from "#first-link"
+      › [Text] First
+    I fill field "rus", "First"
+    › [Element] <input type="text" name="rus" value="Верно">...
+    › [Focused] <input type="text" name="rus" value="Верно">...
+    I press key "Enter"
+    I see "[rus] => First"
+  ✔ OK in 1687ms
+
+Session --
+/home/davert/projects/CodeceptJS/test/acceptance/session_test.js
+    Timeouts: 10
+ › [Session] Starting singleton browser session
+  simple session @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    I dont see "Email"
+    I see in current url "/info"
+ › [New Context] {}
+    john: I am on page "/login"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/login
+    john: I dont see in current url "/info"
+    john: I see "Email"
+  ✔ OK in 1620ms
+
+  screenshots reflect the current page of current session @Puppeteer @Playwright
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "/"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/
+    I save screenshot "session_default_1.png"
+    › [Screenshot] output/session_default_1.png
+    › [Screenshot] john - output/john_session_default_1.png
+    › Cannot take session screenshot: session page for 'john' is closed or undefined
+ › [New Context] {}
+    john: I am on page "/info"
+    › Changed URL to base url + relative path: http://0.0.0.0:8000/info
+    john: I save screenshot "session_john_1.png"
+    › [Screenshot] output/session_john_1.png
+    › [Screenshot] john - output/john_session_john_1.png
+    john: I say "John is first"
+   John is first
+    I say "Me is second"
+   Me is second
+    I save screenshot "session_default_2.png"
+    › [Screenshot] output/session_default_2.png
+    › [Screenshot] john - output/john_session_default_2.png
+    john: I save screenshot "session_john_2.png"
+    › [Screenshot] output/session_john_2.png
+    › [Screenshot] john - output/john_session_john_2.png
+    › [Screenshot]  - output/_session_john_2.png
+    I get sha256digests ["/home/davert/projects/CodeceptJS/test/acceptance/output/session_default_1.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_default_2.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_john_1.png","/home/davert/projects/CodeceptJS/test/acceptance/output/session_john_2.png"]
+    I expect equal "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk=", "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk="
+    I expect equal "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk=", "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk="
+    I expect not equal "132whE0TT/ro7EAFcKnWeBXQh8VCckWPwp8p2piwqgk=", "kLWPm8vv7uuZhkfu6JFsSU3Hz8hnUSip2XGk5Nc/5Mk="
+  ✔ OK in 2972ms
+
+  Different cookies for different sessions @Playwright @Puppeteer
+ › Test Timeout: 10s
+ › [New Session] {"ignoreHTTPSErrors":true,"acceptDownloads":true}
+  Scenario()
+    I am on page "https://google.com/"
+    I grab cookie "AEC"
+ › [New Context] {}
+    john: I am on page "https://google.com/"
+ › [New Context] {}
+    mary: I am on page "https://google.com/"
