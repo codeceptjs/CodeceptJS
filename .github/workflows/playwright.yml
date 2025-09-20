@@ -56,19 +56,19 @@ jobs:
           timeout 15m ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 35000 --reporter @testomatio/reporter/mocha || echo "Tests timed out or failed"
         timeout-minutes: 18
       - name: run chromium tests
-        run: 'BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
       - name: run chromium with restart==browser tests
-        run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
       - name: run chromium with restart==session tests
-        run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
       - name: run firefox tests
-        run: 'BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
       - name: run webkit tests
-        run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
+        run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
         env:
           GH_PAT: ${{ github.token }}
