@@ -44,3 +44,9 @@ jobs:
           timeout 120 env BROWSER_RESTART=browser ./bin/codecept.js run --config test/acceptance/codecept.Playwright.js --grep "within on form" --verbose
           echo "Exit code: $?"
         timeout-minutes: 3
+      - name: run simple test with browser restart
+        run: |
+          echo "=== Running simple test with browser restart ==="
+          timeout 60 env BROWSER_RESTART=browser ./bin/codecept.js run --config test/acceptance/codecept.Playwright.js --grep "simple page test" --verbose
+          echo "Exit code: $?"
+        timeout-minutes: 2

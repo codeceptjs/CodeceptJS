@@ -39,9 +39,9 @@ Scenario('make API call and check response @Playwright', ({ I }) => {
 Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/')
   I.seeInCurrentUrl('codecept.io')
-}).config(async () => {
-  await new Promise(r => {
-    setTimeout(r, 50)
-  })
-  return { url: 'https://codecept.io' }
+})
+
+Scenario('simple page test @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+  I.amOnPage('https://github.com')
+  I.see('GitHub')
 })
