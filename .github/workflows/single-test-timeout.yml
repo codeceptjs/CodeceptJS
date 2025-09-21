@@ -40,10 +40,8 @@ jobs:
         run: 'sleep 3'
       - name: run simple test with browser restart
         run: |
-          echo "=== Running simple test with browser restart ==="
-          timeout 60 env BROWSER_RESTART=browser ./bin/codecept.js run --config test/acceptance/codecept.Playwright.js --grep "simple page test" --verbose
-          echo "Exit code: $?"
-        timeout-minutes: 2
+          DEBUG=* BROWSER_RESTART=browser ./bin/codecept.js run --config test/acceptance/codecept.Playwright.js --grep "simple page test" --verbose
+        timeout-minutes: 1
 
   test-complex-scenario:
     runs-on: ubuntu-latest
