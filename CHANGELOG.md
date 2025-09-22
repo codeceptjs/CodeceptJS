@@ -1,3 +1,171 @@
+## 3.7.5
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+## ✨ Features
+
+- feat: Add configurable sensitive data masking with custom patterns (#5109)
+
+### Backward Compatible Boolean Configuration
+
+```js
+// codecept.conf.js
+exports.config = {
+  maskSensitiveData: true, // Uses built-in patterns for common sensitive data
+  // ... other config
+}
+```
+
+### Advanced Custom Patterns Configuration
+
+```js
+// codecept.conf.js
+exports.config = {
+  maskSensitiveData: {
+    enabled: true,
+    patterns: [
+      {
+        name: 'Email',
+        regex: /(\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b)/gi,
+        mask: '[MASKED_EMAIL]'
+      },
+      {
+        name: 'Credit Card',
+        regex: /\b(?:\d{4}[- ]?){3}\d{4}\b/g,
+        mask: '[MASKED_CARD]'
+      },
+      {
+        name: 'Phone Number',
+        regex: /(\+?1[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})/g,
+        mask: '[MASKED_PHONE]'
+      }
+    ]
+  },
+  // ... other config
+}
+
+## Example Output
+
+With the above configuration, sensitive data is automatically masked:
+
+**Before:**
+
+Given I have user email "john.doe@company.com"
+And I have credit card "4111 1111 1111 1111"
+And I have phone number "+1-555-123-4567"
+
+
+**After:**
+
+Given I have user email "[MASKED_EMAIL]"
+And I have credit card "[MASKED_CARD]"
+And I have phone number "[MASKED_PHONE]"
+```
+
+- feat(playwright): Add Custom Strategy Locators support (#5090)
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      url: 'http://localhost',
+      browser: 'chromium',
+      customLocatorStrategies: {
+        byRole: (selector, root) => {
+          return root.querySelector(`[role="${selector}"]`);
+        },
+        byTestId: (selector, root) => {
+          return root.querySelector(`[data-testid="${selector}"]`);
+        },
+        byDataQa: (selector, root) => {
+          const elements = root.querySelectorAll(`[data-qa="${selector}"]`);
+          return Array.from(elements); // Return array for multiple elements
+        }
+      }
+    }
+  }
+}
+
+And used in tests with the same syntax as other locator types:
+
+I.click({byRole: 'button'});           // Find by role attribute
+I.see('Welcome', {byTestId: 'title'}); // Find by data-testid
+I.fillField({byDataQa: 'email'}, 'test@example.com');
+```
+
+- feat(reporter): Enable HTML reporter by default in new projects (#5105)
+
+```
+plugins: {
+  htmlReporter: {
+    enabled: true
+  }
+}
+```
+
+![HTML report](https://github.com/codeceptjs/CodeceptJS/raw/3.x/docs/shared/html-reporter-main-dashboard.png)
+
+- feat(cli): make test file hyperlink clickable (#5078) - by @kobenguyent
+  ![test file hyperlink clickable](https://private-user-images.githubusercontent.com/7845001/479922301-a2a21480-00d8-4508-8bf6-d4bf5630e06a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTg1MzA1MTUsIm5iZiI6MTc1ODUzMDIxNSwicGF0aCI6Ii83ODQ1MDAxLzQ3OTkyMjMwMS1hMmEyMTQ4MC0wMGQ4LTQ1MDgtOGJmNi1kNGJmNTYzMGUwNmEucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI1MDkyMiUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNTA5MjJUMDgzNjU1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZDE2OGE2YTY5NGZiNmU1NWU2YjA0NmI1ZTZhN2M0MTgzODE3MDNhYTZiM2IzMGU0Y2U1NzY3OWNmNDVlZjJjNSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.iyq8LmTLSwoYIoCY4lBAIQRFGAEBYSq3JTO9ePfNWBg)
+
+- feat: Introduce CodeceptJS WebElement Class to mirror helpers’ element instance (#5091)
+
+### Unified API Methods
+
+- **Element Properties**: `getText()`, `getAttribute()`, `getProperty()`, `getInnerHTML()`, `getValue()`
+- **Element State**: `isVisible()`, `isEnabled()`, `exists()`, `getBoundingBox()`
+- **Element Interactions**: `click()`, `type()`
+- **Child Element Search**: `$()` and `$$()` methods for finding sub-elements
+- **Native Access**: `getNativeElement()` and `getHelper()` for advanced operations
+
+### Updated Helper Methods
+
+- `grabWebElement()` and `grabWebElements()` now return `WebElement` instances instead of native elements
+- Added missing `grabWebElement()` method to WebDriver and Puppeteer helpers
+- Maintains backward compatibility through `getNativeElement()` method
+
+```
+// Works consistently across all helpers
+const element = await I.grabWebElement('#button');
+const text = await element.getText();
+const childElements = await element.$$('.child');
+await element.click();
+
+// Element searching within elements
+const form = await I.grabWebElement('#contact-form');
+const nameInput = await form.$('#name');
+await nameInput.type('John Doe');
+```
+
+- feat: support `feature.only` like `Scenario.only` (#5087)
+  Example:
+
+  ```js
+  Feature.only('Checkout Flow', () => {
+    Scenario('complete order', ({ I }) => {
+      // test steps here
+    })
+  })
+  ```
+
+---
+
+## 🐛 Bug Fixes
+
+- fix(utils): resolve command injection vulnerability in `emptyFolder` (#5190) - by @mhassan1
+- bugfix: prevent WebDriver error without Bidi protocol (#5095) - by @ngraf
+- fix(playwright): relaunch browser correctly with `restart: 'session'` in `run-workers --by pool` (#5118) - by @Samuel-StO
+- fix: JSONResponse helper to preserve original `onResponse` behavior (#5106) - by @myprivaterepo
+- fix: use `platformName` for mobile click detection (Android touchClick bug) (#5107) - by @mirao
+- fix: Properly stop network traffic recording (#5127) - by @Samuel-StO
+- fix: mocha retries losing CodeceptJS-specific properties (#5099)
+- fix: missing `codeceptjs/effects` types (#5094) - by @kobenguyent
+- fix: tryTo steps appearing in test failure traces (#5088)
+- fix: JUnit XML test case name inconsistency with retries (#5082)
+- fix: waitForText timeout regression in Playwright helper (#5093)
+- fix(Playwright): I.waitForText() caused unexpected delay (#5077)
+- fix: I.seeResponseContainsJson not working (#5081)
+
 ## 3.7.4
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
