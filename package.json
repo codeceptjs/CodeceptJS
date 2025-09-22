@@ -29,14 +29,19 @@
     "docs/webapi/**"
   ],
   "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "typings/index.d.ts",
   "exports": {
-    ".": "./lib/index.js",
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "types": "./typings/index.d.ts"
+    },
     "./lib/*": "./lib/*.js",
     "./els": "./lib/els.js",
     "./effects": "./lib/effects.js",
     "./steps": "./lib/steps.js"
   },
-  "types": "typings/index.d.ts",
   "bin": {
     "codeceptjs": "./bin/codecept.js"
   },
