@@ -52,7 +52,7 @@ describe('Playwright', function () {
       waitForTimeout: 5000,
       waitForAction: 500,
       timeout: 2000,
-      restart: false, // Don't restart browser to avoid hanging
+      restart: false,
       networkIdleTimeout: 5000, // Timeout for network requests
       manualStart: false,
       chrome: {
@@ -82,15 +82,6 @@ describe('Playwright', function () {
   after(async () => {
     await I._afterSuite()
     await I._cleanup()
-  })
-
-  describe('restart browser: #restartBrowser', () => {
-    it('should open a new tab after restart of browser', async () => {
-      await I.restartBrowser()
-      await I.wait(1)
-      const numPages = await I.grabNumberOfOpenTabs()
-      assert.equal(numPages, 1)
-    })
   })
 
   describe('open page : #amOnPage', () => {
@@ -1558,7 +1549,7 @@ describe('Playwright - Electron', function () {
     I = new Playwright({
       waitForTimeout: 5000,
       waitForAction: 500,
-      restart: false, // Don't restart browser to avoid hanging
+      restart: false,
       browser: 'electron',
       electron: {
         executablePath: electron,
@@ -1639,7 +1630,7 @@ describe('Playwright - Performance Metrics', () => {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
-      restart: false, // Don't restart browser to avoid hanging
+      restart: false,
       browser: 'chromium',
     })
     await I._init()

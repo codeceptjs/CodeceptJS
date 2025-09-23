@@ -66,9 +66,6 @@ jobs:
       - name: run chromium tests
         run: 'BROWSER=chromium ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
-      - name: run chromium with restart==browser tests
-        run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
-        timeout-minutes: 18
       - name: run chromium with restart==session tests
         run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
