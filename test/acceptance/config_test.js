@@ -39,7 +39,7 @@ Scenario('make API call and check response @Playwright', ({ I }) => {
 Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/')
   I.seeInCurrentUrl('codecept.io')
-})
+}).config({ url: 'https://codecept.io' })
 
 Scenario('simple page test @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('https://github.com')
