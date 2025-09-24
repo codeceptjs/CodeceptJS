@@ -212,16 +212,17 @@ Additional configuration should be added to `codecept.conf.js` to print xml repo
 
 ```json
   "mocha": {
+    "repporter": "mocha-junit-reporter",
     "reporterOptions": {
         "mochaFile": "output/result.xml"
     }
   },
 ```
 
-Execute CodeceptJS with JUnit reporter:
+Execute CodeceptJS:
 
 ```sh
-codeceptjs run --reporter mocha-junit-reporter
+codeceptjs run
 ```
 
 Result will be located at `output/result.xml` file.
@@ -315,16 +316,17 @@ Configure it to use `output` directory to print HTML reports:
 
 ```json
   "mocha": {
+    "reporter": "mochawesome",
     "reporterOptions": {
         "reportDir": "output"
     }
   },
 ```
 
-Execute CodeceptJS with HTML reporter:
+Execute CodeceptJS:
 
 ```sh
-codeceptjs run --reporter mochawesome
+codeceptjs run
 ```
 
 Result will be located at `output/index.html` file.
@@ -388,6 +390,7 @@ Configure mocha-multi with reports that you want:
 
 ```json
   "mocha": {
+    "reporter": "mocha-multi",
     "reporterOptions": {
       "codeceptjs-cli-reporter": {
         "stdout": "-",
@@ -414,10 +417,10 @@ Configure mocha-multi with reports that you want:
   }
 ```
 
-Execute CodeceptJS with mocha-multi reporter:
+Execute CodeceptJS:
 
 ```sh
-npx codeceptjs run --reporter mocha-multi
+npx codeceptjs run
 ```
 
 This will give you cli with steps in console and HTML report in `output` directory.
