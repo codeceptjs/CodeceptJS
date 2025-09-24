@@ -212,7 +212,7 @@ Additional configuration should be added to `codecept.conf.js` to print xml repo
 
 ```json
   "mocha": {
-    "repporter": "mocha-junit-reporter",
+    "reporter": "mocha-junit-reporter",
     "reporterOptions": {
         "mochaFile": "output/result.xml"
     }
