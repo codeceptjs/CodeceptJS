@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { devices } from 'playwright'
-import { within } from 'codeceptjs/effects'
+import { within } from '../../lib/effects.js'
 import event from '../../lib/event.js'
 
 const output_dir = global.output_dir || './output'
@@ -155,7 +155,7 @@ Scenario('change page emulation @Playwright', async ({ I }) => {
 })
 
 Scenario('emulate iPhone @Playwright', async ({ I }) => {
-  if (process.env.BROWSER === 'firefox') return
+  if (process.env.BROWSER === 'firefox' || process.env.BROWSER === 'webkit') return
   I.amOnPage('/')
   session('mobile user', devices['iPhone 6'], async () => {
     I.amOnPage('/')

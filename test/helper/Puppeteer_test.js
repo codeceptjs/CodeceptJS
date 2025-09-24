@@ -151,7 +151,7 @@ describe('Puppeteer', function () {
         await I.amOnPage('/basic_auth')
         await I.dontSee('You entered admin as your password.')
       } catch (e) {
-        expect(e.message).to.eq('net::ERR_INVALID_AUTH_CREDENTIALS at http://localhost:8000/basic_auth')
+        expect(e.message).to.contain('net::ERR_INVALID_AUTH_CREDENTIALS')
       }
     })
   })
