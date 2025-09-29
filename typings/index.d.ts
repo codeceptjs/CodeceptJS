@@ -97,7 +97,7 @@ declare namespace CodeceptJS {
      * tests: 'tests/**.test.ts'
      * ```
      */
-    tests: string
+    tests: string | string[]
     /**
      * Where to store failure screenshots, artifacts, etc
      *
@@ -520,17 +520,16 @@ declare namespace CodeceptJS {
   }
 }
 
-type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>;
-type HopeThat = <T>(fn: () => Promise<T> | T) => Promise<T | false>;
-type RetryTo = <T>(fn: () => Promise<T> | T, retries?: number) => Promise<T>;
-
+type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>
+type HopeThat = <T>(fn: () => Promise<T> | T) => Promise<T | false>
+type RetryTo = <T>(fn: () => Promise<T> | T, retries?: number) => Promise<T>
 
 // Globals
 declare const codecept_dir: string
 declare const output_dir: string
-declare const tryTo: TryTo;
-declare const retryTo: RetryTo;
-declare const hopeThat: HopeThat;
+declare const tryTo: TryTo
+declare const retryTo: RetryTo
+declare const hopeThat: HopeThat
 
 declare const actor: CodeceptJS.actor
 declare const codecept_actor: CodeceptJS.actor
@@ -643,7 +642,7 @@ declare module '@codeceptjs/helper' {
 }
 
 declare module 'codeceptjs/effects' {
-  export const tryTo: TryTo;
-  export const retryTo: RetryTo;
-  export const hopeThat: HopeThat;
+  export const tryTo: TryTo
+  export const retryTo: RetryTo
+  export const hopeThat: HopeThat
 }
