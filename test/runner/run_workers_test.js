@@ -175,7 +175,7 @@ describe('CodeceptJS Workers Runner', function () {
     let createdOutput = false
 
     if (fs.existsSync(outputDir)) {
-      fs.rmdirSync(outputDir, { recursive: true })
+      fs.rmSync(outputDir, { recursive: true, force: true })
     }
 
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
