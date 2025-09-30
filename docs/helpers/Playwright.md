@@ -82,6 +82,12 @@ Type: [object][6]
 *   `recordHar` **[object][6]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
 *   `testIdAttribute` **[string][9]?** locate elements based on the testIdAttribute. See more of [locate by test id][49].
 *   `customLocatorStrategies` **[object][6]?** custom locator strategies. An object with keys as strategy names and values as JavaScript functions. Example: `{ byRole: (selector, root) => { return root.querySelector(`[role="${selector}"]`) } }`
+*   `storageState` **([string][9] | [object][6])?** Playwright storage state (path to JSON file or object)
+    passed directly to `browser.newContext`.
+    If a Scenario is declared with a `cookies` option (e.g. `Scenario('name', { cookies: [...] }, fn)`),
+    those cookies are used instead and the configured `storageState` is ignored (no merge).
+    May include session cookies, auth tokens, localStorage and (if captured with
+    `grabStorageState({ indexedDB: true })`) IndexedDB data; treat as sensitive and do not commit.
 
 
 
@@ -1332,6 +1338,28 @@ let pageSource = await I.grabSource();
 ```
 
 Returns **[Promise][22]<[string][9]>** source code
+
+### grabStorageState
+
+Grab the current storage state (cookies, localStorage, etc.) via Playwright's `browserContext.storageState()`.
+Returns the raw object that Playwright provides.
+
+Security: The returned object can contain authentication tokens, session cookies
+and (when `indexedDB: true` is used) data that may include user PII. Treat it as a secret.
+Avoid committing it to source control and prefer storing it in a protected secrets store / CI artifact vault.
+
+#### Parameters
+
+*   `options` **[object][6]?**  
+
+    *   `options.indexedDB` **[boolean][26]?** set to true to include IndexedDB in snapshot (Playwright >=1.51)```js
+        // basic usage
+        const state = await I.grabStorageState();
+        require('fs').writeFileSync('authState.json', JSON.stringify(state));
+
+        // include IndexedDB when using Firebase Auth, etc.
+        const stateWithIDB = await I.grabStorageState({ indexedDB: true });
+        ```
 
 ### grabTextFrom
 
