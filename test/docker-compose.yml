@@ -7,7 +7,6 @@ services:
       env_file: .env
       volumes:
         - ..:/codecept
-        - node_modules:/codecept/node_modules
     command: test/rest
     depends_on:
       - json_server
@@ -15,31 +14,29 @@ services:
   test-acceptance.webdriverio:
     build: ..
     env_file: .env
+    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
+      - CODECEPT_ARGS=-c acceptance/codecept.WebDriver.js --grep @WebDriverIO --debug
+      - NODE_PATH=/codecept/lib
     depends_on:
       - php
       - selenium.chrome
     volumes:
-      - ./acceptance:/tests
-      - ./data:/data
-      - ./support:/support
-      - node_modules:/node_modules
+      - .:/tests
 
   test-acceptance.puppeteer:
     build: ..
     env_file: .env
+    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
+      - CODECEPT_ARGS=-c acceptance/codecept.Puppeteer.js --grep @Puppeteer
       - PPT_VERSION=$PPT_VERSION
+      - NODE_PATH=/codecept/lib
     depends_on:
       - php
       - puppeteer-image
     volumes:
-      - ./acceptance:/tests
-      - ./data:/data
-      - ./support:/support
-      - node_modules:/node_modules
+      - .:/tests
 
   test-bdd.faker:
     build: ..
@@ -50,7 +47,6 @@ services:
       - ./bdd:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:4.26
@@ -76,6 +72,3 @@ services:
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
-
-volumes:
-  node_modules:
