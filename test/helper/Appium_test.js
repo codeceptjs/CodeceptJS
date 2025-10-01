@@ -19,31 +19,59 @@ describe('Appium', function () {
 
   before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
-    app = new Appium({
-      app: apk_path,
-      desiredCapabilities: {
-        'sauce:options': {
-          appiumVersion: '2.0.0',
+    
+    // Check if Sauce Labs credentials are available
+    if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
+      console.warn('Sauce Labs credentials not found. Skipping Sauce Labs tests.')
+      console.warn('Set SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables to run Sauce Labs tests.')
+      app = new Appium({
+        app: apk_path,
+        desiredCapabilities: {
+          browserName: '',
+          platformName: 'Android',
+          platformVersion: '11.0',
+          deviceName: 'Android Emulator',
+          automationName: 'UiAutomator2',
+          androidInstallTimeout: 90000,
+          appWaitDuration: 300000,
         },
-        browserName: '',
-        recordVideo: 'false',
-        recordScreenshots: 'false',
-        platformName: 'Android',
-        platformVersion: '7.0',
-        deviceName: 'Android GoogleAPI Emulator',
-        androidInstallTimeout: 90000,
-        appWaitDuration: 300000,
-        automationName: 'UiAutomator2',
-      },
-      restart: true,
-      protocol: 'http',
-      host: 'ondemand.saucelabs.com',
-      port: 80,
-      // port: 4723,
-      // host: 'localhost',
-      user: process.env.SAUCE_USERNAME,
-      key: process.env.SAUCE_ACCESS_KEY,
-    })
+        restart: true,
+        protocol: 'http',
+        host: 'localhost',
+        port: 4723,
+      })
+    } else {
+      app = new Appium({
+        app: apk_path,
+        desiredCapabilities: {
+          'sauce:options': {
+            appiumVersion: '2.0.0',
+            name: 'CodeceptJS Appium Test',
+            build: process.env.BUILD_NUMBER || 'local-build',
+            tags: ['codeceptjs', 'appium', 'android'],
+            recordVideo: false,
+            recordScreenshots: false,
+            idleTimeout: 300,
+            newCommandTimeout: 300,
+          },
+          browserName: '',
+          platformName: 'Android',
+          platformVersion: '12.0', // Updated to more recent Android version
+          deviceName: 'Google Pixel 6 GoogleAPI Emulator', // More specific device
+          automationName: 'UiAutomator2',
+          androidInstallTimeout: 90000,
+          appWaitDuration: 300000,
+          autoGrantPermissions: true,
+          noReset: true,
+        },
+        restart: true,
+        protocol: 'https', // Use HTTPS for better security
+        host: 'ondemand.us-west-1.saucelabs.com', // Use specific regional endpoint
+        port: 443,
+        user: process.env.SAUCE_USERNAME,
+        key: process.env.SAUCE_ACCESS_KEY,
+      })
+    }
     await app._beforeSuite()
     app.isWeb = false
     await app._before()

@@ -11,7 +11,7 @@ global.codeceptjs = require('../../lib')
 
 let app
 // iOS test app is built from https://github.com/appium/ios-test-app and uploaded to Saucelabs
-const apk_path = 'storage:filename=TestApp-iphonesimulator.zip'
+const ios_app_path = 'storage:filename=TestApp-iphonesimulator.zip'
 const smallWait = 3
 
 describe('Appium iOS Tests', function () {
@@ -20,24 +20,32 @@ describe('Appium iOS Tests', function () {
   before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
     app = new Appium({
-      app: apk_path,
+      app: ios_app_path,
       desiredCapabilities: {
         'sauce:options': {
           appiumVersion: '2.0.0',
+          name: 'CodeceptJS Appium iOS Test',
+          build: process.env.BUILD_NUMBER || 'local-build',
+          tags: ['codeceptjs', 'appium', 'ios'],
+          recordVideo: false,
+          recordScreenshots: false,
+          idleTimeout: 300,
+          newCommandTimeout: 300,
         },
         browserName: '',
-        recordVideo: 'false',
-        recordScreenshots: 'false',
         platformName: 'iOS',
-        platformVersion: '12.2',
-        deviceName: 'iPhone 8 Simulator',
+        platformVersion: '16.0',
+        deviceName: 'iPhone 14 Simulator',
+        automationName: 'XCUITest',
         androidInstallTimeout: 90000,
         appWaitDuration: 300000,
+        autoAcceptAlerts: true,
+        noReset: true,
       },
       restart: true,
-      protocol: 'http',
-      host: 'ondemand.saucelabs.com',
-      port: 80,
+      protocol: 'https',
+      host: 'ondemand.us-west-1.saucelabs.com',
+      port: 443,
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
     })
