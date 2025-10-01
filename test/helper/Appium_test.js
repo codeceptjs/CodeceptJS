@@ -365,6 +365,7 @@ describe('Appium', function () {
 
     describe('#performTouchAction', () => {
       it('should react on swipeUp action @second', async () => {
+        await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeUp("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000)
@@ -390,6 +391,7 @@ describe('Appium', function () {
       })
 
       it('should react on swipeLeft action', async () => {
+        await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeLeft("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
@@ -401,6 +403,7 @@ describe('Appium', function () {
       })
 
       it('should react on swipeRight action', async () => {
+        await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeRight("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
