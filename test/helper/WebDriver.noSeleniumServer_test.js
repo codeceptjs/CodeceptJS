@@ -12,6 +12,7 @@ const WebDriver = require('../../lib/helper/WebDriver')
 const AssertionFailedError = require('../../lib/assert/error')
 const Secret = require('../../lib/secret')
 global.codeceptjs = require('../../lib')
+const { W3C_ELEMENT_ID } = require('../../lib/utils')
 
 const siteUrl = TestHelper.siteUrl()
 let wd
@@ -41,7 +42,7 @@ describe('WebDriver - No Selenium server started', function () {
         },
       },
       customLocatorStrategies: {
-        customSelector: selector => ({ 'element-6066-11e4-a52e-4f735466cecf': `${selector}-foobar` }),
+        customSelector: selector => ({ [W3C_ELEMENT_ID]: `${selector}-foobar` }),
       },
     })
   })
@@ -381,7 +382,6 @@ describe('WebDriver - No Selenium server started', function () {
       )
     })
   })
-
 
   describe('#seeTitleEquals', () => {
     it('should check that title is equal to provided one', async () => {

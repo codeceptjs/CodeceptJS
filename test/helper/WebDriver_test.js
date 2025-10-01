@@ -11,6 +11,7 @@ const AssertionFailedError = require('../../lib/assert/error')
 const webApiTests = require('./webapi')
 const Secret = require('../../lib/secret')
 global.codeceptjs = require('../../lib')
+const { W3C_ELEMENT_ID } = require('../../lib/utils')
 
 const siteUrl = TestHelper.siteUrl()
 let wd
@@ -44,7 +45,7 @@ describe('WebDriver', function () {
         },
       },
       customLocatorStrategies: {
-        customSelector: selector => ({ 'element-6066-11e4-a52e-4f735466cecf': `${selector}-foobar` }),
+        customSelector: selector => ({ [W3C_ELEMENT_ID]: `${selector}-foobar` }),
       },
     })
   })
