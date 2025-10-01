@@ -34,7 +34,8 @@
     "./lib/*": "./lib/*.js",
     "./els": "./lib/els.js",
     "./effects": "./lib/effects.js",
-    "./steps": "./lib/steps.js"
+    "./steps": "./lib/steps.js",
+    "./store": "./lib/store.js"
   },
   "types": "typings/index.d.ts",
   "bin": {
