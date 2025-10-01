@@ -31,6 +31,7 @@ describe('Appium', function () {
         platformName: 'Android',
         platformVersion: '7.0',
         deviceName: 'Android GoogleAPI Emulator',
+        automationName: 'UiAutomator2',
         androidInstallTimeout: 90000,
         appWaitDuration: 300000,
       },
