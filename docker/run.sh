@@ -24,36 +24,27 @@ EOF
 		fi
 	}
 
-	# Setup node_modules with ESM-compatible codeceptjs
-	setup_node_modules() {
-		local dir="$1"
-		local node_modules="$dir/node_modules"
-		local codecept_module="$node_modules/codeceptjs"
+	# Ensure /tests/node_modules links to /codecept/node_modules
+	if [ -L "/tests/node_modules" ]; then
+		# Already a symlink, good
+		:
+	elif [ -d "/tests/node_modules" ]; then
+		# Directory exists, remove it and create symlink
+		rm -rf /tests/node_modules
+		ln -sf /codecept/node_modules /tests/node_modules
+	else
+		# Doesn't exist, create symlink
+		ln -sf /codecept/node_modules /tests/node_modules
+	fi
 
-		mkdir -p "$codecept_module"
-
-		cat > "$codecept_module/package.json" << 'EOF'
-{
-  "name": "codeceptjs",
-  "type": "module",
-  "exports": {
-    ".": "./index.js",
-    "./effects": "./effects.js"
-  },
-  "main": "./index.js"
-}
-EOF
-
-		ln -sf /codecept/lib/index.js "$codecept_module/index.js"
-		ln -sf /codecept/lib/effects.js "$codecept_module/effects.js"
-
-		for dep_dir in /codecept/node_modules/*; do
-			dep_name=$(basename "$dep_dir")
-			if [ "$dep_name" != "codeceptjs" ] && [ ! -e "$node_modules/$dep_name" ]; then
-				ln -sf "$dep_dir" "$node_modules/$dep_name" 2>/dev/null || true
-			fi
-		done
-	}
+	# Ensure /codecept/node_modules/codeceptjs is a symlink to /codecept
+	# This allows require('codeceptjs') from CJS modules to work
+	if [ -d "/codecept/node_modules/codeceptjs" ] && [ ! -L "/codecept/node_modules/codeceptjs" ]; then
+		rm -rf /codecept/node_modules/codeceptjs
+		ln -sf /codecept /codecept/node_modules/codeceptjs
+	elif [ ! -e "/codecept/node_modules/codeceptjs" ]; then
+		ln -sf /codecept /codecept/node_modules/codeceptjs
+	fi
 
 	# Find codecept config in current directory
 	config_file=$(find . -maxdepth 2 -name "codecept.conf.*" -type f | head -1)
@@ -61,18 +52,9 @@ EOF
 	if [ -n "$config_file" ]; then
 		config_dir=$(dirname "$config_file")
 		ensure_esm_package "$config_dir"
-		setup_node_modules "$config_dir"
 	else
 		ensure_esm_package "$(pwd)"
-		setup_node_modules "$(pwd)"
 	fi
-
-	# Also setup node_modules in any subdirectories that might contain test files
-	for test_dir in acceptance test tests; do
-		if [ -d "$test_dir" ]; then
-			setup_node_modules "$test_dir"
-		fi
-	done
 
 	# Run the tests
 	cd /tests/ || exit
