@@ -190,7 +190,7 @@ describe('Appium', function () {
       await app.see('Prefered Car')
       assert.ok(app.isWeb)
       await app.switchToNative()
-      await app.browser.pause(1000)
+      await app.browser.pause(2000)
       val = await app.grabContext()
       assert.equal(val, 'NATIVE_APP')
       return assert.ok(!app.isWeb)
