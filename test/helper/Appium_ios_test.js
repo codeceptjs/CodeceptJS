@@ -34,8 +34,8 @@ describe('Appium iOS Tests', function () {
         },
         browserName: '',
         platformName: 'iOS',
-        platformVersion: '16.0',
-        deviceName: 'iPhone 14 Simulator',
+        platformVersion: '15.5', // Use more stable iOS version
+        deviceName: 'iPhone 13 Simulator', // Use widely available device
         automationName: 'XCUITest',
         androidInstallTimeout: 90000,
         appWaitDuration: 300000,

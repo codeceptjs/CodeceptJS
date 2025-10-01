@@ -42,7 +42,7 @@ describe('Appium', function () {
       })
     } else {
       app = new Appium({
-        app: apk_path,
+        app: 'storage:filename=selendroid-test-app-0.17.0.apk', // Use Sauce Storage reference
         desiredCapabilities: {
           'sauce:options': {
             appiumVersion: '2.0.0',
@@ -56,17 +56,17 @@ describe('Appium', function () {
           },
           browserName: '',
           platformName: 'Android',
-          platformVersion: '12.0', // Updated to more recent Android version
-          deviceName: 'Google Pixel 6 GoogleAPI Emulator', // More specific device
+          platformVersion: '10.0', // Use very stable Android 10.0
+          deviceName: 'Android GoogleAPI Emulator', // Standard emulator
           automationName: 'UiAutomator2',
           androidInstallTimeout: 90000,
           appWaitDuration: 300000,
           autoGrantPermissions: true,
-          noReset: true,
+          noReset: false, // Clean state for each test
         },
         restart: true,
-        protocol: 'https', // Use HTTPS for better security
-        host: 'ondemand.us-west-1.saucelabs.com', // Use specific regional endpoint
+        protocol: 'https',
+        host: 'ondemand.us-west-1.saucelabs.com',
         port: 443,
         user: process.env.SAUCE_USERNAME,
         key: process.env.SAUCE_ACCESS_KEY,

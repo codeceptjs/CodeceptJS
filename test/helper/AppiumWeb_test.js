@@ -26,8 +26,8 @@ describe('Appium Web', function () {
         },
         browserName: 'Chrome',
         platformName: 'Android',
-        platformVersion: '12.0',
-        deviceName: 'Google Pixel 6 GoogleAPI Emulator',
+        platformVersion: '10.0', // Use very stable Android 10.0
+        deviceName: 'Android GoogleAPI Emulator', // Standard emulator
         automationName: 'UiAutomator2',
         autoGrantPermissions: true,
         noReset: true,

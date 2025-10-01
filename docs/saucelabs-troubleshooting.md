@@ -16,6 +16,19 @@ export SAUCE_ACCESS_KEY="your_sauce_access_key"
 ### 2. Outdated Platform/Device Combinations
 The error often occurs when requesting deprecated or unavailable devices/OS versions.
 
+**Critical Configuration Issues:**
+- Using `app: localPath` instead of `app: 'storage:filename=app.apk'`
+- Requesting too recent OS versions (Android 12+, iOS 16+)
+- Using specific device models that may not be available
+- Missing proper capability namespacing for Appium 2.x
+
+**Quick Fix Checklist:**
+1. ✅ Use `storage:filename=` for app references
+2. ✅ Use Android 10.0/11.0 and iOS 14.x/15.x versions  
+3. ✅ Use standard device names: "Android GoogleAPI Emulator", "iPhone 13 Simulator"
+4. ✅ Set `noReset: false` for clean test state
+5. ✅ Use regional endpoints: `ondemand.us-west-1.saucelabs.com`
+
 **Updated Android Configuration:**
 ```javascript
 {
@@ -26,6 +39,7 @@ The error often occurs when requesting deprecated or unavailable devices/OS vers
       protocol: 'https',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
+      app: 'storage:filename=your-app.apk', // Use Sauce Storage reference
       desiredCapabilities: {
         'sauce:options': {
           appiumVersion: '2.0.0',
@@ -39,12 +53,11 @@ The error often occurs when requesting deprecated or unavailable devices/OS vers
         },
         browserName: '',
         platformName: 'Android',
-        platformVersion: '12.0', // Use recent versions
-        deviceName: 'Google Pixel 6 GoogleAPI Emulator',
+        platformVersion: '10.0', // Use stable versions (9.0-11.0)
+        deviceName: 'Android GoogleAPI Emulator', // Use standard names
         automationName: 'UiAutomator2',
         autoGrantPermissions: true,
-        noReset: true,
-        app: 'sauce-storage:your-app.apk'
+        noReset: false, // Clean state for reliable tests
       }
     }
   }
@@ -61,6 +74,7 @@ The error often occurs when requesting deprecated or unavailable devices/OS vers
       protocol: 'https',
       user: process.env.SAUCE_USERNAME,
       key: process.env.SAUCE_ACCESS_KEY,
+      app: 'storage:filename=your-ios-app.zip', // Use Sauce Storage reference
       desiredCapabilities: {
         'sauce:options': {
           appiumVersion: '2.0.0',
@@ -74,12 +88,11 @@ The error often occurs when requesting deprecated or unavailable devices/OS vers
         },
         browserName: '',
         platformName: 'iOS',
-        platformVersion: '16.0', // Use recent versions
-        deviceName: 'iPhone 14 Simulator',
+        platformVersion: '15.5', // Use stable versions (14.x-15.x)
+        deviceName: 'iPhone 13 Simulator', // Use widely available devices
         automationName: 'XCUITest',
         autoAcceptAlerts: true,
-        noReset: true,
-        app: 'sauce-storage:your-ios-app.ipa'
+        noReset: false, // Clean state for reliable tests
       }
     }
   }
