@@ -22,6 +22,7 @@ describe('Appium Web', function () {
         platformName: 'Android',
         platformVersion: '6.0',
         deviceName: 'Android Emulator',
+        automationName: 'UiAutomator2',
       },
       host: 'ondemand.saucelabs.com',
       port: 80,

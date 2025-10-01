@@ -33,6 +33,7 @@ describe('Appium', function () {
         deviceName: 'Android GoogleAPI Emulator',
         androidInstallTimeout: 90000,
         appWaitDuration: 300000,
+        automationName: 'UiAutomator2',
       },
       restart: true,
       protocol: 'http',
