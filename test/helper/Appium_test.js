@@ -183,6 +183,7 @@ describe('Appium', function () {
     it('should switch to native and web contexts @quick', async () => {
       await app.resetApp()
       await app.tap('~buttonStartWebviewCD')
+      await app.browser.pause(1000)
       await app.see('WebView location')
       await app.switchToWeb()
       let val = await app.grabContext()
