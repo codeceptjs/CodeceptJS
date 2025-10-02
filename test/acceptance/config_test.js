@@ -32,7 +32,7 @@ Scenario('change config 5 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
 
 Scenario('make API call and check response @Playwright', ({ I }) => {
   I.amOnPage('/')
-    I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2', { headers: {'x-api-key': 'reqres-free-v1'}})
+  I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2', { headers: { 'x-api-key': 'reqres-free-v1' } })
   I.seeResponseCodeIsSuccessful()
 })
 

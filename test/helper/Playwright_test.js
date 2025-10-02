@@ -1041,9 +1041,9 @@ describe('Playwright', function () {
 
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
-  const response = await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
-  expect(response.status()).to.equal(200)
-  expect(await response.json()).to.include.keys(['data'])
+      const response = await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
+      expect(response.status()).to.equal(200)
+      expect(await response.json()).to.include.keys(['data'])
     })
 
     it('should make local API request', async () => {
@@ -1054,10 +1054,10 @@ describe('Playwright', function () {
     it('should convert to axios response with onResponse hook', async () => {
       let response
       I.config.onResponse = resp => (response = resp)
-  await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
-  expect(response).to.be.ok
-  expect(response.status).to.equal(200)
-  expect(response.data).to.include.keys(['data'])
+      await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
+      expect(response).to.be.ok
+      expect(response.status).to.equal(200)
+      expect(response.data).to.include.keys(['data'])
     })
   })
 

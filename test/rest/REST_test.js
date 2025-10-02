@@ -150,7 +150,7 @@ describe('REST', () => {
     })
 
     it('should be able to parse JSON responses', async () => {
-      await I.sendGetRequest('http://localhost:3001/api/comments/1', { 'x-api-key': 'reqres-free-v1'})
+      await I.sendGetRequest('http://localhost:3001/api/comments/1', { 'x-api-key': 'reqres-free-v1' })
       await jsonResponse.seeResponseCodeIsSuccessful()
       await jsonResponse.seeResponseContainsKeys(['data', 'support'])
     })
