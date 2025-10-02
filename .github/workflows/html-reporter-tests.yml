@@ -1,0 +1,54 @@
+name: HTML Reporter Tests
+
+on:
+  push:
+    branches:
+      - '3.x'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test-html-reporter:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm i
+      
+      - name: Run HTML Reporter Unit Tests
+        run: npm run test:unit -- test/unit/plugin/htmlReporter_test.js --timeout 10000
+      
+      - name: Run HTML Reporter Integration Tests
+        run: npm run test:runner -- test/runner/html-reporter-plugin_test.js --timeout 60000
+      
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-node-${{ matrix.node-version }}
+          path: |
+            test/data/sandbox/configs/html-reporter-plugin/output/
+            test/acceptance/output/
+          retention-days: 7
+      
+      - name: Upload HTML reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-reports-node-${{ matrix.node-version }}
+          path: |
+            test/data/sandbox/configs/html-reporter-plugin/output/*.html
+          retention-days: 30

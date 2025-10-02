@@ -166,4 +166,270 @@ describe('CodeceptJS html-reporter-plugin', function () {
       done()
     })
   })
+
+  it('should display correct feature names in worker mode', done => {
+    // Test for the "Unknown Feature" fix when running with workers
+    exec(config_run_config('codecept.conf.js') + ' --workers 2', (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      expect(fs.existsSync(reportFile)).toBe(true)
+
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Should NOT contain "Unknown Feature" - all tests should have proper feature names
+      expect(reportContent).not.toContain('Unknown Feature')
+      
+      // Should contain the actual feature name
+      expect(reportContent).toContain('HTML Reporter Test')
+      
+      // Check that feature names are properly set in data attributes
+      expect(reportContent).toMatch(/data-feature="[^"]+HTML Reporter Test[^"]*"/)
+
+      done()
+    })
+  })
+
+  it('should preserve step details for all tests including worker runs', done => {
+    exec(config_run_config('codecept.conf.js') + ' --workers 2', (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check that steps section exists and is populated
+      expect(reportContent).toContain('steps-section')
+      expect(reportContent).toContain('step-item')
+      expect(reportContent).toContain('amInPath')
+      expect(reportContent).toContain('seeFile')
+      
+      // Steps should be visible even if feature name was initially unknown
+      expect(reportContent).toMatch(/step-title[^>]*>.*amInPath/s)
+      expect(reportContent).toMatch(/step-title[^>]*>.*seeFile/s)
+
+      done()
+    })
+  })
+
+  it('should render high-resolution test history chart', done => {
+    exec(config_run_config('codecept-with-history.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check for increased canvas resolution
+      expect(reportContent).toMatch(/<canvas[^>]*id="historyChart"[^>]*width="1600"[^>]*height="600"/s)
+      
+      // Verify history chart rendering function exists
+      expect(reportContent).toContain('drawHistoryChart')
+      expect(reportContent).toContain('historyChart')
+
+      done()
+    })
+  })
+
+  it('should include "Go to Top" button for UI/UX', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check for scrollToTop function
+      expect(reportContent).toContain('function scrollToTop()')
+      expect(reportContent).toContain('window.scrollTo')
+      expect(reportContent).toContain('behavior: \'smooth\'')
+      
+      // Check that button is created dynamically
+      expect(reportContent).toContain('goTopBtn')
+      expect(reportContent).toContain('↑ Top')
+      expect(reportContent).toContain('position: \'fixed\'')
+      expect(reportContent).toContain('bottom: \'30px\'')
+      expect(reportContent).toContain('right: \'30px\'')
+
+      done()
+    })
+  })
+
+  it('should not show HTML Reporter debug logs in normal mode', done => {
+    exec(config_run_config('codecept.conf.js', null, false), (err, stdout) => {
+      debug(stdout)
+      
+      // HTML Reporter debug messages should NOT appear in normal output
+      expect(stdout).not.toContain('HTML Reporter: Retry count detected')
+      expect(stdout).not.toContain('HTML Reporter: Test finished')
+      expect(stdout).not.toContain('HTML Reporter: Processing artifacts')
+      expect(stdout).not.toContain('HTML Reporter: Found screenshot')
+      expect(stdout).not.toContain('HTML Reporter: Checking directory')
+      
+      // But the report file should still be generated
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      expect(fs.existsSync(reportFile)).toBe(true)
+
+      done()
+    })
+  })
+
+  it('should show HTML Reporter debug logs in verbose/debug mode', done => {
+    exec(config_run_config('codecept.conf.js', null, true), (err, stdout) => {
+      debug(stdout)
+      
+      // HTML Reporter debug messages SHOULD appear in verbose output
+      // Note: Some messages may only appear when certain conditions are met
+      const hasDebugMessages = 
+        stdout.includes('HTML Reporter') ||
+        stdout.includes('<htmlReporter>') // plugin messages use this format
+      
+      expect(hasDebugMessages).toBe(true)
+
+      done()
+    })
+  })
+
+  it('should handle artifacts in worker mode', done => {
+    exec(config_run_config('codecept.conf.js') + ' --workers 2', (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check that artifacts section is present
+      expect(reportContent).toContain('artifacts-section')
+      
+      // Should have screenshot handling code
+      expect(reportContent).toContain('openImageModal')
+      expect(reportContent).toContain('imageModal')
+
+      done()
+    })
+  })
+
+  it('should consolidate worker results correctly', done => {
+    exec(config_run_config('codecept.conf.js') + ' --workers 2', (err, stdout) => {
+      debug(stdout)
+
+      const outputDir = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output')
+      
+      // Worker JSON files should be cleaned up after consolidation
+      const files = fs.readdirSync(outputDir)
+      const workerJsonFiles = files.filter(f => f.startsWith('worker-') && f.endsWith('-results.json'))
+      expect(workerJsonFiles.length).toBe(0) // Should be deleted after consolidation
+      
+      // Final report should exist
+      const reportFile = path.join(outputDir, 'report.html')
+      expect(fs.existsSync(reportFile)).toBe(true)
+      
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // All tests should be included
+      expect(reportContent).toContain('test with multiple steps')
+      expect(reportContent).toContain('test that will fail')
+      expect(reportContent).toContain('test that will pass')
+
+      done()
+    })
+  })
+
+  it('should handle test retries and display retry information', done => {
+    // This test assumes there's a config with retries enabled
+    exec(config_run_config('codecept.conf.js', 'test that will fail'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check for retry-related elements
+      expect(reportContent).toContain('retry-section')
+      expect(reportContent).toContain('retry-badge')
+      expect(reportContent).toContain('retries')
+      expect(reportContent).toContain('data-retries=')
+
+      done()
+    })
+  })
+
+  it('should apply filters correctly', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check for all filter types
+      expect(reportContent).toContain('statusFilter')
+      expect(reportContent).toContain('featureFilter')
+      expect(reportContent).toContain('tagFilter')
+      expect(reportContent).toContain('retryFilter')
+      expect(reportContent).toContain('typeFilter')
+      
+      // Check filter functionality
+      expect(reportContent).toContain('function applyFilters()')
+      expect(reportContent).toContain('function resetFilters()')
+      expect(reportContent).toContain('addEventListener(\'change\', applyFilters)')
+      
+      // Check data attributes needed for filtering
+      expect(reportContent).toContain('data-status=')
+      expect(reportContent).toContain('data-feature=')
+      expect(reportContent).toContain('data-type=')
+
+      done()
+    })
+  })
+
+  it('should display system information when available', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check for system info section
+      expect(reportContent).toContain('system-info-section')
+      expect(reportContent).toContain('Environment Information')
+      expect(reportContent).toContain('toggleSystemInfo')
+
+      done()
+    })
+  })
+
+  it('should handle edge cases: empty tests', done => {
+    // Create a temporary empty test file
+    const emptyTestFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'empty_test.js')
+    fs.writeFileSync(emptyTestFile, 'Feature(\'Empty Feature\')\n\n// No scenarios\n')
+
+    exec(config_run_config('codecept.conf.js', 'Empty Feature'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      
+      // Report should still be generated even with no tests
+      expect(fs.existsSync(reportFile)).toBe(true)
+      
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      expect(reportContent).toContain('CodeceptJS Test Report')
+      
+      // Cleanup
+      fs.unlinkSync(emptyTestFile)
+
+      done()
+    })
+  })
+
+  it('should escape HTML in test names and error messages', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+      
+      // Check that escapeHtml function exists
+      expect(reportContent).toContain('function escapeHtml(')
+      expect(reportContent).toContain('.replace(/&/g, \'&amp;\')')
+      expect(reportContent).toContain('.replace(/</g, \'&lt;\')')
+      expect(reportContent).toContain('.replace(/>/g, \'&gt;\')')
+
+      done()
+    })
+  })
 })
