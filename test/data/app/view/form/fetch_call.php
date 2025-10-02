@@ -53,7 +53,7 @@
     const getPostData = () =>
       getData("https://jsonplaceholder.typicode.com/posts/1");
     const getCommentsData = () =>
-  getData("http://localhost:3001/api/comments/1");
+      getData("http://localhost:3001/api/comments/1");
     const getUsersData = () =>
       getData("https://jsonplaceholder.typicode.com/users/1");
   </script>
