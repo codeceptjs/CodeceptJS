@@ -8,9 +8,27 @@ let users = [
   { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
 ]
 
+// Example comments data
+let comments = [{ id: 1, postId: 1, text: 'Great post!' }]
+
 // GET /api/users
 app.get('/api/users', (req, res) => {
   res.json({ data: users })
+})
+
+// GET /api/comments/:id
+app.get('/api/comments/:id', (req, res) => {
+  const comment = comments.find(c => c.id === parseInt(req.params.id))
+  if (comment) {
+    return res.json({
+      data: comment,
+      support: {
+        url: 'http://example.com/support',
+        text: 'Support information',
+      },
+    })
+  }
+  res.status(404).json({ error: 'Comment not found' })
 })
 
 // GET /api/users/:id
