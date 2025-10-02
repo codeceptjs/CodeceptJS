@@ -18,6 +18,9 @@ COPY . /codecept
 WORKDIR /codecept
 RUN npm install
 
+# Remove self-reference and create symlink to use root package.json with ESM exports
+RUN rm -rf /codecept/node_modules/codeceptjs && ln -sf /codecept /codecept/node_modules/codeceptjs
+
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
 RUN mkdir /tests
 WORKDIR /tests
