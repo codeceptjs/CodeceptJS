@@ -21,7 +21,7 @@ jobs:
       matrix:
         node-version: [20.x]
 
-    steps:
+  steps:
       # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v5
@@ -31,6 +31,16 @@ jobs:
         run: |
           sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install -y docker-compose
+
+      # Start mock server
+      - name: Start mock server
+        run: nohup npm run mock-server:start &
+      - name: Wait for mock server
+        run: |
+          for i in {1..20}; do
+            curl -sSf http://localhost:3001/api/users && break
+            sleep 1
+          done
 
       # Run rest tests using docker-compose
       - name: Run REST Tests
@@ -46,3 +56,7 @@ jobs:
       - name: Run Faker BDD Tests
         run: docker-compose run --rm test-bdd.faker
         working-directory: test
+
+      # Stop mock server
+      - name: Stop mock server
+        run: npm run mock-server:stop

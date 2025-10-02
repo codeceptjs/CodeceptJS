@@ -27,7 +27,17 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: Start mock server
+        run: nohup npm run mock-server:start &
+      - name: Wait for mock server
+        run: |
+          for i in {1..20}; do
+            curl -sSf http://localhost:3001/api/users && break
+            sleep 1
+          done
       - run: npm run test:unit
+      - name: Stop mock server
+        run: npm run mock-server:stop
 
   runner-tests:
     name: Runner tests
@@ -47,6 +57,16 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: Start mock server
+        run: nohup npm run mock-server:start &
+      - name: Wait for mock server
+        run: |
+          for i in {1..20}; do
+            curl -sSf http://localhost:3001/api/users && break
+            sleep 1
+          done
       - run: npm run test:runner
+      - name: Stop mock server
+        run: npm run mock-server:stop
         # Note: Runner tests are mocha-based, so sharding doesn't apply here.
         # For CodeceptJS sharding examples, see sharding-demo.yml workflow.
