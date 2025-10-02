@@ -49,7 +49,7 @@ Type: [object][4]
 *   `keepBrowserState` **[boolean][23]?** keep browser state between tests when `restart` is set to false.
 *   `keepCookies` **[boolean][23]?** keep cookies between tests when `restart` is set to false.
 *   `waitForAction` **[number][11]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
-*   `waitForNavigation` **[string][6]?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][26]. Array values are accepted as well.
+*   `waitForNavigation` **([string][6] | [Array][16]<[string][6]>)?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][28]. Array values are accepted as well.
 *   `pressKeyDelay` **[number][11]?** delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 *   `getPageTimeout` **[number][11]?** config option to set maximum navigation time in milliseconds. If the timeout is set to 0, then timeout will be disabled.
 *   `waitForTimeout` **[number][11]?** default wait* timeout in ms.
@@ -57,7 +57,7 @@ Type: [object][4]
 *   `userAgent` **[string][6]?** user-agent string.
 *   `manualStart` **[boolean][23]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 *   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
-*   `chrome` **[object][4]?** pass additional [Puppeteer run options][28].
+*   `chrome` **[object][4]?** pass additional [Puppeteer run options][29].
 *   `highlightElement` **[boolean][23]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 ## findElement
@@ -1412,7 +1412,7 @@ I.openNewTab();
 
 ### pressKey
 
-*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][20]).
+*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([puppeteer/puppeteer#1313][20]).
 
 Presses a key in the browser (on a focused element).
 
@@ -2501,7 +2501,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 Returns **void** automatically synchronized promise through #recorder
 
-[1]: https://github.com/GoogleChrome/puppeteer
+[1]: https://github.com/puppeteer/puppeteer
 
 [2]: https://codecept.io/helpers/Puppeteer-firefox
 
@@ -2539,7 +2539,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 [19]: https://pptr.dev/guides/network-interception
 
-[20]: https://github.com/GoogleChrome/puppeteer/issues/1313
+[20]: https://github.com/puppeteer/puppeteer/issues/1313
 
 [21]: #fillfield
 
@@ -2551,8 +2551,10 @@ Returns **void** automatically synchronized promise through #recorder
 
 [25]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
 
-[26]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
+[26]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.waitfornavigation.md
 
 [27]: https://pptr.dev/api/puppeteer.tracing
 
-[28]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
+[28]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.waitforoptions.md
+
+[29]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.launchoptions.md

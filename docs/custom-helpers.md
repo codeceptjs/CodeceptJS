@@ -5,7 +5,7 @@ title: Custom Helpers
 
 # Extending CodeceptJS With Custom Helpers
 
-Helper is the core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them. When `I` object is used in tests it delegates execution of its functions to currently enabled helper classes. 
+Helper is the core concept of CodeceptJS. Helper is a wrapper on top of various libraries providing unified interface around them. When `I` object is used in tests it delegates execution of its functions to currently enabled helper classes.
 
 Use Helpers to introduce low-level API to your tests without polluting test scenarios. Helpers can also be used to share functionality across different project and installed as npm packages.
 
@@ -34,10 +34,9 @@ Helpers are classes inherited from [corresponding abstract class](https://github
 Created helper file should look like this:
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('@codeceptjs/helper')
 
 class MyHelper extends Helper {
-
   // before/after hooks
   _before() {
     // remove if not used
@@ -50,47 +49,42 @@ class MyHelper extends Helper {
   // add custom methods here
   // If you need to access other helpers
   // use: this.helpers['helperName']
-
 }
 
-module.exports = MyHelper;
+module.exports = MyHelper
 ```
 
 When the helper is enabled in config all methods of a helper class are available in `I` object.
 For instance, if we add a new method to helper class:
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('@codeceptjs/helper')
 
 class MyHelper extends Helper {
-
   doAwesomeThings() {
-    console.log('Hello from MyHelpr');
+    console.log('Hello from MyHelpr')
   }
-
 }
 ```
 
 We can call a new method from within `I`:
 
 ```js
-I.doAwesomeThings();
+I.doAwesomeThings()
 ```
 
 > Methods starting with `_` are considered special and won't available in `I` object.
 
-
-Please note, `I` object can't be used helper class. As `I` object delegates its calls to helper classes, you can't make a circular dependency on it. Instead of calling `I` inside a helper, you can get access to other helpers by using `helpers` property of a helper. This allows you to access any other enabled helper by its name. 
+Please note, `I` object can't be used helper class. As `I` object delegates its calls to helper classes, you can't make a circular dependency on it. Instead of calling `I` inside a helper, you can get access to other helpers by using `helpers` property of a helper. This allows you to access any other enabled helper by its name.
 
 For instance, to perform a click with Playwright helper, do it like this:
 
 ```js
 doAwesomeThingsWithPlaywright() {
   const { Playwright } = this.helpers;
-  Playwright.click('Awesome');    
+  Playwright.click('Awesome');
 }
 ```
-
 
 After a custom helper is finished you can update CodeceptJS Type Definitions by running:
 
@@ -185,16 +179,16 @@ constructor(config) {
 Helpers may contain several hooks you can use to handle events of a test.
 Implement corresponding methods to them.
 
-* `_init` - before all tests
-* `_finishTest` - after all tests
-* `_before` - before a test
-* `_after` - after a test
-* `_beforeStep` - before each step
-* `_afterStep` - after each step
-* `_beforeSuite` - before each suite
-* `_afterSuite` - after each suite
-* `_passed` - after a test passed
-* `_failed` - after a test failed
+- `_init` - before all tests
+- `_finishTest` - after all tests
+- `_before` - before a test
+- `_after` - after a test
+- `_beforeStep` - before each step
+- `_afterStep` - after each step
+- `_beforeSuite` - before each suite
+- `_afterSuite` - after each suite
+- `_passed` - after a test passed
+- `_failed` - after a test failed
 
 Each implemented method should return a value as they will be added to global promise chain as well.
 
@@ -225,7 +219,6 @@ Retry rules are available in array `recorder.retries`. The last retry rule can b
 
 With Typescript, just simply replacing `module.exports` with `export` for autocompletion.
 
-
 ## Helper Examples
 
 ### Playwright Example
@@ -233,14 +226,13 @@ With Typescript, just simply replacing `module.exports` with `export` for autoco
 In this example we take the power of Playwright to change geolocation in our tests:
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('@codeceptjs/helper')
 
 class MyHelper extends Helper {
-
   async setGeoLocation(longitude, latitude) {
-    const { browserContext } = this.helpers.Playwright;
-    await browserContext.setGeolocation({ longitude, latitude });
-    await Playwright.refreshPage();
+    const { browserContext } = this.helpers.Playwright
+    await browserContext.setGeolocation({ longitude, latitude })
+    await Playwright.refreshPage()
   }
 }
 ```
@@ -250,10 +242,10 @@ class MyHelper extends Helper {
 Next example demonstrates how to use WebDriver library to create your own test action. Method `seeAuthentication` will use `browser` instance of WebDriver to get access to cookies. Standard NodeJS assertion library will be used (you can use any).
 
 ```js
-const Helper = require('@codeceptjs/helper');
+const Helper = require('@codeceptjs/helper')
 
 // use any assertion library you like
-const assert = require('assert');
+const assert = require('assert')
 
 class MyHelper extends Helper {
   /**
@@ -262,45 +254,43 @@ class MyHelper extends Helper {
   async seeAuthentication() {
     // access current browser of WebDriver helper
     const { WebDriver } = this.helpers
-    const { browser } = WebDriver;
+    const { browser } = WebDriver
 
     // get all cookies according to https://webdriver.io/api/protocol/cookie.html
     // any helper method should return a value in order to be added to promise chain
-    const res = await browser.cookie();
+    const res = await browser.cookie()
     // get values
-    let cookies = res.value;
+    let cookies = res.value
     for (let k in cookies) {
       // check for a cookie
-      if (cookies[k].name != 'logged_in') continue;
-      assert.equal(cookies[k].value, 'yes');
-      return;
+      if (cookies[k].name != 'logged_in') continue
+      assert.equal(cookies[k].value, 'yes')
+      return
     }
-    assert.fail(cookies, 'logged_in', "Auth cookie not set");
+    assert.fail(cookies, 'logged_in', 'Auth cookie not set')
   }
 }
 
-module.exports = MyHelper;
+module.exports = MyHelper
 ```
 
 ### Puppeteer Example
 
-Puppeteer has [nice and elegant API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md) which you can use inside helpers. Accessing `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
+Puppeteer has [nice and elegant API](https://github.com/puppeteer/puppeteer/blob/main/docs/api/index.md) which you can use inside helpers. Accessing `page` instance via `this.helpers.Puppeteer.page` from inside a helper.
 
-Let's see how we can use [emulate](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pageemulateoptions) function to emulate iPhone browser in a test.
+Let's see how we can use [emulate](https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.emulate.md) function to emulate iPhone browser in a test.
 
 ```js
-const Helper = require('@codeceptjs/helper');
-const puppeteer = require('puppeteer');
-const iPhone = puppeteer.devices['iPhone 6'];
+const Helper = require('@codeceptjs/helper')
+const puppeteer = require('puppeteer')
+const iPhone = puppeteer.devices['iPhone 6']
 
 class MyHelper extends Helper {
-
   async emulateIPhone() {
-    const { page } = this.helpers.Puppeteer;
-    await page.emulate(iPhone);
+    const { page } = this.helpers.Puppeteer
+    await page.emulate(iPhone)
   }
-
 }
 
-module.exports = MyHelper;
+module.exports = MyHelper
 ```

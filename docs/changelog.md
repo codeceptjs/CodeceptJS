@@ -3837,7 +3837,7 @@ This change allows using auto-completion when running a specific test.
 - PageObjects simplified to remove `_init()` extra method. Try updated generators and see [updated guide](https://codecept.io/pageobjects/#pageobject).
 - **[Puppeteer]** [Multiple sessions](https://codecept.io/acceptance/#multiple-sessions) enabled. Requires Puppeteer >= 1.5
 - **[Puppeteer]** Stability improvement. Waits for for `load` event on page load. This strategy can be changed in config:
-  - `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions)
+  - `waitForNavigation` config option introduced. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API](https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.waitforoptions.md)
   - `getPageTimeout` config option to set maximum navigation time in milliseconds. Default is 30 seconds.
   - `waitForNavigation` method added. Explicitly waits for navigation to be finished.
 - [WebDriverIO][Protractor][Puppeteer][Nightmare] **Possible BC** `grabTextFrom` unified. Return a text for single matched element and an array of texts for multiple elements.
@@ -3921,7 +3921,7 @@ Scenario('this test should throw error', I => {
 - Added Chinese translation ("zh-CN" and "zh-TW") by **[TechQuery](https://github.com/TechQuery)**.
 - Fixed running tests from a different folder specified by `-c` option.
 - **[Puppeteer]** Added support for hash handling in URL by **[gavoja](https://github.com/gavoja)**.
-- **[Puppeteer]** Fixed setting viewport size by **[gavoja](https://github.com/gavoja)**. See [Puppeteer issue](https://github.com/GoogleChrome/puppeteer/issues/1183)
+- **[Puppeteer]** Fixed setting viewport size by **[gavoja](https://github.com/gavoja)**. See [Puppeteer issue](https://github.com/puppeteer/puppeteer/issues/1183)
 
 ## 1.1.7
 

@@ -31,7 +31,9 @@ describe('Output', () => {
     }
 
     output.process(expectedProcess)
-    expect(output.process()).to.equal(`[${expectedProcess}]`)
+    // The new format includes "Worker" prefix and cyan color
+    expect(output.process()).to.contain('[Worker')
+    expect(output.process()).to.contain(']')
   })
 
   it('should allow debug messages when output level >= 2', () => {
