@@ -7,7 +7,7 @@ const path = require('path')
 
 const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose ? '--verbose' : ''} --config ${codecept_dir}/configs/html-reporter-plugin/${config} ${grep ? `--grep "${grep}"` : ''}`
 
-describe.only('CodeceptJS html-reporter-plugin', function () {
+describe('CodeceptJS html-reporter-plugin', function () {
   this.timeout(10000)
 
   it('should generate HTML report', done => {
