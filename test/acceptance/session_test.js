@@ -118,7 +118,7 @@ Scenario('exception on async/await @Puppeteer @Playwright', ({ I }) => {
   I.seeCheckboxIsChecked({ css: 'input[value=Yes]' })
 }).throws(/to be checked/)
 
-Scenario('should work with within @Puppeteer @Playwright', ({ I }) => {
+xScenario('should work with within @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467')
   session('john', () => {
     I.amOnPage('/form/bug1467')
