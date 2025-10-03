@@ -12,7 +12,7 @@ import TestHelper from '../support/TestHelper.js'
 import WebDriver from '../../lib/helper/WebDriver.js'
 import AssertionFailedError from '../../lib/assert/error.js'
 import * as webApiTests from './webapi.js'
-import { secret as Secret } from '../../lib/secret.js'
+import { secret } from '../../lib/secret.js'
 import * as codeceptjs from '../../lib/index.js'
 global.codeceptjs = codeceptjs
 
@@ -153,12 +153,12 @@ describe('WebDriver', function () {
 
     it('should check values are the secret type in checkboxes', async () => {
       await wd.amOnPage('/form/field_values')
-      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen one'))
-      await wd.seeInField('checkbox[]', Secret.secret('see test one'))
-      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen two'))
-      await wd.seeInField('checkbox[]', Secret.secret('see test two'))
-      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen three'))
-      await wd.seeInField('checkbox[]', Secret.secret('see test three'))
+      await wd.dontSeeInField('checkbox[]', secret('not seen one'))
+      await wd.seeInField('checkbox[]', secret('see test one'))
+      await wd.dontSeeInField('checkbox[]', secret('not seen two'))
+      await wd.seeInField('checkbox[]', secret('see test two'))
+      await wd.dontSeeInField('checkbox[]', secret('not seen three'))
+      await wd.seeInField('checkbox[]', secret('see test three'))
     })
 
     it('should check values with boolean', async () => {
