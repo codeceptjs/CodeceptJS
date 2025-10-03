@@ -48,6 +48,26 @@ describe('CodeceptJS html-reporter-plugin', function () {
       expect(reportContent).toContain('applyFilters')
       expect(reportContent).toContain('resetFilters')
 
+      // Check for feature grouping with toggle
+      expect(reportContent).toContain('feature-group')
+      expect(reportContent).toContain('feature-group-title')
+      expect(reportContent).toContain('toggleFeatureGroup')
+      expect(reportContent).toContain('toggle-icon')
+
+      // Check for test performance analysis
+      expect(reportContent).toContain('test-performance-section')
+      expect(reportContent).toContain('Test Performance Analysis')
+      expect(reportContent).toContain('Longest Running Tests')
+      expect(reportContent).toContain('Fastest Tests')
+      expect(reportContent).toContain('renderTestPerformance')
+
+      // Check for enhanced history section
+      expect(reportContent).toContain('history-section')
+      expect(reportContent).toContain('Test Execution History')
+      expect(reportContent).toContain('historyStats')
+      expect(reportContent).toContain('historyTimeline')
+      expect(reportContent).toContain('renderHistoryTimeline')
+
       // Check for metadata and tags support
       expect(reportContent).toContain('metadata-section')
       expect(reportContent).toContain('tags-section')
@@ -602,6 +622,275 @@ describe('CodeceptJS html-reporter-plugin', function () {
       expect(reportContent).toContain('Test Statistics')
       expect(reportContent).toContain('Test Results')
       expect(reportContent.length).toBeGreaterThan(50000) // Should be substantial
+
+      done()
+    })
+  })
+
+  // ===== NEW IMPROVEMENT TESTS =====
+
+  it('should display enhanced hook information with location and context', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for enhanced hook structure
+      expect(reportContent).toContain('hook-content')
+      expect(reportContent).toContain('hook-location')
+      expect(reportContent).toContain('hook-context')
+
+      // Hook styling enhancements
+      expect(reportContent).toContain('.hook-item {')
+      expect(reportContent).toMatch(/display:\s*flex/)
+      expect(reportContent).toContain('hook-title')
+      expect(reportContent).toContain('hook-duration')
+
+      done()
+    })
+  })
+
+  it('should group test results by feature name', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for feature grouping
+      expect(reportContent).toContain('feature-group')
+      expect(reportContent).toContain('feature-group-title')
+      expect(reportContent).toContain('feature-tests')
+
+      // CSS for feature groups
+      expect(reportContent).toContain('.feature-group {')
+      expect(reportContent).toContain('.feature-group-title {')
+      expect(reportContent).toMatch(/background:\s*#34495e/)
+
+      // Verify tests are grouped
+      const featureGroupMatches = reportContent.match(/<section class="feature-group">/g)
+      expect(featureGroupMatches).not.toBe(null)
+      expect(featureGroupMatches.length).toBeGreaterThan(0)
+
+      done()
+    })
+  })
+
+  it('should display enhanced metrics including flaky tests and artifacts', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for new metric cards
+      expect(reportContent).toContain('stat-card flaky')
+      expect(reportContent).toContain('stat-card artifacts')
+
+      // Check for metrics summary
+      expect(reportContent).toContain('metrics-summary')
+      expect(reportContent).toContain('Pass Rate:')
+      expect(reportContent).toContain('Fail Rate:')
+
+      // CSS for new metrics
+      expect(reportContent).toContain('.stat-card.flaky')
+      expect(reportContent).toContain('.stat-card.artifacts')
+      expect(reportContent).toContain('.metrics-summary {')
+
+      // Verify we have 6 stat cards instead of 4
+      const statCardMatches = reportContent.match(/<div class="stat-card/g)
+      expect(statCardMatches).not.toBe(null)
+      expect(statCardMatches.length).toBeGreaterThanOrEqual(6)
+
+      done()
+    })
+  })
+
+  it('should display retry history inline with enhanced status badges', done => {
+    exec(config_run_config('codecept-with-retries.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'retry-report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for CSS for retry badges (always present)
+      expect(reportContent).toContain('.retry-status-badge {')
+      expect(reportContent).toContain('.retry-status-badge.passed {')
+      expect(reportContent).toContain('.retry-status-badge.failed {')
+
+      // Check for retry section structure
+      expect(reportContent).toContain('.retry-section')
+      expect(reportContent).toContain('.retry-info')
+      expect(reportContent).toContain('.retry-summary')
+      expect(reportContent).toContain('.retry-description')
+
+      // Verify old retries section is hidden
+      expect(reportContent).toContain('style="display: none;"')
+      expect(reportContent).toContain('Moved to Test Details')
+
+      done()
+    })
+  })
+
+  it('should NOT display inspiration section (removed)', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Verify inspiration section was removed
+      expect(reportContent).not.toContain('inspiration-section')
+      expect(reportContent).not.toContain('Looking for More Features?')
+      expect(reportContent).not.toContain('Allure Report')
+      expect(reportContent).not.toContain('ReportPortal')
+
+      done()
+    })
+  })
+
+  it('should display test performance analysis section', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for performance section
+      expect(reportContent).toContain('test-performance-section')
+      expect(reportContent).toContain('Test Performance Analysis')
+      expect(reportContent).toContain('Longest Running Tests')
+      expect(reportContent).toContain('Fastest Tests')
+      expect(reportContent).toContain('renderTestPerformance')
+
+      // Check for CSS classes
+      expect(reportContent).toContain('performance-container')
+      expect(reportContent).toContain('performance-group')
+      expect(reportContent).toContain('performance-item')
+
+      done()
+    })
+  })
+
+  it('should display enhanced history section with timeline', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for enhanced history
+      expect(reportContent).toContain('history-section')
+      expect(reportContent).toContain('Test Execution History')
+      expect(reportContent).toContain('historyStats')
+      expect(reportContent).toContain('historyTimeline')
+      expect(reportContent).toContain('renderHistoryTimeline')
+
+      // Check for CSS classes
+      expect(reportContent).toContain('history-stats')
+      expect(reportContent).toContain('history-timeline')
+      expect(reportContent).toContain('timeline-item')
+
+      done()
+    })
+  })
+
+  it('should have feature groups with collapse/expand functionality', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for feature grouping
+      expect(reportContent).toContain('feature-group')
+      expect(reportContent).toContain('feature-group-title')
+      expect(reportContent).toContain('toggleFeatureGroup')
+      expect(reportContent).toContain('toggle-icon')
+
+      // Verify toggle icon is present
+      expect(reportContent).toContain('▼')
+
+      done()
+    })
+  })
+
+  it('should NOT display feature name in individual test entries', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Feature names should be in group titles, not test entries
+      // Look for test-feature span which we removed
+      const testFeatureMatches = reportContent.match(/<span class="test-feature">/g)
+      expect(testFeatureMatches).toBe(null) // Should not be present
+
+      done()
+    })
+  })
+
+  it('should display worker info when running with workers', done => {
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+
+    exec(runCmd, (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'worker-report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // Check for worker badge CSS (always present)
+      expect(reportContent).toContain('.worker-badge')
+      expect(reportContent).toContain('.worker-badge {')
+
+      // Worker badges should use teal color (#16a085)
+      expect(reportContent).toContain('background: #16a085')
+
+      // Note: "Worker X" badges only appear in test entries when tests have workerIndex property
+      // The CSS structure is always there for when worker info is available
+
+      done()
+    })
+  })
+
+  it('should have all new features working together (comprehensive check)', done => {
+    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+      debug(stdout)
+
+      const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
+      const reportContent = fs.readFileSync(reportFile, 'utf8')
+
+      // All improvements should be present
+      const features = {
+        'Enhanced Hooks': reportContent.includes('hook-location') && reportContent.includes('hook-context'),
+        'Feature Grouping with Toggle': reportContent.includes('feature-group') && reportContent.includes('toggleFeatureGroup'),
+        'Worker Badges': reportContent.includes('worker-badge') && reportContent.includes('.worker-badge {'),
+        'Enhanced Metrics': reportContent.includes('stat-card flaky') && reportContent.includes('metrics-summary'),
+        'Inline Retries': reportContent.includes('retry-status-badge') && reportContent.includes('retry-summary'),
+        'Test Performance': reportContent.includes('test-performance-section') && reportContent.includes('renderTestPerformance'),
+        'Enhanced History': reportContent.includes('historyTimeline') && reportContent.includes('renderHistoryTimeline'),
+      }
+
+      // Log which features are present
+      Object.entries(features).forEach(([name, present]) => {
+        debug(`${name}: ${present ? '✓' : '✗'}`)
+      })
+
+      // Verify all features are present
+      Object.entries(features).forEach(([name, present]) => {
+        expect(present).toBe(true)
+      })
+
+      // Verify inspiration section is NOT present (removed as requested)
+      expect(reportContent).not.toContain('Looking for More Features')
+      expect(reportContent).not.toContain('inspiration-section')
+
+      // Verify report quality
+      expect(reportContent.length).toBeGreaterThan(70000) // Larger due to new features
+      expect(reportContent).toContain('<!DOCTYPE html>')
+      expect(reportContent).toContain('</html>')
 
       done()
     })
