@@ -2,7 +2,7 @@ services:
   test-rest:
     <<: &test-service
       build: ..
-      entrypoint: /codecept/node_modules/.bin/mocha
+      entrypoint: npx mocha
       working_dir: /codecept
       env_file: .env
       volumes:

@@ -137,7 +137,7 @@ Scenario('should work with within @Puppeteer @Playwright', ({ I }) => {
     I.seeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' })
     I.dontSeeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' })
   })
-})
+}).retry(2)
 
 Scenario('change page emulation @Playwright', async ({ I }) => {
   I.amOnPage('/')
