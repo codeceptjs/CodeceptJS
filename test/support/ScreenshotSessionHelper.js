@@ -1,11 +1,11 @@
-import Helper from '@codeceptjs/helper'
-import crypto from 'crypto'
-import fs from 'fs'
+import Helper from 'codeceptjs/lib/helper.js';
+import crypto from 'crypto';
+import fs from 'fs';
 
 class ScreenshotSessionHelper extends Helper {
   constructor(config) {
-    super(config)
-    this.outputPath = global.output_dir
+    super(config);
+    this.outputPath = global.output_dir;
   }
 
   getSHA256Digests(files = []) {
