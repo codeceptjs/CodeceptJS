@@ -65,7 +65,7 @@ jobs:
         run: 'BROWSER=firefox node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
         timeout-minutes: 18
       - name: run webkit tests
-        run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --verbose'
+        run: 'DEBUG="*" BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep "within on form" --verbose'
         timeout-minutes: 18
         env:
           GH_PAT: ${{ github.token }}

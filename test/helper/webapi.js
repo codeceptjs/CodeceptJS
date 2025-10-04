@@ -827,9 +827,9 @@ export function tests() {
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
       await I.see('Thank you')
-      formContents().files.should.have.key('avatar')
-      formContents().files.avatar.name.should.eql('avatar.jpg')
-      formContents().files.avatar.type.should.eql('image/jpeg')
+      expect(formContents().files).to.have.key('avatar')
+      expect(formContents().files.avatar.name).to.eql('avatar.jpg')
+      expect(formContents().files.avatar.type).to.eql('image/jpeg')
     })
 
     it('should upload file located by label', async () => {
@@ -837,9 +837,9 @@ export function tests() {
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
       await I.see('Thank you')
-      formContents().files.should.have.key('avatar')
-      formContents().files.avatar.name.should.eql('avatar.jpg')
-      formContents().files.avatar.type.should.eql('image/jpeg')
+      expect(formContents().files).to.have.key('avatar')
+      expect(formContents().files.avatar.name).to.eql('avatar.jpg')
+      expect(formContents().files.avatar.type).to.eql('image/jpeg')
     })
   })
 
@@ -1128,7 +1128,7 @@ export function tests() {
         await I.waitForDetached('#step_1', 2)
         throw Error('Should not get this far')
       } catch (err) {
-        err.message.should.include('still on page after')
+        expect(err.message).to.include('still on page after')
       }
     })
 
@@ -1141,7 +1141,7 @@ export function tests() {
         await I.waitForDetached('#step_1', 2)
         throw Error('Should not get this far')
       } catch (err) {
-        err.message.should.include('still on page after')
+        expect(err.message).to.include('still on page after')
       }
     })
 
@@ -1370,7 +1370,7 @@ export function tests() {
         })
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('all elements (//form) to have attributes {"method":"get"}')
+        expect(e.message).to.include('all elements (//form) to have attributes {"method":"get"}')
       }
     })
 
@@ -1386,7 +1386,7 @@ export function tests() {
           },
         )
       } catch (e) {
-        e.message.should.include('all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href":"/codeceptjs/CodeceptJS"}')
+        expect(e.message).to.include('all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href":"/codeceptjs/CodeceptJS"}')
       }
     })
 
@@ -1406,7 +1406,7 @@ export function tests() {
         })
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}')
+        expect(e.message).to.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}')
       }
     })
 
@@ -1422,7 +1422,7 @@ export function tests() {
           },
         )
       } catch (e) {
-        e.message.should.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"')
+        expect(e.message).to.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"')
       }
     })
 
@@ -1435,7 +1435,7 @@ export function tests() {
           disabled: true,
         })
       } catch (e) {
-        e.message.should.include('expected all elements (input) to have attributes {"disabled":true} "0" to equal "1"')
+        expect(e.message).to.include('expected all elements (input) to have attributes {"disabled":true} "0" to equal "1"')
       }
     })
   })
@@ -1456,7 +1456,7 @@ export function tests() {
         })
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}')
+        expect(e.message).to.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}')
       }
     })
 
@@ -1482,7 +1482,7 @@ export function tests() {
         })
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}')
+        expect(e.message).to.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}')
       }
     })
 
