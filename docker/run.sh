@@ -47,7 +47,7 @@ EOF
 	fi
 
 	# Find codecept config in current directory
-	config_file=$(find . -maxdepth 2 -name "codecept.conf.*" -type f | head -1)
+	config_file=$(find . -maxdepth 2 -name "codecept*.js" -o -name "codecept*.ts" -o -name "codecept*.mjs" -type f | head -1)
 
 	if [ -n "$config_file" ]; then
 		config_dir=$(dirname "$config_file")
