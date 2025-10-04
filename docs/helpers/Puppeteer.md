@@ -398,7 +398,7 @@ if none provided clears all cookies.
 
 ```js
 I.clearCookie();
-I.clearCookie('test'); // Playwright currently doesn't support clear a particular cookie name
+I.clearCookie('test');
 ```
 
 #### Parameters

@@ -5,7 +5,7 @@
 </head>
 <style>
     .span {
-        height: 15px; 
+        height: 15px;
     }
     h4 {
         font-weight: 300;
@@ -63,5 +63,12 @@
 </div>
 <div class="issue2928" style="width: 100px; height: 40px; visibility:hidden; background: red">visibility:hidden</div>
 <div class="issue2928" style="width: 100px; height: 40px; background: green">no visibility hidden</div>
+
+<tr>
+<td><p>Field1</p></td>
+<td><p id="p-no-text"></p>sometext</td>
+</tr>
+
 </body>
+
 </html>

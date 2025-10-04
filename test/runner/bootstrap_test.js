@@ -1,26 +1,32 @@
-const assert = require('assert')
-const path = require('path')
-const exec = require('child_process').exec
+import chai from 'chai';
+import assert from 'assert';
+chai.should();
+import path from 'path';
+import { exec } from 'child_process';
+import debugFactory from 'debug';
+const debug = debugFactory('codeceptjs:test');
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/bootstrap')
 const codecept_run = `${runner} run`
-const codecept_run_config = (config, grep) =>
-  `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`
-const config_run_override = (config, override) =>
-  `${codecept_run} --config ${codecept_dir}/${config} --override '${JSON.stringify(override)}'`
+const codecept_run_config = (config, grep) => `${codecept_run} --config ${codecept_dir}/${config} ${grep ? `--grep ${grep}` : ''}`
+const config_run_override = (config, override) => `${codecept_run} --config ${codecept_dir}/${config} --override '${JSON.stringify(override)}'`
 
 describe('CodeceptJS Bootstrap and Teardown', () => {
   // success
-  it('should run bootstrap', (done) => {
+  it('should run bootstrap', done => {
     exec(codecept_run_config('bootstrap.conf.js', '@important'), (err, stdout) => {
+      debug(stdout)
       stdout.should.include('Filesystem') // feature
       stdout.should.include('I am bootstrap')
       stdout.should.include('I am teardown')
       const lines = stdout.split('\n')
-      const bootstrapIndex = lines.findIndex((l) => l === 'I am bootstrap')
-      const testIndex = lines.findIndex((l) => l.indexOf('Filesystem @main') === 0)
-      const teardownIndex = lines.findIndex((l) => l === 'I am teardown')
+      const bootstrapIndex = lines.findIndex(l => l === 'I am bootstrap')
+      const testIndex = lines.findIndex(l => l.indexOf('Filesystem @main') === 0)
+      const teardownIndex = lines.findIndex(l => l === 'I am teardown')
       assert(testIndex > bootstrapIndex, `${testIndex} (test) > ${bootstrapIndex} (bootstrap)`)
       assert(teardownIndex > testIndex, `${teardownIndex} (teardown) > ${testIndex} (test)`)
       assert(!err)
@@ -28,7 +34,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
     })
   })
 
-  it('should run async bootstrap', (done) => {
+  it('should run async bootstrap', done => {
     exec(codecept_run_config('bootstrap.async.conf.js', '@important'), (err, stdout) => {
       stdout.should.include('Filesystem') // feature
       stdout.should.include('I am bootstrap')
@@ -36,9 +42,9 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
       const lines = stdout.split('\n')
       const bootstrap0Index = lines.indexOf('I am 0 bootstrap')
       const teardown0Index = lines.indexOf('I am 0 teardown')
-      const bootstrapIndex = lines.findIndex((l) => l === 'I am bootstrap')
-      const testIndex = lines.findIndex((l) => l.indexOf('Filesystem @main') === 0)
-      const teardownIndex = lines.findIndex((l) => l === 'I am teardown')
+      const bootstrapIndex = lines.findIndex(l => l === 'I am bootstrap')
+      const testIndex = lines.findIndex(l => l.indexOf('Filesystem @main') === 0)
+      const teardownIndex = lines.findIndex(l => l === 'I am teardown')
       assert(bootstrap0Index < bootstrapIndex, `${bootstrap0Index} < ${bootstrapIndex} (bootstrap)`)
       assert(teardown0Index < teardownIndex, `${teardown0Index} < ${teardownIndex} (teardown)`)
       assert(testIndex > bootstrapIndex, `${testIndex} (test) > ${bootstrapIndex} (bootstrap)`)
@@ -49,7 +55,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   })
 
   // with teaedown - failed tests
-  it('should fail with code 1 when test failed and async bootstrap/teardown function with args', (done) => {
+  it('should fail with code 1 when test failed and async bootstrap/teardown function with args', done => {
     exec(config_run_override('bootstrap.async.conf.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err)
       assert.equal(err.code, 1)
@@ -61,7 +67,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
     })
   })
 
-  it('should fail with code 1 when test failed and async bootstrap/teardown function without args', (done) => {
+  it('should fail with code 1 when test failed and async bootstrap/teardown function without args', done => {
     exec(config_run_override('bootstrap.async.conf.js', { tests: './failed_test.js' }), (err, stdout) => {
       assert(err)
       assert.equal(err.code, 1)
@@ -74,7 +80,7 @@ describe('CodeceptJS Bootstrap and Teardown', () => {
   })
 
   // with teardown and fail bootstrap - teardown not call
-  it('should fail with code 1 when async bootstrap failed and not call teardown', (done) => {
+  it('should fail with code 1 when async bootstrap failed and not call teardown', done => {
     exec(codecept_run_config('without.args.failed.bootstrap.async.func.js'), (err, stdout) => {
       assert(err)
       assert.equal(err.code, 1)

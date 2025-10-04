@@ -1,9 +1,10 @@
-module.exports = {
+import { gherkinTranslations } from './utils.js'
+const langCode = 'zh-TW'
+
+export default {
   I: '我',
   contexts: {
-    Feature: '功能',
-    Scenario: '場景',
-    ScenarioOutline: '場景大綱',
+    ...gherkinTranslations(langCode),
   },
   actions: {
     amOutsideAngularApp: '在Angular應用外',

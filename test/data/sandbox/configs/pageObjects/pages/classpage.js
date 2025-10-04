@@ -1,17 +1,19 @@
-const { I } = inject();
-
 class PageObject {
   constructor() {
-    this.method1 = () => { console.log(123); };
+    this.method1 = () => {
+      console.log(123)
+    }
   }
 
   async type(s) {
-    await I.printMessage(s);
+    const { I } = inject()
+    await I.printMessage(s)
   }
 
   purgeDomains() {
-    I.printMessage('purgeDomains');
+    const { I } = inject()
+    I.printMessage('purgeDomains')
   }
 }
 
-module.exports = new PageObject();
+export default new PageObject()

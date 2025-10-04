@@ -1,5 +1,6 @@
-const Appium = require('../../lib/helper/Appium')
-global.codeceptjs = require('../../lib')
+import { Appium } from '../../lib/helper/Appium.js'
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 let I
 const site_url = 'http://davertmik.github.io'
@@ -14,7 +15,9 @@ describe('Appium Web', function () {
       browser: 'chrome',
       restart: false,
       desiredCapabilities: {
-        appiumVersion: '1.6.5',
+        'sauce:options': {
+          appiumVersion: '2.0.0',
+        },
         recordVideo: 'false',
         recordScreenshots: 'false',
         platformName: 'Android',

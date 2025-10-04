@@ -1,12 +1,11 @@
-const Helper = codecept_helper
-
-const crypto = require('crypto')
-const fs = require('fs')
+import Helper from '@codeceptjs/helper'
+import crypto from 'crypto'
+import fs from 'fs'
 
 class ScreenshotSessionHelper extends Helper {
   constructor(config) {
     super(config)
-    this.outputPath = output_dir
+    this.outputPath = global.output_dir
   }
 
   getSHA256Digests(files = []) {
@@ -28,4 +27,4 @@ class ScreenshotSessionHelper extends Helper {
   }
 }
 
-module.exports = ScreenshotSessionHelper
+export default ScreenshotSessionHelper

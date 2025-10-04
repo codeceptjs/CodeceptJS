@@ -7,13 +7,14 @@ Go over the steps in [this](https://github.com/firstcontributions/first-contribu
 To start you need:
 
 1.  Fork and clone the repo.
-2.  Run `npm i --force --omit=optional` to install all required libraries
+2.  Run `npm i --force` to install all required libraries
 3.  Do the changes.
 4.  Add/Update Test (if possible)
 5.  Update documentation
-6.  Run `npm run docs` if you change the documentation
-7.  Commit and Push to your fork
-8.  Make Pull Request
+6.  Run `npm run def` to generate types
+7.  Run `npm run docs` if you change the documentation
+8.  Commit and Push to your fork
+9.  Make Pull Request
 
 To run codeceptjs from this repo use:
 
@@ -26,7 +27,6 @@ To run examples:
 ```
 node bin/codecept.js run -c examples
 ```
-
 
 Depending on a type of change you should do the following.
 
@@ -44,12 +44,12 @@ Please keep in mind that CodeceptJS have **unified API** for Playwright, WebDriv
 
 ### Updating Playwright | Puppeteer | WebDriver
 
-*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
+_Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! _
 
 Working test is highly appreciated. To run the test suite you need:
 
-* selenium server + chromedriver
-* PHP installed
+- selenium server + chromedriver
+- PHP installed
 
 To launch PHP demo application run:
 
@@ -82,7 +82,7 @@ http://localhost:8000/form/myexample
 
 ### Updating REST | ApiDataFactory
 
-*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required!*
+_Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required!_
 
 Adding a test is highly appreciated.
 
@@ -96,7 +96,7 @@ Edit a test at `test/rest/REST_test.js` or `test/rest/ApiDataFactory_test.js`
 
 ## Appium
 
-*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
+_Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! _
 
 It is recommended to run mobile tests on CI.
 So do the changes, make pull request, see the CI status.
@@ -211,6 +211,7 @@ docker-compose run --rm test-helpers test/rest
 ```
 
 #### Run acceptance tests
+
 To that we provide three separate services respectively for WebDriver, Nightmare and Puppeteer tests:
 
 ```sh
@@ -235,11 +236,13 @@ And now every command based on `test-helpers` service will use node 9.4.0. The
 same argument can be passed when building unit and acceptance tests services.
 
 ### CI flow
+
 We're currently using a bunch of CI services to build and test codecept in
 different environments. Here's short summary of what are differences between
 separate services
 
 #### CircleCI
+
 Here we use CodeceptJS docker image to build and execute tests inside it. We
 start with building Docker container based on Dockerfile present in main project
 directory. Then we run (in this order) unit tests, all helpers present in

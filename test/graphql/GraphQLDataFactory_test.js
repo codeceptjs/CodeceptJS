@@ -49,7 +49,7 @@ describe('GraphQLDataFactory', function () {
         createUser: {
           factory: path.join(__dirname, '/../data/graphql/users_factory.js'),
           query: creatUserQuery,
-          revert: (data) => {
+          revert: data => {
             return {
               query: deleteOperationQuery,
               variables: { id: data.id },
@@ -60,7 +60,7 @@ describe('GraphQLDataFactory', function () {
     })
   })
 
-  after((done) => {
+  after(done => {
     // Prepare db.json for the next test run
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data))
@@ -70,7 +70,7 @@ describe('GraphQLDataFactory', function () {
     setTimeout(done, 1000)
   })
 
-  beforeEach((done) => {
+  beforeEach(done => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data))
     } catch (err) {
@@ -103,7 +103,7 @@ describe('GraphQLDataFactory', function () {
     it('should update request with onRequest', async () => {
       I = new GraphQLDataFactory({
         endpoint: graphql_url,
-        onRequest: (request) => {
+        onRequest: request => {
           if (request.data.variables && request.data.variables.input) {
             request.data.variables.input.name = 'Dante'
           }
@@ -112,7 +112,7 @@ describe('GraphQLDataFactory', function () {
           createUser: {
             factory: path.join(__dirname, '/../data/graphql/users_factory.js'),
             query: creatUserQuery,
-            revert: (data) => {
+            revert: data => {
               return {
                 query: deleteOperationQuery,
                 variables: { id: data.id },
@@ -155,7 +155,7 @@ describe('GraphQLDataFactory', function () {
           createUser: {
             factory: path.join(__dirname, '/../data/graphql/users_factory.js'),
             query: creatUserQuery,
-            revert: (data) => {
+            revert: data => {
               return {
                 query: deleteOperationQuery,
                 variables: { id: data.id },

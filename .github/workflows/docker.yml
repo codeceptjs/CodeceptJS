@@ -4,17 +4,26 @@ on:
   push:
     branches:
       - 3.x
-  release:
-    types: [published]
 
 jobs:
   push_to_registry:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-22.04
+    env:
+      DOCKER_REPO: ${{ secrets.DOCKERHUB_REPOSITORY }}
 
     steps:
-      - name: Check out the repo with the latest code
+      - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -25,15 +34,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Get the current tag
-        id: currentTag
-        run: git fetch --prune --unshallow && TAG=$(git describe --tags --abbrev=0) && echo $TAG && echo "TAG="$TAG >> "$GITHUB_ENV"
+      - name: Check if Docker tag exists on Docker Hub
+        id: tag_check
+        run: |
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            https://hub.docker.com/v2/repositories/${{ env.DOCKER_REPO }}/tags/${{ steps.get_version.outputs.version }}/)
+          echo "status_code=$STATUS_CODE" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
+        if: steps.tag_check.outputs.status_code != '200'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_REPOSITORY }}:latest
-            ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ env.TAG }}
+            ${{ env.DOCKER_REPO }}:latest
+            ${{ env.DOCKER_REPO }}:${{ env.VERSION }}

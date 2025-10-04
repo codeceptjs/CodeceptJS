@@ -1,6 +1,6 @@
-const axios = require('axios');
+import axios from 'axios';
 
-const TestHelper = require('../../support/TestHelper');
+import TestHelper from '../../support/TestHelper.js';
 
 class User {
   constructor() {
@@ -27,4 +27,4 @@ class User {
   }
 }
 
-exports.userModel = new User();
+export const userModel = new User();

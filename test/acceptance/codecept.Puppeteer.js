@@ -1,8 +1,8 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 10,
   output: './output',
   helpers: {
     Puppeteer: {
@@ -33,4 +33,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-};
+}

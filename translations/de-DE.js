@@ -1,9 +1,10 @@
-module.exports = {
+import { gherkinTranslations } from './utils.js'
+const langCode = 'de'
+
+export default {
   I: 'Ich',
   contexts: {
-    Feature: 'Funktionalität',
-    Scenario: 'Szenario',
-    ScenarioOutline: 'Szenariogrundriss',
+    ...gherkinTranslations(langCode),
   },
   actions: {
     amOutsideAngularApp: 'befinde_mich_außerhalb_der_angular_app',

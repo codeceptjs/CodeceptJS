@@ -1,0 +1,45 @@
+name: Appium Tests - iOS
+
+on:
+  push:
+    branches:
+      - 3.x
+
+env:
+  CI: true
+  # Force terminal colors. @see https://www.npmjs.com/package/colors
+  FORCE_COLOR: 1
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+
+jobs:
+  appium:
+    if: false
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+        test-suite: ['other', 'quick']
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i --force
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Upload APK to Sauce Labs
+        run: |
+          curl -u "$SAUCE_USERNAME:$SAUCE_ACCESS_KEY" \
+          --location --request POST 'https://api.us-west-1.saucelabs.com/v1/storage/upload' \
+          --form 'payload=@test/data/mobile/TestApp-iphonesimulator.zip' \
+          --form 'name="TestApp-iphonesimulator.zip"'
+
+      - run: 'timeout 900 bash -c "npm run test:ios:appium-${{ matrix.test-suite }}"'
+        timeout-minutes: 20

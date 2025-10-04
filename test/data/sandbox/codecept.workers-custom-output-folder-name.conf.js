@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './workers/*.js',
   timeout: 10000,
   output: './thisIsCustomOutputFolderName',
@@ -9,8 +9,7 @@ exports.config = {
     },
   },
   include: {},
-  // eslint-disable-next-line no-empty-function
   async bootstrap() {},
   mocha: {},
   name: 'sandbox',
-};
+}

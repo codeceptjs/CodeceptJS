@@ -1,5 +1,6 @@
 // Project: https://github.com/codeception/codeceptjs/
 /// <reference path="./types.d.ts" />
+/// <reference path="../lib/mocha/types.d.ts" />
 /// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
@@ -450,14 +451,9 @@ declare namespace CodeceptJS {
   }
 
   // Extending JSDoc generated typings
-  interface Step {
-    isMetaStep(): this is MetaStep
-  }
 
   // Types who are not be defined by JSDoc
-  type actor = <T extends { [action: string]: (...args: any[]) => void }>(
-    customSteps?: T & ThisType<WithTranslation<Methods & T>>,
-  ) => WithTranslation<Methods & T>
+  type actor = <T extends { [action: string]: (...args: any[]) => void }>(customSteps?: T & ThisType<WithTranslation<Methods & T>>) => WithTranslation<Methods & T>
 
   type ILocator =
     | { id: string }
@@ -503,7 +499,7 @@ declare namespace CodeceptJS {
     (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig
   }
   interface IHook {
-    (callback: HookCallback): void
+    (callback: HookCallback): HookConfig
   }
 
   interface Globals {
@@ -517,6 +513,12 @@ declare namespace CodeceptJS {
     useForSnippets?: boolean
     preferForRegexpMatch?: boolean
   }
+
+  interface HookConfig {
+    retry(retries?: number): HookConfig
+  }
+
+  function addStep(step: string, fn: Function): Promise<void>
 }
 
 // Globals
@@ -534,7 +536,7 @@ declare const within: typeof CodeceptJS.within
 declare const session: typeof CodeceptJS.session
 declare const DataTable: typeof CodeceptJS.DataTable
 declare const DataTableArgument: typeof CodeceptJS.DataTableArgument
-declare const codeceptjs: typeof CodeceptJS.index
+declare const codeceptjs: typeof CodeceptJS
 declare const locate: typeof CodeceptJS.Locator.build
 declare function inject(): CodeceptJS.SupportObject
 declare function inject<T extends keyof CodeceptJS.SupportObject>(name: T): CodeceptJS.SupportObject[T]

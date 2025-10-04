@@ -1,10 +1,15 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
 
-require('../support/setup')
-const TestHelper = require('../support/TestHelper')
-const ApiDataFactory = require('../../lib/helper/ApiDataFactory')
-global.codeceptjs = require('../../lib')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+import '../support/setup.js'
+import TestHelper from '../support/TestHelper.js'
+import ApiDataFactory from '../../lib/helper/ApiDataFactory.js'
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 const api_url = TestHelper.jsonServerUrl()
 
@@ -38,7 +43,7 @@ describe('ApiDataFactory', function () {
     })
   })
 
-  beforeEach((done) => {
+  beforeEach(done => {
     try {
       fs.writeFileSync(dbFile, JSON.stringify(data))
     } catch (err) {
@@ -85,7 +90,7 @@ describe('ApiDataFactory', function () {
     it('should update request with onRequest', async () => {
       const I = new ApiDataFactory({
         endpoint: api_url,
-        onRequest: (request) => (request.data.author = 'Vasya'),
+        onRequest: request => (request.data.author = 'Vasya'),
         factories: {
           post: {
             factory: path.join(__dirname, '/../data/rest/posts_factory.js'),
@@ -108,7 +113,7 @@ describe('ApiDataFactory', function () {
               method: 'post',
               data: { author: 'Yorik', title: 'xxx', body: 'yyy' },
             }),
-            delete: (id) => ({ url: `/posts/${id}`, method: 'delete' }),
+            delete: id => ({ url: `/posts/${id}`, method: 'delete' }),
           },
         },
       })
@@ -135,13 +140,13 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts')
       resp.data.length.should.eql(1)
       await I.haveMultiple('post', 3)
-      await new Promise((done) => {
+      await new Promise(done => {
         setTimeout(done, 500)
       })
       resp = await I.restHelper.sendGetRequest('/posts')
       resp.data.length.should.eql(4)
       await I._after()
-      await new Promise((done) => {
+      await new Promise(done => {
         setTimeout(done, 500)
       })
       resp = await I.restHelper.sendGetRequest('/posts')
@@ -182,7 +187,7 @@ describe('ApiDataFactory', function () {
       let resp = await I.restHelper.sendGetRequest('/posts')
       resp.data.length.should.eql(2)
       await I._after()
-      await new Promise((done) => {
+      await new Promise(done => {
         setTimeout(done, 500)
       })
       resp = await I.restHelper.sendGetRequest('/posts')

@@ -2,12 +2,12 @@ services:
   test-rest:
     <<: &test-service
       build: ..
-      entrypoint: /codecept/node_modules/.bin/mocha
+      entrypoint: npx mocha
       working_dir: /codecept
       env_file: .env
       volumes:
         - ..:/codecept
-        - node_modules:/codecept/node_modules
+        - /codecept/node_modules
     command: test/rest
     depends_on:
       - json_server
@@ -15,31 +15,29 @@ services:
   test-acceptance.webdriverio:
     build: ..
     env_file: .env
+    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
+      - CODECEPT_ARGS=-c acceptance/codecept.WebDriver.js --grep @WebDriverIO --debug
+      - NODE_PATH=/codecept/lib
     depends_on:
       - php
       - selenium.chrome
     volumes:
-      - ./acceptance:/tests
-      - ./data:/data
-      - ./support:/support
-      - node_modules:/node_modules
+      - .:/tests
 
   test-acceptance.puppeteer:
     build: ..
     env_file: .env
+    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
+      - CODECEPT_ARGS=-c acceptance/codecept.Puppeteer.js --grep @Puppeteer
       - PPT_VERSION=$PPT_VERSION
+      - NODE_PATH=/codecept/lib
     depends_on:
       - php
       - puppeteer-image
     volumes:
-      - ./acceptance:/tests
-      - ./data:/data
-      - ./support:/support
-      - node_modules:/node_modules
+      - .:/tests
 
   test-bdd.faker:
     build: ..
@@ -50,10 +48,9 @@ services:
       - ./bdd:/tests
       - ./data:/data
       - ./support:/support
-      - node_modules:/node_modules
 
   selenium.chrome:
-    image: selenium/standalone-chrome:3.141.59-oxygen
+    image: selenium/standalone-chrome:4.26
     shm_size: 2g
     ports:
       - 4444:4444
@@ -70,11 +67,9 @@ services:
     <<: *test-service
     entrypoint: []
     command: npm run json-server
-    expose:
-      - 8010
+    ports:
+      - '8010:8010' # Expose to host
+    restart: always # Automatically restart the container if it fails or becomes unhealthy
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
-
-volumes:
-  node_modules:

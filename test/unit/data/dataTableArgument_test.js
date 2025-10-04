@@ -1,9 +1,5 @@
-let expect;
-import('chai').then(chai => {
-  expect = chai.expect;
-});
-const { it } = require('mocha');
-const DataTableArgument = require('../../../lib/data/dataTableArgument');
+import { expect } from 'chai'
+import DataTableArgument from '../../../lib/data/dataTableArgument.js'
 
 describe('DataTableArgument', () => {
   const gherkinDataTable = {
@@ -25,7 +21,7 @@ describe('DataTableArgument', () => {
         ],
       },
     ],
-  };
+  }
 
   const gherkinDataTableWithHeader = {
     rows: [
@@ -46,7 +42,7 @@ describe('DataTableArgument', () => {
         ],
       },
     ],
-  };
+  }
 
   const gherkinDataTableWithColumnHeader = {
     rows: [
@@ -67,41 +63,47 @@ describe('DataTableArgument', () => {
         ],
       },
     ],
-  };
+  }
 
   it('should return a 2D array containing each row', () => {
-    const dta = new DataTableArgument(gherkinDataTable);
-    const raw = dta.raw();
-    const expectedRaw = [['John', 'Doe'], ['Chuck', 'Norris']];
-    expect(raw).to.deep.equal(expectedRaw);
-  });
+    const dta = new DataTableArgument(gherkinDataTable)
+    const raw = dta.raw()
+    const expectedRaw = [
+      ['John', 'Doe'],
+      ['Chuck', 'Norris'],
+    ]
+    expect(raw).to.deep.equal(expectedRaw)
+  })
 
   it('should return a 2D array containing each row without the header (first one)', () => {
-    const dta = new DataTableArgument(gherkinDataTableWithHeader);
-    const rows = dta.rows();
-    const expectedRows = [['Chuck', 'Norris']];
-    expect(rows).to.deep.equal(expectedRows);
-  });
+    const dta = new DataTableArgument(gherkinDataTableWithHeader)
+    const rows = dta.rows()
+    const expectedRows = [['Chuck', 'Norris']]
+    expect(rows).to.deep.equal(expectedRows)
+  })
 
   it('should return an of object where properties is the header', () => {
-    const dta = new DataTableArgument(gherkinDataTableWithHeader);
-    const rows = dta.hashes();
-    const expectedRows = [{ firstName: 'Chuck', lastName: 'Norris' }];
-    expect(rows).to.deep.equal(expectedRows);
-  });
+    const dta = new DataTableArgument(gherkinDataTableWithHeader)
+    const rows = dta.hashes()
+    const expectedRows = [{ firstName: 'Chuck', lastName: 'Norris' }]
+    expect(rows).to.deep.equal(expectedRows)
+  })
 
   it('transpose should transpose the gherkin data table', () => {
-    const dta = new DataTableArgument(gherkinDataTable);
-    dta.transpose();
-    const raw = dta.raw();
-    const expectedRaw = [['John', 'Chuck'], ['Doe', 'Norris']];
-    expect(raw).to.deep.equal(expectedRaw);
-  });
+    const dta = new DataTableArgument(gherkinDataTable)
+    dta.transpose()
+    const raw = dta.raw()
+    const expectedRaw = [
+      ['John', 'Chuck'],
+      ['Doe', 'Norris'],
+    ]
+    expect(raw).to.deep.equal(expectedRaw)
+  })
 
   it('rowsHash returns an object where the keys are the first column', () => {
-    const dta = new DataTableArgument(gherkinDataTableWithColumnHeader);
-    const rawHash = dta.rowsHash();
-    const expectedRaw = { firstName: 'Chuck', lastName: 'Norris' };
-    expect(rawHash).to.deep.equal(expectedRaw);
-  });
-});
+    const dta = new DataTableArgument(gherkinDataTableWithColumnHeader)
+    const rawHash = dta.rowsHash()
+    const expectedRaw = { firstName: 'Chuck', lastName: 'Norris' }
+    expect(rawHash).to.deep.equal(expectedRaw)
+  })
+})
