@@ -224,9 +224,9 @@ describe('BDD', () => {
     return new Promise(resolve => {
       suite.tests[0].fn(() => {
         recorder.promise().then(() => {
-          printed.should.include.members(['add 600', 'add 1600', 'add finish checkout'])
+          expect(printed).to.include.members(['add 600', 'add 1600', 'add finish checkout'])
           const lines = recorder.scheduled().split('\n')
-          lines.should.include.members([
+          expect(lines).to.include.members([
             'do: "add", 600',
             'step passed',
             'return result',
@@ -266,7 +266,7 @@ describe('BDD', () => {
     const suite = await run(text)
     return new Promise(resolve => {
       suite.tests[0].fn(() => {
-        listeners.should.eql(2)
+        expect(listeners).to.eql(2)
         resolve()
       })
     })

@@ -71,7 +71,7 @@ describe('retryFailedStep', () => {
 
     expect(test.opts.conditionalRetries).to.equal(1)
     // expects to retry only once
-    counter.should.equal(2)
+    expect(counter).to.equal(2)
   })
 
   it('should not retry steps with wait*', async () => {
@@ -238,7 +238,7 @@ describe('retryFailedStep', () => {
 
     recorder.add(
       () => {
-        initalIndex.should.equal(getRetryIndex())
+        expect(initalIndex).to.equal(getRetryIndex())
       },
       undefined,
       undefined,
