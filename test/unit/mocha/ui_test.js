@@ -50,15 +50,15 @@ describe('ui', () => {
       suiteConfig = context.Feature('basic suite @very @important')
       expect(suiteConfig.suite).is.ok
 
-      suiteConfig.suite.tags.should.include('@very')
-      suiteConfig.suite.tags.should.include('@important')
+      expect(suiteConfig.suite.tags).to.include('@very')
+      expect(suiteConfig.suite.tags).to.include('@important')
 
       suiteConfig.tag('@user')
-      suiteConfig.suite.tags.should.include('@user')
+      expect(suiteConfig.suite.tags).to.include('@user')
 
-      suiteConfig.suite.tags.should.not.include('@slow')
+      expect(suiteConfig.suite.tags).to.not.include('@slow')
       suiteConfig.tag('slow')
-      suiteConfig.suite.tags.should.include('@slow')
+      expect(suiteConfig.suite.tags).to.include('@slow')
     })
 
     it('retries can be set', () => {
@@ -167,12 +167,12 @@ describe('ui', () => {
 
       scenarioConfig = context.Scenario('scenario @very @important')
 
-      scenarioConfig.test.tags.should.include('@cool')
-      scenarioConfig.test.tags.should.include('@very')
-      scenarioConfig.test.tags.should.include('@important')
+      expect(scenarioConfig.test.tags).to.include('@cool')
+      expect(scenarioConfig.test.tags).to.include('@very')
+      expect(scenarioConfig.test.tags).to.include('@important')
 
       scenarioConfig.tag('@user')
-      scenarioConfig.test.tags.should.include('@user')
+      expect(scenarioConfig.test.tags).to.include('@user')
     })
 
     it('should dynamically inject dependencies', () => {

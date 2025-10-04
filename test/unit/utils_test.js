@@ -284,19 +284,19 @@ describe('utils', () => {
       sinon.stub(os, 'platform').callsFake(() => {
         return 'notdarwin'
       })
-      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft')
+      expect(utils.getNormalizedKeyAttributeValue('CmdOrCtrl')).to.equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL')).to.equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('ControlOrCommand')).to.equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('left ctrl or command')).to.equal('ControlLeft')
       os.platform.restore()
 
       sinon.stub(os, 'platform').callsFake(() => {
         return 'darwin'
       })
-      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight')
+      expect(utils.getNormalizedKeyAttributeValue('CtrlOrCmd')).to.equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND')).to.equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('CommandOrControl')).to.equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('right command or ctrl')).to.equal('MetaRight')
       os.platform.restore()
     })
   })
