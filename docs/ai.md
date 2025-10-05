@@ -40,25 +40,30 @@ Even though, the HTML is still quite big and may exceed the token limit. So we r
 
 ## Set up AI Provider
 
-To enable AI features in CodeceptJS you should pick an AI provider and add `ai` section to `codecept.conf` file. This section should contain `request` function which will take a prompt from CodeceptJS, send it to AI provider and return a result.
+CodeceptJS uses [Vercel AI SDK](https://ai-sdk.dev) to connect to different AI providers. To enable AI features, add an `ai` section to your `codecept.conf` file with a configured model.
+
+### Quick Start
+
+Install the AI SDK and your preferred provider package:
+
+```bash
+npm install ai @ai-sdk/openai
+# or
+npm install ai @ai-sdk/anthropic
+```
+
+Then configure the model in your `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async messages => {
-    // implement OpenAI or any other provider like this
-    const ai = require('my-ai-provider')
-    return ai.send(messages)
-  }
+import { openai } from '@ai-sdk/openai'
+
+export default {
+  // ... other config
+  ai: {
+    model: openai('gpt-4o-mini'),
+  },
 }
 ```
-
-In `request` function `messages` is an array of prompt messages in format
-
-```js
-;[{ role: 'user', content: 'prompt text' }]
-```
-
-Which is natively supported by OpenAI, Anthropic, and others. You can adjust messages to expected format before sending a request. The expected response from AI provider is a text in markdown format with code samples, which can be interpreted by CodeceptJS.
 
 Once AI provider is configured run tests with `--ai` flag to enable AI features
 
@@ -70,195 +75,96 @@ Below we list sample configuration for popular AI providers
 
 ### OpenAI GPT
 
-Prerequisite:
+Install the OpenAI provider:
 
-- Install `openai` package
-- obtain `OPENAI_API_KEY` from OpenAI
-- set `OPENAI_API_KEY` as environment variable
-
-Sample OpenAI configuration:
-
-```js
-ai: {
-  request: async messages => {
-    const OpenAI = require('openai')
-    const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] })
-
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages,
-    })
-
-    return completion?.choices[0]?.message?.content
-  }
-}
+```bash
+npm install @ai-sdk/openai
 ```
 
-### Mixtral
+Set your API key as environment variable:
 
-Mixtral is opensource and can be used via Cloudflare, Google Cloud, Azure or installed locally.
-
-The simplest way to try Mixtral on your case is using [Groq Cloud](https://groq.com) which provides Mixtral access with GPT-like API:
-
-Prerequisite:
-
-- Install `groq-sdk` package
-- obtain `GROQ_API_KEY` from Groq Cloud
-- set `GROQ_API_KEY` as environment variable
-
-Sample Groq configuration with Mixtral model:
-
-```js
-ai: {
-  request: async messages => {
-    const Groq = require('groq-sdk')
-
-    const client = new Groq({
-      apiKey: process.env['GROQ_API_KEY'], // This is the default and can be omitted
-    })
-
-    const chatCompletion = await groq.chat.completions.create({
-      messages,
-      model: 'mixtral-8x7b-32768',
-    })
-    return chatCompletion.choices[0]?.message?.content || ''
-  }
-}
+```bash
+export OPENAI_API_KEY=your-api-key
 ```
 
-> Groq also provides access to other opensource models like llama or gemma
+Configure in `codecept.conf.js`:
+
+```js
+import { openai } from '@ai-sdk/openai'
+
+export default {
+  ai: {
+    model: openai('gpt-4o-mini'),
+    // or use gpt-4o, gpt-3.5-turbo, etc.
+  },
+}
+```
 
 ### Anthropic Claude
 
-Prerequisite:
+Install the Anthropic provider:
 
-- Install `@anthropic-ai/sdk` package
-- obtain `CLAUDE_API_KEY` from Anthropic
-- set `CLAUDE_API_KEY` as environment variable
+```bash
+npm install @ai-sdk/anthropic
+```
+
+Set your API key as environment variable:
+
+```bash
+export ANTHROPIC_API_KEY=your-api-key
+```
+
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async messages => {
-    const Anthropic = require('@anthropic-ai/sdk')
+import { anthropic } from '@ai-sdk/anthropic'
 
-    const anthropic = new Anthropic({
-      apiKey: process.env.CLAUDE_API_KEY,
-    })
-
-    const resp = await anthropic.messages.create({
-      model: 'claude-2.1',
-      max_tokens: 1024,
-      messages,
-    })
-    return resp.content.map(c => c.text).join('\n\n')
-  }
+export default {
+  ai: {
+    model: anthropic('claude-3-5-sonnet-20241022'),
+    // or use claude-3-opus-20240229, claude-3-haiku-20240307, etc.
+  },
 }
 ```
 
-### Azure OpenAI
+### Google Gemini
 
-When your setup using Azure API key
+Install the Google provider:
 
-Prerequisite:
+```bash
+npm install @ai-sdk/google
+```
 
-- Install `@azure/openai` package
-- obtain `Azure API key`, `resource name` and `deployment ID`
+Set your API key as environment variable:
+
+```bash
+export GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
+```
+
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async messages => {
-    const { OpenAIClient, AzureKeyCredential } = require('@azure/openai')
+import { google } from '@ai-sdk/google'
 
-    const client = new OpenAIClient('https://<resource name>.openai.azure.com/', new AzureKeyCredential('<Azure API key>'))
-    const { choices } = await client.getCompletions('<deployment ID>', messages)
-
-    return choices[0]?.message?.content
-  }
+export default {
+  ai: {
+    model: google('gemini-1.5-flash'),
+    // or use gemini-1.5-pro, gemini-2.0-flash-exp, etc.
+  },
 }
 ```
 
-When your setup using `bearer token`
+### Other Providers
 
-Prerequisite:
+The AI SDK supports 20+ providers including:
 
-- Install `@azure/openai`, `@azure/identity` packages
-- obtain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET`
+- **xAI (Grok)**: `npm install @ai-sdk/xai`
+- **Mistral**: `npm install @ai-sdk/mistral`
+- **Groq**: `npm install @ai-sdk/groq`
+- **Cohere**: `npm install @ai-sdk/cohere`
+- **Azure OpenAI**: `npm install @ai-sdk/azure`
 
-```js
-ai: {
-  request: async messages => {
-    try {
-      const { OpenAIClient } = require('@azure/openai')
-      const { DefaultAzureCredential } = require('@azure/identity')
-
-      const endpoint = process.env.API_ENDPOINT
-      const deploymentId = process.env.DEPLOYMENT_ID
-
-      const client = new OpenAIClient(endpoint, new DefaultAzureCredential())
-      const result = await client.getCompletions(deploymentId, {
-        prompt: messages,
-        model: 'gpt-3.5-turbo', // your preferred model
-      })
-
-      return result.choices[0]?.text
-    } catch (error) {
-      console.error('Error calling API:', error)
-      throw error
-    }
-  }
-}
-```
-
-Or you could try with direct API request
-
-```js
-ai: {
-  request: async (messages) => {
-    try {
-      const endpoint = process.env.API_ENDPOINT;
-      const deploymentId = process.env.DEPLOYMENT_ID;
-
-      const result = await makeApiRequest(endpoint, deploymentId, messages)
-
-      return result.choices[0]?.message.content
-    } catch (error) {
-      console.error("Error calling API:", error);
-      throw error;
-    }
-  }
-}
-...
-
-async function getAccessToken() {
-  const credential = new DefaultAzureCredential();
-  const scope = "https://cognitiveservices.azure.com/.default";
-
-  try {
-    const accessToken = await credential.getToken(scope);
-    return `Bearer ${accessToken.token}`;
-  } catch (err) {
-    console.error("Failed to get access token:", err);
-  }
-}
-
-async function makeApiRequest(endpoint, deploymentId, messages) {
-  const token = await getAccessToken();
-  const url = `${endpoint}/openai/deployments/${deploymentId}/chat/completions?api-version=2024-06-01`;
-
-  const data = { messages };
-
-  try {
-    const response = await axios.post(url, data, {
-      headers: {
-        'Authorization': `${token}`
-      }
-    });
-    return response.data
-  } catch (err) {
-    console.error("API request failed:", err.response);
-  }
-}
-```
+See [AI SDK Providers](https://ai-sdk.dev/docs/foundations/providers-and-models) for complete list and configuration details.
 
 ## Writing Tests with AI Copilot
 
@@ -600,14 +506,13 @@ Rename created PageObject to remove timestamp and move it from `output` to `page
 
 ## Advanced Configuration
 
-GPT prompts and HTML compression can also be configured inside `ai` section of `codecept.conf` file:
+AI prompts and HTML compression can be configured inside `ai` section of `codecept.conf` file:
 
 ```js
 ai: {
-  // define how requests to AI are sent
-  request: (messages) => {
-    // ...
-  }
+  // configure AI model (required)
+  model: openai('gpt-4o-mini'),
+
   // redefine prompts
   prompts: {
     // {}
@@ -622,7 +527,49 @@ ai: {
 }
 ```
 
-Default prompts for healing steps or writing steps can be re-declared. Use function that accepts HTML as the first parameter and additional information as second and create a prompt from that information. Prompt should be an array of messages with `role` and `content` data set.
+### Customizing Prompts
+
+CodeceptJS uses three main prompts for AI features:
+
+- `writeStep` - generates test code in interactive pause mode
+- `healStep` - suggests fixes for failing tests
+- `generatePageObject` - creates page objects from HTML
+
+To customize a prompt, generate it using:
+
+```bash
+npx codeceptjs generate:prompt <promptName>
+# or use alias
+npx codeceptjs gp <promptName>
+```
+
+For example, to customize the heal step prompt:
+
+```bash
+npx codeceptjs generate:prompt healStep
+```
+
+This creates `prompts/healStep.js` file in your project root:
+
+```js
+export default (html, { step, error, prevSteps }) => {
+  return [
+    {
+      role: 'user',
+      content: `As a test automation engineer I am testing web application using CodeceptJS.
+      I want to heal a test that fails. Here is the list of executed steps: ${prevSteps.map(s => s.toString()).join(', ')}
+      Propose how to adjust ${step.toCode()} step to fix the test.
+      Use locators in order of preference: semantic locator by text, CSS, XPath. Use codeblocks marked with \`\`\`
+      Here is the error message: ${error.message}
+      Here is HTML code of a page where the failure has happened: \n\n${html}`,
+    },
+  ]
+}
+```
+
+Modify this prompt to fit your needs. CodeceptJS will automatically load custom prompts from the `prompts/` directory when AI features are enabled.
+
+You can also override prompts programmatically in config:
 
 ```js
 ai: {

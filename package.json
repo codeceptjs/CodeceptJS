@@ -75,6 +75,7 @@
     "publish-beta": "./runok.cjs publish:next-beta-version"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.42",
     "@codeceptjs/configure": "1.0.6",
     "@codeceptjs/helper": "^4.0.0-beta.1",
     "@cucumber/cucumber-expressions": "^18.0.1",
@@ -87,6 +88,7 @@
     "@inquirer/select": "^4.3.1",
     "@xmldom/xmldom": "0.9.8",
     "acorn": "8.14.1",
+    "ai": "^5.0.60",
     "arrify": "3.0.0",
     "axios": "1.8.4",
     "chalk": "4.1.2",
