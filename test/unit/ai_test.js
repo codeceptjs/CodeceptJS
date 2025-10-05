@@ -1,7 +1,6 @@
 import { expect } from 'chai'
 import AiAssistant from '../../lib/ai.js'
 import config from '../../lib/config.js'
-import { openai } from '@ai-sdk/openai'
 import { createMockModel, MockResponses } from '../support/mock-ai-provider.js'
 import fs from 'fs'
 import path from 'path'
@@ -42,31 +41,6 @@ describe('AI module', () => {
     await AiAssistant.enable()
     AiAssistant.disable()
     expect(AiAssistant.isEnabled).to.be.false
-  })
-
-  it.skip('Creating completion', async () => {
-    AiAssistant.enable({
-      model: openai('gpt-4o-mini'),
-    })
-    const completion = await AiAssistant.createCompletion([
-      { role: 'user', content: 'message 1' },
-      { role: 'user', content: 'message 2' },
-    ])
-    expect(completion).to.be.a('string')
-  })
-
-  it.skip('Healing failed step', async () => {
-    AiAssistant.enable({
-      model: openai('gpt-4o-mini'),
-    })
-    const failureContext = {
-      html: '<div><a href="#">Hello, world!</a></div>',
-      step: { toCode: () => 'Failed step' },
-      error: { message: 'Error message' },
-      prevSteps: [{ toString: () => 'Previous step' }],
-    }
-    const completion = await AiAssistant.healFailedStep(failureContext)
-    expect(completion).to.be.an('array')
   })
 
   it('Stopping when reaching tokens limit', async () => {

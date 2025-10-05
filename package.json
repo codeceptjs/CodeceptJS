@@ -75,7 +75,6 @@
     "publish-beta": "./runok.cjs publish:next-beta-version"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^2.0.42",
     "@codeceptjs/configure": "1.0.6",
     "@codeceptjs/helper": "^4.0.0-beta.1",
     "@cucumber/cucumber-expressions": "^18.0.1",
