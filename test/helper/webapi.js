@@ -350,6 +350,28 @@ export function tests() {
     })
   })
 
+  describe('#clickXY', () => {
+    it('should click at global coordinates', async () => {
+      await I.amOnPage('/form/click_coordinates')
+      await I.dontSee('Global click at:')
+      await I.clickXY(100, 50)
+      await I.see('Global click at: X=100, Y=50')
+    })
+
+    it('should click at coordinates relative to element', async () => {
+      await I.amOnPage('/form/click_coordinates')
+      await I.dontSee('Clicked at:')
+      await I.clickXY('#clickArea', 50, 30)
+      await I.see('Clicked at: X=50, Y=30')
+    })
+
+    it('should click at different relative coordinates', async () => {
+      await I.amOnPage('/form/click_coordinates')
+      await I.clickXY('#clickArea', 100, 75)
+      await I.see('Clicked at: X=100, Y=75')
+    })
+  })
+
   describe('#checkOption', () => {
     it('should check option by css', async () => {
       await I.amOnPage('/form/checkbox')
