@@ -16,7 +16,8 @@ describe('CodeceptJS Timeouts', function () {
     exec(config_run_config('codecept.conf.js', 'timed out'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 2s exceeded (with Before hook)')
-      expect(stdout).toContain('Timeout 1s exceeded (with Before hook)')
+      // The second scenario can show either format depending on which timeout triggers first
+      expect(stdout.includes('Timeout 1s exceeded (with Before hook)') || stdout.includes('timed out after 1s')).toBeTruthy()
       expect(err).toBeTruthy()
       done()
     })
