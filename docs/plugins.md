@@ -815,6 +815,10 @@ Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
 
+## reportData
+
+TypeScript: Explicitly type reportData arrays as any\[] to avoid 'never' errors
+
 ## retryFailedStep
 
 Retries each failed step in a test.
