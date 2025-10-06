@@ -40,6 +40,14 @@ jobs:
           sudo apt-get update --allow-releaseinfo-change
       - name: Install browsers and deps
         run: npx playwright install && npx playwright install-deps
+      - name: Start mock server
+        run: nohup npm run mock-server:start &
+      - name: Wait for mock server
+        run: |
+          for i in {1..20}; do
+            curl -sSf http://localhost:3001/api/users && break
+            sleep 1
+          done
       - name: check
         run: './bin/codecept.js check -c test/acceptance/codecept.Playwright.js'
       - name: start a server
@@ -58,3 +66,5 @@ jobs:
         run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
       - name: run chromium unit tests
         run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 5000
+      - name: Stop mock server
+        run: npm run mock-server:stop

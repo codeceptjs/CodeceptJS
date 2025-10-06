@@ -1,10 +1,10 @@
-const { expect } = require('expect');
-const WorkerStorage = require('../../lib/workerStorage');
-const { Worker } = require('worker_threads');
-const event = require('../../lib/event');
+const { expect } = require('expect')
+const WorkerStorage = require('../../lib/workerStorage')
+const { Worker } = require('worker_threads')
+const event = require('../../lib/event')
 
 describe('WorkerStorage', () => {
-  it('should handle share message correctly without circular dependency', (done) => {
+  it('should handle share message correctly without circular dependency', done => {
     // Create a mock worker to test the functionality
     const mockWorker = {
       threadId: 'test-thread-1',
@@ -12,24 +12,24 @@ describe('WorkerStorage', () => {
         if (eventName === 'message') {
           // Simulate receiving a share message
           setTimeout(() => {
-            callback({ event: 'share', data: { testKey: 'testValue' } });
-            done();
-          }, 10);
+            callback({ event: 'share', data: { testKey: 'testValue' } })
+            done()
+          }, 10)
         }
       },
-      postMessage: () => {}
-    };
+      postMessage: () => {},
+    }
 
     // Add the mock worker to storage
-    WorkerStorage.addWorker(mockWorker);
-  });
+    WorkerStorage.addWorker(mockWorker)
+  })
 
   it('should not crash when sharing data', () => {
-    const testData = { user: 'test', password: '123' };
-    
+    const testData = { user: 'test', password: '123' }
+
     // This should not throw an error
     expect(() => {
-      WorkerStorage.share(testData);
-    }).not.toThrow();
-  });
-});
+      WorkerStorage.share(testData)
+    }).not.toThrow()
+  })
+})
