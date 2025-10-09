@@ -1767,4 +1767,129 @@ export function tests() {
       expect(wsMessages.length).to.equal(afterWsMessages.length)
     })
   })
+
+  describe('role locators', () => {
+    it('should locate elements by role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test basic role locators
+      await I.seeElement({ role: 'button' })
+      await I.seeElement({ role: 'combobox' })
+      await I.seeElement({ role: 'textbox' })
+      await I.seeElement({ role: 'searchbox' })
+      await I.seeElement({ role: 'checkbox' })
+
+      // Test count of elements with same role
+      await I.seeNumberOfVisibleElements({ role: 'button' }, 3)
+      await I.seeNumberOfVisibleElements({ role: 'combobox' }, 4)
+      await I.seeNumberOfVisibleElements({ role: 'checkbox' }, 2)
+    })
+
+    it('should locate elements by role with text filter', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test role with text (exact match)
+      await I.seeElement({ role: 'button', text: 'Submit Form' })
+      await I.seeElement({ role: 'button', text: 'Cancel' })
+      await I.seeElement({ role: 'button', text: 'Reset' })
+
+      // Test role with text (partial match)
+      await I.seeElement({ role: 'combobox', text: 'Title' })
+      await I.seeElement({ role: 'combobox', text: 'Name' })
+      await I.seeElement({ role: 'combobox', text: 'Category' })
+
+      // Test role with exact text match
+      await I.seeElement({ role: 'combobox', text: 'Title', exact: true })
+      await I.dontSeeElement({ role: 'combobox', text: 'title', exact: true }) // case sensitive
+
+      // Test non-existing elements
+      await I.dontSeeElement({ role: 'button', text: 'Non Existent Button' })
+      await I.dontSeeElement({ role: 'combobox', text: 'Non Existent Field' })
+    })
+
+    it('should interact with elements located by role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Fill combobox by role and text
+      await I.fillField({ role: 'combobox', text: 'Title' }, 'Test Title')
+      await I.seeInField({ role: 'combobox', text: 'Title' }, 'Test Title')
+
+      // Fill textbox by role
+      await I.fillField({ role: 'textbox', text: 'your@email.com' }, 'test@example.com')
+      await I.seeInField({ role: 'textbox', text: 'your@email.com' }, 'test@example.com')
+
+      // Fill another textbox
+      await I.fillField({ role: 'textbox', text: 'Enter your message' }, 'This is a test message')
+      await I.seeInField({ role: 'textbox', text: 'Enter your message' }, 'This is a test message')
+
+      // Click button by role and text
+      await I.click({ role: 'button', text: 'Submit Form' })
+      await I.see('Form Submitted!')
+      await I.see('Form data submitted')
+    })
+
+    it('should work with different role locator combinations', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test searchbox role
+      await I.fillField({ role: 'searchbox' }, 'search query')
+      await I.seeInField({ role: 'searchbox' }, 'search query')
+
+      // Test checkbox interaction
+      await I.dontSeeCheckboxIsChecked({ role: 'checkbox' })
+      await I.checkOption({ role: 'checkbox' })
+      await I.seeCheckboxIsChecked({ role: 'checkbox' })
+      await I.uncheckOption({ role: 'checkbox' })
+      await I.dontSeeCheckboxIsChecked({ role: 'checkbox' })
+
+      // Test specific checkbox by text
+      await I.checkOption({ role: 'checkbox', text: 'Subscribe to newsletter' })
+      await I.seeCheckboxIsChecked({ role: 'checkbox', text: 'Subscribe to newsletter' })
+      await I.dontSeeCheckboxIsChecked({ role: 'checkbox', text: 'I agree to the terms and conditions' })
+    })
+
+    it('should grab elements by role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test grabbing multiple elements
+      const buttons = await I.grabWebElements({ role: 'button' })
+      assert.equal(buttons.length, 3)
+
+      const comboboxes = await I.grabWebElements({ role: 'combobox' })
+      assert.equal(comboboxes.length, 4)
+
+      // Test grabbing specific element
+      const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit Form' })
+      assert.ok(submitButton)
+
+      // Test grabbing text from role elements
+      const buttonText = await I.grabTextFrom({ role: 'button', text: 'Cancel' })
+      assert.equal(buttonText, 'Cancel')
+
+      // Test grabbing attributes from role elements
+      const titlePlaceholder = await I.grabAttributeFrom({ role: 'combobox', text: 'Title' }, 'placeholder')
+      assert.equal(titlePlaceholder, 'Title')
+    })
+
+    it('should work with multiple elements of same role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test filling specific combobox by text when there are multiple
+      await I.fillField({ role: 'combobox', text: 'Name' }, 'John Doe')
+      await I.fillField({ role: 'combobox', text: 'Category' }, 'Technology')
+      await I.fillField({ role: 'combobox', text: 'Title' }, 'Software Engineer')
+
+      // Verify each field has the correct value
+      await I.seeInField({ role: 'combobox', text: 'Name' }, 'John Doe')
+      await I.seeInField({ role: 'combobox', text: 'Category' }, 'Technology')
+      await I.seeInField({ role: 'combobox', text: 'Title' }, 'Software Engineer')
+
+      // Submit and verify data is processed correctly
+      await I.click({ role: 'button', text: 'Submit Form' })
+      await I.see('Form Submitted!')
+      await I.see('John Doe')
+      await I.see('Technology')
+      await I.see('Software Engineer')
+    })
+  })
 }

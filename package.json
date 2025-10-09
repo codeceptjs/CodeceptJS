@@ -165,7 +165,7 @@
     "puppeteer": "24.8.0",
     "qrcode-terminal": "0.12.0",
     "rosie": "2.1.1",
-    "runok": "0.9.3",
+    "bunosh": "latest",
     "semver": "7.7.2",
     "sinon": "21.0.0",
     "sinon-chai": "3.7.0",
