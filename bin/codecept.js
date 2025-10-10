@@ -142,6 +142,12 @@ program.command('generate:helper [path]').alias('gh').description('Generates a n
 program.command('generate:heal [path]').alias('gr').description('Generates basic heal recipes').action(commandHandlerWithProperty('../lib/command/generate.js', 'heal'))
 
 program
+  .command('generate:prompt <promptName> [path]')
+  .alias('gp')
+  .description('Generates AI prompt template (writeStep, healStep, generatePageObject)')
+  .action(commandHandlerWithProperty('../lib/command/generate.js', 'prompt'))
+
+program
   .command('run [test]')
   .description('Executes tests')
 
