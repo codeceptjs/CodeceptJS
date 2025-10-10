@@ -1,5 +1,5 @@
 import chai from 'chai'
-import joi from 'joi'
+import { z } from 'zod'
 import { JSONResponse } from '../../lib/helper/JSONResponse.js'
 import Container from '../../lib/container.js'
 import * as codeceptjs from '../../lib/index.js'
@@ -150,16 +150,16 @@ describe('JSONResponse', () => {
       expect(fn.toString()).to.include("assert('posts' in data)")
     })
 
-    it('should check for json by joi schema', () => {
+    it('should check for json by zod schema', () => {
       restHelper.config.onResponse({ data })
-      const schema = joi.object({
-        posts: joi.array().items({
-          id: joi.number(),
-          author: joi.string(),
-          title: joi.string(),
-        }),
-        user: joi.object({
-          name: joi.string(),
+      const schema = z.object({
+        posts: z.array(z.object({
+          id: z.number(),
+          author: z.string(),
+          title: z.string(),
+        })),
+        user: z.object({
+          name: z.string(),
         }),
       })
       const fn = () => {
@@ -167,6 +167,15 @@ describe('JSONResponse', () => {
       }
       I.seeResponseMatchesJsonSchema(fn)
       I.seeResponseMatchesJsonSchema(schema)
+    })
+
+    it('should throw error when zod validation fails', () => {
+      restHelper.config.onResponse({ data: { name: 'invalid', age: 'not_a_number' } })
+      const schema = z.object({
+        name: z.string(),
+        age: z.number(),
+      })
+      expect(() => I.seeResponseMatchesJsonSchema(schema)).to.throw('Schema validation failed')
     })
   })
 })
