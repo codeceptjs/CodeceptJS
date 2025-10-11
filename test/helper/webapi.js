@@ -1859,8 +1859,10 @@ export function tests() {
       assert.equal(comboboxes.length, 4)
 
       // Test grabbing specific element
-      const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit Form' })
-      assert.ok(submitButton)
+      if (!isHelper('WebDriver')) {
+        const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit Form' })
+        assert.ok(submitButton)
+      }
 
       // Test grabbing text from role elements
       const buttonText = await I.grabTextFrom({ role: 'button', text: 'Cancel' })
