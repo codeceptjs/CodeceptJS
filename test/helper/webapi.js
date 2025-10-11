@@ -1894,4 +1894,81 @@ export function tests() {
       await I.see('Software Engineer')
     })
   })
+
+  describe('aria selectors without role locators', () => {
+    it('should find clickable elements by aria-label', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.click('Reset')
+      await I.dontSeeInField('Title', 'Test')
+
+      await I.click('Submit Form')
+      await I.see('Form Submitted!')
+    })
+
+    it('should click elements by aria-label', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.fillField('Title', 'Test Title')
+      await I.fillField('Name', 'John Doe')
+
+      await I.click('Submit Form')
+      await I.see('Form Submitted!')
+      await I.see('Test Title')
+      await I.see('John Doe')
+    })
+
+    it('should fill fields by aria-label without specifying role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.fillField('Title', 'Senior Developer')
+      await I.seeInField('Title', 'Senior Developer')
+
+      await I.fillField('Name', 'Jane Smith')
+      await I.seeInField('Name', 'Jane Smith')
+
+      await I.fillField('Category', 'Engineering')
+      await I.seeInField('Category', 'Engineering')
+
+      await I.fillField('your@email.com', 'test@example.com')
+      await I.seeInField('your@email.com', 'test@example.com')
+
+      await I.fillField('Enter your message', 'Hello World')
+      await I.seeInField('Enter your message', 'Hello World')
+    })
+
+    it('should check options by aria-label', async () => {
+      if (!isHelper('WebDriver')) return
+
+      await I.amOnPage('/form/role_elements')
+
+      await I.dontSeeCheckboxIsChecked('I agree to the terms and conditions')
+      await I.checkOption('I agree to the terms and conditions')
+      await I.seeCheckboxIsChecked('I agree to the terms and conditions')
+
+      await I.dontSeeCheckboxIsChecked('Subscribe to newsletter')
+      await I.checkOption('Subscribe to newsletter')
+      await I.seeCheckboxIsChecked('Subscribe to newsletter')
+    })
+
+    it('should interact with multiple elements using aria-label', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.fillField('Title', 'Product Manager')
+      await I.fillField('Name', 'Bob Johnson')
+      await I.fillField('Category', 'Product')
+      await I.fillField('your@email.com', 'bob@company.com')
+      await I.fillField('Enter your message', 'Test message')
+
+      if (isHelper('WebDriver')) {
+        await I.checkOption('Subscribe to newsletter')
+      }
+
+      await I.click('Submit Form')
+      await I.see('Form Submitted!')
+      await I.see('Product Manager')
+      await I.see('Bob Johnson')
+      await I.see('Product')
+    })
+  })
 }
