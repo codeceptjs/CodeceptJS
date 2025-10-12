@@ -1780,7 +1780,7 @@ export function tests() {
       await I.seeElement({ role: 'checkbox' })
 
       // Test count of elements with same role
-      await I.seeNumberOfVisibleElements({ role: 'button' }, 3)
+      await I.seeNumberOfVisibleElements({ role: 'button' }, 4)
       await I.seeNumberOfVisibleElements({ role: 'combobox' }, 4)
       await I.seeNumberOfVisibleElements({ role: 'checkbox' }, 2)
     })
@@ -1789,7 +1789,8 @@ export function tests() {
       await I.amOnPage('/form/role_elements')
 
       // Test role with text (exact match)
-      await I.seeElement({ role: 'button', text: 'Submit Form' })
+      await I.seeElement({ role: 'button', text: 'Submit' })
+      await I.seeElement({ role: 'button', text: 'Dont Submit' })
       await I.seeElement({ role: 'button', text: 'Cancel' })
       await I.seeElement({ role: 'button', text: 'Reset' })
 
@@ -1823,7 +1824,7 @@ export function tests() {
       await I.seeInField({ role: 'textbox', text: 'Enter your message' }, 'This is a test message')
 
       // Click button by role and text
-      await I.click({ role: 'button', text: 'Submit Form' })
+      await I.click({ role: 'button', text: 'Submit' })
       await I.see('Form Submitted!')
       await I.see('Form data submitted')
     })
@@ -1853,14 +1854,14 @@ export function tests() {
 
       // Test grabbing multiple elements
       const buttons = await I.grabWebElements({ role: 'button' })
-      assert.equal(buttons.length, 3)
+      assert.equal(buttons.length, 4)
 
       const comboboxes = await I.grabWebElements({ role: 'combobox' })
       assert.equal(comboboxes.length, 4)
 
       // Test grabbing specific element
       if (!isHelper('WebDriver')) {
-        const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit Form' })
+        const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit' })
         assert.ok(submitButton)
       }
 
@@ -1887,7 +1888,7 @@ export function tests() {
       await I.seeInField({ role: 'combobox', text: 'Title' }, 'Software Engineer')
 
       // Submit and verify data is processed correctly
-      await I.click({ role: 'button', text: 'Submit Form' })
+      await I.click({ role: 'button', text: 'Submit' })
       await I.see('Form Submitted!')
       await I.see('John Doe')
       await I.see('Technology')
@@ -1902,7 +1903,7 @@ export function tests() {
       await I.click('Reset')
       await I.dontSeeInField('Title', 'Test')
 
-      await I.click('Submit Form')
+      await I.click('Submit')
       await I.see('Form Submitted!')
     })
 
@@ -1912,7 +1913,7 @@ export function tests() {
       await I.fillField('Title', 'Test Title')
       await I.fillField('Name', 'John Doe')
 
-      await I.click('Submit Form')
+      await I.click('Submit')
       await I.see('Form Submitted!')
       await I.see('Test Title')
       await I.see('John Doe')
@@ -1964,11 +1965,43 @@ export function tests() {
         await I.checkOption('Subscribe to newsletter')
       }
 
-      await I.click('Submit Form')
+      await I.click('Submit')
       await I.see('Form Submitted!')
       await I.see('Product Manager')
       await I.see('Bob Johnson')
       await I.see('Product')
+    })
+
+    it('should click the correct button when multiple buttons have similar text', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Fill form with test data
+      await I.fillField('Title', 'Test Data')
+      await I.fillField('Name', 'Test User')
+
+      // Click 'Submit' button - should NOT click 'Dont Submit'
+      await I.click('Submit')
+
+      // Verify form was submitted (meaning the correct 'Submit' button was clicked)
+      await I.see('Form Submitted!')
+      await I.see('Test Data')
+      await I.see('Test User')
+
+      // Reset and test again to be sure
+      await I.click('Reset')
+      await I.dontSee('Form Submitted!')
+
+      // Fill form again
+      await I.fillField('Title', 'Another Test')
+      await I.fillField('Name', 'Another User')
+
+      // Click 'Submit' button again
+      await I.click('Submit')
+
+      // Verify form was submitted again
+      await I.see('Form Submitted!')
+      await I.see('Another Test')
+      await I.see('Another User')
     })
   })
 }

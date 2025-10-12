@@ -157,7 +157,8 @@
             </div>
 
             <div class="form-group">
-                <div class="custom-button" role="button" tabindex="0" id="submitBtn">Submit Form</div>
+                <div class="custom-button" role="button" tabindex="0" id="submitBtn">Submit</div>
+                <div class="custom-button" role="button" tabindex="0" id="dontSubmitBtn">Dont Submit</div>
                 <div class="custom-button" role="button" tabindex="0" onclick="window.location.href='/'">Cancel</div>
                 <div class="custom-button" role="button" tabindex="0" id="resetBtn">Reset</div>
             </div>
@@ -209,6 +210,10 @@
 
             formDataDiv.innerHTML = html;
             result.style.display = 'block';
+        });
+
+        document.getElementById('dontSubmitBtn').addEventListener('click', function() {
+            alert('Dont Submit button was clicked - this should NOT happen when testing I.click("Submit")');
         });
 
         document.getElementById('resetBtn').addEventListener('click', function() {
