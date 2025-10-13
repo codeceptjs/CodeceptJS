@@ -79,7 +79,7 @@
     "@codeceptjs/helper": "^4.0.0-beta.1",
     "@cucumber/cucumber-expressions": "^18.0.1",
     "@cucumber/gherkin": "32.1.2",
-    "@cucumber/messages": "27.2.0",
+    "@cucumber/messages": "30.1.0",
     "@inquirer/confirm": "^5.1.14",
     "@inquirer/core": "^10.1.15",
     "@inquirer/input": "^4.2.1",
