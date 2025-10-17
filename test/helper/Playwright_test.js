@@ -800,6 +800,41 @@ describe('Playwright', function () {
         .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')))
   })
 
+  describe('#grabAriaSnapshot', () => {
+    it('should grab aria snapshot of entire page when no locator is provided', () =>
+      I.amOnPage('/')
+        .then(() => I.grabAriaSnapshot())
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+
+    it('should grab aria snapshot of entire page using default body locator', () =>
+      I.amOnPage('/')
+        .then(() => I.grabAriaSnapshot('//body'))
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+
+    it('should grab aria snapshot of a specific element', () =>
+      I.amOnPage('/')
+        .then(() => I.grabAriaSnapshot('#area1'))
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+
+    it('should grab aria snapshot from within an iframe', () =>
+      I.amOnPage('/iframe')
+        .then(() => I.switchTo({ frame: 'iframe' }))
+        .then(() => I.grabAriaSnapshot())
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+  })
+
   describe('#grabBrowserLogs', () => {
     it('should grab browser logs', () =>
       I.amOnPage('/')
