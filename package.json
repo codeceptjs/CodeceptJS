@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "3.7.3",
+  "version": "4.0.0-beta.7.esm-aria",
   "type": "module",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
@@ -148,6 +148,7 @@
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.19.2",
     "@xmldom/xmldom": "0.9.8",
+    "bunosh": "latest",
     "chai": "^4.5.0",
     "chai-as-promised": "7.1.2",
     "chai-subset": "1.6.0",
@@ -171,8 +172,8 @@
     "puppeteer": "24.8.0",
     "qrcode-terminal": "0.12.0",
     "rosie": "2.1.1",
-    "runok": "0.9.3",
-    "semver": "7.7.3",
+    "runok": "^0.9.3",
+    "semver": "7.7.2",
     "sinon": "21.0.0",
     "sinon-chai": "3.7.0",
     "ts-morph": "26.0.0",

@@ -49,7 +49,7 @@ wd.blur('div', { id: '//div' })
 wd.blur('div', { android: '//div' })
 wd.blur('div', { ios: '//div' })
 
-expectError(wd.click())
+expectType<void>(wd.click())
 expectType<void>(wd.click('div'))
 wd.click({ css: 'div' })
 wd.click({ xpath: '//div' })
