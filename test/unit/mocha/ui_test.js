@@ -1,19 +1,21 @@
-import { expect } from 'chai'
-import Mocha from 'mocha/lib/mocha.js'
-import Suite from 'mocha/lib/suite.js'
-import { createTest } from '../../../lib/mocha/test.js'
-import codeceptjs from '../../../lib/index.js'
-import makeUI from '../../../lib/mocha/ui.js'
-import container from '../../../lib/container.js'
+let expect
+import('chai').then(chai => {
+  expect = chai.expect
+})
+const Mocha = require('mocha/lib/mocha')
+const Suite = require('mocha/lib/suite')
+const { createTest } = require('../../../lib/mocha/test')
 
-global.codeceptjs = codeceptjs
+global.codeceptjs = require('../../../lib')
+const makeUI = require('../../../lib/mocha/ui')
+const container = require('../../../lib/container')
 
 describe('ui', () => {
   let suite
   let context
 
-  beforeEach(async () => {
-    await container.clear()
+  beforeEach(() => {
+    container.clear()
     context = {}
     suite = new Suite('empty')
     makeUI(suite)
@@ -25,6 +27,11 @@ describe('ui', () => {
 
     constants.forEach(c => {
       it(`context should contain ${c}`, () => expect(context[c]).is.ok)
+    })
+
+    it('context should contain Feature.only', () => {
+      expect(context.Feature.only).is.ok
+      expect(context.Feature.only).to.be.a('function')
     })
   })
 
@@ -50,15 +57,15 @@ describe('ui', () => {
       suiteConfig = context.Feature('basic suite @very @important')
       expect(suiteConfig.suite).is.ok
 
-      expect(suiteConfig.suite.tags).to.include('@very')
-      expect(suiteConfig.suite.tags).to.include('@important')
+      suiteConfig.suite.tags.should.include('@very')
+      suiteConfig.suite.tags.should.include('@important')
 
       suiteConfig.tag('@user')
-      expect(suiteConfig.suite.tags).to.include('@user')
+      suiteConfig.suite.tags.should.include('@user')
 
-      expect(suiteConfig.suite.tags).to.not.include('@slow')
+      suiteConfig.suite.tags.should.not.include('@slow')
       suiteConfig.tag('slow')
-      expect(suiteConfig.suite.tags).to.include('@slow')
+      suiteConfig.suite.tags.should.include('@slow')
     })
 
     it('retries can be set', () => {
@@ -127,6 +134,68 @@ describe('ui', () => {
       expect(suiteConfig.suite.opts).to.deep.eq({}, 'Features should have no skip info')
     })
 
+    it('Feature can be run exclusively with only', () => {
+      // Create a new mocha instance to test grep behavior
+      const mocha = new Mocha()
+      let grepPattern = null
+
+      // Mock mocha.grep to capture the pattern
+      const originalGrep = mocha.grep
+      mocha.grep = function (pattern) {
+        grepPattern = pattern
+        return this
+      }
+
+      // Reset environment variable
+      delete process.env.FEATURE_ONLY
+
+      // Re-emit pre-require with our mocked mocha instance
+      suite.emit('pre-require', context, {}, mocha)
+
+      suiteConfig = context.Feature.only('exclusive feature', { key: 'value' })
+
+      expect(suiteConfig.suite.title).eq('exclusive feature')
+      expect(suiteConfig.suite.opts).to.deep.eq({ key: 'value' }, 'Feature.only should pass options correctly')
+      expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
+      expect(grepPattern).to.be.instanceOf(RegExp)
+      expect(grepPattern.source).eq('^exclusive feature:')
+      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+
+      // Restore original grep
+      mocha.grep = originalGrep
+    })
+
+    it('Feature.only should work without options', () => {
+      // Create a new mocha instance to test grep behavior
+      const mocha = new Mocha()
+      let grepPattern = null
+
+      // Mock mocha.grep to capture the pattern
+      const originalGrep = mocha.grep
+      mocha.grep = function (pattern) {
+        grepPattern = pattern
+        return this
+      }
+
+      // Reset environment variable
+      delete process.env.FEATURE_ONLY
+
+      // Re-emit pre-require with our mocked mocha instance
+      suite.emit('pre-require', context, {}, mocha)
+
+      suiteConfig = context.Feature.only('exclusive feature without options')
+
+      expect(suiteConfig.suite.title).eq('exclusive feature without options')
+      expect(suiteConfig.suite.opts).to.deep.eq({}, 'Feature.only without options should have empty opts')
+      expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
+      expect(grepPattern).to.be.instanceOf(RegExp)
+      expect(grepPattern.source).eq('^exclusive feature without options:')
+      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+
+      // Restore original grep
+      mocha.grep = originalGrep
+    })
+
     it('Feature should correctly pass options to suite context', () => {
       suiteConfig = context.Feature('not skipped suite', { key: 'value' })
       expect(suiteConfig.suite.opts).to.deep.eq({ key: 'value' }, 'Features should have passed options')
@@ -167,12 +236,12 @@ describe('ui', () => {
 
       scenarioConfig = context.Scenario('scenario @very @important')
 
-      expect(scenarioConfig.test.tags).to.include('@cool')
-      expect(scenarioConfig.test.tags).to.include('@very')
-      expect(scenarioConfig.test.tags).to.include('@important')
+      scenarioConfig.test.tags.should.include('@cool')
+      scenarioConfig.test.tags.should.include('@very')
+      scenarioConfig.test.tags.should.include('@important')
 
       scenarioConfig.tag('@user')
-      expect(scenarioConfig.test.tags).to.include('@user')
+      scenarioConfig.test.tags.should.include('@user')
     })
 
     it('should dynamically inject dependencies', () => {

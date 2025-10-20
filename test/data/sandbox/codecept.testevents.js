@@ -1,9 +1,9 @@
-import eventHandlers from './eventHandlers.js';
-import '../fake_driver.js';
+const eventHandlers = require('./eventHandlers');
+require('../fake_driver');
 
 eventHandlers.setConsoleLogging(true);
 
-export const config = {
+module.exports.config = {
   tests: './*_test.testevents.js',
   timeout: 10000,
   output: './output',

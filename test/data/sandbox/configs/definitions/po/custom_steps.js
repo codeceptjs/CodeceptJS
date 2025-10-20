@@ -1,7 +1,5 @@
 // Need for testing pages
-import { actor } from '../../../../../../lib/index.js';
-
-export default () => {
+module.exports = () => {
   return actor({
     openDir() {
       this.amInPath('.');

@@ -1,4 +1,4 @@
-import { store } from 'codeceptjs';
+const { store } = require('codeceptjs')
 
 let retryCount = 0
 
@@ -21,4 +21,4 @@ class MyHelper {
   }
 }
 
-export default MyHelper;
+module.exports = MyHelper

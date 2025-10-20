@@ -1,15 +1,9 @@
-import chai from 'chai';
-chai.should();
-import { expect } from 'expect';
-import { exec } from 'child_process';
-import { codecept_dir, codecept_run } from './consts.js';
-import debugFactory from 'debug';
-const debug = debugFactory('codeceptjs:tests');
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const { expect } = require('expect')
+const exec = require('child_process').exec
+const { codecept_dir, codecept_run } = require('./consts')
+const debug = require('debug')('codeceptjs:tests')
+const fs = require('fs')
+const path = require('path')
 
 const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose ? '--verbose' : ''} --config ${codecept_dir}/configs/custom-reporter-plugin/${config} ${grep ? `--grep "${grep}"` : ''}`
 

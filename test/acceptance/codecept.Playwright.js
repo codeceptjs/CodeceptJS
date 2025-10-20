@@ -1,8 +1,8 @@
-import TestHelper from '../support/TestHelper.js'
+const TestHelper = require('../support/TestHelper')
 
-export const config = {
+module.exports.config = {
   tests: './*_test.js',
-  timeout: 10,
+  timeout: 10000,
   output: './output',
   grep: '@Playwright',
   helpers: {
@@ -12,13 +12,25 @@ export const config = {
       restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
       ignoreHTTPSErrors: true,
-      waitForTimeout: 5000,
-      waitForAction: 500,
-      chromium: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
-      },
       webkit: {
         ignoreHTTPSErrors: true,
+      },
+      customLocatorStrategies: {
+        byRole: (selector, root) => {
+          return root.querySelector(`[role="${selector}"]`)
+        },
+        byTestId: (selector, root) => {
+          return root.querySelector(`[data-testid="${selector}"]`)
+        },
+        byDataQa: (selector, root) => {
+          return root.querySelectorAll(`[data-qa="${selector}"]`)
+        },
+        byAriaLabel: (selector, root) => {
+          return root.querySelector(`[aria-label="${selector}"]`)
+        },
+        byPlaceholder: (selector, root) => {
+          return root.querySelector(`[placeholder="${selector}"]`)
+        },
       },
     },
     JSONResponse: {
@@ -37,7 +49,7 @@ export const config = {
     screenshotOnFail: {
       enabled: true,
     },
-    retryFailedStep: {
+    retryTo: {
       enabled: true,
     },
   },

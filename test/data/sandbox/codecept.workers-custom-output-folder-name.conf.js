@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   tests: './workers/*.js',
   timeout: 10000,
   output: './thisIsCustomOutputFolderName',

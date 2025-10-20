@@ -1,6 +1,6 @@
-import { expect } from 'chai'
-import { hopeThat, retryTo, tryTo } from '../../lib/effects.js'
-import recorder from '../../lib/recorder.js'
+const { expect } = require('chai')
+const { hopeThat, retryTo, tryTo } = require('../../lib/effects')
+const recorder = require('../../lib/recorder')
 
 describe('effects', () => {
   describe('hopeThat', () => {

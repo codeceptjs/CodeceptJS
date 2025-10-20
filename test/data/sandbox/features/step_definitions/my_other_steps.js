@@ -1,9 +1,7 @@
-import axios from 'axios';
-import { actor } from '../../../../../lib/index.js'
-import { Given, Then } from '../../../../../lib/mocha/bdd.js'
+const I = actor();
+const axios = require('axios');
 
 Given('I have products in my cart', table => {
-  const I = actor();
   for (const id in table.rows) {
     if (id < 1) {
       continue;
@@ -14,12 +12,10 @@ Given('I have products in my cart', table => {
 });
 
 Given(/I have product described as/, text => {
-  const I = actor();
   I.addItem(text.content.length);
 });
 
 Given(/I have simple product/, async () => {
-  const I = actor();
   return new Promise(resolve => {
     I.addItem(10);
     setTimeout(resolve, 0);
@@ -71,6 +67,5 @@ Given(/^I make a request \(and it fails\)$/, async () => {
 });
 
 Then(/^my test execution gets stuck$/, async () => {
-  const I = actor();
   I.say('Test execution never gets here...');
 });

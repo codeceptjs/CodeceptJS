@@ -1,19 +1,13 @@
-import chai from 'chai'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-
-import { Appium } from '../../lib/helper/Appium.js'
-import AssertionFailedError from '../../lib/assert/error.js'
-import { fileExists } from '../../lib/utils.js'
-import * as codeceptjs from '../../lib/index.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const chai = require('chai')
 
 const expect = chai.expect
 const assert = chai.assert
-global.codeceptjs = codeceptjs.default || codeceptjs
+const path = require('path')
+
+const Appium = require('../../lib/helper/Appium')
+const AssertionFailedError = require('../../lib/assert/error')
+const fileExists = require('../../lib/utils').fileExists
+global.codeceptjs = require('../../lib')
 
 let app
 const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk'
@@ -37,6 +31,7 @@ describe('Appium', function () {
         platformName: 'Android',
         platformVersion: '7.0',
         deviceName: 'Android GoogleAPI Emulator',
+        automationName: 'UiAutomator2',
         androidInstallTimeout: 90000,
         appWaitDuration: 300000,
       },
@@ -188,6 +183,7 @@ describe('Appium', function () {
     it('should switch to native and web contexts @quick', async () => {
       await app.resetApp()
       await app.tap('~buttonStartWebviewCD')
+      await app.browser.pause(1000)
       await app.see('WebView location')
       await app.switchToWeb()
       let val = await app.grabContext()
@@ -195,6 +191,7 @@ describe('Appium', function () {
       await app.see('Prefered Car')
       assert.ok(app.isWeb)
       await app.switchToNative()
+      await app.browser.pause(2000)
       val = await app.grabContext()
       assert.equal(val, 'NATIVE_APP')
       return assert.ok(!app.isWeb)
@@ -298,7 +295,7 @@ describe('Appium', function () {
       await app.resetApp()
       await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
       await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
-      await app.swipeDown("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 120, 100)
+      await app.swipeDown("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000)
       const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
       assert.equal(type, 'FLICK')
     })
@@ -368,9 +365,12 @@ describe('Appium', function () {
 
     describe('#performTouchAction', () => {
       it('should react on swipeUp action @second', async () => {
+        await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
-        await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+        await app.swipeUp("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000)
+        await app.browser.pause(3000)
+        await app.waitForElement("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']", 20)
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
         assert.equal(type, 'FLICK')
@@ -381,7 +381,9 @@ describe('Appium', function () {
         await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
-        await app.swipeUp("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+        await app.swipeDown("//android.widget.LinearLayout[@resource-id = 'io.selendroid.testapp:id/LinearLayout1']", 1200, 1000)
+        await app.browser.pause(3000)
+        await app.waitForElement("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']", 20)
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
         assert.equal(type, 'FLICK')
@@ -389,9 +391,11 @@ describe('Appium', function () {
       })
 
       it('should react on swipeLeft action', async () => {
+        await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeLeft("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+        await app.waitForElement("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']", 5)
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
         assert.equal(type, 'FLICK')
@@ -399,9 +403,11 @@ describe('Appium', function () {
       })
 
       it('should react on swipeRight action', async () => {
+        await app.resetApp()
         await app.tap("//android.widget.Button[@resource-id = 'io.selendroid.testapp:id/touchTest']")
         await app.waitForText('Gesture Type', 10, "//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         await app.swipeRight("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
+        await app.waitForElement("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']", 5)
         const type = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/gesture_type_text_view']")
         const vy = await app.grabTextFrom("//android.widget.TextView[@resource-id = 'io.selendroid.testapp:id/text_view4']")
         assert.equal(type, 'FLICK')
@@ -563,7 +569,7 @@ describe('Appium', function () {
       await app.tap('~email of the customer')
       await app.appendField('//android.widget.EditText[@content-desc="email of the customer"]', '1')
       await app.hideDeviceKeyboard('pressKey', 'Done')
-      await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 30, 100, 700)
+      await app.swipeTo('//android.widget.Button', '//android.widget.ScrollView/android.widget.LinearLayout', 'up', 60, 100, 700)
       await app.tap('//android.widget.Button')
       await app.see('1', '//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]')
       const id = await app.grabNumberOfVisibleElements('//android.widget.TextView[@resource-id="io.selendroid.testapp:id/label_email_data"]', 'contentDescription')

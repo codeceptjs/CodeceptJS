@@ -1,6 +1,6 @@
-import event from '../../../lib/event.js';
+const event = require('../../../lib/event');
 
-export const config = {
+exports.config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',

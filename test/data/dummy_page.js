@@ -1,6 +1,6 @@
 const { I } = inject()
 
-export default {
+module.exports = {
   openDummyPage: () => 'dummy page opened',
   getI: () => I,
 }

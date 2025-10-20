@@ -1,15 +1,10 @@
-import path from 'path'
-import fs from 'fs'
-import { fileURLToPath } from 'url'
+const path = require('path')
+const fs = require('fs')
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-import '../support/setup.js'
-import TestHelper from '../support/TestHelper.js'
-import ApiDataFactory from '../../lib/helper/ApiDataFactory.js'
-import * as codeceptjs from '../../lib/index.js'
-global.codeceptjs = codeceptjs.default || codeceptjs
+require('../support/setup')
+const TestHelper = require('../support/TestHelper')
+const ApiDataFactory = require('../../lib/helper/ApiDataFactory')
+global.codeceptjs = require('../../lib')
 
 const api_url = TestHelper.jsonServerUrl()
 

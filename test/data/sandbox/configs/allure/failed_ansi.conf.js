@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   tests: './failed_ansi_test.js',
   timeout: 10000,
   output: './output/ansi',

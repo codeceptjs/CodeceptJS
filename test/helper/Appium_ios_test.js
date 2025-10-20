@@ -1,19 +1,13 @@
-import chai from 'chai'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-
-import { Appium } from '../../lib/helper/Appium.js'
-import AssertionFailedError from '../../lib/assert/error.js'
-import { fileExists } from '../../lib/utils.js'
-import * as codeceptjs from '../../lib/index.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const chai = require('chai')
 
 const expect = chai.expect
 const assert = chai.assert
-global.codeceptjs = codeceptjs.default || codeceptjs
+const path = require('path')
+
+const Appium = require('../../lib/helper/Appium')
+const AssertionFailedError = require('../../lib/assert/error')
+const fileExists = require('../../lib/utils').fileExists
+global.codeceptjs = require('../../lib')
 
 let app
 // iOS test app is built from https://github.com/appium/ios-test-app and uploaded to Saucelabs

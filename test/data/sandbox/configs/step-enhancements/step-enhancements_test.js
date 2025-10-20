@@ -1,4 +1,4 @@
-import step from 'codeceptjs/steps';
+const step = require('codeceptjs/steps')
 Feature('step-enhancements')
 
 Scenario('test step opts', ({ I }) => {

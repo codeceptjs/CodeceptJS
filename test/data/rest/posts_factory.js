@@ -1,7 +1,7 @@
-import { Factory } from 'rosie';
-import { faker } from '@faker-js/faker';
+const { Factory } = require('rosie');
+const { faker } = require('@faker-js/faker');
 
-export default new Factory()
+module.exports = new Factory()
   .attr('author', () => faker.person.fullName())
   .attr('title', () => faker.lorem.sentence())
   .attr('body', () => faker.lorem.paragraph());

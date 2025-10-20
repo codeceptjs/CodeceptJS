@@ -1,6 +1,6 @@
-import Helper from '../../../lib/helper.js';
-import output from '../../../lib/output.js';
-import Step from '../../../lib/step.js';
+const Helper = require('../../../lib/helper');
+const output = require('../../../lib/output');
+const Step = require('../../../lib/step');
 
 class Within extends Helper {
   _withinBegin(testStr) {
@@ -32,4 +32,4 @@ class Within extends Helper {
   }
 }
 
-export default Within;
+module.exports = Within;

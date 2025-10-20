@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   secondPageMethod() {
     console.log('secondPageMethod');
   },

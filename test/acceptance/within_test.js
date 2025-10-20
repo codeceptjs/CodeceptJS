@@ -1,9 +1,9 @@
 Feature('within', { retries: 3 })
 
-Scenario('within on form @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+Scenario('within on form @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467')
   I.see('TEST TEST')
-  await within({ css: '[name=form2]' }, async () => {
+  within({ css: '[name=form2]' }, async () => {
     await I.checkOption('Yes')
     await I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' })
   })
@@ -24,9 +24,9 @@ Scenario('switch iframe manually @WebDriverIO @Puppeteer @Playwright', ({ I }) =
   I.dontSee('Email Address')
 })
 
-Scenario('within on iframe @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+Scenario('within on iframe @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/iframe')
-  await within({ frame: 'iframe' }, async () => {
+  within({ frame: 'iframe' }, async () => {
     await I.fillField('rus', 'Updated')
     await I.click('Sign in!')
     await I.waitForText('Email Address')
@@ -101,17 +101,15 @@ Scenario('within on nested iframe depth 2 and mixed class and xpath selector @We
 
 Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
   I.amOnPage('/form/textarea')
-  await within('#grab-multiple', async () => {
-    return await I.grabTextFrom('#first-link')
+  within('#grab-multiple', async () => {
+    return I.grabTextFrom('#first-link')
   })
 }).throws(/found/)
 
 Scenario('should return a value @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
-  // Ensure browser is initialized by forcing a simple operation first
   I.amOnPage('/info')
-  await I.waitForElement('#grab-multiple', 5)
-  const val = await within('#grab-multiple', async () => {
-    return await I.grabTextFrom('#first-link')
+  const val = await within('#grab-multiple', () => {
+    return I.grabTextFrom('#first-link')
   })
   I.fillField('rus', val)
   I.pressKey('Enter')

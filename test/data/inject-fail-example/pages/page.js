@@ -1,6 +1,6 @@
 const { notpage, arraypage } = inject();
 
-export default {
+module.exports = {
   type: s => {
     console.log('type => ', s);
     console.log('strategy', arraypage.toString());

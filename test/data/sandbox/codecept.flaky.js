@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   tests: './*_test.flaky.js',
   timeout: 10000,
   output: './output',

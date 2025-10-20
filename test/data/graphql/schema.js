@@ -1,8 +1,8 @@
-import gql from 'graphql-tag';
+const gql = require('graphql-tag');
 
-import { userModel } from './models.js';
+const { userModel } = require('./models');
 
-export const typeDefs = gql`
+exports.typeDefs = gql`
   type User {
     id: ID
     name: String!
@@ -28,7 +28,7 @@ export const typeDefs = gql`
   }
 `;
 
-export const resolvers = {
+exports.resolvers = {
   Query: {
     users() {
       return userModel.list();

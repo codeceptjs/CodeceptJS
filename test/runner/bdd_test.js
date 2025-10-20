@@ -1,12 +1,6 @@
-import chai from 'chai'
-chai.should()
-import assert from 'assert'
-import path from 'path'
-import { exec } from 'child_process'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const assert = require('assert')
+const path = require('path')
+const exec = require('child_process').exec
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -19,14 +13,7 @@ describe('BDD Gherkin', () => {
   })
 
   it('should run feature files', done => {
-    const child = exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', { timeout: 10000 }, (err, stdout, stderr) => {
-      console.log('=== ACTUAL OUTPUT ===')
-      console.log(stdout)
-      console.log('=== STDERR ===')
-      console.log(stderr)
-      console.log('=== ERROR ===')
-      console.log(err)
-      console.log('=== END ===')
+    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => {
       stdout.should.include('Checkout process') // feature
       stdout.should.include('-- before checkout --')
       stdout.should.include('-- after checkout --')
@@ -37,13 +24,8 @@ describe('BDD Gherkin', () => {
       stdout.should.include('And my order amount is $1600')
       stdout.should.not.include('I add item 600') // 'Given' actor's non-gherkin step check
       stdout.should.not.include('I see sum 1600') // 'And' actor's non-gherkin step check
+      assert(!err)
       done()
-    })
-
-    child.on('timeout', () => {
-      console.error('Test timed out')
-      child.kill()
-      done(new Error('Test timed out'))
     })
   })
 
@@ -374,7 +356,6 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
 
     it('should run feature files in NL', done => {
       exec(config_run_config('codecept.bdd.nl.js') + ' --steps --grep "@i18n"', (err, stdout, stderr) => {
-        console.log(stdout)
         stdout.should.include('On Gegeven: ik heb een product met een prijs van 10$ in mijn winkelwagen')
         stdout.should.include('On En: de korting voor bestellingen van meer dan $20 is 10 %')
         stdout.should.include('On Wanneer: ik naar de kassa ga')
@@ -387,6 +368,22 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
         stdout.should.include('Ik checkout')
         stdout.should.include('On Dan: zou ik de totaalprijs van "10.0" $ moeten zien')
         stdout.should.include('Ik see sum 10')
+        assert(!err)
+        done()
+      })
+    })
+
+    it('should run feature files in PT-BR', done => {
+      exec(config_run_config('codecept.bdd.pt-br.js') + ' --steps --grep "@i18n"', (err, stdout, stderr) => {
+        stdout.should.include('On Dado: que inicio meu teste')
+        stdout.should.include('On Quando: faço algo')
+        stdout.should.include('On Então: acontece alguma coisa')
+        stdout.should.include('On Dado: que estou com o usuário "um"')
+        stdout.should.include('On Quando: faço algo com o usuário')
+        stdout.should.include('On Dado: que estou com o usuário "dois"')
+        stdout.should.include('Cenário simples')
+        stdout.should.include('Cenário com exemplos')
+        stdout.should.match(/OK  \| 3 passed/)
         assert(!err)
         done()
       })

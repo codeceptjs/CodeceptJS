@@ -1,4 +1,4 @@
-import { event } from '../../../../../lib/index.js';
+const { event } = require('../../../../../lib/index');
 
 Feature('Skip tests');
 

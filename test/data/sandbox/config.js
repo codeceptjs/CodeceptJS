@@ -1,6 +1,6 @@
 const profile = process.env.profile || process.profile;
 
-export const config = {
+exports.config = {
   tests: './*_test.js',
   timeout: 10000,
   output: './output',
@@ -14,5 +14,5 @@ export const config = {
 };
 
 if (profile === 'failed') {
-  config.tests = './*_test_failed.js';
+  exports.config.tests = './*_test_failed.js';
 }

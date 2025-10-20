@@ -1,7 +1,7 @@
-import { Factory } from 'rosie';
-import { faker } from '@faker-js/faker';
+const { Factory } = require('rosie');
+const { faker } = require('@faker-js/faker');
 
-export default new Factory(function (buildObject) {
+module.exports = new Factory(function (buildObject) {
   this.input = { ...buildObject };
 })
   .attr('name', () => faker.person.fullName())

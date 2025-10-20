@@ -66,7 +66,7 @@ Scenario('Create some todo items @coverage', () => {
   I.see('Optimize Puppeteer support', {
     css: 'li:nth-child(1) label',
   })
-  I.dontSee('WebDriver', '.main')
+  I.dontSee('Nightmare', '.main')
 
   I.say('I complete a todo')
   I.click({

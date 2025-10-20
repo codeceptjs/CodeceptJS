@@ -1,12 +1,10 @@
-import assert from 'assert'
-import { expect } from 'chai'
-import els from '../../lib/els.js'
-import recorder from '../../lib/recorder.js'
-import Container from '../../lib/container.js'
-import StepConfig from '../../lib/step/config.js'
-
-// Import Helper from @codeceptjs/helper directly for tests
-import Helper from '@codeceptjs/helper'
+const assert = require('assert')
+const { expect } = require('chai')
+const els = require('../../lib/els')
+const recorder = require('../../lib/recorder')
+const Container = require('../../lib/container')
+const Helper = require('../../lib/helper')
+const StepConfig = require('../../lib/step/config')
 
 class TestHelper extends Helper {
   constructor() {

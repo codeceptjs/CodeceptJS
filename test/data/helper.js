@@ -1,14 +1,8 @@
-import HelperModule from '../../lib/helper.js'
-const Helper = HelperModule.default || HelperModule
+const Helper = require('../../lib/helper')
 
 class MyHelper extends Helper {
   method() {
     return 'hello world'
-  }
-
-  async _locate(locator) {
-    // Mock method for eachElement tests - returns 2 elements
-    return ['element1', 'element2']
   }
 
   _init() {
@@ -64,4 +58,4 @@ class MyHelper extends Helper {
   }
 }
 
-export default MyHelper
+module.exports = MyHelper

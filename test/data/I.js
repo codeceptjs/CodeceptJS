@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   _init: () => {
     global.I_initialized = true
   },

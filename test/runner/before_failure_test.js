@@ -1,12 +1,6 @@
-import chai from 'chai';
-chai.should();
-import path from 'path';
-import { exec } from 'child_process';
-import debugFactory from 'debug';
-const debug = debugFactory('codeceptjs:test');
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const path = require('path')
+const exec = require('child_process').exec
+const debug = require('debug')('codeceptjs:test')
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -39,9 +33,7 @@ describe('Failure in before', function () {
 
   it('should trigger skipped events', done => {
     exec(`DEBUG=codeceptjs:* ${codecept_run} --verbose`, (err, stdout, stderr) => {
-      if (err) {
-        err.code.should.eql(1)
-      }
+      err.code.should.eql(1)
       stderr.should.include('Emitted | test.skipped')
       done()
     })

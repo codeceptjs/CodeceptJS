@@ -1,8 +1,8 @@
-import TestHelper from '../support/TestHelper.js'
+const TestHelper = require('../support/TestHelper')
 
-export const config = {
+module.exports.config = {
   tests: './*_test.js',
-  timeout: 10,
+  timeout: 10000,
   output: './output',
   helpers: {
     Puppeteer: {

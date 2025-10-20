@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-# Set up module resolution - NODE_PATH is all we need
-export NODE_PATH=/codecept/lib:$NODE_PATH
-
 xvfb-run -a --server-args="-screen 0 1024x768x24" "$@"

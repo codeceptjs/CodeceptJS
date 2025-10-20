@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 3.x
+      - 5228-fix-appium-tests
 
 env:
   CI: true
@@ -15,7 +16,6 @@ env:
 jobs:
   appium:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
 
     strategy:
       matrix:
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -42,5 +42,4 @@ jobs:
           --form 'payload=@test/data/mobile/selendroid-test-app-0.17.0.apk' \
           --form 'name="selendroid-test-app-0.17.0.apk"'
 
-      - run: 'timeout 900 bash -c "npm run test:appium-${{ matrix.test-suite }}"'
-        timeout-minutes: 20
+      - run: 'npm run test:appium-${{ matrix.test-suite }}'

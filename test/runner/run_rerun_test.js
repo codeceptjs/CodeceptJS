@@ -1,12 +1,8 @@
-import chai from 'chai';
-chai.should();
-import { expect } from 'expect';
-import { describe } from 'mocha';
-import path from 'path';
-import { exec } from 'child_process';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const { expect } = require('expect')
+const { describe } = require('mocha')
+const path = require('path')
+const exec = require('child_process').exec
+const semver = require('semver')
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/run-rerun/')

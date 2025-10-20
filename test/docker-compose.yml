@@ -2,42 +2,46 @@ services:
   test-rest:
     <<: &test-service
       build: ..
-      entrypoint: npx mocha
+      entrypoint: ['']
       working_dir: /codecept
       env_file: .env
       volumes:
-        - ..:/codecept
-        - /codecept/node_modules
-    command: test/rest
+        - ./:/codecept/test
+      environment:
+        - MOCK_SERVER_HOST=mock_server
+    command: ['/codecept/node_modules/.bin/mocha', 'test/rest']
     depends_on:
       - json_server
+      - mock_server
 
   test-acceptance.webdriverio:
     build: ..
     env_file: .env
-    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c acceptance/codecept.WebDriver.js --grep @WebDriverIO --debug
-      - NODE_PATH=/codecept/lib
+      - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
     depends_on:
       - php
       - selenium.chrome
     volumes:
-      - .:/tests
+      - ./acceptance:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   test-acceptance.puppeteer:
     build: ..
     env_file: .env
-    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c acceptance/codecept.Puppeteer.js --grep @Puppeteer
+      - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
       - PPT_VERSION=$PPT_VERSION
-      - NODE_PATH=/codecept/lib
     depends_on:
       - php
       - puppeteer-image
     volumes:
-      - .:/tests
+      - ./acceptance:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   test-bdd.faker:
     build: ..
@@ -48,6 +52,7 @@ services:
       - ./bdd:/tests
       - ./data:/data
       - ./support:/support
+      - node_modules:/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:4.26
@@ -66,10 +71,23 @@ services:
   json_server:
     <<: *test-service
     entrypoint: []
-    command: npm run json-server
+    command: npm run test-server
     ports:
       - '8010:8010' # Expose to host
     restart: always # Automatically restart the container if it fails or becomes unhealthy
 
+  mock_server:
+    <<: *test-service
+    entrypoint: []
+    command: npm run mock-server:start
+    ports:
+      - '3001:3001' # Expose to host
+    restart: always # Automatically restart the container if it fails or becomes unhealthy
+    environment:
+      - PORT=3001
+
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
+
+volumes:
+  node_modules:

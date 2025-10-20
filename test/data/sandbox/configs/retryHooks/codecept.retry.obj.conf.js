@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   tests: './*_spec.js',
   output: './output',
   helpers: {

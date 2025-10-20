@@ -1,6 +1,6 @@
-import assert from 'assert';
+const assert = require('assert');
 
-export default {
+module.exports = {
   locator: 'body',
   secondPageMethod() {
     console.log('secondPageMethod');

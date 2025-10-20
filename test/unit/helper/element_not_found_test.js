@@ -1,6 +1,9 @@
-import { expect } from 'chai'
+let expect
+import('chai').then(chai => {
+  expect = chai.expect
+})
 
-import ElementNotFound from '../../../lib/helper/errors/ElementNotFound.js'
+const ElementNotFound = require('../../../lib/helper/errors/ElementNotFound')
 
 const locator = '#invalidSelector'
 

@@ -1,10 +1,14 @@
-import { expect } from 'chai'
-import Mocha from 'mocha/lib/mocha.js'
-import Suite from 'mocha/lib/suite.js'
-import makeUI from '../../../lib/mocha/ui.js'
-import addData from '../../../lib/data/context.js'
-import DataTable from '../../../lib/data/table.js'
-import Secret from '../../../lib/secret.js'
+let expect
+import('chai').then(chai => {
+  expect = chai.expect
+})
+const Mocha = require('mocha/lib/mocha')
+const Suite = require('mocha/lib/suite')
+
+const makeUI = require('../../../lib/mocha/ui')
+const addData = require('../../../lib/data/context')
+const DataTable = require('../../../lib/data/table')
+const Secret = require('../../../lib/secret')
 
 describe('ui', () => {
   let suite

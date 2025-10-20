@@ -1,12 +1,7 @@
-import chai from 'chai';
-chai.should();
-import assert from 'assert';
-import { expect } from 'expect';
-import path from 'path';
-import { exec } from 'child_process';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const assert = require('assert')
+const { expect } = require('expect')
+const path = require('path')
+const exec = require('child_process').exec
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -180,10 +175,10 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should exit with non-zero code for failures during init process', done => {
     process.chdir(codecept_dir)
-    exec(`${runner} run-multiple --config codecept.multiple.initFailure.js default --all`, (err, stdout, stderr) => {
+    exec(`${runner} run-multiple --config codecept.multiple.initFailure.js default --all`, (err, stdout) => {
       expect(err).not.toBeFalsy()
       expect(err.code).toBe(1)
-      expect(stdout + stderr).toContain('Failed on FailureHelper')
+      expect(stdout).toContain('Failed on FailureHelper')
       done()
     })
   })

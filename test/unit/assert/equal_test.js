@@ -1,7 +1,10 @@
-import { expect } from 'chai'
+let expect
+import('chai').then(chai => {
+  expect = chai.expect
+})
 
-import { Assertion } from '../../../lib/assert/equal.js'
-import AssertionError from '../../../lib/assert/error.js'
+const { Assertion } = require('../../../lib/assert/equal')
+const AssertionError = require('../../../lib/assert/error')
 
 let equal
 

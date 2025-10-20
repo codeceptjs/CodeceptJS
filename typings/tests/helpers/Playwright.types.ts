@@ -28,6 +28,8 @@ expectType<void>(playwright.moveCursorTo(str, num, num));
 expectError(playwright.dragAndDrop(str));
 expectType<void>(playwright.dragAndDrop(str, str));
 expectType<void>(playwright.dragAndDrop(str, str, { sourcePosition, targetPosition }));
+expectType<void>(playwright.restartBrowser());
+expectType<void>(playwright.restartBrowser({}));
 expectType<void>(playwright.refreshPage());
 expectType<void>(playwright.scrollPageToTop());
 expectType<void>(playwright.scrollPageToBottom());

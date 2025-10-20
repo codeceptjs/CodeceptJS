@@ -1,16 +1,12 @@
-import { actor } from 'codeceptjs'
+const I = actor();
 
-const I = actor()
-
-const loginMethods = {
+module.exports = {
   login(email, password) {
-    I.click('Sign in')
-    I.fillField('Username or email address', email)
-    I.fillField('Password', password)
-    I.click('Sign in')
+    I.click('Sign in');
+    I.fillField('Username or email address', email);
+    I.fillField('Password', password);
+    I.click('Sign in');
   },
-}
+};
 
-Object.setPrototypeOf(loginMethods, class Login {}.prototype)
-
-export default loginMethods
+Object.setPrototypeOf(module.exports, class Login {}.prototype);

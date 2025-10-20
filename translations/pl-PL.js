@@ -1,7 +1,7 @@
-import { gherkinTranslations } from './utils.js'
+const { gherkinTranslations } = require('./utils')
 const langCode = 'pl'
 
-export default {
+module.exports = {
   I: 'Ja',
   contexts: {
     ...gherkinTranslations(langCode),

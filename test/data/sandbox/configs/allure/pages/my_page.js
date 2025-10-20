@@ -1,19 +1,17 @@
-const MyPage = {
+let I;
+
+module.exports = {
 
   _init() {
-    // Legacy method - not needed with inject pattern
+    I = actor();
   },
 
   hasFile(arg) {
-    const { I } = inject();
     I.seeFile('allure.conf.js');
     I.seeFile('codecept.po.js');
   },
 
   failedMethod() {
-    const { I } = inject();
     I.seeFile('notexistfile.js');
   },
 };
-
-export default MyPage;

@@ -1,8 +1,6 @@
-import { actor } from '../../../../lib/index.js';
-
 let I;
 
-export default {
+module.exports = {
 
   _init() {
     I = actor();

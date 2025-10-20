@@ -1,6 +1,6 @@
-import TestHelper from '../support/TestHelper.js'
+const TestHelper = require('../support/TestHelper')
 
-export const config = {
+module.exports.config = {
   tests: './*_test.js',
   timeout: 20,
   output: './output',
@@ -13,7 +13,7 @@ export const config = {
       // disableScreenshots: true,
       desiredCapabilities: {
         chromeOptions: {
-          args: ['--headless', '--disable-gui', '--window-size=500,700'],
+          args: ['--headless', '--disable-gpu', '--window-size=500,700'],
         },
       },
     },

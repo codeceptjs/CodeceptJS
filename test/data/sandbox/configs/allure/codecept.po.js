@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   tests: './fs_test.po.js',
   timeout: 10000,
   output: './output/pageobject',

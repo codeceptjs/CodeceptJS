@@ -1,5 +1,9 @@
-import { expect } from 'chai'
-import config from '../../lib/config.js'
+let expect
+import('chai').then(chai => {
+  expect = chai.expect
+})
+
+const config = require('../../lib/config')
 
 describe('Config', () => {
   beforeEach(() => config.reset())

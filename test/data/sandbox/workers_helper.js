@@ -1,13 +1,12 @@
-import assert from 'assert';
-import { isMainThread } from 'worker_threads';
+const assert = require('assert');
+const { isMainThread } = require('worker_threads');
 
-import HelperModule from '@codeceptjs/helper';
-const Helper = HelperModule.default || HelperModule;
+const Helper = require('@codeceptjs/helper');
 
 class Workers extends Helper {
   seeThisIsWorker() {
-    assert(!isMainThread, 'this is running inside worker')
+    assert(!isMainThread, 'this is running inside worker');
   }
 }
 
-export default Workers;
+module.exports = Workers;

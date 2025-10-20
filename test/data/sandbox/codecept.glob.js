@@ -1,4 +1,4 @@
-export const config = {
+exports.config = {
   tests: '{./*does_not_exist_test.js,./*fs_test.glob.js}',
   timeout: 10000,
   output: './output',

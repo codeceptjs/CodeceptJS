@@ -1,18 +1,16 @@
-let I
+let I;
 
-const LogsPage = {
+module.exports = {
   _init() {
-    I = actor()
-    this.value = 'Logs Page Value'
+    I = actor();
+    this.value = 'Logs Page Value';
   },
 
   print(arg) {
-    I.printMessage('Logs Page Message')
+    I.printMessage('Logs Page Message');
   },
 
   toString() {
-    return this.value
+    return this.value;
   },
-}
-
-export default LogsPage
+};

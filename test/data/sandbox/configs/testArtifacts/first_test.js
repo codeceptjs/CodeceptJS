@@ -1,4 +1,4 @@
-import { event } from '../../../../../lib/index.js';
+const { event } = require('../../../../../lib/index');
 
 event.dispatcher.on(event.test.failed, test => {
   test.artifacts.screenshot = '[ SCREEENSHOT FILE ]';
