@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { expect } from 'chai'
+import { fileURLToPath } from 'url'
+import * as cheerio from 'cheerio'
+import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks } from '../../lib/html.js'
 
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const cheerio = require('cheerio')
-const { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks } = require('../../lib/html')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],
@@ -113,9 +113,9 @@ describe('HTML module', () => {
     it('should cut out all non-interactive elements from GitLab HTML', () => {
       html = fs.readFileSync(path.join(__dirname, '../data/gitlab.html'), 'utf8')
       const result = removeNonInteractiveElements(html, opts)
-      result.should.include('Get free trial')
-      result.should.include('Sign in')
-      result.should.include('<button')
+      expect(result).to.include('Get free trial')
+      expect(result).to.include('Sign in')
+      expect(result).to.include('<button')
 
       const $ = cheerio.load(result)
       const nodes = $('input[placeholder="Search"]')
@@ -125,7 +125,7 @@ describe('HTML module', () => {
     it('should cut out and minify Testomatio HTML', () => {
       html = fs.readFileSync(path.join(__dirname, '../data/testomat.html'), 'utf8')
       const result = removeNonInteractiveElements(html, opts)
-      result.should.include('<svg class="md-icon md-icon-check-bold')
+      expect(result).to.include('<svg class="md-icon md-icon-check-bold')
     })
   })
 

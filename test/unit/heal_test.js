@@ -1,15 +1,18 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const heal = require('../../lib/heal')
-const recorder = require('../../lib/recorder')
-const Step = require('../../lib/step')
+import { expect } from 'chai'
+import heal from '../../lib/heal.js'
+import recorder from '../../lib/recorder.js'
+import Step from '../../lib/step.js'
 
 describe('heal', () => {
   beforeEach(() => {
     heal.clear()
     recorder.reset()
+    recorder.start()
+    global.inject = () => ({}) // Mock inject function for heal tests
+    global.container = {
+      // Mock container for heal tests
+      support: name => ({}),
+    }
   })
 
   it('should collect recipes', () => {
@@ -78,7 +81,7 @@ describe('heal', () => {
       },
     })
 
-    await heal.healStep(new Step(null, 'click'))
+    await heal.healStep(new Step('click'), new Error('test error'))
 
     expect(isHealed).to.be.true
   })
@@ -111,7 +114,7 @@ describe('heal', () => {
       },
     })
 
-    await heal.healStep(new Step(null, 'click'), new Error('Ups'), { test: { title: 'test' } })
+    await heal.healStep(new Step('click'), new Error('Ups'), { test: { title: 'test' } })
 
     expect(isHealed).to.be.true
     expect(passedOpts).to.haveOwnProperty('test')

@@ -1,12 +1,13 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const os = require('os')
-const path = require('path')
-const sinon = require('sinon')
+import { expect } from 'chai'
+import os from 'os'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import sinon from 'sinon'
+import * as utils from '../../lib/utils.js'
+import playwright from 'playwright'
 
-const utils = require('../../lib/utils')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 describe('utils', () => {
   describe('#fileExists', () => {
@@ -283,19 +284,19 @@ describe('utils', () => {
       sinon.stub(os, 'platform').callsFake(() => {
         return 'notdarwin'
       })
-      utils.getNormalizedKeyAttributeValue('CmdOrCtrl').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('ControlOrCommand').should.equal('Control')
-      utils.getNormalizedKeyAttributeValue('left ctrl or command').should.equal('ControlLeft')
+      expect(utils.getNormalizedKeyAttributeValue('CmdOrCtrl')).to.equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('COMMANDORCONTROL')).to.equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('ControlOrCommand')).to.equal('Control')
+      expect(utils.getNormalizedKeyAttributeValue('left ctrl or command')).to.equal('ControlLeft')
       os.platform.restore()
 
       sinon.stub(os, 'platform').callsFake(() => {
         return 'darwin'
       })
-      utils.getNormalizedKeyAttributeValue('CtrlOrCmd').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('CommandOrControl').should.equal('Meta')
-      utils.getNormalizedKeyAttributeValue('right command or ctrl').should.equal('MetaRight')
+      expect(utils.getNormalizedKeyAttributeValue('CtrlOrCmd')).to.equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('CONTROLORCOMMAND')).to.equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('CommandOrControl')).to.equal('Meta')
+      expect(utils.getNormalizedKeyAttributeValue('right command or ctrl')).to.equal('MetaRight')
       os.platform.restore()
     })
   })
@@ -334,7 +335,7 @@ describe('utils', () => {
 
   describe('#requireWithFallback', () => {
     it('returns the fallback package', () => {
-      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(require('playwright'))
+      expect(utils.requireWithFallback('unexisting-package', 'playwright')).eql(playwright)
     })
 
     it('returns provide default require not found message', () => {

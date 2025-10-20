@@ -1,4 +1,4 @@
-const step = require('codeceptjs/steps')
+import step from 'codeceptjs/steps';
 
 Feature('no timeout')
 

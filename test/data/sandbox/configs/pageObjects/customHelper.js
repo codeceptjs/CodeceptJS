@@ -1,4 +1,5 @@
-const event = require('../../../../../lib/event');
+import Helper from '@codeceptjs/helper'
+import event from '../../../../../lib/event.js';
 
 class CustomHelper extends Helper {
   constructor(config) {
@@ -23,4 +24,4 @@ class CustomHelper extends Helper {
   }
 }
 
-module.exports = CustomHelper;
+export default CustomHelper;

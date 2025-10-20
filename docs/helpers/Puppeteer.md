@@ -49,7 +49,7 @@ Type: [object][4]
 *   `keepBrowserState` **[boolean][23]?** keep browser state between tests when `restart` is set to false.
 *   `keepCookies` **[boolean][23]?** keep cookies between tests when `restart` is set to false.
 *   `waitForAction` **[number][11]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
-*   `waitForNavigation` **([string][6] | [Array][16]<[string][6]>)?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][28]. Array values are accepted as well.
+*   `waitForNavigation` **[string][6]?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][26]. Array values are accepted as well.
 *   `pressKeyDelay` **[number][11]?** delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 *   `getPageTimeout` **[number][11]?** config option to set maximum navigation time in milliseconds. If the timeout is set to 0, then timeout will be disabled.
 *   `waitForTimeout` **[number][11]?** default wait* timeout in ms.
@@ -57,32 +57,8 @@ Type: [object][4]
 *   `userAgent` **[string][6]?** user-agent string.
 *   `manualStart` **[boolean][23]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 *   `browser` **[string][6]?** can be changed to `firefox` when using [puppeteer-firefox][2].
-*   `chrome` **[object][4]?** pass additional [Puppeteer run options][29].
+*   `chrome` **[object][4]?** pass additional [Puppeteer run options][28].
 *   `highlightElement` **[boolean][23]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
-
-## findElement
-
-Find a single element using Puppeteer's native element discovery methods
-Note: Puppeteer Locator API doesn't have .first() method like Playwright
-
-### Parameters
-
-*   `matcher` **[Object][4]** Puppeteer context to search within
-*   `locator` **([Object][4] | [string][6])** Locator specification
-
-Returns **[Promise][14]<[Object][4]>** Single ElementHandle object
-
-## findElements
-
-Find elements using Puppeteer's native element discovery methods
-Note: Unlike Playwright, Puppeteer's Locator API doesn't have .all() method for multiple elements
-
-### Parameters
-
-*   `matcher` **[Object][4]** Puppeteer context to search within
-*   `locator` **([Object][4] | [string][6])** Locator specification
-
-Returns **[Promise][14]<[Array][16]>** Array of ElementHandle objects
 
 
 
@@ -254,25 +230,6 @@ Find a clickable element by providing human-readable text:
 ```js
 this.helpers['Puppeteer']._locateClickable('Next page').then // ...
 ```
-
-#### Parameters
-
-*   `locator` &#x20;
-
-### _locateElement
-
-Get single element by different locator types, including strict locator
-Should be used in custom helpers:
-
-```js
-const element = await this.helpers['Puppeteer']._locateElement({name: 'password'});
-```
-
-
-
-
-This action supports [React locators](https://codecept.io/react#locators)
-
 
 #### Parameters
 
@@ -1309,21 +1266,6 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 Returns **[Promise][14]<[Array][16]<[string][6]>>** attribute value
 
-### grabWebElement
-
-Grab WebElement for given locator
-Resumes test execution, so **should be used inside an async function with `await`** operator.
-
-```js
-const webElement = await I.grabWebElement('#button');
-```
-
-#### Parameters
-
-*   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
-
-Returns **[Promise][14]<any>** WebElement of being used Web helper
-
 ### grabWebElements
 
 Grab WebElements for given locator
@@ -1412,7 +1354,7 @@ I.openNewTab();
 
 ### pressKey
 
-*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([puppeteer/puppeteer#1313][20]).
+*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([GoogleChrome/puppeteer#1313][20]).
 
 Presses a key in the browser (on a focused element).
 
@@ -2501,7 +2443,7 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 Returns **void** automatically synchronized promise through #recorder
 
-[1]: https://github.com/puppeteer/puppeteer
+[1]: https://github.com/GoogleChrome/puppeteer
 
 [2]: https://codecept.io/helpers/Puppeteer-firefox
 
@@ -2539,7 +2481,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 [19]: https://pptr.dev/guides/network-interception
 
-[20]: https://github.com/puppeteer/puppeteer/issues/1313
+[20]: https://github.com/GoogleChrome/puppeteer/issues/1313
 
 [21]: #fillfield
 
@@ -2551,10 +2493,8 @@ Returns **void** automatically synchronized promise through #recorder
 
 [25]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
 
-[26]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.waitfornavigation.md
+[26]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagewaitfornavigationoptions
 
 [27]: https://pptr.dev/api/puppeteer.tracing
 
-[28]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.waitforoptions.md
-
-[29]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.launchoptions.md
+[28]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions

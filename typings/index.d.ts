@@ -97,7 +97,7 @@ declare namespace CodeceptJS {
      * tests: 'tests/**.test.ts'
      * ```
      */
-    tests: string | string[]
+    tests: string
     /**
      * Where to store failure screenshots, artifacts, etc
      *
@@ -440,7 +440,7 @@ declare namespace CodeceptJS {
   interface IHook {}
   interface IScenario {}
   interface IFeature {
-    (title: string, opts?: { [key: string]: any }): FeatureConfig
+    (title: string): FeatureConfig
   }
   interface CallbackOrder extends Array<any> {}
   interface SupportObject {
@@ -486,7 +486,6 @@ declare namespace CodeceptJS {
     todo: IScenario
   }
   interface Feature extends IFeature {
-    only: IFeature
     skip: IFeature
   }
   interface IData {
@@ -518,18 +517,15 @@ declare namespace CodeceptJS {
   interface HookConfig {
     retry(retries?: number): HookConfig
   }
-}
 
-type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>
-type HopeThat = <T>(fn: () => Promise<T> | T) => Promise<T | false>
-type RetryTo = <T>(fn: () => Promise<T> | T, retries?: number) => Promise<T>
+  function addStep(step: string, fn: Function): Promise<void>
+}
 
 // Globals
 declare const codecept_dir: string
 declare const output_dir: string
-declare const tryTo: TryTo
-declare const retryTo: RetryTo
-declare const hopeThat: HopeThat
+declare function tryTo(...fn): Promise<boolean>
+declare function retryTo(...fn): Promise<null>
 
 declare const actor: CodeceptJS.actor
 declare const codecept_actor: CodeceptJS.actor
@@ -540,7 +536,7 @@ declare const within: typeof CodeceptJS.within
 declare const session: typeof CodeceptJS.session
 declare const DataTable: typeof CodeceptJS.DataTable
 declare const DataTableArgument: typeof CodeceptJS.DataTableArgument
-declare const codeceptjs: typeof CodeceptJS.index
+declare const codeceptjs: typeof CodeceptJS
 declare const locate: typeof CodeceptJS.Locator.build
 declare function inject(): CodeceptJS.SupportObject
 declare function inject<T extends keyof CodeceptJS.SupportObject>(name: T): CodeceptJS.SupportObject[T]
@@ -551,7 +547,7 @@ declare const Given: typeof CodeceptJS.addStep
 declare const When: typeof CodeceptJS.addStep
 declare const Then: typeof CodeceptJS.addStep
 
-declare const Feature: CodeceptJS.Feature
+declare const Feature: typeof CodeceptJS.Feature
 declare const Scenario: CodeceptJS.Scenario
 declare const xScenario: CodeceptJS.IScenario
 declare const xFeature: CodeceptJS.IFeature
@@ -639,10 +635,4 @@ declare module 'codeceptjs' {
 
 declare module '@codeceptjs/helper' {
   export = CodeceptJS.Helper
-}
-
-declare module 'codeceptjs/effects' {
-  export const tryTo: TryTo
-  export const retryTo: RetryTo
-  export const hopeThat: HopeThat
 }

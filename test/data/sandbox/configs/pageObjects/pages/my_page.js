@@ -1,17 +1,18 @@
-let I;
-
-module.exports = {
-
+const MyPage = {
   _init() {
-    I = actor();
+    // Legacy method - not needed with inject pattern
   },
 
   hasFile(arg) {
+    const { I } = inject();
     I.seeFile('codecept.class.js');
     I.seeFile('codecept.po.js');
   },
 
   failedMethod() {
+    const { I } = inject();
     I.seeFile('notexistfile.js');
   },
-};
+}
+
+export default MyPage

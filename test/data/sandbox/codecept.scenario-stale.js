@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './test.scenario-stale.js',
   timeout: 10000,
   retry: 2,

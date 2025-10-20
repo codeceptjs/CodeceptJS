@@ -1,6 +1,6 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper.js'
 
-module.exports.config = {
+export const config = {
   timeout: 10000,
   output: './output',
   helpers: {

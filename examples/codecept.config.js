@@ -1,6 +1,6 @@
-require('./heal_recipes')
+import './heal_recipes.js'
 
-exports.config = {
+export const config = {
   output: './output',
   helpers: {
     Playwright: {
@@ -37,9 +37,9 @@ exports.config = {
     steps: ['./step_definitions/steps.js'],
   },
   plugins: {
-    analyze: {
-      enabled: true,
-    },
+    // analyze: {
+    //   enabled: true,
+    // },
     // heal: {
     //   enabled: true,
     // },

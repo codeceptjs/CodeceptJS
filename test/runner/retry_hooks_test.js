@@ -1,6 +1,12 @@
-const { expect } = require('expect')
-const exec = require('child_process').exec
-const { codecept_dir, codecept_run } = require('./consts')
+import chai from 'chai';
+chai.should();
+import { expect } from 'expect';
+import { exec } from 'child_process';
+import { codecept_dir, codecept_run } from './consts.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const debug_this_test = false
 

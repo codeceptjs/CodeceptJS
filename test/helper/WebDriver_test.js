@@ -1,16 +1,22 @@
-const chai = require('chai')
+import chai from 'chai'
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
-const fs = require('fs')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-const TestHelper = require('../support/TestHelper')
-const WebDriver = require('../../lib/helper/WebDriver')
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const Secret = require('../../lib/secret')
-global.codeceptjs = require('../../lib')
+import TestHelper from '../support/TestHelper.js'
+import WebDriver from '../../lib/helper/WebDriver.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import * as webApiTests from './webapi.js'
+import { secret } from '../../lib/secret.js'
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs
+
+const dataFile = path.join(__dirname, '/../data/app/db')
 
 const siteUrl = TestHelper.siteUrl()
 let wd
@@ -87,19 +93,19 @@ describe('WebDriver', function () {
     it('should open main page of configured site', async () => {
       await wd.amOnPage('/')
       const url = await wd.grabCurrentUrl()
-      url.should.eql(`${siteUrl}/`)
+      expect(url).to.eql(`${siteUrl}/`)
     })
 
     it('should open any page of configured site', async () => {
       await wd.amOnPage('/info')
       const url = await wd.grabCurrentUrl()
-      url.should.eql(`${siteUrl}/info`)
+      expect(url).to.eql(`${siteUrl}/info`)
     })
 
     it('should open absolute url', async () => {
       await wd.amOnPage(siteUrl)
       const url = await wd.grabCurrentUrl()
-      url.should.eql(`${siteUrl}/`)
+      expect(url).to.eql(`${siteUrl}/`)
     })
   })
 
@@ -110,15 +116,15 @@ describe('WebDriver', function () {
       try {
         await wd.see('Something incredible!')
       } catch (e) {
-        e.should.be.instanceOf(AssertionFailedError)
-        e.inspect().should.include('web page')
+        expect(e).to.be.instanceOf(AssertionFailedError)
+        expect(e.inspect()).to.include('web page')
       }
 
       try {
         await wd.dontSee('Welcome')
       } catch (e) {
-        e.should.be.instanceOf(AssertionFailedError)
-        e.inspect().should.include('web page')
+        expect(e).to.be.instanceOf(AssertionFailedError)
+        expect(e.inspect()).to.include('web page')
       }
     })
   })
@@ -130,8 +136,8 @@ describe('WebDriver', function () {
       try {
         await wd.seeInField('#empty_input', 'Ayayay')
       } catch (e) {
-        e.should.be.instanceOf(AssertionFailedError)
-        e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"')
+        expect(e).to.be.instanceOf(AssertionFailedError)
+        expect(e.inspect()).to.equal('expected fields by #empty_input to include "Ayayay"')
       }
     })
 
@@ -147,12 +153,12 @@ describe('WebDriver', function () {
 
     it('should check values are the secret type in checkboxes', async () => {
       await wd.amOnPage('/form/field_values')
-      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen one'))
-      await wd.seeInField('checkbox[]', Secret.secret('see test one'))
-      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen two'))
-      await wd.seeInField('checkbox[]', Secret.secret('see test two'))
-      await wd.dontSeeInField('checkbox[]', Secret.secret('not seen three'))
-      await wd.seeInField('checkbox[]', Secret.secret('see test three'))
+      await wd.dontSeeInField('checkbox[]', secret('not seen one'))
+      await wd.seeInField('checkbox[]', secret('see test one'))
+      await wd.dontSeeInField('checkbox[]', secret('not seen two'))
+      await wd.seeInField('checkbox[]', secret('see test two'))
+      await wd.dontSeeInField('checkbox[]', secret('not seen three'))
+      await wd.seeInField('checkbox[]', secret('see test three'))
     })
 
     it('should check values with boolean', async () => {
@@ -204,7 +210,7 @@ describe('WebDriver', function () {
       try {
         await wd.seeInField('#search_input_react', 'WebDriver1')
       } catch (e) {
-        e.should.be.instanceOf(Error)
+        expect(e).to.be.instanceOf(Error)
       }
     })
   })
@@ -411,9 +417,9 @@ describe('WebDriver', function () {
         await wd.seeTextEquals('Welcome to test app', 'h1')
         assert.equal(true, false, 'Throw an error because it should not get this far!')
       } catch (e) {
-        e.should.be.instanceOf(Error)
-        e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"')
-        // e.should.be.instanceOf(AssertionFailedError);
+        expect(e).to.be.instanceOf(Error)
+        expect(e.message).to.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"')
+        // expect(e).to.be.instanceOf(AssertionFailedError);
       }
     })
 
@@ -424,8 +430,8 @@ describe('WebDriver', function () {
         await wd.seeTextEquals('', '.logo')
         await wd.seeTextEquals('This is not empty', '.logo')
       } catch (e) {
-        e.should.be.instanceOf(Error)
-        e.message.should.be.equal('expected element .logo "This is not empty" to equal ""')
+        expect(e).to.be.instanceOf(Error)
+        expect(e.message).to.equal('expected element .logo "This is not empty" to equal ""')
       }
     })
   })
@@ -474,7 +480,7 @@ describe('WebDriver', function () {
         await wd.waitForValue('//input[@name= "rus"]', 'Верно3', 0.1)
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec')
+        expect(e.message).to.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec')
       }
     })
 
@@ -515,7 +521,7 @@ describe('WebDriver', function () {
         await wd.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 2, 0.1)
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec')
+        expect(e.message).to.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec')
       }
     })
 
@@ -525,7 +531,7 @@ describe('WebDriver', function () {
         await wd.waitNumberOfVisibleElements({ css: '//div[@id = "grab-multiple"]//a' }, 3)
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.not.include('[object Object]')
+        expect(e.message).to.not.include('[object Object]')
       }
     })
 
@@ -536,7 +542,7 @@ describe('WebDriver', function () {
         await wd.waitNumberOfVisibleElements('#grab-multiple > a', 2, 0.1)
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec')
+        expect(e.message).to.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec')
       }
     })
 
@@ -555,7 +561,7 @@ describe('WebDriver', function () {
         await wd.waitForVisible('//div[@id = "grab-multiple"]//a', 3)
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.not.include('[object Object]')
+        expect(e.message).to.not.include('[object Object]')
       }
     })
   })
@@ -567,7 +573,7 @@ describe('WebDriver', function () {
         await wd.waitForInvisible('//div[@id = "grab-multiple"]//a', 3)
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.not.include('[object Object]')
+        expect(e.message).to.not.include('[object Object]')
       }
     })
 
@@ -720,7 +726,7 @@ describe('WebDriver', function () {
         .amOnPage('/dynamic')
         .then(() => wd.waitForText('Nothing here', 1, '#text'))
         .catch(e => {
-          e.message.should.be.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec')
+          expect(e.message).to.equal('element (#text) is not in DOM or there is no element(#text) with text "Nothing here" after 1 sec')
         })
     })
 
@@ -729,7 +735,7 @@ describe('WebDriver', function () {
         .amOnPage('/dynamic')
         .then(() => wd.waitForText('Dynamic text', 0.1))
         .catch(e => {
-          e.message.should.be.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec')
+          expect(e.message).to.equal('element (body) is not in DOM or there is no element(body) with text "Dynamic text" after 0.1 sec')
         })
     })
   })
@@ -754,8 +760,8 @@ describe('WebDriver', function () {
       try {
         await wd.switchTo('#invalidIframeSelector')
       } catch (e) {
-        e.should.be.instanceOf(Error)
-        e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+        expect(e).to.be.instanceOf(Error)
+        expect(e.message).to.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
       }
     })
 
@@ -765,9 +771,9 @@ describe('WebDriver', function () {
       try {
         await wd.switchTo('h1')
       } catch (e) {
-        e.should.be.instanceOf(Error)
+        expect(e).to.be.instanceOf(Error)
         // this literally means no such frame
-        e.message.should.contain('Cannot read properties of undefined')
+        expect(e.message).to.contain('Cannot read properties of undefined')
       }
     })
 
@@ -899,13 +905,13 @@ describe('WebDriver', function () {
     it('should locate a button to click', async () => {
       await wd.amOnPage('/form/checkbox')
       const res = await wd._locateClickable('Submit')
-      res.length.should.be.equal(1)
+      expect(res.length).to.equal(1)
     })
 
     it('should not locate a non-existing checkbox', async () => {
       await wd.amOnPage('/form/checkbox')
       const res = await wd._locateClickable('I disagree')
-      res.length.should.be.equal(0)
+      expect(res.length).to.equal(0)
     })
   })
 
@@ -913,13 +919,13 @@ describe('WebDriver', function () {
     it('should locate a checkbox', async () => {
       await wd.amOnPage('/form/checkbox')
       const res = await wd._locateCheckable('I Agree')
-      res.length.should.be.equal(1)
+      expect(res.length).to.equal(1)
     })
 
     it('should not locate a non-existing checkbox', async () => {
       await wd.amOnPage('/form/checkbox')
       const res = await wd._locateCheckable('I disagree')
-      res.length.should.be.equal(0)
+      expect(res.length).to.equal(0)
     })
   })
 
@@ -927,13 +933,13 @@ describe('WebDriver', function () {
     it('should locate a field', async () => {
       await wd.amOnPage('/form/field')
       const res = await wd._locateFields('Name')
-      res.length.should.be.equal(1)
+      expect(res.length).to.equal(1)
     })
 
     it('should not locate a non-existing field', async () => {
       await wd.amOnPage('/form/field')
       const res = await wd._locateFields('Mother-in-law')
-      res.length.should.be.equal(0)
+      expect(res.length).to.equal(0)
     })
   })
 
@@ -1066,33 +1072,33 @@ describe('WebDriver', function () {
       const urlBeforePopup = await wd.grabCurrentUrl()
 
       const allHandlesBeforePopup = await wd.grabAllWindowHandles()
-      allHandlesBeforePopup.length.should.eql(1)
+      expect(allHandlesBeforePopup.length).to.eql(1)
 
       await wd.executeScript(() => {
         window.open('https://www.w3schools.com/', 'new window', 'toolbar=yes,scrollbars=yes,resizable=yes,width=400,height=400')
       })
 
       const allHandlesAfterPopup = await wd.grabAllWindowHandles()
-      allHandlesAfterPopup.length.should.eql(2)
+      expect(allHandlesAfterPopup.length).to.eql(2)
 
       await wd.switchToWindow(allHandlesAfterPopup[1])
       const urlAfterPopup = await wd.grabCurrentUrl()
-      urlAfterPopup.should.eql('https://www.w3schools.com/')
+      expect(urlAfterPopup).to.eql('https://www.w3schools.com/')
 
-      handleBeforePopup.should.eql(allHandlesAfterPopup[0])
+      expect(handleBeforePopup).to.eql(allHandlesAfterPopup[0])
       await wd.switchToWindow(handleBeforePopup)
       const currentURL = await wd.grabCurrentUrl()
-      currentURL.should.eql(urlBeforePopup)
+      expect(currentURL).to.eql(urlBeforePopup)
 
       await wd.switchToWindow(allHandlesAfterPopup[1])
       const urlAfterSwitchBack = await wd.grabCurrentUrl()
-      urlAfterSwitchBack.should.eql('https://www.w3schools.com/')
+      expect(urlAfterSwitchBack).to.eql('https://www.w3schools.com/')
       await wd.closeCurrentTab()
 
       const allHandlesAfterPopupClosed = await wd.grabAllWindowHandles()
-      allHandlesAfterPopupClosed.length.should.eql(1)
+      expect(allHandlesAfterPopupClosed.length).to.eql(1)
       const currentWindowHandle = await wd.grabCurrentWindowHandle()
-      currentWindowHandle.should.eql(handleBeforePopup)
+      expect(currentWindowHandle).to.eql(handleBeforePopup)
     })
   })
 
@@ -1115,7 +1121,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element #button still not clickable after 0.1 sec')
+          expect(e.message).to.include('element #button still not clickable after 0.1 sec')
         })
     })
 
@@ -1127,7 +1133,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element .//button[@id="button"] still not clickable after 0.1 sec')
+          expect(e.message).to.include('element .//button[@id="button"] still not clickable after 0.1 sec')
         })
     })
 
@@ -1139,7 +1145,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element #notInViewportTop still not clickable after 0.1 sec')
+          expect(e.message).to.include('element #notInViewportTop still not clickable after 0.1 sec')
         })
     })
 
@@ -1151,7 +1157,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element #notInViewportBottom still not clickable after 0.1 sec')
+          expect(e.message).to.include('element #notInViewportBottom still not clickable after 0.1 sec')
         })
     })
 
@@ -1163,7 +1169,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element #notInViewportLeft still not clickable after 0.1 sec')
+          expect(e.message).to.include('element #notInViewportLeft still not clickable after 0.1 sec')
         })
     })
 
@@ -1175,7 +1181,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element #notInViewportRight still not clickable after 0.1 sec')
+          expect(e.message).to.include('element #notInViewportRight still not clickable after 0.1 sec')
         })
     })
 
@@ -1188,7 +1194,7 @@ describe('WebDriver', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element #div1_button still not clickable after 0.1 sec')
+          expect(e.message).to.include('element #div1_button still not clickable after 0.1 sec')
         })
     })
   })

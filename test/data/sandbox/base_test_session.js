@@ -1,66 +1,40 @@
-Feature('Session')
+Feature('Session');
 
 Scenario('basic session @1', ({ I }) => {
-  I.do('writing')
+  I.do('writing');
   session('davert', () => {
-    I.do('reading')
-  })
-  I.do('playing')
+    I.do('reading');
+  });
+  I.do('playing');
   session('john', () => {
-    I.do('crying')
-  })
+    I.do('crying');
+  });
   session('davert', () => {
-    I.do('smiling')
-  })
-  I.do('laughing')
+    I.do('smiling');
+  });
+  I.do('laughing');
   session('mike', () => {
-    I.do('spying')
-  })
+    I.do('spying');
+  });
   session('john', () => {
-    I.do('lying')
-  })
-  I.do('waving')
-})
+    I.do('lying');
+  });
+  I.do('waving');
+});
 
 Scenario('session defined not used @2', ({ I }) => {
-  session('davert')
-  I.do('writing')
-  I.do('playing')
+  session('davert');
+  I.do('writing');
+  I.do('playing');
   session('john', () => {
-    I.do('crying')
-  })
+    I.do('crying');
+  });
   session('davert', () => {
-    I.do('smiling')
-  })
-  I.do('laughing')
+    I.do('smiling');
+  });
+  I.do('laughing');
   session('davert', () => {
-    I.do('singing')
-  })
-  I.do('waving')
-})
-
-Scenario('tryTo inside session @3', ({ I }) => {
-  const { tryTo } = require('../../../lib/effects')
-  I.do('before session')
-  session('tryTo-test', async () => {
-    I.do('inside session')
-    await tryTo(() => {
-      I.do('inside tryTo')
-    })
-    I.do('after tryTo')
-  })
-  I.do('after session')
-})
-
-Scenario('session inside tryTo @4', ({ I }) => {
-  const { tryTo } = require('../../../lib/effects')
-  I.do('before tryTo')
-  tryTo(async () => {
-    I.do('inside tryTo')
-    await session('nested-session', () => {
-      I.do('inside nested session')
-    })
-    I.do('after session')
-  })
-  I.do('after tryTo')
-})
+    I.do('singing');
+  });
+  I.do('waving');
+});

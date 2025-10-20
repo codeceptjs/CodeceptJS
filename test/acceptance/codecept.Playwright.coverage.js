@@ -1,8 +1,8 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 10,
   output: './output',
   grep: '@Playwright',
   helpers: {
@@ -10,7 +10,7 @@ module.exports.config = {
       url: TestHelper.siteUrl(),
       show: false,
       restart: process.env.BROWSER_RESTART || false,
-      browser: process.env.BROWSER || 'chromium',
+      browser: ['chromium', 'webkit', 'firefox', 'electron'].includes(process.env.BROWSER) ? process.env.BROWSER : 'chromium',
       ignoreHTTPSErrors: true,
       webkit: {
         ignoreHTTPSErrors: true,

@@ -16,6 +16,7 @@ jobs:
   appium:
     if: false
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
 
     strategy:
       matrix:
@@ -25,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm i --force
@@ -40,4 +41,5 @@ jobs:
           --form 'payload=@test/data/mobile/TestApp-iphonesimulator.zip' \
           --form 'name="TestApp-iphonesimulator.zip"'
 
-      - run: 'npm run test:ios:appium-${{ matrix.test-suite }}'
+      - run: 'timeout 900 bash -c "npm run test:ios:appium-${{ matrix.test-suite }}"'
+        timeout-minutes: 20

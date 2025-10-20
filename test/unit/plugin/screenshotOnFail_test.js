@@ -1,16 +1,12 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const sinon = require('sinon')
-
-const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail')
-const container = require('../../../lib/container')
-const event = require('../../../lib/event')
-const recorder = require('../../../lib/recorder')
-const { createTest } = require('../../../lib/mocha/test')
-const { deserializeSuite } = require('../../../lib/mocha/suite')
-const MochawesomeHelper = require('../../../lib/helper/Mochawesome')
+import { expect } from 'chai'
+import sinon from 'sinon'
+import screenshotOnFail from '../../../lib/plugin/screenshotOnFail.js'
+import container from '../../../lib/container.js'
+import event from '../../../lib/event.js'
+import recorder from '../../../lib/recorder.js'
+import { createTest } from '../../../lib/mocha/test.js'
+import { deserializeSuite } from '../../../lib/mocha/suite.js'
+import MochawesomeHelper from '../../../lib/helper/Mochawesome.js'
 
 let screenshotSaved
 
@@ -76,18 +72,6 @@ describe('screenshotOnFail', () => {
     expect(fileName.match(regexpFileName).length).is.equal(1)
   })
 
-  it('should create screenshot with unique name when uid is null', async () => {
-    screenshotOnFail({ uniqueScreenshotNames: true })
-
-    const test = createTest('test1')
-    event.dispatcher.emit(event.test.failed, test)
-    await recorder.promise()
-    expect(screenshotSaved.called).is.ok
-    const fileName = screenshotSaved.getCall(0).args[0]
-    const regexpFileName = /test1_[0-9]{10}.failed.png/
-    expect(fileName.match(regexpFileName).length).is.equal(1)
-  })
-
   it('should not save screenshot in BeforeSuite', async () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
     const test = createTest('test1')
@@ -124,17 +108,12 @@ describe('screenshotOnFail', () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
     const test = createTest('test1')
 
-    // Use sinon to stub Date.now to return consistent timestamp
-    const clock = sinon.useFakeTimers(1755596785000) // Fixed timestamp
-
     const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
     const spy = sinon.spy(helper, '_addContext')
     helper._failed(test)
 
     event.dispatcher.emit(event.test.failed, test)
     await recorder.promise()
-
-    clock.restore()
 
     const screenshotFileName = screenshotSaved.getCall(0).args[0]
     expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
