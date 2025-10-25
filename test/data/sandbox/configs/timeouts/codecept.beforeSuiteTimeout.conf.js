@@ -6,7 +6,6 @@ exports.config = {
       require: './customHelper.js',
     },
   },
-  plugins: {},
-  name: 'my',
+  name: 'beforeSuiteTimeout',
   timeout: 2,
 }
