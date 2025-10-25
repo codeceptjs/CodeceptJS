@@ -100,4 +100,14 @@ describe('CodeceptJS Timeouts', function () {
       done()
     })
   })
+
+  it('should enforce global timeout even with BeforeSuite', done => {
+    exec(config_run_config('codecept.beforeSuiteTimeout.conf.js', 'enforce global timeout with BeforeSuite', true), (err, stdout) => {
+      debug_this_test && console.log(stdout)
+      expect(stdout).toContain('Timeout 2s exceeded')
+      expect(stdout).toContain('TestTimeoutError')
+      expect(err).toBeTruthy()
+      done()
+    })
+  })
 })
