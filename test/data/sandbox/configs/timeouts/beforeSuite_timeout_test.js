@@ -1,4 +1,4 @@
-Feature('Timeout')
+Feature('Global Timeout with BeforeSuite')
 
 BeforeSuite(() => {
   // No stuff needed here to reproduce the issue
