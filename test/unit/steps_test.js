@@ -1,19 +1,23 @@
-const sinon = require('sinon')
+import sinon from 'sinon'
+import Step, { MetaStep } from '../../lib/step.js'
+import event from '../../lib/event.js'
+import { secret } from '../../lib/secret.js'
+import { expect } from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 
-const Step = require('../../lib/step')
-const { MetaStep } = require('../../lib/step')
-const event = require('../../lib/event')
-const { secret } = require('../../lib/secret')
-
-let expect
-
-import('chai').then((chai) => {
-  expect = chai.expect
-  chai.use(require('chai-as-promised'))
+import('chai').then(chai => {
+  chai.use(chaiAsPromised)
 })
 
 let step
 let action
+let asyncAction
+let asyncMetaStep
+let metaStep
+let fn
+let asyncFn
+let boundedRun
+let boundedAsyncRun
 
 describe('Steps', () => {
   describe('Step', () => {
@@ -92,7 +96,7 @@ describe('Steps', () => {
     })
 
     describe('#isBDD', () => {
-      ;['Given', 'When', 'Then', 'And'].forEach((key) => {
+      ;['Given', 'When', 'Then', 'And'].forEach(key => {
         it(`[${key}] #isBdd should return true if it BDD style`, () => {
           const metaStep = new MetaStep(key, 'I need to open Google')
           expect(metaStep.isBDD()).to.be.true
@@ -100,13 +104,8 @@ describe('Steps', () => {
       })
     })
 
-    it('#isWithin should return true if it Within step', () => {
-      const metaStep = new MetaStep('Within', 'clickByName')
-      expect(metaStep.isWithin()).to.be.true
-    })
-
     describe('#toString', () => {
-      ;['Given', 'When', 'Then', 'And'].forEach((key) => {
+      ;['Given', 'When', 'Then', 'And'].forEach(key => {
         it(`[${key}] should correct print BDD step`, () => {
           const metaStep = new MetaStep(key, 'I need to open Google')
           expect(metaStep.toString()).to.include(`${key} I need to open Google`)
@@ -127,7 +126,7 @@ describe('Steps', () => {
         const metaStep = new MetaStep('MyPage', 'clickByName')
         const msg = 'first message'
         const msg2 = 'second message'
-        const fn = (msg) => `result from callback = ${msg}`
+        const fn = msg => `result from callback = ${msg}`
         metaStep.run.bind(metaStep, fn)(msg, msg2)
         expect(metaStep.toString()).eql(`On MyPage: click by name "${msg}", "${msg2}"`)
       })
@@ -141,15 +140,11 @@ describe('Steps', () => {
     })
 
     describe('#run', () => {
-      let metaStep
-      let fn
-      let boundedRun
-      let boundedAsyncRun
       beforeEach(() => {
         metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething')
         asyncMetaStep = new MetaStep({ metaStepDoSomething: asyncAction }, 'metaStepDoSomething')
-        fn = (msg) => `result from callback = ${msg}`
-        asyncFn = async (msg) => `result from callback = ${msg}`
+        fn = msg => `result from callback = ${msg}`
+        asyncFn = async msg => `result from callback = ${msg}`
         boundedRun = metaStep.run.bind(metaStep, fn)
         boundedAsyncRun = metaStep.run.bind(metaStep, asyncFn)
       })

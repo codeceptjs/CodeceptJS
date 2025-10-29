@@ -38,7 +38,7 @@ If you plan to use CodeceptJS for **API testing** only proceed to standard insta
 ## Standard Installation
 
 Open a directory where you want to install CodeceptJS tests.
-If it is an empty directory - create a new NPM package with 
+If it is an empty directory - create a new NPM package with
 
 ```
 npm init -y
@@ -50,12 +50,21 @@ Install CodeceptJS with NPM:
 npx codeceptjs init
 ```
 
-After choosing default helper (Playwright, Puppeteer, WebDriver, etc) a corresponding package should be installed automatically. 
+After choosing default helper (Playwright, Puppeteer, WebDriver, etc) a corresponding package should be installed automatically.
 
 > If you face issues installing additional packages while running `npx codeceptjs init` command, install required packages manually using npm
 
 Unless you are using WebDriver - CodeceptJS is ready to go!
-For WebDriver installation Selenium Server is required 👇 
+For WebDriver installation Selenium Server is required 👇
+
+## ESM Support
+
+CodeceptJS v4.x supports ECMAScript Modules (ESM) format. To use ESM:
+
+1. Add `"type": "module"` to your `package.json`
+2. Update import syntax in configuration files to use ESM format
+
+For detailed migration instructions and important behavioral changes, see the **[ESM Migration Guide](esm-migration.md)**.
 
 ## WebDriver
 
@@ -64,7 +73,6 @@ WebDriver based helpers like WebDriver will require [Selenium Server](https://co
 We recommend to install them manually or use NPM packages:
 
 [Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
-
 
 Alternatively, you can execute headless Selenium in [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless browser testing.
 

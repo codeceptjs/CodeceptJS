@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './*_no_test.js',
   timeout: 10000,
   output: './output',
@@ -17,5 +17,8 @@ exports.config = {
   include: {},
   bootstrap: false,
   mocha: {},
+  plugins: {
+    // Disable problematic plugins for ESM testing
+  },
   name: 'sandbox',
 };

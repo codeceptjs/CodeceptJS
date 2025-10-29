@@ -35,13 +35,14 @@ Type: [object][17]
 
 *   `url` **[string][18]** base url of website to be tested.
 *   `browser` **[string][18]** Browser in which to perform testing.
+*   `bidiProtocol` **[boolean][33]?** WebDriver Bidi Protocol. Default: false. More info: [https://webdriver.io/docs/api/webdriverBidi/][37]
 *   `basicAuth` **[string][18]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 *   `host` **[string][18]?** WebDriver host to connect.
 *   `port` **[number][23]?** WebDriver port to connect.
 *   `protocol` **[string][18]?** protocol for WebDriver server.
 *   `path` **[string][18]?** path to WebDriver server.
 *   `restart` **[boolean][33]?** restart browser between tests.
-*   `smartWait` **([boolean][33] | [number][23])?** **enables [SmartWait][37]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+*   `smartWait` **([boolean][33] | [number][23])?** **enables [SmartWait][38]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
 *   `disableScreenshots` **[boolean][33]?** don't save screenshots on failure.
 *   `fullPageScreenshots` **[boolean][33]?** (optional - make full page screenshots on failure.
 *   `uniqueScreenshotNames` **[boolean][33]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
@@ -51,9 +52,9 @@ Type: [object][17]
 *   `waitForTimeout` **[number][23]?** sets default wait time in *ms* for all `wait*` functions.
 *   `desiredCapabilities` **[object][17]?** Selenium's [desired capabilities][7].
 *   `manualStart` **[boolean][33]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
-*   `timeouts` **[object][17]?** [WebDriver timeouts][38] defined as hash.
+*   `timeouts` **[object][17]?** [WebDriver timeouts][39] defined as hash.
 *   `highlightElement` **[boolean][33]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
-*   `logLevel` **[string][18]?** level of logging verbosity. Default: silent. Options: trace | debug | info | warn | error | silent. More info: [https://webdriver.io/docs/configuration/#loglevel][39]
+*   `logLevel` **[string][18]?** level of logging verbosity. Default: silent. Options: trace | debug | info | warn | error | silent. More info: [https://webdriver.io/docs/configuration/#loglevel][40]
 
 
 
@@ -604,7 +605,7 @@ if none provided clears all cookies.
 
 ```js
 I.clearCookie();
-I.clearCookie('test'); // Playwright currently doesn't support clear a particular cookie name
+I.clearCookie('test');
 ```
 
 #### Parameters
@@ -2519,8 +2520,10 @@ Returns **void** automatically synchronized promise through #recorder
 
 [36]: https://webdriver.io/docs/api.html
 
-[37]: http://codecept.io/acceptance/#smartwait
+[37]: https://webdriver.io/docs/api/webdriverBidi/
 
-[38]: http://webdriver.io/docs/timeouts.html
+[38]: http://codecept.io/acceptance/#smartwait
 
-[39]: https://webdriver.io/docs/configuration/#loglevel
+[39]: http://webdriver.io/docs/timeouts.html
+
+[40]: https://webdriver.io/docs/configuration/#loglevel

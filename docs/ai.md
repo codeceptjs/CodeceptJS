@@ -11,7 +11,6 @@ Think of it as your testing co-pilot built into the testing framework
 
 > 🪄 **AI features for testing are experimental**. AI works only for web based testing with Playwright, WebDriver, etc. Those features will be improved based on user's experience.
 
-
 ## How AI Improves Automated Testing
 
 LLMs like ChatGPT can technically write automated tests for you. However, ChatGPT misses the context of your application so it will guess elements on page, instead of writing the code that works.
@@ -22,10 +21,10 @@ So, instead of asking "write me a test" it can ask "write a test for **this** pa
 
 CodeceptJS AI can do the following:
 
-* 🏋️‍♀️ **assist writing tests** in `pause()` or interactive shell mode
-* 📃 **generate page objects** in `pause()` or interactive shell mode
-* 🚑 **self-heal failing tests** (can be used on CI)
-* 💬 send arbitrary prompts to AI provider from any tested page attaching its HTML contents
+- 🏋️‍♀️ **assist writing tests** in `pause()` or interactive shell mode
+- 📃 **generate page objects** in `pause()` or interactive shell mode
+- 🚑 **self-heal failing tests** (can be used on CI)
+- 💬 send arbitrary prompts to AI provider from any tested page attaching its HTML contents
 
 ![](/img/fill_form.gif)
 
@@ -39,29 +38,32 @@ Even though, the HTML is still quite big and may exceed the token limit. So we r
 
 > ❗AI features require sending HTML contents to AI provider. Choosing one may depend on the descurity policy of your company. Ask your security department which AI providers you can use.
 
-
-
 ## Set up AI Provider
 
-To enable AI features in CodeceptJS you should pick an AI provider and add `ai` section to `codecept.conf` file. This section should contain `request` function which will take a prompt from CodeceptJS, send it to AI provider and return a result.
+CodeceptJS uses [Vercel AI SDK](https://ai-sdk.dev) to connect to different AI providers. To enable AI features, add an `ai` section to your `codecept.conf` file with a configured model.
+
+### Quick Start
+
+Install the AI SDK and your preferred provider package:
+
+```bash
+npm install ai @ai-sdk/openai
+# or
+npm install ai @ai-sdk/anthropic
+```
+
+Then configure the model in your `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async (messages) => {
-    // implement OpenAI or any other provider like this
-    const ai = require('my-ai-provider')
-    return ai.send(messages);
-  }
+import { openai } from '@ai-sdk/openai'
+
+export default {
+  // ... other config
+  ai: {
+    model: openai('gpt-4o-mini'),
+  },
 }
 ```
-
-In `request` function `messages` is an array of prompt messages in format
-
-```js
-[{ role: 'user', content: 'prompt text'}]
-```
-
-Which is natively supported by OpenAI, Anthropic, and others. You can adjust messages to expected format before sending a request. The expected response from AI provider is a text in markdown format with code samples, which can be interpreted by CodeceptJS.
 
 Once AI provider is configured run tests with `--ai` flag to enable AI features
 
@@ -71,194 +73,98 @@ npx codeceptjs run --ai
 
 Below we list sample configuration for popular AI providers
 
-#### OpenAI GPT
+### OpenAI GPT
 
-Prerequisite:
+Install the OpenAI provider:
 
-* Install `openai` package
-* obtain `OPENAI_API_KEY` from OpenAI
-* set `OPENAI_API_KEY` as environment variable
+```bash
+npm install @ai-sdk/openai
+```
 
-Sample OpenAI configuration:
+Set your API key as environment variable:
+
+```bash
+export OPENAI_API_KEY=your-api-key
+```
+
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async (messages) => {
-    const OpenAI = require('openai');
-    const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] })
+import { openai } from '@ai-sdk/openai'
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo-0125',
-      messages,
-    });
-
-    return completion?.choices[0]?.message?.content;
-  }
+export default {
+  ai: {
+    model: openai('gpt-4o-mini'),
+    // or use gpt-4o, gpt-3.5-turbo, etc.
+  },
 }
 ```
 
-#### Mixtral
+### Anthropic Claude
 
-Mixtral is opensource and can be used via Cloudflare, Google Cloud, Azure or installed locally.
+Install the Anthropic provider:
 
-The simplest way to try Mixtral on your case is using [Groq Cloud](https://groq.com) which provides Mixtral access with GPT-like API:
+```bash
+npm install @ai-sdk/anthropic
+```
 
-Prerequisite:
+Set your API key as environment variable:
 
-* Install `groq-sdk` package
-* obtain `GROQ_API_KEY` from OpenAI
-* set `GROQ_API_KEY` as environment variable
+```bash
+export ANTHROPIC_API_KEY=your-api-key
+```
 
-Sample Groq configuration with Mixtral model:
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async (messages) => {
-    const chatCompletion = await groq.chat.completions.create({
-        messages,
-        model: "mixtral-8x7b-32768",
-    });
-    return chatCompletion.choices[0]?.message?.content || "";
-  }
+import { anthropic } from '@ai-sdk/anthropic'
+
+export default {
+  ai: {
+    model: anthropic('claude-3-5-sonnet-20241022'),
+    // or use claude-3-opus-20240229, claude-3-haiku-20240307, etc.
+  },
 }
 ```
 
-> Groq also provides access to other opensource models like llama or gemma
+### Google Gemini
 
-#### Anthropic Claude
+Install the Google provider:
 
-Prerequisite:
+```bash
+npm install @ai-sdk/google
+```
 
-* Install `@anthropic-ai/sdk` package
-* obtain `CLAUDE_API_KEY` from Anthropic
-* set `CLAUDE_API_KEY` as environment variable
+Set your API key as environment variable:
+
+```bash
+export GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
+```
+
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async(messages) => {
-    const Anthropic = require('@anthropic-ai/sdk');
+import { google } from '@ai-sdk/google'
 
-    const anthropic = new Anthropic({
-      apiKey: process.env.CLAUDE_API_KEY,
-    });
-
-    const resp = await anthropic.messages.create({
-      model: 'claude-2.1',
-      max_tokens: 1024,
-      messages
-    });
-    return resp.content.map((c) => c.text).join('\n\n');
-  }
+export default {
+  ai: {
+    model: google('gemini-1.5-flash'),
+    // or use gemini-1.5-pro, gemini-2.0-flash-exp, etc.
+  },
 }
 ```
 
-#### Azure OpenAI
+### Other Providers
 
-When your setup using Azure API key
+The AI SDK supports 20+ providers including:
 
-Prerequisite:
+- **xAI (Grok)**: `npm install @ai-sdk/xai`
+- **Mistral**: `npm install @ai-sdk/mistral`
+- **Groq**: `npm install @ai-sdk/groq`
+- **Cohere**: `npm install @ai-sdk/cohere`
+- **Azure OpenAI**: `npm install @ai-sdk/azure`
 
-* Install `@azure/openai` package
-* obtain `Azure API key`, `resource name` and `deployment ID`
-
-```js
-ai: {
-  request: async(messages) => {
-    const { OpenAIClient, AzureKeyCredential } = require("@azure/openai");
-
-    const client = new OpenAIClient(
-      "https://<resource name>.openai.azure.com/",
-      new AzureKeyCredential("<Azure API key>")
-    );
-    const { choices } = await client.getCompletions("<deployment ID>", messages);
-
-    return choices[0]?.message?.content;
-  }
-}
-```
-
-When your setup using `bearer token`
-
-Prerequisite:
-
-* Install `@azure/openai`, `@azure/identity` packages
-* obtain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET`
-
-```js
-ai: {
-  request: async (messages) => {
-    try {
-      const { OpenAIClient} = require("@azure/openai");
-      const { DefaultAzureCredential } = require("@azure/identity");
-
-      const endpoint = process.env.API_ENDPOINT;
-      const deploymentId = process.env.DEPLOYMENT_ID;
-
-      const client = new OpenAIClient(endpoint, new DefaultAzureCredential());
-      const result = await client.getCompletions(deploymentId, {
-        prompt: messages,
-        model: 'gpt-3.5-turbo' // your preferred model
-      });
-
-      return result.choices[0]?.text;
-    } catch (error) {
-      console.error("Error calling API:", error);
-      throw error;
-    }
-  }
-}
-```
-
-Or you could try with direct API request
-
-```js
-ai: {
-  request: async (messages) => {
-    try {
-      const endpoint = process.env.API_ENDPOINT;
-      const deploymentId = process.env.DEPLOYMENT_ID;
-
-      const result = await makeApiRequest(endpoint, deploymentId, messages)
-
-      return result.choices[0]?.message.content
-    } catch (error) {
-      console.error("Error calling API:", error);
-      throw error;
-    }
-  }
-}
-...
-
-async function getAccessToken() {
-  const credential = new DefaultAzureCredential();
-  const scope = "https://cognitiveservices.azure.com/.default";
-
-  try {
-    const accessToken = await credential.getToken(scope);
-    return `Bearer ${accessToken.token}`;
-  } catch (err) {
-    console.error("Failed to get access token:", err);
-  }
-}
-
-async function makeApiRequest(endpoint, deploymentId, messages) {
-  const token = await getAccessToken();
-  const url = `${endpoint}/openai/deployments/${deploymentId}/chat/completions?api-version=2024-06-01`;
-
-  const data = { messages };
-
-  try {
-    const response = await axios.post(url, data, {
-      headers: {
-        'Authorization': `${token}`
-      }
-    });
-    return response.data
-  } catch (err) {
-    console.error("API request failed:", err.response);
-  }
-}
-```
+See [AI SDK Providers](https://ai-sdk.dev/docs/foundations/providers-and-models) for complete list and configuration details.
 
 ## Writing Tests with AI Copilot
 
@@ -273,12 +179,12 @@ npx codeceptjs gt
 Name a test and write the code. We will use `Scenario.only` instead of Scenario to execute only this exact test.
 
 ```js
-Feature('ai');
+Feature('ai')
 
 Scenario.only('test ai features', ({ I }) => {
   I.amOnPage('https://getbootstrap.com/docs/5.1/examples/checkout/')
-  pause();
-});
+  pause()
+})
 ```
 
 Now run the test in debug mode with AI enabled:
@@ -288,7 +194,6 @@ npx codeceptjs run --debug --ai
 ```
 
 When pause mode started you can ask GPT to fill in the fields on this page. Use natural language to describe your request, and provide enough details that AI could operate with it. It is important to include at least a space char in your input, otherwise, CodeceptJS will consider the input to be JavaScript code.
-
 
 ```
  I.fill checkout form with valid values without submitting it
@@ -310,15 +215,13 @@ Please keep in mind that GPT can't react to page changes and operates with stati
 
 In large test suites, the cost of maintaining tests goes exponentially. That's why any effort that can improve the stability of tests pays itself. That's why CodeceptJS has concept of [heal recipes](./heal), functions that can be executed on a test failure. Those functions can try to revive the test and continue execution. When combined with AI, heal recipe can ask AI provider how to fix the test. It will provide error message, step being executed and HTML context of a page. Based on this information AI can suggest the code to be executed to fix the failing test.
 
-
 AI healing can solve exactly one problem: if a locator of an element has changed, and an action can't be performed, **it matches a new locator, tries a command again, and continues executing a test**. For instance, if the "Sign in" button was renamed to "Login" or changed its class, it will detect a new locator of the button and will retry execution.
 
 > You can define your own [heal recipes](./heal) that won't use AI to revive failing tests.
 
-Heal actions **work only on actions like `click`, `fillField`, etc, and won't work on assertions, waiters, grabbers, etc. Assertions can't be guessed by AI, the same way as grabbers, as this may lead to unpredictable results.
+Heal actions \*\*work only on actions like `click`, `fillField`, etc, and won't work on assertions, waiters, grabbers, etc. Assertions can't be guessed by AI, the same way as grabbers, as this may lead to unpredictable results.
 
 If Heal plugin successfully fixes the step, it will print a suggested change at the end of execution. Take it as actionable advice and use it to update the codebase. Heal plugin is supposed to be used on CI, and works automatically without human assistance.
-
 
 To start, make sure [AI provider is connected](#set-up-ai-provider), and [heal recipes were created](/heal#how-to-start-healing) by running this command:
 
@@ -357,6 +260,130 @@ npx codeceptjs run --ai
 When execution finishes, you will receive information on token usage and code suggestions proposed by AI.
 By evaluating this information you will be able to check how effective AI can be for your case.
 
+## Analyze Results
+
+When running tests with AI enabled, CodeceptJS can automatically analyze test failures and provide insights. The analyze plugin helps identify patterns in test failures and provides detailed explanations of what went wrong.
+
+Enable the analyze plugin in your config:
+
+```js
+plugins: {
+  analyze: {
+    enabled: true,
+    // analyze up to 3 failures in detail
+    analyze: 3,
+    // group similar failures when 5 or more tests fail
+    clusterize: 5,
+    // enable screenshot analysis (requires modal that can analyze  screenshots)
+    vision: false
+  }
+}
+```
+
+When tests are executed with `--ai` flag, the analyze plugin will:
+
+**Analyze Individual Failures**: For each failed test (up to the `analyze` limit), it will:
+
+- Examine the error message and stack trace
+- Review the test steps that led to the failure
+- Provide a detailed explanation of what likely caused the failure
+- Suggest possible fixes and improvements
+
+Sample Analysis report:
+
+When analyzing individual failures (less than `clusterize` threshold), the output looks like this:
+
+```
+🪄 AI REPORT:
+--------------------------------
+→ Cannot submit registration form with invalid email 👀
+
+* SUMMARY: Form submission failed due to invalid email format, system correctly shows validation message
+* ERROR: expected element ".success-message" to be visible, but it is not present in DOM
+* CATEGORY: Data errors (password incorrect, no options in select, invalid format, etc)
+* STEPS: I.fillField('#email', 'invalid-email'); I.click('Submit'); I.see('.success-message')
+* URL: /register
+
+```
+
+> The 👀 emoji indicates that screenshot analysis was performed (when `vision: true`).
+
+**Cluster Similar Failures**: When number of failures exceeds the `clusterize` threshold:
+
+- Groups failures with similar error patterns
+- Identifies common root causes
+- Suggests fixes that could resolve multiple failures
+- Helps prioritize which issues to tackle first
+
+**Categorize Failures**: Automatically classifies failures into categories like:
+
+- Browser/connection issues
+- Network errors
+- Element locator problems
+- Navigation errors
+- Code errors
+- Data validation issues
+- etc.
+
+Clusterization output:
+
+```
+🪄 AI REPORT:
+_______________________________
+
+## Group 1 🔍
+
+* SUMMARY: Element locator failures across login flow
+* CATEGORY: HTML / page elements (not found, not visible, etc)
+* ERROR: Element "#login-button" is not visible
+* STEP: I.click('#login-button')
+* SUITE: Authentication
+* TAG: @login
+* AFFECTED TESTS (4):
+    x Cannot login with valid credentials
+    x Should show error on invalid login
+    x Login button should be disabled when form empty
+    x Should redirect to dashboard after login
+
+## Group 2 🌐
+
+* SUMMARY: API timeout issues during user data fetch
+* CATEGORY: Network errors (server error, timeout, etc)
+* URL: /api/v1/users
+* ERROR: Request failed with status code 504, Gateway Timeout
+* SUITE: User Management
+* AFFECTED TESTS (3):
+    x Should load user profile data
+    x Should display user settings
+    x Should fetch user notifications
+
+## Group 3 ⚠️
+
+* SUMMARY: Form validation errors on registration page
+* CATEGORY: Data errors (password incorrect, no options in select, invalid format, etc)
+* ERROR: Expected field "password" to have error "Must be at least 8 characters"
+* STEP: I.see('Must be at least 8 characters', '.error-message')
+* SUITE: User Registration
+* TAG: @registration
+* AFFECTED TESTS (2):
+    x Should validate password requirements
+    x Should show all validation errors on submit
+```
+
+If `vision: true` is enabled and your tests take screenshots on failure, the plugin will also analyze screenshots to provide additional visual context about the failure.
+
+The analysis helps teams:
+
+- Quickly understand the root cause of failures
+- Identify patterns in failing tests
+- Prioritize fixes based on impact
+- Maintain more stable test suites
+
+Run tests with both AI and analyze enabled:
+
+```bash
+npx codeceptjs run --ai
+```
 
 ## Arbitrary Prompts
 
@@ -377,23 +404,23 @@ helpers: {
 
 AI helper will be automatically attached to Playwright, WebDriver, or another web helper you use. It includes the following methods:
 
-* `askGptOnPage` - sends GPT prompt attaching the HTML of the page. Large pages will be split into chunks, according to `chunkSize` config. You will receive responses for all chunks.
-* `askGptOnPageFragment` - sends GPT prompt attaching the HTML of the specific element. This method is recommended over `askGptOnPage` as you can reduce the amount of data to be processed.
-* `askGptGeneralPrompt` - sends GPT prompt without HTML.
-* `askForPageObject` - creates PageObject for you, explained in next section.
+- `askGptOnPage` - sends GPT prompt attaching the HTML of the page. Large pages will be split into chunks, according to `chunkSize` config. You will receive responses for all chunks.
+- `askGptOnPageFragment` - sends GPT prompt attaching the HTML of the specific element. This method is recommended over `askGptOnPage` as you can reduce the amount of data to be processed.
+- `askGptGeneralPrompt` - sends GPT prompt without HTML.
+- `askForPageObject` - creates PageObject for you, explained in next section.
 
 `askGpt` methods won't remove non-interactive elements, so it is recommended to manually control the size of the sent HTML.
 
 Here are some good use cases for this helper:
 
-* get page summaries
-* inside pause mode navigate through your application and ask to document pages
-* etc...
+- get page summaries
+- inside pause mode navigate through your application and ask to document pages
+- etc...
 
 ```js
 // use it inside test or inside interactive pause
 // pretend you are technical writer asking for documentation
-const pageDoc = await I.askGptOnPageFragment('Act as technical writer, describe what is this page for', '#container');
+const pageDoc = await I.askGptOnPageFragment('Act as technical writer, describe what is this page for', '#container')
 ```
 
 As of now, those use cases do not apply to test automation but maybe you can apply them to your testing setup.
@@ -479,14 +506,13 @@ Rename created PageObject to remove timestamp and move it from `output` to `page
 
 ## Advanced Configuration
 
-GPT prompts and HTML compression can also be configured inside `ai` section of `codecept.conf` file:
+AI prompts and HTML compression can be configured inside `ai` section of `codecept.conf` file:
 
 ```js
 ai: {
-  // define how requests to AI are sent
-  request: (messages) => {
-    // ...
-  }
+  // configure AI model (required)
+  model: openai('gpt-4o-mini'),
+
   // redefine prompts
   prompts: {
     // {}
@@ -501,14 +527,56 @@ ai: {
 }
 ```
 
-Default prompts for healing steps or writing steps can be re-declared. Use function that accepts HTML as the first parameter and additional information as second and create a prompt from that information. Prompt should be an array of messages with `role` and `content` data set.
+### Customizing Prompts
+
+CodeceptJS uses three main prompts for AI features:
+
+- `writeStep` - generates test code in interactive pause mode
+- `healStep` - suggests fixes for failing tests
+- `generatePageObject` - creates page objects from HTML
+
+To customize a prompt, generate it using:
+
+```bash
+npx codeceptjs generate:prompt <promptName>
+# or use alias
+npx codeceptjs gp <promptName>
+```
+
+For example, to customize the heal step prompt:
+
+```bash
+npx codeceptjs generate:prompt healStep
+```
+
+This creates `prompts/healStep.js` file in your project root:
+
+```js
+export default (html, { step, error, prevSteps }) => {
+  return [
+    {
+      role: 'user',
+      content: `As a test automation engineer I am testing web application using CodeceptJS.
+      I want to heal a test that fails. Here is the list of executed steps: ${prevSteps.map(s => s.toString()).join(', ')}
+      Propose how to adjust ${step.toCode()} step to fix the test.
+      Use locators in order of preference: semantic locator by text, CSS, XPath. Use codeblocks marked with \`\`\`
+      Here is the error message: ${error.message}
+      Here is HTML code of a page where the failure has happened: \n\n${html}`,
+    },
+  ]
+}
+```
+
+Modify this prompt to fit your needs. CodeceptJS will automatically load custom prompts from the `prompts/` directory when AI features are enabled.
+
+You can also override prompts programmatically in config:
 
 ```js
 ai: {
   prompts: {
     writeStep: (html, input) => [{ role: 'user', content: 'As a test engineer...' }]
     healStep: (html, { step, error, prevSteps }) => [{ role: 'user', content: 'As a test engineer...' }]
-    generatePageObject: (html, extraPrompt = '',  rootLocator = null) => [{ role: 'user', content: 'As a test engineer...' }]
+    generatePageObject: (html, extraPrompt = '', rootLocator = null) => [{ role: 'user', content: 'As a test engineer...' }]
   }
 }
 ```
@@ -531,34 +599,33 @@ ai: {
 }
 ```
 
-* `maxLength`: the size of HTML to cut to not reach the token limit. 50K is the current default but you may try to increase it or even set it to null.
-* `simplify`: should we process HTML before sending to GPT. This will remove all non-interactive elements from HTML.
-* `minify`: should HTML be additionally minified. This removed empty attributes, shortens notations, etc.
-* `interactiveElements`: explicit list of all elements that are considered interactive.
-* `textElements`: elements that contain text which can be used for test automation.
-* `allowedAttrs`: explicit list of attributes that may be used to construct locators. If you use special `data-` attributes to enable locators, add them to the list.
-* `allowedRoles`: list of roles that make standard elements interactive.
+- `maxLength`: the size of HTML to cut to not reach the token limit. 50K is the current default but you may try to increase it or even set it to null.
+- `simplify`: should we process HTML before sending to GPT. This will remove all non-interactive elements from HTML.
+- `minify`: should HTML be additionally minified. This removed empty attributes, shortens notations, etc.
+- `interactiveElements`: explicit list of all elements that are considered interactive.
+- `textElements`: elements that contain text which can be used for test automation.
+- `allowedAttrs`: explicit list of attributes that may be used to construct locators. If you use special `data-` attributes to enable locators, add them to the list.
+- `allowedRoles`: list of roles that make standard elements interactive.
 
 It is recommended to try HTML processing on one of your web pages before launching AI features of CodeceptJS.
-
 
 To do that open the common page of your application and using DevTools copy the outerHTML of `<html>` element. Don't use `Page Source` for that, as it may not include dynamically added HTML elements. Save this HTML into a file and create a NodeJS script:
 
 ```js
-const { removeNonInteractiveElements } = require('codeceptjs/lib/html');
-const fs = require('fs');
+const { removeNonInteractiveElements } = require('codeceptjs/lib/html')
+const fs = require('fs')
 
 const htmlOpts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],
   allowedAttrs: ['id', 'for', 'class', 'name', 'type', 'value', 'aria-labelledby', 'aria-label', 'label', 'placeholder', 'title', 'alt', 'src', 'role'],
   textElements: ['label', 'h1', 'h2'],
   allowedRoles: ['button', 'checkbox', 'search', 'textbox', 'tab'],
-};
+}
 
-html = fs.readFileSync('saved.html', 'utf8');
-const result = removeNonInteractiveElements(html, htmlOpts);
+html = fs.readFileSync('saved.html', 'utf8')
+const result = removeNonInteractiveElements(html, htmlOpts)
 
-console.log(result);
+console.log(result)
 ```
 
 Tune the options until you are satisfied with the results and use this as `html` config for `ai` section inside `codecept.conf` file.
@@ -571,9 +638,7 @@ For instance, if you use `data-qa` attributes to specify locators and you want t
   // inside codecept.conf.js
   ai: {
     html: {
-      allowedAttrs: [
-        'data-qa', 'id', 'for', 'class', 'name', 'type', 'value', 'aria-labelledby', 'aria-label', 'label', 'placeholder', 'title', 'alt', 'src', 'role'
-      ]
+      allowedAttrs: ['data-qa', 'id', 'for', 'class', 'name', 'type', 'value', 'aria-labelledby', 'aria-label', 'label', 'placeholder', 'title', 'alt', 'src', 'role']
     }
   }
 }

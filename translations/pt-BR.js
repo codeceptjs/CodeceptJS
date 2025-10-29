@@ -1,9 +1,10 @@
-module.exports = {
+import { gherkinTranslations } from './utils.js'
+const langCode = 'pt'
+
+export default {
   I: 'Eu',
   contexts: {
-    Feature: 'Funcionalidade',
-    Scenario: 'Cenário',
-    ScenarioOutline: 'Esquema do Cenário',
+    ...gherkinTranslations(langCode),
     Before: 'Antes',
     After: 'Depois',
     BeforeSuite: 'AntesDaSuite',

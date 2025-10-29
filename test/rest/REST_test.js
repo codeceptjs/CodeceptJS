@@ -1,14 +1,19 @@
-const path = require('path')
-const { expect } = require('expect')
-const fs = require('fs')
+import path from 'path'
+import { expect } from 'expect'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
 
-const TestHelper = require('../support/TestHelper')
-const REST = require('../../lib/helper/REST')
-const Container = require('../../lib/container')
-const Secret = require('../../lib/secret')
+import TestHelper from '../support/TestHelper.js'
+import REST from '../../lib/helper/REST.js'
+import Container from '../../lib/container.js'
+import Secret from '../../lib/secret.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const api_url = TestHelper.jsonServerUrl()
-global.codeceptjs = require('../../lib')
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 let I
 const dbFile = path.join(__dirname, '/../data/rest/db.json')
@@ -28,7 +33,7 @@ const data = {
 }
 
 describe('REST', () => {
-  beforeEach((done) => {
+  beforeEach(done => {
     I = new REST({
       endpoint: api_url,
       defaultHeaders: {
@@ -117,7 +122,7 @@ describe('REST', () => {
     })
 
     it('should update request with onRequest', async () => {
-      I.config.onRequest = (request) => (request.data = { name: 'Vasya' })
+      I.config.onRequest = request => (request.data = { name: 'Vasya' })
 
       const response = await I.sendPostRequest('/user', { name: 'john' })
       response.data.name.should.eql('Vasya')
@@ -133,13 +138,14 @@ describe('REST', () => {
   describe('JSONResponse integration', () => {
     let jsonResponse
 
-    beforeEach(() => {
+    beforeEach(async () => {
       Container.create({
         helpers: {
           REST: {},
           JSONResponse: {},
         },
       })
+      await Container.started()
       I = Container.helpers('REST')
       jsonResponse = Container.helpers('JSONResponse')
       jsonResponse._beforeSuite()
@@ -150,7 +156,7 @@ describe('REST', () => {
     })
 
     it('should be able to parse JSON responses', async () => {
-      await I.sendGetRequest('https://reqres.in/api/comments/1')
+      await I.sendGetRequest('https://reqres.in/api/comments/1', { 'x-api-key': 'reqres-free-v1' })
       await jsonResponse.seeResponseCodeIsSuccessful()
       await jsonResponse.seeResponseContainsKeys(['data', 'support'])
     })
@@ -306,7 +312,7 @@ describe('REST', () => {
 })
 
 describe('REST - Form upload', () => {
-  beforeEach((done) => {
+  beforeEach(done => {
     I = new REST({
       endpoint: 'http://the-internet.herokuapp.com/',
       maxUploadFileSize: 0.00008,

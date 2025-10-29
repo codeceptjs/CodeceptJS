@@ -1,8 +1,8 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 20,
   output: './output',
   helpers: {
     WebDriver: {
@@ -11,11 +11,11 @@ module.exports.config = {
       host: TestHelper.seleniumHost(),
       port: TestHelper.seleniumPort(),
       // disableScreenshots: true,
-      // desiredCapabilities: {
-      //   chromeOptions: {
-      //     args: ['--headless', '--disable-gpu', '--window-size=1280,1024'],
-      //   },
-      // },
+      desiredCapabilities: {
+        chromeOptions: {
+          args: ['--headless', '--disable-gui', '--window-size=500,700'],
+        },
+      },
     },
     ScreenshotSessionHelper: {
       require: '../support/ScreenshotSessionHelper.js',
@@ -28,7 +28,7 @@ module.exports.config = {
   include: {},
   bootstrap: async () =>
     new Promise(done => {
-      setTimeout(done, 5000);
+      setTimeout(done, 5000)
     }), // let's wait for selenium
   mocha: {},
   name: 'acceptance',
@@ -41,4 +41,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-};
+}

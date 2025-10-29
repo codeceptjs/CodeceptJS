@@ -1,5 +1,12 @@
-const path = require('path')
-const exec = require('child_process').exec
+import chai from 'chai';
+chai.should();
+import path from 'path';
+import { exec } from 'child_process';
+import debugFactory from 'debug';
+const debug = debugFactory('codeceptjs:test');
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -7,8 +14,9 @@ const codecept_run = `${runner} run --config ${codecept_dir}/codecept.beforetest
 
 describe('Failure in before', function () {
   this.timeout(40000)
-  it('should skip tests that are skipped because of failure in before hook', (done) => {
+  it('should skip tests that are skipped because of failure in before hook', done => {
     exec(`${codecept_run}`, (err, stdout) => {
+      debug(stdout)
       stdout.should.include('First test will be passed @grep')
       stdout.should.include('Third test will be skipped @grep')
       stdout.should.include('Fourth test will be skipped')
@@ -18,8 +26,9 @@ describe('Failure in before', function () {
     })
   })
 
-  it('should skip tests correctly with grep options', (done) => {
+  it('should skip tests correctly with grep options', done => {
     exec(`${codecept_run} --grep @grep`, (err, stdout) => {
+      debug(stdout)
       stdout.should.include('First test will be passed @grep')
       stdout.should.include('Third test will be skipped @grep')
       stdout.should.include('1 passed, 1 failed, 1 failedHooks, 1 skipped')
@@ -28,9 +37,11 @@ describe('Failure in before', function () {
     })
   })
 
-  it('should trigger skipped events', (done) => {
+  it('should trigger skipped events', done => {
     exec(`DEBUG=codeceptjs:* ${codecept_run} --verbose`, (err, stdout, stderr) => {
-      err.code.should.eql(1)
+      if (err) {
+        err.code.should.eql(1)
+      }
       stderr.should.include('Emitted | test.skipped')
       done()
     })

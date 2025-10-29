@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
   tests: './*_ftest.js',
   output: './output',
   helpers: {

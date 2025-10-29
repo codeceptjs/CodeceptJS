@@ -1,8 +1,8 @@
-const TestHelper = require('../support/TestHelper');
+import TestHelper from '../support/TestHelper.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 10,
   output: './output',
   grep: '@Playwright',
   helpers: {
@@ -12,6 +12,11 @@ module.exports.config = {
       restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
       ignoreHTTPSErrors: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chromium: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+      },
       webkit: {
         ignoreHTTPSErrors: true,
       },
@@ -32,7 +37,7 @@ module.exports.config = {
     screenshotOnFail: {
       enabled: true,
     },
-    retryTo: {
+    retryFailedStep: {
       enabled: true,
     },
   },
@@ -41,4 +46,4 @@ module.exports.config = {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],
   },
-};
+}

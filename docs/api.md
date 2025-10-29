@@ -267,24 +267,32 @@ I.seeResponseContainsKeys(['name', 'email']);
 > ℹ️ If response is an array, it will check that every element in array have provided keys
 
 However, this is a very naive approach. It won't work for arrays or nested objects.
-To check complex JSON structures `JSONResponse` helper uses [`joi`](https://joi.dev) library. 
-It has rich API to validate JSON by the schema defined using JavaScript. 
+To check complex JSON structures `JSONResponse` helper uses [`Zod`](https://zod.dev) library.
+It has rich API to validate JSON by the schema defined using JavaScript.
 
 ```js
-// require joi library, 
+// import zod library,
 // it is installed with CodeceptJS
-const Joi = require('joi');
+import { z } from 'zod';
 
-// create schema definition using Joi API
-const schema = Joi.object().keys({
-  email: Joi.string().email().required(),
-  phone: Joi.string().regex(/^\d{3}-\d{3}-\d{4}$/).required(),
-  birthday: Joi.date().max('1-1-2004').iso()
+// create schema definition using Zod API
+const schema = z.object({
+  email: z.string().email(),
+  phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/),
+  birthday: z.string().datetime().max(new Date('2004-01-01'))
 });
 
 // check that response matches that schema
 I.seeResponseMatchesJsonSchema(schema);
 ```
+
+> 📋 **Migration Note**: CodeceptJS has migrated from Joi to Zod v4 for JSON schema validation.
+> If you have existing tests using Joi, please update them:
+> * Replace `const Joi = require('joi')` with `import { z } from 'zod'`
+> * Replace `Joi.object().keys({...})` with `z.object({...})`
+> * Replace `Joi.string().email()` with `z.string().email()`
+> * Replace `Joi.date()` with appropriate `z.string()` or `z.date()` types
+> * See [Zod documentation](https://zod.dev) for complete API reference
 
 ### Data Inclusion
 
