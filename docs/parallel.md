@@ -95,6 +95,7 @@ npx codeceptjs run-workers --suites 2
 CodeceptJS supports three different strategies for distributing tests across workers:
 
 #### Default Strategy (`--by test`)
+
 Tests are pre-assigned to workers at startup, distributing them evenly across all workers. Each worker gets a predetermined set of tests to run.
 
 ```sh
@@ -102,6 +103,7 @@ npx codeceptjs run-workers 3 --by test
 ```
 
 #### Suite Strategy (`--by suite`)
+
 Test suites are pre-assigned to workers, with all tests in a suite running on the same worker. This ensures better test isolation but may lead to uneven load distribution.
 
 ```sh
@@ -109,6 +111,7 @@ npx codeceptjs run-workers 3 --by suite
 ```
 
 #### Pool Strategy (`--by pool`) - **Recommended for optimal performance**
+
 Tests are maintained in a shared pool and distributed dynamically to workers as they become available. This provides the best load balancing and resource utilization.
 
 ```sh
@@ -121,19 +124,19 @@ The pool mode enables dynamic test distribution for improved worker load balanci
 
 ### Benefits of Pool Mode
 
-* **Better load balancing**: Workers never sit idle while others are still running long tests
-* **Improved performance**: Especially beneficial when tests have varying execution times
-* **Optimal resource utilization**: All CPU cores stay busy until the entire test suite is complete
-* **Automatic scaling**: Workers continuously process tests until the pool is empty
+- **Better load balancing**: Workers never sit idle while others are still running long tests
+- **Improved performance**: Especially beneficial when tests have varying execution times
+- **Optimal resource utilization**: All CPU cores stay busy until the entire test suite is complete
+- **Automatic scaling**: Workers continuously process tests until the pool is empty
 
 ### When to Use Pool Mode
 
 Pool mode is particularly effective in these scenarios:
 
-* **Uneven test execution times**: When some tests take significantly longer than others
-* **Large test suites**: With hundreds or thousands of tests where load balancing matters
-* **Mixed test types**: When combining unit tests, integration tests, and end-to-end tests
-* **CI/CD pipelines**: For consistent and predictable test execution times
+- **Uneven test execution times**: When some tests take significantly longer than others
+- **Large test suites**: With hundreds or thousands of tests where load balancing matters
+- **Mixed test types**: When combining unit tests, integration tests, and end-to-end tests
+- **CI/CD pipelines**: For consistent and predictable test execution times
 
 ### Usage Examples
 
@@ -144,7 +147,7 @@ npx codeceptjs run-workers 4 --by pool
 # Pool mode with grep filtering
 npx codeceptjs run-workers 3 --by pool --grep "@smoke"
 
-# Pool mode in debug mode  
+# Pool mode in debug mode
 npx codeceptjs run-workers 2 --by pool --debug
 
 # Pool mode with specific configuration
@@ -165,7 +168,7 @@ npx codeceptjs run-workers 3 --by pool -c codecept.conf.js
 # Traditional mode - tests pre-assigned, some workers may finish early
 npx codeceptjs run-workers 3 --by test   # ✓ Good for uniform test times
 
-# Suite mode - entire suites assigned to workers  
+# Suite mode - entire suites assigned to workers
 npx codeceptjs run-workers 3 --by suite  # ✓ Good for test isolation
 
 # Pool mode - tests distributed dynamically
@@ -437,17 +440,17 @@ async function runWorkers() {
 Inside `event.all.result` you can obtain test results from all workers, so you can customize the report:
 
 ```js
-workers.on(event.all.result, (status, completedTests, workerStats) => {
+workers.on(event.all.result, result => {
   // print output
-  console.log('Test status : ', status ? 'Passes' : 'Failed ');
+  console.log('Test status : ', result.hasFailed() ? 'Failed' : 'Passed');
 
   // print stats
-  console.log(`Total tests : ${workerStats.tests}`);
-  console.log(`Passed tests : ${workerStats.passes}`);
-  console.log(`Failed test tests : ${workerStats.failures}`);
+  console.log(`Total tests : ${result.stats.tests}`);
+  console.log(`Passed tests : ${result.stats.passes}`);
+  console.log(`Failed test tests : ${result.stats.failures}`);
 
-  // If you don't want to listen for failed and passed test separately, use completedTests object
-  for (const test of Object.values(completedTests)) {
+  // If you don't want to listen for failed and passed test separately, use `tests` array
+  for (const test of result.tests) {
     console.log(`Test status: ${test.err===null}, `, `Test : ${test.title}`);
   }
 }
@@ -498,7 +501,7 @@ workers.on('message', data => {
   console.log(data)
 })
 
-workers.on(event.all.result, (status, completedTests, workerStats) => {
+workers.on(event.all.result, result => {
   // logic
 })
 ```
