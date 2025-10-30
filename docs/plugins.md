@@ -817,7 +817,7 @@ Enable it manually on each run via `-p` option:
 
 ## reportData
 
-TypeScript: Explicitly type reportData arrays as any\[] to avoid 'never' errors
+TypeScript: Explicitly type reportData arrays as any[] to avoid 'never' errors
 
 ## retryFailedStep
 
