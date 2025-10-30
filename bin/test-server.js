@@ -4,8 +4,13 @@
  * Standalone test server script to replace json-server
  */
 
-const path = require('path')
-const TestServer = require('../lib/test-server')
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import TestServer from '../lib/test-server.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // Parse command line arguments
 const args = process.argv.slice(2)
