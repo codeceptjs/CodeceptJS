@@ -4,7 +4,7 @@ const assert = require('assert')
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/only')
-const codecept_run = `${runner} run --config ${codecept_dir}/codecept.conf.js `
+const codecept_run = `${runner} run --config ${codecept_dir}/codecept.conf.cjs `
 
 describe('Feature.only', () => {
   it('should run only scenarios in Feature.only and skip other features', done => {
