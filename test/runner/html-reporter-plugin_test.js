@@ -11,7 +11,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   this.timeout(10000)
 
   it('should generate HTML report', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       // Check if HTML report file exists
@@ -93,7 +93,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should export test stats when configured', done => {
-    exec(config_run_config('codecept-with-stats.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept-with-stats.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       // Check if stats export file exists
@@ -121,7 +121,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should track history when configured', done => {
-    exec(config_run_config('codecept-with-history.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept-with-history.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       // Check if history file exists
@@ -143,7 +143,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should support BDD/Gherkin scenarios', done => {
-    exec(config_run_config('codecept-bdd.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept-bdd.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       // Check if HTML report file exists
@@ -189,7 +189,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
 
   it('should display correct feature names in worker mode', done => {
     // Test for the "Unknown Feature" fix when running with workers
-    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.cjs`
 
     exec(runCmd, (err, stdout) => {
       debug(stdout)
@@ -225,7 +225,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should preserve step details for all tests including worker runs', done => {
-    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.cjs`
 
     exec(runCmd, (err, stdout) => {
       debug(stdout)
@@ -244,7 +244,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
       // After fix: I.amInPath(".") - with argument
       expect(reportContent).toContain('I.amInPath(".")')
       expect(reportContent).toContain('I.seeFile("package.json")')
-      expect(reportContent).toContain('I.seeFile("codecept.conf.js")')
+      expect(reportContent).toContain('I.seeFile("codecept.conf.cjs")')
 
       // Verify steps have the complete step-title with arguments
       const stepTitleMatches = reportContent.match(/<span class="step-title">([^<]+)<\/span>/g)
@@ -262,7 +262,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should render high-resolution test history chart', done => {
-    exec(config_run_config('codecept-with-history.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept-with-history.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -289,7 +289,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should include "Go to Top" button for UI/UX', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -324,7 +324,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should not show HTML Reporter debug logs in normal mode', done => {
-    exec(config_run_config('codecept.conf.js', null, false), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.conf.cjs', null, false), (err, stdout, stderr) => {
       debug(stdout)
 
       const combinedOutput = stdout + stderr
@@ -350,7 +350,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should show HTML Reporter debug logs in verbose/debug mode', done => {
-    exec(config_run_config('codecept.conf.js', null, true), (err, stdout, stderr) => {
+    exec(config_run_config('codecept.conf.cjs', null, true), (err, stdout, stderr) => {
       debug(stdout)
 
       const combinedOutput = stdout + stderr
@@ -372,7 +372,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should handle artifacts in worker mode', done => {
-    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.cjs`
 
     exec(runCmd, (err, stdout) => {
       debug(stdout)
@@ -404,7 +404,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should consolidate worker results correctly', done => {
-    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.cjs`
 
     exec(runCmd, (err, stdout) => {
       debug(stdout)
@@ -445,7 +445,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
 
   it('should handle test retries and display retry information', done => {
     // Use the retry test configuration
-    exec(config_run_config('codecept-with-retries.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept-with-retries.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'retry-report.html')
@@ -474,7 +474,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should apply filters correctly', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -502,7 +502,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should display system information when available', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -522,7 +522,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
     const emptyTestFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'empty_test.js')
     fs.writeFileSync(emptyTestFile, "Feature('Empty Feature')\n\n// No scenarios\n")
 
-    exec(config_run_config('codecept.conf.js', 'Empty Feature'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'Empty Feature'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -541,7 +541,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should escape HTML in test names and error messages', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -567,7 +567,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
 
   // Comprehensive E2E test validating all 5 major fixes together
   it('should have all 5 major fixes working in worker mode (comprehensive E2E)', done => {
-    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.cjs`
 
     exec(runCmd, (err, stdout, stderr) => {
       debug(stdout)
@@ -630,7 +630,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   // ===== NEW IMPROVEMENT TESTS =====
 
   it('should display enhanced hook information with location and context', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -652,7 +652,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should group test results by feature name', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -678,7 +678,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should display enhanced metrics including flaky tests and artifacts', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -708,7 +708,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should display retry history inline with enhanced status badges', done => {
-    exec(config_run_config('codecept-with-retries.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept-with-retries.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'retry-report.html')
@@ -734,7 +734,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should NOT display inspiration section (removed)', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -751,7 +751,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should display test performance analysis section', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -774,7 +774,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should display enhanced history section with timeline', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -797,7 +797,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should have feature groups with collapse/expand functionality', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -817,7 +817,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should NOT display feature name in individual test entries', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
@@ -833,7 +833,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should display worker info when running with workers', done => {
-    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.js`
+    const runCmd = `${codecept_run} --config ${codecept_dir}/configs/html-reporter-plugin/codecept-workers.conf.cjs`
 
     exec(runCmd, (err, stdout) => {
       debug(stdout)
@@ -856,7 +856,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
   })
 
   it('should have all new features working together (comprehensive check)', done => {
-    exec(config_run_config('codecept.conf.js'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs'), (err, stdout) => {
       debug(stdout)
 
       const reportFile = path.join(`${codecept_dir}/configs/html-reporter-plugin`, 'output', 'report.html')
