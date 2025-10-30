@@ -124,8 +124,7 @@ describe('Container', () => {
       expect(container.support('support1').name).to.eql('hello')
       expect(container.support('support2')).is.ok
       expect(container.support('support2').name).to.eql('world')
-
-      expect(() => container.support('support3').name).to.throw(Error)
+      expect(container.support('support3').name).to.be.undefined
     })
   })
 
