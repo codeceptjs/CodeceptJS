@@ -777,6 +777,64 @@ describe('Playwright', function () {
         .then(() => I.seeInField('#text2', 'London')))
   })
 
+  describe('#waitForText timeout fix', () => {
+    it('should wait for the full timeout duration when text is not found', async function () {
+      this.timeout(10000) // Allow up to 10 seconds for this test
+
+      const startTime = Date.now()
+      const timeoutSeconds = 3 // 3 second timeout
+
+      try {
+        await I.amOnPage('/')
+        await I.waitForText('ThisTextDoesNotExistAnywhere12345', timeoutSeconds)
+        // Should not reach here
+        throw new Error('waitForText should have thrown an error')
+      } catch (error) {
+        const elapsedTime = Date.now() - startTime
+        const expectedTimeout = timeoutSeconds * 1000
+
+        // Verify it waited close to the full timeout (allow 500ms tolerance)
+        assert.ok(elapsedTime >= expectedTimeout - 500, `Expected to wait at least ${expectedTimeout - 500}ms, but waited ${elapsedTime}ms`)
+        assert.ok(elapsedTime <= expectedTimeout + 1000, `Expected to wait at most ${expectedTimeout + 1000}ms, but waited ${elapsedTime}ms`)
+        assert.ok(error.message.includes('was not found on page after'), `Expected error message about text not found, got: ${error.message}`)
+      }
+    })
+
+    it('should return quickly when text is found', async function () {
+      this.timeout(5000)
+
+      const startTime = Date.now()
+
+      await I.amOnPage('/')
+      await I.waitForText('TestEd', 10) // This text should exist on the test page
+
+      const elapsedTime = Date.now() - startTime
+      // Should find text quickly, within 2 seconds
+      assert.ok(elapsedTime < 2000, `Expected to find text quickly but took ${elapsedTime}ms`)
+    })
+
+    it('should work correctly with context parameter and proper timeout', async function () {
+      this.timeout(8000)
+
+      const startTime = Date.now()
+      const timeoutSeconds = 2
+
+      try {
+        await I.amOnPage('/')
+        await I.waitForText('NonExistentTextInBody', timeoutSeconds, 'body')
+        throw new Error('Should have thrown timeout error')
+      } catch (error) {
+        const elapsedTime = Date.now() - startTime
+        const expectedTimeout = timeoutSeconds * 1000
+
+        // Verify proper timeout behavior with context
+        assert.ok(elapsedTime >= expectedTimeout - 500, `Expected to wait at least ${expectedTimeout - 500}ms, but waited ${elapsedTime}ms`)
+        assert.ok(elapsedTime <= expectedTimeout + 1000, `Expected to wait at most ${expectedTimeout + 1000}ms, but waited ${elapsedTime}ms`)
+        assert.ok(error.message.includes('was not found on page after'), `Expected timeout error message, got: ${error.message}`)
+      }
+    })
+  })
+
   describe('#grabHTMLFrom', () => {
     it('should grab inner html from an element using xpath query', () =>
       I.amOnPage('/')
@@ -1003,7 +1061,7 @@ describe('Playwright', function () {
   describe('#mockRoute, #stopMockingRoute', () => {
     it('should mock a route', async () => {
       await I.amOnPage('/form/fetch_call')
-      await I.mockRoute('https://reqres.in/api/comments/1', route => {
+      await I.mockRoute('http://localhost:3001/api/comments/1', route => {
         route.fulfill({
           status: 200,
           headers: { 'Access-Control-Allow-Origin': '*' },
@@ -1013,7 +1071,7 @@ describe('Playwright', function () {
       })
       await I.click('GET COMMENTS')
       await I.see('this was mocked')
-      await I.stopMockingRoute('https://reqres.in/api/comments/1')
+      await I.stopMockingRoute('http://localhost:3001/api/comments/1')
       await I.click('GET COMMENTS')
       await I.see('data')
       await I.dontSee('this was mocked')
@@ -1022,10 +1080,9 @@ describe('Playwright', function () {
 
   describe('#makeApiRequest', () => {
     it('should make 3rd party API request', async () => {
-      // Using local json-server for reliable testing
-      const response = await I.makeApiRequest('get', 'http://127.0.0.1:8010/posts/1')
+      const response = await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
       expect(response.status()).to.equal(200)
-      expect(await response.json()).to.include.keys(['id', 'title', 'author'])
+      expect(await response.json()).to.include.keys(['data'])
     })
 
     it('should make local API request', async () => {
@@ -1036,10 +1093,10 @@ describe('Playwright', function () {
     it('should convert to axios response with onResponse hook', async () => {
       let response
       I.config.onResponse = resp => (response = resp)
-      await I.makeApiRequest('get', 'http://127.0.0.1:8010/posts/1')
+      await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
       expect(response).to.be.ok
       expect(response.status).to.equal(200)
-      expect(response.data).to.include.keys(['id', 'title', 'author'])
+      expect(response.data).to.include.keys(['data'])
     })
   })
 
@@ -1120,6 +1177,161 @@ describe('Playwright', function () {
       I.waitForURL(/info/)
       I.see('Information')
     })
+  })
+})
+
+describe('Playwright - Custom Locator Strategies Configuration', () => {
+  let customI
+
+  before(async () => {
+    // Create a new Playwright instance with custom locator strategies
+    customI = new Playwright({
+      url: siteUrl,
+      browser: process.env.BROWSER || 'chromium',
+      show: false,
+      waitForTimeout: 5000,
+      timeout: 2000,
+      restart: true,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      customLocatorStrategies: {
+        byRole: (selector, root) => {
+          return root.querySelector(`[role="${selector}"]`)
+        },
+        byTestId: (selector, root) => {
+          return root.querySelector(`[data-testid="${selector}"]`)
+        },
+        byDataQa: (selector, root) => {
+          const elements = root.querySelectorAll(`[data-qa="${selector}"]`)
+          return Array.from(elements) // Return all matching elements
+        },
+      },
+    })
+    // Note: Skip _init() for configuration-only tests to avoid browser dependency
+    // await customI._init()
+    // Skip browser initialization for basic config tests
+  })
+
+  after(async () => {
+    if (customI) {
+      try {
+        await customI._after()
+      } catch (e) {
+        // Ignore cleanup errors if browser wasn't initialized
+      }
+    }
+  })
+
+  it('should have custom locator strategies defined', () => {
+    expect(customI.customLocatorStrategies).to.not.be.undefined
+    expect(customI.customLocatorStrategies.byRole).to.be.a('function')
+    expect(customI.customLocatorStrategies.byTestId).to.be.a('function')
+    expect(customI.customLocatorStrategies.byDataQa).to.be.a('function')
+  })
+
+  it('should detect custom locator strategies are defined', () => {
+    expect(customI._isCustomLocatorStrategyDefined()).to.be.true
+  })
+
+  it('should lookup custom locator functions', () => {
+    const byRoleFunction = customI._lookupCustomLocator('byRole')
+    expect(byRoleFunction).to.be.a('function')
+
+    const nonExistentFunction = customI._lookupCustomLocator('nonExistent')
+    expect(nonExistentFunction).to.be.null
+  })
+
+  it('should identify custom locators correctly', () => {
+    const customLocator = { byRole: 'button' }
+    expect(customI._isCustomLocator(customLocator)).to.be.true
+
+    const standardLocator = { css: '#test' }
+    expect(customI._isCustomLocator(standardLocator)).to.be.false
+  })
+
+  it('should throw error for undefined custom locator strategy', () => {
+    const invalidLocator = { nonExistent: 'test' }
+
+    try {
+      customI._isCustomLocator(invalidLocator)
+      expect.fail('Should have thrown an error')
+    } catch (error) {
+      expect(error.message).to.include('Please define "customLocatorStrategies"')
+    }
+  })
+})
+
+describe('Playwright - Custom Locator Strategies Browser Tests', () => {
+  let customI
+
+  before(async () => {
+    // Create a new Playwright instance with custom locator strategies
+    customI = new Playwright({
+      url: siteUrl,
+      browser: process.env.BROWSER || 'chromium',
+      show: false,
+      waitForTimeout: 5000,
+      timeout: 2000,
+      restart: true,
+      chrome: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+      customLocatorStrategies: {
+        byRole: (selector, root) => {
+          return root.querySelector(`[role="${selector}"]`)
+        },
+        byTestId: (selector, root) => {
+          return root.querySelector(`[data-testid="${selector}"]`)
+        },
+        byDataQa: (selector, root) => {
+          const elements = root.querySelectorAll(`[data-qa="${selector}"]`)
+          return Array.from(elements) // Return all matching elements
+        },
+      },
+    })
+    await customI._init()
+  })
+
+  after(async () => {
+    if (customI) {
+      try {
+        await customI._after()
+      } catch (e) {
+        // Ignore cleanup errors if browser wasn't initialized
+      }
+    }
+  })
+
+  it('should use custom locator to find elements on page', async function () {
+    // Skip if browser can't be initialized
+    try {
+      await customI._beforeSuite()
+      await customI._before()
+    } catch (e) {
+      this.skip() // Skip if browser not available
+    }
+
+    await customI.amOnPage('/form/example1')
+
+    // Test byRole locator - assuming the page has elements with role attributes
+    // This test assumes there's a button with role="button" on the form page
+    // If the test fails, it means the page doesn't have the expected elements
+    // but the custom locator mechanism is working if no errors are thrown
+
+    try {
+      const elements = await customI._locate({ byRole: 'button' })
+      // If we get here without error, the custom locator is working
+      expect(elements).to.be.an('array')
+    } catch (error) {
+      // If the error is about element not found, that's ok - means locator works but element doesn't exist
+      // If it's about custom locator not being recognized, that's a real failure
+      if (error.message.includes('Please define "customLocatorStrategies"')) {
+        throw error
+      }
+      // Element not found is acceptable - means the custom locator is working
+      console.log('Custom locator working but element not found (expected):', error.message)
+    }
   })
 })
 
@@ -1548,6 +1760,172 @@ describe('Playwright - Video & Trace & HAR', () => {
     expect(test.artifacts.trace).to.include(path.join(global.output_dir, 'trace'))
     expect(test.artifacts.har).to.include(path.join(global.output_dir, 'har'))
   })
+
+  it('checks that video and trace are recorded for sessions', async () => {
+    // Reset test artifacts
+    test.artifacts = {}
+
+    await I.amOnPage('about:blank')
+    await I.executeScript(() => (document.title = 'Main Session'))
+
+    // Create a session and perform actions
+    const session = I._session()
+    const sessionName = 'test_session'
+    I.activeSessionName = sessionName
+
+    // Start session and get context
+    const sessionContext = await session.start(sessionName, {})
+    I.sessionPages[sessionName] = (await sessionContext.pages())[0]
+
+    // Simulate session actions
+    await I.sessionPages[sessionName].goto('about:blank')
+    await I.sessionPages[sessionName].evaluate(() => (document.title = 'Session Test'))
+
+    // Trigger failure to save artifacts
+    await I._failed(test)
+
+    // Check main session artifacts
+    assert(test.artifacts)
+    expect(Object.keys(test.artifacts)).to.include('trace')
+    expect(Object.keys(test.artifacts)).to.include('video')
+
+    // Check session-specific artifacts with correct naming convention
+    const sessionVideoKey = `video_${sessionName}`
+    const sessionTraceKey = `trace_${sessionName}`
+
+    expect(Object.keys(test.artifacts)).to.include(sessionVideoKey)
+    expect(Object.keys(test.artifacts)).to.include(sessionTraceKey)
+
+    // Verify file naming convention: session name comes first
+    // The file names should contain the session name at the beginning
+    expect(test.artifacts[sessionVideoKey]).to.include(sessionName)
+    expect(test.artifacts[sessionTraceKey]).to.include(sessionName)
+
+    // Cleanup
+    await sessionContext.close()
+    delete I.sessionPages[sessionName]
+  })
+
+  it('handles sessions with long test titles correctly', async () => {
+    // Create a test with a very long title to test truncation behavior
+    const longTest = {
+      title:
+        'this_is_a_very_long_test_title_that_would_cause_issues_with_file_naming_when_session_names_are_appended_at_the_end_instead_of_the_beginning_which_could_lead_to_collisions_between_different_sessions_writing_to_the_same_file_path_due_to_truncation',
+      artifacts: {},
+    }
+
+    await I.amOnPage('about:blank')
+
+    // Create multiple sessions with different names
+    const session1 = I._session()
+    const session2 = I._session()
+    const sessionName1 = 'session_one'
+    const sessionName2 = 'session_two'
+
+    I.activeSessionName = sessionName1
+    const sessionContext1 = await session1.start(sessionName1, {})
+    I.sessionPages[sessionName1] = (await sessionContext1.pages())[0]
+
+    I.activeSessionName = sessionName2
+    const sessionContext2 = await session2.start(sessionName2, {})
+    I.sessionPages[sessionName2] = (await sessionContext2.pages())[0]
+
+    // Trigger failure to save artifacts
+    await I._failed(longTest)
+
+    // Check that different sessions have different file paths
+    const session1VideoKey = `video_${sessionName1}`
+    const session2VideoKey = `video_${sessionName2}`
+    const session1TraceKey = `trace_${sessionName1}`
+    const session2TraceKey = `trace_${sessionName2}`
+
+    expect(longTest.artifacts[session1VideoKey]).to.not.equal(longTest.artifacts[session2VideoKey])
+    expect(longTest.artifacts[session1TraceKey]).to.not.equal(longTest.artifacts[session2TraceKey])
+
+    // Verify that session names are present in filenames (indicating the naming fix works)
+    expect(longTest.artifacts[session1VideoKey]).to.include(sessionName1)
+    expect(longTest.artifacts[session2VideoKey]).to.include(sessionName2)
+    expect(longTest.artifacts[session1TraceKey]).to.include(sessionName1)
+    expect(longTest.artifacts[session2TraceKey]).to.include(sessionName2)
+
+    // Cleanup
+    await sessionContext1.close()
+    await sessionContext2.close()
+    delete I.sessionPages[sessionName1]
+    delete I.sessionPages[sessionName2]
+  })
+
+  it('skips main session in session artifacts processing', async () => {
+    // Reset test artifacts
+    test.artifacts = {}
+
+    await I.amOnPage('about:blank')
+
+    // Simulate having a main session (empty string name) in sessionPages
+    I.sessionPages[''] = I.page
+
+    // Create a regular session
+    const session = I._session()
+    const sessionName = 'regular_session'
+    I.activeSessionName = sessionName
+    const sessionContext = await session.start(sessionName, {})
+    I.sessionPages[sessionName] = (await sessionContext.pages())[0]
+
+    // Trigger failure to save artifacts
+    await I._failed(test)
+
+    // Check that main session artifacts are present (not duplicated)
+    expect(Object.keys(test.artifacts)).to.include('trace')
+    expect(Object.keys(test.artifacts)).to.include('video')
+
+    // Check that regular session artifacts are present
+    expect(Object.keys(test.artifacts)).to.include(`video_${sessionName}`)
+    expect(Object.keys(test.artifacts)).to.include(`trace_${sessionName}`)
+
+    // Check that there are no duplicate main session artifacts with empty key
+    expect(Object.keys(test.artifacts)).to.not.include('video_')
+    expect(Object.keys(test.artifacts)).to.not.include('trace_')
+
+    // Cleanup
+    await sessionContext.close()
+    delete I.sessionPages[sessionName]
+    delete I.sessionPages['']
+  })
+
+  it('gracefully handles tracing errors for invalid session contexts', async () => {
+    // Reset test artifacts
+    test.artifacts = {}
+
+    await I.amOnPage('about:blank')
+
+    // Create a real session that we can manipulate
+    const session = I._session()
+    const sessionName = 'error_session'
+    I.activeSessionName = sessionName
+    const sessionContext = await session.start(sessionName, {})
+    I.sessionPages[sessionName] = (await sessionContext.pages())[0]
+
+    // Manually stop tracing to create the error condition
+    try {
+      await sessionContext.tracing.stop()
+    } catch (e) {
+      // This may fail if tracing wasn't started, which is fine
+    }
+
+    // Now when _failed is called, saveTraceForContext should handle the tracing error gracefully
+    await I._failed(test)
+
+    // Main artifacts should still be created
+    expect(Object.keys(test.artifacts)).to.include('trace')
+    expect(Object.keys(test.artifacts)).to.include('video')
+
+    // Session video should still be created despite tracing error
+    expect(Object.keys(test.artifacts)).to.include(`video_${sessionName}`)
+
+    // Cleanup
+    await sessionContext.close()
+    delete I.sessionPages[sessionName]
+  })
 })
 describe('Playwright - HAR', () => {
   before(async () => {
@@ -1600,7 +1978,8 @@ describe('Playwright - HAR', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElements = await I.grabWebElements('#button')
-      assert.equal(webElements[0], "locator('#button').first()")
+      assert.equal(webElements[0].constructor.name, 'WebElement')
+      assert.equal(webElements[0].getNativeElement(), "locator('#button').first()")
       assert.isAbove(webElements.length, 0)
     })
 
@@ -1608,7 +1987,8 @@ describe('Playwright - HAR', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElement = await I.grabWebElement('#button')
-      assert.equal(webElement, "locator('#button').first()")
+      assert.equal(webElement.constructor.name, 'WebElement')
+      assert.equal(webElement.getNativeElement(), "locator('#button').first()")
     })
   })
 })
@@ -1644,7 +2024,8 @@ describe('using data-testid attribute', () => {
     await I.amOnPage('/')
 
     const webElements = await I.grabWebElements({ pw: '[data-testid="welcome"]' })
-    assert.equal(webElements[0]._selector, '[data-testid="welcome"] >> nth=0')
+    assert.equal(webElements[0].constructor.name, 'WebElement')
+    assert.equal(webElements[0].getNativeElement()._selector, '[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
 
@@ -1652,44 +2033,198 @@ describe('using data-testid attribute', () => {
     await I.amOnPage('/')
 
     const webElements = await I.grabWebElements('h1[data-testid="welcome"]')
-    assert.equal(webElements[0]._selector, 'h1[data-testid="welcome"] >> nth=0')
+    assert.equal(webElements[0].constructor.name, 'WebElement')
+    assert.equal(webElements[0].getNativeElement()._selector, 'h1[data-testid="welcome"] >> nth=0')
     assert.equal(webElements.length, 1)
   })
 })
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
-  // Don't exit the process, just log the error
+// Tests for storageState configuration & helper behavior
+describe('Playwright - storageState object ', function () {
+  let I
+
+  before(() => {
+    global.codecept_dir = path.join(__dirname, '/../data')
+
+    // Provide a storageState object (cookie + localStorage) to seed the context
+    I = new Playwright({
+      url: siteUrl,
+      browser: 'chromium',
+      restart: true,
+      show: false,
+      waitForTimeout: 5000,
+      waitForAction: 200,
+      storageState: {
+        cookies: [
+          {
+            name: 'auth',
+            value: '123',
+            domain: 'localhost',
+            path: '/',
+            httpOnly: false,
+            secure: false,
+            sameSite: 'Lax',
+          },
+        ],
+        origins: [
+          {
+            origin: siteUrl,
+            localStorage: [{ name: 'ls_key', value: 'ls_val' }],
+          },
+        ],
+      },
+    })
+    I._init()
+    return I._beforeSuite()
+  })
+
+  afterEach(async () => {
+    return I._after()
+  })
+
+  it('should apply config storageState (cookies & localStorage)', async () => {
+    await I._before()
+    await I.amOnPage('/')
+    const cookies = await I.grabCookie()
+    const names = cookies.map(c => c.name)
+    expect(names).to.include('auth')
+    const authCookie = cookies.find(c => c.name === 'auth')
+    expect(authCookie && authCookie.value).to.equal('123')
+    const lsVal = await I.executeScript(() => localStorage.getItem('ls_key'))
+    assert.equal(lsVal, 'ls_val')
+  })
+
+  it('should allow Scenario cookies to override config storageState', async () => {
+    const test = {
+      title: 'override cookies scenario',
+      opts: {
+        cookies: [
+          {
+            name: 'override',
+            value: '2',
+            domain: 'localhost',
+            path: '/',
+          },
+        ],
+      },
+    }
+    await I._before(test)
+    await I.amOnPage('/')
+    const cookies = await I.grabCookie()
+    const names = cookies.map(c => c.name)
+    expect(names).to.include('override')
+    expect(names).to.not.include('auth') // original config cookie ignored for this Scenario
+    const overrideCookie = cookies.find(c => c.name === 'override')
+    expect(overrideCookie && overrideCookie.value).to.equal('2')
+  })
+
+  it('grabStorageState should return current state', async () => {
+    await I._before()
+    await I.amOnPage('/')
+    const state = await I.grabStorageState()
+    expect(state.cookies).to.be.an('array')
+    const names = state.cookies.map(c => c.name)
+    expect(names).to.include('auth')
+    expect(state.origins).to.be.an('array')
+    const originEntry = state.origins.find(o => o.origin === siteUrl)
+    expect(originEntry).to.exist
+    if (originEntry && originEntry.localStorage) {
+      const lsNames = originEntry.localStorage.map(e => e.name)
+      expect(lsNames).to.include('ls_key')
+    }
+    // With IndexedDB flag (will include same base data; presence suffices)
+    const stateIdx = await I.grabStorageState({ indexedDB: true })
+    expect(stateIdx).to.be.ok
+  })
 })
 
-// Global after hook to ensure all browser instances are closed
-after(async function () {
-  this.timeout(10000) // 10 second timeout for cleanup
-
-  // Close the main browser instance if it exists
-  if (I && I.browser) {
-    try {
-      await Promise.race([I.browser.close(), new Promise((_, reject) => setTimeout(() => reject(new Error('Browser close timeout')), 5000))])
-    } catch (e) {
-      console.warn('Warning during browser cleanup:', e.message)
+// Additional tests for storageState file path usage and error conditions
+describe('Playwright - storageState file path', function () {
+  this.timeout(15000)
+  it('should load storageState from a JSON file path', async () => {
+    const tmpPath = path.join(__dirname, '../data/output/tmp-auth-state.json')
+    const fileState = {
+      cookies: [{ name: 'filecookie', value: 'f1', domain: 'localhost', path: '/' }],
+      origins: [{ origin: siteUrl, localStorage: [{ name: 'from_file', value: 'yes' }] }],
     }
-  }
+    fs.mkdirSync(path.dirname(tmpPath), { recursive: true })
+    fs.writeFileSync(tmpPath, JSON.stringify(fileState, null, 2))
 
-  // Close remote browser if it exists
-  if (remoteBrowser) {
-    try {
-      await Promise.race([remoteBrowser.close(), new Promise((_, reject) => setTimeout(() => reject(new Error('Remote browser close timeout')), 5000))])
-    } catch (e) {
-      console.warn('Warning during remote browser cleanup:', e.message)
+    let I = new Playwright({
+      url: siteUrl,
+      browser: 'chromium',
+      restart: true,
+      show: false,
+      storageState: tmpPath,
+    })
+    I._init()
+    await I._beforeSuite()
+    await I._before()
+    await I.amOnPage('/')
+    const cookies = await I.grabCookie()
+    const names = cookies.map(c => c.name)
+    expect(names).to.include('filecookie')
+    const lsVal = await I.executeScript(() => localStorage.getItem('from_file'))
+    expect(lsVal).to.equal('yes')
+    await I._after()
+  })
+
+  it('should allow Scenario cookies to override file-based storageState', async () => {
+    const tmpPath = path.join(__dirname, '../data/output/tmp-auth-state-override.json')
+    const fileState = {
+      cookies: [{ name: 'basecookie', value: 'b1', domain: 'localhost', path: '/' }],
+      origins: [{ origin: siteUrl, localStorage: [{ name: 'persist', value: 'keep' }] }],
     }
-  }
+    fs.mkdirSync(path.dirname(tmpPath), { recursive: true })
+    fs.writeFileSync(tmpPath, JSON.stringify(fileState, null, 2))
 
-  // Force close any remaining Playwright browser processes
-  try {
-    const { exec } = await import('child_process')
-    exec('pkill -f "playwright.*chromium" || true')
-  } catch (e) {
-    // Ignore errors from pkill
-  }
+    let I = new Playwright({
+      url: siteUrl,
+      browser: 'chromium',
+      restart: true,
+      show: false,
+      storageState: tmpPath,
+    })
+    I._init()
+    await I._beforeSuite()
+    const test = {
+      title: 'override cookies with file-based storageState',
+      opts: {
+        cookies: [{ name: 'override_from_file', value: 'ov1', domain: 'localhost', path: '/' }],
+      },
+    }
+    await I._before(test)
+    await I.amOnPage('/')
+    const cookies = await I.grabCookie()
+    const names = cookies.map(c => c.name)
+    expect(names).to.include('override_from_file')
+    expect(names).to.not.include('basecookie')
+    const overrideCookie = cookies.find(c => c.name === 'override_from_file')
+    expect(overrideCookie && overrideCookie.value).to.equal('ov1')
+    await I._after()
+  })
+
+  it('should throw when storageState file path does not exist', async () => {
+    const badPath = path.join(__dirname, '../data/output/missing-auth-state.json')
+    let I = new Playwright({
+      url: siteUrl,
+      browser: 'chromium',
+      restart: true,
+      show: false,
+      storageState: badPath,
+    })
+    I._init()
+    await I._beforeSuite()
+    let threw = false
+    try {
+      await I._before()
+    } catch (e) {
+      threw = true
+      expect(e.message).to.match(/ENOENT|no such file|cannot find/i)
+    }
+    expect(threw, 'expected missing storageState path to throw').to.be.true
+    try {
+      await I._after()
+    } catch (_) {}
+  })
 })

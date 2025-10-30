@@ -5,20 +5,20 @@ title: Testing with Puppeteer
 
 # Testing with Puppeteer
 
-Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/GoogleChrome/puppeteer). It operates over Google Chrome directly without requiring additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
+Among all Selenium alternatives the most interesting emerging ones are tools developed around Google Chrome [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). And the most prominent one is [Puppeteer](https://github.com/puppeteer/puppeteer). It operates over Google Chrome directly without requiring additional tools like ChromeDriver. So tests setup with Puppeteer can be started with npm install only. If you want get faster and simpler to setup tests, Puppeteer would be your choice.
 
 CodeceptJS uses Puppeteer to improve end to end testing experience. No need to learn the syntax of a new tool, all drivers in CodeceptJS share the same API.
 
 Take a look at a sample test:
 
 ```js
-I.amOnPage('https://github.com');
-I.click('Sign in', '//html/body/div[1]/header');
-I.see('Sign in to GitHub', 'h1');
-I.fillField('Username or email address', 'something@totest.com');
-I.fillField('Password', '123456');
-I.click('Sign in');
-I.see('Incorrect username or password.', '.flash-error');
+I.amOnPage('https://github.com')
+I.click('Sign in', '//html/body/div[1]/header')
+I.see('Sign in to GitHub', 'h1')
+I.fillField('Username or email address', 'something@totest.com')
+I.fillField('Password', '123456')
+I.click('Sign in')
+I.see('Incorrect username or password.', '.flash-error')
 ```
 
 It's readable and simple and works using Puppeteer API!
@@ -96,34 +96,34 @@ As an example we will use `ToDoMvc` app for testing.
 
 Tests consist with a scenario of user's action taken on a page. The most widely used ones are:
 
-* `amOnPage` - to open a webpage (accepts relative or absolute url)
-* `click` - to locate a button or link and click on it
-* `fillField` - to enter a text inside a field
-* `selectOption`, `checkOption` - to interact with a form
-* `wait*` to wait for some parts of page to be fully rendered (important for testing SPA)
-* `grab*` to get values from page sources
-* `see`, `dontSee` - to check for a text on a page
-* `seeElement`, `dontSeeElement` - to check for elements on a page
+- `amOnPage` - to open a webpage (accepts relative or absolute url)
+- `click` - to locate a button or link and click on it
+- `fillField` - to enter a text inside a field
+- `selectOption`, `checkOption` - to interact with a form
+- `wait*` to wait for some parts of page to be fully rendered (important for testing SPA)
+- `grab*` to get values from page sources
+- `see`, `dontSee` - to check for a text on a page
+- `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ  All actions are listed in [Puppeteer helper reference](https://codecept.io/helpers/Puppeteer/).*
+> ℹ All actions are listed in [Puppeteer helper reference](https://codecept.io/helpers/Puppeteer/).\*
 
 All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
 ```js
 // search for link or button
-I.click('Login');
+I.click('Login')
 // locate field by its label
-I.fillField('Name', 'Miles');
+I.fillField('Name', 'Miles')
 // we can use input name
-I.fillField('user[email]','miles@davis.com');
+I.fillField('user[email]', 'miles@davis.com')
 ```
 
 You can also specify the exact locator type with strict locators:
 
 ```js
-I.click({css: 'button.red'});
-I.fillField({name: 'user[email]'},'miles@davis.com');
-I.seeElement({xpath: '//body/header'});
+I.click({ css: 'button.red' })
+I.fillField({ name: 'user[email]' }, 'miles@davis.com')
+I.seeElement({ xpath: '//body/header' })
 ```
 
 ### Interactive Pause
@@ -131,12 +131,12 @@ I.seeElement({xpath: '//body/header'});
 It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
 
 ```js
-Feature('Sample Test');
+Feature('Sample Test')
 
 Scenario('open my website', ({ I }) => {
-  I.amOnPage('http://todomvc.com/examples/react/');
-  pause();
-});
+  I.amOnPage('http://todomvc.com/examples/react/')
+  pause()
+})
 ```
 
 This is just enough to run a test, open a browser, and think what to do next to write a test case.
@@ -152,16 +152,16 @@ After a page is opened a full control of a browser is given to a terminal. Type 
 A complete ToDo-MVC test may look like:
 
 ```js
-Feature('ToDo');
+Feature('ToDo')
 
 Scenario('create todo item', ({ I }) => {
-  I.amOnPage('http://todomvc.com/examples/react/');
-  I.dontSeeElement('.todo-count');
-  I.fillField('What needs to be done?', 'Write a guide');
-  I.pressKey('Enter');
-  I.see('Write a guide', '.todo-list');
-  I.see('1 item left', '.todo-count');
-});
+  I.amOnPage('http://todomvc.com/examples/react/')
+  I.dontSeeElement('.todo-count')
+  I.fillField('What needs to be done?', 'Write a guide')
+  I.pressKey('Enter')
+  I.see('Write a guide', '.todo-list')
+  I.see('1 item left', '.todo-count')
+})
 ```
 
 ### Grabbers
@@ -169,15 +169,15 @@ Scenario('create todo item', ({ I }) => {
 If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
 
 ```js
-const assert = require('assert');
+const assert = require('assert')
 Scenario('get value of current tasks', async ({ I }) => {
-  I.fillField('.todo', 'my first item');
+  I.fillField('.todo', 'my first item')
   I.pressKey('Enter')
-  I.fillField('.todo', 'my second item');
+  I.fillField('.todo', 'my second item')
   I.pressKey('Enter')
-  let numTodos = await I.grabTextFrom('.todo-count strong');
-  assert.equal(2, numTodos);
-});
+  let numTodos = await I.grabTextFrom('.todo-count strong')
+  assert.equal(2, numTodos)
+})
 ```
 
 ### Within
@@ -187,18 +187,18 @@ Please take a note that you can't use within inside another within in Puppeteer 
 
 ```js
 await within('.todoapp', () => {
-  I.fillField('.todo', 'my new item');
+  I.fillField('.todo', 'my new item')
   I.pressKey('Enter')
-  I.see('1 item left', '.todo-count');
-  I.click('.todo-list input.toggle');
-});
-I.see('0 items left', '.todo-count');
+  I.see('1 item left', '.todo-count')
+  I.click('.todo-list input.toggle')
+})
+I.see('0 items left', '.todo-count')
 ```
 
 ### Each Element <Badge text="Since 3.3" type="warning"/>
 
-Usually, CodeceptJS performs an action on the first matched element. 
-In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin. 
+Usually, CodeceptJS performs an action on the first matched element.
+In case you want to do an action on each element found, use the special function `eachElement` which comes from [eachElement](https://codecept.io/plugins/#eachelement) plugin.
 
 `eachElement` function matches all elements by locator and performs a callback on each of those element. A callback function receives [ElementHandle instance](https://pptr.dev/#?product=Puppeteer&show=api-class-elementhandle) from Puppeteer API. `eachElement` may perform arbitrary actions on a page, so the first argument should by a description of the actions performed. This description will be used for logging purposes.
 
@@ -206,8 +206,8 @@ Usage example
 
 ```js
 await eachElement(
-  'click all checkboxes', 
-  'input.custom-checkbox', 
+  'click all checkboxes',
+  'input.custom-checkbox',
   async (el, index) => {
     await el.click();
   });
@@ -239,7 +239,6 @@ I.stopMockingRoute('**/*.{png,jpg,jpeg}'
 
 To master request intercepting [use `HTTPRequest` object](https://pptr.dev/next/api/puppeteer.httprequest) object passed into mock request handler.
 
-
 ## Accessing Puppeteer API
 
 To get Puppeteer API inside a test use [`I.usePupepteerTo`](/helpers/Puppeteer/#usepuppeteerto) method with a callback.
@@ -247,8 +246,8 @@ To keep test readable provide a description of a callback inside the first param
 
 ```js
 I.usePuppeteerTo('emulate offline mode', async ({ page, browser }) => {
-  await page.setOfflineMode(true);
-});
+  await page.setOfflineMode(true)
+})
 ```
 
 > Puppeteer commands are asynchronous so a callback function must be async.
@@ -256,12 +255,12 @@ I.usePuppeteerTo('emulate offline mode', async ({ page, browser }) => {
 A Puppeteer helper is passed as argument for callback, so you can combine Puppeteer API with CodeceptJS API:
 
 ```js
-I.usePuppeteerTo('emulate offline mode', async (Puppeteer) => {
+I.usePuppeteerTo('emulate offline mode', async Puppeteer => {
   // access internal objects browser, page, context of helper
-  await Puppeteer.page.setOfflineMode(true);
+  await Puppeteer.page.setOfflineMode(true)
   // call a method of helper, await is required here
-  await Puppeteer.click('Reload');
-});
+  await Puppeteer.click('Reload')
+})
 ```
 
 ## Capturing Code Coverage
@@ -280,7 +279,7 @@ Code coverage can be captured, by enabling the `coverage` plugin in `codecept.co
 
 Once all the tests are completed, `codecept` will create and store coverage in `output/coverage` folder, as shown below.
 
-![]((https://github.com/codeceptjs/CodeceptJS/assets/7845001/3b8b81a3-7c85-470c-992d-ecdc7d5b4a1e))
+![](<(https://github.com/codeceptjs/CodeceptJS/assets/7845001/3b8b81a3-7c85-470c-992d-ecdc7d5b4a1e)>)
 
 Open `index.html` in your browser to view the full interactive coverage report.
 

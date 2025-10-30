@@ -1,6 +1,5 @@
-import assert from 'assert'
-import helperModule from '../../../../lib/helper.js'
-const Helper = helperModule.default || helperModule
+const assert = require('assert')
+const Helper = require('../../../../lib/helper')
 
 class CheckoutHelper extends Helper {
   constructor(config) {
@@ -13,27 +12,21 @@ class CheckoutHelper extends Helper {
   }
 
   _before() {
-    console.log('DEBUG: CheckoutHelper._before called, resetting state')
-    console.log('DEBUG: Current state before reset:', { num: this.num, sum: this.sum })
     this.num = 0
     this.sum = 0
     this.discountCalc = null
   }
 
   addItem(price) {
-    if (typeof this.num !== 'number') this.num = 0
-    if (typeof this.sum !== 'number') this.sum = 0
     this.num++
     this.sum += price
   }
 
   seeNum(num) {
-    if (typeof this.num !== 'number') this.num = 0
     assert.equal(num, this.num)
   }
 
   seeSum(sum) {
-    if (typeof this.sum !== 'number') this.sum = 0
     assert.equal(sum, this.sum)
   }
 
@@ -46,9 +39,6 @@ class CheckoutHelper extends Helper {
   }
 
   addProduct(name, price) {
-    if (typeof this.num !== 'number') this.num = 0
-    if (typeof this.sum !== 'number') this.sum = 0
-    this.num++
     this.sum += price
   }
 
@@ -59,6 +49,18 @@ class CheckoutHelper extends Helper {
   }
 
   login() {}
+
+  say(message) {
+    // Use CodeceptJS output system instead of direct console.log
+    const output = require('../../../../lib/output')
+    output.log(`[Helper] ${message}`)
+  }
+
+  debug(message) {
+    // Use CodeceptJS output system instead of direct console.log
+    const output = require('../../../../lib/output')
+    output.debug(`[Helper] ${message}`)
+  }
 }
 
-export default CheckoutHelper
+module.exports = CheckoutHelper

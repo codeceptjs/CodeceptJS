@@ -1,4 +1,4 @@
-name: Acceptance Tests using docker compose
+name: Acceptance Tests
 
 on:
   push:

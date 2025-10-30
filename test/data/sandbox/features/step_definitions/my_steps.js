@@ -51,6 +51,29 @@ Given('I login', () => {
   I.login('user', secret('password'))
 })
 
+Given('I have user email {string}', email => {
+  I.debug(`User email is: ${email}`)
+  I.say(`Processing email: ${email}`)
+})
+
+Given('I have credit card {string}', card => {
+  I.debug(`Credit card is: ${card}`)
+  I.say(`Processing card: ${card}`)
+})
+
+Given('I have phone number {string}', phone => {
+  I.debug(`Phone number is: ${phone}`)
+  I.say(`Processing phone: ${phone}`)
+})
+
+When('I process user data', () => {
+  I.debug('Processing user data with sensitive information')
+})
+
+Then('I should see masked output', () => {
+  I.debug('All sensitive data should be masked in output')
+})
+
 Given(/^I have this product in my cart$/, table => {
   let str = ''
   for (const id in table.rows) {

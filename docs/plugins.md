@@ -336,6 +336,14 @@ Possible config options:
 
 *   `config` &#x20;
 
+## consolidateWorkerJsonResults
+
+Consolidates JSON reports from multiple workers into a single HTML report
+
+### Parameters
+
+- `config` &#x20;
+
 ## coverage
 
 Dumps code coverage from Playwright/Puppeteer after every test.
@@ -480,7 +488,123 @@ Sample custom reporter for CodeceptJS.
 
 ### Parameters
 
-*   `config` &#x20;
+- `config` &#x20;
+
+## eachElement
+
+Provides `eachElement` global function to iterate over found elements to perform actions on them.
+
+`eachElement` takes following args:
+
+- `purpose` - the goal of an action. A comment text that will be displayed in output.
+- `locator` - a CSS/XPath locator to match elements
+- `fn(element, index)` - **asynchronous** function which will be executed for each matched element.
+
+Example of usage:
+
+```js
+// this example works with Playwright and Puppeteer helper
+await eachElement('click all checkboxes', 'form input[type=checkbox]', async el => {
+  await el.click()
+})
+```
+
+Click odd elements:
+
+```js
+// this example works with Playwright and Puppeteer helper
+await eachElement('click odd buttons', '.button-select', async (el, index) => {
+  if (index % 2) await el.click()
+})
+```
+
+Check all elements for visibility:
+
+```js
+// this example works with Playwright and Puppeteer helper
+const assert = require('assert')
+await eachElement('check all items are visible', '.item', async el => {
+  assert(await el.isVisible())
+})
+```
+
+This method works with WebDriver, Playwright, Puppeteer, Appium helpers.
+
+Function parameter `el` represents a matched element.
+Depending on a helper API of `el` can be different. Refer to API of corresponding browser testing engine for a complete API list:
+
+- [Playwright ElementHandle][4]
+- [Puppeteer][5]
+- [webdriverio element][6]
+
+#### Configuration
+
+- `registerGlobal` - to register `eachElement` function globally, true by default
+
+If `registerGlobal` is false you can use eachElement from the plugin:
+
+```js
+const eachElement = codeceptjs.container.plugins('eachElement')
+```
+
+### Parameters
+
+- `purpose` **[string][7]**&#x20;
+- `locator` **CodeceptJS.LocatorOrString**&#x20;
+- `fn` **[Function][8]**&#x20;
+
+Returns **([Promise][9]\<any> | [undefined][10])**&#x20;
+
+## enhancedRetryFailedStep
+
+Enhanced retryFailedStep plugin that coordinates with other retry mechanisms
+
+This plugin provides step-level retries and coordinates with global retry settings
+to avoid conflicts and provide predictable behavior.
+
+### Parameters
+
+- `config` &#x20;
+
+## fakerTransform
+
+Use the `@faker-js/faker` package to generate fake data inside examples on your gherkin tests
+
+#### Usage
+
+To start please install `@faker-js/faker` package
+
+    npm install -D @faker-js/faker
+
+<!---->
+
+    yarn add -D @faker-js/faker
+
+Add this plugin to config file:
+
+```js
+plugins: {
+  fakerTransform: {
+    enabled: true
+  }
+}
+```
+
+Add the faker API using a mustache string format inside examples tables in your gherkin scenario outline
+
+```feature
+Scenario Outline: ...
+            Given ...
+             When ...
+             Then ...
+        Examples:
+  | productName          | customer              | email              | anythingMore |
+  | {{commerce.product}} | Dr. {{name.findName}} | {{internet.email}} | staticData   |
+```
+
+### Parameters
+
+- `config` &#x20;
 
 ## heal
 
@@ -503,6 +627,44 @@ More config options are available:
 ### Parameters
 
 *   `config`   (optional, default `{}`)
+
+## htmlReporter
+
+HTML Reporter Plugin for CodeceptJS
+
+Generates comprehensive HTML reports showing:
+
+- Test statistics
+- Feature/Scenario details
+- Individual step results
+- Test artifacts (screenshots, etc.)
+
+## Configuration
+
+```js
+"plugins": {
+   "htmlReporter": {
+     "enabled": true,
+     "output": "./output",
+     "reportFileName": "report.html",
+     "includeArtifacts": true,
+     "showSteps": true,
+     "showSkipped": true,
+     "showMetadata": true,
+     "showTags": true,
+     "showRetries": true,
+     "exportStats": false,
+     "exportStatsPath": "./stats.json",
+     "keepHistory": false,
+     "historyPath": "./test-history.json",
+     "maxHistoryEntries": 50
+   }
+}
+```
+
+### Parameters
+
+- `config` &#x20;
 
 ## pageInfo
 
@@ -615,6 +777,14 @@ Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
 
 *   `config` &#x20;
 
+## safeJsonStringify
+
+Safely serialize data to JSON, handling circular references
+
+### Parameters
+
+- `data` &#x20;
+
 ## screenshotOnFail
 
 Creates screenshot on failure. Screenshot is saved into `output` directory.
@@ -704,10 +874,9 @@ Run tests with plugin enabled:
 
 *   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
 
-*   `noTimeoutSteps` - an array of steps with no timeout. Default:
-
-    *   `amOnPage`
-    *   `wait*`
+- `noTimeoutSteps` - an array of steps with no timeout. Default:
+  - `amOnPage`
+  - `wait*`
 
     you could set your own noTimeoutSteps which would replace the default one.
 

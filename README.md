@@ -64,6 +64,8 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 - Also plays nice with TypeScript.
 - </> Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 - 🌐 Interactive debugging shell: pause test at any point and try different commands in a browser.
+- ⚡ **Parallel testing** with dynamic test pooling for optimal load balancing and performance.
+- 📊 **Built-in HTML Reporter** with interactive dashboard, step-by-step execution details, and comprehensive test analytics.
 - Easily create tests, pageobjects, stepobjects with CLI generators.
 
 ## Installation
@@ -232,6 +234,49 @@ Scenario('test title', () => {
   I.seeInTitle('Example application')
 })
 ```
+
+## HTML Reporter
+
+CodeceptJS includes a powerful built-in HTML Reporter that generates comprehensive, interactive test reports with detailed information about your test runs. The HTML reporter is **enabled by default** for all new projects and provides:
+
+### Features
+
+- **Interactive Dashboard**: Visual statistics, pie charts, and expandable test details
+- **Step-by-Step Execution**: Shows individual test steps with timing and status indicators
+- **BDD/Gherkin Support**: Full support for feature files with proper scenario formatting
+- **System Information**: Comprehensive environment details including browser versions
+- **Advanced Filtering**: Real-time filtering by status, tags, features, and test types
+- **History Tracking**: Multi-run history with trend visualization
+- **Error Details**: Clean formatting of error messages and stack traces
+- **Artifacts Support**: Display screenshots and other test artifacts
+
+### Visual Examples
+
+#### Interactive Test Dashboard
+
+The main dashboard provides a complete overview with interactive statistics and pie charts:
+
+![HTML Reporter Dashboard](docs/shared/html-reporter-main-dashboard.png)
+
+#### Detailed Test Results
+
+Each test shows comprehensive execution details with expandable step information:
+
+![HTML Reporter Test Details](docs/shared/html-reporter-test-details.png)
+
+#### Advanced Filtering Capabilities
+
+Real-time filtering allows quick navigation through test results:
+
+![HTML Reporter Filtering](docs/shared/html-reporter-filtering.png)
+
+#### BDD/Gherkin Support
+
+Full support for Gherkin scenarios with proper feature formatting:
+
+![HTML Reporter BDD Details](docs/shared/html-reporter-bdd-details.png)
+
+The HTML reporter generates self-contained reports that can be easily shared with your team. Learn more about configuration and features in the [HTML Reporter documentation](https://codecept.io/plugins/#htmlreporter).
 
 ## PageObjects
 
