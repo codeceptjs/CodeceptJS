@@ -35,6 +35,7 @@ GitHub --
 ```
 
 output steps use `--steps` option:
+
 ```
 npx codeceptjs run --steps
 ```
@@ -73,11 +74,9 @@ GitHub --
 
 To get additional information about test execution use `--debug` option.
 
-
 ```
 npx codeceptjs run --debug
 ```
-
 
 This will show execution steps
 as well as notices from test runner. To get even more information with more technical details like error stack traces,
@@ -141,7 +140,6 @@ npx codecepjs dry-run --debug
 
 > ℹ If you use custom JavaScript code inside tests, or rely on values from `grab*` commands, dry-run may produce error output.
 
-
 ## Testomat.io
 
 [Testomat.io](https://testomat.io) is a modern test management tool focused on CodeceptJS and **created by CodeceptJS team**.
@@ -153,18 +151,17 @@ Testomat.io is commercial SaaS service that can receive run reports from local r
 
 To receive run reports you should:
 
-* [Sign up](https://app.testomat.io/users/sign_up) at Testomat.io
-* Create a new "Classical" project (select "BDD" project if you use CodeceptJS in BDD mode)
-* Select "Import from Source Code"
-* Select "CodeceptJS" as testing framework and JavaScript or TypeScript as a language. If you use BDD select "Gherkin" as language.
-* Execute provided command in a terminal with your project. This will be "check-tests" or "check-cucmber" command. It scans all your test files and imports them into Testomat.io. This way all your e2e tests will be visible in one UI.
-* After tests are imported, go to Runs tab and select "Setup automated tests".
-* Follow the instructions:
-
+- [Sign up](https://app.testomat.io/users/sign_up) at Testomat.io
+- Create a new "Classical" project (select "BDD" project if you use CodeceptJS in BDD mode)
+- Select "Import from Source Code"
+- Select "CodeceptJS" as testing framework and JavaScript or TypeScript as a language. If you use BDD select "Gherkin" as language.
+- Execute provided command in a terminal with your project. This will be "check-tests" or "check-cucmber" command. It scans all your test files and imports them into Testomat.io. This way all your e2e tests will be visible in one UI.
+- After tests are imported, go to Runs tab and select "Setup automated tests".
+- Follow the instructions:
 
 ![image](https://user-images.githubusercontent.com/77803888/151834217-5da44d92-a59a-458d-8856-64ce61bf3a38.png)
 
-* You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config:
+- You will need to install `@testomatio/reporter` package and enable it as a plugin in codeceptjs config:
 
 ```js
 plugins: {
@@ -176,13 +173,10 @@ plugins: {
 }
 ```
 
-* Run tests with `TESTOMATIO=` env variable and API key provided by Testomat.io
-* See the run report is created and updated in realtime.
-
+- Run tests with `TESTOMATIO=` env variable and API key provided by Testomat.io
+- See the run report is created and updated in realtime.
 
 [Testomat.io](https://testomat.io) reporter works in the cloud, so it doesn't require you to install additional software. It can be integrated with your CI service to rerun only failed tests, launch new runs from UI, and send report notifications by email or in Slack, MS Teams, or create issue in Jira.
-
-
 
 ## ReportPortal
 
@@ -194,7 +188,6 @@ For enterprise grade we reporting we recommend using [ReportPortal](https://repo
 Think of it as Kibana but for test reports.
 
 Use official [CodeceptJS Agent for ReportPortal](https://github.com/reportportal/agent-js-codecept/) to start publishing your test results.
-
 
 ## XML
 
@@ -226,6 +219,21 @@ codeceptjs run --reporter mocha-junit-reporter
 
 Result will be located at `output/result.xml` file.
 
+Alternatively, the reporter name can be added to the configuration file as well. In this case, CodeceptJS can be executed without additional CLI options.
+
+```json
+  "mocha": {
+    "reporter": "mocha-junit-reporter",
+    "reporterOptions": {
+        "mochaFile": "output/result.xml"
+    }
+  },
+```
+
+```sh
+codeceptjs run
+```
+
 ## Html
 
 ### Built-in HTML Reporter
@@ -252,13 +260,13 @@ exports.config = {
   plugins: {
     htmlReporter: {
       enabled: true,
-      output: './output',              // Directory for the report
-      reportFileName: 'report.html',   // Name of the HTML file
-      includeArtifacts: true,          // Include screenshots/artifacts
-      showSteps: true,                 // Show individual test steps
-      showSkipped: true                // Show skipped tests
-    }
-  }
+      output: './output', // Directory for the report
+      reportFileName: 'report.html', // Name of the HTML file
+      includeArtifacts: true, // Include screenshots/artifacts
+      showSteps: true, // Show individual test steps
+      showSkipped: true, // Show skipped tests
+    },
+  },
 }
 ```
 
@@ -299,6 +307,7 @@ npm i mochawesome
 ```
 
 If you get an error like this
+
 ```sh
 "mochawesome" reporter not found
 
@@ -321,13 +330,28 @@ Configure it to use `output` directory to print HTML reports:
   },
 ```
 
-Execute CodeceptJS with HTML reporter:
+Execute CodeceptJS with mochawesome reporter:
 
 ```sh
 codeceptjs run --reporter mochawesome
 ```
 
 Result will be located at `output/index.html` file.
+
+Alternatively, the reporter name can be added to the configuration file as well. In this case, CodeceptJS can be executed without additional CLI options.
+
+```json
+  "mocha": {
+    "reporter": "mochawesome",
+    "reporterOptions": {
+        "reportDir": "output"
+    }
+  },
+```
+
+```sh
+codeceptjs run
+```
 
 ### Advanced usage
 
@@ -349,7 +373,7 @@ Then tests with failure will have screenshots.
 This helper should be configured in codecept.conf.ts
 
 - `uniqueScreenshotNames` (optional, default: false) - option to prevent screenshot override if you have scenarios with the same name in different suites. This option should be the same as in common helper.
-- `disableScreenshots` (optional, default: false)  - don't save screenshot on failure. This option should be the same as in common helper.
+- `disableScreenshots` (optional, default: false) - don't save screenshot on failure. This option should be the same as in common helper.
 
 Also if you will add Mochawesome helper, then you will able to add custom context in report:
 
@@ -358,21 +382,22 @@ Also if you will add Mochawesome helper, then you will able to add custom contex
 Adds context to executed test in HTML report:
 
 ```js
-I.addMochawesomeContext('simple string');
-I.addMochawesomeContext('http://www.url.com/pathname');
-I.addMochawesomeContext('http://www.url.com/screenshot-maybe.jpg');
-I.addMochawesomeContext({title: 'expected output',
-                         value: {
-                           a: 1,
-                           b: '2',
-                           c: 'd'
-                         }
-});
+I.addMochawesomeContext('simple string')
+I.addMochawesomeContext('http://www.url.com/pathname')
+I.addMochawesomeContext('http://www.url.com/screenshot-maybe.jpg')
+I.addMochawesomeContext({
+  title: 'expected output',
+  value: {
+    a: 1,
+    b: '2',
+    c: 'd',
+  },
+})
 ```
 
 ##### Parameters
 
-- `context`  string, url, path to screenshot, object. See [this](https://www.npmjs.com/package/mochawesome#adding-test-context)
+- `context` string, url, path to screenshot, object. See [this](https://www.npmjs.com/package/mochawesome#adding-test-context)
 
 ## Multi Reports
 
@@ -422,6 +447,20 @@ npx codeceptjs run --reporter mocha-multi
 
 This will give you cli with steps in console and HTML report in `output` directory.
 
+Alternatively, the reporter name can be added to the configuration file as well. In this case, CodeceptJS can be executed without additional CLI options.
+
+```json
+  "mocha": {
+    "reporter": "mocha-multi",
+    "reporterOptions": {
+      ...
+    }
+  }
+```
+
+```sh
+codeceptjs run
+```
 
 ## Testrail
 
@@ -439,7 +478,6 @@ npm i codeceptjs-testrail --save
 
 Now there is new feature, add the configuration to test run of test plan
 ![Attachemnt for failed case](http://g.recordit.co/uQLvQUq7cT.gif)
-
 
 ## Tesults
 
