@@ -1,5 +1,5 @@
-const assert = require('assert')
-const Helper = require('../../../../lib/helper')
+import assert from 'assert'
+import Helper from '../../../../lib/helper.js'
 
 class CheckoutHelper extends Helper {
   constructor(config) {
@@ -58,9 +58,10 @@ class CheckoutHelper extends Helper {
 
   debug(message) {
     // Use CodeceptJS output system instead of direct console.log
-    const output = require('../../../../lib/output')
-    output.debug(`[Helper] ${message}`)
+    import('../../../../lib/output.js').then(({ default: output }) => {
+      output.debug(`[Helper] ${message}`)
+    })
   }
 }
 
-module.exports = CheckoutHelper
+export default CheckoutHelper
