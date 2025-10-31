@@ -19,7 +19,7 @@ describe('CodeceptJS Timeouts', function () {
   this.retries(2)
 
   it('should stop test when timeout exceeded', done => {
-    exec(config_run_config('codecept.conf.js', 'timed out'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'timed out'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 2s exceeded (with Before hook)')
       // The second scenario can show either format depending on which timeout triggers first
@@ -30,7 +30,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should take --no-timeouts option', done => {
-    exec(`${config_run_config('codecept.conf.js', 'timed out')} --no-timeouts`, (err, stdout) => {
+    exec(`${config_run_config('codecept.conf.cjs', 'timed out')} --no-timeouts`, (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeouts were disabled')
       expect(stdout).not.toContain('Timeout 2s exceeded (with Before hook)')
@@ -41,7 +41,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should ignore timeouts if no timeout', done => {
-    exec(config_run_config('codecept.conf.js', 'no timeout test'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).not.toContain('TimeoutError')
       expect(stdout).not.toContain('was interrupted on')
@@ -61,7 +61,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should prefer step timeout', done => {
-    exec(config_run_config('codecept.conf.js', 'timeout step', true), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('was interrupted on timeout 200ms')
       expect(err).toBeTruthy()
