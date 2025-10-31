@@ -1,5 +1,5 @@
 module.exports = {
-  tests: './*_test.js',
+  tests: './*_test.cjs',
   output: './output',
   helpers: {
     CustomHelper: {
