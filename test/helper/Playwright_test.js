@@ -712,6 +712,15 @@ describe('Playwright', function () {
     })
   })
 
+  describe('#type', () => {
+    it('should type national characters', async () => {
+      await I.amOnPage('/form/field')
+      await I.fillField('Name', '')
+      await I.type('Oprávněné')
+      await I.seeInField('Name', 'Oprávněné')
+    })
+  })
+
   describe('#waitForEnabled', () => {
     it('should wait for input text field to be enabled', () =>
       I.amOnPage('/form/wait_enabled')
