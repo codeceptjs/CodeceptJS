@@ -247,7 +247,8 @@ describe('BDD Gherkin', () => {
     exec(config_run_config('codecept.bdd.js') + ' --grep "@fail" --steps', (err, stdout, stderr) => {
       // stdout.should.include('Given I make a request (and it fails)');
       // stdout.should.not.include('Then my test execution gets stuck');
-      stdout.should.include('1 failed')
+      // There are 2 scenarios with @fail tag (fail.feature and masking.feature)
+      stdout.should.include('2 failed')
       stdout.should.include('[Wrapped Error]')
       assert(err)
       done()
