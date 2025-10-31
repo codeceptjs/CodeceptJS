@@ -39,8 +39,8 @@ Scenario('session defined not used @2', ({ I }) => {
   I.do('waving')
 })
 
-Scenario('tryTo inside session @3', ({ I }) => {
-  const { tryTo } = require('../../../lib/effects')
+Scenario('tryTo inside session @3', async ({ I }) => {
+  const { tryTo } = await import('../../../lib/effects.js')
   I.do('before session')
   session('tryTo-test', async () => {
     I.do('inside session')
@@ -52,10 +52,10 @@ Scenario('tryTo inside session @3', ({ I }) => {
   I.do('after session')
 })
 
-Scenario('session inside tryTo @4', ({ I }) => {
-  const { tryTo } = require('../../../lib/effects')
+Scenario('session inside tryTo @4', async ({ I }) => {
+  const { tryTo } = await import('../../../lib/effects.js')
   I.do('before tryTo')
-  tryTo(async () => {
+  await tryTo(async () => {
     I.do('inside tryTo')
     await session('nested-session', () => {
       I.do('inside nested session')
