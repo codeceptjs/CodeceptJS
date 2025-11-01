@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import WebElement from '../../lib/element/WebElement'
+import WebElement from '../../lib/element/WebElement.js'
 
 describe('Helper Integration with WebElement', () => {
   describe('WebElement method testing across helpers', () => {
