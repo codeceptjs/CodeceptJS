@@ -1,4 +1,4 @@
-import expect from 'chai'
+import { expect } from 'chai'
 import WebElement from '../../lib/element/WebElement'
 
 describe('WebElement', () => {
