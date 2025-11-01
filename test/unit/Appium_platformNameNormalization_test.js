@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Appium from '../../lib/helper/Appium'
+import Appium from '../../lib/helper/Appium.js'
 
 describe('Appium platformName normalization', () => {
   it('should normalize platformName to lowercase for Android', () => {
