@@ -1,5 +1,5 @@
-const { expect } = require('chai')
-const Appium = require('../../lib/helper/Appium')
+import expect from 'chai'
+import Appium from '../../lib/helper/Appium'
 
 describe('Appium platformName normalization', () => {
   it('should normalize platformName to lowercase for Android', () => {
