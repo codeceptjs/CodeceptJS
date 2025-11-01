@@ -1,9 +1,11 @@
-const { expect } = require('expect')
-const exec = require('child_process').exec
-const { codecept_dir, codecept_run } = require('./consts')
-const debug = require('debug')('codeceptjs:tests')
-const fs = require('fs')
-const path = require('path')
+import { expect } from 'expect'
+import { exec } from 'child_process'
+import { codecept_dir, codecept_run } from './consts'
+import debug from 'debug'
+import fs from 'fs'
+import path from 'path'
+
+const log = debug('codeceptjs:tests')
 
 const config_run_config = (config, grep, verbose = false) => `${codecept_run} ${verbose ? '--verbose' : ''} --config ${codecept_dir}/configs/html-reporter-plugin/${config} ${grep ? `--grep "${grep}"` : ''}`
 
