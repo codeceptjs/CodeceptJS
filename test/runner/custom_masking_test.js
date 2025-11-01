@@ -1,6 +1,6 @@
-const { exec } = require('child_process')
-const { assert } = require('chai')
-const path = require('path')
+import { exec } from 'child_process'
+import { assert } from 'chai'
+import path from 'path'
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
