@@ -1,6 +1,10 @@
 import { exec } from 'child_process'
 import { assert } from 'chai'
 import path from 'path'
+import { fileURLToPath } from 'url'
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
