@@ -1,4 +1,4 @@
-import expect from 'chai'
+import { expect } from 'chai'
 import Appium from '../../lib/helper/Appium'
 
 describe('Appium platformName normalization', () => {
