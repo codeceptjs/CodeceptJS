@@ -1,5 +1,5 @@
-const expect = require('chai').expect
-const Codecept = require('../../lib/codecept')
+import { expect } from 'chai'
+import Codecept from '../../lib/codecept.js'
 
 describe('Test Sharding Edge Cases', () => {
   let codecept

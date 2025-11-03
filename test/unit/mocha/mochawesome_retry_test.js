@@ -1,11 +1,11 @@
-const { expect } = require('chai')
-const { createTest } = require('../../../lib/mocha/test')
-const { createSuite } = require('../../../lib/mocha/suite')
-const MochaSuite = require('mocha/lib/suite')
-const Test = require('mocha/lib/test')
-const Mochawesome = require('../../../lib/helper/Mochawesome')
-const retryEnhancer = require('../../../lib/listener/retryEnhancer')
-const event = require('../../../lib/event')
+import { expect } from 'chai'
+import { createTest } from '../../../lib/mocha/test.js'
+import { createSuite } from '../../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite.js'
+import Test from 'mocha/lib/test.js'
+import Mochawesome from '../../../lib/helper/Mochawesome.js'
+import retryEnhancer from '../../../lib/listener/retryEnhancer.js'
+import event from '../../../lib/event.js'
 
 describe('MochawesomeHelper with retries', function () {
   let helper

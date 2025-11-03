@@ -1,3 +1,5 @@
+import container from '../../../../../lib/container.js'
+
 Feature('HTML Reporter with Artifacts Test')
 
 Scenario('test with artifacts', async ({ I }) => {
@@ -5,7 +7,6 @@ Scenario('test with artifacts', async ({ I }) => {
   I.seeFile('codecept.conf.js')
 
   // Simulate adding test artifacts
-  const container = require('../../../../../lib/container')
   try {
     const currentTest = container.mocha().currentTest
     if (currentTest) {

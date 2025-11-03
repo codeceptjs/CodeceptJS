@@ -1,5 +1,6 @@
 import assert from 'assert'
 import Helper from '../../../../lib/helper.js'
+import output from '../../../../lib/output.js'
 
 class CheckoutHelper extends Helper {
   constructor(config) {
@@ -52,7 +53,6 @@ class CheckoutHelper extends Helper {
 
   say(message) {
     // Use CodeceptJS output system instead of direct console.log
-    const output = require('../../../../lib/output')
     output.log(`[Helper] ${message}`)
   }
 

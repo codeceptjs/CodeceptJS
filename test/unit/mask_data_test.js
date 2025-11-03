@@ -1,5 +1,5 @@
-const { expect } = require('expect')
-const { maskData, getMaskConfig, shouldMaskData } = require('../../lib/utils/mask_data')
+import { expect } from 'expect'
+import { maskData, getMaskConfig, shouldMaskData } from '../../lib/utils/mask_data.js'
 
 describe('Mask Data Utility Tests', () => {
   let originalMaskConfig

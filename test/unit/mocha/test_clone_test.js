@@ -1,10 +1,10 @@
-const { expect } = require('chai')
-const { createTest, cloneTest } = require('../../../lib/mocha/test')
-const { createSuite } = require('../../../lib/mocha/suite')
-const MochaSuite = require('mocha/lib/suite')
-const Test = require('mocha/lib/test')
-const retryEnhancer = require('../../../lib/listener/retryEnhancer')
-const event = require('../../../lib/event')
+import { expect } from 'chai'
+import { createTest, cloneTest } from '../../../lib/mocha/test.js'
+import { createSuite } from '../../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite.js'
+import Test from 'mocha/lib/test.js'
+import retryEnhancer from '../../../lib/listener/retryEnhancer.js'
+import event from '../../../lib/event.js'
 
 describe('Test cloning for retries', function () {
   it('should maintain consistent fullTitle format after cloning', function () {

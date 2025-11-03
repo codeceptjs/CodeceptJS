@@ -1,18 +1,20 @@
-const { expect } = require('chai')
-const event = require('../../lib/event')
-const Config = require('../../lib/config')
-const enhancedGlobalRetry = require('../../lib/listener/enhancedGlobalRetry')
-const enhancedRetryFailedStep = require('../../lib/plugin/enhancedRetryFailedStep')
-const retryCoordinator = require('../../lib/retryCoordinator')
-const store = require('../../lib/store')
-const recorder = require('../../lib/recorder')
-const { createTest } = require('../../lib/mocha/test')
-const { createSuite } = require('../../lib/mocha/suite')
-const MochaSuite = require('mocha/lib/suite')
+import { expect } from 'chai'
+import event from '../../lib/event.js'
+import Config from '../../lib/config.js'
+import enhancedGlobalRetry from '../../lib/listener/enhancedGlobalRetry.js'
+import enhancedRetryFailedStep from '../../lib/plugin/enhancedRetryFailedStep.js'
+import * as retryCoordinator from '../../lib/retryCoordinator.js'
+import store from '../../lib/store.js'
+import recorder from '../../lib/recorder.js'
+import { createTest } from '../../lib/mocha/test.js'
+import { createSuite } from '../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite.js'
+import output from '../../lib/output.js'
 
 describe('Enhanced Retry Mechanisms', function () {
   let originalConfig
   let capturedLogs
+  let originalLog
 
   beforeEach(function () {
     // Capture original configuration
@@ -20,8 +22,8 @@ describe('Enhanced Retry Mechanisms', function () {
 
     // Setup log capturing
     capturedLogs = []
-    const originalLog = require('../../lib/output').log
-    require('../../lib/output').log = message => {
+    originalLog = output.log
+    output.log = message => {
       capturedLogs.push(message)
       // Comment out to reduce noise: originalLog(message)
     }
@@ -34,6 +36,11 @@ describe('Enhanced Retry Mechanisms', function () {
   })
 
   afterEach(function () {
+    // Restore original log
+    if (originalLog) {
+      output.log = originalLog
+    }
+
     // Restore original configuration
     Config.create(originalConfig)
 
@@ -67,8 +74,8 @@ describe('Enhanced Retry Mechanisms', function () {
       event.dispatcher.emit(event.test.before, test)
 
       // Check that priority information is tracked
-      expect(suite.opts.retryPriority).to.equal(enhancedGlobalRetry.RETRY_PRIORITIES.FEATURE_CONFIG)
-      expect(test.opts.retryPriority).to.equal(enhancedGlobalRetry.RETRY_PRIORITIES.SCENARIO_CONFIG)
+      expect(suite.opts.retryPriority).to.equal(retryCoordinator.RETRY_PRIORITIES.FEATURE_CONFIG)
+      expect(test.opts.retryPriority).to.equal(retryCoordinator.RETRY_PRIORITIES.SCENARIO_CONFIG)
 
       // Check logging includes enhanced information
       const globalRetryLogs = capturedLogs.filter(log => log.includes('[Global Retry]'))
@@ -89,10 +96,10 @@ describe('Enhanced Retry Mechanisms', function () {
       // First set by global retry
       event.dispatcher.emit(event.test.before, test)
       expect(test.retries()).to.equal(2)
-      expect(test.opts.retryPriority).to.equal(enhancedGlobalRetry.RETRY_PRIORITIES.SCENARIO_CONFIG)
+      expect(test.opts.retryPriority).to.equal(retryCoordinator.RETRY_PRIORITIES.SCENARIO_CONFIG)
 
       // Simulate a higher priority mechanism (like manual retry)
-      test.opts.retryPriority = enhancedGlobalRetry.RETRY_PRIORITIES.MANUAL_STEP
+      test.opts.retryPriority = retryCoordinator.RETRY_PRIORITIES.MANUAL_STEP
       test.retries(1) // Manual override
 
       // Global retry should not override higher priority

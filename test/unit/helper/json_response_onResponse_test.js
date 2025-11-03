@@ -1,9 +1,9 @@
-const assert = require('assert')
-const REST = require('../../../lib/helper/REST')
-const Container = require('../../../lib/container')
+import assert from 'assert'
+import REST from '../../../lib/helper/REST.js'
+import Container from '../../../lib/container.js'
+import TestHelper from '../../support/TestHelper.js'
+import axios from 'axios'
 
-const TestHelper = require('../../support/TestHelper')
-const axios = require('axios')
 const fallBackURL = 'https://jsonplaceholder.typicode.com'
 //start the server using npm run test-server as in the package.json
 let api_url = TestHelper.jsonServerUrl()

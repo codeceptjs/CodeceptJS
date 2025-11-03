@@ -1,8 +1,8 @@
-const chai = require('chai')
-const expect = chai.expect
+import chai from 'chai'
+import Playwright from '../../lib/helper/Playwright.js'
+import Locator from '../../lib/locator.js'
 
-const Playwright = require('../../lib/helper/Playwright')
-const Locator = require('../../lib/locator')
+const expect = chai.expect
 
 describe('Custom Locator Strategies', function () {
   this.timeout(5000)

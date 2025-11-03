@@ -1,6 +1,6 @@
-const assert = require('assert')
-const event = require('../../../lib/event')
-const retryFailedStep = require('../../../lib/plugin/retryFailedStep')
+import assert from 'assert'
+import event from '../../../lib/event.js'
+import retryFailedStep from '../../../lib/plugin/retryFailedStep.js'
 
 describe('retryFailedStep plugin (interactive shell regression)', () => {
   beforeEach(() => {
