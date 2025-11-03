@@ -1,8 +1,8 @@
 import { expect } from 'chai'
-import { safeStringify } from '../../lib/utils'
-import { createTest } from '../../lib/mocha/test'
-import { createSuite } from '../../lib/mocha/suite'
-import MochaSuite from 'mocha/lib/suite'
+import { safeStringify } from '../../lib/utils.js'
+import { createTest } from '../../lib/mocha/test.js'
+import { createSuite } from '../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite.js'
 
 describe('Circular Reference Handling', function () {
   describe('safeStringify utility', function () {
