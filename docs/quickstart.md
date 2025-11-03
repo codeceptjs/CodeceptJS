@@ -20,16 +20,6 @@ This gives you access to rich Selenium ecosystem and cross-browser support for m
 
 ---
 
-#### Use TestCafe for cross-browser testing without Selenium
-
-<small>
-TestCafe provides cross-browser support without Selenium. TestCafe tests are faster, require no extra tooling and faster than regular Selenium. However, can be less stable.
-</small>
-
-<a href="/testcafe" class="button green extended" >Start with TestCafe &raquo;</a>
-
----
-
 * [Mobile Testing with Appium »](/mobile)
 
 :::

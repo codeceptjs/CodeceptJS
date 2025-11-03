@@ -55,7 +55,7 @@ Features:
 
 * Toggle headless/window mode with one click
 * See HTML snapshot of each step
-* Works with WebDriver, Puppeteer, TestCafe
+* Works with WebDriver, Puppeteer, Playwright
 * Shows step-by-step execution
 * Integrated with your local IDE
 

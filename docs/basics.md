@@ -41,7 +41,6 @@ Refer to following guides to more information on:
 - [▶ Playwright](/playwright)
 - [▶ WebDriver](/webdriver)
 - [▶ Puppeteer](/puppeteer)
-- [▶ TestCafe](/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
 
@@ -434,7 +433,7 @@ const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure')
 
 // run headless when CI environment variable set
 setHeadlessWhen(process.env.CI)
-// set window size for any helper: Puppeteer, WebDriver, TestCafe
+// set window size for any helper: Puppeteer, WebDriver, Playwright
 setWindowSize(1600, 1200)
 
 exports.config = {
