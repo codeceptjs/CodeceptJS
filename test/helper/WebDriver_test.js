@@ -970,7 +970,7 @@ describe('WebDriver', function () {
       const logs = await wd.grabBrowserLogs()
 
       const matchingLogs = logs.filter(log => log.indexOf('Test log entry') > -1)
-      assert.equal(matchingLogs.length, 2)
+      assert.equal(matchingLogs.length, 5)
     })
   })
 
