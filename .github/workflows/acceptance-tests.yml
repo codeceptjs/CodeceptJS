@@ -34,10 +34,10 @@ jobs:
 
       # Run rest tests using docker-compose
       - name: Run REST Tests
-        run: docker-compose run --rm test-rest
+        run: docker-compose run --rm --build test-rest
         working-directory: test
 
       # Run WebDriverIO acceptance tests using docker-compose
       - name: Run WebDriverIO Acceptance Tests
-        run: docker-compose run --rm test-acceptance.webdriverio
+        run: docker-compose run --rm --build test-acceptance.webdriverio
         working-directory: test
