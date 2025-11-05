@@ -70,7 +70,7 @@ services:
   json_server:
     <<: *test-service
     entrypoint: []
-    command: npm run test-server
+    command: /bin/bash /codecept/test/scripts/start-json-server.sh
     ports:
       - '8010:8010' # Expose to host
     restart: always # Automatically restart the container if it fails or becomes unhealthy
