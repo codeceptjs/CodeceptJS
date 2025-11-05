@@ -17,6 +17,7 @@ const args = process.argv.slice(2)
 let dbFile = path.join(__dirname, '../test/data/rest/db.json')
 let port = 8010
 let host = '0.0.0.0'
+let readOnly = false
 
 // Simple argument parsing
 for (let i = 0; i < args.length; i++) {
@@ -26,15 +27,20 @@ for (let i = 0; i < args.length; i++) {
     port = parseInt(args[++i])
   } else if (arg === '--host') {
     host = args[++i]
+  } else if (arg === '--read-only' || arg === '-r') {
+    readOnly = true
   } else if (!arg.startsWith('-')) {
     dbFile = path.resolve(arg)
   }
 }
 
 // Create and start server
-const server = new TestServer({ port, host, dbFile })
+const server = new TestServer({ port, host, dbFile, readOnly })
 
 console.log(`Starting test server with db file: ${dbFile}`)
+if (readOnly) {
+  console.log('Running in READ-ONLY mode - changes will not be persisted to disk')
+}
 
 server
   .start()
