@@ -11,37 +11,37 @@ services:
         - MOCK_SERVER_HOST=mock_server
     command: ['/codecept/node_modules/.bin/mocha', 'test/rest']
     depends_on:
-      json_server:
-        condition: service_healthy
-      mock_server:
-        condition: service_started
+      - json_server
+      - mock_server
 
   test-acceptance.webdriverio:
     build: ..
     env_file: .env
-    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c acceptance/codecept.WebDriver.js --grep @WebDriverIO --debug
-      - NODE_PATH=/codecept/lib
+      - CODECEPT_ARGS=-c codecept.WebDriver.js --grep @WebDriverIO --debug
     depends_on:
       - php
       - selenium.chrome
     volumes:
-      - .:/tests
+      - ./acceptance:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   test-acceptance.puppeteer:
     build: ..
     env_file: .env
-    working_dir: /tests
     environment:
-      - CODECEPT_ARGS=-c acceptance/codecept.Puppeteer.js --grep @Puppeteer
+      - CODECEPT_ARGS=-c codecept.Puppeteer.js --grep @Puppeteer
       - PPT_VERSION=$PPT_VERSION
-      - NODE_PATH=/codecept/lib
     depends_on:
       - php
       - puppeteer-image
     volumes:
-      - .:/tests
+      - ./acceptance:/tests
+      - ./data:/data
+      - ./support:/support
+      - node_modules:/node_modules
 
   test-bdd.faker:
     build: ..
@@ -52,6 +52,7 @@ services:
       - ./bdd:/tests
       - ./data:/data
       - ./support:/support
+      - node_modules:/node_modules
 
   selenium.chrome:
     image: selenium/standalone-chrome:4.26
@@ -74,12 +75,6 @@ services:
     ports:
       - '8010:8010' # Expose to host
     restart: always # Automatically restart the container if it fails or becomes unhealthy
-    healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8010/posts', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
-      interval: 2s
-      timeout: 3s
-      retries: 10
-      start_period: 5s
 
   mock_server:
     <<: *test-service
@@ -93,3 +88,6 @@ services:
 
   puppeteer-image:
     image: ghcr.io/puppeteer/puppeteer:22.4.1
+
+volumes:
+  node_modules:
