@@ -15,7 +15,19 @@
 - **Fix**: Allow auto-initialization when `manualStart` is false
 - **Impact**: Tests with `Before()` hooks now work properly with restart=browser mode
 
-### 3. ⚠️ Per-Test Config with Session Mode + Workers (LIMITATION DOCUMENTED)
+### 3. ✅ Process Hanging After Tests Complete (FIXED)
+**Problem**: Process doesn't exit after all tests pass, hangs indefinitely
+- **Root Cause**: Playwright's internal event loops keep the process alive even after cleanup
+- **File**: `lib/helper/Playwright.js` `_cleanup()` method
+- **Fix**: Add delayed auto-exit (2 seconds) after cleanup completes
+- **Details**:
+  - Uses `setTimeout().unref()` to allow natural exit if possible
+  - Only exits if no other exit handlers are registered
+  - Respects existing `process.exitCode`
+  - Can be disabled with `CODECEPT_DISABLE_AUTO_EXIT=1` environment variable
+- **Impact**: Tests now exit cleanly within 2 seconds after completion
+
+### 4. ⚠️ Per-Test Config with Session Mode + Workers (LIMITATION DOCUMENTED)
 **Problem**: Per-test `.config()` doesn't work in BROWSER_RESTART=session mode with workers
 - **Root Cause**: `teardown()` afterEach hooks don't execute in worker/pool mode
 - **Evidence**: File logging showed config changes applied but restore callbacks never fired
@@ -27,7 +39,7 @@
 - **Affected Tests**: 18 tests from `config_test.js` and `session_test.js`
 - **Workaround Applied**: Changed CI workflow to avoid the problematic combination
 
-### 4. ⚠️ Selector Registration Conflicts (NEW ISSUE)
+### 5. ⚠️ Selector Registration Conflicts (NEW ISSUE)
 **Problem**: BROWSER_RESTART=context with workers causes selector registration conflicts
 - **Error**: `browser.newContext: "__value" selector engine has been already registered`
 - **Root Cause**: Custom selectors are registered globally on the Playwright module instance (module-level variable)
