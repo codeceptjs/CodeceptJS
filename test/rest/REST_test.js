@@ -1,15 +1,15 @@
 import path from 'path'
-import { expect } from 'expect'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+import '../support/setup.js'
 import TestHelper from '../support/TestHelper.js'
 import REST from '../../lib/helper/REST.js'
 import Container from '../../lib/container.js'
 import Secret from '../../lib/secret.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const api_url = TestHelper.jsonServerUrl()
 import * as codeceptjs from '../../lib/index.js'
