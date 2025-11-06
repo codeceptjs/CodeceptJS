@@ -49,6 +49,7 @@
   "repository": "Codeception/codeceptjs",
   "scripts": {
     "test-server": "node bin/test-server.js test/data/rest/db.json --host 0.0.0.0 -p 8010 --read-only",
+    "test-server:writable": "node bin/test-server.js test/data/rest/db.json --host 0.0.0.0 -p 8010",
     "mock-server:start": "node test/mock-server/start-mock-server.js",
     "mock-server:stop": "kill -9 $(lsof -t -i:3001)",
     "test:with-mock-server": "npm run mock-server:start && npm test",
@@ -58,8 +59,9 @@
     "prettier": "prettier --config prettier.config.js --write bin/**/*.js lib/**/*.js test/**/*.js translations/**/*.js runok.cjs",
     "docs": "./runok.cjs docs",
     "test:unit": "mocha test/unit --recursive --timeout 10000 --reporter @testomatio/reporter/mocha",
+    "test:rest": "mocha test/rest --recursive --timeout 20000 --reporter @testomatio/reporter/mocha",
     "test:runner": "mocha test/runner --recursive --timeout 10000 --reporter @testomatio/reporter/mocha",
-    "test": "npm run test:unit && npm run test:runner",
+    "test": "npm run test:unit && npm run test:rest && npm run test:runner",
     "test:appium-quick": "mocha test/helper/Appium_test.js --grep 'quick' --reporter @testomatio/reporter/mocha",
     "test:appium-other": "mocha test/helper/Appium_test.js --grep 'second' --reporter @testomatio/reporter/mocha",
     "test:ios:appium-quick": "mocha test/helper/Appium_ios_test.js --grep 'quick' --reporter @testomatio/reporter/mocha",
