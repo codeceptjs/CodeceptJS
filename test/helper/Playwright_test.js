@@ -2,6 +2,7 @@ import chai from 'chai'
 
 const assert = chai.assert
 const expect = chai.expect
+const should = chai.should()
 
 import path from 'path'
 import fs from 'fs'
