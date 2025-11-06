@@ -8,7 +8,14 @@
 - **Fix**: Added `await` keyword: `const baseConfig = await getConfig(options.config || testRoot)`
 - **Impact**: Custom locator tests now pass (20 passed, 2 skipped - was 2 passed, 18 failed)
 
-### 2. ⚠️ Per-Test Config with Session Mode + Workers (LIMITATION DOCUMENTED)
+### 2. ✅ Browser Auto-Initialization (FIXED)
+**Problem**: "Cannot navigate: browser is not running" error in `Before()` hooks with BROWSER_RESTART=browser
+- **Root Cause**: `Before()` hooks run before helper's `_before()` method, so browser not started yet
+- **File**: `lib/helper/Playwright.js` line 1508
+- **Fix**: Allow auto-initialization when `manualStart` is false
+- **Impact**: Tests with `Before()` hooks now work properly with restart=browser mode
+
+### 3. ⚠️ Per-Test Config with Session Mode + Workers (LIMITATION DOCUMENTED)
 **Problem**: Per-test `.config()` doesn't work in BROWSER_RESTART=session mode with workers
 - **Root Cause**: `teardown()` afterEach hooks don't execute in worker/pool mode
 - **Evidence**: File logging showed config changes applied but restore callbacks never fired
@@ -20,7 +27,7 @@
 - **Affected Tests**: 18 tests from `config_test.js` and `session_test.js`
 - **Workaround Applied**: Changed CI workflow to avoid the problematic combination
 
-### 3. ⚠️ Selector Registration Conflicts (NEW ISSUE)
+### 4. ⚠️ Selector Registration Conflicts (NEW ISSUE)
 **Problem**: BROWSER_RESTART=context with workers causes selector registration conflicts
 - **Error**: `browser.newContext: "__value" selector engine has been already registered`
 - **Root Cause**: Custom selectors are registered globally on the Playwright module instance (module-level variable)
