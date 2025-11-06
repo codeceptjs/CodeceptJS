@@ -54,17 +54,16 @@ jobs:
           GH_PAT: ${{ github.token }}
           SELENIUM_HOST: localhost
           SELENIUM_PORT: 4444
-      - name: start a server
-        run: |
-          php -S 0.0.0.0:8000 -t test/data/app &
-          sleep 5
       - name: run unit tests
         run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit --reporter @testomatio/reporter/mocha
         timeout-minutes: 10
         env:
           SELENIUM_HOST: localhost
           SELENIUM_PORT: 4444
-      - name: run tests
-        run: './bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriver --debug'
+      - name: run acceptance tests
+        run: './bin/codecept.js run -c test/acceptance/codecept.WebDriver.js --grep @WebDriverIO --debug'
+        env:
+          SELENIUM_HOST: localhost
+          SELENIUM_PORT: 4444
       - name: Stop mock server
         run: npm run mock-server:stop
