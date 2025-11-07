@@ -1,6 +1,6 @@
 class TestHelper {
   static siteUrl() {
-    return process.env.SITE_URL || 'http://0.0.0.0:8000'
+    return process.env.SITE_URL || 'http://127.0.0.1:8000'
   }
 
   static angularSiteUrl() {
@@ -12,7 +12,7 @@ class TestHelper {
   }
 
   static seleniumHost() {
-    return process.env.SELENIUM_HOST || '0.0.0.0'
+    return process.env.SELENIUM_HOST || '127.0.0.1'
   }
 
   static seleniumPort() {

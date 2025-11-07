@@ -42,6 +42,6 @@ Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
 }).config({ url: 'https://codecept.io' })
 
 Scenario('simple page test @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
-  I.amOnPage('https://github.com')
-  I.see('GitHub')
+  I.amOnPage('https://example.com')
+  I.see('Example Domain')
 })
