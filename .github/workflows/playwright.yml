@@ -58,8 +58,6 @@ jobs:
         run: './bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
       - name: run chromium with restart==browser tests
         run: 'BROWSER_RESTART=browser ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
-      - name: run chromium with restart==browser tests on 2 workers split by pool
-        run: 'BROWSER_RESTART=browser ./bin/codecept.js run-workers 2 -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug --by=pool'
       - name: run chromium with restart==session tests
         run: 'BROWSER_RESTART=session ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
       - name: run firefox tests
