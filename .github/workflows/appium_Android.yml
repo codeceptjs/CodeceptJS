@@ -6,6 +6,10 @@ on:
       - 3.x
       - 5228-fix-appium-tests
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   CI: true
   # Force terminal colors. @see https://www.npmjs.com/package/colors
