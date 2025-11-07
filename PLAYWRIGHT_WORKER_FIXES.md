@@ -18,14 +18,15 @@
 ### 3. ✅ Process Hanging After Tests Complete (FIXED)
 **Problem**: Process doesn't exit after all tests pass, hangs indefinitely
 - **Root Cause**: Playwright's internal event loops keep the process alive even after cleanup
-- **File**: `lib/helper/Playwright.js` `_cleanup()` method
-- **Fix**: Add delayed auto-exit (2 seconds) after cleanup completes
+- **File**: `lib/helper/Playwright.js` `_afterSuite()` and `_cleanup()` methods
+- **Fix**: Add forced auto-exit (2 seconds) after cleanup completes
 - **Details**:
-  - Uses `setTimeout().unref()` to allow natural exit if possible
-  - Only exits if no other exit handlers are registered
-  - Respects existing `process.exitCode`
+  - Uses `setTimeout().unref()` with forced `process.exit()`
+  - Unconditionally exits after delay (removed listenerCount check)
+  - Respects existing `process.exitCode` (0 for success, non-zero for failures)
   - Can be disabled with `CODECEPT_DISABLE_AUTO_EXIT=1` environment variable
-- **Impact**: Tests now exit cleanly within 2 seconds after completion
+- **Testing**: Verified locally - process exits in ~9s (6s test + 2s delay + overhead) instead of hanging indefinitely
+- **Impact**: Tests now exit cleanly within 2 seconds after completion in all modes
 
 ### 4. ⚠️ Per-Test Config with Session Mode + Workers (LIMITATION DOCUMENTED)
 **Problem**: Per-test `.config()` doesn't work in BROWSER_RESTART=session mode with workers
