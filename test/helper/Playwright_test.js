@@ -978,7 +978,7 @@ describe('Playwright', function () {
       await I.switchTo('#test-iframe')
       await I.seeElementInDOM('#iframe-draggable')
       await I.dragAndDrop('#iframe-draggable', '#iframe-droppable')
-      await I.see('Drop here')
+      await I.see('Dropped!')
     })
   })
 

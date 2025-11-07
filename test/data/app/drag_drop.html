@@ -41,7 +41,7 @@
     </style>
   </head>
   <body>
-    <div id="draggable">
+    <div id="draggable" draggable="true">
       <p>Drag me to my target</p>
     </div>
 
@@ -78,8 +78,26 @@
                 </style>
             </head>
             <body>
-                <div id="iframe-draggable">Drag me</div>
+                <div id="iframe-draggable" draggable="true">Drag me</div>
                 <div id="iframe-droppable">Drop here</div>
+                <script>
+                    let draggedElement = null;
+                    document.getElementById("iframe-draggable").addEventListener("dragstart", function(e) {
+                        draggedElement = this;
+                        e.dataTransfer.effectAllowed = "move";
+                    });
+                    document.getElementById("iframe-droppable").addEventListener("dragover", function(e) {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = "move";
+                    });
+                    document.getElementById("iframe-droppable").addEventListener("drop", function(e) {
+                        e.preventDefault();
+                        if (draggedElement) {
+                            this.style.background = "lightgreen";
+                            this.innerHTML = "Dropped!";
+                        }
+                    });
+                </script>
             </body>
             </html>
         '
