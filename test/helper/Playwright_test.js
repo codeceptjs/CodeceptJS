@@ -2229,3 +2229,13 @@ describe('Playwright - storageState file path', function () {
     } catch (_) {}
   })
 })
+
+// Global after hook to ensure process exits after all tests complete
+// This prevents the process from hanging due to Playwright event loops
+after(function () {
+  if (!process.env.CODECEPT_DISABLE_AUTO_EXIT) {
+    setTimeout(() => {
+      process.exit(process.exitCode || 0)
+    }, 1000).unref()
+  }
+})
