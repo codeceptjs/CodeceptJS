@@ -1578,7 +1578,7 @@ describe('Playwright - Electron', function () {
       browser: 'electron',
       electron: {
         executablePath: electron,
-        args: [path.join(global.codecept_dir, '/electron/')],
+        args: ['--no-sandbox', path.join(global.codecept_dir, '/electron/')],
       },
     })
     try {
@@ -1968,7 +1968,7 @@ describe('Playwright - HAR', () => {
     const harFile = './test/data/sandbox/testHar.har'
     await I.replayFromHar(harFile, { url: '*/**/api-mocking' })
     await I.amOnPage('https://demo.playwright.dev/api-mocking')
-    await I.see('API Mocking')
+    await I.see('Render a List of Fruits')
   })
 
   describe('#grabWebElements, #grabWebElement', () => {
