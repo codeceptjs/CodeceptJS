@@ -82,7 +82,6 @@ describe('Playwright', function () {
 
   after(async () => {
     await I._afterSuite()
-    await I._cleanup()
   })
 
   describe('open page : #amOnPage', () => {
@@ -1695,8 +1694,6 @@ describe('Playwright - Performance Metrics', () => {
 
   after(async () => {
     await I._afterSuite()
-    // Use the built-in cleanup method
-    await I._cleanup()
   })
 })
 
