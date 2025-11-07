@@ -1577,6 +1577,13 @@ describe('Playwright - PERSISTENT', () => {
 
 describe('Playwright - Electron', function () {
   before(async function () {
+    // Skip Electron tests in CI environments as they require a display
+    if (process.env.CI) {
+      console.log('Skipping Electron tests in CI environment (no display available)')
+      this.skip()
+      return
+    }
+
     this.timeout(15000) // Increase timeout for Electron test
     global.codecept_dir = path.join(__dirname, '/../data')
 
