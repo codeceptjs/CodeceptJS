@@ -1966,9 +1966,9 @@ describe('Playwright - HAR', () => {
 
   it('replay from HAR', async function () {
     const harFile = './test/data/sandbox/testHar.har'
-    await I.replayFromHar(harFile)
-    await I.amOnPage('/')
-    await I.see('Welcome to test app')
+    await I.replayFromHar(harFile, { url: '*/**/api-mocking' })
+    await I.amOnPage('https://demo.playwright.dev/api-mocking')
+    await I.see('API Mocking')
   })
 
   describe('#grabWebElements, #grabWebElement', () => {
