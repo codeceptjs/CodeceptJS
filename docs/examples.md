@@ -21,7 +21,6 @@ Tests repository demonstrate usage of
 - Playwright helper
 - Puppeteer helper
 - WebDriver helper
-- TestCafe plugin
 - Toggle headless mode with env variables
 - PageObjects
 - Cucumber syntax

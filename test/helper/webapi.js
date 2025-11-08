@@ -319,8 +319,6 @@ export function tests() {
   // Could not get double click to work
   describe('#doubleClick', () => {
     it('it should doubleClick', async function () {
-      if (isHelper('TestCafe')) this.skip() // jQuery CDN not accessible in test environment
-
       await I.amOnPage('/form/doubleclick')
       await I.dontSee('Done!')
       await I.doubleClick('#block')
@@ -583,7 +581,6 @@ export function tests() {
     })
 
     it('should fill field by name', async () => {
-      if (isHelper('TestCafe')) return // TODO Chrome popup causes problems with TestCafe
       await I.amOnPage('/form/example1')
       await I.fillField('LoginForm[username]', 'davert')
       await I.fillField('LoginForm[password]', '123456')

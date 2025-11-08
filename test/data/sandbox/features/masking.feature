@@ -1,5 +1,6 @@
 Feature: Custom Data Masking
 
+  @fail
   Scenario: mask custom sensitive data in output
     Given I have user email "john.doe@example.com"
     And I have credit card "4111 1111 1111 1111"

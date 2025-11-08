@@ -1,4 +1,4 @@
-const assert = require('assert');
+import assert from 'assert';
 
 Feature('Complete validation for issue #5066 fix');
 

@@ -1,5 +1,10 @@
-const { spawn } = require('child_process')
-const http = require('http')
+import { spawn } from 'child_process'
+import http from 'http'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const PORT = process.env.PORT || 3001
 const MAX_RETRIES = 20

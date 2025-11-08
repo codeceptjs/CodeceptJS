@@ -1,12 +1,12 @@
-const { expect } = require('chai')
-const sinon = require('sinon')
-const event = require('../../../lib/event')
-const recorder = require('../../../lib/recorder')
-const { tryTo, hopeThat } = require('../../../lib/effects')
-const Step = require('../../../lib/step')
+import { expect } from 'chai'
+import sinon from 'sinon'
+import event from '../../../lib/event.js'
+import recorder from '../../../lib/recorder.js'
+import { tryTo, hopeThat } from '../../../lib/effects.js'
+import Step from '../../../lib/step.js'
 
 // Import and initialize the steps listener
-const stepsListener = require('../../../lib/listener/steps')
+import stepsListener from '../../../lib/listener/steps.js'
 
 describe('Steps Listener - Issue Fix #4619', () => {
   let currentTest

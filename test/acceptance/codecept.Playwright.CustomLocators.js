@@ -1,4 +1,4 @@
-const { config } = require('../acceptance/codecept.Playwright')
+import { config } from '../acceptance/codecept.Playwright.js'
 
 // Extend the base Playwright configuration to add custom locator strategies
 const customLocatorConfig = {
@@ -31,4 +31,4 @@ const customLocatorConfig = {
   },
 }
 
-module.exports.config = customLocatorConfig
+export { customLocatorConfig as config }

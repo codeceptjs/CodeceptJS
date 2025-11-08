@@ -13,7 +13,6 @@ Feature: HTML Reporter BDD Test
     When I perform an action
     Then I should see the expected result
     And everything should work correctly
-    But I should see the expected result
 
   @regression @critical
   Scenario: Test with data table

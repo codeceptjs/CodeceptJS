@@ -32,9 +32,9 @@ jobs:
           sudo apt-get update --allow-releaseinfo-change
           sudo apt-get install -y docker-compose
 
-      # Run rest tests using docker-compose
-      - name: Run REST Tests
-        run: docker-compose run --rm test-rest
+      # Build Docker images to include latest code changes
+      - name: Build Docker Images
+        run: docker-compose build
         working-directory: test
 
       # Run WebDriverIO acceptance tests using docker-compose

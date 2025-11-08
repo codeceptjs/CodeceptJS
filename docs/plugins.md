@@ -342,7 +342,7 @@ Consolidates JSON reports from multiple workers into a single HTML report
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## coverage
 
@@ -490,6 +490,17 @@ Sample custom reporter for CodeceptJS.
 
 *   `config` &#x20;
 
+## enhancedRetryFailedStep
+
+Enhanced retryFailedStep plugin that coordinates with other retry mechanisms
+
+This plugin provides step-level retries and coordinates with global retry settings
+to avoid conflicts and provide predictable behavior.
+
+### Parameters
+
+*   `config` &#x20;
+
 ## heal
 
 Self-healing tests with AI.
@@ -518,10 +529,10 @@ HTML Reporter Plugin for CodeceptJS
 
 Generates comprehensive HTML reports showing:
 
-- Test statistics
-- Feature/Scenario details
-- Individual step results
-- Test artifacts (screenshots, etc.)
+*   Test statistics
+*   Feature/Scenario details
+*   Individual step results
+*   Test artifacts (screenshots, etc.)
 
 ## Configuration
 
@@ -548,7 +559,7 @@ Generates comprehensive HTML reports showing:
 
 ### Parameters
 
-- `config` &#x20;
+*   `config` &#x20;
 
 ## pageInfo
 
@@ -671,7 +682,7 @@ Safely serialize data to JSON, handling circular references
 
 ### Parameters
 
-- `data` &#x20;
+*   `data` &#x20;
 
 ## screenshotOnFail
 

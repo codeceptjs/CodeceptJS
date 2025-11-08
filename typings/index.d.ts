@@ -636,11 +636,17 @@ declare namespace Mocha {
 }
 
 declare module 'codeceptjs' {
-  export = codeceptjs
+  export default codeceptjs
 }
 
 declare module '@codeceptjs/helper' {
-  export = CodeceptJS.Helper
+  export default CodeceptJS.Helper
+}
+
+declare module 'codeceptjs/effects' {
+  export const tryTo: TryTo
+  export const retryTo: RetryTo
+  export const hopeThat: HopeThat
 }
 
 declare module 'codeceptjs/effects' {

@@ -1,5 +1,5 @@
-const { expect } = require('chai')
-const WebElement = require('../../lib/element/WebElement')
+import { expect } from 'chai'
+import WebElement from '../../lib/element/WebElement.js'
 
 describe('WebElement', () => {
   describe('constructor and helper detection', () => {

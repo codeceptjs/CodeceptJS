@@ -1,4 +1,4 @@
-export const config = {
+module.exports = {
   tests: './*_test.js',
   output: './output',
   helpers: {
@@ -6,5 +6,6 @@ export const config = {
       require: './customHelper.js',
     },
   },
+  timeout: 0.1,
   name: 'steps',
 };
