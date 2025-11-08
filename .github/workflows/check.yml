@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
   pull_request:
     branches:
       - '**'
@@ -19,7 +19,7 @@ jobs:
       with:
         fetch-depth: 0
     - uses: testomatio/check-tests@stable
-      if: github.repository == 'codeceptjs/CodeceptJS' && github.event.pull_request.title == '3.x'
+      if: github.repository == 'codeceptjs/CodeceptJS' && github.event.pull_request.title == '4.x'
       with:
         framework: mocha
         tests: "./test/**/*_test.js"

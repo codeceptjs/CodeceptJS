@@ -3,7 +3,7 @@ name: Update documentation after merge
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
