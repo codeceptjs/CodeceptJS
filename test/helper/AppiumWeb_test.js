@@ -1,4 +1,4 @@
-import { Appium } from '../../lib/helper/Appium.js'
+import Appium from '../../lib/helper/Appium.js'
 import * as codeceptjs from '../../lib/index.js'
 global.codeceptjs = codeceptjs.default || codeceptjs
 
