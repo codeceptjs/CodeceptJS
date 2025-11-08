@@ -3,7 +3,7 @@ name: Minimal Sharding Test
 on:
   push:
     branches:
-      - '3.x'
+      - '4.x'
   pull_request:
     branches:
       - '**'
