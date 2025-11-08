@@ -3,7 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
-import { Appium } from '../../lib/helper/Appium.js'
+import Appium from '../../lib/helper/Appium.js'
 import AssertionFailedError from '../../lib/assert/error.js'
 import { fileExists } from '../../lib/utils.js'
 import * as codeceptjs from '../../lib/index.js'
