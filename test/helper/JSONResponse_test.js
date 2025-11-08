@@ -83,7 +83,7 @@ describe('JSONResponse', () => {
       I.seeResponseContainsJson({
         posts: [{ id: 1, author: 'davert' }],
       })
-      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('expected { …(2) } to deeply match { Object (posts) }')
+      expect(() => I.seeResponseContainsJson({ posts: [{ id: 2, author: 'boss' }] })).to.throw('No matching element found in array for {"id":2,"author":"boss"}')
     })
 
     it('should check for json inclusion - returned Array', () => {
@@ -142,11 +142,12 @@ describe('JSONResponse', () => {
 
     it('should check for json by callback', () => {
       restHelper.config.onResponse({ data })
-      const fn = ({ expect, data }) => {
-        expect(data).to.have.keys(['posts', 'user'])
+      const fn = ({ assert, data }) => {
+        assert('posts' in data)
+        assert('user' in data)
       }
       I.seeResponseValidByCallback(fn)
-      expect(fn.toString()).to.include('expect(data).to.have')
+      expect(fn.toString()).to.include("assert('posts' in data)")
     })
 
     it('should check for json by zod schema', () => {

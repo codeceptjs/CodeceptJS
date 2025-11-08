@@ -1,46 +1,50 @@
 # Download Playwright and its dependencies
 FROM mcr.microsoft.com/playwright:v1.55.0-noble
 
-RUN apt-get update --allow-releaseinfo-change
+# Set non-interactive mode for apt operations
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Installing the pre-required packages and libraries
-RUN apt-get update && \
-      apt-get install -y libgtk2.0-0 \
-      libxtst6 libxss1 libnss3 xvfb
+# Update and install required dependencies in a single step to reduce layers
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgtk2.0-0 libxtst6 libxss1 libnss3 xvfb \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
-# Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
-# installs, work.
-RUN apt-get update && apt-get install -y gnupg wget && \
-  wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
-  echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-  apt-get update && \
-  apt-get install -y google-chrome-stable --no-install-recommends && \
-  rm -rf /var/lib/apt/lists/*
+# Ensure the pptruser exists, otherwise add it for better security
+RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+    && mkdir -p /home/pptruser/Downloads \
+    && chown -R pptruser:pptruser /home/pptruser
 
+# Copy project files to Docker image
 COPY . /codecept
+
+# Set the working directory and install npm dependencies
 WORKDIR /codecept
-RUN npm install
+RUN npm install --loglevel=warn
 
-# Remove self-reference and create symlink to use root package.json with ESM exports
-RUN rm -rf /codecept/node_modules/codeceptjs && ln -sf /codecept /codecept/node_modules/codeceptjs
+# Set ownership for files to pptruser
+RUN chown -R pptruser:pptruser /codecept
 
+# Create symbolic link for CodeceptJS binary
 RUN ln -s /codecept/bin/codecept.js /usr/local/bin/codeceptjs
-RUN mkdir /tests
-WORKDIR /tests
-RUN npm init -y && npm pkg set type=module
 
-# Allow to pass argument to codecept run via env variable
+# Create a directory for tests and set as the working directory
+RUN mkdir -p /tests
+WORKDIR /tests
+
+# Set required environment variables
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV CODECEPT_ARGS=""
 ENV RUN_MULTIPLE=false
 ENV NO_OF_WORKERS=""
 
-# Set HOST ENV variable for Selenium Server
+# Set Selenium and Docker configurations
 ENV HOST=selenium
 ENV CODECEPT_DOCKER=1
 
-# Set the entrypoint
-ENTRYPOINT ["/codecept/docker/entrypoint"]
+# Uncomment the following line to use a non-root user for better security
+USER pptruser
 
-# Run tests
+# Set the entrypoint script and default CMD
+ENTRYPOINT ["/codecept/docker/entrypoint"]
 CMD ["bash", "/codecept/docker/run.sh"]

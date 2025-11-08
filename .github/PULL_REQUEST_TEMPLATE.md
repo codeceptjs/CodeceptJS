@@ -10,7 +10,6 @@ Applicable helpers:
 - [ ] REST
 - [ ] FileHelper
 - [ ] Appium
-- [ ] TestCafe
 
 Applicable plugins:
 

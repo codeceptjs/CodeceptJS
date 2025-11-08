@@ -26,6 +26,11 @@ describe('ui', () => {
     constants.forEach(c => {
       it(`context should contain ${c}`, () => expect(context[c]).is.ok)
     })
+
+    it('context should contain Feature.only', () => {
+      expect(context.Feature.only).is.ok
+      expect(context.Feature.only).to.be.a('function')
+    })
   })
 
   describe('Feature', () => {
@@ -125,6 +130,68 @@ describe('ui', () => {
       suiteConfig = context.Feature('not skipped suite')
       expect(suiteConfig.suite.pending).eq(false, 'Feature must not contain pending === true')
       expect(suiteConfig.suite.opts).to.deep.eq({}, 'Features should have no skip info')
+    })
+
+    it('Feature can be run exclusively with only', () => {
+      // Create a new mocha instance to test grep behavior
+      const mocha = new Mocha()
+      let grepPattern = null
+
+      // Mock mocha.grep to capture the pattern
+      const originalGrep = mocha.grep
+      mocha.grep = function (pattern) {
+        grepPattern = pattern
+        return this
+      }
+
+      // Reset environment variable
+      delete process.env.FEATURE_ONLY
+
+      // Re-emit pre-require with our mocked mocha instance
+      suite.emit('pre-require', context, {}, mocha)
+
+      suiteConfig = context.Feature.only('exclusive feature', { key: 'value' })
+
+      expect(suiteConfig.suite.title).eq('exclusive feature')
+      expect(suiteConfig.suite.opts).to.deep.eq({ key: 'value' }, 'Feature.only should pass options correctly')
+      expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
+      expect(grepPattern).to.be.instanceOf(RegExp)
+      expect(grepPattern.source).eq('^exclusive feature:')
+      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+
+      // Restore original grep
+      mocha.grep = originalGrep
+    })
+
+    it('Feature.only should work without options', () => {
+      // Create a new mocha instance to test grep behavior
+      const mocha = new Mocha()
+      let grepPattern = null
+
+      // Mock mocha.grep to capture the pattern
+      const originalGrep = mocha.grep
+      mocha.grep = function (pattern) {
+        grepPattern = pattern
+        return this
+      }
+
+      // Reset environment variable
+      delete process.env.FEATURE_ONLY
+
+      // Re-emit pre-require with our mocked mocha instance
+      suite.emit('pre-require', context, {}, mocha)
+
+      suiteConfig = context.Feature.only('exclusive feature without options')
+
+      expect(suiteConfig.suite.title).eq('exclusive feature without options')
+      expect(suiteConfig.suite.opts).to.deep.eq({}, 'Feature.only without options should have empty opts')
+      expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
+      expect(grepPattern).to.be.instanceOf(RegExp)
+      expect(grepPattern.source).eq('^exclusive feature without options:')
+      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+
+      // Restore original grep
+      mocha.grep = originalGrep
     })
 
     it('Feature should correctly pass options to suite context', () => {

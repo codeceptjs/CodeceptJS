@@ -52,7 +52,11 @@ describe('ApiDataFactory', function () {
     setTimeout(done, 5000)
   })
 
-  afterEach(() => I._after())
+  afterEach(async () => {
+    await I._after()
+    // Add extra delay to ensure cleanup propagates in Docker environments
+    await new Promise(resolve => setTimeout(resolve, 200))
+  })
 
   describe('create and cleanup records', function () {
     this.retries(2)

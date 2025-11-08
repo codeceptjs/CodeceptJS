@@ -131,6 +131,52 @@ I.fillField({ name: 'user[email]' }, 'miles@davis.com')
 I.seeElement({ xpath: '//body/header' })
 ```
 
+### Custom Locator Strategies
+
+CodeceptJS with Playwright supports custom locator strategies, allowing you to define your own element finding logic. Custom locator strategies are JavaScript functions that receive a selector value and return DOM elements.
+
+To use custom locator strategies, configure them in your `codecept.conf.js`:
+
+```js
+exports.config = {
+  helpers: {
+    Playwright: {
+      url: 'http://localhost',
+      browser: 'chromium',
+      customLocatorStrategies: {
+        byRole: (selector, root) => {
+          return root.querySelector(`[role="${selector}"]`);
+        },
+        byTestId: (selector, root) => {
+          return root.querySelector(`[data-testid="${selector}"]`);
+        },
+        byDataQa: (selector, root) => {
+          const elements = root.querySelectorAll(`[data-qa="${selector}"]`);
+          return Array.from(elements); // Return array for multiple elements
+        }
+      }
+    }
+  }
+}
+```
+
+Once configured, you can use these custom locator strategies in your tests:
+
+```js
+I.click({byRole: 'button'});           // Find by role attribute
+I.see('Welcome', {byTestId: 'title'}); // Find by data-testid
+I.fillField({byDataQa: 'email'}, 'test@example.com');
+```
+
+**Custom Locator Function Guidelines:**
+- Functions receive `(selector, root)` parameters where `selector` is the value and `root` is the DOM context
+- Return a single DOM element for finding the first match
+- Return an array of DOM elements for finding all matches
+- Return `null` or empty array if no elements found
+- Functions execute in the browser context, so only browser APIs are available
+
+This feature provides the same functionality as WebDriver's custom locator strategies but leverages Playwright's native selector engine system.
+
 ### Interactive Pause
 
 It's easy to start writing a test if you use [interactive pause](/basics#debug). Just open a web page and pause execution.
@@ -626,4 +672,49 @@ Playwright can be added to GitHub Actions using [official action](https://github
 - uses: microsoft/playwright-github-action@v1
 - name: run CodeceptJS tests
   run: npx codeceptjs run
+```
+
+## Reusing Auth State (storageState) <Badge text="Since 3.7.5" type="warning"/>
+
+Use Playwright's native `storageState` to start tests already authenticated.
+Pass either a JSON file path or a state object to the Playwright helper; CodeceptJS forwards it directly to Playwright (no pre-checks).
+
+**Sensitive**: A storage state contains session cookies, auth tokens and may contain localStorage / IndexedDB application data. Treat it like a secret: do not commit it to git, encrypt or store it in a secure CI artifact store.
+
+Reference: https://playwright.dev/docs/auth#reuse-authentication-state
+
+**Limitation**: If a Scenario is declared with a `cookies` option (e.g. `Scenario('My test', { cookies: [...] }, ({ I }) => { ... })`), those cookies are used to initialize the context and any helper-level `storageState` is ignored (no merge). Choose one mechanism per Scenario.
+
+Minimal examples:
+
+```js
+// File path
+helpers: { Playwright: { url: 'http://localhost', browser: 'chromium', storageState: 'authState.json' } }
+
+// Inline object
+const state = require('./authState.json');
+helpers: { Playwright: { url: 'http://localhost', browser: 'chromium', storageState: state } }
+```
+
+Scenario with explicit cookies (bypasses configured storageState):
+
+```js
+const authCookies = [{ name: 'session', value: 'abc123', domain: 'localhost', path: '/', httpOnly: true, secure: false, sameSite: 'Lax' }]
+Scenario('Dashboard (authenticated)', { cookies: authCookies }, ({ I }) => {
+  I.amOnPage('/dashboard')
+  I.see('Welcome')
+})
+```
+
+Helper snippet:
+
+```js
+// Grab current state as object
+const state = await I.grabStorageState()
+// Persist manually (sensitive file!)
+require('fs').writeFileSync('authState.json', JSON.stringify(state))
+
+// Include IndexedDB (Playwright >= 1.51) if your app relies on it (e.g. Firebase Auth persistence)
+const stateWithIDB = await I.grabStorageState({ indexedDB: true })
+require('fs').writeFileSync('authState-with-idb.json', JSON.stringify(stateWithIDB))
 ```

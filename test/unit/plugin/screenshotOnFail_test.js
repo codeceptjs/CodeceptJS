@@ -108,12 +108,17 @@ describe('screenshotOnFail', () => {
     screenshotOnFail({ uniqueScreenshotNames: true })
     const test = createTest('test1')
 
+    // Use sinon to stub Date.now to return consistent timestamp
+    const clock = sinon.useFakeTimers(1755596785000) // Fixed timestamp
+
     const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
     const spy = sinon.spy(helper, '_addContext')
     helper._failed(test)
 
     event.dispatcher.emit(event.test.failed, test)
     await recorder.promise()
+
+    clock.restore()
 
     const screenshotFileName = screenshotSaved.getCall(0).args[0]
     expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)

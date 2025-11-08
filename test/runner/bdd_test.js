@@ -247,7 +247,8 @@ describe('BDD Gherkin', () => {
     exec(config_run_config('codecept.bdd.js') + ' --grep "@fail" --steps', (err, stdout, stderr) => {
       // stdout.should.include('Given I make a request (and it fails)');
       // stdout.should.not.include('Then my test execution gets stuck');
-      stdout.should.include('1 failed')
+      // There are 2 scenarios with @fail tag (fail.feature and masking.feature)
+      stdout.should.include('2 failed')
       stdout.should.include('[Wrapped Error]')
       assert(err)
       done()
@@ -374,7 +375,6 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
 
     it('should run feature files in NL', done => {
       exec(config_run_config('codecept.bdd.nl.js') + ' --steps --grep "@i18n"', (err, stdout, stderr) => {
-        console.log(stdout)
         stdout.should.include('On Gegeven: ik heb een product met een prijs van 10$ in mijn winkelwagen')
         stdout.should.include('On En: de korting voor bestellingen van meer dan $20 is 10 %')
         stdout.should.include('On Wanneer: ik naar de kassa ga')
@@ -387,6 +387,22 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
         stdout.should.include('Ik checkout')
         stdout.should.include('On Dan: zou ik de totaalprijs van "10.0" $ moeten zien')
         stdout.should.include('Ik see sum 10')
+        assert(!err)
+        done()
+      })
+    })
+
+    it('should run feature files in PT-BR', done => {
+      exec(config_run_config('codecept.bdd.pt-br.js') + ' --steps --grep "@i18n"', (err, stdout, stderr) => {
+        stdout.should.include('On Dado: que inicio meu teste')
+        stdout.should.include('On Quando: faço algo')
+        stdout.should.include('On Então: acontece alguma coisa')
+        stdout.should.include('On Dado: que estou com o usuário "um"')
+        stdout.should.include('On Quando: faço algo com o usuário')
+        stdout.should.include('On Dado: que estou com o usuário "dois"')
+        stdout.should.include('Cenário simples')
+        stdout.should.include('Cenário com exemplos')
+        stdout.should.match(/OK  \| 3 passed/)
         assert(!err)
         done()
       })

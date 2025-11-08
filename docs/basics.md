@@ -41,7 +41,6 @@ Refer to following guides to more information on:
 - [▶ Playwright](/playwright)
 - [▶ WebDriver](/webdriver)
 - [▶ Puppeteer](/puppeteer)
-- [▶ TestCafe](/testcafe)
 
 > ℹ Depending on a helper selected a list of available actions may change.
 
@@ -434,7 +433,7 @@ const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure')
 
 // run headless when CI environment variable set
 setHeadlessWhen(process.env.CI)
-// set window size for any helper: Puppeteer, WebDriver, TestCafe
+// set window size for any helper: Puppeteer, WebDriver, Playwright
 setWindowSize(1600, 1200)
 
 exports.config = {
@@ -961,6 +960,29 @@ Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
 - `Scenario.only` - executes only the current test
 - `xFeature` - skips current suite <Badge text="Since 2.6.6" type="warning"/>
 - `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
+- `Feature.only` - executes only the current suite <Badge text="Since 3.7.5" type="warning"/>
+
+When using `Feature.only`, only scenarios within that feature will be executed:
+
+```js
+Feature.only('My Important Feature')
+
+Scenario('test something', ({ I }) => {
+  I.amOnPage('https://github.com')
+  I.see('GitHub')
+})
+
+Scenario('test something else', ({ I }) => {
+  I.amOnPage('https://github.com')
+  I.see('GitHub')
+})
+
+Feature('Another Feature') // This will be skipped
+
+Scenario('will not run', ({ I }) => {
+  // This scenario will be skipped
+})
+```
 
 ## Todo Test
 

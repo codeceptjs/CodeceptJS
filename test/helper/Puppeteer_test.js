@@ -1036,7 +1036,7 @@ describe('Puppeteer', function () {
   describe('#mockRoute, #stopMockingRoute', () => {
     it('should mock a route', async () => {
       await I.amOnPage('/form/fetch_call')
-      await I.mockRoute('https://reqres.in/api/comments/1', request => {
+      await I.mockRoute('http://localhost:3001/api/comments/1', request => {
         request.respond({
           status: 200,
           headers: { 'Access-Control-Allow-Origin': '*' },
@@ -1046,7 +1046,7 @@ describe('Puppeteer', function () {
       })
       await I.click('GET COMMENTS')
       await I.see('this was mocked')
-      await I.stopMockingRoute('https://reqres.in/api/comments/1')
+      await I.stopMockingRoute('http://localhost:3001/api/comments/1')
       await I.click('GET COMMENTS')
       await I.see('data')
       await I.dontSee('this was mocked')
@@ -1197,7 +1197,8 @@ describe('Puppeteer - Trace', () => {
       await I.amOnPage('/form/focus_blur_elements')
 
       const webElements = await I.grabWebElements('#button')
-      assert.include(webElements[0].constructor.name, 'CdpElementHandle')
+      assert.equal(webElements[0].constructor.name, 'WebElement')
+      assert.include(webElements[0].getNativeElement().constructor.name, 'CdpElementHandle')
       assert.isAbove(webElements.length, 0)
     })
   })

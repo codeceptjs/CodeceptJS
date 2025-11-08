@@ -187,6 +187,21 @@ I.sendGetRequest('/api/users.json');
 
 Returns **[Promise][2]<any>** response
 
+### sendHeadRequest
+
+Send HEAD request to REST API
+
+```js
+I.sendHeadRequest('/api/users.json');
+```
+
+#### Parameters
+
+*   `url` **any**&#x20;
+*   `headers` **[object][4]** the headers object to be sent. By default, it is sent as an empty object 
+
+Returns **[Promise][2]<any>** response
+
 ### sendPatchRequest
 
 Sends PATCH request to API.

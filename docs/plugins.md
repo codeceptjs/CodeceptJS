@@ -336,6 +336,14 @@ Possible config options:
 
 *   `config` &#x20;
 
+## consolidateWorkerJsonResults
+
+Consolidates JSON reports from multiple workers into a single HTML report
+
+### Parameters
+
+*   `config` &#x20;
+
 ## coverage
 
 Dumps code coverage from Playwright/Puppeteer after every test.
@@ -482,6 +490,17 @@ Sample custom reporter for CodeceptJS.
 
 *   `config` &#x20;
 
+## enhancedRetryFailedStep
+
+Enhanced retryFailedStep plugin that coordinates with other retry mechanisms
+
+This plugin provides step-level retries and coordinates with global retry settings
+to avoid conflicts and provide predictable behavior.
+
+### Parameters
+
+*   `config` &#x20;
+
 ## heal
 
 Self-healing tests with AI.
@@ -503,6 +522,44 @@ More config options are available:
 ### Parameters
 
 *   `config`   (optional, default `{}`)
+
+## htmlReporter
+
+HTML Reporter Plugin for CodeceptJS
+
+Generates comprehensive HTML reports showing:
+
+*   Test statistics
+*   Feature/Scenario details
+*   Individual step results
+*   Test artifacts (screenshots, etc.)
+
+## Configuration
+
+```js
+"plugins": {
+   "htmlReporter": {
+     "enabled": true,
+     "output": "./output",
+     "reportFileName": "report.html",
+     "includeArtifacts": true,
+     "showSteps": true,
+     "showSkipped": true,
+     "showMetadata": true,
+     "showTags": true,
+     "showRetries": true,
+     "exportStats": false,
+     "exportStatsPath": "./stats.json",
+     "keepHistory": false,
+     "historyPath": "./test-history.json",
+     "maxHistoryEntries": 50
+   }
+}
+```
+
+### Parameters
+
+*   `config` &#x20;
 
 ## pageInfo
 
@@ -547,6 +604,10 @@ Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
 Enable it manually on each run via `-p` option:
 
     npx codeceptjs run -p pauseOnFail
+
+## reportData
+
+TypeScript: Explicitly type reportData arrays as any\[] to avoid 'never' errors
 
 ## retryFailedStep
 
@@ -614,6 +675,14 @@ Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
 ### Parameters
 
 *   `config` &#x20;
+
+## safeJsonStringify
+
+Safely serialize data to JSON, handling circular references
+
+### Parameters
+
+*   `data` &#x20;
 
 ## screenshotOnFail
 
