@@ -3,8 +3,7 @@ name: Appium Tests - Android
 on:
   push:
     branches:
-      - 3.x
-      - 5228-fix-appium-tests
+      - 4.x
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
