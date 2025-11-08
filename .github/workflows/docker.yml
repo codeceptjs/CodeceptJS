@@ -3,7 +3,7 @@ name: Build and push Docker image upon release
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
