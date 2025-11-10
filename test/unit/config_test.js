@@ -95,4 +95,15 @@ describe('Config', () => {
     expect(cfg.name).to.equal('typescript-dynamic-require-test')
     delete process.env.E2E_ENV
   })
+
+  it('should load TypeScript config with directory-style imports (no .ts extension)', async () => {
+    const configPath = './test/data/typescript-directory-import/test/api/codecept.conf.ts'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://api.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(5000)
+    expect(cfg.name).to.equal('typescript-directory-import-test')
+  })
 })
