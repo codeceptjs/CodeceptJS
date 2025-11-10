@@ -11,6 +11,7 @@ import * as codeceptjs from '../../lib/index.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+chai.should()
 const expect = chai.expect
 const assert = chai.assert
 global.codeceptjs = codeceptjs.default || codeceptjs
