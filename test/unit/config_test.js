@@ -83,4 +83,16 @@ describe('Config', () => {
     expect(cfg.plugins.htmlReporter.enabled).to.equal(true)
     expect(cfg.name).to.equal('typescript-config-with-require')
   })
+
+  it('should load TypeScript config with dynamic require() paths', async () => {
+    const configPath = './test/data/typescript-dynamic-require/tests/codecept.conf.ts'
+    process.env.E2E_ENV = 'TEST'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://api.test.example.com')
+    expect(cfg.name).to.equal('typescript-dynamic-require-test')
+    delete process.env.E2E_ENV
+  })
 })
