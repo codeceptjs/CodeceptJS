@@ -335,5 +335,20 @@ describe('Container', () => {
       expect(I.getCurrentFile).to.be.a('function')
       // The test verifies that the file loads without "ReferenceError: __dirname is not defined"
     })
+
+    it('should handle TypeScript files that use require()', async () => {
+      const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_with_require.ts')
+      await container.create({
+        include: {
+          I: tsStepsPath
+        }
+      })
+      
+      const I = container.support('I')
+      expect(I).to.be.ok
+      expect(I.getPluginPath).to.be.a('function')
+      expect(I.loadModule).to.be.a('function')
+      // The test verifies that the file loads without "ReferenceError: require is not defined"
+    })
   })
 })
