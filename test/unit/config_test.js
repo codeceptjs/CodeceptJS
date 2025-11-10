@@ -71,4 +71,16 @@ describe('Config', () => {
     expect(cfg.helpers.REST.timeout).to.equal(5000)
     expect(cfg.name).to.equal('typescript-config-test')
   })
+
+  it('should load TypeScript config that uses require()', async () => {
+    const configPath = './test/data/typescript-config-require/codecept.conf.ts'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.plugins).to.have.property('allure')
+    expect(cfg.plugins.allure.require).to.equal('@codeceptjs/allure-legacy')
+    expect(cfg.plugins.htmlReporter.enabled).to.equal(true)
+    expect(cfg.name).to.equal('typescript-config-with-require')
+  })
 })
