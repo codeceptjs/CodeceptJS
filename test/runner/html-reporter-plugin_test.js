@@ -183,7 +183,7 @@ describe('CodeceptJS html-reporter-plugin', function () {
       expect(reportContent).toContain('data-type=')
 
       // Should contain scenario steps with proper keywords
-      expect(reportContent).toMatch(/Given|When|Then|And/)
+      expect(reportContent).toMatch(/Given|When|Then|And|But/)
 
       done()
     })
