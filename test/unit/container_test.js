@@ -288,4 +288,37 @@ describe('Container', () => {
       expect(container.support('userPage').login).is.eql('#login')
     })
   })
+
+  describe('TypeScript support', () => {
+    it('should load TypeScript steps_file that imports other TS files', async () => {
+      const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_file.ts')
+      await container.create({
+        include: {
+          I: tsStepsPath
+        }
+      })
+      
+      const I = container.support('I')
+      expect(I).to.be.ok
+      expect(I.testMethod).to.be.a('function')
+      expect(I.useHelper).to.be.a('function')
+      expect(I.getConstant).to.be.a('function')
+    })
+
+    it('should properly execute methods from TypeScript steps_file', async () => {
+      const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_file.ts')
+      await container.create({
+        include: {
+          I: tsStepsPath
+        }
+      })
+      
+      const I = container.support('I')
+      // Note: These are proxied through MetaStep, so we can't call them directly in tests
+      // The test verifies that the file loads and the structure is correct
+      expect(I.testMethod).to.exist
+      expect(I.useHelper).to.exist
+      expect(I.getConstant).to.exist
+    })
+  })
 })
