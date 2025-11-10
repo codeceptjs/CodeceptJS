@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "4.0.0-beta.11.esm-aria",
+  "version": "4.0.0-beta.12",
   "type": "module",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
