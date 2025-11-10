@@ -60,4 +60,15 @@ describe('Config', () => {
     expect(cfg).to.contain.key('additionalValue')
     expect(cfg.additionalValue).to.eql(true)
   })
+
+  it('should load TypeScript config that imports other TypeScript files', async () => {
+    const configPath = './test/data/typescript-config-imports/tests/api/codecept.conf.ts'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://api.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(5000)
+    expect(cfg.name).to.equal('typescript-config-test')
+  })
 })
