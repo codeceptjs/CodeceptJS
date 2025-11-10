@@ -320,5 +320,20 @@ describe('Container', () => {
       expect(I.useHelper).to.exist
       expect(I.getConstant).to.exist
     })
+
+    it('should handle TypeScript files that use __dirname and __filename', async () => {
+      const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_with_dirname.ts')
+      await container.create({
+        include: {
+          I: tsStepsPath
+        }
+      })
+      
+      const I = container.support('I')
+      expect(I).to.be.ok
+      expect(I.getConfigPath).to.be.a('function')
+      expect(I.getCurrentFile).to.be.a('function')
+      // The test verifies that the file loads without "ReferenceError: __dirname is not defined"
+    })
   })
 })
