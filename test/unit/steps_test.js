@@ -92,7 +92,7 @@ describe('Steps', () => {
     })
 
     describe('#isBDD', () => {
-      ;['Given', 'When', 'Then', 'And'].forEach(key => {
+      ;['Given', 'When', 'Then', 'And', 'But'].forEach(key => {
         it(`[${key}] #isBdd should return true if it BDD style`, () => {
           const metaStep = new MetaStep(key, 'I need to open Google')
           expect(metaStep.isBDD()).to.be.true
