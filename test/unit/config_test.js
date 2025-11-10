@@ -106,4 +106,17 @@ describe('Config', () => {
     expect(cfg.helpers.REST.timeout).to.equal(5000)
     expect(cfg.name).to.equal('typescript-directory-import-test')
   })
+
+  it('should load TypeScript config with require() for paths without extensions', async () => {
+    const configPath = './test/data/typescript-require-relative/codecept.conf.ts'
+    process.env.E2E_ENV = 'TEST'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://test.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(10000)
+    expect(cfg.name).to.equal('typescript-require-relative-test')
+    delete process.env.E2E_ENV
+  })
 })
