@@ -33,39 +33,77 @@ After running `codeceptjs init` it should be saved in test root.
 
 ## Require
 
-Requires described module before run. This option is useful for assertion libraries, so you may `--require should` instead of manually invoking `require('should')` within each test file. It can be used with relative paths, e.g. `"require": ["/lib/somemodule"]`, and installed packages.
+Requires modules before running tests. This is useful for:
+- **Assertion libraries:** e.g., `'should'` instead of manually requiring it in each test
+- **TypeScript loaders:** Enable TypeScript test files in ESM or CommonJS projects
+- **Setup modules:** Initialize testing environment
+- **Custom modules:** With relative paths like `"require": ["./lib/setup"]`
 
-You can register ts-node, so you can use Typescript in tests with ts-node package
+### TypeScript Support
 
-```js
-exports.config = {
-  tests: './*_test.js',
-  timeout: 10000,
-  output: '',
+#### For ESM Projects (CodeceptJS 4.x)
+
+Use modern loaders that support ES Modules:
+
+**Using tsx (recommended - fast, zero config):**
+
+```typescript
+// codecept.conf.ts
+export const config = {
+  tests: './**/*_test.ts',
+  require: ['tsx/cjs'],  // ← Modern TypeScript loader
   helpers: {},
   include: {},
-  bootstrap: false,
-  mocha: {},
-  // require modules
-  require: ['ts-node/register', 'should'],
 }
 ```
 
-For array of test pattern
+**Using ts-node/esm:**
 
-```js
-exports.config = {
-  tests: ['./*_test.js', './sampleTest.js'],
-  timeout: 10000,
-  output: '',
+```typescript
+// codecept.conf.ts
+export const config = {
+  tests: './**/*_test.ts',
+  require: ['ts-node/esm'],  // ← Established TypeScript loader
   helpers: {},
   include: {},
-  bootstrap: false,
-  mocha: {},
-  // require modules
-  require: ['ts-node/register', 'should'],
 }
 ```
+
+> **Note:** For ts-node/esm, you need a tsconfig.json with ESM configuration. See [TypeScript documentation](/typescript) for details.
+
+#### For CommonJS Projects (CodeceptJS 3.x)
+
+Use the CommonJS loader:
+
+```javascript
+// codecept.conf.js
+exports.config = {
+  tests: './*_test.ts',
+  require: ['ts-node/register'],  // ← CommonJS TypeScript loader
+  helpers: {},
+  include: {},
+}
+```
+
+### Multiple Requires
+
+You can combine multiple modules:
+
+```typescript
+// codecept.conf.ts
+export const config = {
+  tests: ['./**/*_test.ts', './smoke_test.ts'],
+  require: [
+    'tsx/cjs',           // TypeScript loader
+    'should',            // Assertion library
+    './lib/testSetup'    // Custom setup
+  ],
+  helpers: {},
+  include: {},
+}
+```
+
+Modules are loaded in the order specified, before any tests run.
 
 ## Dynamic Configuration
 
