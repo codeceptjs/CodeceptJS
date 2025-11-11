@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "4.0.0-beta.18",
+  "version": "4.0.0-beta.19",
   "type": "module",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
@@ -183,6 +183,7 @@
     "ts-node": "10.9.2",
     "tsd": "^0.33.0",
     "tsd-jsdoc": "2.5.0",
+    "tsx": "^4.19.2",
     "typedoc": "0.28.13",
     "typedoc-plugin-markdown": "4.9.0",
     "typescript": "5.8.3",
@@ -190,6 +191,14 @@
     "webdriverio": "9.12.5",
     "xml2js": "0.6.2",
     "xpath": "0.0.34"
+  },
+  "peerDependencies": {
+    "tsx": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "tsx": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=16.0",

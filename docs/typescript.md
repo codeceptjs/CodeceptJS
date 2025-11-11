@@ -43,6 +43,176 @@ Then a config file and new tests will be created in TypeScript format.
 
 If a config file is set in TypeScript format (`codecept.conf.ts`) package `ts-node` will be used to run tests. 
 
+## TypeScript Tests in ESM (CodeceptJS 4.x) <Badge text="Since 4.0.0" type="tip"/>
+
+CodeceptJS 4.x uses ES Modules (ESM) which requires a different approach for TypeScript test files. While TypeScript **config files** (`codecept.conf.ts`) are automatically transpiled, TypeScript **test files** need a loader.
+
+### Using tsx (Recommended)
+
+[tsx](https://tsx.is) is a modern, fast TypeScript loader built on esbuild. It's the recommended way to run TypeScript tests in CodeceptJS 4.x.
+
+**Installation:**
+```bash
+npm install --save-dev tsx
+```
+
+**Configuration:**
+```typescript
+// codecept.conf.ts
+export const config = {
+  tests: './**/*_test.ts',
+  require: ['tsx/cjs'],  // ← Enable TypeScript loader for test files
+  helpers: {
+    Playwright: {
+      url: 'http://localhost',
+      browser: 'chromium'
+    }
+  }
+}
+```
+
+That's it! Now you can write tests in TypeScript with full language support:
+
+```typescript
+// login_test.ts
+Feature('Login')
+
+Scenario('successful login', ({ I }) => {
+  I.amOnPage('/login')
+  I.fillField('email', 'user@example.com')
+  I.fillField('password', 'password123')
+  I.click('Login')
+  I.see('Welcome')
+})
+```
+
+**Why tsx?**
+- ⚡ **Fast:** Built on esbuild, much faster than ts-node
+- 🎯 **Zero config:** Works without tsconfig.json  
+- 🚀 **Works with Mocha:** Uses CommonJS hooks that Mocha understands
+- ✅ **Complete:** Handles all TypeScript features (enums, decorators, etc.)
+
+### Using ts-node/esm (Alternative)
+
+If you prefer ts-node:
+
+**Installation:**
+```bash
+npm install --save-dev ts-node
+```
+
+**Configuration:**
+```typescript
+// codecept.conf.ts
+export const config = {
+  tests: './**/*_test.ts',
+  require: ['ts-node/esm'],  // ← Use ts-node ESM loader
+  helpers: { /* ... */ }
+}
+```
+
+**Required tsconfig.json:**
+```json
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}
+```
+
+### Full TypeScript Features in Tests
+
+With tsx or ts-node/esm, you can use complete TypeScript syntax including imports, enums, interfaces, and types:
+
+```typescript
+// types.ts
+export enum Environment {
+  TEST = 'test',
+  STAGING = 'staging',
+  PRODUCTION = 'production'
+}
+
+export interface User {
+  email: string
+  password: string
+}
+
+// login_test.ts
+import { Environment, User } from './types'
+
+const testUser: User = {
+  email: 'test@example.com',
+  password: 'password123'
+}
+
+Feature('Login')
+
+Scenario(`Login on ${Environment.TEST}`, ({ I }) => {
+  I.amOnPage('/login')
+  I.fillField('email', testUser.email)
+  I.fillField('password', testUser.password)
+  I.click('Login')
+  I.see('Welcome')
+})
+```
+
+### Troubleshooting TypeScript Tests
+
+**Error: "Cannot find module" or "Unexpected token"**
+
+This means the TypeScript loader isn't configured. Make sure:
+1. You have `tsx` or `ts-node` installed: `npm install --save-dev tsx`
+2. Your config includes the loader in `require` array: `require: ['tsx/cjs']`
+3. The loader is specified before test files are loaded
+
+**Error: Module not found when importing from `.ts` files**
+
+Make sure you're using a proper TypeScript loader (`tsx/cjs` or `ts-node/esm`).
+
+**TypeScript config files vs test files**
+
+Note the difference:
+- **Config files** (`codecept.conf.ts`, helpers): Automatically transpiled by CodeceptJS
+- **Test files** (`*_test.ts`): Need a loader specified in `config.require`
+
+### Migration from CodeceptJS 3.x
+
+If you're upgrading from CodeceptJS 3.x (CommonJS) to 4.x (ESM):
+
+**Old setup (3.x):**
+```javascript
+// codecept.conf.js
+module.exports = {
+  tests: './*_test.ts',
+  require: ['ts-node/register'],  // CommonJS loader
+  helpers: {}
+}
+```
+
+**New setup (4.x):**
+```typescript
+// codecept.conf.ts
+export const config = {
+  tests: './*_test.ts',
+  require: ['tsx/cjs'],  // TypeScript loader
+  helpers: {}
+}
+```
+
+**Migration steps:**
+1. Install tsx: `npm install --save-dev tsx`
+2. Update package.json: `"type": "module"`
+3. Rename config to `codecept.conf.ts` and use `export const config = {}`
+4. Change `require: ['ts-node/register']` to `require: ['tsx/cjs']`
+5. Run tests: `npx codeceptjs run`
+
 ## Promise-Based Typings
 
 By default, CodeceptJS tests are written in synchronous mode. This is a regular CodeceptJS test:

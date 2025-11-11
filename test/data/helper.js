@@ -62,6 +62,13 @@ class MyHelper extends Helper {
   _locate() {
     return [{ name: 'el1' }, { name: 'el2' }]
   }
+
+  assertEqual(actual, expected) {
+    if (actual !== expected) {
+      throw new Error(`Assertion failed: expected ${JSON.stringify(expected)} but got ${JSON.stringify(actual)}`)
+    }
+    console.log(`✓ Assertion passed: ${JSON.stringify(actual)} === ${JSON.stringify(expected)}`)
+  }
 }
 
 export default MyHelper
