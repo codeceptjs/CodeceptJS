@@ -113,7 +113,6 @@
     "js-beautify": "1.15.4",
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
-    "lodash.shuffle": "4.2.0",
     "mkdirp": "3.0.1",
     "mocha": "11.7.2",
     "monocart-coverage-reports": "2.12.9",
