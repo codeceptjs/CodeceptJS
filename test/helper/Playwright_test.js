@@ -1101,7 +1101,7 @@ describe('Playwright', function () {
 
     it('should convert to axios response with onResponse hook', async () => {
       let response
-      I.config.onResponse = resp => (response = resp)
+      I.options.onResponse = resp => (response = resp)
       await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
       expect(response).to.be.ok
       expect(response.status).to.equal(200)
