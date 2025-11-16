@@ -21,9 +21,7 @@ describe('AsyncWrapper', () => {
     test.fn = fn
     await Container.create({
       helpers: {
-        TestHelper: {
-          testMethod: () => 'test result',
-        },
+        FileSystem: {},
       },
     })
   })

@@ -161,7 +161,7 @@ describe('Container', () => {
           FileSystem: {},
         },
       }
-      container.create(config)
+      await container.create(config)
       await container.started()
       // custom helpers
       expect(container.helpers('MyHelper')).is.ok
@@ -266,7 +266,7 @@ describe('Container', () => {
           FileSystem: {},
         },
       }
-      container.create(config)
+      await container.create(config)
       await container.started()
       container.append({
         helpers: {
@@ -294,10 +294,10 @@ describe('Container', () => {
       const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_file.ts')
       await container.create({
         include: {
-          I: tsStepsPath
-        }
+          I: tsStepsPath,
+        },
       })
-      
+
       const I = container.support('I')
       expect(I).to.be.ok
       expect(I.testMethod).to.be.a('function')
@@ -309,10 +309,10 @@ describe('Container', () => {
       const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_file.ts')
       await container.create({
         include: {
-          I: tsStepsPath
-        }
+          I: tsStepsPath,
+        },
       })
-      
+
       const I = container.support('I')
       // Note: These are proxied through MetaStep, so we can't call them directly in tests
       // The test verifies that the file loads and the structure is correct
@@ -325,10 +325,10 @@ describe('Container', () => {
       const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_with_dirname.ts')
       await container.create({
         include: {
-          I: tsStepsPath
-        }
+          I: tsStepsPath,
+        },
       })
-      
+
       const I = container.support('I')
       expect(I).to.be.ok
       expect(I.getConfigPath).to.be.a('function')
@@ -340,10 +340,10 @@ describe('Container', () => {
       const tsStepsPath = path.join(__dirname, '../data/typescript-support/steps_with_require.ts')
       await container.create({
         include: {
-          I: tsStepsPath
-        }
+          I: tsStepsPath,
+        },
       })
-      
+
       const I = container.support('I')
       expect(I).to.be.ok
       expect(I.getPluginPath).to.be.a('function')

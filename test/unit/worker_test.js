@@ -60,20 +60,22 @@ describe('Workers', function () {
     const workerConfig = {
       by: createTestGroups,
       testConfig: './test/data/sandbox/codecept.customworker.js',
+      options: {
+        override: JSON.stringify({
+          helpers: {
+            FileSystem: {},
+            Workers: {
+              require: './workers_helper',
+            },
+            CustomWorkers: {
+              require: './custom_worker_helper',
+            },
+          },
+        }),
+      },
     }
 
     const workers = new Workers(-1, workerConfig)
-
-    for (const worker of workers.getWorkers()) {
-      worker.addConfig({
-        helpers: {
-          FileSystem: {},
-          Workers: {
-            require: './custom_worker_helper.js',
-          },
-        },
-      })
-    }
 
     workers.run()
 
@@ -110,7 +112,7 @@ describe('Workers', function () {
       // Clean up event listeners
       workers.removeListener(event.test.failed, onTestFailed)
       workers.removeListener(event.test.passed, onTestPassed)
-      
+
       // The main assertion is that workers ran and some tests failed (indicating they executed)
       expect(result.hasFailed).equal(true)
       // In test suite context, event counting has timing issues, but functionality works
@@ -141,7 +143,10 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper.js',
+            require: './workers_helper',
+          },
+          CustomWorkers: {
+            require: './custom_worker_helper',
           },
         },
       })
@@ -176,7 +181,10 @@ describe('Workers', function () {
         helpers: {
           FileSystem: {},
           Workers: {
-            require: './custom_worker_helper.js',
+            require: './workers_helper',
+          },
+          CustomWorkers: {
+            require: './custom_worker_helper',
           },
         },
       })
@@ -233,7 +241,7 @@ describe('Workers', function () {
       testConfig: './test/data/sandbox/codecept.non-test-events-worker.js',
     }
 
-  let workers = new Workers(2, workerConfig)
+    let workers = new Workers(2, workerConfig)
 
     workers.run()
 

@@ -140,7 +140,7 @@ describe('REST', () => {
     let jsonResponse
 
     beforeEach(async () => {
-      Container.create({
+      await Container.create({
         helpers: {
           REST: {},
           JSONResponse: {},
