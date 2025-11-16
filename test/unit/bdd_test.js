@@ -55,10 +55,10 @@ const checkTestForErrors = test => {
 }
 
 describe('BDD', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     clearSteps()
     recorder.start()
-    container.create({})
+    await container.create({})
     Config.reset()
   })
 
