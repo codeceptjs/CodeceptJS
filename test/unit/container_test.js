@@ -350,5 +350,58 @@ describe('Container', () => {
       expect(I.loadModule).to.be.a('function')
       // The test verifies that the file loads without "ReferenceError: require is not defined"
     })
+
+    it('should load TypeScript custom helper', async () => {
+      const tsHelperPath = path.join(__dirname, '../data/typescript-support/CustomHelper.ts')
+      await container.create({
+        helpers: {
+          CustomHelper: {
+            require: tsHelperPath,
+          },
+        },
+      })
+      await container.started()
+
+      const helper = container.helpers('CustomHelper')
+      expect(helper).to.be.ok
+      expect(helper.customMethod).to.be.a('function')
+      expect(helper.customMethod()).to.eql('TypeScript helper loaded successfully')
+      expect(helper.asyncCustomMethod).to.be.a('function')
+    })
+
+    it('should load TypeScript helper that imports another TypeScript file without extension', async () => {
+      const tsHelperPath = path.join(__dirname, '../data/typescript-support/MaterialComponentHelper.ts')
+      await container.create({
+        helpers: {
+          MaterialComponentHelper: {
+            require: tsHelperPath,
+          },
+        },
+      })
+      await container.started()
+
+      const helper = container.helpers('MaterialComponentHelper')
+      expect(helper).to.be.ok
+      expect(helper.customMethod).to.be.a('function')
+      expect(helper.customMethod()).to.eql('[Helper] Material component helper loaded')
+      expect(helper.clickButton).to.be.a('function')
+    })
+
+    it('should load TypeScript helper with dots in filename that imports another file with dots', async () => {
+      const tsHelperPath = path.join(__dirname, '../data/typescript-support/material.component.helper.ts')
+      await container.create({
+        helpers: {
+          MaterialComponentHelper: {
+            require: tsHelperPath,
+          },
+        },
+      })
+      await container.started()
+
+      const helper = container.helpers('MaterialComponentHelper')
+      expect(helper).to.be.ok
+      expect(helper.customMethod).to.be.a('function')
+      expect(helper.customMethod()).to.eql('Material component works')
+    })
   })
 })
