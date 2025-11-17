@@ -350,5 +350,23 @@ describe('Container', () => {
       expect(I.loadModule).to.be.a('function')
       // The test verifies that the file loads without "ReferenceError: require is not defined"
     })
+
+    it('should load TypeScript custom helper', async () => {
+      const tsHelperPath = path.join(__dirname, '../data/typescript-support/CustomHelper.ts')
+      await container.create({
+        helpers: {
+          CustomHelper: {
+            require: tsHelperPath,
+          },
+        },
+      })
+      await container.started()
+
+      const helper = container.helpers('CustomHelper')
+      expect(helper).to.be.ok
+      expect(helper.customMethod).to.be.a('function')
+      expect(helper.customMethod()).to.eql('TypeScript helper loaded successfully')
+      expect(helper.asyncCustomMethod).to.be.a('function')
+    })
   })
 })
