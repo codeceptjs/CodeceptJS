@@ -147,7 +147,6 @@ describe('screenshotOnFail', () => {
       savedFilenames = []
 
       // Override screenshotSaved to capture filenames
-      const originalSaveScreenshot = screenshotSaved
       screenshotSaved = sinon.stub().callsFake(filename => {
         savedFilenames.push(filename)
         return Promise.resolve()
