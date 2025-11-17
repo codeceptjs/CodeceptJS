@@ -386,5 +386,22 @@ describe('Container', () => {
       expect(helper.customMethod()).to.eql('[Helper] Material component helper loaded')
       expect(helper.clickButton).to.be.a('function')
     })
+
+    it('should load TypeScript helper with dots in filename that imports another file with dots', async () => {
+      const tsHelperPath = path.join(__dirname, '../data/typescript-support/material.component.helper.ts')
+      await container.create({
+        helpers: {
+          MaterialComponentHelper: {
+            require: tsHelperPath,
+          },
+        },
+      })
+      await container.started()
+
+      const helper = container.helpers('MaterialComponentHelper')
+      expect(helper).to.be.ok
+      expect(helper.customMethod).to.be.a('function')
+      expect(helper.customMethod()).to.eql('Material component works')
+    })
   })
 })
