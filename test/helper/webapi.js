@@ -1,4 +1,4 @@
-import chai from 'chai'
+import * as chai from 'chai'
 import storeModule from '../../lib/store.js'
 const store = storeModule.default || storeModule
 const expect = chai.expect
