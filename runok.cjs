@@ -35,12 +35,10 @@ module.exports = {
   },
 
   async defTypings() {
-    console.log('Generate TypeScript definition')
-    // Generate definitions for promised-based helper methods
-    await npx('jsdoc -c typings/jsdocPromiseBased.conf.json')
-    fs.renameSync('typings/types.d.ts', 'typings/promiseBasedTypes.d.ts')
-    // Generate all other regular definitions
-    await npx('jsdoc -c typings/jsdoc.conf.json')
+    console.log('Generate TypeScript definitions using TypeScript compiler')
+    // Generate type definitions using TypeScript compiler (replaces tsd-jsdoc)
+    // The script generates .d.ts files from JSDoc comments in JavaScript files
+    await npx('node typings/generate-dts.mjs tsconfig.typings.json')
   },
 
   async docsPlugins() {

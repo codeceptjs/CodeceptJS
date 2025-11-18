@@ -27,3 +27,9 @@ yarn.lock
 /.vs
 typings/types.d.ts
 typings/promiseBasedTypes.d.ts
+# Ignore generated .d.ts files (but keep hand-written ones)
+typings/docs/
+typings/lib/
+typings/translations/*.d.ts
+!typings/translations/index.d.ts
+!typings/translations/utils.d.ts
