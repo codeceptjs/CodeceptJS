@@ -1,4 +1,4 @@
-import chai from 'chai'
+import * as chai from 'chai'
 import Playwright from '../../lib/helper/Playwright.js'
 import Locator from '../../lib/locator.js'
 

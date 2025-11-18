@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 chai.should();
 import { expect } from 'expect';
 import { exec } from 'child_process';
