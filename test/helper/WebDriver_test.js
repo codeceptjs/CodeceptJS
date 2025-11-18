@@ -1,4 +1,4 @@
-import chai from 'chai'
+import * as chai from 'chai'
 import path from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'

@@ -1,4 +1,4 @@
-import chai from 'chai'
+import * as chai from 'chai'
 chai.should()
 import assert from 'assert'
 import path from 'path'
