@@ -98,7 +98,7 @@
     "chalk": "4.1.2",
     "cheerio": "^1.0.0",
     "chokidar": "^4.0.3",
-    "commander": "11.1.0",
+    "commander": "14.0.2",
     "cross-spawn": "7.0.6",
     "css-to-xpath": "0.1.0",
     "csstoxpath": "1.6.0",
