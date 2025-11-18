@@ -1,5 +1,7 @@
 // Project: https://github.com/codeception/codeceptjs/
 // TypeScript definitions generated from JSDoc comments
+/// <reference path="./types.d.ts" />
+/// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
 /// <reference types="joi" />

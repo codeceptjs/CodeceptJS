@@ -37,7 +37,8 @@ module.exports = {
   async defTypings() {
     console.log('Generate TypeScript definitions using TypeScript compiler')
     // Generate type definitions using TypeScript compiler (replaces tsd-jsdoc)
-    // The script generates .d.ts files from JSDoc comments in JavaScript files
+    // First generate promise-based helper types, then regular types
+    await npx('node typings/generate-dts.mjs tsconfig.typings.json --promise-based')
     await npx('node typings/generate-dts.mjs tsconfig.typings.json')
   },
 

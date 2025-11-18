@@ -48,8 +48,11 @@ function cleanupDeclaration(filePath) {
     return
   }
 
-  // Simple cleanup - just ensure proper formatting
-  // Don't wrap in namespace here, we'll create a consolidated types.d.ts instead
+  // Remove problematic export statements that cause module format errors
+  content = content.replace(/^export\s*=\s*.+;?\s*$/gm, '')
+
+  // Remove empty lines at the start
+  content = content.replace(/^\s*\n/gm, '')
 
   writeFileSync(filePath, content)
 }
@@ -187,6 +190,71 @@ function main() {
 
     cleanupDeclaration(file)
   }
+
+  // Step 3: Create consolidated types.d.ts file in CodeceptJS namespace
+  console.log('\nCreating consolidated types file...')
+  const outputFilename = isPromiseBased ? 'promiseBasedTypes.d.ts' : 'types.d.ts'
+  const outputPath = join(typingsDir, outputFilename)
+
+  const consolidated = []
+  consolidated.push('// Auto-generated TypeScript definitions')
+  consolidated.push('// Generated from JSDoc comments using TypeScript compiler')
+  consolidated.push('')
+  consolidated.push('declare namespace CodeceptJS {')
+
+  // Collect all class, interface, and type definitions from helper and lib files
+  const helperFiles = dtsFiles.filter(f => f.includes('/docs/build/'))
+  const libFiles = dtsFiles.filter(
+    f =>
+      f.includes('/lib/') &&
+      !f.includes('/lib/command/') &&
+      !f.includes('/lib/listener/') &&
+      !f.includes('/lib/assert/') &&
+      !f.includes('/lib/data/') &&
+      !f.includes('/lib/plugin/') &&
+      !f.includes('/lib/template/') &&
+      !f.includes('/lib/utils/'),
+  )
+
+  // For promise-based types, only include helpers. For regular types, include both.
+  const allFiles = isPromiseBased ? helperFiles : [...libFiles, ...helperFiles]
+
+  for (const file of allFiles) {
+    if (!existsSync(file)) continue
+
+    let content = readFileSync(file, 'utf-8')
+
+    // Remove all import statements
+    content = content.replace(/^import .+$/gm, '')
+
+    // Remove export default and export = statements
+    content = content.replace(/^export default .+$/gm, '')
+    content = content.replace(/^export = .+$/gm, '')
+    content = content.replace(/^export \{\};?$/gm, '')
+
+    // Remove export keywords but keep declarations
+    content = content.replace(/^export (declare )?/gm, '')
+    content = content.replace(/^declare /gm, '')
+
+    // Keep CodeceptJS. prefix - it's needed for cross-references within the namespace
+
+    // Split into lines and indent
+    const lines = content.split('\n')
+    for (const line of lines) {
+      if (line.trim()) {
+        consolidated.push('    ' + line)
+      } else if (consolidated[consolidated.length - 1] !== '') {
+        // Only add empty line if previous line wasn't empty
+        consolidated.push('')
+      }
+    }
+  }
+
+  consolidated.push('}')
+  consolidated.push('')
+
+  writeFileSync(outputPath, consolidated.join('\n'))
+  console.log(`Created ${outputFilename} with ${allFiles.length} type definitions (${helperFiles.length} helpers, ${libFiles.length} lib)`)
 
   console.log('\nType definitions generated successfully!')
   console.log('Generated .d.ts files are in typings/ directory (excluded from git)')
