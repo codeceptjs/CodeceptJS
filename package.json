@@ -144,7 +144,7 @@
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "6.0.6",
     "@testomatio/reporter": "^2.3.1",
-    "@types/chai": "5.2.2",
+    "@types/chai": "5.2.3",
     "@types/inquirer": "9.0.9",
     "@types/node": "^24.9.2",
     "@wdio/sauce-service": "9.12.5",
