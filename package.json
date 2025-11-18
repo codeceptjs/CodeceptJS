@@ -153,7 +153,7 @@
     "@xmldom/xmldom": "0.9.8",
     "bunosh": "latest",
     "chai": "^6.2.1",
-    "chai-as-promised": "7.1.2",
+    "chai-as-promised": "^8.0.2",
     "chai-subset": "1.6.0",
     "documentation": "14.0.3",
     "electron": "38.2.0",
