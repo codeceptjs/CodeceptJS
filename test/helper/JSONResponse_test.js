@@ -1,4 +1,4 @@
-import chai from 'chai'
+import * as chai from 'chai'
 import { z } from 'zod'
 import { JSONResponse } from '../../lib/helper/JSONResponse.js'
 import Container from '../../lib/container.js'
