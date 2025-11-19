@@ -261,6 +261,28 @@ describe('Definitions', function () {
       done()
     })
   })
+
+  it('def should create definition file with custom helper using ESM default export', done => {
+    const customHelperDir = `${codecept_dir}/../custom-helper-esm`
+    exec(`${runner} def --config ${customHelperDir}/codecept.conf.js`, (err, stdout) => {
+      stdout.should.include('Definitions were generated in steps.d.ts')
+      const types = typesFrom(`${customHelperDir}/steps.d.ts`)
+      types.should.be.valid
+
+      const definitionFile = types.getSourceFileOrThrow(`${customHelperDir}/steps.d.ts`)
+      const fileContent = definitionFile.getFullText()
+      fileContent.should.include("type MyHelper = InstanceType<typeof import('./myhelper_helper.js').default>;")
+      
+      const extend = getExtends(definitionFile.getModule('CodeceptJS').getInterfaceOrThrow('I'))
+      const hasOpenPageMethod = extend.some(ext => 
+        ext.methods && ext.methods.some(m => m.name === 'openPage')
+      )
+      hasOpenPageMethod.should.be.true
+      
+      assert(!err)
+      done()
+    })
+  })
 })
 
 /**
