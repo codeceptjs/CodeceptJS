@@ -1,9 +1,9 @@
 /// <reference types='codeceptjs' />
-type MyHelper = InstanceType<typeof import('./myhelper_helper.js').default>;
+type CustomHelper = InstanceType<typeof import('./custom_helper.js').default>;
 
 declare namespace CodeceptJS {
   interface SupportObject { I: I, current: any }
-  interface Methods extends FileSystem, MyHelper {}
+  interface Methods extends FileSystem, CustomHelper {}
   interface I extends WithTranslation<Methods> {}
   namespace Translation {
     interface Actions {}
