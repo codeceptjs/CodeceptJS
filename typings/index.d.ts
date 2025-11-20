@@ -637,6 +637,27 @@ declare namespace Mocha {
 
 declare module 'codeceptjs' {
   export default codeceptjs
+  export const codecept: typeof CodeceptJS.Codecept
+  export const Codecept: typeof CodeceptJS.Codecept
+  export const output: typeof CodeceptJS.output
+  export const container: typeof CodeceptJS.Container
+  export const event: typeof CodeceptJS.event
+  export const recorder: CodeceptJS.recorder
+  export const config: typeof CodeceptJS.Config
+  export const actor: CodeceptJS.actor
+  export const helper: typeof CodeceptJS.Helper
+  export const Helper: typeof CodeceptJS.Helper
+  export const pause: typeof CodeceptJS.pause
+  export const within: typeof CodeceptJS.within
+  export const dataTable: typeof CodeceptJS.DataTable
+  export const dataTableArgument: typeof CodeceptJS.DataTableArgument
+  export const store: typeof CodeceptJS.store
+  export const locator: typeof CodeceptJS.Locator
+  export const heal: any
+  export const ai: any
+  export const Workers: any
+  export const Secret: typeof CodeceptJS.Secret
+  export const secret: typeof CodeceptJS.secret
 }
 
 declare module '@codeceptjs/helper' {
