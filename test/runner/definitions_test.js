@@ -283,6 +283,22 @@ describe('Definitions', function () {
       done()
     })
   })
+
+  it('def should create definition file with empty Methods interface when no helpers configured', done => {
+    exec(`${runner} def --config ${codecept_dir}/codecept.no-helpers.js`, (err, stdout) => {
+      stdout.should.include('Definitions were generated in steps.d.ts')
+      const types = typesFrom(`${codecept_dir}/steps.d.ts`)
+      types.should.be.valid
+
+      const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`)
+      const fileContent = definitionFile.getFullText()
+      fileContent.should.include('interface Methods {}')
+      fileContent.should.include('interface I extends WithTranslation<Methods>')
+      
+      assert(!err)
+      done()
+    })
+  })
 })
 
 /**
