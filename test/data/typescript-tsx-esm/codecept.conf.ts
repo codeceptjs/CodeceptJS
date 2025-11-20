@@ -6,6 +6,6 @@ export const config: CodeceptJS.MainConfig = {
       require: "../helper.js"
     }
   },
-  name: "typescript-esm-imports-test",
-  require: ["ts-node/esm"]
+  name: "typescript-tsx-esm-test",
+  require: ["tsx/cjs"]
 };

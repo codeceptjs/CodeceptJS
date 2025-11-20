@@ -1,0 +1,8 @@
+{
+  "name": "typescript-tsx-esm",
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "tsx": "^4.20.6"
+  }
+}

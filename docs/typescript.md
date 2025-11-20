@@ -92,27 +92,33 @@ Scenario('successful login', ({ I }) => {
 - 🚀 **Works with Mocha:** Uses CommonJS hooks that Mocha understands
 - ✅ **Complete:** Handles all TypeScript features (enums, decorators, etc.)
 
-### Using ts-node/esm (Alternative)
+### Using ts-node/esm (Not Recommended)
 
-If you prefer ts-node:
+> ⚠️ **Note:** `ts-node/esm` has significant limitations with module resolution and doesn't work well with modern ESM TypeScript projects. **We strongly recommend using `tsx` instead.** The information below is provided for reference only.
 
-**Installation:**
+`ts-node/esm` has several issues:
+- Doesn't support `"type": "module"` in package.json
+- Doesn't resolve extensionless imports or `.js` imports to `.ts` files
+- Requires explicit `.ts` extensions in imports, which isn't standard TypeScript practice
+- Less reliable than `tsx` for ESM scenarios
+
+**If you still want to use ts-node/esm:**
+
 ```bash
 npm install --save-dev ts-node
 ```
 
-**Configuration:**
 ```typescript
 // codecept.conf.ts
 export const config = {
   tests: './**/*_test.ts',
-  require: ['ts-node/esm'],  // ← Use ts-node ESM loader
+  require: ['ts-node/esm'],
   helpers: { /* ... */ }
 }
 ```
 
-**Required tsconfig.json:**
 ```json
+// tsconfig.json
 {
   "compilerOptions": {
     "module": "ESNext",
@@ -126,33 +132,12 @@ export const config = {
 }
 ```
 
-**Required package.json:**
-```json
-{
-  "name": "your-project",
-  "version": "1.0.0"
-  // ⚠️ DO NOT include "type": "module" when using ts-node/esm
-  // ts-node/esm works with CommonJS-style loading
-}
-```
+**Critical Limitations:**
+- ❌ Cannot use `"type": "module"` in package.json
+- ❌ Import statements must match the actual file (no automatic resolution)
+- ❌ Module resolution doesn't work like standard TypeScript/Node.js ESM
 
-**⚠️ Important Notes:**
-
-1. **Do not use `"type": "module"`** in your package.json when using `ts-node/esm`. The ts-node/esm loader uses CommonJS-style module loading internally and is incompatible with `"type": "module"`.
-
-2. **Use `.js` extensions in imports**: When writing TypeScript code for ESM, you must use `.js` extensions in your imports, even when importing TypeScript files:
-
-```typescript
-// ❌ Wrong - will cause "Cannot find module" error
-import loginPage from "./pages/Login"
-
-// ✅ Correct - use .js extension
-import loginPage from "./pages/Login.js"
-```
-
-TypeScript will automatically resolve `.js` imports to `.ts` files during type-checking. This is the standard approach for ESM + TypeScript projects as documented in the [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/modules/theory.html#typescript-imitates-the-hosts-module-resolution-but-with-types).
-
-3. **For `"type": "module"` projects, use `tsx` instead**: If you need `"type": "module"` in your package.json, use `tsx/cjs` which is designed to work in both CommonJS and ESM contexts.
+**Recommendation:** Use `tsx/cjs` instead for a better experience.
 
 ### Full TypeScript Features in Tests
 
