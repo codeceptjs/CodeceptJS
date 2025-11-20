@@ -121,11 +121,38 @@ export const config = {
     "esModuleInterop": true
   },
   "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "esm": true
   }
 }
 ```
+
+**Required package.json:**
+```json
+{
+  "name": "your-project",
+  "version": "1.0.0"
+  // ⚠️ DO NOT include "type": "module" when using ts-node/esm
+  // ts-node/esm works with CommonJS-style loading
+}
+```
+
+**⚠️ Important Notes:**
+
+1. **Do not use `"type": "module"`** in your package.json when using `ts-node/esm`. The ts-node/esm loader uses CommonJS-style module loading internally and is incompatible with `"type": "module"`.
+
+2. **Use `.js` extensions in imports**: When writing TypeScript code for ESM, you must use `.js` extensions in your imports, even when importing TypeScript files:
+
+```typescript
+// ❌ Wrong - will cause "Cannot find module" error
+import loginPage from "./pages/Login"
+
+// ✅ Correct - use .js extension
+import loginPage from "./pages/Login.js"
+```
+
+TypeScript will automatically resolve `.js` imports to `.ts` files during type-checking. This is the standard approach for ESM + TypeScript projects as documented in the [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/modules/theory.html#typescript-imitates-the-hosts-module-resolution-but-with-types).
+
+3. **For `"type": "module"` projects, use `tsx` instead**: If you need `"type": "module"` in your package.json, use `tsx/cjs` which is designed to work in both CommonJS and ESM contexts.
 
 ### Full TypeScript Features in Tests
 
@@ -174,7 +201,19 @@ This means the TypeScript loader isn't configured. Make sure:
 
 **Error: Module not found when importing from `.ts` files**
 
-Make sure you're using a proper TypeScript loader (`tsx/cjs` or `ts-node/esm`).
+When using `ts-node/esm` with ESM, you need to use `.js` extensions in imports:
+
+```typescript
+// This will cause an error in ESM mode:
+import loginPage from "./pages/Login"
+
+// Use .js extension instead:
+import loginPage from "./pages/Login.js"
+```
+
+TypeScript will resolve the `.js` import to your `.ts` file during compilation. This is the standard behavior for ESM + TypeScript.
+
+Alternatively, use `tsx/cjs` which doesn't require explicit extensions.
 
 **TypeScript config files vs test files**
 
