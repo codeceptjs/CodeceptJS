@@ -666,11 +666,7 @@ declare module 'codeceptjs' {
   export const dataTableArgument: typeof CodeceptJS.DataTableArgument
   export const store: typeof CodeceptJS.store
   export const locator: typeof CodeceptJS.Locator
-  export const heal: any
-  export const ai: any
-  export const Workers: any
-  export const Secret: typeof CodeceptJS.Secret
-  export const secret: typeof CodeceptJS.secret
+
 }
 
 declare module '@codeceptjs/helper' {
