@@ -640,7 +640,20 @@ declare module 'codeceptjs' {
   export const codecept: typeof CodeceptJS.Codecept
   export const Codecept: typeof CodeceptJS.Codecept
   export const output: typeof CodeceptJS.output
-  export const container: typeof CodeceptJS.Container
+  export const container: {
+    helpers(name?: string): any
+    support(name?: string): any
+    plugins(name?: string): any
+    translation(): any
+    mocha(): any
+    result(): any
+    append(newContainer: any): void
+    clear(newHelpers?: any, newSupport?: any, newPlugins?: any): Promise<void>
+    started(fn?: Function | null): Promise<void>
+    share(data: any, options?: any): void
+    createMocha(config?: any, opts?: any): void
+    actor(): any
+  }
   export const event: typeof CodeceptJS.event
   export const recorder: CodeceptJS.recorder
   export const config: typeof CodeceptJS.Config
