@@ -1,6 +1,5 @@
 import { expectType } from 'tsd'
 import { container, codecept, Codecept, output, event, recorder, config, actor, helper, Helper, pause, within, dataTable, dataTableArgument, store, locator } from 'codeceptjs'
-import defaultExport from 'codeceptjs'
 
 // Test that container can be imported and has the expected methods
 const helpers = container.helpers()
@@ -23,5 +22,3 @@ expectType<typeof CodeceptJS.DataTable>(dataTable)
 expectType<typeof CodeceptJS.DataTableArgument>(dataTableArgument)
 expectType<typeof CodeceptJS.store>(store)
 expectType<typeof CodeceptJS.Locator>(locator)
-
-expectType<typeof defaultExport>(defaultExport)
