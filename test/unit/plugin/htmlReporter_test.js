@@ -1,28 +1,33 @@
 const { expect } = require('chai')
 
-describe('htmlReporter plugin', () => {
-  describe('escapeHtml function', () => {
-    // Helper function to simulate the escapeHtml behavior from htmlReporter.js
-    function escapeHtml(text) {
-      if (!text) return ''
-      // Convert non-string values to strings before escaping
-      if (typeof text !== 'string') {
-        // Handle arrays by joining with commas
-        if (Array.isArray(text)) {
-          text = text.map(item => {
-            // Recursively flatten nested arrays
+// Helper function to simulate the escapeHtml behavior from htmlReporter.js
+function escapeHtml(text) {
+  if (!text) return ''
+  // Convert non-string values to strings before escaping
+  if (typeof text !== 'string') {
+    // Handle arrays by recursively flattening and joining with commas
+    if (Array.isArray(text)) {
+      // Recursive helper to flatten deeply nested arrays
+      const flattenArray = arr => {
+        return arr
+          .map(item => {
             if (Array.isArray(item)) {
-              return item.join(', ')
+              return flattenArray(item)
             }
             return String(item)
-          }).join(', ')
-        } else {
-          text = String(text)
-        }
+          })
+          .join(', ')
       }
-      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+      text = flattenArray(text)
+    } else {
+      text = String(text)
     }
+  }
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
 
+describe('htmlReporter plugin', () => {
+  describe('escapeHtml function', () => {
     it('should escape HTML special characters in strings', () => {
       const result = escapeHtml('<script>alert("xss")</script>')
       expect(result).to.include('&lt;script&gt;')
@@ -59,7 +64,7 @@ describe('htmlReporter plugin', () => {
     it('should handle null and undefined inputs', () => {
       const resultNull = escapeHtml(null)
       expect(resultNull).to.equal('')
-      
+
       const resultUndefined = escapeHtml(undefined)
       expect(resultUndefined).to.equal('')
     })
@@ -89,24 +94,6 @@ describe('htmlReporter plugin', () => {
   })
 
   describe('generateSystemInfoHtml function', () => {
-    // Helper function to simulate escapeHtml
-    function escapeHtml(text) {
-      if (!text) return ''
-      if (typeof text !== 'string') {
-        if (Array.isArray(text)) {
-          text = text.map(item => {
-            if (Array.isArray(item)) {
-              return item.join(', ')
-            }
-            return String(item)
-          }).join(', ')
-        } else {
-          text = String(text)
-        }
-      }
-      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
-    }
-
     it('should handle system info with nested arrays', () => {
       // This tests the real-world scenario from the issue
       const systemInfo = {
@@ -137,12 +124,12 @@ describe('htmlReporter plugin', () => {
       expect(formatValue(systemInfo.osInfo)).to.include('Windows 10')
       expect(formatValue(systemInfo.cpuInfo)).to.include('12th Gen')
       expect(formatValue(systemInfo.chromeInfo)).to.include('142.0.7444.163')
-      
+
       // The critical test: edgeInfo with nested array should not crash
       const edgeResult = formatValue(systemInfo.edgeInfo)
       expect(edgeResult).to.include('Chromium')
       expect(edgeResult).to.include('140.0.3485.54')
-      
+
       expect(formatValue(systemInfo.safariInfo)).to.equal('N/A')
     })
 
@@ -180,24 +167,6 @@ describe('htmlReporter plugin', () => {
   })
 
   describe('edge cases', () => {
-    // Helper function to simulate escapeHtml
-    function escapeHtml(text) {
-      if (!text) return ''
-      if (typeof text !== 'string') {
-        if (Array.isArray(text)) {
-          text = text.map(item => {
-            if (Array.isArray(item)) {
-              return item.join(', ')
-            }
-            return String(item)
-          }).join(', ')
-        } else {
-          text = String(text)
-        }
-      }
-      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
-    }
-
     it('should handle arrays with HTML content', () => {
       const result = escapeHtml(['<script>', ['alert("xss")'], '</script>'])
       expect(result).to.include('&lt;script&gt;')
