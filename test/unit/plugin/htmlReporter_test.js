@@ -7,12 +7,16 @@ function escapeHtml(text) {
   if (typeof text !== 'string') {
     // Handle arrays by recursively flattening and joining with commas
     if (Array.isArray(text)) {
-      // Recursive helper to flatten deeply nested arrays
-      const flattenArray = arr => {
+      // Recursive helper to flatten deeply nested arrays with depth limit to prevent stack overflow
+      const flattenArray = (arr, depth = 0, maxDepth = 100) => {
+        if (depth >= maxDepth) {
+          // Safety limit reached, return string representation
+          return String(arr)
+        }
         return arr
           .map(item => {
             if (Array.isArray(item)) {
-              return flattenArray(item)
+              return flattenArray(item, depth + 1, maxDepth)
             }
             return String(item)
           })
