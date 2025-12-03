@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.27
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
