@@ -112,7 +112,7 @@
     "html-minifier-terser": "7.2.0",
     "inquirer": "^8.2.7",
     "invisi-data": "^1.0.0",
-    "joi": "18.0.1",
+    "joi": "18.0.2",
     "js-beautify": "1.15.4",
     "lodash.clonedeep": "4.5.0",
     "lodash.merge": "4.6.2",
