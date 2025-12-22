@@ -146,7 +146,7 @@
     "@testomatio/reporter": "^2.3.1",
     "@types/chai": "5.2.3",
     "@types/inquirer": "9.0.9",
-    "@types/node": "^24.9.2",
+    "@types/node": "^25.0.3",
     "@wdio/sauce-service": "9.12.5",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.21.0",
