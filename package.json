@@ -186,7 +186,7 @@
     "tsx": "^4.19.2",
     "typedoc": "0.28.15",
     "typedoc-plugin-markdown": "4.9.0",
-    "typescript": "5.8.3",
+    "typescript": "5.9.3",
     "wdio-docker-service": "3.2.1",
     "webdriverio": "9.12.5",
     "xml2js": "0.6.2",
