@@ -519,7 +519,7 @@ declare namespace CodeceptJS {
     retry(retries?: number): HookConfig
   }
 
-  function addStep(step: string, fn: Function): Promise<void>
+  function addStep(step: string | RegExp, fn: Function): Promise<void>
 }
 
 type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>

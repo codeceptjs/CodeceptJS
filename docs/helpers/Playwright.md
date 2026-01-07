@@ -88,6 +88,17 @@ Type: [object][6]
     May include session cookies, auth tokens, localStorage and (if captured with
     `grabStorageState({ indexedDB: true })`) IndexedDB data; treat as sensitive and do not commit.
 
+## createCustomSelectorEngine
+
+Creates a Playwright selector engine factory for a custom locator strategy.
+
+### Parameters
+
+*   `name` **[string][9]** Strategy name for error messages
+*   `func` **[Function][22]** The locator function (selector, root) => Element|Element[]
+
+Returns **[Function][22]** Selector engine factory
+
 ## handleRoleLocator
 
 Handles role locator objects by converting them to Playwright's getByRole() API
