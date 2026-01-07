@@ -140,7 +140,7 @@
     "@eslint/eslintrc": "3.3.1",
     "@eslint/js": "9.36.0",
     "@faker-js/faker": "9.8.0",
-    "@inquirer/testing": "^2.1.49",
+    "@inquirer/testing": "^3.0.3",
     "@pollyjs/adapter-puppeteer": "6.0.6",
     "@pollyjs/core": "6.0.6",
     "@testomatio/reporter": "^2.3.1",
