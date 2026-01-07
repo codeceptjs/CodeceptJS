@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+import { expect } from 'chai'
 
 // Helper function to simulate the escapeHtml behavior from htmlReporter.js
 function escapeHtml(text) {
