@@ -22,6 +22,10 @@ describe('screenshotOnFail', () => {
     })
   })
 
+  afterEach(() => {
+    event.dispatcher.removeAllListeners(event.test.failed)
+  })
+
   it('should remove the . at the end of test title', async () => {
     screenshotOnFail({})
     event.dispatcher.emit(event.test.failed, createTest('test title.'))
@@ -68,7 +72,7 @@ describe('screenshotOnFail', () => {
     await recorder.promise()
     expect(screenshotSaved.called).is.ok
     const fileName = screenshotSaved.getCall(0).args[0]
-    const regexpFileName = /test1_[0-9]{10}.failed.png/
+    const regexpFileName = /test1_[0-9]{13}.failed.png/
 
     expect(fileName.match(regexpFileName).length).is.equal(1)
   })
@@ -143,6 +147,10 @@ describe('screenshotOnFail', () => {
           saveScreenshot: screenshotSaved,
         },
       })
+    })
+
+    afterEach(() => {
+      event.dispatcher.removeAllListeners(event.test.failed)
     })
 
     it('should generate unique screenshot names for Data() iterations with uniqueScreenshotNames: true', async () => {
