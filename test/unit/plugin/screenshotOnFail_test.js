@@ -68,7 +68,8 @@ describe('screenshotOnFail', () => {
     await recorder.promise()
     expect(screenshotSaved.called).is.ok
     const fileName = screenshotSaved.getCall(0).args[0]
-    const regexpFileName = /test1_[0-9]{13}.failed.png/
+    const regexpFileName = /test1_[0-9]{10}.failed.png/
+
     expect(fileName.match(regexpFileName).length).is.equal(1)
   })
 
