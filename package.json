@@ -137,7 +137,7 @@
     "@apollo/server": "^5",
     "@codeceptjs/expect-helper": "^1.0.2",
     "@codeceptjs/mock-request": "0.3.1",
-    "@eslint/eslintrc": "3.3.1",
+    "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.2",
     "@faker-js/faker": "9.8.0",
     "@inquirer/testing": "^3.0.3",
