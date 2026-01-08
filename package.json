@@ -181,6 +181,7 @@
     "sinon-chai": "^4.0.1",
     "ts-morph": "27.0.2",
     "ts-node": "10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "tsd": "^0.33.0",
     "tsd-jsdoc": "2.5.0",
     "tsx": "^4.19.2",
