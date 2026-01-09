@@ -1,6 +1,6 @@
 {
   "name": "codeceptjs",
-  "version": "4.0.1-beta.9",
+  "version": "4.0.2-beta.17",
   "type": "module",
   "description": "Supercharged End 2 End Testing Framework for NodeJS",
   "keywords": [
