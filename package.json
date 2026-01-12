@@ -184,7 +184,7 @@
     "tsd": "^0.33.0",
     "tsd-jsdoc": "2.5.0",
     "tsx": "^4.19.2",
-    "typedoc": "0.28.15",
+    "typedoc": "0.28.16",
     "typedoc-plugin-markdown": "4.9.0",
     "typescript": "5.9.3",
     "wdio-docker-service": "3.2.1",
