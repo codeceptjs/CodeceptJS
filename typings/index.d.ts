@@ -637,6 +637,7 @@ declare namespace Mocha {
 
 declare module 'codeceptjs' {
   export default codeceptjs
+  export const container: any
 }
 
 declare module '@codeceptjs/helper' {
