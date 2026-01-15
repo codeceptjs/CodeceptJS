@@ -663,7 +663,7 @@ declare module 'codeceptjs' {
   /**
    * Global promise chain recorder
    */
-  export const recorder: typeof CodeceptJS.recorder
+  export const recorder: CodeceptJS.recorder
 
   /**
    * Configuration module
