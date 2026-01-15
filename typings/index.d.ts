@@ -520,6 +520,86 @@ declare namespace CodeceptJS {
   }
 
   function addStep(step: string | RegExp, fn: Function): Promise<void>
+
+  // Internal API types
+  class Container {
+    static create(config: any, opts?: any): Promise<void>
+    static actor(): any
+    static plugins(name?: string): any
+    static support(name?: string): any
+    static helpers(name?: string): any
+    static translation(): any
+    static mocha(): any
+  }
+
+  class Codecept {
+    // Codecept class methods - to be filled from JSDoc
+  }
+
+  class Config {
+    static get(): any
+    static set(key: string, value: any): void
+  }
+
+  namespace output {
+    function print(message: string): void
+    function log(message: string): void
+    function debug(message: string): void
+    function error(message: string): void
+    function info(message: string): void
+    function success(message: string): void
+    function warn(message: string): void
+  }
+
+  type event = {
+    dispatcher: any
+    on: (event: string, handler: Function) => void
+    once: (event: string, handler: Function) => void
+    removeListener: (event: string, handler: Function) => void
+    removeAllListeners: (event?: string) => void
+    emit: (event: string, ...args: any[]) => void
+  }
+
+  type recorder = {
+    (fn: () => Promise<void> | void): void
+    start: () => void
+    stop: () => void
+    add: (fn: Function) => void
+    retry: any[]
+    catch: (fn: Function) => void
+    schedule: (fn: Function) => any
+    promiseStack: any[]
+    running: boolean
+  }
+
+  type store = {
+    debugMode: boolean
+    timeouts: boolean
+    autoRetries: boolean
+    dryRun: boolean
+  }
+
+  class Secret {
+    static secret(value: string | number): Secret
+    toString(): string
+    getMasked(): string
+  }
+
+  type pause = () => void
+
+  type within = (locator: LocatorOrString) => void
+
+  class DataTable {
+    static (data: any[] | any[][]): any
+  }
+
+  class DataTableArgument {
+    static (data: any): any
+  }
+
+  class Locator {
+    static build(locator: ILocator | string): any
+  }
 }
 
 type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>
@@ -635,9 +715,105 @@ declare namespace Mocha {
   }
 }
 
+// Internal API types
 declare module 'codeceptjs' {
   export default codeceptjs
-  export const container: any
+
+  /**
+   * Dependency Injection Container
+   * Provides access to helpers, support objects, plugins, and translation
+   */
+  export const container: typeof CodeceptJS.Container
+
+  /**
+   * Test runner class
+   */
+  export const codecept: typeof CodeceptJS.Codecept
+
+  /**
+   * Output module for printing messages
+   */
+  export const output: typeof CodeceptJS.output
+
+  /**
+   * Event dispatcher for listening to CodeceptJS events
+   */
+  export const event: CodeceptJS.event
+
+  /**
+   * Global promise chain recorder
+   */
+  export const recorder: CodeceptJS.recorder
+
+  /**
+   * Configuration module
+   */
+  export const config: typeof CodeceptJS.Config
+
+  /**
+   * Actor (I) constructor
+   */
+  export const actor: CodeceptJS.actor
+
+  /**
+   * Base Helper class
+   */
+  export const helper: typeof CodeceptJS.Helper
+
+  /**
+   * Pause execution until user input
+   */
+  export const pause: CodeceptJS.pause
+
+  /**
+   * Execute steps within specific context
+   */
+  export const within: CodeceptJS.within
+
+  /**
+   * Create data tables for data-driven tests
+   */
+  export const dataTable: typeof CodeceptJS.DataTable
+
+  /**
+   * Create data table arguments
+   */
+  export const dataTableArgument: typeof CodeceptJS.DataTableArgument
+
+  /**
+   * Shared store for test data
+   */
+  export const store: CodeceptJS.store
+
+  /**
+   * Locator builder
+   */
+  export const locator: typeof CodeceptJS.Locator
+
+  /**
+   * Auto-healing module
+   */
+  export const heal: any
+
+  /**
+   * AI assistant module
+   */
+  export const ai: any
+
+  /**
+   * Workers for parallel execution
+   */
+  export const Workers: any
+
+  /**
+   * Secret value type for sensitive data
+   */
+  export const Secret: typeof CodeceptJS.Secret
+
+  /**
+   * Create a secret value
+   */
+  export const secret: typeof CodeceptJS.secret
 }
 
 declare module '@codeceptjs/helper' {
