@@ -658,12 +658,12 @@ declare module 'codeceptjs' {
   /**
    * Event dispatcher for listening to CodeceptJS events
    */
-  export const event: CodeceptJS.event
+  export const event: typeof CodeceptJS.event
 
   /**
    * Global promise chain recorder
    */
-  export const recorder: CodeceptJS.recorder
+  export const recorder: typeof CodeceptJS.recorder
 
   /**
    * Configuration module
@@ -683,12 +683,12 @@ declare module 'codeceptjs' {
   /**
    * Pause execution until user input
    */
-  export const pause: CodeceptJS.pause
+  export const pause: typeof CodeceptJS.pause
 
   /**
    * Execute steps within specific context
    */
-  export const within: CodeceptJS.within
+  export const within: typeof CodeceptJS.within
 
   /**
    * Create data tables for data-driven tests
@@ -703,7 +703,7 @@ declare module 'codeceptjs' {
   /**
    * Shared store for test data
    */
-  export const store: CodeceptJS.store
+  export const store: typeof CodeceptJS.store
 
   /**
    * Locator builder
