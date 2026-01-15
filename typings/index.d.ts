@@ -520,86 +520,6 @@ declare namespace CodeceptJS {
   }
 
   function addStep(step: string | RegExp, fn: Function): Promise<void>
-
-  // Internal API types
-  class Container {
-    static create(config: any, opts?: any): Promise<void>
-    static actor(): any
-    static plugins(name?: string): any
-    static support(name?: string): any
-    static helpers(name?: string): any
-    static translation(): any
-    static mocha(): any
-  }
-
-  class Codecept {
-    // Codecept class methods - to be filled from JSDoc
-  }
-
-  class Config {
-    static get(): any
-    static set(key: string, value: any): void
-  }
-
-  namespace output {
-    function print(message: string): void
-    function log(message: string): void
-    function debug(message: string): void
-    function error(message: string): void
-    function info(message: string): void
-    function success(message: string): void
-    function warn(message: string): void
-  }
-
-  type event = {
-    dispatcher: any
-    on: (event: string, handler: Function) => void
-    once: (event: string, handler: Function) => void
-    removeListener: (event: string, handler: Function) => void
-    removeAllListeners: (event?: string) => void
-    emit: (event: string, ...args: any[]) => void
-  }
-
-  type recorder = {
-    (fn: () => Promise<void> | void): void
-    start: () => void
-    stop: () => void
-    add: (fn: Function) => void
-    retry: any[]
-    catch: (fn: Function) => void
-    schedule: (fn: Function) => any
-    promiseStack: any[]
-    running: boolean
-  }
-
-  type store = {
-    debugMode: boolean
-    timeouts: boolean
-    autoRetries: boolean
-    dryRun: boolean
-  }
-
-  class Secret {
-    static secret(value: string | number): Secret
-    toString(): string
-    getMasked(): string
-  }
-
-  type pause = () => void
-
-  type within = (locator: LocatorOrString) => void
-
-  class DataTable {
-    static (data: any[] | any[][]): any
-  }
-
-  class DataTableArgument {
-    static (data: any): any
-  }
-
-  class Locator {
-    static build(locator: ILocator | string): any
-  }
 }
 
 type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>
@@ -813,7 +733,7 @@ declare module 'codeceptjs' {
   /**
    * Create a secret value
    */
-  export const secret: typeof CodeceptJS.secret
+  export const secret: typeof CodeceptJS.Secret.secret
 }
 
 declare module '@codeceptjs/helper' {
