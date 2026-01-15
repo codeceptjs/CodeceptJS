@@ -10,6 +10,7 @@
 
 ## 🐛 Bug Fixes
 
+- fix(runner): test files are not executed in alphabetical order (#5386) - by DenysKuchma
 - fix(html-reporter): handle edgeInfo properly (#5327)
 - fix(html-reporter): improvements and stability fixes (#5242) - by @kobenguyent
 - fix(html-reporter): address multiple rendering issues (#5240) - by @kobenguyent
