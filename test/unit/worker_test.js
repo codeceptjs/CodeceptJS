@@ -46,7 +46,7 @@ describe('Workers', function () {
 
   it('should create worker by function', done => {
     const createTestGroups = () => {
-      const files = [[path.join(codecept_dir, '/custom-worker/base_test.worker.js')], [path.join(codecept_dir, '/custom-worker/custom_test.worker.js')]]
+      const files = [[path.join(codecept_dir, '/custom-worker/3_base_test.worker.js')], [path.join(codecept_dir, '/custom-worker/2_custom_test.worker.js')]]
 
       return files
     }
@@ -125,10 +125,10 @@ describe('Workers', function () {
     const workers = new Workers(-1, workerConfig)
 
     const workerOne = workers.spawn()
-    workerOne.addTestFiles([path.join(codecept_dir, '/custom-worker/base_test.worker.js')])
+    workerOne.addTestFiles([path.join(codecept_dir, '/custom-worker/3_base_test.worker.js')])
 
     const workerTwo = workers.spawn()
-    workerTwo.addTestFiles([path.join(codecept_dir, '/custom-worker/custom_test.worker.js')])
+    workerTwo.addTestFiles([path.join(codecept_dir, '/custom-worker/2_custom_test.worker.js')])
 
     for (const worker of workers.getWorkers()) {
       worker.addConfig({
