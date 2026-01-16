@@ -1,3 +1,46 @@
+## 3.7.6
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+## ✨ Features
+
+- feat(bdd): add support for the `But` keyword (#5291) - by @mozillalives
+- feat(playwright): add support for `storageState` configuration (#5192) - by @Samuel-StO
+- feat(rest): add support for `HEAD` request (#5212) - by @kobenguyent
+
+## 🐛 Bug Fixes
+
+- fix(runner): test files are not executed in alphabetical order (#5386) - by DenysKuchma
+- fix(html-reporter): handle edgeInfo properly (#5327)
+- fix(html-reporter): improvements and stability fixes (#5242) - by @kobenguyent
+- fix(html-reporter): address multiple rendering issues (#5240) - by @kobenguyent
+- fix(screenshots): prevent filename collisions using unique names (#5299) - by @mirao
+- fix(playwright): always use `keyboard.type` for strings and add national characters test (#5280) - by @mirao
+- fix(playwright): remove redundant async initialization of selector engines (#5206) - by @Samuel-StO
+- fix(timeout): apply global timeout before suite execution (#5275) - by @mirao
+- fix(retryFailedStep): handle missing options to prevent promise chaining error (#5276) - by @mirao
+- fix(workers): correct stats when running with workers (#5215) - by @kobenguyent
+- fix(appium): resolve `platformName` handling issue (#5214) - by @mirao
+- fix(appium): avoid overriding `sauce:options` on iOS 17+ (#5202) - by @mikhail-yesipchuk-zenitech
+- fix(types): add and correct typings for Result class (#5236, #5252) - by @danielrentz
+- fix(types): fix TS typings for Codecept and MainConfig (#5216) - by @danielrentz
+- fix(types): add correct signatures for package exports (#5204) - by @epszaw
+- fix(fs): remove deprecated `fs.rmdirSync` recursive usage (#5218) - by @danielrentz
+- fix(effects): correct typo in `retryTo` example (#5203) - by @danielrentz
+
+## 📖 Documentation
+
+- docs(reports): use reporter config option instead of CLI flag (#5211) - by @danielrentz
+- docs(events): update example for `event.all.result` handler (#5233) - by @danielrentz
+- docs(playwright): update deprecated Puppeteer and Playwright links (#5222) - by @danielrentz
+
+## 🧹 Chores & Maintenance
+
+- chore(deps): keep dependencies in sync (#5346, #5220, #5388, #5303, #5210) - by @thomashohn
+- chore(deps): remove `lodash.shuffle` and use internal implementation (#5301) - by @thomashohn
+- chore(cleanup): clean up unused files (#5281) - by @kobenguyent
+- chore(cli): improve workers CLI logging (#5235) - by @kobenguyent
+
 ## 3.7.5
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
@@ -2439,7 +2482,7 @@ npx codeceptjs run-workers 2 all
 - Support `--grep` in dry-run command (#3673) - by @KobeNguyenT
 - Fix typings improvements in playwright (#3650) - by @KobeNguyenT
 - Fixed global retry #3667 by @KobeNguyenT
-- Fixed creating JavaScript test using "codeceptjs gt" (#3611) - by Jaromir Obr
+- Fixed creating JavaScript test using "codeceptjs gt" (#3611) - by mirao
 
 ## 3.4.1
 
