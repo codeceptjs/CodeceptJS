@@ -108,8 +108,8 @@ describe('Definitions', function () {
       const extend = definitionFile.getFullText()
 
       // Page objects are exported as plain objects in .js files
-      // Use typeof import() without ['default'] to allow TypeScript to infer the object type
-      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js');")
+      // Access .default to allow TypeScript to extract properties for autocompletion
+      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js').default;")
       assert(!err)
       done()
     })
