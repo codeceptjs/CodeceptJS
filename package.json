@@ -106,7 +106,7 @@
     "escape-string-regexp": "4.0.0",
     "figures": "3.2.0",
     "fn-args": "4.0.0",
-    "fs-extra": "11.3.2",
+    "fs-extra": "11.3.3",
     "fuse.js": "^7.0.0",
     "glob": ">=9.0.0 <14",
     "html-minifier-terser": "7.2.0",
