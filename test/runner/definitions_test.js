@@ -107,7 +107,9 @@ describe('Definitions', function () {
       const definitionFile = types.getSourceFileOrThrow(`${codecept_dir}/steps.d.ts`)
       const extend = definitionFile.getFullText()
 
-      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js')['default'];")
+      // Page objects are exported as plain objects, not classes
+      // So they should not have ['default'] to allow autocompletion
+      extend.should.include("type CurrentPage = typeof import('./po/custom_steps.js');")
       assert(!err)
       done()
     })
