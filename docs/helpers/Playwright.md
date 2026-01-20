@@ -80,24 +80,12 @@ Type: [object][6]
 *   `highlightElement` **[boolean][28]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 *   `recordHar` **[object][6]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
 *   `testIdAttribute` **[string][9]?** locate elements based on the testIdAttribute. See more of [locate by test id][51].
-*   `customLocatorStrategies` **[object][6]?** custom locator strategies. An object with keys as strategy names and values as JavaScript functions. Example: `{ byRole: (selector, root) => { return root.querySelector(`[role="${selector}"]`) } }`
 *   `storageState` **([string][9] | [object][6])?** Playwright storage state (path to JSON file or object)
     passed directly to `browser.newContext`.
     If a Scenario is declared with a `cookies` option (e.g. `Scenario('name', { cookies: [...] }, fn)`),
     those cookies are used instead and the configured `storageState` is ignored (no merge).
     May include session cookies, auth tokens, localStorage and (if captured with
     `grabStorageState({ indexedDB: true })`) IndexedDB data; treat as sensitive and do not commit.
-
-## createCustomSelectorEngine
-
-Creates a Playwright selector engine factory for a custom locator strategy.
-
-### Parameters
-
-*   `name` **[string][9]** Strategy name for error messages
-*   `func` **[Function][22]** The locator function (selector, root) => Element|Element[]
-
-Returns **[Function][22]** Selector engine factory
 
 ## handleRoleLocator
 

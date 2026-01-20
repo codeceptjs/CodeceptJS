@@ -20,23 +20,6 @@ export const config = {
       webkit: {
         ignoreHTTPSErrors: true,
       },
-      customLocatorStrategies: {
-        byRole: (selector, root) => {
-          return root.querySelector(`[role="${selector}"]`)
-        },
-        byTestId: (selector, root) => {
-          return root.querySelector(`[data-testid="${selector}"]`)
-        },
-        byDataQa: (selector, root) => {
-          return root.querySelectorAll(`[data-qa="${selector}"]`)
-        },
-        byAriaLabel: (selector, root) => {
-          return root.querySelector(`[aria-label="${selector}"]`)
-        },
-        byPlaceholder: (selector, root) => {
-          return root.querySelector(`[placeholder="${selector}"]`)
-        },
-      },
     },
     JSONResponse: {
       requestHelper: 'Playwright',
