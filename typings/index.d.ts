@@ -635,8 +635,105 @@ declare namespace Mocha {
   }
 }
 
+// Internal API types
 declare module 'codeceptjs' {
   export default codeceptjs
+
+  /**
+   * Dependency Injection Container
+   * Provides access to helpers, support objects, plugins, and translation
+   */
+  export const container: typeof CodeceptJS.Container
+
+  /**
+   * Test runner class
+   */
+  export const codecept: typeof CodeceptJS.Codecept
+
+  /**
+   * Output module for printing messages
+   */
+  export const output: typeof CodeceptJS.output
+
+  /**
+   * Event dispatcher for listening to CodeceptJS events
+   */
+  export const event: typeof CodeceptJS.event
+
+  /**
+   * Global promise chain recorder
+   */
+  export const recorder: CodeceptJS.recorder
+
+  /**
+   * Configuration module
+   */
+  export const config: typeof CodeceptJS.Config
+
+  /**
+   * Actor (I) constructor
+   */
+  export const actor: CodeceptJS.actor
+
+  /**
+   * Base Helper class
+   */
+  export const helper: typeof CodeceptJS.Helper
+
+  /**
+   * Pause execution until user input
+   */
+  export const pause: typeof CodeceptJS.pause
+
+  /**
+   * Execute steps within specific context
+   */
+  export const within: typeof CodeceptJS.within
+
+  /**
+   * Create data tables for data-driven tests
+   */
+  export const dataTable: typeof CodeceptJS.DataTable
+
+  /**
+   * Create data table arguments
+   */
+  export const dataTableArgument: typeof CodeceptJS.DataTableArgument
+
+  /**
+   * Shared store for test data
+   */
+  export const store: typeof CodeceptJS.store
+
+  /**
+   * Locator builder
+   */
+  export const locator: typeof CodeceptJS.Locator
+
+  /**
+   * Auto-healing module
+   */
+  export const heal: any
+
+  /**
+   * AI assistant module
+   */
+  export const ai: any
+
+  /**
+   * Workers for parallel execution
+   */
+  export const Workers: any
+
+  /**
+   * Secret value type for sensitive data
+   */
+  export const Secret: typeof CodeceptJS.Secret
+
+  /**
+   * Create a secret value
+   */
+  export const secret: typeof CodeceptJS.Secret.secret
 }
 
 declare module '@codeceptjs/helper' {
