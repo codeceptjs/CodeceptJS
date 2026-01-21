@@ -27,7 +27,7 @@ describe('AI module', () => {
       },
     }
 
-    AiAssistant.enable(config)
+    await AiAssistant.enable(config)
     await AiAssistant.setHtmlContext(html)
     expect(AiAssistant.minifiedHtml).to.include('<a data-qa="ok">Hey</a>')
   })
@@ -64,7 +64,7 @@ describe('AI module', () => {
 describe('AI module with mock provider', () => {
   const tempDir = path.join(__dirname, '../data/sandbox/ai-prompts-test')
 
-  beforeEach(async () => {
+  beforeEach(() => {
     AiAssistant.reset()
     config.reset()
 

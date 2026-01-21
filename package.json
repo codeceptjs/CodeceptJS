@@ -92,7 +92,7 @@
     "@cucumber/messages": "31.2.0",
     "@xmldom/xmldom": "0.9.8",
     "acorn": "8.15.0",
-    "ai": "^6.0.41",
+    "ai": "^6.0.43",
     "arrify": "3.0.0",
     "axios": "1.13.2",
     "chalk": "4.1.2",
