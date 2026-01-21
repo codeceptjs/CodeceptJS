@@ -4,12 +4,10 @@ export function createMockModel(config = {}) {
   let callCount = 0
 
   const mockModel = {
-    specificationVersion: 'v2',
-    provider: 'mock',
+    specificationVersion: 'v3',
     modelId: 'mock-model',
-    config: {
-      provider: 'mock',
-    },
+    provider: 'mock',
+    defaultObjectGenerationMode: 'json',
 
     async doGenerate(options) {
       if (delay > 0) {
@@ -25,6 +23,11 @@ export function createMockModel(config = {}) {
 
       const textContent = response.text || 'Mock response'
 
+      // Calculate token values
+      const promptTokens = response.promptTokens || 50
+      const totalTokens = response.totalTokens || 100
+      const completionTokens = response.completionTokens || (totalTokens - promptTokens)
+
       return {
         text: textContent,
         content: [
@@ -34,12 +37,20 @@ export function createMockModel(config = {}) {
           },
         ],
         usage: {
-          promptTokens: response.promptTokens || 50,
-          completionTokens: response.completionTokens || 50,
-          totalTokens: response.totalTokens || 100,
+          promptTokens,
+          completionTokens,
+          totalTokens,
+          inputTokens: {
+            total: promptTokens,
+          },
+          outputTokens: {
+            total: completionTokens,
+          },
         },
         finishReason: response.finishReason || 'stop',
-        rawResponse: { headers: {} },
+        rawResponse: {
+          headers: {},
+        },
         warnings: [],
         logprobs: undefined,
         response: {
@@ -54,6 +65,7 @@ export function createMockModel(config = {}) {
         request: {
           body: JSON.stringify({ messages: options.prompt }),
         },
+        experimental_providerMetadata: undefined,
       }
     },
 
