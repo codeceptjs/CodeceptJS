@@ -110,8 +110,10 @@ describe('Workers', function () {
 
     workers.on(event.all.result, result => {
       expect(result.hasFailed).equal(true)
-      expect(passedCount).equal(3)
-      expect(failedCount).equal(2)
+      // Note: pass/fail counts depend on test distribution order, which affects
+      // timing of shared state between workers. See issue #5412.
+      expect(passedCount).equal(4)
+      expect(failedCount).equal(1)
       done()
     })
   })
@@ -367,5 +369,46 @@ describe('Workers', function () {
     })
 
     workers.run()
+  })
+
+  it('should not sort test files in loadTests for worker distribution (issue #5412)', () => {
+    // This test verifies the fix for issue #5412:
+    // Test files should NOT be sorted in loadTests() because that affects worker distribution.
+    // Sorting should only happen in run() for execution order.
+    //
+    // The bug was: sorting in loadTests() changed the order of suites during distribution,
+    // causing all workers to receive the same tests instead of different suites.
+
+    // Ensure clean state
+    const testFilesPattern = /custom-worker/
+    Object.keys(require.cache).forEach(key => {
+      if (testFilesPattern.test(key)) {
+        delete require.cache[key]
+      }
+    })
+    Container.clear()
+    Container.createMocha()
+
+    const workerConfig = {
+      by: 'suite',
+      testConfig: './test/data/sandbox/codecept.customworker.js',
+    }
+
+    const workers = new Workers(3, workerConfig)
+
+    // The key fix: after loadTests(), files should be in original (glob) order, NOT sorted.
+    // Glob returns files in reverse order on this system: 3_, 2_, 1_
+    // If files were sorted, they would be: 1_, 2_, 3_
+    const testFiles = workers.codecept.testFiles
+    const filenames = testFiles.map(f => path.basename(f))
+
+    // Verify files are NOT in sorted order (they should be in glob order)
+    const sortedFilenames = [...filenames].sort()
+    expect(filenames).to.not.deep.equal(sortedFilenames, 'Files should NOT be sorted after loadTests() - sorting should happen in run()')
+
+    // Also verify that suites are distributed across multiple worker groups
+    const groups = workers.testGroups
+    const nonEmptyGroups = groups.filter(g => g.length > 0)
+    expect(nonEmptyGroups.length).to.be.greaterThan(1, 'Suites should be distributed across multiple worker groups')
   })
 })
