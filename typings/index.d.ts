@@ -745,3 +745,9 @@ declare module 'codeceptjs/effects' {
   export const retryTo: RetryTo
   export const hopeThat: HopeThat
 }
+
+declare module 'codeceptjs/effects' {
+  export const tryTo: TryTo
+  export const retryTo: RetryTo
+  export const hopeThat: HopeThat
+}

@@ -1101,7 +1101,11 @@ describe('Playwright', function () {
 
     it('should convert to axios response with onResponse hook', async () => {
       let response
+<<<<<<< HEAD
       I.options.onResponse = resp => (response = resp)
+=======
+      I.config.onResponse = resp => (response = resp)
+>>>>>>> 875a660b5219dd2475883ed35db6adb58852216f
       await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
       expect(response).to.be.ok
       expect(response.status).to.equal(200)
@@ -2087,6 +2091,7 @@ describe('Playwright - storageState file path', function () {
     } catch (_) {}
   })
 })
+<<<<<<< HEAD
 
 // Global after hook to ensure process exits after all tests complete
 // This prevents the process from hanging due to Playwright event loops
@@ -2097,3 +2102,5 @@ after(function () {
     }, 1000).unref()
   }
 })
+=======
+>>>>>>> 875a660b5219dd2475883ed35db6adb58852216f
