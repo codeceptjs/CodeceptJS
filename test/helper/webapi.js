@@ -517,6 +517,32 @@ export function tests() {
     })
   })
 
+  describe('#shadow DOM', () => {
+    it('should click button inside shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click({ shadow: ['my-button', 'button'] })
+      await I.see('my-button > button', '#clicked-element')
+    })
+
+    it('should click button in nested shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click({ shadow: ['my-app', 'my-form', 'button'] })
+      await I.see('my-app > my-form > button', '#clicked-element')
+    })
+
+    it('should fill field inside nested shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.fillField({ shadow: ['my-app', 'my-form', 'input'] }, 'Shadow Test')
+      await I.see('Shadow Test', '#input-value')
+    })
+
+    it('should work with shadow locator as JSON string', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click('{"shadow": ["my-button", "button"]}')
+      await I.see('my-button > button', '#clicked-element')
+    })
+  })
+
   describe('#executeScript', () => {
     it('should execute synchronous script', async () => {
       await I.amOnPage('/')
