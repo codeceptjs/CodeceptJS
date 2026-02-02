@@ -424,7 +424,7 @@ describe('Playwright', function () {
         .then(() => I.switchTo('#invalidIframeSelector'))
         .catch(e => {
           e.should.be.instanceOf(Error)
-          e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+          e.message.should.be.equal('Frame "#invalidIframeSelector" was not found by text|CSS|XPath')
         }))
 
     it('should return error if iframe selector is not iframe', () =>
@@ -432,7 +432,7 @@ describe('Playwright', function () {
         .then(() => I.switchTo('h1'))
         .catch(e => {
           e.should.be.instanceOf(Error)
-          e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+          e.message.should.be.equal('Frame "#invalidIframeSelector" was not found by text|CSS|XPath')
         }))
 
     it('should return to parent frame given a null locator', async () => {
