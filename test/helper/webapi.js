@@ -469,6 +469,78 @@ export function tests() {
       await I.click('Submit')
       assert.equal(formContents('age'), 'adult')
     })
+
+    describe('custom combobox/listbox', () => {
+      it('should select from custom combobox by fuzzy label', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Country', 'Porto')
+        await I.see('country: pt', '#result')
+      })
+
+      it('should select from multiple custom comboboxes', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Country', 'New York')
+        await I.selectOption('City', 'Madrid')
+        await I.see('country: us', '#result')
+        await I.see('city: madrid', '#result')
+      })
+
+      it('should select from standalone listbox', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Favorite Color', 'Blue')
+        await I.see('color: blue', '#result')
+      })
+
+      it('should select from combobox using strict css locator', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption({ css: '#country-trigger' }, 'Paris')
+        await I.see('country: fr', '#result')
+      })
+
+      it('should select from listbox using strict css locator', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption({ css: '#color-listbox' }, 'Green')
+        await I.see('color: green', '#result')
+      })
+
+      it('should select multiple options from multiselect listbox', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Tags', ['Important', 'Urgent'])
+        await I.see('tags: important,urgent', '#result')
+      })
+
+      it('should select multiple options using strict css locator', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption({ css: '#tags-listbox' }, ['Review', 'Later'])
+        await I.see('tags: review,later', '#result')
+      })
+    })
+  })
+
+  describe('#shadow DOM', () => {
+    it('should click button inside shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click({ shadow: ['my-button', 'button'] })
+      await I.see('my-button > button', '#clicked-element')
+    })
+
+    it('should click button in nested shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click({ shadow: ['my-app', 'my-form', 'button'] })
+      await I.see('my-app > my-form > button', '#clicked-element')
+    })
+
+    it('should fill field inside nested shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.fillField({ shadow: ['my-app', 'my-form', 'input'] }, 'Shadow Test')
+      await I.see('Shadow Test', '#input-value')
+    })
+
+    it('should work with shadow locator as JSON string', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click('{"shadow": ["my-button", "button"]}')
+      await I.see('my-button > button', '#clicked-element')
+    })
   })
 
   describe('#executeScript', () => {

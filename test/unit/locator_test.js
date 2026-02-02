@@ -288,6 +288,95 @@ describe('Locator', () => {
         expect(l.toString()).to.equal('{id: foo}')
       })
     })
+
+    describe('JSON string parsing', () => {
+      it('should parse JSON string to css locator', () => {
+        const jsonStr = '{"css": "#button"}'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('css')
+        expect(l.value).to.equal('#button')
+      })
+
+      it('should parse JSON string to xpath locator', () => {
+        const jsonStr = '{"xpath": "//div[@class=\\"test\\"]"}'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('xpath')
+        expect(l.value).to.equal('//div[@class="test"]')
+      })
+
+      it('should parse JSON string to id locator', () => {
+        const jsonStr = '{"id": "my-element"}'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('id')
+        expect(l.value).to.equal('my-element')
+      })
+
+      it('should parse JSON string to custom locator', () => {
+        const jsonStr = '{"byRole": "button"}'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('byRole')
+        expect(l.value).to.equal('button')
+      })
+
+      it('should handle whitespace around JSON string', () => {
+        const jsonStr = '  { "css": ".test" }  '
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('css')
+        expect(l.value).to.equal('.test')
+      })
+
+      it('should reject invalid JSON and treat as string', () => {
+        const l = new Locator('{ invalid json')
+        expect(l.type).to.equal('fuzzy')
+        expect(l.value).to.equal('{ invalid json')
+      })
+
+      it('should handle aria-style locators with multiple properties', () => {
+        const jsonStr = '{"role": "button", "text": "Save"}'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('role')
+        expect(l.value).to.equal('button')
+        expect(l.strict).to.equal(true)
+      })
+
+      it('should ignore non-object JSON', () => {
+        const jsonStr = '"just a string"'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('fuzzy')
+        expect(l.value).to.equal('"just a string"')
+      })
+
+      it('should work with array values for certain locators', () => {
+        const jsonStr = '{"shadow": ["app", "component", "button"]}'
+        const l = new Locator(jsonStr)
+        expect(l.type).to.equal('shadow')
+        expect(l.value).to.eql(['app', 'component', 'button'])
+      })
+
+      it('should mark parsed locators as strict', () => {
+        const jsonStr = '{"css": "#test"}'
+        const l = new Locator(jsonStr)
+        expect(l.strict).to.equal(true)
+      })
+
+      it('should demonstrate equivalence between object and JSON string locators', () => {
+        const objectLocator = new Locator({ css: '#main-button' })
+        const jsonLocator = new Locator('{"css": "#main-button"}')
+
+        expect(objectLocator.type).to.equal(jsonLocator.type)
+        expect(objectLocator.value).to.equal(jsonLocator.value)
+        expect(objectLocator.strict).to.equal(jsonLocator.strict)
+      })
+
+      it('should work with complex xpath in JSON', () => {
+        const jsonStr = '{"xpath": "//div[contains(@class, \\"container\\")]//button"}'
+        const l = new Locator(jsonStr)
+
+        expect(l.type).to.equal('xpath')
+        expect(l.value).to.equal('//div[contains(@class, "container")]//button')
+        expect(l.simplify()).to.equal('//div[contains(@class, "container")]//button')
+      })
+    })
   })
 
   it('should transform CSS to xpath', () => {
