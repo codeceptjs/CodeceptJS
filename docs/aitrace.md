@@ -212,26 +212,7 @@ helpers: {
 
 ## Using with AI Agents
 
-The trace format is optimized for AI agents like Claude Code. When debugging a failing test:
-
-1. Open the generated `trace.md` file
-2. Copy its contents along with relevant artifact files (ARIA snapshots, console logs, etc.)
-3. Provide to the AI agent with context about the failure
-
-Example prompt:
-```
-I have a failing test. Here's the AI trace:
-
-[paste trace.md contents]
-
-[paste relevant ARIA snapshots]
-
-[paste console logs]
-
-Analyze this and explain why the test failed and how to fix it.
-```
-
-The AI agent can analyze all artifacts together - screenshots, HTML structure, console errors, and network requests - to provide comprehensive debugging insights.
+The trace format is optimized for AI agents like Claude Code. When debugging a failing test, just point the AI agent to the `trace.md` file - it will read the file and all linked artifacts automatically to analyze the failure.
 
 ## Troubleshooting
 
