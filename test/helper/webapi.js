@@ -75,6 +75,45 @@ export function tests() {
       const url = await I.grabCurrentUrl()
       assert.equal(url, `${siteUrl}/info`)
     })
+
+    it('should check for equality with query strings', async () => {
+      await I.amOnPage('/info?user=test')
+      // Query strings matter for exact equality
+      await I.seeCurrentUrlEquals('/info?user=test')
+      await I.dontSeeCurrentUrlEquals('/info')
+      // But substring check works
+      await I.seeInCurrentUrl('/info')
+      await I.seeInCurrentUrl('user=test')
+    })
+
+    it('should handle root path with query strings', async () => {
+      await I.amOnPage('/?user=ok')
+      // Query strings matter - exact equality requires query string
+      await I.seeCurrentUrlEquals('/?user=ok')
+      await I.dontSeeCurrentUrlEquals('/')
+      // But substring check works for path fragment
+      await I.seeInCurrentUrl('/')
+    })
+
+    it('should check path equality ignoring query strings', async () => {
+      await I.amOnPage('/info?user=test')
+      // Path equality ignores query strings
+      await I.seeCurrentPathEquals('/info')
+      await I.dontSeeCurrentPathEquals('/form')
+      await I.dontSeeCurrentPathEquals('/info?user=test')
+    })
+
+    it('should check root path equality ignoring query strings', async () => {
+      await I.amOnPage('/?user=ok')
+      await I.seeCurrentPathEquals('/')
+      await I.dontSeeCurrentPathEquals('/info')
+    })
+
+    it('should check path equality ignoring hash fragments', async () => {
+      await I.amOnPage('/info#section')
+      await I.seeCurrentPathEquals('/info')
+      await I.dontSeeCurrentPathEquals('/info#section')
+    })
   })
 
   describe('#waitInUrl, #waitUrlEquals', () => {
