@@ -1,5 +1,6 @@
 const expect = require('chai').expect
 const Codecept = require('../../lib/codecept')
+const Container = require('../../lib/container')
 const path = require('path')
 const fs = require('fs')
 
@@ -56,7 +57,11 @@ describe('Test Files Alphabetical Order', () => {
     codecept.init(path.join(__dirname, '../data/sandbox'))
   })
 
-  it('should sort test files alphabetically after loading', () => {
+  afterEach(() => {
+    Container.clear()
+  })
+
+  it('should sort test files alphabetically when run() is called', async () => {
     codecept.loadTests()
 
     if (codecept.testFiles.length === 0) {
@@ -64,11 +69,24 @@ describe('Test Files Alphabetical Order', () => {
       return
     }
 
-    const filenames = codecept.testFiles.map(filePath => path.basename(filePath))
+    // Capture the files that would be passed to mocha during run()
+    let filesPassedToMocha = null
+    const mocha = Container.mocha()
+    mocha.run = callback => {
+      filesPassedToMocha = [...mocha.files]
+      // Call callback immediately to complete the run
+      if (callback) callback()
+    }
 
+    // Call run() which should sort files before passing to mocha
+    await codecept.run()
+
+    // Verify files passed to mocha are sorted alphabetically
+    expect(filesPassedToMocha).to.not.be.null
+    const filenames = filesPassedToMocha.map(filePath => path.basename(filePath))
     const sortedFilenames = [...filenames].sort()
 
-    expect(filenames).to.deep.equal(sortedFilenames)
+    expect(filenames).to.deep.equal(sortedFilenames, 'Files should be sorted alphabetically for execution')
 
     const aaaIndex = filenames.findIndex(f => f.includes('aaa_test.js'))
     const mmmIndex = filenames.findIndex(f => f.includes('mmm_test.js'))
