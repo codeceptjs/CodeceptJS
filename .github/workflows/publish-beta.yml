@@ -27,4 +27,4 @@ jobs:
         run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
 
       - name: Publish to npm
-        run: npm publish --provenance --access public --tag beta
+        run: npm publish --provenance --access public --tag beta --ignore-scripts
