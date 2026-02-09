@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -44,6 +44,14 @@ jobs:
           else
             echo "tag=latest" >> $GITHUB_OUTPUT
           fi
+
+      - name: Configure git
+        run: |
+          git config user.name "GitHub CD"
+          git config user.email "github-cd@example.com"
+
+      - name: Set package version
+        run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
 
       - name: Publish to npm
         run: npm publish --provenance --access public --tag ${{ steps.npm_tag.outputs.tag }}
