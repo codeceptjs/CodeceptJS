@@ -23,35 +23,8 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install dependencies
-        run: npm i
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-
-      - name: Determine npm tag
-        id: npm_tag
-        run: |
-          TAG="${{ github.event.release.tag_name }}"
-          if echo "$TAG" | grep -qE "alpha|-alpha|\.a\."; then
-            echo "tag=alpha" >> $GITHUB_OUTPUT
-          elif echo "$TAG" | grep -qE "beta|-beta|\.b\."; then
-            echo "tag=beta" >> $GITHUB_OUTPUT
-          elif echo "$TAG" | grep -qE "rc|-rc|\.rc\."; then
-            echo "tag=rc" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event.release.prerelease }}" = "true" ]; then
-            echo "tag=beta" >> $GITHUB_OUTPUT
-          else
-            echo "tag=latest" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Configure git
-        run: |
-          git config user.name "GitHub CD"
-          git config user.email "github-cd@example.com"
-
       - name: Set package version
         run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
 
       - name: Publish to npm
-        run: npm publish --provenance --access public --tag ${{ steps.npm_tag.outputs.tag }}
+        run: npm publish --provenance --access public --tag beta
