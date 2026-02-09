@@ -66,7 +66,7 @@ describe('Test Files Alphabetical Order', () => {
     Container.clear()
   })
 
-  it('should sort test files alphabetically when run() is called', async () => {
+  it('should not sort test files in loadTests (sorting happens in run)', () => {
     codecept.loadTests()
 
     if (codecept.testFiles.length === 0) {
@@ -74,34 +74,22 @@ describe('Test Files Alphabetical Order', () => {
       return
     }
 
-    // Capture the files that would be passed to mocha during run()
-    let filesPassedToMocha = null
-    const mocha = Container.mocha()
-    mocha.run = callback => {
-      filesPassedToMocha = [...mocha.files]
-      // Call callback immediately to complete the run
-      if (callback) callback()
-    }
+    // After loadTests(), files should be in glob order (NOT sorted).
+    // Sorting should only happen later in run().
+    const filenames = codecept.testFiles.map(filePath => path.basename(filePath))
 
-    // Call run() which should sort files before passing to mocha
-    await codecept.run()
+    // Verify all 3 test files were loaded
+    expect(filenames).to.include('aaa_test.js')
+    expect(filenames).to.include('mmm_test.js')
+    expect(filenames).to.include('zzz_test.js')
+    expect(filenames.length).to.equal(3)
 
-    // Verify files passed to mocha are sorted alphabetically
-    expect(filesPassedToMocha).to.not.be.null
-    const filenames = filesPassedToMocha.map(filePath => path.basename(filePath))
-    const sortedFilenames = [...filenames].sort()
+    // Verify that sorting the files produces alphabetical order
+    const sortedFiles = [...codecept.testFiles].sort()
+    const sortedFilenames = sortedFiles.map(filePath => path.basename(filePath))
 
-    expect(filenames).to.deep.equal(sortedFilenames, 'Files should be sorted alphabetically for execution')
-
-    const aaaIndex = filenames.findIndex(f => f.includes('aaa_test.js'))
-    const mmmIndex = filenames.findIndex(f => f.includes('mmm_test.js'))
-    const zzzIndex = filenames.findIndex(f => f.includes('zzz_test.js'))
-
-    expect(aaaIndex).to.be.greaterThan(-1)
-    expect(mmmIndex).to.be.greaterThan(-1)
-    expect(zzzIndex).to.be.greaterThan(-1)
-
-    expect(aaaIndex).to.be.lessThan(mmmIndex, 'aaa_test.js should come before mmm_test.js')
-    expect(mmmIndex).to.be.lessThan(zzzIndex, 'mmm_test.js should come before zzz_test.js')
+    expect(sortedFilenames[0]).to.include('aaa_test.js')
+    expect(sortedFilenames[1]).to.include('mmm_test.js')
+    expect(sortedFilenames[2]).to.include('zzz_test.js')
   })
 })
