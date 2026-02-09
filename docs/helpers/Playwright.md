@@ -739,6 +739,22 @@ I.dontSeeCookie('auth'); // no auth cookie
 
 Returns **void** automatically synchronized promise through #recorder
 
+### dontSeeCurrentPathEquals
+
+Checks that current URL path does NOT match the expected path.
+Query strings and URL fragments are ignored.
+
+```js
+I.dontSeeCurrentPathEquals('/form'); // fails for '/form', '/form?user=1', '/form#section'
+I.dontSeeCurrentPathEquals('/'); // fails for '/', '/?user=ok', '/#top'
+```
+
+#### Parameters
+
+*   `path` **[string][9]** value to check.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### dontSeeCurrentUrlEquals
 
 Checks that current url is not equal to provided one.
@@ -1991,6 +2007,22 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 *   `locator` **([string][9] | [object][6])** located by CSS|XPath|strict locator.
 *   `cssProperties` **[object][6]** object with CSS properties and their values to check.
+
+Returns **void** automatically synchronized promise through #recorder
+
+### seeCurrentPathEquals
+
+Checks that current URL path matches the expected path.
+Query strings and URL fragments are ignored.
+
+```js
+I.seeCurrentPathEquals('/info'); // passes for '/info', '/info?user=1', '/info#section'
+I.seeCurrentPathEquals('/'); // passes for '/', '/?user=ok', '/#top'
+```
+
+#### Parameters
+
+*   `path` **[string][9]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
