@@ -44,7 +44,7 @@
         static function stick ($urls) {
 
             $method = strtoupper($_SERVER['REQUEST_METHOD']);
-            $path = $_SERVER['REQUEST_URI'];
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
             $found = false;
 
