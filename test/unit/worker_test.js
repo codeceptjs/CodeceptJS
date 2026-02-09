@@ -383,17 +383,13 @@ describe('Workers', function () {
     workers.run()
   })
 
-  it('should distribute suites across workers for --by suite (issue #5412)', async () => {
+  it('should preserve original file order in loadTests for worker distribution (issue #5412)', async () => {
     // This test verifies the fix for issue #5412:
     // Test files should NOT be sorted in loadTests() because that affects worker distribution.
     // Sorting should only happen in run() for execution order.
     //
     // The bug was: sorting in loadTests() changed the order of suites during distribution,
     // causing all workers to receive the same tests instead of different suites.
-
-    // Ensure clean state
-    Container.clear()
-    Container.createMocha()
 
     const workerConfig = {
       by: 'suite',
@@ -405,11 +401,16 @@ describe('Workers', function () {
 
     // Verify that test files were loaded
     const testFiles = workers.codecept.testFiles
-    expect(testFiles.length).to.be.greaterThan(0, 'Test files should be loaded')
+    expect(testFiles.length).to.be.greaterThan(1, 'Multiple test files should be loaded')
 
-    // Verify that suites are distributed across multiple worker groups
-    const groups = workers.testGroups
-    const nonEmptyGroups = groups.filter(g => g.length > 0)
-    expect(nonEmptyGroups.length).to.be.greaterThan(1, 'Suites should be distributed across multiple worker groups')
+    // loadTests() must preserve the original glob order (not sort files).
+    // Verify by comparing with a fresh glob call — the order should match.
+    const { globSync } = await import('glob')
+    const expectedFiles = globSync('./custom-worker/*.js', { cwd: path.join(__dirname, '/../data/sandbox') })
+      .filter(f => !f.includes('node_modules'))
+      .map(f => path.resolve(path.join(__dirname, '/../data/sandbox'), f))
+
+    const actualFiles = testFiles.map(f => path.resolve(f))
+    expect(actualFiles).to.deep.equal(expectedFiles, 'loadTests() should preserve original glob order without sorting')
   })
 })
