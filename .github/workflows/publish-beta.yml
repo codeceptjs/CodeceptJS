@@ -1,0 +1,52 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.release.prerelease || contains(github.event.release.tag_name, 'alpha') || contains(github.event.release.tag_name, 'beta') || contains(github.event.release.tag_name, 'rc') }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm i
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+
+      - name: Determine npm tag
+        id: npm_tag
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          if echo "$TAG" | grep -qE "alpha|-alpha|\.a\."; then
+            echo "tag=alpha" >> $GITHUB_OUTPUT
+          elif echo "$TAG" | grep -qE "beta|-beta|\.b\."; then
+            echo "tag=beta" >> $GITHUB_OUTPUT
+          elif echo "$TAG" | grep -qE "rc|-rc|\.rc\."; then
+            echo "tag=rc" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.release.prerelease }}" = "true" ]; then
+            echo "tag=beta" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public --tag ${{ steps.npm_tag.outputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_RELEASE_TOKEN }}
