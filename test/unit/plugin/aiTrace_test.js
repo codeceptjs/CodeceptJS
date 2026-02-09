@@ -54,6 +54,8 @@ describe('aiTrace plugin', () => {
       toString: () => 'I am on page',
       meta: { url: 'https://example.com' },
       status: 'success',
+      startTime: Date.now(),
+      endTime: Date.now() + 100,
     }
 
     event.dispatcher.emit(event.step.after, step)
@@ -81,6 +83,8 @@ describe('aiTrace plugin', () => {
       name: 'see',
       toString: () => 'I see test',
       status: 'success',
+      startTime: Date.now(),
+      endTime: Date.now() + 100,
     }
 
     event.dispatcher.emit(event.step.after, step)
@@ -112,6 +116,8 @@ describe('aiTrace plugin', () => {
       name: 'see',
       toString: () => 'I see test',
       status: 'failed',
+      startTime: Date.now(),
+      endTime: Date.now() + 100,
     }
 
     event.dispatcher.emit(event.step.after, step)
@@ -138,6 +144,8 @@ describe('aiTrace plugin', () => {
       name: 'grabText',
       toString: () => 'I grab text',
       status: 'success',
+      startTime: Date.now(),
+      endTime: Date.now() + 100,
     }
     event.dispatcher.emit(event.step.after, step)
     await recorder.promise()
@@ -159,6 +167,8 @@ describe('aiTrace plugin', () => {
       name: 'see',
       toString: () => 'I see test',
       status: 'success',
+      startTime: Date.now(),
+      endTime: Date.now() + 100,
     }
 
     event.dispatcher.emit(event.step.after, step)
@@ -220,6 +230,8 @@ describe('aiTrace plugin', () => {
         name: 'amOnPage',
         toString: () => 'I am on page',
         status: 'success',
+        startTime: Date.now(),
+        endTime: Date.now() + 100,
       }
 
       event.dispatcher.emit(event.step.after, step)
@@ -243,6 +255,8 @@ describe('aiTrace plugin', () => {
         name: 'amOnPage',
         toString: () => 'I am on page',
         status: 'success',
+        startTime: Date.now(),
+        endTime: Date.now() + 100,
       }
 
       event.dispatcher.emit(event.step.after, step)
@@ -266,6 +280,8 @@ describe('aiTrace plugin', () => {
         name: 'amOnPage',
         toString: () => 'I am on page',
         status: 'success',
+        startTime: Date.now(),
+        endTime: Date.now() + 100,
       }
 
       event.dispatcher.emit(event.step.after, step)
