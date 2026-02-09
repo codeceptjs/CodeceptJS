@@ -382,4 +382,58 @@ describe('Workers', function () {
 
     workers.run()
   })
+
+  it('should aggregate results from all suites for custom reporters when splitting by suite (issue #5411)', async () => {
+    const receivedTests = []
+    const receivedSuites = []
+    let endCalled = false
+
+    function TestReporter(runner) {
+      runner.on('suite', suite => {
+        if (!suite.root) receivedSuites.push(suite.title)
+      })
+      runner.on('test end', test => {
+        receivedTests.push(test.title)
+      })
+      runner.on('end', () => {
+        endCalled = true
+      })
+    }
+
+    const workerConfig = {
+      by: 'suite',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+    }
+
+    const workers = new Workers(2, workerConfig)
+    await workers._ensureInitialized()
+
+    workers._savedReporterConfig = {
+      reporter: TestReporter,
+      reporterOptions: {},
+      outputDir: workers.codecept.config.output,
+    }
+
+    const { deserializeTest } = await import('../../lib/mocha/test.js')
+    const fakeTests = [
+      { title: 'Scenario 1', state: 'passed', duration: 5, parent: { title: 'SuiteA' }, uid: 'suiteA-1' },
+      { title: 'Scenario 2', state: 'passed', duration: 3, parent: { title: 'SuiteA' }, uid: 'suiteA-2' },
+      { title: 'Scenario 1', state: 'passed', duration: 4, parent: { title: 'SuiteB' }, uid: 'suiteB-1' },
+      { title: 'Scenario 2', state: 'failed', duration: 2, parent: { title: 'SuiteB' }, uid: 'suiteB-2', err: { message: 'test failed', stack: 'Error: test failed' } },
+    ]
+
+    for (const test of fakeTests) {
+      const deserialized = deserializeTest(test)
+      Container.result().addTest(deserialized)
+      workers._reporterTests.push(deserialized)
+    }
+    Container.result().addStats({ passes: 3, failures: 1, tests: 4, pending: 0 })
+
+    await workers._runReporters()
+
+    expect(endCalled).to.equal(true, 'Reporter end event should be called')
+    expect(receivedSuites).to.include('SuiteA')
+    expect(receivedSuites).to.include('SuiteB')
+    expect(receivedTests.length).to.equal(4, 'Reporter should receive all 4 tests')
+  })
 })

@@ -530,4 +530,74 @@ describe('CodeceptJS Workers Runner', function () {
       done()
     })
   })
+
+  it('should aggregate results from all suites in mochawesome report when using --by suite (#5411)', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+
+    const outputDir = path.join(codecept_dir, 'output/workers_mochawesome')
+    if (fs.existsSync(outputDir)) {
+      fs.rmSync(outputDir, { recursive: true })
+    }
+
+    const configPath = path.join(codecept_dir, 'codecept.workers.mochawesome.conf.js')
+    exec(`${runner} run-workers --config ${configPath} 2 --by suite`, (_, stdout) => {
+      expect(stdout).toContain('Running tests in 2 workers')
+
+      const reportPath = path.join(outputDir, 'report.json')
+      expect(fs.existsSync(reportPath)).toBe(true)
+
+      const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'))
+      const suiteNames = report.results[0].suites.map(s => s.title)
+
+      expect(suiteNames).toContain('Workers')
+      expect(suiteNames).toContain('@feature_grep in worker')
+      expect(suiteNames.length).toBeGreaterThanOrEqual(3)
+
+      const totalTests = report.results[0].suites.reduce((sum, s) => sum + s.tests.length, 0)
+      expect(totalTests).toBeGreaterThanOrEqual(5)
+
+      const htmlPath = path.join(outputDir, 'report.html')
+      expect(fs.existsSync(htmlPath)).toBe(true)
+      const html = fs.readFileSync(htmlPath, 'utf8')
+      expect(html).toContain('Workers')
+      expect(html).toContain('@feature_grep in worker')
+      expect(html).toContain('Retry Workers')
+
+      fs.rmSync(outputDir, { recursive: true })
+      done()
+    })
+  })
+
+  it('should aggregate results per browser in mochawesome report with config.multiple (#5411)', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+
+    const outputDir = path.join(codecept_dir, 'output/workers_mochawesome')
+    if (fs.existsSync(outputDir)) {
+      fs.rmSync(outputDir, { recursive: true })
+    }
+
+    const configPath = path.join(codecept_dir, 'codecept.workers.mochawesome.multiple.conf.js')
+    exec(`${runner} run-workers --config ${configPath} 2 --by suite parallel`, (_, stdout) => {
+      expect(stdout).toContain('Running tests in')
+
+      for (const browser of ['parallel_chrome1', 'parallel_firefox1']) {
+        const browserDir = path.join(outputDir, browser)
+        const reportPath = path.join(browserDir, 'report.json')
+        expect(fs.existsSync(reportPath)).toBe(true)
+
+        const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'))
+        const suiteNames = report.results[0].suites.map(s => s.title)
+
+        expect(suiteNames).toContain('Workers')
+        expect(suiteNames).toContain('@feature_grep in worker')
+        expect(suiteNames.length).toBeGreaterThanOrEqual(3)
+
+        const totalTests = report.results[0].suites.reduce((sum, s) => sum + s.tests.length, 0)
+        expect(totalTests).toBeGreaterThanOrEqual(5)
+      }
+
+      fs.rmSync(outputDir, { recursive: true })
+      done()
+    })
+  })
 })
