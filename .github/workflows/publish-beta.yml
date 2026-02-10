@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: write
+  contents: read
   id-token: write
 
 jobs:
@@ -24,7 +24,12 @@ jobs:
           node-version: '20.x'
 
       - name: Set package version
-        run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          npm version "$VERSION" --no-git-tag-version
 
       - name: Publish to npm
-        run: npm publish --provenance --access public --tag beta --ignore-scripts
+        run: npm publish --provenance --access public --tag beta
+        env:
+          npm_config_ignore_scripts: true
