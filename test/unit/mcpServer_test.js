@@ -130,7 +130,7 @@ describe('MCP Server Utilities', () => {
     })
 
     it('should handle multiple special characters', () => {
-      expect(clearString('test@#$%name')).to.equal('test_____name')
+      expect(clearString('test@#$%name')).to.equal('test____name')
     })
 
     it('should preserve alphanumeric characters', () => {
@@ -260,12 +260,12 @@ describe('MCP Server Integration', () => {
       this.timeout(10000)
 
       let executionOrder = []
-      const lock = Promise.resolve()
+      let lock = Promise.resolve()
 
       async function withLock(fn) {
         const prev = lock
         let release
-        const newLock = new Promise(r => (release = r))
+        lock = new Promise(r => (release = r))
 
         await prev
         try {
