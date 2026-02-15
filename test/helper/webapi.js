@@ -556,6 +556,31 @@ export function tests() {
     })
   })
 
+  describe('context parameter', () => {
+    it('should see element within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.seeElement('.unique-element', '#area2')
+      await I.dontSeeElement('.unique-element', '#area1')
+    })
+
+    it('should fill field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.fillField('Name', 'davert', '#area2')
+      const val = await I.grabValueFrom('#name2')
+      assert.equal(val, 'davert')
+      await I.seeInField('#name1', '')
+    })
+
+    it('should select option within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.selectOption('select', '21-60', '#area2')
+      const val = await I.grabValueFrom('#age2')
+      assert.equal(val, 'adult')
+      const val1 = await I.grabValueFrom('#age1')
+      assert.equal(val1, 'child')
+    })
+  })
+
   describe('#shadow DOM', () => {
     it('should click button inside shadow DOM', async () => {
       await I.amOnPage('/form/shadow_dom')
