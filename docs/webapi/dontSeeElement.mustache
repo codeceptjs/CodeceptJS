@@ -1,8 +1,12 @@
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeElement('.modal'); // modal is not shown
+I.dontSeeElement('.modal', '#container');
 ```
 
 @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|Strict locator.
+@param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
 @returns {void} automatically synchronized promise through #recorder
