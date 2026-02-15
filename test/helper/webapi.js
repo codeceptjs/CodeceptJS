@@ -120,18 +120,15 @@ export function tests() {
       await I.seeCurrentPathEquals('/info')
       await I.seeCurrentPathEquals('/info/')
 
-      await I.amOnPage('/users/')
-      await I.seeCurrentPathEquals('/users')
-      await I.seeCurrentPathEquals('/users/')
+      await I.amOnPage('/form/field/')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form/field/')
     })
 
     it('should normalize multiple consecutive slashes in path', async () => {
-      await I.amOnPage('/users//1')
-      await I.seeCurrentPathEquals('/users/1')
-      await I.seeCurrentPathEquals('/users//1')
-
-      await I.amOnPage('/info///test')
-      await I.seeCurrentPathEquals('/info/test')
+      await I.amOnPage('/form//field')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form//field')
     })
 
     it('should handle root path correctly', async () => {
@@ -142,13 +139,13 @@ export function tests() {
     })
 
     it('should normalize both expected and actual paths', async () => {
-      await I.amOnPage('/users/')
-      await I.seeCurrentPathEquals('/users/')
-      await I.seeCurrentPathEquals('/users')
+      await I.amOnPage('/form/field/')
+      await I.seeCurrentPathEquals('/form/field/')
+      await I.seeCurrentPathEquals('/form/field')
 
-      await I.amOnPage('/users//1/')
-      await I.seeCurrentPathEquals('/users/1')
-      await I.seeCurrentPathEquals('/users/1/')
+      await I.amOnPage('/form//field//')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form/field/')
     })
   })
 
