@@ -172,6 +172,28 @@ export function tests() {
     })
   })
 
+  describe('#waitCurrentPathEquals', () => {
+    it('should wait for path to match (ignoring query strings)', async () => {
+      await I.amOnPage('/info')
+      await I.waitCurrentPathEquals('/info')
+    })
+
+    it('should wait timeout with proper error message', async () => {
+      try {
+        await I.amOnPage('/info')
+        await I.waitCurrentPathEquals('/nonexistent', 0.1)
+      } catch (e) {
+        assert.include(e.message, 'expected path to be /nonexistent')
+      }
+    })
+
+    it('should normalize paths when comparing', async () => {
+      await I.amOnPage('/form/field/')
+      await I.waitCurrentPathEquals('/form/field')
+      await I.waitCurrentPathEquals('/form/field/')
+    })
+  })
+
   describe('see text : #see', () => {
     it('should check text on site', async () => {
       await I.amOnPage('/')
