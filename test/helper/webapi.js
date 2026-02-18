@@ -156,7 +156,7 @@ export function tests() {
         await I.waitInUrl('/info')
         await I.waitInUrl('/info2', 0.1)
       } catch (e) {
-        assert.include(e.message, `expected url to include /info2, but found ${siteUrl}/info`)
+        assert.include(e.message, `expected url to include ${siteUrl}/info2, but found ${siteUrl}/info`)
       }
     })
 
