@@ -51,15 +51,17 @@ For each test, a `trace_<sha256>` directory is created with the following files:
 
 **trace.md** - AI-friendly markdown file with test execution history
 
-**0000_screenshot.png** - Screenshot for each step
+**0000_step_name_screenshot.png** - Screenshot for each step (file names include step names)
 
-**0000_page.html** - Full HTML of the page at each step
+**0000_step_name_page.html** - Full HTML of the page at each step
 
-**0000_aria.txt** - ARIA accessibility snapshot (AI-readable structure without HTML noise)
+**0000_step_name_aria.txt** - ARIA accessibility snapshot (AI-readable structure without HTML noise)
 
-**0000_console.json** - Browser console logs
+**0000_step_name_console.json** - Browser console logs
 
 When HAR or trace recording is enabled in your helper config, links to those files are also included.
+
+**Note:** Artifact files are named using step names for easier identification (e.g., `0000_I_see_Product_screenshot.png` instead of just `0000_screenshot.png`).
 
 ## Trace File Format
 
@@ -73,19 +75,21 @@ time: 3.45s
 
 I am on page "https://example.com"
   > navigated to https://example.com/
-  > [HTML](./0000_page.html)
-  > [ARIA Snapshot](./0000_aria.txt)
-  > [Screenshot](./0000_screenshot.png)
-  > [Browser Logs](0000_console.json) (7 entries)
+  > [HTML](./0000_I_am_on_page_https_example.com_page.html)
+  > [ARIA Snapshot](./0000_I_am_on_page_https_example.com_aria.txt)
+  > [Screenshot](./0000_I_am_on_page_https_example.com_screenshot.png)
+  > [Browser Logs](./0000_I_am_on_page_https_example.com_console.json) (7 entries)
   > HTTP: see [HAR file](../har/...) for network requests
 
 I see "Welcome"
   > navigated to https://example.com/
-  > [HTML](./0001_page.html)
-  > [ARIA Snapshot](./0001_aria.txt)
-  > [Screenshot](./0001_screenshot.png)
-  > [Browser Logs](0001_console.json) (0 entries)
+  > [HTML](./0001_I_see_Welcome_page.html)
+  > [ARIA Snapshot](./0001_I_see_Welcome_aria.txt)
+  > [Screenshot](./0001_I_see_Welcome_screenshot.png)
+  > [Browser Logs](./0001_I_see_Welcome_console.json) (0 entries)
 ```
+
+Files are named with step descriptions for easier navigation and debugging.
 
 ## Configuration
 

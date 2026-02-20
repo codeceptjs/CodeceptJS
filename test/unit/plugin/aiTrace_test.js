@@ -7,6 +7,7 @@ import recorder from '../../../lib/recorder.js'
 import output from '../../../lib/output.js'
 import { createTest } from '../../../lib/mocha/test.js'
 import path from 'path'
+import fs from 'fs'
 
 const testsDir = path.join(process.cwd(), 'test/output')
 
@@ -288,6 +289,129 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       expect(helperStub.grabBrowserLogs.called).to.be.false
+    })
+  })
+
+  describe('Failed step handling', () => {
+    it('should skip queued steps after test fails', async () => {
+      aiTrace({
+        enabled: true,
+        output: testsDir,
+      })
+
+      event.dispatcher.emit(event.suite.before, {})
+      await recorder.promise()
+
+      const test = createTest('failing test')
+      test.art = { message: 'Test failed' }
+
+      event.dispatcher.emit(event.test.before, test)
+      await recorder.promise()
+
+      const step1 = {
+        name: 'see',
+        toString: () => 'I see success',
+        status: 'success',
+        startTime: Date.now(),
+        endTime: Date.now() + 100,
+      }
+
+      const step2 = {
+        name: 'click',
+        toString: () => 'I click button',
+        status: 'failed',
+        startTime: Date.now() + 100,
+        endTime: Date.now() + 200,
+      }
+
+      const step3 = {
+        name: 'fillField',
+        toString: () => 'I fill field',
+        status: 'queued',
+        startTime: Date.now() + 200,
+        endTime: Date.now() + 300,
+      }
+
+      event.dispatcher.emit(event.step.after, step1)
+      await recorder.promise()
+
+      event.dispatcher.emit(event.step.after, step2)
+      await recorder.promise()
+
+      event.dispatcher.emit(event.step.after, step3)
+      await recorder.promise()
+
+      event.dispatcher.emit(event.test.failed, test)
+      await recorder.promise()
+
+      expect(helperStub.saveScreenshot.calledTwice).to.be.true
+    })
+  })
+
+  describe('Step file naming', () => {
+    it('should use step names in file names instead of just numbers', async () => {
+      aiTrace({
+        enabled: true,
+        output: testsDir,
+      })
+
+      event.dispatcher.emit(event.suite.before, {})
+      await recorder.promise()
+
+      const test = createTest('naming test')
+      event.dispatcher.emit(event.test.before, test)
+      await recorder.promise()
+
+      const step = {
+        name: 'see',
+        toString: () => 'I see "Test Element"',
+        status: 'success',
+        startTime: Date.now(),
+        endTime: Date.now() + 100,
+      }
+
+      event.dispatcher.emit(event.step.after, step)
+      await recorder.promise()
+
+      expect(helperStub.saveScreenshot.calledOnce).to.be.true
+
+      const screenshotPath = helperStub.saveScreenshot.firstCall.args[0]
+      expect(screenshotPath).to.include('I_see_Test_Element')
+      expect(screenshotPath).to.match(/_I_see_Test_Element_screenshot\.png$/)
+    })
+  })
+
+  describe('Directory cleanup', () => {
+    it('should clean directory before each test run', async () => {
+      aiTrace({
+        enabled: true,
+        output: testsDir,
+      })
+
+      event.dispatcher.emit(event.suite.before, {})
+      await recorder.promise()
+
+      const test = createTest('cleanup test')
+      event.dispatcher.emit(event.test.before, test)
+      await recorder.promise()
+
+      const step = {
+        name: 'see',
+        toString: () => 'I see test',
+        status: 'success',
+        startTime: Date.now(),
+        endTime: Date.now() + 100,
+      }
+
+      event.dispatcher.emit(event.step.after, step)
+      await recorder.promise()
+
+      event.dispatcher.emit(event.test.passed, test)
+      await recorder.promise()
+
+      const traceFile = test.artifacts.aiTrace
+      expect(traceFile).to.be.ok
+      expect(fs.existsSync(traceFile)).to.be.true
     })
   })
 })
