@@ -359,7 +359,7 @@ Playwright can emulate browsers of mobile devices. Instead of paying for expensi
 
 Device emulation can be enabled in CodeceptJS globally in a config or per session.
 
-Playwright contains a [list of predefined devices](https://github.com/microsoft/playwright/blob/master/src/server/deviceDescriptors.js) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+Playwright contains a [list of predefined devices](https://github.com/microsoft/playwright/blob/master/packages/playwright-core/src/server/deviceDescriptorsSource.json) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
 
 ```js
 const { devices } = require('playwright');
