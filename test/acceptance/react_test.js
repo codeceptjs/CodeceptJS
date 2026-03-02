@@ -1,4 +1,3 @@
-/*
 const { I } = inject()
 
 Feature('React Selectors')
@@ -32,4 +31,3 @@ Scenario('using playwright locator @Playwright', () => {
   I.click({ pw: '_react=t[name = "="]' })
   I.seeElement({ pw: '_react=t[value = "10"]' })
 })
-*/
