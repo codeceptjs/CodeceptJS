@@ -100,7 +100,7 @@
     "css-to-xpath": "0.1.0",
     "csstoxpath": "1.6.0",
     "envinfo": "7.21.0",
-    "escape-string-regexp": "4.0.0",
+    "escape-string-regexp": "5.0.0",
     "figures": "3.2.0",
     "fn-args": "4.0.0",
     "fs-extra": "11.3.3",
