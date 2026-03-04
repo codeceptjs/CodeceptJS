@@ -60,6 +60,14 @@ export const config = {
     subtitles: {
       enabled: true,
     },
+    aiTrace: {
+      enabled: true,
+      captureHTML: true,
+      captureARIA: true,
+      captureBrowserLogs: true,
+      captureHTTP: true,
+      ignoreSteps: [/^grab/, /^wait/],
+    },
   },
 
   tests: './*_test.js',

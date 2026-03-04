@@ -63,6 +63,118 @@ exports.config = {
 
 Returns **void**&#x20;
 
+## aiTrace
+
+Generates AI-friendly trace files for debugging with AI agents like Claude Code.
+
+When a test fails, you need to understand what went wrong. This plugin automatically captures comprehensive information about test execution - screenshots, HTML, ARIA snapshots, console logs, and HTTP requests - and organizes it in a format optimized for AI analysis.
+
+The generated trace files are structured markdown documents that AI agents can easily parse to understand test context and provide debugging insights.
+
+#### Usage
+
+Enable this plugin in your config:
+
+```js
+// in codecept.conf.js
+exports.config = {
+  plugins: {
+    aiTrace: {
+      enabled: true
+    }
+  }
+}
+```
+
+#### Configuration
+
+*   `deleteSuccessful` (boolean) - delete traces for successfully executed tests. Default: false.
+*   `fullPageScreenshots` (boolean) - should full page screenshots be used. Default: false.
+*   `output` (string) - a directory where traces should be stored. Default: `output`.
+*   `captureHTML` (boolean) - capture HTML for each step. Default: true.
+*   `captureARIA` (boolean) - capture ARIA snapshot for each step. Default: true.
+*   `captureBrowserLogs` (boolean) - capture browser console logs. Default: true.
+*   `captureHTTP` (boolean) - capture HTTP requests (requires `trace` or `recordHar` enabled in helper config). Default: true.
+*   `captureDebugOutput` (boolean) - capture CodeceptJS debug output. Default: true.
+*   `ignoreSteps` (array) - steps to ignore in trace. Array of RegExps is expected. Default: [].
+
+#### Artifacts Created
+
+For each test, a `trace_<sha256>` directory is created with:
+
+*   **trace.md** - AI-friendly markdown file with test execution history
+*   **0000_step_name_screenshot.png** - screenshot for each step (named with step description)
+*   **0000_step_name_page.html** - full HTML of the page at each step
+*   **0000_step_name_aria.txt** - ARIA accessibility snapshot (AI-readable structure)
+*   **0000_step_name_console.json** - browser console logs
+
+Artifact files include step names for easier identification (e.g., `0000_I_see_Product_screenshot.png`).
+
+When HAR or trace recording is enabled in your helper config, links to those files are also included.
+
+#### Example Output
+
+```markdown
+file: /path/to/test.js
+name: My test scenario
+time: 3.45s
+---
+
+I am on page "https://example.com"
+  > navigated to https://example.com/
+  > [HTML](./0000_I_am_on_page_https_example.com_page.html)
+  > [ARIA Snapshot](./0000_I_am_on_page_https_example.com_aria.txt)
+  > [Screenshot](./0000_I_am_on_page_https_example.com_screenshot.png)
+  > [Browser Logs](./0000_I_am_on_page_https_example.com_console.json) (7 entries)
+  > HTTP: see [HAR file](../har/...) for network requests
+
+I see "Welcome"
+  > navigated to https://example.com/
+  > [HTML](./0001_I_see_Welcome_page.html)
+  > [ARIA Snapshot](./0001_I_see_Welcome_aria.txt)
+  > [Screenshot](./0001_I_see_Welcome_screenshot.png)
+  > [Browser Logs](./0001_I_see_Welcome_console.json) (0 entries)
+```
+
+Files are named with step descriptions for easier identification.
+
+#### Best Practices
+
+**Save disk space** - Only keep traces for failed tests:
+
+```js
+aiTrace: {
+  enabled: true,
+  deleteSuccessful: true
+}
+```
+
+**Ignore noise** - Don't capture logs for `grab` and `wait` steps:
+
+```js
+aiTrace: {
+  enabled: true,
+  ignoreSteps: [/^grab/, /^wait/]
+}
+```
+
+**Reduce file sizes** - Capture only what you need:
+
+```js
+aiTrace: {
+  enabled: true,
+  captureHTML: false,        // Skip HTML (saves ~500KB per step)
+  captureARIA: true,         // Keep ARIA (only ~16KB)
+  captureBrowserLogs: false  // Skip console logs
+}
+```
+
+### Parameters
+
+*   `config` **[Object][1]** Plugin configuration (optional, default `{}`)
+
+Returns **void**&#x20;
+
 ## auth
 
 Logs user in for the first test and reuses session for next tests.
