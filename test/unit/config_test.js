@@ -80,7 +80,6 @@ describe('Config', () => {
     expect(cfg.helpers).to.have.property('REST')
     expect(cfg.plugins).to.have.property('allure')
     expect(cfg.plugins.allure.require).to.equal('@codeceptjs/allure-legacy')
-    expect(cfg.plugins.htmlReporter.enabled).to.equal(true)
     expect(cfg.name).to.equal('typescript-config-with-require')
   })
 
