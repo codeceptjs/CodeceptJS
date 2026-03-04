@@ -184,7 +184,7 @@ Our community prepared some valuable recipes for setting up CI systems with Code
     // generate documentation for helpers
     const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js')
 
-    const ignoreList = ['Polly', 'MockRequest'] // WebDriverIO won't be documented and should be removed
+    const ignoreList = ['Polly', 'MockRequest', 'Nightmare', 'Protractor'] // WebDriverIO won't be documented and should be removed
 
     const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache')
     const placeholders = partials.map(file => `{{> ${path.basename(file, '.mustache')} }}`)
@@ -587,7 +587,7 @@ const exec = require('child_process').exec
 const { codecept_dir, codecept_run } = require('./consts')
 const debug = require('debug')('codeceptjs:tests')
 
-const config_run_config = (config, grep, verbose = false) => 
+const config_run_config = (config, grep, verbose = false) =>
   \`\${codecept_run} \${verbose ? '--verbose' : ''} --config \${codecept_dir}/configs/${featureName}/\${config} \${grep ? \`--grep "\${grep}"\` : ''}\`
 
 describe('CodeceptJS ${featureName}', function () {

@@ -889,6 +889,22 @@ module.exports.tests = function () {
     })
   })
 
+  describe('#saveScreenshotToPath', () => {
+    if (isHelper('TestCafe')) return
+
+    beforeEach(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output')
+      global.custom_dir = path.join(global.codecept_dir, 'custom')
+    })
+
+    it('should create a screenshot file in custom dir', async () => {
+      const sec = new Date().getUTCMilliseconds()
+      await I.amOnPage('/')
+      await I.saveScreenshotToPath(global.custom_dir, `screenshot_${sec}.png`)
+      assert.ok(fileExists(path.join(global.custom_dir, `screenshot_${sec}.png`)), null, 'file does not exists')
+    })
+  })
+
   describe('cookies : #setCookie, #clearCookies, #seeCookie, #waitForCookie', () => {
     it('should do all cookie stuff', async () => {
       await I.amOnPage('/')

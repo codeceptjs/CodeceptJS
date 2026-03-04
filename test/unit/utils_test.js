@@ -1,7 +1,5 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+const { expect } = require('chai')
+
 const os = require('os')
 const path = require('path')
 const sinon = require('sinon')
@@ -328,6 +326,15 @@ describe('utils', () => {
         expect(_path).eql(path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
       } else {
         expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')
+      }
+    })
+
+    it('saves screenshot to custom path', () => {
+      const _path = utils.screenshotOutputFolder('screenshot1.failed.png', '/Users/someuser/workbase/project1/custom_path/'.replace(/\//g, path.sep))
+      if (os.platform() === 'win32') {
+        expect(_path).eql(path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/custom_path/screenshot1.failed.png'))
+      } else {
+        expect(_path).eql('/Users/someuser/workbase/project1/custom_path/screenshot1.failed.png')
       }
     })
   })
