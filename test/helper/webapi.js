@@ -890,14 +890,14 @@ module.exports.tests = function () {
   })
 
   describe('#saveScreenshotToPath', () => {
-    if (isHelper('TestCafe')) return
-
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output')
       global.custom_dir = path.join(global.codecept_dir, 'custom')
     })
 
     it('should create a screenshot file in custom dir', async () => {
+      if (isHelper('TestCafe')) return
+
       const sec = new Date().getUTCMilliseconds()
       await I.amOnPage('/')
       await I.saveScreenshotToPath(global.custom_dir, `screenshot_${sec}.png`)
