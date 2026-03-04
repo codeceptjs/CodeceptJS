@@ -794,6 +794,22 @@ I.dontSeeCookie('auth'); // no auth cookie
 
 Returns **void** automatically synchronized promise through #recorder
 
+### dontSeeCurrentPathEquals
+
+Checks that current URL path does NOT match the expected path.
+Query strings and URL fragments are ignored.
+
+```js
+I.dontSeeCurrentPathEquals('/form'); // fails for '/form', '/form?user=1', '/form#section'
+I.dontSeeCurrentPathEquals('/'); // fails for '/', '/?user=ok', '/#top'
+```
+
+#### Parameters
+
+*   `path` **[string][18]** value to check.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### dontSeeCurrentUrlEquals
 
 Checks that current url is not equal to provided one.
@@ -814,13 +830,17 @@ Returns **void** automatically synchronized promise through #recorder
 
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeElement('.modal'); // modal is not shown
+I.dontSeeElement('.modal', '#container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][18] | [object][17])** located by CSS|XPath|Strict locator.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1024,6 +1044,8 @@ Returns **[Promise][23]<any>** script return value
 Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.
 
+The third parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 // by label
 I.fillField('Email', 'hello@world.com');
@@ -1033,12 +1055,15 @@ I.fillField('password', secret('123456'));
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
+// within a context
+I.fillField('Name', 'John', '#section2');
 ```
 
 #### Parameters
 
 *   `field` **([string][18] | [object][17])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][18] | [object][17])** text value to fill.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1870,6 +1895,22 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 Returns **void** automatically synchronized promise through #recorder
 
+### seeCurrentPathEquals
+
+Checks that current URL path matches the expected path.
+Query strings and URL fragments are ignored.
+
+```js
+I.seeCurrentPathEquals('/info'); // passes for '/info', '/info?user=1', '/info#section'
+I.seeCurrentPathEquals('/'); // passes for '/', '/?user=ok', '/#top'
+```
+
+#### Parameters
+
+*   `path` **[string][18]** value to check.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### seeCurrentUrlEquals
 
 Checks that current url is equal to provided one.
@@ -1892,13 +1933,17 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that a given Element is visible
 Element is located by CSS or XPath.
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.seeElement('#modal');
+I.seeElement('#modal', '#container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][18] | [object][17])** located by CSS|XPath|strict locator.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2066,6 +2111,8 @@ Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
 
+The third parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
 I.selectOption('subscription', 'Monthly'); // match option by text
@@ -2073,6 +2120,8 @@ I.selectOption('subscription', '0'); // or by value
 I.selectOption('//form/select[@name=account]','Premium');
 I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
+// within a context
+I.selectOption('age', '21-60', '#section2');
 ```
 
 Provide an array for the second argument to select multiple options.
@@ -2085,6 +2134,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 *   `select` **([string][18] | [object][17])** field located by label|name|CSS|XPath|strict locator.
 *   `option` **([string][18] | [Array][29]<any>)** visible text or value of option.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 

@@ -1,0 +1,10 @@
+Checks that current URL path matches the expected path.
+Query strings and URL fragments are ignored.
+
+```js
+I.seeCurrentPathEquals('/info'); // passes for '/info', '/info?user=1', '/info#section'
+I.seeCurrentPathEquals('/'); // passes for '/', '/?user=ok', '/#top'
+```
+
+@param {string} path value to check.
+@returns {void} automatically synchronized promise through #recorder

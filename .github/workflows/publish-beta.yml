@@ -1,0 +1,37 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.release.prerelease || contains(github.event.release.tag_name, 'alpha') || contains(github.event.release.tag_name, 'beta') || contains(github.event.release.tag_name, 'rc') }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm install -g npm@latest
+
+      - run: npm ci
+
+      - name: Set package version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          npm version "$VERSION" --no-git-tag-version
+
+      - name: Publish to npm
+        run: npm publish --provenance --tag beta

@@ -1,8 +1,12 @@
 Checks that a given Element is visible
 Element is located by CSS or XPath.
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.seeElement('#modal');
+I.seeElement('#modal', '#container');
 ```
 @param {CodeceptJS.LocatorOrString} locator located by CSS|XPath|strict locator.
+@param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
 @returns {void} automatically synchronized promise through #recorder

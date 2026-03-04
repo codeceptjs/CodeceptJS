@@ -75,6 +75,45 @@ export function tests() {
       const url = await I.grabCurrentUrl()
       assert.equal(url, `${siteUrl}/info`)
     })
+
+    it('should check for equality with query strings', async () => {
+      await I.amOnPage('/info?user=test')
+      // Query strings matter for exact equality
+      await I.seeCurrentUrlEquals('/info?user=test')
+      await I.dontSeeCurrentUrlEquals('/info')
+      // But substring check works
+      await I.seeInCurrentUrl('/info')
+      await I.seeInCurrentUrl('user=test')
+    })
+
+    it('should handle root path with query strings', async () => {
+      await I.amOnPage('/?user=ok')
+      // Query strings matter - exact equality requires query string
+      await I.seeCurrentUrlEquals('/?user=ok')
+      await I.dontSeeCurrentUrlEquals('/')
+      // But substring check works for path fragment
+      await I.seeInCurrentUrl('/')
+    })
+
+    it('should check path equality ignoring query strings', async () => {
+      await I.amOnPage('/info?user=test')
+      // Path equality ignores query strings
+      await I.seeCurrentPathEquals('/info')
+      await I.dontSeeCurrentPathEquals('/form')
+      await I.dontSeeCurrentPathEquals('/info?user=test')
+    })
+
+    it('should check root path equality ignoring query strings', async () => {
+      await I.amOnPage('/?user=ok')
+      await I.seeCurrentPathEquals('/')
+      await I.dontSeeCurrentPathEquals('/info')
+    })
+
+    it('should check path equality ignoring hash fragments', async () => {
+      await I.amOnPage('/info#section')
+      await I.seeCurrentPathEquals('/info')
+      await I.dontSeeCurrentPathEquals('/info#section')
+    })
   })
 
   describe('#waitInUrl, #waitUrlEquals', () => {
@@ -514,6 +553,31 @@ export function tests() {
         await I.selectOption({ css: '#tags-listbox' }, ['Review', 'Later'])
         await I.see('tags: review,later', '#result')
       })
+    })
+  })
+
+  describe('context parameter', () => {
+    it('should see element within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.seeElement('.unique-element', '#area2')
+      await I.dontSeeElement('.unique-element', '#area1')
+    })
+
+    it('should fill field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.fillField('Name', 'davert', '#area2')
+      const val = await I.grabValueFrom('#name2')
+      assert.equal(val, 'davert')
+      await I.seeInField('#name1', '')
+    })
+
+    it('should select option within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.selectOption('select', '21-60', '#area2')
+      const val = await I.grabValueFrom('#age2')
+      assert.equal(val, 'adult')
+      const val1 = await I.grabValueFrom('#age1')
+      assert.equal(val1, 'child')
     })
   })
 
