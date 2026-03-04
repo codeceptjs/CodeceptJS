@@ -236,64 +236,57 @@ codeceptjs run
 
 ## Html
 
-### Built-in HTML Reporter
+### Testomat.io HTML Reporter
 
-CodeceptJS includes a built-in HTML reporter plugin that generates comprehensive HTML reports with detailed test information.
+For modern HTML reports, use **[@testomatio/reporter](https://github.com/testomatio/reporter)** package.
 
-#### Features
+#### Installation
 
-- **Interactive Test Results**: Click on tests to expand and view detailed information
-- **Step-by-Step Details**: Shows individual test steps with status indicators and timing
-- **Test Statistics**: Visual cards showing totals, passed, failed, and pending test counts
-- **Error Information**: Detailed error messages for failed tests with clean formatting
-- **Artifacts Support**: Display screenshots and other test artifacts with modal viewing
-- **Responsive Design**: Mobile-friendly layout that works on all screen sizes
-- **Professional Styling**: Modern, clean interface with color-coded status indicators
+```sh
+npm install @testomatio/reporter --save-dev
+```
 
 #### Configuration
 
-Add the `htmlReporter` plugin to your `codecept.conf.js`:
+Add the `testomatio` plugin to your `codecept.conf.js`:
 
 ```js
 exports.config = {
-  // ... your other configuration
   plugins: {
-    htmlReporter: {
+    testomatio: {
       enabled: true,
-      output: './output', // Directory for the report
-      reportFileName: 'report.html', // Name of the HTML file
-      includeArtifacts: true, // Include screenshots/artifacts
-      showSteps: true, // Show individual test steps
-      showSkipped: true, // Show skipped tests
+      require: '@testomatio/reporter/lib/adapter/codecept',
     },
   },
 }
 ```
 
-#### Configuration Options
-
-- `output` (optional, default: `./output`) - Directory where the HTML report will be saved
-- `reportFileName` (optional, default: `'report.html'`) - Name of the generated HTML file
-- `includeArtifacts` (optional, default: `true`) - Whether to include screenshots and other artifacts
-- `showSteps` (optional, default: `true`) - Whether to display individual test steps
-- `showSkipped` (optional, default: `true`) - Whether to include skipped tests in the report
-
 #### Usage
 
-Run your tests normally and the HTML report will be automatically generated:
+Generate HTML reports with environment variable:
 
 ```sh
-npx codeceptjs run
+TESTOMATIO_HTML_REPORT_SAVE=1 npx codeceptjs run
 ```
 
-The report will be saved to `output/report.html` (or your configured location) and includes:
+Report is saved to `html-report/testomatio-report.html`.
 
-- Overview statistics with visual cards
-- Expandable test details showing steps and timing
-- Error messages for failed tests
-- Screenshots and artifacts (if available)
-- Interactive failures section
+#### Configuration Options
 
+Customize report location:
+
+```sh
+# Custom folder
+TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO_HTML_REPORT_FOLDER=./reports npx codeceptjs run
+
+# Custom filename
+TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO_HTML_FILENAME=my-report.html npx codeceptjs run
+
+# With Testomat.io cloud
+TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO=your_api_key npx codeceptjs run
+```
+
+For more details, see [documentation](https://docs.testomat.io/test-reporting/pipes/html/).
 ### Mochawesome
 
 Best HTML reports could be produced with [mochawesome](https://www.npmjs.com/package/mochawesome) reporter.
