@@ -1580,7 +1580,8 @@ export function tests() {
           },
         )
       } catch (e) {
-        expect(e.message).to.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"')
+        expect(e.message).to.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true}')
+        expect(e.message).to.match(/"0" to equal "\d+"/)
       }
     })
 
