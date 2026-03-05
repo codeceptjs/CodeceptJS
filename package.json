@@ -120,7 +120,7 @@
     "multer": "^2.0.2",
     "ora-classic": "5.4.2",
     "parse-function": "5.6.10",
-    "parse5": "8.0.0",
+    "parse5": "7.3.0",
     "promise-retry": "1.1.1",
     "resq": "1.11.0",
     "sprintf-js": "1.1.3",
