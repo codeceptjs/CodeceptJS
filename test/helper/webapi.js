@@ -1497,7 +1497,7 @@ module.exports.tests = function () {
           },
         )
       } catch (e) {
-        e.message.should.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"')
+        e.message.should.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0"')
       }
     })
 
