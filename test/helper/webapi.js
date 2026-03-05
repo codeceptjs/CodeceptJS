@@ -892,8 +892,8 @@ module.exports.tests = function () {
   describe('#saveScreenshotToPath', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output')
-      global.custom_dir = path.join(global.codecept_dir, 'custom')
-    })
+      // workaround so that we dont need to create an empty custom dir upfront
+      global.custom_dir = global.output_dir
 
     it('should create a screenshot file in custom dir', async () => {
       if (isHelper('TestCafe')) return
