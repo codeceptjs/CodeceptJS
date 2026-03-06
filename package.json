@@ -200,7 +200,6 @@
   "overrides": {
     "tmp": "0.2.5",
     "js-yaml": "^4.1.1",
-    "serialize-javascript": "7.0.3",
     "axios": "1.13.6"
   }
 }
