@@ -1,5 +1,12 @@
 Feature('within', { retries: 3 })
 
+Scenario('within with locate().at().find() should scope XPath @Playwright', async ({ I }) => {
+  I.amOnPage('/form/bug5473')
+  await within('#list2', async () => {
+    await I.see('Second', locate('.item').at(1).find('.label'))
+  })
+})
+
 Scenario('within on form @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
   I.amOnPage('/form/bug1467')
   I.see('TEST TEST')
