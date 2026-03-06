@@ -2290,6 +2290,15 @@ I.wait(2); // wait 2 secs
 
 Returns **void** automatically synchronized promise through #recorder
 
+### waitCurrentPathEquals
+
+{{> waitCurrentPathEquals }}
+
+#### Parameters
+
+*   `path` &#x20;
+*   `sec`   
+
 ### waitForClickable
 
 Waits for element to be clickable (by default waits for 1sec).
