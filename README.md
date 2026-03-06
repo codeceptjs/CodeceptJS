@@ -1,7 +1,7 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
 
 [<img src="https://img.shields.io/badge/slack-@codeceptjs-purple.svg?logo=slack">](https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ) [<img src="https://img.shields.io/badge/discourse-codeceptjs-purple">](https://codecept.discourse.group) [![NPM version][npm-image]][npm-url] [<img src="https://img.shields.io/badge/dockerhub-images-blue.svg?logo=codeceptjs">](https://hub.docker.com/r/codeceptjs/codeceptjs)
-[![AI features](https://img.shields.io/badge/AI-features?logo=openai&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+[![AI features](https://img.shields.io/badge/AI-features?logo=openai&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) [![MCP Server](https://img.shields.io/badge/MCP-server?logo=anthropic&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/blob/main/docs/mcp.md) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
 ## Build Status
 
@@ -233,48 +233,60 @@ Scenario('test title', () => {
 })
 ```
 
-## HTML Reporter
+## HTML Reports
 
-CodeceptJS includes a powerful built-in HTML Reporter that generates comprehensive, interactive test reports with detailed information about your test runs. The HTML reporter is **enabled by default** for all new projects and provides:
+Generate beautiful HTML reports using **[@testomatio/reporter](https://github.com/testomatio/reporter)** package.
+
+### Installation
+
+```sh
+npm install @testomatio/reporter --save-dev
+```
+
+### Configuration
+
+Add the `testomatio` plugin to your `codecept.conf.js`:
+
+```js
+plugins: {
+  testomatio: {
+    enabled: true,
+    require: '@testomatio/reporter/lib/adapter/codecept',
+  },
+}
+```
+
+### Usage
+
+Generate HTML reports by setting the `TESTOMATIO_HTML_REPORT_SAVE` environment variable:
+
+```sh
+TESTOMATIO_HTML_REPORT_SAVE=1 npx codeceptjs run
+```
+
+The report will be saved to `html-report/testomatio-report.html`.
 
 ### Features
 
-- **Interactive Dashboard**: Visual statistics, pie charts, and expandable test details
-- **Step-by-Step Execution**: Shows individual test steps with timing and status indicators
-- **BDD/Gherkin Support**: Full support for feature files with proper scenario formatting
-- **System Information**: Comprehensive environment details including browser versions
-- **Advanced Filtering**: Real-time filtering by status, tags, features, and test types
-- **History Tracking**: Multi-run history with trend visualization
-- **Error Details**: Clean formatting of error messages and stack traces
-- **Artifacts Support**: Display screenshots and other test artifacts
+- Modern, responsive interface with real-time statistics
+- Detailed test information with step-by-step breakdown
+- Screenshots, videos, and artifacts display
+- BDD/Gherkin support with proper scenario formatting
+- Customizable output location and filename
+- Optional integration with [Testomat.io](https://testomat.io) cloud
 
-### Visual Examples
+### Customization
 
-#### Interactive Test Dashboard
+```sh
+# Custom output folder
+TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO_HTML_REPORT_FOLDER=./reports npx codeceptjs run
 
-The main dashboard provides a complete overview with interactive statistics and pie charts:
+# Custom filename
+TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO_HTML_FILENAME=my-report.html npx codeceptjs run
 
-![HTML Reporter Dashboard](docs/shared/html-reporter-main-dashboard.png)
-
-#### Detailed Test Results
-
-Each test shows comprehensive execution details with expandable step information:
-
-![HTML Reporter Test Details](docs/shared/html-reporter-test-details.png)
-
-#### Advanced Filtering Capabilities
-
-Real-time filtering allows quick navigation through test results:
-
-![HTML Reporter Filtering](docs/shared/html-reporter-filtering.png)
-
-#### BDD/Gherkin Support
-
-Full support for Gherkin scenarios with proper feature formatting:
-
-![HTML Reporter BDD Details](docs/shared/html-reporter-bdd-details.png)
-
-The HTML reporter generates self-contained reports that can be easily shared with your team. Learn more about configuration and features in the [HTML Reporter documentation](https://codecept.io/plugins/#htmlreporter).
+# Integrate with Testomat.io cloud
+TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO=your_api_key npx codeceptjs run
+```
 
 ## PageObjects
 

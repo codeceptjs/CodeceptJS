@@ -775,13 +775,17 @@ Returns **void** automatically synchronized promise through #recorder
 
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeElement('.modal'); // modal is not shown
+I.dontSeeElement('.modal', '#container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][9] | [object][6])** located by CSS|XPath|Strict locator.
+*   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -969,6 +973,8 @@ Returns **[Promise][20]<any>**&#x20;
 Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.
 
+The third parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 // by label
 I.fillField('Email', 'hello@world.com');
@@ -978,12 +984,15 @@ I.fillField('password', secret('123456'));
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
+// within a context
+I.fillField('Name', 'John', '#section2');
 ```
 
 #### Parameters
 
 *   `field` **([string][9] | [object][6])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][9] | [object][6])** text value to fill.
+*   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2048,13 +2057,17 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that a given Element is visible
 Element is located by CSS or XPath.
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.seeElement('#modal');
+I.seeElement('#modal', '#container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][9] | [object][6])** located by CSS|XPath|strict locator.
+*   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2259,6 +2272,8 @@ Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
 
+The third parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
 I.selectOption('subscription', 'Monthly'); // match option by text
@@ -2266,6 +2281,8 @@ I.selectOption('subscription', '0'); // or by value
 I.selectOption('//form/select[@name=account]','Premium');
 I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
+// within a context
+I.selectOption('age', '21-60', '#section2');
 ```
 
 Provide an array for the second argument to select multiple options.
@@ -2278,6 +2295,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 *   `select` **([string][9] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 *   `option` **([string][9] | [Array][10]<any>)** visible text or value of option.
+*   `context` **([string][9]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 

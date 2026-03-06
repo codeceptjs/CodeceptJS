@@ -11,10 +11,6 @@ export const config = {
       enabled: false,
       require: '@codeceptjs/allure-legacy',
     },
-    htmlReporter: {
-      enabled: true,
-      keepHistory: true,
-    }
   },
   bootstrap: null,
   mocha: {},
