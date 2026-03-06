@@ -114,6 +114,39 @@ export function tests() {
       await I.seeCurrentPathEquals('/info')
       await I.dontSeeCurrentPathEquals('/info#section')
     })
+
+    it('should normalize trailing slashes in path comparison', async () => {
+      await I.amOnPage('/info/')
+      await I.seeCurrentPathEquals('/info')
+      await I.seeCurrentPathEquals('/info/')
+
+      await I.amOnPage('/form/field/')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form/field/')
+    })
+
+    it('should normalize multiple consecutive slashes in path', async () => {
+      await I.amOnPage('/form//field')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form//field')
+    })
+
+    it('should handle root path correctly', async () => {
+      await I.amOnPage('/')
+      await I.seeCurrentPathEquals('/')
+      await I.seeCurrentPathEquals('')
+      await I.dontSeeCurrentPathEquals('/info')
+    })
+
+    it('should normalize both expected and actual paths', async () => {
+      await I.amOnPage('/form/field/')
+      await I.seeCurrentPathEquals('/form/field/')
+      await I.seeCurrentPathEquals('/form/field')
+
+      await I.amOnPage('/form//field//')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form/field/')
+    })
   })
 
   describe('#waitInUrl, #waitUrlEquals', () => {
@@ -123,7 +156,7 @@ export function tests() {
         await I.waitInUrl('/info')
         await I.waitInUrl('/info2', 0.1)
       } catch (e) {
-        assert.include(e.message, `expected url to include /info2, but found ${siteUrl}/info`)
+        assert.include(e.message, `expected url to include ${siteUrl}/info2, but found ${siteUrl}/info`)
       }
     })
 
@@ -136,6 +169,28 @@ export function tests() {
       } catch (e) {
         assert.include(e.message, `expected url to be ${siteUrl}/info2, but found ${siteUrl}/info`)
       }
+    })
+  })
+
+  describe('#waitCurrentPathEquals', () => {
+    it('should wait for path to match (ignoring query strings)', async () => {
+      await I.amOnPage('/info')
+      await I.waitCurrentPathEquals('/info')
+    })
+
+    it('should wait timeout with proper error message', async () => {
+      try {
+        await I.amOnPage('/info')
+        await I.waitCurrentPathEquals('/nonexistent', 0.1)
+      } catch (e) {
+        assert.include(e.message, 'expected path to be /nonexistent')
+      }
+    })
+
+    it('should normalize paths when comparing', async () => {
+      await I.amOnPage('/form/field/')
+      await I.waitCurrentPathEquals('/form/field')
+      await I.waitCurrentPathEquals('/form/field/')
     })
   })
 
