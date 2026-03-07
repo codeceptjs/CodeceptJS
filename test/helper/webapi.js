@@ -634,6 +634,35 @@ export function tests() {
       const val1 = await I.grabValueFrom('#age1')
       assert.equal(val1, 'child')
     })
+
+    it('should append field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.appendField('Name', '_appended', '#area2')
+      const val = await I.grabValueFrom('#name2')
+      assert.equal(val, 'old2_appended')
+      const val1 = await I.grabValueFrom('#name1')
+      assert.equal(val1, 'old1')
+    })
+
+    it('should clear field within context', async () => {
+      await I.amOnPage('/form/context')
+      if (isHelper('Playwright')) {
+        await I.clearField('Name', {}, '#area2')
+      } else {
+        await I.clearField('Name', '#area2')
+      }
+      await I.seeInField('#name2', '')
+      await I.seeInField('#name1', 'old1')
+    })
+
+    it('should attach file within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.attachFile('Avatar', 'app/avatar.jpg', '#area2')
+      const val2 = await I.executeScript(() => document.getElementById('file2').files.length)
+      assert.equal(val2, 1, 'file2 should have a file attached')
+      const val1 = await I.executeScript(() => document.getElementById('file1').files.length)
+      assert.equal(val1, 0, 'file1 should have no files')
+    })
   })
 
   describe('#shadow DOM', () => {
