@@ -646,11 +646,7 @@ export function tests() {
 
     it('should clear field within context', async () => {
       await I.amOnPage('/form/context')
-      if (isHelper('Playwright')) {
-        await I.clearField('Name', {}, '#area2')
-      } else {
-        await I.clearField('Name', '#area2')
-      }
+      await I.clearField('Name', '#area2')
       await I.seeInField('#name2', '')
       await I.seeInField('#name1', 'old1')
     })
