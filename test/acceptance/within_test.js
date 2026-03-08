@@ -1,3 +1,5 @@
+import { Within } from '../../lib/effects.js'
+
 Feature('within', { retries: 3 })
 
 Scenario('within with locate().at().find() should scope XPath @Playwright', async ({ I }) => {
@@ -124,3 +126,46 @@ Scenario('should return a value @WebDriverIO @Puppeteer @Playwright', async ({ I
   I.pressKey('Enter')
   I.see('[rus] => First')
 }).retry(0)
+
+Scenario('Within begin/end on form @Playwright', ({ I }) => {
+  I.amOnPage('/form/bug1467')
+  I.see('TEST TEST')
+  Within({ css: '[name=form2]' })
+  I.checkOption('Yes')
+  I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' })
+  Within()
+  I.seeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' })
+  I.dontSeeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' })
+})
+
+Scenario('Within begin/end on iframe @Playwright', ({ I }) => {
+  I.amOnPage('/iframe')
+  Within({ frame: 'iframe' })
+  I.fillField('rus', 'Updated')
+  I.see('Sign in!')
+  Within()
+  I.see('Iframe test')
+  I.dontSee('Sign in!')
+})
+
+Scenario('Within auto-end previous context @Playwright', ({ I }) => {
+  I.amOnPage('/form/bug1467')
+  Within({ css: '[name=form2]' })
+  I.checkOption('Yes')
+  Within({ css: '[name=form1]' })
+  I.checkOption('Yes')
+  Within()
+  I.seeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' })
+  I.seeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' })
+})
+
+Scenario('Within callback with uppercase @Playwright', async ({ I }) => {
+  I.amOnPage('/form/bug1467')
+  I.see('TEST TEST')
+  await Within({ css: '[name=form2]' }, async () => {
+    await I.checkOption('Yes')
+    await I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' })
+  })
+  I.seeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' })
+  I.dontSeeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' })
+})
