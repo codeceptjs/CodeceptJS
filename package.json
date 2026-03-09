@@ -47,7 +47,7 @@
     "codeceptjs": "./bin/codecept.js",
     "codeceptjs-mcp": "./bin/mcp-server.js"
   },
-  "repository": "Codeception/codeceptjs",
+  "repository": "codeceptjs/CodeceptJS",
   "scripts": {
     "test-server": "node bin/test-server.js test/data/rest/db.json --host 0.0.0.0 -p 8010 --read-only",
     "test-server:writable": "node bin/test-server.js test/data/rest/db.json --host 0.0.0.0 -p 8010",
