@@ -528,16 +528,21 @@ Returns **void** automatically synchronized promise through #recorder
 Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.appendField('#myTextField', 'appended');
 // typing secret
 I.appendField('password', secret('123456'));
+// within a context
+I.appendField('name', 'John', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` **([string][18] | [object][17])** located by label|name|CSS|XPath|strict locator
 *   `value` **[string][18]** text value to append.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -553,15 +558,20 @@ Attaches a file to element located by label, name, CSS or XPath
 Path to file is relative current codecept directory (where codecept.conf.ts or codecept.conf.js is located).
 File will be uploaded to remote system (if tests are running remotely).
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.attachFile('Avatar', 'data/avatar.jpg');
 I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
+// within a context
+I.attachFile('Avatar', 'data/avatar.jpg', '.form-container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][18] | [object][17])** field located by label|name|CSS|XPath|strict locator.
 *   `pathToFile` **[string][18]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -600,7 +610,7 @@ Appium: not tested
 Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
-The second parameter is a context (CSS or XPath locator) to narrow the search.
+The second parameter is an optional context (CSS or XPath locator) to narrow the search.
 
 ```js
 I.checkOption('#agree');
@@ -633,15 +643,20 @@ I.clearCookie('test');
 
 Clears a `<textarea>` or text `<input>` element's value.
 
+The second parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.clearField('Email');
 I.clearField('user[email]');
 I.clearField('#email');
+// within a context
+I.clearField('Email', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` &#x20;
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 *   `editable` **([string][18] | [object][17])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **void** automatically synchronized promise through #recorder.
@@ -877,15 +892,20 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeInField('email', 'user@user.com'); // field by name
 I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
+// within a context
+I.dontSeeInField('Name', 'old_value', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` **([string][18] | [object][17])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][18] | [object][17])** value to check.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1044,7 +1064,7 @@ Returns **[Promise][23]<any>** script return value
 Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.
 
-The third parameter is a context (CSS or XPath locator) to narrow the search.
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
 
 ```js
 // by label
@@ -1985,17 +2005,22 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that the given input field or textarea equals to given value.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.seeInField('Username', 'davert');
 I.seeInField({css: 'form textarea'},'Type your comment here');
 I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
+// within a context
+I.seeInField('Name', 'John', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` **([string][18] | [object][17])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][18] | [object][17])** value to check.
+*   `context` **([string][18]? | [object][17])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2111,7 +2136,7 @@ Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
 
-The third parameter is a context (CSS or XPath locator) to narrow the search.
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
 
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
@@ -2260,7 +2285,7 @@ Appium: not tested
 Unselects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
-The second parameter is a context (CSS or XPath locator) to narrow the search.
+The second parameter is an optional context (CSS or XPath locator) to narrow the search.
 
 ```js
 I.uncheckOption('#agree');
