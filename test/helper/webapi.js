@@ -659,6 +659,18 @@ export function tests() {
       const val1 = await I.executeScript(() => document.getElementById('file1').files.length)
       assert.equal(val1, 0, 'file1 should have no files')
     })
+
+    it('should see in field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.seeInField('Name', 'old2', '#area2')
+      await I.seeInField('Name', 'old1', '#area1')
+    })
+
+    it('should not see in field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.dontSeeInField('Name', 'old1', '#area2')
+      await I.dontSeeInField('Name', 'old2', '#area1')
+    })
   })
 
   describe('#shadow DOM', () => {
