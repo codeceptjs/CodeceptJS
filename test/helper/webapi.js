@@ -1091,6 +1091,19 @@ export function tests() {
       expect(formContents().files.avatar.name).to.eql('avatar.jpg')
       expect(formContents().files.avatar.type).to.eql('image/jpeg')
     })
+
+    it('should drop file to dropzone', async () => {
+      await I.amOnPage('/form/dropzone')
+      await I.attachFile('#droparea', 'app/avatar.jpg')
+      await I.see('Dropped 1 file(s)')
+      await I.see('avatar.jpg')
+    })
+
+    it('should see correct file type after drop', async () => {
+      await I.amOnPage('/form/dropzone')
+      await I.attachFile('#droparea', 'app/avatar.jpg')
+      await I.see('image/jpeg')
+    })
   })
 
   describe('#saveScreenshot', () => {
