@@ -1,11 +1,16 @@
 Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath
 
+The third parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.appendField('#myTextField', 'appended');
 // typing secret
 I.appendField('password', secret('123456'));
+// within a context
+I.appendField('name', 'John', '.form-container');
 ```
 @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator
 @param {string} value text value to append.
+@param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
 @returns {void} automatically synchronized promise through #recorder
