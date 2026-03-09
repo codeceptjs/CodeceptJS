@@ -482,6 +482,13 @@ I.attachFile('form input[name=avatar]', 'data/avatar.jpg');
 I.attachFile('Avatar', 'data/avatar.jpg', '.form-container');
 ```
 
+If the locator points to a non-file-input element (e.g., a dropzone area),
+the file will be dropped onto that element using drag-and-drop events.
+
+```js
+I.attachFile('#dropzone', 'data/avatar.jpg');
+```
+
 #### Parameters
 
 *   `locator` **([string][9] | [object][6])** field located by label|name|CSS|XPath|strict locator.
