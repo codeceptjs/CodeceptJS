@@ -872,6 +872,8 @@ module.exports.tests = function () {
   describe('#saveScreenshot', () => {
     beforeEach(() => {
       global.output_dir = path.join(global.codecept_dir, 'output')
+      // workaround so that we don't need to create an empty custom dir upfront
+      global.custom_dir = global.output_dir
     })
 
     it('should create a screenshot file in output dir', async () => {
@@ -887,21 +889,13 @@ module.exports.tests = function () {
       await I.saveScreenshot(`screenshot_full_${+sec}.png`, true)
       assert.ok(fileExists(path.join(global.output_dir, `screenshot_full_${+sec}.png`)), null, 'file does not exists')
     })
-  })
-
-  describe('#saveScreenshotToPath', () => {
-    beforeEach(() => {
-      global.output_dir = path.join(global.codecept_dir, 'output')
-      // workaround so that we don't need to create an empty custom dir upfront
-      global.custom_dir = global.output_dir
-    })
 
     it('should create a screenshot file in custom dir', async () => {
       if (isHelper('TestCafe')) return
 
       const sec = new Date().getUTCMilliseconds()
       await I.amOnPage('/')
-      await I.saveScreenshotToPath(global.custom_dir, `screenshot_${sec}.png`)
+      await I.saveScreenshot(path.resolve(global.custom_dir, `screenshot_${sec}.png`))
       assert.ok(fileExists(path.join(global.custom_dir, `screenshot_${sec}.png`)), null, 'file does not exists')
     })
   })
