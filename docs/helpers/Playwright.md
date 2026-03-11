@@ -1817,30 +1817,11 @@ Optionally resize the window to the full available page `scrollHeight` and `scro
 ```js
 I.saveScreenshot('debug.png')
 I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
+I.saveScreenshot('customFolder/debug.png') //saves to customFolder/debug.png
 ```
 
 #### Parameters
 
-- `fileName` **[string][9]** file name to save.
-- `fullPage` **[boolean][26]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
-- `customPath` **[string][9]** (optional, `''` by default) custom path to save file.
-
-Returns **void** automatically synchronized promise through #recorder
-
-### saveScreenshotToPath
-
-Saves a screenshot to custom folder (set in codecept.conf.ts or codecept.conf.js).
-Filename is relative to custom folder.
-Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
-
-```js
-I.saveScreenshotToPath('output/custom', 'debug.png')
-I.saveScreenshotToPath('output/custom', 'debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
-```
-
-#### Parameters
-
-- `path` **[string][9]** custom path to save file.
 - `fileName` **[string][9]** file name to save.
 - `fullPage` **[boolean][26]** (optional, `false` by default) flag to enable fullscreen screenshot mode.
 

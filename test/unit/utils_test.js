@@ -330,7 +330,7 @@ describe('utils', () => {
     })
 
     it('saves screenshot to custom path', () => {
-      const _path = utils.screenshotOutputFolder('screenshot1.failed.png', '/Users/someuser/workbase/project1/custom_path/'.replace(/\//g, path.sep))
+      const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/custom_path/'.replace(/\//g, path.sep) + 'screenshot1.failed.png')
       if (os.platform() === 'win32') {
         expect(_path).eql(path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/custom_path/screenshot1.failed.png'))
       } else {
