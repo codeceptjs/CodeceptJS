@@ -1541,9 +1541,13 @@ Returns **[Promise][23]<any>** WebElement of being used Web helper
 Moves cursor to element matched by locator.
 Extra shift can be set with offsetX and offsetY options.
 
+An optional `context` (as a second parameter) can be specified to narrow the search to an element within a parent.
+When the second argument is a non-number (string or locator object), it is treated as context.
+
 ```js
 I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
+I.moveCursorTo('#submit', '.container');
 ```
 
 #### Parameters
@@ -1551,7 +1555,7 @@ I.moveCursorTo('#submit', 5,5);
 *   `locator` **([string][18] | [object][17])** located by CSS|XPath|strict locator.
 *   `xOffset` &#x20;
 *   `yOffset` &#x20;
-*   `offsetX` **[number][22]** (optional, `0` by default) X-axis offset. 
+*   `offsetX` **([number][22] | [string][18] | [object][17])** (optional, `0` by default) X-axis offset or context locator. 
 *   `offsetY` **[number][22]** (optional, `0` by default) Y-axis offset. 
 
 Returns **void** automatically synchronized promise through #recorder

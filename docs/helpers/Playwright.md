@@ -1682,15 +1682,19 @@ I.mockTraffic([/^https://api.example.com/v1/, 'https://api.example.com/v2/**'], 
 Moves cursor to element matched by locator.
 Extra shift can be set with offsetX and offsetY options.
 
+An optional `context` (as a second parameter) can be specified to narrow the search to an element within a parent.
+When the second argument is a non-number (string or locator object), it is treated as context.
+
 ```js
 I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
+I.moveCursorTo('#submit', '.container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][9] | [object][6])** located by CSS|XPath|strict locator.
-*   `offsetX` **[number][17]** (optional, `0` by default) X-axis offset. 
+*   `offsetX` **([number][17] | [string][9] | [object][6])** (optional, `0` by default) X-axis offset or context locator. 
 *   `offsetY` **[number][17]** (optional, `0` by default) Y-axis offset. 
 
 Returns **void** automatically synchronized promise through #recorder

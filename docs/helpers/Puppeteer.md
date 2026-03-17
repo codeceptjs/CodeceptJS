@@ -1472,15 +1472,19 @@ This method allows intercepting and mocking requests & responses. [Learn more ab
 Moves cursor to element matched by locator.
 Extra shift can be set with offsetX and offsetY options.
 
+An optional `context` (as a second parameter) can be specified to narrow the search to an element within a parent.
+When the second argument is a non-number (string or locator object), it is treated as context.
+
 ```js
 I.moveCursorTo('.tooltip');
 I.moveCursorTo('#submit', 5,5);
+I.moveCursorTo('#submit', '.container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][6] | [object][4])** located by CSS|XPath|strict locator.
-*   `offsetX` **[number][10]** (optional, `0` by default) X-axis offset. 
+*   `offsetX` **([number][10] | [string][6] | [object][4])** (optional, `0` by default) X-axis offset or context locator. 
 *   `offsetY` **[number][10]** (optional, `0` by default) Y-axis offset. 
 
 Returns **void** automatically synchronized promise through #recorder
