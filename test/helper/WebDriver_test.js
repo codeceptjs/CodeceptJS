@@ -596,6 +596,12 @@ describe('WebDriver', function () {
       await wd.moveCursorTo('#hover', 100, 100)
       await wd.dontSee('Hovered', '#show')
     })
+
+    it('should trigger hover event within a context', async () => {
+      await wd.amOnPage('/form/hover')
+      await wd.moveCursorTo('#hover', 'body')
+      await wd.see('Hovered', '#show')
+    })
   })
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {

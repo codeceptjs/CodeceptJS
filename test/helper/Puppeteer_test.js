@@ -240,6 +240,11 @@ describe('Puppeteer', function () {
       I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover', 100, 100))
         .then(() => I.dontSee('Hovered', '#show')))
+
+    it('should trigger hover event within a context', () =>
+      I.amOnPage('/form/hover')
+        .then(() => I.moveCursorTo('#hover', 'body'))
+        .then(() => I.see('Hovered', '#show')))
   })
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
