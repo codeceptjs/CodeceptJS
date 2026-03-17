@@ -2278,4 +2278,58 @@ export function tests() {
       await I.see('Another User')
     })
   })
+
+  describe('#strict mode', () => {
+    afterEach(() => {
+      I.options.strict = false
+    })
+
+    it('should throw error if multiple elements found for click', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+      expect(err.message).to.include('Multiple elements')
+    })
+
+    it('should throw error if multiple elements found for fillField', async () => {
+      await I.amOnPage('/form/example20')
+      I.options.strict = true
+      let err
+      try {
+        await I.fillField("input[name='txtName']", 'test')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should not throw error if only one element found', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      await I.click('#first-link')
+    })
+
+    it('should provide element details after fetchDetails', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      await err.fetchDetails()
+      expect(err.message).to.include('/html')
+      expect(err.message).to.include('Use a more specific locator')
+    })
+  })
 }
