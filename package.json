@@ -149,7 +149,7 @@
     "chai-as-promised": "7.1.2",
     "chai-subset": "1.6.0",
     "documentation": "14.0.3",
-    "electron": "41.0.2",
+    "electron": "41.0.3",
     "eslint": "^9.36.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-mocha": "11.2.0",
@@ -171,7 +171,7 @@
     "rosie": "2.1.1",
     "runok": "0.9.3",
     "semver": "7.7.4",
-    "sinon": "21.0.2",
+    "sinon": "21.0.3",
     "sinon-chai": "3.7.0",
     "testcafe": "3.7.4",
     "ts-morph": "26.0.0",
@@ -201,6 +201,7 @@
     "tmp": "0.2.5",
     "js-yaml": "^4.1.1",
     "serialize-javascript": "7.0.3",
-    "axios": "1.13.6"
+    "axios": "1.13.6",
+    "fast-xml-parser": "^5.5.6"
   }
 }
