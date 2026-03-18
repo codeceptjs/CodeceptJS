@@ -1139,7 +1139,7 @@ Returns **[Promise][6]<[string][5]>** attribute value
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.conf.ts or codecept.conf.js).
+Saves a screenshot to output folder (set in codecept.conf.ts or codecept.conf.js).
 Filename is relative to output folder.
 
 ```js

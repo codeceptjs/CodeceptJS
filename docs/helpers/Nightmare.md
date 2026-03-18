@@ -794,7 +794,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### saveElementScreenshot
 
-Saves screenshot of the specified locator to ouput folder (set in codecept.conf.ts or codecept.conf.js).
+Saves screenshot of the specified locator to output folder (set in codecept.conf.ts or codecept.conf.js).
 Filename is relative to output folder.
 
 ```js
@@ -810,7 +810,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### saveScreenshot
 
-Saves a screenshot to ouput folder (set in codecept.conf.ts or codecept.conf.js).
+Saves a screenshot to output folder (set in codecept.conf.ts or codecept.conf.js).
 Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
