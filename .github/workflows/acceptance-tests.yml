@@ -24,7 +24,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # Install Docker Compose
       - name: Install Docker Compose
