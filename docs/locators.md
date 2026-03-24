@@ -9,6 +9,7 @@ CodeceptJS provides flexible strategies for locating elements:
 
 * [CSS and XPath locators](#css-and-xpath)
 * [Semantic locators](#semantic-locators): by link text, by button text, by field names, etc.
+* [ARIA and role locators](#aria-and-role-locators): by ARIA role and accessible name
 * [Locator Builder](#locator-builder)
 * [ID locators](#id-locators): by CSS id or by accessibility id
 * [Custom Locator Strategies](#custom-locators): by data attributes or whatever you prefer.
@@ -16,35 +17,36 @@ CodeceptJS provides flexible strategies for locating elements:
 * [React](/react): to access React elements by component names and props
 * Playwright: to access locator supported by Playwright, namely [_react](https://playwright.dev/docs/other-locators#react-locator), [_vue](https://playwright.dev/docs/other-locators#vue-locator), [data-testid](https://playwright.dev/docs/locators#locate-by-test-id)
 
-Most methods in CodeceptJS use locators which can be either a string or an object.
+Most methods in CodeceptJS accept locators as strings or objects.
 
-If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class`, `shadow` or `pw`) and the value being the locator itself. This is called a "strict" locator.
+If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class`, `shadow`, `pw`, or `role`) and the value being the locator itself. This is called a **strict** locator.
 
 Examples:
 
-* {id: 'foo'} matches `<div id="foo">`
-* {name: 'foo'} matches `<div name="foo">`
-* {css: 'input[type=input][value=foo]'} matches `<input type="input" value="foo">`
-* {xpath: "//input[@type='submit'][contains(@value, 'foo')]"} matches `<input type="submit" value="foobar">`
-* {class: 'foo'} matches `<div class="foo">`
-* { pw: '_react=t[name = "="]' }
+* `{id: 'foo'}` matches `<div id="foo">`
+* `{name: 'foo'}` matches `<div name="foo">`
+* `{css: 'input[type=input][value=foo]'}` matches `<input type="input" value="foo">`
+* `{xpath: "//input[@type='submit'][contains(@value, 'foo')]"}` matches `<input type="submit" value="foobar">`
+* `{class: 'foo'}` matches `<div class="foo">`
+* `{ pw: '_react=t[name = "="]' }`
+* `{ role: 'button', name: 'Submit' }` matches `<button>Submit</button>`
 
 Writing good locators can be tricky.
 The Mozilla team has written an excellent guide titled [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/).
 
-If you prefer, you may also pass a string for the locator. This is called a "fuzzy" locator.
+If you prefer, you may also pass a string for the locator. This is called a **fuzzy** locator.
 In this case, CodeceptJS uses a variety of heuristics (depending on the exact method called) to determine what element you're referring to. If you are locating a clickable element or an input element, CodeceptJS will use [semantic locators](#semantic-locators).
 
 For example, here's the heuristic used for the `fillField` method:
 
-1. Does the locator look like an ID selector (e.g. "#foo")? If so, try to find an input element matching that ID.
+1. Does the locator look like an ID selector (e.g. `#foo`)? If so, try to find an input element matching that ID.
 2. If nothing found, check if locator looks like a CSS selector. If so, run it.
 3. If nothing found, check if locator looks like an XPath expression. If so, run it.
 4. If nothing found, check if there is an input element with a corresponding name.
 5. If nothing found, check if there is a label with specified text for input element.
 6. If nothing found, throw an `ElementNotFound` exception.
 
-> ⚠ Be warned that fuzzy locators can be significantly slower than strict locators. If speed is a concern, it's recommended you stick with explicitly specifying the locator type via object syntax.
+> ⚠ Fuzzy locators can be significantly slower than strict locators. If speed is a concern, stick with explicitly specifying the locator type via object syntax.
 
 It is recommended to avoid using implicit CSS locators in methods like `fillField` or `click`, where semantic locators are allowed.
 Use locator type to speed up search by various locator strategies.
@@ -58,7 +60,7 @@ I.fillField({ css: 'input[type=password]' }, '123456');
 
 ## CSS and XPath
 
-Both CSS and XPath is supported. Usually CodeceptJS can guess locator's type:
+Both CSS and XPath are supported. Usually CodeceptJS can guess the locator's type:
 
 ```js
 // select by CSS
@@ -84,15 +86,33 @@ I.seeElement({ xpath: 'descendant::table/tr' });
 ## Semantic Locators
 
 CodeceptJS can guess an element's locator from context.
-For example, when clicking CodeceptJS will try to find a link or button by their text
-When typing into a field this field can be located by its name, placeholder.
+For example, when clicking CodeceptJS will try to find a link or button by their text.
+When typing into a field, the field can be located by its name or placeholder.
 
 ```js
 I.click('Sign In');
 I.fillField('Username', 'davert');
 ```
 
-Various strategies are used to locate semantic elements. However, they may run slower than specifying locator by XPath or CSS.
+Various strategies are used to locate semantic elements. However, they may run slower than specifying the locator by XPath or CSS.
+
+## ARIA and Role Locators
+
+ARIA locators find elements by their ARIA role and accessible name. They are the most resilient to markup changes and the most meaningful for accessibility.
+
+Pass an object with a `role` key and an optional `name` key:
+
+```js
+I.click({ role: 'button', name: 'Login' });
+I.fillField({ role: 'textbox', name: 'Email Address' }, 'user@test.com');
+I.seeElement({ role: 'button', name: 'Submit' });
+```
+
+The `name` matches the element's accessible name — its visible text, `aria-label`, or `aria-labelledby` target.
+
+Common ARIA roles include `button`, `link`, `textbox`, `checkbox`, `radio`, `combobox`, `listbox`, `menuitem`, `tab`, `dialog`, `alert`, `heading`, and `navigation`.
+
+> ℹ ARIA locators are supported by Playwright and other helpers that implement accessibility tree queries.
 
 ## Locator Builder
 
@@ -250,6 +270,31 @@ ID locators are best to select the exact semantic element in web and mobile test
 
 * `#user` or `{ id: 'user' }` finds element with id="user"
 * `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
+* `{ aria: 'user' }` finds element with `aria-label="user"` in web testing.
+
+## Context
+
+Most CodeceptJS actions accept a **context** locator as a last parameter. The context narrows the search to a specific part of the page.
+
+```js
+I.click('Edit', '.user-profile');
+I.fillField('Email', 'user@test.com', '#login-form');
+I.see('Error', '.alert');
+I.seeElement({ role: 'button', name: 'Delete' }, '.toolbar');
+```
+
+Use context when the same element appears in multiple places on a page:
+
+```js
+// click Delete only inside the toolbar, not the sidebar
+I.click({ role: 'button', name: 'Delete' }, '.toolbar');
+
+// fill Email in login form, not registration form
+I.fillField('Email', 'user@test.com', '#login-form');
+I.fillField('Email', 'admin@test.com', '#registration-form');
+```
+
+The context accepts any locator type: CSS, XPath, strict object, or `locate()` builder result.
 
 ## Custom Locators
 
