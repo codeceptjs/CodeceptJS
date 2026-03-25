@@ -1,370 +1,274 @@
+---
+permalink: /retry
+title: Retry Mechanisms
+---
+
 # Retry Mechanisms
 
-CodeceptJS provides flexible retry mechanisms to handle flaky tests at different levels.
+CodeceptJS provides flexible retry mechanisms to handle flaky tests. Use retries when dealing with unstable environments, network delays, or timing issues — not to mask bugs in your code.
 
-## Overview
+## Helper Retries
 
-CodeceptJS supports retries at **four levels** with a **priority system** to prevent conflicts:
+Browser automation helpers (Playwright, Puppeteer, WebDriver) have **built-in retry mechanisms** for element interactions. When you call `I.click('Button')`, Playwright automatically waits for the element to exist, be visible, stable, and enabled — retrying for up to 5 seconds.
 
-| Priority | Level | Value | Description |
-|----------|-------|-------|-------------|
-| **Highest** | Manual Step (`I.retry()`) | 100 | Explicit retries in test code |
-| | Step Plugin (`retryFailedStep`) | 50 | Automatic step-level retries |
-| | Scenario Config | 30 | Retry entire scenarios |
-| | Feature Config | 20 | Retry all scenarios in feature |
-| **Lowest** | Hook Config | 10 | Retry failed hooks |
-
-**Rule:** Higher priority retries cannot be overwritten by lower priority ones.
-
-## Step-Level Retries
-
-### Manual Retry: `I.retry()`
-
-Retry specific steps in your tests:
+Configure the timeout in your helper settings:
 
 ```js
-// Retry up to 5 times
-I.retry().click('Submit')
+helpers: {
+  Playwright: {
+    timeout: 5000,      // retry actions for up to 5 seconds
+    waitForAction: 100  // wait 100ms before each action
+  }
+}
+```
 
-// Custom options
-I.retry({
+**Learn more:** [Playwright Helper](/helpers/Playwright), [Timeouts](/timeouts)
+
+## CodeceptJS Retry Levels
+
+When helper retries aren't enough, CodeceptJS adds retry layers on top.
+
+### 1. Manual Step Retry
+
+Retry a specific step known to be flaky:
+
+```js
+import step from 'codeceptjs/steps'
+
+Scenario('checkout', ({ I }) => {
+  I.amOnPage('/cart')
+  I.click('Proceed to Checkout', step.retry(5))  // retry up to 5 times
+  I.see('Payment')
+})
+```
+
+Configure timing with exponential backoff:
+
+```js
+I.click('Submit', step.retry({
   retries: 3,
-  minTimeout: 1000,  // 1 second
-  maxTimeout: 5000,  // 5 seconds
-}).see('Welcome')
-
-// Infinite retries
-I.retry(0).waitForElement('Dashboard')
+  minTimeout: 1000,  // wait 1 second before first retry
+  maxTimeout: 5000,  // max 5 seconds between retries
+  factor: 1.5        // exponential backoff multiplier
+}))
 ```
 
-### Automatic Retry: `retryFailedStep` Plugin
+Pass `0` for infinite retries.
 
-Automatically retry all failed steps without modifying test code.
+### 2. Automatic Step Retry
 
-**Basic configuration:**
-
-```js
-// codecept.conf.js
-plugins: {
-  retryFailedStep: {
-    enabled: true,
-    retries: 3,
-  }
-}
-```
-
-**Advanced options:**
+Automatically retry all failed steps without modifying test code:
 
 ```js
 plugins: {
   retryFailedStep: {
     enabled: true,
-    retries: 3,
-    factor: 1.5,              // exponential backoff factor
-    minTimeout: 1000,         // 1 second before first retry
-    maxTimeout: 5000,         // 5 seconds max between retries
-
-    // Steps to ignore (never retry these)
-    ignoredSteps: [
-      'scroll*',   // ignore all scroll steps
-      /Cookie/,    // ignore by regexp
-    ],
-
-    // Defer to scenario retries to prevent excessive retries (default: true)
-    deferToScenarioRetries: true,
+    retries: 3
   }
 }
 ```
 
-**Ignored steps by default:** `amOnPage`, `wait*`, `send*`, `execute*`, `run*`, `have*`
+Steps matching `amOnPage`, `wait*`, `send*`, `execute*`, `run*`, `have*` are skipped by default.
 
-**Disable per test:**
+When a scenario has its own retries, step retries are disabled by default (`deferToScenarioRetries: true`). This prevents excessive execution time:
 
 ```js
-Scenario('test', { disableRetryFailedStep: true }, () => {
-  I.retry(5).click('Button')  // Use manual retries instead
+Scenario('test', { retries: 2 }, ({ I }) => {
+  I.click('Button')  // step retries disabled; scenario retries run instead
 })
 ```
 
-## Scenario-Level Retries
-
-Configure retries for individual test scenarios.
+To disable step retries for a specific test:
 
 ```js
-// Simple: All scenarios retry 3 times
-{
-  retry: 3
-}
-
-// Advanced: By pattern
-{
-  retry: [
-    {
-      Scenario: 2,
-      grep: 'Login',  // Only scenarios containing "Login"
-    },
-    {
-      Scenario: 5,
-      grep: 'API',
-    },
-  ]
-}
-
-// In-code
-Scenario('my test', { retries: 3 }, () => {
-  I.amOnPage('/')
-  I.click('Login')
+Scenario('manual retries only', { disableRetryFailedStep: true }, ({ I }) => {
+  I.click('Button', step.retry(5))
 })
 ```
 
-## Feature-Level Retries
+Full plugin options:
 
-Retry all scenarios within a feature file:
+| Option | Default | Description |
+|--------|---------|-------------|
+| `retries` | — | Retries per step |
+| `minTimeout` | — | Milliseconds before first retry |
+| `maxTimeout` | `Infinity` | Max milliseconds between retries |
+| `factor` | — | Exponential backoff multiplier |
+| `randomize` | `false` | Randomize timeout intervals |
+| `ignoredSteps` | `[]` | Patterns/regex of steps to never retry |
+| `deferToScenarioRetries` | `true` | Disable step retries when scenario retries exist |
+| `when` | `() => true` | Function receiving error; return `true` to retry |
+
+### 3. Multiple Steps Retry (retryTo)
+
+Retry a group of steps together as a single operation:
 
 ```js
-{
-  retry: [
-    {
-      Feature: 3,
-      grep: 'Authentication',  // Only features containing "Authentication"
-    },
-  ]
-}
+import { retryTo } from 'codeceptjs/effects'
+
+await retryTo(() => {
+  I.click('Load More')
+  I.see('New Content')
+}, 3)
 ```
 
-## Hook-Level Retries
+If any step inside fails, the entire block retries. Use this for sequences that must succeed together — switching into an iframe and filling a form, for example.
 
-Configure retries for failed hooks:
+**Learn more:** [Effects](/effects#retryto)
 
-```js
-{
-  retry: [
-    {
-      BeforeSuite: 2,  // Retry setup hook
-      Before: 1,       // Retry test setup
-      After: 1,        // Retry teardown
-    },
-  ]
-}
-```
+### 4. Self-Healing Steps
 
-## Retry Coordination
-
-### How Different Retries Work Together
-
-When multiple retry mechanisms are configured, they work together based on priorities:
-
-**Example 1: Step Plugin + Scenario Retries (default behavior)**
+When a step fails, a healing recipe runs recovery actions and continues the test — without touching test code. With AI healing enabled:
 
 ```js
-plugins: {
-  retryFailedStep: {
-    enabled: true,
-    retries: 3,
-    deferToScenarioRetries: true,  // default
-  }
-}
-
-Scenario('API test', { retries: 2 }, () => {
-  I.sendPostRequest('/api/users', { name: 'John' })
+Scenario('checkout', ({ I }) => {
+  I.click('Proceed to Checkout')
+  I.see('Payment')
 })
 ```
 
-**Result:** Step retries are **disabled**. Only scenario retries run (2 times).
-**Total attempts:** 1 initial + 2 retries = **3 attempts**
+- `I.click('Proceed to Checkout')` fails — button was renamed or moved
+  - failed step, error message, and page HTML are sent to an LLM
+  - AI scans page elements and suggests valid replacement actions
+  - CodeceptJS executes the suggestions until one succeeds
+- test continues with `I.see('Payment')`
 
-**Example 2: Step Plugin without Defer**
+Run with `--ai` to activate:
+
+```bash
+npx codeceptjs run --ai
+```
+
+You can also write custom recipes for non-UI failures — network errors, data glitches, UI migrations.
+
+**Learn more:** [Self-Healing Tests](/heal), [AI Configuration](/ai)
+
+### 5. Scenario Retry
+
+Retry an entire test when it fails:
 
 ```js
-plugins: {
-  retryFailedStep: {
-    enabled: true,
-    retries: 3,
-    deferToScenarioRetries: false,
-  }
-}
-
-Scenario('API test', { retries: 2 }, () => {
-  I.sendPostRequest('/api/users', { name: 'John' })
+Scenario('API integration', { retries: 3 }, ({ I }) => {
+  I.sendGetRequest('/api/users')
   I.seeResponseCodeIs(200)
 })
 ```
 
-**Result:** Each step can retry 3 times, scenario can retry 2 times.
-**⚠️ Warning:** Can lead to excessive execution time
-
-**Example 3: Manual Retry + Plugin**
+Retry all scenarios globally, or by grep pattern:
 
 ```js
-plugins: {
-  retryFailedStep: {
-    enabled: true,
-    retries: 3,
-  }
+export const config = {
+  retry: [
+    { Scenario: 3, grep: 'API' },       // retry scenarios containing "API" 3 times
+    { Scenario: 5, grep: '@flaky' }      // retry @flaky-tagged scenarios 5 times
+  ]
 }
+```
 
-Scenario('test', () => {
-  I.retry(5).click('Button')  // Manual (priority 100)
-  I.click('AnotherButton')     // Plugin (priority 50)
+### 6. Feature Retry
+
+Retry all scenarios within a feature:
+
+```js
+Feature('Payment Processing', { retries: 2 })
+
+Scenario('credit card payment', ({ I }) => { ... })  // retries 2 times
+Scenario('paypal payment', ({ I }) => { ... })        // retries 2 times
+```
+
+Or target features by pattern in config:
+
+```js
+export const config = {
+  retry: [
+    { Feature: 3, grep: 'Integration' }
+  ]
+}
+```
+
+### 7. Hook Retries
+
+Retry `Before`/`After` hooks when they fail:
+
+```js
+Before(({ I }) => {
+  I.amOnPage('/')
+}).retry(2)
+```
+
+Set per feature:
+
+```js
+Feature('My Suite', {
+  retryBefore: 2,
+  retryAfter: 1,
+  retryBeforeSuite: 3,
+  retryAfterSuite: 1
 })
 ```
 
-**Result:**
-- First button: **5 retries** (manual takes precedence)
-- Second button: **3 retries** (plugin)
-
-## Common Patterns
-
-### External API Flakiness
+Or globally:
 
 ```js
-{
+export const config = {
   retry: [
-    {
-      Scenario: 3,
-      grep: 'API',
-    },
-  ],
-  plugins: {
-    retryFailedStep: {
-      enabled: true,
-      deferToScenarioRetries: true,  // Let scenario retries handle it
-    },
-  },
+    { BeforeSuite: 2, Before: 1, After: 1 }
+  ]
 }
 ```
 
-### UI Element Intermittent Visibility
+## Retry Priority
 
-```js
-Scenario('form submission', () => {
-  I.amOnPage('/form')
-  I.fillField('email', 'test@example.com')
+When multiple retry configurations exist, higher-priority retries take precedence:
 
-  // This specific button is sometimes not immediately clickable
-  I.retry(3).click('Submit')
+| Priority | Type | Description |
+|----------|------|-------------|
+| **Highest** | Manual Step (`step.retry()`) | Explicit retries in test code |
+| | Automatic Step | `retryFailedStep` plugin |
+| | Multiple Steps (`retryTo`) | Retry groups of steps together |
+| | Scenario Config | Retry entire scenarios |
+| | Feature Config | Retry all scenarios in a feature |
+| **Lowest** | Hook Config | Retry failed hooks |
 
-  I.see('Success')
-})
-```
-
-### Flaky Feature Suite
-
-```js
-{
-  retry: [
-    {
-      Feature: 2,
-      grep: 'ThirdPartyIntegration',
-    },
-  ],
-}
-```
+`retryTo` operates independently from step-level retries. If a step inside `retryTo` fails, the entire block retries.
 
 ## Best Practices
 
-1. **Use `deferToScenarioRetries: true`** (default) to avoid excessive retries
-2. **Prefer scenario retries** over step retries for general flakiness
-3. **Use manual `I.retry()`** for specific problematic steps
-4. **Avoid combining** step plugin with scenario retries unless necessary
-5. **Don't over-retry** - it can mask real bugs and slow down tests
+1. **Understand helper retries first** — Playwright/Puppeteer/WebDriver already retry actions internally
+2. **Start with scenario retries** — simpler and less likely to cause issues
+3. **Use manual retries for known flaky steps** — most predictable behavior
+4. **Enable `deferToScenarioRetries`** — prevents excessive retries (default)
+5. **Don't over-retry** — if tests fail consistently, fix the root cause
+6. **Use grep patterns** — apply retries only where needed
+7. **Retry timeouts, not bugs** — retries handle environmental issues, not code defects
+8. **Consider healing for complex recovery** — see [Self-Healing Tests](/heal)
 
 ## Troubleshooting
 
-### Tests Taking Too Long
+### Tests running too long
 
-**Solutions:**
-- Enable `deferToScenarioRetries: true`
+- Confirm `deferToScenarioRetries: true` (the default)
 - Reduce retry counts
-- Use more specific retry patterns (grep)
-- Fix the root cause instead of retrying
+- Use `grep` patterns to target specific tests
+- Add problematic steps to `ignoredSteps`
 
-### Retries Not Working
+### Retries not working
 
-**Check:**
-1. Verify configuration syntax
-2. Check if higher priority retry is overriding
-3. Ensure `disableRetryFailedStep: true` isn't set
-4. Run with `DEBUG_RETRY_PLUGIN=1`:
+1. Check configuration syntax
+2. Check the priority table — a higher-priority retry may be overriding
+3. Confirm `disableRetryFailedStep: true` is not set on the scenario
+4. Confirm the step isn't in `ignoredSteps`
+
+Debug with:
 
 ```bash
 DEBUG_RETRY_PLUGIN=1 npx codeceptjs run
 ```
 
-### Too Many Retries
+### `step.retry()` is undefined
 
-**Solutions:**
-1. Set `deferToScenarioRetries: true`
-2. Add problematic steps to `ignoredSteps`
-3. Use scenario retries instead of step retries
-4. Add `when` condition to filter errors:
+Import `step` from codeceptjs:
 
 ```js
-plugins: {
-  retryFailedStep: {
-    enabled: true,
-    when: (err) => {
-      // Only retry network errors
-      return err.message.includes('ECONNREFUSED')
-    },
-  }
-}
+import step from 'codeceptjs/steps'
 ```
-
-## Configuration Reference
-
-### Global Retry Options
-
-```js
-// Simple
-{
-  retry: 3
-}
-
-// Advanced
-{
-  retry: [
-    {
-      Feature: 2,
-      grep: 'Auth',
-    },
-    {
-      Scenario: 5,
-      grep: 'Payment',
-    },
-    {
-      BeforeSuite: 3,
-    },
-  ]
-}
-```
-
-### retryFailedStep Plugin Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `retries` | number | `3` | Number of retries per step |
-| `factor` | number | `1.5` | Exponential backoff factor |
-| `minTimeout` | number | `1000` | Min milliseconds before first retry |
-| `maxTimeout` | number | `Infinity` | Max milliseconds between retries |
-| `randomize` | boolean | `false` | Randomize timeouts |
-| `ignoredSteps` | array | `[]` | Additional steps to ignore |
-| `deferToScenarioRetries` | boolean | `true` | Disable step retries when scenario retries exist |
-| `when` | function | - | Custom condition (receives error) |
-
-### I.retry() Options
-
-```js
-I.retry({
-  retries: 3,        // number of retries (0 = infinite)
-  minTimeout: 1000,  // milliseconds
-  maxTimeout: 5000,  // milliseconds
-  factor: 1.5,       // exponential backoff
-})
-```
-
-## Related
-
-- [Plugins](plugins.md) - Plugin system overview
-- [Configuration](configuration.md) - Full configuration reference
-- [Hooks](hooks.md) - Test hooks and lifecycle
