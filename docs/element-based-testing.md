@@ -19,6 +19,7 @@ CodeceptJS uniquely combines both styles. You can freely mix `I.*` actions with 
 ```js
 // Import element functions
 import { element, eachElement, expectElement } from 'codeceptjs/els'
+import { expect } from 'chai'
 
 Scenario('checkout flow', async ({ I }) => {
   // Use I.* for navigation and high-level actions
@@ -28,7 +29,7 @@ Scenario('checkout flow', async ({ I }) => {
   // Use element-based for detailed validation
   await element('.cart-summary', async cart => {
     const total = await cart.getAttribute('data-total')
-    assert greaterThan(total, 0)
+    expect(parseFloat(total)).to.be.above(0)
   })
 
   // Continue with I.* actions
@@ -259,6 +260,7 @@ Execute a function on the first matching element.
 
 ```js
 import { element } from 'codeceptjs/els'
+import { expect } from 'chai'
 
 // Basic usage
 await element('.submit-button', async btn => {
@@ -271,7 +273,7 @@ await element(
   '.submit-button',
   async btn => {
     const enabled = await btn.isEnabled()
-    assert.ok(enabled, 'Button should be enabled')
+    expect(enabled).to.be.true
   }
 )
 
@@ -374,6 +376,7 @@ await expectAllElements('a', async link => {
 
 ```js
 import { element, eachElement } from 'codeceptjs/els'
+import { expect } from 'chai'
 
 Scenario('validate form fields', async ({ I }) => {
   I.amOnPage('/register')
@@ -391,7 +394,7 @@ Scenario('validate form fields', async ({ I }) => {
   await element('#email', async input => {
     await input.type('test@example.com')
     const value = await input.getValue()
-    assert.include(value, '@')
+    expect(value).to.include('@')
   })
 
   I.click('Submit')
@@ -444,6 +447,7 @@ Scenario('wait for dynamic content', async ({ I }) => {
 
 ```js
 import { element, eachElement } from 'codeceptjs/els'
+import { expect } from 'chai'
 
 Scenario('calculate cart total', async ({ I }) => {
   I.amOnPage('/cart')
@@ -461,7 +465,7 @@ Scenario('calculate cart total', async ({ I }) => {
   await element('.cart-total', async totalEl => {
     const displayedTotal = await totalEl.getText()
     const displayedValue = parseFloat(displayedTotal.replace('$', ''))
-    assert.equal(displayedValue, total, 'Cart total mismatch')
+    expect(displayedValue).to.equal(total)
   })
 })
 ```
@@ -470,6 +474,7 @@ Scenario('calculate cart total', async ({ I }) => {
 
 ```js
 import { element, eachElement, expectAnyElement } from 'codeceptjs/els'
+import { expect } from 'chai'
 
 Scenario('filter products by price', async ({ I }) => {
   I.amOnPage('/products')
@@ -480,7 +485,7 @@ Scenario('filter products by price', async ({ I }) => {
     const priceEl = await product.$('.price')
     const priceText = await priceEl.getText()
     const price = parseFloat(priceText.replace('$', ''))
-    assert lessThan(price, 100, 'Product should be under $100')
+    expect(price).to.be.below(100)
   })
 
   // Check at least one product exists
