@@ -1,4 +1,4 @@
-import { Within } from '../../lib/effects.js'
+import { within } from '../../lib/effects.js'
 
 Feature('within', { retries: 3 })
 
@@ -127,42 +127,42 @@ Scenario('should return a value @WebDriverIO @Puppeteer @Playwright', async ({ I
   I.see('[rus] => First')
 }).retry(0)
 
-Scenario('Within begin/end on form @Playwright', ({ I }) => {
+Scenario('within begin/leave on form @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467')
   I.see('TEST TEST')
-  Within({ css: '[name=form2]' })
+  const area = within({ css: '[name=form2]' })
   I.checkOption('Yes')
   I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' })
-  Within()
+  area.leave()
   I.seeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' })
   I.dontSeeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' })
 })
 
-Scenario('Within begin/end on iframe @Playwright', ({ I }) => {
+Scenario('within begin/leave on iframe @Playwright', ({ I }) => {
   I.amOnPage('/iframe')
-  Within({ frame: 'iframe' })
+  const area = within({ frame: 'iframe' })
   I.fillField('rus', 'Updated')
   I.see('Sign in!')
-  Within()
+  area.leave()
   I.see('Iframe test')
   I.dontSee('Sign in!')
 })
 
-Scenario('Within auto-end previous context @Playwright', ({ I }) => {
+Scenario('within auto-end previous context @Playwright', ({ I }) => {
   I.amOnPage('/form/bug1467')
-  Within({ css: '[name=form2]' })
+  within({ css: '[name=form2]' })
   I.checkOption('Yes')
-  Within({ css: '[name=form1]' })
+  within({ css: '[name=form1]' })
   I.checkOption('Yes')
-  Within()
+  within()
   I.seeCheckboxIsChecked({ css: 'form[name=form2] input[name=first_test_radio]' })
   I.seeCheckboxIsChecked({ css: 'form[name=form1] input[name=first_test_radio]' })
 })
 
-Scenario('Within callback with uppercase @Playwright', async ({ I }) => {
+Scenario('within callback @Playwright', async ({ I }) => {
   I.amOnPage('/form/bug1467')
   I.see('TEST TEST')
-  await Within({ css: '[name=form2]' }, async () => {
+  await within({ css: '[name=form2]' }, async () => {
     await I.checkOption('Yes')
     await I.seeCheckboxIsChecked({ css: 'input[name=first_test_radio]' })
   })

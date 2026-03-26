@@ -29,7 +29,7 @@ describe('CodeceptJS within', function () {
       const withoutGeneratorList = grepLines(lines, 'Check within without generator', 'Check within with generator. Yield is first in order')
       testStatus = withoutGeneratorList.find(line => line.includes('OK'))
       testStatus.should.include('OK')
-      const stepsList = withoutGeneratorList.filter(line => !line.includes('OK') && !line.includes('[deprecated]'))
+      const stepsList = withoutGeneratorList.filter(line => !line.includes('OK'))
       stepsList.should.eql(
         ['Scenario()', 'I small promise ', 'I small promise was finished ', 'I hey! i am within begin. i get blabla ', 'Within "blabla"', 'I small promise ', 'I small promise was finished ', 'I oh! i am within end( '],
         'check steps execution order',

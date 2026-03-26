@@ -12,7 +12,7 @@ Effects are functions that can modify scenario flow. They provide ways to handle
 Effects can be imported directly from CodeceptJS:
 
 ```js
-import { tryTo, retryTo, Within } from 'codeceptjs/effects'
+import { tryTo, retryTo, within } from 'codeceptjs/effects'
 ```
 
 > 📝 Note: Prior to v3.7, `tryTo` and `retryTo` were available globally via plugins. This behavior is deprecated and will be removed in v4.0.
@@ -76,36 +76,34 @@ await retryTo(tries => {
 }, 3)
 ```
 
-## Within
+## within
 
-The `Within` effect scopes actions to a specific element or iframe. It supports both a begin/end pattern and a callback pattern:
+The `within` effect scopes actions to a specific element or iframe. It supports both a begin/leave pattern and a callback pattern:
 
 ```js
-import { Within } from 'codeceptjs/effects'
+import { within } from 'codeceptjs/effects'
 
-// Begin/end pattern
-Within('.modal')
+// Begin/leave pattern
+const area = within('.modal')
 I.see('Modal title')
 I.click('Close')
-Within()
+area.leave()
 
 // Callback pattern
-Within('.modal', () => {
+within('.modal', () => {
   I.see('Modal title')
   I.click('Close')
 })
 ```
 
-See the full [Within documentation](/within) for details on iframes, page objects, and `await` usage.
-
-> The lowercase `within()` is deprecated. Use `Within` instead.
+See the full [within documentation](/within) for details on iframes, page objects, and `await` usage.
 
 ## Usage with TypeScript
 
 Effects are fully typed and work well with TypeScript:
 
 ```ts
-import { tryTo, retryTo, Within } from 'codeceptjs/effects'
+import { tryTo, retryTo, within } from 'codeceptjs/effects'
 
 const success = await tryTo(async () => {
   await I.see('Element')
