@@ -12,11 +12,7 @@ Effects are functions that can modify scenario flow. They provide ways to handle
 Effects can be imported directly from CodeceptJS:
 
 ```js
-// ESM
 import { tryTo, retryTo, within } from 'codeceptjs/effects'
-
-// CommonJS
-const { tryTo, retryTo, within } = require('codeceptjs/effects')
 ```
 
 > 📝 Note: Prior to v3.7, `tryTo` and `retryTo` were available globally via plugins. This behavior is deprecated and will be removed in v4.0.
@@ -82,58 +78,25 @@ await retryTo(tries => {
 
 ## within
 
-The `within` effect scopes all actions inside it to a specific element on the page — useful when working with repeated UI components or narrowing interaction to a specific section.
+The `within` effect scopes actions to a specific element or iframe. It supports both a begin/leave pattern and a callback pattern:
 
 ```js
 import { within } from 'codeceptjs/effects'
 
-// inside a test...
-await within('.js-signup-form', () => {
-  I.fillField('user[login]', 'User')
-  I.fillField('user[email]', 'user@user.com')
-  I.fillField('user[password]', 'user@user.com')
-  I.click('button')
-})
-I.see('There were problems creating your account.')
-```
+// Begin/leave pattern
+const area = within('.modal')
+I.see('Modal title')
+I.click('Close')
+area.leave()
 
-> ⚠ `within` can cause problems when used incorrectly. If you see unexpected behavior, refactor to use the context parameter on individual actions instead (e.g. `I.click('Login', '.nav')`). Keep `within` for the simplest cases.
-
-> ⚠ Since `within` returns a Promise, always `await` it when you need its return value.
-
-### IFrames
-
-Use a `frame` locator to scope actions inside an iframe:
-
-```js
-await within({ frame: '#editor' }, () => {
-  I.see('Page')
-  I.fillField('Body', 'Hello world')
+// Callback pattern
+within('.modal', () => {
+  I.see('Modal title')
+  I.click('Close')
 })
 ```
 
-Nested iframes _(WebDriver & Puppeteer only)_:
-
-```js
-await within({ frame: ['.content', '#editor'] }, () => {
-  I.see('Page')
-})
-```
-
-> ℹ IFrames can also be accessed via `I.switchTo` command.
-
-### Returning Values
-
-`within` can return a value for use in the scenario:
-
-```js
-const val = await within('#sidebar', () => {
-  return I.grabTextFrom({ css: 'h1' })
-})
-I.fillField('Description', val)
-```
-
-When running steps inside a `within` block, they will be shown indented in the output.
+See the full [within documentation](/within) for details on iframes, page objects, and `await` usage.
 
 ## Usage with TypeScript
 
@@ -146,5 +109,3 @@ const success = await tryTo(async () => {
   await I.see('Element')
 })
 ```
-
-This documentation covers the main effects functionality while providing practical examples and important notes about deprecation and future changes. Let me know if you'd like me to expand any section or add more examples!

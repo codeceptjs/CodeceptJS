@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { devices } from 'playwright'
-import { within } from 'codeceptjs/effects'
+import { within } from '../../lib/effects.js'
 import event from 'codeceptjs'
 
 const output_dir = global.output_dir || './output'
