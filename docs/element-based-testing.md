@@ -19,7 +19,6 @@ CodeceptJS uniquely combines both styles. You can freely mix `I.*` actions with 
 ```js
 // Import element functions
 import { element, eachElement, expectElement } from 'codeceptjs/els'
-import { expect } from 'chai'
 
 Scenario('checkout flow', async ({ I }) => {
   // Use I.* for navigation and high-level actions
@@ -29,13 +28,15 @@ Scenario('checkout flow', async ({ I }) => {
   // Use element-based for detailed validation
   await element('.cart-summary', async cart => {
     const total = await cart.getAttribute('data-total')
-    expect(parseFloat(total)).to.be.above(0)
+    console.log('Cart total:', total)
   })
 
   // Continue with I.* actions
   I.click('Checkout')
 })
 ```
+
+This hybrid approach gives you the best of both worlds - readable high-level actions mixed with low-level control when needed.
 
 ## Quick Comparison
 
@@ -80,7 +81,19 @@ Scenario('form validation', async ({ I }) => {
 })
 ```
 
-### Using Element Chaining
+### When to Use Each
+
+| Use `I.*` actions when... | Use element-based when... |
+|---------------------------|---------------------------|
+| Simple navigation and clicks | Complex DOM traversal |
+| Standard form interactions | Custom validation logic |
+| Built-in assertions suffice | Need specific element properties |
+| Readability is priority | Working with element collections |
+| Single-step operations | Chaining multiple operations on same element |
+
+## Element Chaining
+
+Element-based testing allows you to chain queries to find child elements, reducing redundant lookups:
 
 ```js
 import { element } from 'codeceptjs/els'
@@ -102,277 +115,11 @@ Scenario('product list', async ({ I }) => {
 })
 ```
 
-## WebElement API Reference
-
-Elements returned by `element()`, `eachElement()`, and `expectElement()` functions are wrapped in a `WebElement` class that provides a consistent API across all helpers (Playwright, WebDriver, Puppeteer).
-
-### Getting Element Information
-
-#### `getText()`
-Get the visible text content of an element.
-
-```js
-await element('.status', async el => {
-  const text = await el.getText()
-  console.log(text) // "Active"
-})
-```
-
-#### `getAttribute(name)`
-Get the value of an attribute.
-
-```js
-await element('input', async el => {
-  const type = await el.getAttribute('type')
-  const placeholder = await el.getAttribute('placeholder')
-})
-```
-
-#### `getProperty(name)`
-Get the value of a JavaScript property.
-
-```js
-await element('input', async el => {
-  const value = await el.getProperty('value')
-  const checked = await el.getProperty('checked')
-})
-```
-
-#### `getInnerHTML()`
-Get the inner HTML of an element.
-
-```js
-await element('.content', async el => {
-  const html = await el.getInnerHTML()
-})
-```
-
-#### `getValue()`
-Get the current value of an input element.
-
-```js
-await element('#username', async el => {
-  const value = await el.getValue()
-})
-```
-
-### Checking Element State
-
-#### `isVisible()`
-Check if an element is visible.
-
-```js
-await element('.modal', async el => {
-  const visible = await el.isVisible()
-  if (visible) {
-    console.log('Modal is shown')
-  }
-})
-```
-
-#### `isEnabled()`
-Check if an element is enabled (typically for inputs and buttons).
-
-```js
-await element('button', async el => {
-  const enabled = await el.isEnabled()
-  if (!enabled) {
-    throw new Error('Button should be enabled')
-  }
-})
-```
-
-#### `exists()`
-Check if an element exists in the DOM.
-
-```js
-await element('.notification', async el => {
-  const exists = await el.exists()
-})
-```
-
-### Element Interactions
-
-#### `click(options)`
-Click the element.
-
-```js
-await element('.submit-btn', async el => {
-  await el.click()
-})
-
-// With options (Playwright/Puppeteer)
-await element('.btn', async el => {
-  await el.click({ button: 'right' })
-})
-```
-
-#### `type(text, options)`
-Type text into an input element.
-
-```js
-await element('#search', async el => {
-  await el.type('search query')
-})
-```
-
-### Element Location
-
-#### `getBoundingBox()`
-Get the position and size of an element.
-
-```js
-await element('.hero', async el => {
-  const box = await el.getBoundingBox()
-  console.log(`x: ${box.x}, y: ${box.y}, width: ${box.width}, height: ${box.height}`)
-})
-```
-
-### Child Element Queries
-
-#### `$(locator)`
-Find the first child element matching the locator.
-
-```js
-await element('.container', async container => {
-  const button = await container.$('button')
-  await button.click()
-})
-```
-
-#### `$$(locator)`
-Find all child elements matching the locator.
-
-```js
-await element('.list', async list => {
-  const items = await list.$$('.item')
-  for (const item of items) {
-    console.log(await item.getText())
-  }
-})
-```
-
-## Element Functions
-
-### `element(locator, fn)`
-
-Execute a function on the first matching element.
-
-```js
-import { element } from 'codeceptjs/els'
-import { expect } from 'chai'
-
-// Basic usage
-await element('.submit-button', async btn => {
-  await btn.click()
-})
-
-// With custom purpose for better logging
-await element(
-  'check button state',
-  '.submit-button',
-  async btn => {
-    const enabled = await btn.isEnabled()
-    expect(enabled).to.be.true
-  }
-)
-
-// Return values
-const text = await element('.title', async el => {
-  return await el.getText()
-})
-console.log(text)
-```
-
-### `eachElement(locator, fn)`
-
-Execute a function on each matching element.
-
-```js
-import { eachElement } from 'codeceptjs/els'
-
-// Iterate over list items
-await eachElement('.todo-item', async (item, index) => {
-  const text = await item.getText()
-  console.log(`Item ${index}: ${text}`)
-})
-
-// Validate all checkboxes are checked
-await eachElement('input[type="checkbox"]', async checkbox => {
-  const checked = await checkbox.getProperty('checked')
-  if (!checked) {
-    throw new Error('Found unchecked checkbox')
-  }
-})
-```
-
-### `expectElement(locator, fn)`
-
-Assert that the first matching element meets a condition.
-
-```js
-import { expectElement } from 'codeceptjs/els'
-
-// Check if button is enabled
-await expectElement('.submit-btn', async btn => {
-  return await btn.isEnabled()
-})
-
-// Verify element has specific attribute
-await expectElement('#user-profile', async el => {
-  const role = await el.getAttribute('role')
-  return role === 'button'
-})
-
-// Check text content
-await expectElement('.header', async el => {
-  const text = await el.getText()
-  return text === 'Welcome'
-})
-```
-
-### `expectAnyElement(locator, fn)`
-
-Assert that at least one matching element meets a condition.
-
-```js
-import { expectAnyElement } from 'codeceptjs/els'
-
-// Check if any product is in stock
-await expectAnyElement('.product-item', async product => {
-  const status = await product.getAttribute('data-status')
-  return status === 'in-stock'
-})
-
-// Verify at least one button is enabled
-await expectAnyElement('.action-btn', async btn => {
-  return await btn.isEnabled()
-})
-```
-
-### `expectAllElements(locator, fn)`
-
-Assert that all matching elements meet a condition.
-
-```js
-import { expectAllElements } from 'codeceptjs/els'
-
-// Verify all required fields have the required attribute
-await expectAllElements('.required-field', async field => {
-  const required = await field.getAttribute('required')
-  return required !== null
-})
-
-// Check all links have valid href
-await expectAllElements('a', async link => {
-  const href = await link.getAttribute('href')
-  return href && href.startsWith('http')
-})
-```
-
 ## Real-World Examples
 
 ### Example 1: Form Validation
+
+Validate complex form requirements that built-in methods don't cover:
 
 ```js
 import { element, eachElement } from 'codeceptjs/els'
@@ -381,7 +128,7 @@ import { expect } from 'chai'
 Scenario('validate form fields', async ({ I }) => {
   I.amOnPage('/register')
 
-  // Check all required fields are marked
+  // Check all required fields are properly marked
   await eachElement('[required]', async field => {
     const ariaRequired = await field.getAttribute('aria-required')
     const required = await field.getAttribute('required')
@@ -402,6 +149,8 @@ Scenario('validate form fields', async ({ I }) => {
 ```
 
 ### Example 2: Data Table Processing
+
+Work with tabular data using iteration and child element queries:
 
 ```js
 import { eachElement, element } from 'codeceptjs/els'
@@ -427,6 +176,8 @@ Scenario('verify table data', async ({ I }) => {
 
 ### Example 3: Dynamic Content Waiting
 
+Wait for and validate dynamic content with custom conditions:
+
 ```js
 import { element, expectElement } from 'codeceptjs/els'
 
@@ -435,8 +186,8 @@ Scenario('wait for dynamic content', async ({ I }) => {
   I.fillField('query', 'test')
   I.click('Search')
 
-  // Wait for results with custom timeout
-  const hasResults = await expectElement('.search-results', async results => {
+  // Wait for results with custom validation
+  await expectElement('.search-results', async results => {
     const items = await results.$$('.result-item')
     return items.length > 0
   })
@@ -444,6 +195,8 @@ Scenario('wait for dynamic content', async ({ I }) => {
 ```
 
 ### Example 4: Shopping Cart Operations
+
+Calculate and verify cart totals by iterating through items:
 
 ```js
 import { element, eachElement } from 'codeceptjs/els'
@@ -461,7 +214,7 @@ Scenario('calculate cart total', async ({ I }) => {
     total += price
   })
 
-  // Verify displayed total matches
+  // Verify displayed total matches calculated sum
   await element('.cart-total', async totalEl => {
     const displayedTotal = await totalEl.getText()
     const displayedValue = parseFloat(displayedTotal.replace('$', ''))
@@ -471,6 +224,8 @@ Scenario('calculate cart total', async ({ I }) => {
 ```
 
 ### Example 5: List Filtering and Validation
+
+Validate filtered results meet specific criteria:
 
 ```js
 import { element, eachElement, expectAnyElement } from 'codeceptjs/els'
@@ -493,9 +248,34 @@ Scenario('filter products by price', async ({ I }) => {
 })
 ```
 
-## Portability Across Helpers
+## Best Practices
 
-The WebElement wrapper provides a consistent API whether you're using Playwright, WebDriver, or Puppeteer. Your element-based tests will work the same way across all helpers:
+1. **Mix styles appropriately** - Use `I.*` for navigation and high-level actions, element-based for complex validation
+
+2. **Use descriptive purposes** - Add purpose strings for better debugging logs:
+   ```js
+   await element(
+     'verify discount applied',
+     '.price',
+     async el => { /* ... */ }
+   )
+   ```
+
+3. **Reuse element references** - Chain `$(locator)` to avoid redundant lookups
+
+4. **Handle empty results** - Always check if elements exist before accessing properties
+
+5. **Prefer standard assertions** - Use `I.see()`, `I.dontSee()` when possible for readability
+
+6. **Consider page objects** - Combine with Page Objects for reusable element logic
+
+## API Reference
+
+For complete API documentation of all element functions and the WebElement class, see [Element Access](els.md).
+
+## Portability
+
+Elements are wrapped in a `WebElement` class that provides a consistent API across all helpers (Playwright, WebDriver, Puppeteer). Your element-based tests will work the same way regardless of which helper you're using:
 
 ```js
 // This test works identically with Playwright, WebDriver, or Puppeteer
@@ -512,18 +292,3 @@ Scenario('portable test', async ({ I }) => {
   })
 })
 ```
-
-## Best Practices
-
-1. **Mix styles appropriately** - Use `I.*` for navigation and high-level actions, element-based for complex validation
-2. **Use descriptive purposes** - Add purpose strings for better debugging logs
-3. **Reuse element references** - Chain `$(locator)` to avoid redundant lookups
-4. **Handle empty results** - Always check if elements exist before accessing properties
-5. **Prefer standard assertions** - Use `I.see()`, `I.dontSee()` when possible for readability
-6. **Consider page objects** - Combine with Page Objects for reusable element logic
-
-## Limitations
-
-- Element-based tests access helper-specific features, making them less portable than pure `I.*` tests
-- The WebElement wrapper adds a small performance overhead
-- Some helper-specific features may not be available through the unified API
