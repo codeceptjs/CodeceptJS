@@ -293,187 +293,36 @@ Scenario('validate all elements meet criteria', async ({ I }) => {
 
 ## WebElement API
 
-Elements passed to your callbacks are wrapped in a `WebElement` class that provides a consistent API across all helpers. This ensures your element-based tests work the same way whether you're using Playwright, WebDriver, or Puppeteer.
+Elements passed to your callbacks are wrapped in a `WebElement` class that provides a consistent API across all helpers. For complete documentation of the WebElement API, see [WebElement](WebElement.md).
 
-### Getting Element Information
-
-#### `getText()`
-
-Get the visible text content of an element.
+Quick reference of available methods:
 
 ```js
-await element('.status', async el => {
+await element('.my-element', async el => {
+  // Get element information
   const text = await el.getText()
-  console.log(text) // "Active"
-})
-```
-
-#### `getAttribute(name)`
-
-Get the value of an attribute.
-
-```js
-await element('input', async el => {
-  const type = await el.getAttribute('type')
-  const placeholder = await el.getAttribute('placeholder')
-})
-```
-
-#### `getProperty(name)`
-
-Get the value of a JavaScript property.
-
-```js
-await element('input', async el => {
-  const value = await el.getProperty('value')
-  const checked = await el.getProperty('checked')
-})
-```
-
-#### `getInnerHTML()`
-
-Get the inner HTML of an element.
-
-```js
-await element('.content', async el => {
+  const attr = await el.getAttribute('data-value')
+  const prop = await el.getProperty('value')
   const html = await el.getInnerHTML()
-})
-```
 
-#### `getValue()`
-
-Get the current value of an input element.
-
-```js
-await element('#username', async el => {
-  const value = await el.getValue()
-})
-```
-
-### Checking Element State
-
-#### `isVisible()`
-
-Check if an element is visible.
-
-```js
-await element('.modal', async el => {
+  // Check state
   const visible = await el.isVisible()
-  if (visible) {
-    console.log('Modal is shown')
-  }
-})
-```
-
-#### `isEnabled()`
-
-Check if an element is enabled (typically for inputs and buttons).
-
-```js
-await element('button', async el => {
   const enabled = await el.isEnabled()
-  if (!enabled) {
-    throw new Error('Button should be enabled')
-  }
-})
-```
-
-#### `exists()`
-
-Check if an element exists in the DOM.
-
-```js
-await element('.notification', async el => {
   const exists = await el.exists()
-})
-```
 
-### Element Interactions
-
-#### `click(options)`
-
-Click the element.
-
-```js
-await element('.submit-btn', async el => {
+  // Interactions
   await el.click()
-})
+  await el.type('text')
 
-// With options (Playwright/Puppeteer)
-await element('.btn', async el => {
-  await el.click({ button: 'right' })
-})
-```
+  // Child elements
+  const child = await el.$('.child')
+  const children = await el.$$('.child')
 
-#### `type(text, options)`
-
-Type text into an input element.
-
-```js
-await element('#search', async el => {
-  await el.type('search query')
-})
-```
-
-### Element Location
-
-#### `getBoundingBox()`
-
-Get the position and size of an element.
-
-```js
-await element('.hero', async el => {
+  // Position
   const box = await el.getBoundingBox()
-  console.log(`x: ${box.x}, y: ${box.y}, width: ${box.width}, height: ${box.height}`)
-})
-```
 
-### Child Element Queries
-
-#### `$(locator)`
-
-Find the first child element matching the locator.
-
-```js
-await element('.container', async container => {
-  const button = await container.$('button')
-  await button.click()
-})
-```
-
-#### `$$(locator)`
-
-Find all child elements matching the locator.
-
-```js
-await element('.list', async list => {
-  const items = await list.$$('.item')
-  for (const item of items) {
-    console.log(await item.getText())
-  }
-})
-```
-
-### Helper-Specific Methods
-
-#### `getHelper()`
-
-Get the underlying helper instance.
-
-```js
-await element('.my-element', async el => {
+  // Native access
   const helper = el.getHelper()
-  // Access helper-specific features if needed
-})
-```
-
-#### `getNativeElement()`
-
-Get the raw native element from the underlying browser library (Playwright ElementHandle, WebDriver WebElement, etc.).
-
-```js
-await element('.my-element', async el => {
   const native = el.getNativeElement()
-  // Use helper-specific APIs directly
 })
 ```
