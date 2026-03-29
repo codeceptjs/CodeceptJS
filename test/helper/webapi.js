@@ -2332,4 +2332,61 @@ export function tests() {
       expect(err.message).to.include('Use a more specific locator')
     })
   })
+
+  describe('#elementIndex step option', () => {
+    afterEach(() => {
+      store.currentStep = null
+      I.options.strict = false
+    })
+
+    it('should click nth element with positive index', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 2 } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should click last element with -1', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: -1 } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should support "first" alias', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 'first' } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should support "last" alias', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 'last' } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should ignore elementIndex when only one element found', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 5 } }
+      await I.click('#first-link')
+    })
+
+    it('should skip strict mode when elementIndex is set', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      store.currentStep = { opts: { elementIndex: 1 } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should throw if elementIndex out of bounds with multiple elements', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 100 } }
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.message).to.include('elementIndex')
+    })
+  })
 }
