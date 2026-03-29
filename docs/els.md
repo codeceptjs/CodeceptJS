@@ -1,13 +1,15 @@
 ## Element Access
 
-The `els` module provides low-level element manipulation functions for CodeceptJS tests, allowing for more granular control over element interactions and assertions. However, because element representation differs between frameworks, tests using element functions are not portable between helpers. So if you set to use Playwright you won't be able to witch to WebDriver with one config change in CodeceptJS.
+The `els` module provides low-level element manipulation functions for CodeceptJS tests, allowing for more granular control over element interactions and assertions. Elements are wrapped in a unified `WebElement` class that provides a consistent API across all helpers (Playwright, WebDriver, Puppeteer).
+
+> **Note:** For a comprehensive guide on element-based testing patterns and best practices, see [Element-Based Testing](element-based-testing.md).
 
 ### Usage
 
 Import the els functions in your test file:
 
 ```js
-const { element, eachElement, expectElement, expectAnyElement, expectAllElements } = require('codeceptjs/els');
+import { element, eachElement, expectElement, expectAnyElement, expectAllElements } from 'codeceptjs/els'
 ```
 
 ## element
@@ -26,7 +28,7 @@ element(locator, fn);
 
 - `purpose` (optional) - A string describing the operation being performed. If omitted, a default purpose will be generated from the function.
 - `locator` - A locator string/object to find the element(s).
-- `fn` - An async function that receives the element as its argument and performs the desired operation. `el` argument represents an element of an underlying engine used: Playwright, WebDriver, or Puppeteer.
+- `fn` - An async function that receives the element as its argument and performs the desired operation. `el` argument is a `WebElement` wrapper providing a consistent API across all helpers.
 
 ### Returns
 
@@ -104,8 +106,8 @@ Scenario('my test', async ({ I }) => {
 
   // Or simply check if all checkboxes are checked
   await eachElement('input[type="checkbox"]', async el => {
-    const isChecked = await el.isSelected();
-    if (!isChecked) {
+    const checked = await el.getProperty('checked');
+    if (!checked) {
       throw new Error('Found unchecked checkbox');
     }
   });
@@ -263,7 +265,8 @@ Scenario('validate all elements meet criteria', async ({ I }) => {
 
   // Check if all checkboxes in a form are checked
   await expectAllElements('input[type="checkbox"]', async el => {
-    return await el.isSelected();
+    const checked = await el.getProperty('checked');
+    return checked === true;
   });
 
   // Verify all items in a list have non-empty text
@@ -287,3 +290,39 @@ Scenario('validate all elements meet criteria', async ({ I }) => {
 - The provided callback must be an async function that returns a boolean
 - The assertion message will include which element number failed (e.g., "element #2 of...")
 - Throws an error if no helper with `_locate` method is enabled
+
+## WebElement API
+
+Elements passed to your callbacks are wrapped in a `WebElement` class that provides a consistent API across all helpers. For complete documentation of the WebElement API, see [WebElement](WebElement.md).
+
+Quick reference of available methods:
+
+```js
+await element('.my-element', async el => {
+  // Get element information
+  const text = await el.getText()
+  const attr = await el.getAttribute('data-value')
+  const prop = await el.getProperty('value')
+  const html = await el.getInnerHTML()
+
+  // Check state
+  const visible = await el.isVisible()
+  const enabled = await el.isEnabled()
+  const exists = await el.exists()
+
+  // Interactions
+  await el.click()
+  await el.type('text')
+
+  // Child elements
+  const child = await el.$('.child')
+  const children = await el.$$('.child')
+
+  // Position
+  const box = await el.getBoundingBox()
+
+  // Native access
+  const helper = el.getHelper()
+  const native = el.getNativeElement()
+})
+```
