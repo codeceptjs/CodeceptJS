@@ -82,14 +82,38 @@ When a test fails in strict mode, the error includes a `fetchDetails()` method t
 // Use a more specific locator or grabWebElements() to work with multiple elements
 ```
 
-When you do need to target one of multiple matches in strict mode, `elementIndex` overrides the check — no error is thrown because you've explicitly chosen which element to use:
+Strict mode is supported in **Playwright**, **Puppeteer**, and **WebDriver** helpers.
+
+### Per-Step Strict Mode with `exact`
+
+You don't have to enable strict mode globally. Use `exact: true` to enforce it on a single step — handy when most of your tests are fine with default behavior but a particular action needs to be precise:
+
+```js
+import step from 'codeceptjs/steps'
+
+I.click('a', step.opts({ exact: true }))
+// throws MultipleElementsFound if more than one link matches
+```
+
+`strictMode: true` is an alias if you prefer a more descriptive name:
+
+```js
+I.click('a', step.opts({ strictMode: true }))
+```
+
+It works the other way too. If your helper has `strict: true` globally but you need to relax it for one step, use `exact: false`:
+
+```js
+// strict: true in config, but this step allows multiple matches
+I.click('a', step.opts({ exact: false }))
+```
+
+And when you know there are multiple matches and want a specific one, `elementIndex` also overrides the strict check — no error is thrown because you've explicitly chosen which element to use:
 
 ```js
 // strict: true in config, but this works without error
 I.click('a', step.opts({ elementIndex: 2 }))
 ```
-
-Strict mode is supported in **Playwright**, **Puppeteer**, and **WebDriver** helpers.
 
 ## Summary
 
