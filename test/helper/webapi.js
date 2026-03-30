@@ -2420,5 +2420,12 @@ export function tests() {
       store.currentStep = { opts: { exact: true } }
       await I.click('#first-link')
     })
+
+    it('should cancel strict mode with exact: false', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      store.currentStep = { opts: { exact: false } }
+      await I.click('#grab-multiple a')
+    })
   })
 }
