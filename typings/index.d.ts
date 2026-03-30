@@ -745,3 +745,22 @@ declare module 'codeceptjs/effects' {
   export const retryTo: RetryTo
   export const hopeThat: HopeThat
 }
+
+declare module 'codeceptjs/steps' {
+  const step: {
+    opts(opts: CodeceptJS.StepOptions): CodeceptJS.StepConfig;
+    timeout(timeout: number): CodeceptJS.StepConfig;
+    retry(retry: number): CodeceptJS.StepConfig;
+    stepOpts(opts: CodeceptJS.StepOptions): CodeceptJS.StepConfig;
+    stepTimeout(timeout: number): CodeceptJS.StepConfig;
+    stepRetry(retry: number): CodeceptJS.StepConfig;
+    section(name: string): any;
+    endSection(): any;
+    Section(name: string): any;
+    EndSection(): any;
+    Given(): any;
+    When(): any;
+    Then(): any;
+  }
+  export default step
+}
