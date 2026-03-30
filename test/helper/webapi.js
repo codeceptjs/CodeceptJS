@@ -2388,5 +2388,37 @@ export function tests() {
       expect(err).to.exist
       expect(err.message).to.include('elementIndex')
     })
+
+    it('should enable strict mode per-step with exact: true', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { exact: true } }
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should enable strict mode per-step with strictMode: true', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { strictMode: true } }
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should not throw with exact: true when single element found', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { exact: true } }
+      await I.click('#first-link')
+    })
   })
 }
