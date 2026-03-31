@@ -2331,6 +2331,55 @@ export function tests() {
       expect(err.message).to.include('/html')
       expect(err.message).to.include('Use a more specific locator')
     })
+
+    it('should throw NonFocusedType error when typing without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      let err
+      try {
+        await I.type('test')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('NonFocusedType')
+      expect(err.message).to.include('No element is in focus')
+    })
+
+    it('should not throw NonFocusedType when element is focused', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.click('Name')
+      await I.type('test')
+      await I.seeInField('Name', 'test')
+    })
+
+    it('should throw NonFocusedType for Ctrl+A without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      let err
+      try {
+        await I.pressKey(['Control', 'A'])
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('NonFocusedType')
+      expect(err.message).to.include('No element is in focus')
+    })
+
+    it('should not throw for Escape without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.pressKey('Escape')
+    })
+
+    it('should not throw for Ctrl+A when element is focused', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.click('Name')
+      await I.pressKey(['Control', 'A'])
+    })
   })
 
   describe('#elementIndex step option', () => {
