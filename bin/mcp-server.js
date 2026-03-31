@@ -12,7 +12,8 @@ import path from 'path'
 import crypto from 'crypto'
 import { spawn } from 'child_process'
 import { createRequire } from 'module'
-import { existsSync, readdirSync } from 'fs'
+import { existsSync, readdirSync, writeFileSync } from 'fs'
+import { mkdirp } from 'mkdirp'
 
 const require = createRequire(import.meta.url)
 
@@ -439,12 +440,38 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             const helper = Object.values(helpers)[0]
             if (helper) {
               try {
-                if (helper.grabAriaSnapshot) result.artifacts.aria = await helper.grabAriaSnapshot()
-                if (helper.grabCurrentUrl) result.artifacts.url = await helper.grabCurrentUrl()
-                if (helper.grabBrowserLogs) result.artifacts.consoleLogs = (await helper.grabBrowserLogs()) || []
+                const traceDir = getTraceDir('mcp', 'run_code')
+                mkdirp.sync(traceDir)
+
+                if (helper.grabAriaSnapshot) {
+                  const aria = await helper.grabAriaSnapshot()
+                  const ariaFile = path.join(traceDir, 'aria.txt')
+                  writeFileSync(ariaFile, aria)
+                  result.artifacts.aria = `file://${ariaFile}`
+                }
+
+                if (helper.grabCurrentUrl) {
+                  result.artifacts.url = await helper.grabCurrentUrl()
+                }
+
+                if (helper.grabBrowserLogs) {
+                  const logs = (await helper.grabBrowserLogs()) || []
+                  const logsFile = path.join(traceDir, 'console.json')
+                  writeFileSync(logsFile, JSON.stringify(logs, null, 2))
+                  result.artifacts.consoleLogs = `file://${logsFile}`
+                }
+
                 if (helper.grabSource) {
                   const html = await helper.grabSource()
-                  result.artifacts.html = html.substring(0, 10000) + '...'
+                  const htmlFile = path.join(traceDir, 'page.html')
+                  writeFileSync(htmlFile, html)
+                  result.artifacts.html = `file://${htmlFile}`
+                }
+
+                if (helper.saveScreenshot) {
+                  const screenshotFile = path.join(traceDir, 'screenshot.png')
+                  await helper.saveScreenshot(screenshotFile)
+                  result.artifacts.screenshot = `file://${screenshotFile}`
                 }
               } catch (e) {
                 result.output += ` (Warning: ${e.message})`
