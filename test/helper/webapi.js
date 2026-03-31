@@ -2331,6 +2331,29 @@ export function tests() {
       expect(err.message).to.include('/html')
       expect(err.message).to.include('Use a more specific locator')
     })
+
+    it('should throw NonFocusedType error when typing without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      let err
+      try {
+        await I.type('test')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('NonFocusedType')
+      expect(err.message).to.include('No element is in focus')
+      expect(err.message).to.include('strict mode')
+    })
+
+    it('should not throw NonFocusedType when element is focused', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.click('Name')
+      await I.type('test')
+      await I.seeInField('Name', 'test')
+    })
   })
 
   describe('#elementIndex step option', () => {
