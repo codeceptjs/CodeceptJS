@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import sinon from 'sinon'
 import * as utils from '../../lib/utils.js'
+import store from '../../lib/store.js'
 import playwright from 'playwright'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -302,20 +303,20 @@ describe('utils', () => {
   })
 
   describe('#screenshotOutputFolder', () => {
-    let _oldGlobalOutputDir
-    let _oldGlobalCodeceptDir
+    let _oldOutputDir
+    let _oldCodeceptDir
 
     before(() => {
-      _oldGlobalOutputDir = global.output_dir
-      _oldGlobalCodeceptDir = global.codecept_dir
+      _oldOutputDir = store.outputDir
+      _oldCodeceptDir = store.codeceptDir
 
-      global.output_dir = '/Users/someuser/workbase/project1/test_output'
-      global.codecept_dir = '/Users/someuser/workbase/project1/tests/e2e'
+      store.outputDir = '/Users/someuser/workbase/project1/test_output'
+      store.codeceptDir = '/Users/someuser/workbase/project1/tests/e2e'
     })
 
     after(() => {
-      global.output_dir = _oldGlobalOutputDir
-      global.codecept_dir = _oldGlobalCodeceptDir
+      store.outputDir = _oldOutputDir
+      store.codeceptDir = _oldCodeceptDir
     })
 
     it('returns the joined filename for filename only', () => {
@@ -326,7 +327,7 @@ describe('utils', () => {
     it('returns the given filename for absolute one', () => {
       const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep))
       if (os.platform() === 'win32') {
-        expect(_path).eql(path.resolve(global.codecept_dir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
+        expect(_path).eql(path.resolve(store.codeceptDir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
       } else {
         expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')
       }
