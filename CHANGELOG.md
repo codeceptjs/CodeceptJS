@@ -1,15 +1,28 @@
+## 3.7.8
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+## 🧹 Chores & Maintenance
+
+- Update dependencies (#5510) - by @thomashohn
+- Create gitleaks.yml (#5505) - by @kobenguyent
+- Fix open security issues (#5504) - by @thomashohn
+
 ## 3.7.7
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
 
-🐛 *Bug Fixes*
-* fix: `run-workers --by suite` parallelization broken by test file sorting (#5412) (#5419) - by @mirao
-* fix: support Playwright 1.58+ output format in `codeceptjs info` (#5423) - by @mirao
+🐛 _Bug Fixes_
 
-📖 *Documentation*
-* doc: fix playwright link to external device list (#5450) - by @gimler
+- fix: `run-workers --by suite` parallelization broken by test file sorting (#5412) (#5419) - by @mirao
+- fix: support Playwright 1.58+ output format in `codeceptjs info` (#5423) - by @mirao
+
+📖 _Documentation_
+
+- doc: fix playwright link to external device list (#5450) - by @gimler
 
 ## 🧹 Chores & Maintenance
+
 - chore(deps): keep dependencies in sync (#5494, #5490, #5488, #5477, #5472, #5467, #5463, #5458, #5448) - by @thomashohn
 
 ## 3.7.6
