@@ -18,7 +18,11 @@ The most efficient way would be to allow test to control its data, i.e. the 3rd 
 However, accessing database directly is not a good idea as database vendor, schema and data are used by application internally and are out of scope of acceptance test.
 
 Today all modern web applications have REST or GraphQL API . So it is a good idea to use it to create data for a test and delete it after.
-API is supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 4 helpers for Data Management via REST and GraphQL API.
+API is supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides helpers for Data Management via REST and GraphQL API, as well as **[Data Objects](/pageobjects#data-objects)** — class-based page objects with automatic cleanup via lifecycle hooks.
+
+## Data Objects
+
+For a lightweight, class-based approach to managing test data, see **[Data Objects](/pageobjects#data-objects)** in the Page Objects documentation. Data Objects let you create page object classes that manage API data with automatic cleanup via the `_after()` hook — no factory configuration needed.
 
 ## REST
 

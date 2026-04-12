@@ -40,9 +40,8 @@ Scenario('sample test', ({ I, myPage, mySteps }) => {
 During initialization, you were asked to create a custom steps file. If you accepted this option, you are now able to use the `custom_steps.js` file to extend `I`. See how the `login` method can be added to `I`:
 
 ```js
-module.exports = function() {
+export default function() {
   return actor({
-
     login: function(email, password) {
       this.fillField('Email', email);
       this.fillField('Password', password);
@@ -52,11 +51,11 @@ module.exports = function() {
 }
 ```
 
-> ℹ Instead of `I` you should use `this` in the current context.
+> Instead of `I` you should use `this` in the current context.
 
 ## PageObject
 
-> ✨ CodeceptJS can [generate PageObjects using AI](/ai#generate-pageobjects). It fetches all interactive elements from a page, generates locators and methods page and writes JS code. Generated page object can be tested on the fly within the same browser session.
+> CodeceptJS can [generate PageObjects using AI](/ai#generate-pageobjects). It fetches all interactive elements from a page, generates locators and methods page and writes JS code. Generated page object can be tested on the fly within the same browser session.
 
 If an application has different pages (login, admin, etc) you should use a page object.
 CodeceptJS can generate a template for it with the following command:
@@ -67,46 +66,38 @@ npx codeceptjs gpo
 
 This will create a sample template for a page object and include it in the `codecept.json` config file.
 
-```js
-const { I, otherPage } = inject();
-
-module.exports = {
-
-  // insert your locators and methods here
-}
-```
-
-As you see, the `I` object is available in scope, so you can use it just like you would do in tests.
-A general page object for a login page could look like this:
+**Page objects should be classes.** Use `const { I } = inject()` at the top of the file to access `I` and other page objects. Export the class itself — the DI container will auto-instantiate it.
 
 ```js
-// enable I and another page object
 const { I, registerPage } = inject();
 
-module.exports = {
-
+class LoginPage {
   // setting locators
-  fields: {
+  fields = {
     email: '#user_basic_email',
     password: '#user_basic_password'
-  },
-  submitButton: {css: '#new_user_basic input[type=submit]'},
+  }
+  submitButton = { css: '#new_user_basic input[type=submit]' }
 
   // introducing methods
   sendForm(email, password) {
     I.fillField(this.fields.email, email);
     I.fillField(this.fields.password, password);
     I.click(this.submitButton);
-  },
+  }
 
   register(email, password) {
     // use another page object inside current one
     registerPage.registerUser({ email, password });
   }
 }
+
+export default LoginPage
 ```
 
-You can include this pageobject in a test by its name (defined in `codecept.json`). If you created a `loginPage` object,
+> The `inject()` call at the top returns a lazy proxy. `I` and other page objects resolve at call time, so it's safe to destructure before class definition.
+
+You can include this pageobject in a test by its name (defined in `codecept.conf.js`). If you created a `loginPage` object,
 it should be added to the list of arguments to be included in the test:
 
 ```js
@@ -116,19 +107,18 @@ Scenario('login', ({ I, loginPage }) => {
 });
 ```
 
-Also, you can use `async/await` inside a Page Object:
+You can use `async/await` inside a Page Object:
 
 ```js
 const { I } = inject();
 
-module.exports = {
-
+class MainPage {
   // setting locators
-  container: "//div[@class = 'numbers']",
-  mainItem: {
+  container = "//div[@class = 'numbers']"
+  mainItem = {
     number: ".//div[contains(@class, 'numbers__main-number')]",
     title: ".//div[contains(@class, 'numbers__main-title-block')]"
-  },
+  }
 
   // introducing methods
   async openMainArticle() {
@@ -144,31 +134,28 @@ module.exports = {
     return title;
   }
 }
+
+export default MainPage
 ```
 
 and use them in your tests:
 
 ```js
-Scenario('login2', async ({ I, loginPage, basePage }) => {
+Scenario('open article', async ({ I, mainPage, basePage }) => {
   let title = await mainPage.openMainArticle()
   basePage.pageShouldBeOpened(title)
 });
 ```
 
-Page Objects can be functions, arrays or classes. When declared as classes you can easily extend them in other page objects.
-
-Here is an example of declaring page object as a class:
+Page objects can also be extended via class inheritance:
 
 ```js
-const { expect } = require('chai');
 const { I } = inject();
 
 class AttachFile {
-  constructor() {
-    this.inputFileField = 'input[name=fileUpload]';
-    this.fileSize = '.file-size';
-    this.fileName = '.file-name'
-  }
+  inputFileField = 'input[name=fileUpload]'
+  fileSize = '.file-size'
+  fileName = '.file-name'
 
   async attachFileFrom(path) {
     await I.waitForVisible(this.inputFileField)
@@ -180,20 +167,70 @@ class AttachFile {
     const size = await I.grabTextFrom(this.fileSize)
     expect(size).toEqual(fileSizeText)
   }
+}
 
-  async hasFileSizeInPosition(fileNameText, position) {
-    await I.waitNumberOfVisibleElements(this.fileName, position)
-    const text = await I.grabTextFrom(this.fileName)
-    expect(text[position - 1]).toEqual(fileNameText)
+// Export class for auto-instantiation
+export default AttachFile
+```
+
+> While building complex page objects it is important to keep all `async` functions to be called with `await`. While CodeceptJS allows to run commands synchronously if async function has `I.grab*` or any custom function that returns a promise it must be called with `await`. If you see `UnhandledPromiseRejectionWarning` it might be caused by async page object function that was called without `await`.
+
+## Page Object Lifecycle Hooks
+
+Page objects support lifecycle hooks that mirror the helper hook system. These methods are called automatically by the framework:
+
+| Hook | When it runs |
+|------|-------------|
+| `_before()` | Before the first method call on this page object in a test (lazy, per-test) |
+| `_after()` | After each test, but only if the page object was used in that test |
+| `_beforeSuite()` | Before each Feature/suite (for all page objects that define it) |
+| `_afterSuite()` | After each Feature/suite (for all page objects that define it) |
+
+```js
+const { I } = inject();
+
+class DashboardPage {
+  _before() {
+    I.amOnPage('/dashboard');
+    I.waitForElement('.dashboard-loaded');
+  }
+
+  _after() {
+    I.clearCookie();
+  }
+
+  _afterSuite() {
+    I.sendDeleteRequest('/api/test-data/cleanup');
+  }
+
+  grabStats() {
+    return I.grabTextFrom('.stats');
+  }
+
+  seeWelcomeMessage(name) {
+    I.see(`Welcome, ${name}`, '.header');
   }
 }
 
-// For inheritance
-module.exports = new AttachFile();
-module.exports.AttachFile = AttachFile;
+export default DashboardPage
 ```
 
-> ⚠ While building complex page objects it is important to keep all `async` functions to be called with `await`. While CodeceptJS allows to run commands synchronously if async function has `I.grab*` or any custom function that returns a promise it must be called with `await`. If you see `UnhandledPromiseRejectionWarning` it might be caused by async page object function that was called without `await`.
+```js
+Scenario('see dashboard stats', async ({ I, dashboardPage }) => {
+  // dashboardPage._before() runs automatically before this line
+  dashboardPage.seeWelcomeMessage('John');
+  const stats = await dashboardPage.grabStats();
+  I.say(`Stats: ${stats}`);
+  // dashboardPage._after() runs automatically after test ends
+});
+```
+
+Key behaviors:
+- `_before()` runs **lazily** — only when the page object is first used in a test, not when it's injected
+- `_before()` runs **once per test** — calling multiple methods does not re-trigger it
+- `_after()` is **skipped** for page objects that were never used in the test
+- `_beforeSuite()` and `_afterSuite()` run for **all** page objects that define them, regardless of usage
+- Hook methods are **not** shown as test steps in the output
 
 ## Page Fragments
 
@@ -211,18 +248,18 @@ Methods of page fragments can use `within` block to narrow scope to a root locat
 
 ```js
 const { I } = inject();
-// fragments/modal.js
-module.exports = {
 
-  root: '#modal',
+class Modal {
+  root = '#modal'
 
-  // we are clicking "Accept: inside a popup window
   accept() {
     within(this.root, function() {
       I.click('Accept');
     });
   }
 }
+
+export default Modal
 ```
 
 To use a Page Fragment within a Test Scenario, just inject it into your Scenario:
@@ -242,13 +279,14 @@ To use a Page Fragment within a Page Object, you can use `inject` method to get 
 ```js
 const { I, modal } = inject();
 
-module.exports = {
-  doStuff() {
-    ...
+class CheckoutPage {
+  confirmOrder() {
+    I.click('Place Order');
     modal.accept();
-    ...
   }
 }
+
+export default CheckoutPage
 ```
 
 > PageObject and PageFragment names are declared inside `include` section of `codecept.conf.js`. See [Dependency Injection](#dependency-injection)
@@ -267,17 +305,102 @@ Technically, they are the same as PageObjects. StepObjects can inject PageObject
 ```js
 const { I, userPage, permissionPage } = inject();
 
-module.exports = {
-
+class AdminSteps {
   createUser(name) {
     // action composed from actions of page objects
     userPage.open();
     userPage.create(name);
     permissionPage.activate(name);
   }
+}
 
-};
+export default AdminSteps
 ```
+
+## Data Objects
+
+Data Objects are page objects designed to manage test data via API. They use the REST helper (through `I`) to create data in a test and clean it up automatically via the `_after()` hook.
+
+This is a lightweight alternative to [ApiDataFactory](/helpers/ApiDataFactory) — ideal when you want full control over data creation and cleanup logic without factory configuration.
+
+### Defining a Data Object
+
+```js
+const { I } = inject();
+
+class UserData {
+  constructor() {
+    this._created = [];
+  }
+
+  async createUser(data = {}) {
+    const response = await I.sendPostRequest('/api/users', {
+      name: data.name || 'Test User',
+      email: data.email || `test-${Date.now()}@example.com`,
+      ...data,
+    });
+    this._created.push(response.data.id);
+    return response.data;
+  }
+
+  async createPost(userId, data = {}) {
+    const response = await I.sendPostRequest('/api/posts', {
+      userId,
+      title: data.title || 'Test Post',
+      body: data.body || 'Test body',
+      ...data,
+    });
+    this._created.push({ type: 'post', id: response.data.id });
+    return response.data;
+  }
+
+  async _after() {
+    for (const record of this._created.reverse()) {
+      const id = typeof record === 'object' ? record.id : record;
+      const type = typeof record === 'object' ? record.type : 'user';
+      try {
+        await I.sendDeleteRequest(`/api/${type}s/${id}`);
+      } catch (e) {
+        // cleanup errors should not fail the test
+      }
+    }
+    this._created = [];
+  }
+}
+
+export default UserData
+```
+
+### Configuration
+
+Add the REST helper and the Data Object to your config:
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost', browser: 'chromium' },
+  REST: {
+    endpoint: 'http://localhost/api',
+    defaultHeaders: { 'Content-Type': 'application/json' },
+  },
+},
+include: {
+  I: './steps_file.js',
+  userData: './data/UserData.js',
+}
+```
+
+### Usage in Tests
+
+```js
+Scenario('user sees their profile', async ({ I, userData }) => {
+  const user = await userData.createUser({ name: 'John Doe' });
+  I.amOnPage(`/users/${user.id}`);
+  I.see('John Doe');
+  // userData._after() runs automatically — deletes the created user
+});
+```
+
+Data Objects can use any helper methods available via `I`, including `sendGetRequest`, `sendPutRequest`, and browser actions. They combine the convenience of managed test data with the flexibility of page objects.
 
 ## Dynamic Injection
 
@@ -291,3 +414,27 @@ Scenario('search @grop', ({ I, Data }) => {
 ```
 
 This requires the `./data.js` module and assigns it to a `Data` argument in a test.
+
+## Plain Object Page Objects (Legacy)
+
+Plain object page objects are still supported for backward compatibility:
+
+```js
+const { I } = inject();
+
+module.exports = {
+  fields: {
+    email: '#user_basic_email',
+    password: '#user_basic_password'
+  },
+  submitButton: { css: '#new_user_basic input[type=submit]' },
+
+  sendForm(email, password) {
+    I.fillField(this.fields.email, email);
+    I.fillField(this.fields.password, password);
+    I.click(this.submitButton);
+  }
+}
+```
+
+> Class-based page objects are recommended for new code as they support lifecycle hooks and inheritance.
