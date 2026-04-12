@@ -225,42 +225,143 @@ Step events provide step objects with following fields:
 
 Whenever you execute tests with `--verbose` option you will see registered events and promises executed by a recorder.
 
-## Custom Runner
+## Programmatic API
 
-You can run CodeceptJS tests from your script.
+CodeceptJS can be imported and used programmatically from your scripts. The main entry point is the `Codecept` class, which provides methods to list and execute tests.
+
+### Setup
 
 ```js
-const { codecept: Codecept } = require('codeceptjs');
+import { Codecept, container } from 'codeceptjs';
 
-// define main config
-const config = { 
-  helpers: { 
-    WebDriver: { 
-      browser: 'chrome', 
-      url: 'http://localhost' 
-    }
-  }
+const config = {
+  helpers: {
+    Playwright: { browser: 'chromium', url: 'http://localhost' }
+  },
+  tests: './*_test.js',
 };
 
-const opts = { steps: true };
-
-// run CodeceptJS inside async function
-(async () => {
-  const codecept = new Codecept(config, options);
-  codecept.init(__dirname);
-
-  try {
-    await codecept.bootstrap();
-    codecept.loadTests('**_test.js');
-    // run tests
-    await codecept.run(test);
-  } catch (err) {
-    printError(err);
-    process.exitCode = 1;
-  } finally {
-    await codecept.teardown();
-  }    
-})();
+const codecept = new Codecept(config, { steps: true });
+await codecept.init(__dirname);
 ```
 
-> Also, you can run tests inside workers in a custom scripts. Please refer to the [parallel execution](/parallel) guide for more details.
+### Listing Tests
+
+Use `getSuites()` to get all parsed suites with their tests without executing them:
+
+```js
+const suites = codecept.getSuites();
+
+for (const suite of suites) {
+  console.log(suite.title, suite.tags);
+  for (const test of suite.tests) {
+    console.log(' -', test.title, test.tags);
+  }
+}
+```
+
+`getSuites()` accepts an optional glob pattern. If `loadTests()` hasn't been called yet, it will be called internally.
+
+Each suite contains:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `title` | `string` | Feature/suite title |
+| `file` | `string` | Absolute path to the test file |
+| `tags` | `string[]` | Tags (e.g. `@smoke`) |
+| `tests` | `Array` | Tests in this suite |
+
+Each test contains:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `title` | `string` | Scenario title |
+| `uid` | `string` | Unique test identifier |
+| `tags` | `string[]` | Tags from scenario and suite |
+| `fullTitle` | `string` | `"Suite: Test"` format |
+
+### Executing Suites
+
+Use `executeSuite()` to run all tests within a suite:
+
+```js
+await codecept.bootstrap();
+
+const suites = codecept.getSuites();
+for (const suite of suites) {
+  await codecept.executeSuite(suite);
+}
+
+const result = container.result();
+console.log(result.stats);
+console.log(`Passed: ${result.passedTests.length}`);
+console.log(`Failed: ${result.failedTests.length}`);
+
+await codecept.teardown();
+```
+
+### Executing Individual Tests
+
+Use `executeTest()` to run a single test:
+
+```js
+await codecept.bootstrap();
+
+const suites = codecept.getSuites();
+for (const test of suites[0].tests) {
+  await codecept.executeTest(test);
+}
+
+const result = container.result();
+await codecept.teardown();
+```
+
+### Result Object
+
+The `Result` object returned by `container.result()` provides:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `stats` | `object` | `{ passes, failures, tests, pending, failedHooks, duration }` |
+| `tests` | `Test[]` | All collected tests |
+| `passedTests` | `Test[]` | Tests that passed |
+| `failedTests` | `Test[]` | Tests that failed |
+| `skippedTests` | `Test[]` | Tests that were skipped |
+| `hasFailed` | `boolean` | Whether any test failed |
+| `duration` | `number` | Total duration in milliseconds |
+
+### Full Lifecycle (Low-Level)
+
+For full control, you can orchestrate the lifecycle manually:
+
+```js
+const codecept = new Codecept(config, opts);
+await codecept.init(__dirname);
+
+try {
+  await codecept.bootstrap();
+  codecept.loadTests('**_test.js');
+  await codecept.run();
+} catch (err) {
+  console.error(err);
+  process.exitCode = 1;
+} finally {
+  await codecept.teardown();
+}
+```
+
+### Codecept Methods Reference
+
+| Method | Description |
+|--------|-------------|
+| `new Codecept(config, opts)` | Create runner instance |
+| `await init(dir)` | Initialize globals, container, helpers, plugins |
+| `loadTests(pattern?)` | Find test files by glob pattern |
+| `getSuites(pattern?)` | Load and return parsed suites with tests |
+| `await bootstrap()` | Execute bootstrap hook |
+| `await run(test?)` | Run all loaded tests (or filter by file path) |
+| `await executeSuite(suite)` | Run a specific suite from `getSuites()` |
+| `await executeTest(test)` | Run a specific test from `getSuites()` |
+| `await teardown()` | Execute teardown hook |
+
+> Also, you can run tests inside workers in a custom script. Please refer to the [parallel execution](/parallel) guide for more details.
