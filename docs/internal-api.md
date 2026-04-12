@@ -282,14 +282,14 @@ Each test contains:
 
 ### Executing Suites
 
-Use `executeSuite()` to run all tests within a suite:
+Use `runSuite()` to run all tests within a suite:
 
 ```js
 await codecept.bootstrap();
 
 const suites = codecept.getSuites();
 for (const suite of suites) {
-  await codecept.executeSuite(suite);
+  await codecept.runSuite(suite);
 }
 
 const result = container.result();
@@ -302,14 +302,14 @@ await codecept.teardown();
 
 ### Executing Individual Tests
 
-Use `executeTest()` to run a single test:
+Use `runTest()` to run a single test:
 
 ```js
 await codecept.bootstrap();
 
 const suites = codecept.getSuites();
 for (const test of suites[0].tests) {
-  await codecept.executeTest(test);
+  await codecept.runTest(test);
 }
 
 const result = container.result();
@@ -350,18 +350,42 @@ try {
 }
 ```
 
+### Runner
+
+All Mocha interactions are handled by the `Runner` class (`lib/runner.js`). After calling `init()`, it's available as `codecept.runner`:
+
+```js
+const runner = codecept.runner;
+
+// Same as codecept.getSuites() / runSuite() / runTest()
+const suites = runner.getSuites();
+await runner.runSuite(suites[0]);
+await runner.runTest(suites[0].tests[0]);
+```
+
+The `Codecept` methods (`getSuites`, `runSuite`, `runTest`, `run`) delegate to the Runner.
+
 ### Codecept Methods Reference
 
 | Method | Description |
 |--------|-------------|
-| `new Codecept(config, opts)` | Create runner instance |
-| `await init(dir)` | Initialize globals, container, helpers, plugins |
+| `new Codecept(config, opts)` | Create codecept instance |
+| `await init(dir)` | Initialize globals, container, helpers, plugins, runner |
 | `loadTests(pattern?)` | Find test files by glob pattern |
 | `getSuites(pattern?)` | Load and return parsed suites with tests |
 | `await bootstrap()` | Execute bootstrap hook |
 | `await run(test?)` | Run all loaded tests (or filter by file path) |
-| `await executeSuite(suite)` | Run a specific suite from `getSuites()` |
-| `await executeTest(test)` | Run a specific test from `getSuites()` |
+| `await runSuite(suite)` | Run a specific suite from `getSuites()` |
+| `await runTest(test)` | Run a specific test from `getSuites()` |
 | `await teardown()` | Execute teardown hook |
+
+### Runner Methods Reference
+
+| Method | Description |
+|--------|-------------|
+| `getSuites(pattern?)` | Parse suites using a temporary Mocha instance |
+| `run(test?)` | Run tests, optionally filtering by file path |
+| `runSuite(suite)` | Run all tests in a suite |
+| `runTest(test)` | Run a single test by fullTitle |
 
 > Also, you can run tests inside workers in a custom script. Please refer to the [parallel execution](/parallel) guide for more details.
