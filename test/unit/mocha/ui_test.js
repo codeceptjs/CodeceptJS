@@ -5,6 +5,7 @@ import { createTest } from '../../../lib/mocha/test.js'
 import codeceptjs from '../../../lib/index.js'
 import makeUI from '../../../lib/mocha/ui.js'
 import container from '../../../lib/container.js'
+import store from '../../../lib/store.js'
 
 global.codeceptjs = codeceptjs
 
@@ -145,7 +146,7 @@ describe('ui', () => {
       }
 
       // Reset environment variable
-      delete process.env.FEATURE_ONLY
+      store.featureOnly = false
 
       // Re-emit pre-require with our mocked mocha instance
       suite.emit('pre-require', context, {}, mocha)
@@ -157,7 +158,7 @@ describe('ui', () => {
       expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
       expect(grepPattern).to.be.instanceOf(RegExp)
       expect(grepPattern.source).eq('^exclusive feature:')
-      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+      expect(store.featureOnly).eq(true, 'store.featureOnly should be set')
 
       // Restore original grep
       mocha.grep = originalGrep
@@ -176,7 +177,7 @@ describe('ui', () => {
       }
 
       // Reset environment variable
-      delete process.env.FEATURE_ONLY
+      store.featureOnly = false
 
       // Re-emit pre-require with our mocked mocha instance
       suite.emit('pre-require', context, {}, mocha)
@@ -188,7 +189,7 @@ describe('ui', () => {
       expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
       expect(grepPattern).to.be.instanceOf(RegExp)
       expect(grepPattern.source).eq('^exclusive feature without options:')
-      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+      expect(store.featureOnly).eq(true, 'store.featureOnly should be set')
 
       // Restore original grep
       mocha.grep = originalGrep

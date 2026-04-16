@@ -90,19 +90,12 @@ Type: [object][6]
 ## handleRoleLocator
 
 Handles role locator objects by converting them to Playwright's getByRole() API
+Accepts both raw objects ({role: 'button', text: 'Submit'}) and Locator-wrapped role objects.
 Returns elements array if role locator, null otherwise
 
 ### Parameters
 
 *   `context` &#x20;
-*   `locator` &#x20;
-
-## isRoleLocatorObject
-
-Checks if a locator is a role locator object (e.g., {role: 'button', text: 'Submit', exact: true})
-
-### Parameters
-
 *   `locator` &#x20;
 
 

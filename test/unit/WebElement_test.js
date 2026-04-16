@@ -307,6 +307,7 @@ describe('WebElement', () => {
     it('should work with Puppeteer helper', async () => {
       let typedText = ''
       const mockElement = {
+        evaluate: (fn) => Promise.resolve(fn({ value: '' })),
         type: (text, options) => {
           typedText = text
           return Promise.resolve()

@@ -172,6 +172,56 @@ describe('CodeceptJS PageObject', () => {
     })
   })
 
+  describe('PageObject Hooks', () => {
+    it('should run _before on first method call and _after after test', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectHooks$')} --debug`, (err, stdout) => {
+        expect(stdout).toContain('HookPage._before called')
+        expect(stdout).toContain('HookPage action')
+        expect(stdout).toContain('HookPage._after called')
+        expect(stdout).toContain('HookPage._afterSuite called')
+        const beforeIdx = stdout.indexOf('HookPage._before called')
+        const actionIdx = stdout.indexOf('HookPage action')
+        const afterIdx = stdout.indexOf('HookPage._after called')
+        expect(beforeIdx).toBeLessThan(actionIdx)
+        expect(actionIdx).toBeLessThan(afterIdx)
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+
+    it('should call _before only once for multiple method calls', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectHooksMultipleCalls')} --steps`, (err, stdout) => {
+        const lines = stdout.split('\n').filter(l => l.trim() === 'HookPage._before called')
+        expect(lines).toHaveLength(1)
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+
+    it('should not call _before/_after for unused page objects', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectNotUsed')} --debug`, (err, stdout) => {
+        expect(stdout).not.toContain('HookPage._before called')
+        expect(stdout).not.toContain('HookPage._after called')
+        expect(stdout).toContain('only I used')
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+
+    it('should not call _before/_after for page objects without hooks', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectNoHooksUsed')} --debug`, (err, stdout) => {
+        expect(stdout).not.toContain('_before called')
+        expect(stdout).toContain('NoHookPage action')
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+  })
+
   it('built methods are still available custom I steps_file is added', done => {
     exec(`${config_run_config('codecept.class.js', '@CustomStepsBuiltIn')} --debug`, (err, stdout) => {
       expect(stdout).toContain('Built in say')

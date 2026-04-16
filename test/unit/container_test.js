@@ -287,6 +287,17 @@ describe('Container', () => {
       expect(container.support('userPage')).is.ok
       expect(container.support('userPage').login).is.eql('#login')
     })
+
+    it('should be able to add and retrieve a function as a support object', async () => {
+      await container.create({})
+      const loginFunction = async name => `logged in as ${name}`
+      container.append({ support: { loginAs: loginFunction } })
+      expect(container.support('I')).is.ok
+      const loginAs = container.support('loginAs')
+      expect(loginAs).to.be.a('function')
+      const result = await loginAs('admin')
+      expect(result).to.eql('logged in as admin')
+    })
   })
 
   describe('TypeScript support', () => {
