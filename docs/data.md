@@ -22,7 +22,90 @@ API is supposed to be a stable interface and it can be used by acceptance tests.
 
 ## Data Objects
 
-For a lightweight, class-based approach to managing test data, see **[Data Objects](/pageobjects#data-objects)** in the Page Objects documentation. Data Objects let you create page object classes that manage API data with automatic cleanup via the `_after()` hook — no factory configuration needed.
+Data Objects are page object classes designed to manage test data via API. They use the REST helper (through `I`) to create data in a test and clean it up automatically via the `_after()` hook.
+
+This is a lightweight alternative to [ApiDataFactory](#api-data-factory) — ideal when you want full control over data creation and cleanup logic without factory configuration.
+
+### Defining a Data Object
+
+```js
+const { I } = inject();
+
+class UserData {
+  constructor() {
+    this._created = [];
+  }
+
+  async createUser(data = {}) {
+    const response = await I.sendPostRequest('/api/users', {
+      name: data.name || 'Test User',
+      email: data.email || `test-${Date.now()}@example.com`,
+      ...data,
+    });
+    this._created.push(response.data.id);
+    return response.data;
+  }
+
+  async createPost(userId, data = {}) {
+    const response = await I.sendPostRequest('/api/posts', {
+      userId,
+      title: data.title || 'Test Post',
+      body: data.body || 'Test body',
+      ...data,
+    });
+    this._created.push({ type: 'post', id: response.data.id });
+    return response.data;
+  }
+
+  async _after() {
+    for (const record of this._created.reverse()) {
+      const id = typeof record === 'object' ? record.id : record;
+      const type = typeof record === 'object' ? record.type : 'user';
+      try {
+        await I.sendDeleteRequest(`/api/${type}s/${id}`);
+      } catch (e) {
+        // cleanup errors should not fail the test
+      }
+    }
+    this._created = [];
+  }
+}
+
+export default UserData
+```
+
+### Configuration
+
+Add the REST helper and the Data Object to your config:
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost', browser: 'chromium' },
+  REST: {
+    endpoint: 'http://localhost/api',
+    defaultHeaders: { 'Content-Type': 'application/json' },
+  },
+},
+include: {
+  I: './steps_file.js',
+  userData: './data/UserData.js',
+}
+```
+
+### Usage in Tests
+
+```js
+Scenario('user sees their profile', async ({ I, userData }) => {
+  const user = await userData.createUser({ name: 'John Doe' });
+  I.amOnPage(`/users/${user.id}`);
+  I.see('John Doe');
+  // userData._after() runs automatically — deletes the created user
+});
+```
+
+Data Objects can use any helper methods available via `I`, including `sendGetRequest`, `sendPutRequest`, and browser actions. They combine the convenience of managed test data with the flexibility of page objects.
+
+**Learn more:** See [Page Objects](/pageobjects) for general page object patterns.
 
 ## REST
 
