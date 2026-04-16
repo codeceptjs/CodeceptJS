@@ -166,20 +166,6 @@ npx codeceptjs run -p pauseOn:url:/checkout/*
 
 This is useful when you want to inspect a specific page regardless of which test step navigates there.
 
-### Plugin Arguments Syntax
-
-The `-p` flag supports passing arguments to any plugin using colon-separated syntax:
-
-```
--p <pluginName>:<arg1>:<arg2>:<arg3>
-```
-
-Multiple plugins can be enabled together:
-
-```bash
-npx codeceptjs run -p pauseOn:fail,retryFailedStep
-```
-
 ## IDE Debugging
 
 ### VS Code
