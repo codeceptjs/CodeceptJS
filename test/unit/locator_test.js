@@ -407,6 +407,67 @@ describe('Locator', () => {
     expect(nodes).to.have.length(9)
   })
 
+  it('withClass: single class (word-exact)', () => {
+    const l = Locator.build('a').withClass('ps-menu-button')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(10, l.toXPath())
+  })
+
+  it('withClass: variadic ANDs class conditions', () => {
+    const l = Locator.build('a').withClass('ps-menu-button', 'active')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('withClass: word-exact (does not match partial class)', () => {
+    const l = Locator.build('div').withClass('form-')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
+
+  it('withoutClass: excludes elements carrying the class', () => {
+    const l = Locator.build('a').withClass('ps-menu-button').withoutClass('active')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(9, l.toXPath())
+  })
+
+  it('withoutText: excludes elements containing text', () => {
+    const l = Locator.build('span').withoutText('Hey')
+    const nodes = xpath.select(l.toXPath(), doc)
+    const matchesHey = nodes.find(n => n.firstChild && n.firstChild.data === 'Hey boy')
+    expect(matchesHey).to.be.undefined
+  })
+
+  it('withoutAttr: excludes matching attribute value', () => {
+    const l = Locator.build('input').withoutAttr({ type: 'hidden' })
+    const nodes = xpath.select(l.toXPath(), doc)
+    nodes.forEach(n => expect(n.getAttribute('type')).to.not.equal('hidden'))
+  })
+
+  it('withoutDescendant: excludes elements with a descendant match', () => {
+    const l = Locator.build('a').withClass('ps-menu-button').withoutDescendant('.ps-submenu-expand-icon')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('withoutChild: excludes elements with a direct child match', () => {
+    const l = Locator.build('p').withoutChild('span')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
+
+  it('and: appends raw xpath predicate', () => {
+    const l = Locator.build('input').and('@type="checkbox"')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('andNot: wraps raw xpath predicate in not()', () => {
+    const l = Locator.build('a').withClass('ps-menu-button').andNot('.//span[contains(@class, "ps-submenu-expand-icon")]')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
   it('should build locator to match element containing a text', () => {
     const l = Locator.build('span').withText('Hey')
     const nodes = xpath.select(l.toXPath(), doc)

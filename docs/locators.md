@@ -143,7 +143,7 @@ locate('//table')
 // will be printed as 'edit button'
 ```
 
-`locate` has following methods:
+`locate` has following methods. The `with*` family filters elements positively; `without*` excludes; `and` / `andNot` / `or` let you compose raw predicates or union locators.
 
 #### find
 
@@ -165,13 +165,61 @@ Find an element with provided attributes
 locate('input').withAttr({ placeholder: 'Type in name' });
 ```
 
-#### withClassAttr
+#### withAttrStartsWith
 
-Find an element with class attribute
+Find an element whose attribute value starts with a given text:
 
 ```js
-// find div with class contains 'form'
-locate('div').withClassAttr('text');
+// find links to https:// URLs
+locate('a').withAttrStartsWith('href', 'https://');
+```
+
+#### withAttrEndsWith
+
+Find an element whose attribute value ends with a given text:
+
+```js
+locate('a').withAttrEndsWith('href', '.pdf');
+```
+
+#### withAttrContains
+
+Find an element whose attribute value contains a given text:
+
+```js
+locate('a').withAttrContains('href', 'google');
+```
+
+#### withClass
+
+Find an element with all of the provided CSS classes. Variadic — pass any number of class names; all must be present. Uses word-exact matching (same semantics as CSS `.foo`).
+
+```js
+// find button that has ALL of these classes
+locate('button').withClass('btn-primary', 'btn-lg', 'btn-selected');
+```
+
+> ℹ Prefer `withClass` over `withClassAttr`. `withClassAttr` uses substring matching on `@class` (so `'btn'` matches `'btn-lg'`), which rarely does what you want.
+
+#### withoutClass
+
+Find an element that does NOT carry any of the provided CSS classes:
+
+```js
+// rows not marked as deleted
+locate('tr').withoutClass('deleted');
+
+// combine with withClass to express "has X but not Y"
+locate('a').withClass('ps-menu-button').withoutClass('active');
+```
+
+#### withClassAttr
+
+Legacy alias — uses substring matching on `@class`. Prefer `withClass` (word-exact) or `withAttrContains('class', …)` if substring matching is intended.
+
+```js
+// matches elements whose @class CONTAINS 'form-' (e.g. 'form-wrapper', 'form-field')
+locate('div').withClassAttr('form-');
 ```
 
 #### withChild
@@ -206,6 +254,40 @@ Find an element with exact text
 
 ```js
 locate('button').withTextEquals('Add');
+```
+
+#### withoutText
+
+Find an element that does NOT contain the given text:
+
+```js
+locate('li').withoutText('Archived');
+```
+
+#### withoutAttr
+
+Find an element that does NOT have any of the given attribute/value pairs:
+
+```js
+// buttons that are not disabled
+locate('button').withoutAttr({ disabled: '' });
+```
+
+#### withoutChild
+
+Find an element with no direct child matching the provided locator:
+
+```js
+locate('form').withoutChild('input[type=submit]');
+```
+
+#### withoutDescendant
+
+Find an element with no descendant matching the provided locator. Covers the common "not `.//svg`" case:
+
+```js
+// buttons without an icon (svg) inside
+locate('button').withoutDescendant('svg');
 ```
 
 #### first
@@ -262,6 +344,67 @@ Finds element located after the provided one
 ```js
 // finds `button` after .btn-cancel
 locate('button').after('.btn-cancel');
+```
+
+#### or
+
+Composes two locators: matches elements that satisfy either one (XPath union `|`):
+
+```js
+// primary or secondary submit button
+locate('button.submit').or('input[type=submit]');
+```
+
+#### and
+
+Escape hatch: appends a raw XPath predicate `[expr]`. The argument is inserted as-is — quoting and escaping are your responsibility.
+
+```js
+locate('input').and('@type="text" or @type="email"');
+```
+
+#### andNot
+
+Escape hatch for negation: appends `[not(expr)]`:
+
+```js
+// button that has no svg anywhere inside
+locate('button').andNot('.//svg');
+
+// element without the hidden attribute
+locate('div').andNot('@hidden');
+```
+
+#### as
+
+Give the locator a short descriptive name used in logs and reports (does not change matching):
+
+```js
+locate('//table').find('a').withText('Edit').as('edit button');
+// logged as 'edit button' instead of a long XPath
+```
+
+### Translating complex XPath
+
+Long XPath expressions become readable with the DSL. For example:
+
+```
+//*[self::button
+    and contains(@class,"red-btn")
+    and contains(@class,"btn-text-and-icon")
+    and contains(@class,"btn-lg")
+    and contains(@class,"btn-selected")
+    and normalize-space(.)="Button selected"
+    and not(.//svg)]
+```
+
+becomes:
+
+```js
+locate('button')
+  .withClass('red-btn', 'btn-text-and-icon', 'btn-lg', 'btn-selected')
+  .withText('Button selected')
+  .withoutDescendant('svg');
 ```
 
 ## ID Locators
