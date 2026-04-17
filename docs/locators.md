@@ -5,386 +5,269 @@ title: Locators
 
 # Locators
 
-CodeceptJS provides flexible strategies for locating elements:
+Locators tell CodeceptJS which element on the page a step acts on. Every action that touches the DOM — `click`, `fillField`, `see`, `waitForVisible` — accepts one.
 
-* [CSS and XPath locators](#css-and-xpath)
-* [Semantic locators](#semantic-locators): by link text, by button text, by field names, etc.
-* [ARIA and role locators](#aria-and-role-locators): by ARIA role and accessible name
-* [Locator Builder](#locator-builder)
-* [ID locators](#id-locators): by CSS id or by accessibility id
-* [Custom Locator Strategies](#custom-locators): by data attributes or whatever you prefer.
-* [Shadow DOM](/shadow): to access shadow dom elements
-* [React](/react): to access React elements by component names and props
-* Playwright: to access locator supported by Playwright, namely [_react](https://playwright.dev/docs/other-locators#react-locator), [_vue](https://playwright.dev/docs/other-locators#vue-locator), [data-testid](https://playwright.dev/docs/locators#locate-by-test-id)
+CodeceptJS accepts locators in two forms:
 
-Most methods in CodeceptJS accept locators as strings or objects.
+- **Strict locator** — an object whose single key names the strategy: `{ css: 'button' }`, `{ role: 'button', name: 'Submit' }`, `{ xpath: '//td[1]' }`, `{ id: 'email' }`. The strategy is explicit, so the helper runs exactly one query.
+- **Fuzzy locator** — a plain string. CodeceptJS guesses the strategy from shape (`#foo` → id, `//td` → xpath, `.row` → css) and falls back to semantic matching (labels, button text, placeholders). Convenient, but slower and sometimes ambiguous.
 
-If the locator is an object, it should have a single element, with the key signifying the locator type (`id`, `name`, `css`, `xpath`, `link`, `react`, `class`, `shadow`, `pw`, or `role`) and the value being the locator itself. This is called a **strict** locator.
+Prefer strict locators in stable test suites. Reach for fuzzy strings when prototyping.
 
-Examples:
+Supported strategies: `css`, `xpath`, `id`, `name`, `role`, `frame`, `shadow`, `pw`. Shadow DOM and React selectors have their own pages — see [Shadow DOM](/shadow) and [React](/react). Playwright-specific locators (`_react`, `_vue`, `data-testid`) use the `pw` strategy: `{ pw: '_react=Button[name="Save"]' }`.
 
-* `{id: 'foo'}` matches `<div id="foo">`
-* `{name: 'foo'}` matches `<div name="foo">`
-* `{css: 'input[type=input][value=foo]'}` matches `<input type="input" value="foo">`
-* `{xpath: "//input[@type='submit'][contains(@value, 'foo')]"}` matches `<input type="submit" value="foobar">`
-* `{class: 'foo'}` matches `<div class="foo">`
-* `{ pw: '_react=t[name = "="]' }`
-* `{ role: 'button', name: 'Submit' }` matches `<button>Submit</button>`
+## Locator types at a glance
 
-Writing good locators can be tricky.
-The Mozilla team has written an excellent guide titled [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/).
+| Type | Example | Strengths | Weaknesses | Reach for it when |
+|------|---------|-----------|------------|-------------------|
+| **ARIA role** | `{ role: 'button', name: 'Save' }` | Survives markup changes; matches how users and screen readers identify elements; exposes accessibility gaps | Needs correct ARIA roles and accessible names; slower than CSS | The app follows accessibility guidelines and you want tests that mirror user intent |
+| **CSS** | `{ css: '.btn-save' }` or `.btn-save` | Fast; familiar to every web developer; composes with class, attribute, and pseudo-selectors | Couples tests to styling; breaks on CSS refactors; cannot match by visible text | A stable class, id, or data-attribute exists on the target |
+| **XPath** | `{ xpath: '//table//tr[2]/td[last()]' }` | Walks the tree in any direction (`ancestor`, `following-sibling`); matches visible text | Verbose; slow; harder to read than CSS | You need text matching or axis navigation that CSS cannot express |
+| **Semantic (fuzzy)** | `'Sign In'`, `'Email'` | No locator to maintain; reads like prose | Several lookups per call; ambiguous when labels repeat | Writing a quick scenario or prototyping |
+| **ID / name** | `#email`, `{ name: 'user[email]' }` | Shortest possible locator; unambiguous | Requires an `id` or `name` attribute to exist | Forms and elements with stable ids |
+| **Accessibility id** | `~login-button` | Works in both web (`aria-label`) and mobile | Mobile apps need to expose the id | Cross-platform web and mobile tests |
+| **Custom (`$foo`)** | `$register_button` | Encodes team convention (`data-qa`, `data-test`) in two characters | Needs the [customLocator plugin](/plugins#customlocator) | Your team uses dedicated test attributes |
 
-If you prefer, you may also pass a string for the locator. This is called a **fuzzy** locator.
-In this case, CodeceptJS uses a variety of heuristics (depending on the exact method called) to determine what element you're referring to. If you are locating a clickable element or an input element, CodeceptJS will use [semantic locators](#semantic-locators).
+## ARIA locators
 
-For example, here's the heuristic used for the `fillField` method:
-
-1. Does the locator look like an ID selector (e.g. `#foo`)? If so, try to find an input element matching that ID.
-2. If nothing found, check if locator looks like a CSS selector. If so, run it.
-3. If nothing found, check if locator looks like an XPath expression. If so, run it.
-4. If nothing found, check if there is an input element with a corresponding name.
-5. If nothing found, check if there is a label with specified text for input element.
-6. If nothing found, throw an `ElementNotFound` exception.
-
-> ⚠ Fuzzy locators can be significantly slower than strict locators. If speed is a concern, stick with explicitly specifying the locator type via object syntax.
-
-It is recommended to avoid using implicit CSS locators in methods like `fillField` or `click`, where semantic locators are allowed.
-Use locator type to speed up search by various locator strategies.
+ARIA role locators are the modern default. They identify elements the way assistive technology does — by role and accessible name — and they survive layout and class refactors that break CSS.
 
 ```js
-// will search for "input[type=password]" text before trying to search by CSS
-I.fillField('input[type=password]', '123456');
-// replace with strict locator
-I.fillField({ css: 'input[type=password]' }, '123456');
+I.click({ role: 'button', name: 'Login' })
+I.fillField({ role: 'textbox', name: 'Email Address' }, 'user@test.com')
+I.seeElement({ role: 'heading', name: 'Dashboard' })
+I.selectOption({ role: 'combobox', name: 'Country' }, 'Ukraine')
 ```
 
-## CSS and XPath
+The `name` matches the element's accessible name — its visible text, `aria-label`, or the text referenced by `aria-labelledby`.
 
-Both CSS and XPath are supported. Usually CodeceptJS can guess the locator's type:
+Common roles: `button`, `link`, `textbox`, `checkbox`, `radio`, `combobox`, `listbox`, `menuitem`, `tab`, `dialog`, `alert`, `heading`, `navigation`, `banner`, `main`.
+
+**Prefer ARIA when:**
+
+- The element has a visible label or accessible text.
+- You want the test to double as an accessibility smoke check.
+- The UI is rewritten often and class names drift.
+
+**Reach for something else when:**
+
+- The element has no accessible name (purely decorative icons, unlabeled inputs).
+- The page predates ARIA annotation and you cannot change it.
+- A hot loop runs thousands of locator calls and needs the speed of a direct CSS query.
+
+> ARIA locators rely on the accessibility tree of the underlying helper. Playwright and modern WebDriver support them natively.
+
+## CSS selectors
+
+CSS is the fastest locator type and most frontend developers read it fluently.
 
 ```js
-// select by CSS
-I.seeElement('.user .profile');
-I.seeElement('#user-name');
-
-// select by XPath
-I.seeElement('//table/tr/td[position()=3]');
+I.seeElement('.user-profile .avatar')
+I.click('#checkout-btn')
+I.fillField('input[name="email"]', 'user@test.com')
 ```
 
-To specify exact locator type use **strict locators**:
+Pair CSS with stable test attributes — `data-testid`, `data-qa` — rather than style classes. Style classes drift with every design update; test attributes exist to be locators.
 
 ```js
-// it's not clear that 'button' is actual CSS locator
-I.seeElement({ css: 'button' });
-
-// it's not clear that 'descendant::table/tr' is actual XPath locator
-I.seeElement({ xpath: 'descendant::table/tr' });
+I.click('[data-testid="submit-order"]')
 ```
 
-> ℹ Use [Locator Advicer](https://davertmik.github.io/locator/) to check quality of your locators.
+Tie locators to structure, not to presentation: `.btn-primary` survives a redesign; `.bg-green-500` does not.
 
-## Semantic Locators
-
-CodeceptJS can guess an element's locator from context.
-For example, when clicking CodeceptJS will try to find a link or button by their text.
-When typing into a field, the field can be located by its name or placeholder.
+Force CSS when a bare string would trigger fuzzy matching:
 
 ```js
-I.click('Sign In');
-I.fillField('Username', 'davert');
+I.fillField({ css: 'input[type=password]' }, '123456')
 ```
 
-Various strategies are used to locate semantic elements. However, they may run slower than specifying the locator by XPath or CSS.
+## XPath
 
-## ARIA and Role Locators
+XPath reaches where CSS cannot. Use it for:
 
-ARIA locators find elements by their ARIA role and accessible name. They are the most resilient to markup changes and the most meaningful for accessibility.
-
-Pass an object with a `role` key and an optional `name` key:
+- Text matching: `//button[contains(., 'Save changes')]`
+- Axis navigation: `ancestor`, `following-sibling`, `preceding-sibling`
+- Positional selection deep in a table or list
 
 ```js
-I.click({ role: 'button', name: 'Login' });
-I.fillField({ role: 'textbox', name: 'Email Address' }, 'user@test.com');
-I.seeElement({ role: 'button', name: 'Submit' });
+I.click({ xpath: "//tr[td[text()='Acme Corp']]//button[contains(., 'Edit')]" })
 ```
 
-The `name` matches the element's accessible name — its visible text, `aria-label`, or `aria-labelledby` target.
+Long XPath expressions become unreadable fast. The [`locate()` builder](#combining-locators) produces the same XPath with a fluent syntax — prefer it for anything beyond two conditions.
 
-Common ARIA roles include `button`, `link`, `textbox`, `checkbox`, `radio`, `combobox`, `listbox`, `menuitem`, `tab`, `dialog`, `alert`, `heading`, and `navigation`.
+## Semantic locators
 
-> ℹ ARIA locators are supported by Playwright and other helpers that implement accessibility tree queries.
+When you pass a plain string to a form or click action, CodeceptJS tries several strategies in order: links, buttons, labels, placeholders, `aria-label`.
 
-## Locator Builder
+```js
+I.click('Sign In')                      // matches <a>, <button>, or <input type="submit">
+I.fillField('Email', 'u@t.com')         // matches label, placeholder, or name
+I.checkOption('I accept the terms')
+```
 
-CodeceptJS provides a fluent builder to compose custom locators in JavaScript. Use `locate` function to start.
+The order `fillField` actually uses is:
 
-To locate `a` element inside `label` with text: 'Hello' use:
+1. Is the locator an ARIA role locator (`{ role: 'textbox', name: 'Email' }`)? If so, resolve through the accessibility tree and stop.
+2. Is it a strict locator (`{ css: ... }`, `{ xpath: ... }`, `{ id: ... }`, …)? Run it directly and stop.
+3. Otherwise treat the string as fuzzy and try, in order:
+   1. A field whose `name`, `id`+`label[for]`, or `placeholder` **equals** the string — or a `<label>` with that exact text wrapping an input.
+   2. The same match with **contains**, extended to `aria-label`, `aria-labelledby`, and `title`.
+   3. An input with that `name` attribute.
+   4. Finally, the string as a CSS selector.
+4. Nothing matched? Throw `ElementNotFound`.
+
+So fuzzy `fillField` already covers labels, placeholders, names, ids referenced by labels, and the ARIA attributes (`aria-label`, `aria-labelledby`, `title`) — no extra syntax needed. Each lookup runs several queries, though, so switch to strict locators (`{ role: ... }` or `{ css: ... }`) once a scenario is stable.
+
+## ID locators
+
+Three short forms cover id-based matching:
+
+- `#user` or `{ id: 'user' }` — element with `id="user"`
+- `{ name: 'email' }` — form field with `name="email"`
+- `~login-button` — accessibility id (mobile) or `aria-label` (web)
+
+```js
+I.fillField('#email', 'user@test.com')
+I.seeElement({ id: 'confirmation' })
+I.tap('~submit')   // mobile
+```
+
+## Picking a specific element
+
+When a locator matches several elements on the page, CodeceptJS acts on the first one by default. To target a different match, pass `elementIndex` via `step.opts()`:
+
+```js
+import step from 'codeceptjs/steps'
+
+I.click('a', step.opts({ elementIndex: 2 }))       // the 2nd link
+I.click('a', step.opts({ elementIndex: 'last' }))  // the last link
+I.fillField('.email-input', 'u@t.com', step.opts({ elementIndex: -1 }))
+```
+
+`elementIndex` accepts positive numbers (1-based), negative numbers (`-1` is last), or the aliases `'first'` and `'last'`. It works with `click`, `fillField`, `selectOption`, `checkOption`, and other single-element actions.
+
+To catch ambiguous locators during development rather than silently using the first match, enable `strict: true` in the helper config, or pass `step.opts({ exact: true })` on a single step:
+
+```js
+I.click('a', step.opts({ exact: true }))
+// throws MultipleElementsFound if more than one link matches
+```
+
+See [Element Selection](/element-selection) for full details on `elementIndex`, strict mode, and iterating over matches with `eachElement`.
+
+## Combining locators
+
+Two mechanisms narrow a locator to a region of the page:
+
+- **Context** — the last argument of most actions. Works with every locator type. In `I.click('Save', '.toolbar')` it is the second argument; in `I.fillField('Email', 'u@t.com', '#login-form')` it is the third.
+- **`locate()` builder** — a fluent API that composes CSS and XPath into a single XPath expression. Does **not** accept ARIA role locators.
+
+### Context: scope any locator to a region
+
+Every action that targets an element accepts a context locator as its last argument. The action searches only inside the context.
+
+```js
+I.click('Login', '#login-form')
+I.fillField('Email', 'u@t.com', '.modal')
+I.seeElement({ role: 'button', name: 'Delete' }, '.toolbar')
+```
+
+Context is the right tool when the locator types differ on each side — for example, an ARIA button inside a CSS-selected container.
+
+**Example: a dropdown inside a top bar**
+
+A complex app often has several menus on screen at once: the top navigation bar, a left sidebar, a right-click context menu. Each may contain a "Settings" item. Without scoping, `I.click('Settings')` is a coin toss.
+
+```js
+// Open the user dropdown in the top bar, then pick Settings
+I.click({ role: 'button', name: 'User menu' }, '.top-bar')
+I.click({ role: 'menuitem', name: 'Settings' }, '.top-bar')
+
+// The same label in the sidebar goes to a different screen
+I.click({ role: 'link', name: 'Settings' }, '.sidebar')
+```
+
+The context itself accepts any locator type: a bare string, a strict object, or a [`locate()`](#locate-builder-compose-css-and-xpath) chain.
+
+```js
+I.click({ role: 'menuitem', name: 'Log out' }, locate('.dropdown-menu').inside('header'))
+```
+
+### `locate()` builder: compose CSS and XPath
+
+`locate()` chains CSS and XPath conditions into a single XPath expression. Each method returns the builder so you keep composing.
 
 ```js
 locate('a')
   .withAttr({ href: '#' })
-  .inside(locate('label').withText('Hello'));
+  .inside(locate('label').withText('Hello'))
+// .//a[@href = '#'][ancestor::label[contains(., 'Hello')]]
 ```
 
-which will produce following XPath:
-
-```
-.//a[@href = '#'][ancestor::label[contains(., 'Hello')]]
-```
-
-Locator builder accepts both XPath and CSS as parameters but converts them to XPath as more feature-rich format.
-Sometimes provided locators can get very long so it's recommended to simplify the output by providing a brief description for generated XPath:
+Give long chains a name for readable logs:
 
 ```js
-locate('//table')
-  .find('a')
+locate('//table').find('a').withText('Edit').as('row edit button')
+```
+
+> **`locate()` does not wrap ARIA role locators.** The builder produces XPath; ARIA role matching relies on the accessibility tree provided by the helper. To scope an ARIA locator to a region, pass the region as a [**context** argument](#context-scope-any-locator-to-a-region) rather than wrapping it in `locate()`.
+
+**Example: the dropdown from the top bar, expressed with `locate()`**
+
+When menu items expose no useful ARIA role (custom components built from `<div>` elements and click handlers), fall back to CSS and XPath inside a `locate()` chain:
+
+```js
+const userMenu = locate('.dropdown-menu').inside('.top-bar').as('user menu')
+
+I.click('.user-avatar', '.top-bar')
+I.click(locate('a').withText('Settings').inside(userMenu))
+```
+
+**Example: the Edit button in a specific table row**
+
+```js
+const editAcme = locate('tr')
+  .withDescendant(locate('td').withText('Acme Corp'))
+  .find('button')
   .withText('Edit')
-  .as('edit button')
-// will be printed as 'edit button'
+  .as('Edit button for Acme')
+
+I.click(editAcme)
 ```
 
-`locate` has following methods. The `with*` family filters elements positively; `without*` excludes; `and` / `andNot` / `or` let you compose raw predicates or union locators.
-
-#### find
-
-Finds an element inside a located.
-
-```js
-// find td inside a table
-locate('table').find('td');
-```
-Switches current element to found one.
-Can accept another `locate` call or strict locator.
-
-#### withAttr
-
-Find an element with provided attributes
-
-```js
-// find input with placeholder 'Type in name'
-locate('input').withAttr({ placeholder: 'Type in name' });
-```
-
-#### withAttrStartsWith
-
-Find an element whose attribute value starts with a given text:
-
-```js
-// find links to https:// URLs
-locate('a').withAttrStartsWith('href', 'https://');
-```
-
-#### withAttrEndsWith
-
-Find an element whose attribute value ends with a given text:
-
-```js
-locate('a').withAttrEndsWith('href', '.pdf');
-```
-
-#### withAttrContains
-
-Find an element whose attribute value contains a given text:
-
-```js
-locate('a').withAttrContains('href', 'google');
-```
-
-#### withClass
-
-Find an element with all of the provided CSS classes. Variadic — pass any number of class names; all must be present. Uses word-exact matching (same semantics as CSS `.foo`).
-
-```js
-// find button that has ALL of these classes
-locate('button').withClass('btn-primary', 'btn-lg', 'btn-selected');
-```
-
-> ℹ Prefer `withClass` over `withClassAttr`. `withClassAttr` uses substring matching on `@class` (so `'btn'` matches `'btn-lg'`), which rarely does what you want.
-
-#### withoutClass
-
-Find an element that does NOT carry any of the provided CSS classes:
-
-```js
-// rows not marked as deleted
-locate('tr').withoutClass('deleted');
-
-// combine with withClass to express "has X but not Y"
-locate('a').withClass('ps-menu-button').withoutClass('active');
-```
-
-#### withClassAttr
-
-Legacy alias — uses substring matching on `@class`. Prefer `withClass` (word-exact) or `withAttrContains('class', …)` if substring matching is intended.
-
-```js
-// matches elements whose @class CONTAINS 'form-' (e.g. 'form-wrapper', 'form-field')
-locate('div').withClassAttr('form-');
-```
-
-#### withChild
-
-Finds an element which contains a child element provided:
-
-```js
-// finds form with <select> inside it
-locate('form').withChild('select');
-```
-
-#### withDescendant
-
-Finds an element which contains a descendant element provided:
-
-```js
-// finds form with <select> which is the descendant it
-locate('form').withDescendant('select');
-```
-
-#### withText
-
-Find an element containing a text
-
-```js
-locate('span').withText('Warning');
-```
-
-#### withTextEquals
-
-Find an element with exact text
-
-```js
-locate('button').withTextEquals('Add');
-```
-
-#### withoutText
-
-Find an element that does NOT contain the given text:
-
-```js
-locate('li').withoutText('Archived');
-```
-
-#### withoutAttr
-
-Find an element that does NOT have any of the given attribute/value pairs:
-
-```js
-// buttons that are not disabled
-locate('button').withoutAttr({ disabled: '' });
-```
-
-#### withoutChild
-
-Find an element with no direct child matching the provided locator:
-
-```js
-locate('form').withoutChild('input[type=submit]');
-```
-
-#### withoutDescendant
-
-Find an element with no descendant matching the provided locator. Covers the common "not `.//svg`" case:
-
-```js
-// buttons without an icon (svg) inside
-locate('button').withoutDescendant('svg');
-```
-
-#### first
-
-Get first element:
-
-```js
-locate('#table td').first();
-```
-
-#### last
-
-Get last element:
-
-```js
-locate('#table td').last();
-```
-
-#### at
-
-Get element at position:
-
-```js
-// first element
-locate('#table td').at(1);
-// second element
-locate('#table td').at(2);
-// second element from end
-locate('#table td').at(-2);
-```
-
-#### inside
-
-Finds an element which contains an provided ancestor:
-
-```js
-// finds `select` element inside #user_profile
-locate('select').inside('form#user_profile');
-```
-
-#### before
-
-Finds element located before the provided one
-
-```js
-// finds `button` before .btn-cancel
-locate('button').before('.btn-cancel');
-```
-
-#### after
-
-Finds element located after the provided one
-
-```js
-// finds `button` after .btn-cancel
-locate('button').after('.btn-cancel');
-```
-
-#### or
-
-Composes two locators: matches elements that satisfy either one (XPath union `|`):
-
-```js
-// primary or secondary submit button
-locate('button.submit').or('input[type=submit]');
-```
-
-#### and
-
-Escape hatch: appends a raw XPath predicate `[expr]`. The argument is inserted as-is — quoting and escaping are your responsibility.
-
-```js
-locate('input').and('@type="text" or @type="email"');
-```
-
-#### andNot
-
-Escape hatch for negation: appends `[not(expr)]`:
-
-```js
-// button that has no svg anywhere inside
-locate('button').andNot('.//svg');
-
-// element without the hidden attribute
-locate('div').andNot('@hidden');
-```
-
-#### as
-
-Give the locator a short descriptive name used in logs and reports (does not change matching):
-
-```js
-locate('//table').find('a').withText('Edit').as('edit button');
-// logged as 'edit button' instead of a long XPath
-```
-
-### Translating complex XPath
+#### Builder methods
+
+The `with*` family filters elements positively; `without*` excludes; `and` / `andNot` / `or` compose raw predicates or union locators.
+
+| Method | Purpose | Example |
+|--------|---------|---------|
+| `find(loc)` | Descendant lookup | `locate('table').find('td')` |
+| `withAttr(obj)` | Match attributes | `locate('input').withAttr({ placeholder: 'Name' })` |
+| `withAttrContains(attr, str)` | Attr value contains substring | `locate('a').withAttrContains('href', 'google')` |
+| `withAttrStartsWith(attr, str)` | Attr value starts with | `locate('a').withAttrStartsWith('href', 'https://')` |
+| `withAttrEndsWith(attr, str)` | Attr value ends with | `locate('a').withAttrEndsWith('href', '.pdf')` |
+| `withClass(...classes)` | Has all classes (word-exact) | `locate('button').withClass('btn-primary', 'btn-lg')` |
+| `withClassAttr(str)` | Class attribute contains substring (legacy — prefer `withClass`) | `locate('div').withClassAttr('form')` |
+| `withText(str)` | Visible text contains | `locate('span').withText('Warning')` |
+| `withTextEquals(str)` | Visible text matches exactly | `locate('button').withTextEquals('Add')` |
+| `withChild(loc)` | Has a direct child | `locate('form').withChild('select')` |
+| `withDescendant(loc)` | Has a descendant anywhere below | `locate('tr').withDescendant('img.avatar')` |
+| `withoutClass(...classes)` | None of these classes | `locate('tr').withoutClass('deleted')` |
+| `withoutText(str)` | Visible text does not contain | `locate('li').withoutText('Archived')` |
+| `withoutAttr(obj)` | None of these attr/value pairs | `locate('button').withoutAttr({ disabled: '' })` |
+| `withoutChild(loc)` | No direct child matching | `locate('form').withoutChild('input[type=submit]')` |
+| `withoutDescendant(loc)` | No descendant matching | `locate('button').withoutDescendant('svg')` |
+| `inside(loc)` | Sits inside an ancestor | `locate('select').inside('form#user')` |
+| `before(loc)` | Appears before another element | `locate('button').before('.btn-cancel')` |
+| `after(loc)` | Appears after another element | `locate('button').after('.btn-cancel')` |
+| `or(loc)` | Union of two locators | `locate('button.submit').or('input[type=submit]')` |
+| `and(expr)` | Append raw XPath predicate | `locate('input').and('@type="text" or @type="email"')` |
+| `andNot(expr)` | Append negated raw XPath predicate | `locate('button').andNot('.//svg')` |
+| `first()` / `last()` | Bound position | `locate('#table td').first()` |
+| `at(n)` | Pick nth element (negative counts from end) | `locate('#table td').at(-2)` |
+| `as(name)` | Rename in logs | `locate('//table').as('orders table')` |
+
+#### Translating complex XPath
 
 Long XPath expressions become readable with the DSL. For example:
 
@@ -404,135 +287,38 @@ becomes:
 locate('button')
   .withClass('red-btn', 'btn-text-and-icon', 'btn-lg', 'btn-selected')
   .withText('Button selected')
-  .withoutDescendant('svg');
+  .withoutDescendant('svg')
 ```
 
-## ID Locators
+> `withClass` uses word-exact matching (same as CSS `.foo`), so `.withClass('btn')` will not accidentally match `class="btn-lg"`. Use `withAttrContains('class', …)` if you need the old substring behavior.
 
-ID locators are best to select the exact semantic element in web and mobile testing:
+## Custom locators
 
-* `#user` or `{ id: 'user' }` finds element with id="user"
-* `~user` finds element with accessibility id "user" (in Mobile testing) or with `aria-label=user`.
-* `{ aria: 'user' }` finds element with `aria-label="user"` in web testing.
+Teams that tag elements with `data-qa`, `data-test`, or similar attributes can register a short-form syntax instead of typing `{ css: '[data-qa-id=register_button]' }` every time.
 
-## Context
-
-Most CodeceptJS actions accept a **context** locator as a last parameter. The context narrows the search to a specific part of the page.
+The [`customLocator` plugin](/plugins#customlocator) maps a prefix to an attribute:
 
 ```js
-I.click('Edit', '.user-profile');
-I.fillField('Email', 'user@test.com', '#login-form');
-I.see('Error', '.alert');
-I.seeElement({ role: 'button', name: 'Delete' }, '.toolbar');
+// with plugin enabled: $name → [data-qa=name]
+I.click('$register_button')
+I.fillField('$email', 'user@test.com')
 ```
 
-Use context when the same element appears in multiple places on a page:
+For more control, register a filter from a bootstrap script or plugin:
 
 ```js
-// click Delete only inside the toolbar, not the sidebar
-I.click({ role: 'button', name: 'Delete' }, '.toolbar');
-
-// fill Email in login form, not registration form
-I.fillField('Email', 'user@test.com', '#login-form');
-I.fillField('Email', 'admin@test.com', '#registration-form');
-```
-
-The context accepts any locator type: CSS, XPath, strict object, or `locate()` builder result.
-
-## Custom Locators
-
-CodeceptJS allows to create custom locator strategies and use them in tests. This way you can define your own handling of elements using specially prepared attributes of elements.
-
-What if you use special test attributes for locators such as `data-qa`, `data-test`, `test-id`, etc.
-We created [customLocator plugin](/plugins#customlocator) to declare rules for locating element.
-
-Instead of writing a full CSS locator like `[data-qa-id=user_name]` simplify it to `$user_name`.
-
-```js
-// replace this:
-I.click({ css: '[data-test-id=register_button]'});
-// with this:
-I.click('$register_button');
-```
-
-This plugin requires two options: locator prefix and actual attribute to match.
-
-> ℹ See [customLocator Plugin](/plugins#customlocator) reference to learn how to set it up.
-
-If you need more control over custom locators see how declare them manually without using a customLocator plugin.
-
-#### Custom Strict Locators
-
-If use locators of `data-element` attribute you can implement a strategy, which will allow you to use `{ data: 'my-element' }` as a valid locator.
-
-Custom locators should be implemented in a plugin or a bootstrap script using internal CodeceptJS API:
-
-```js
-// inside a plugin or a bootstrap script:
 codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
-  // providedLocator - a locator in a format it was provided
-  // locatorObj - a standrard locator object.
-    if (providedLocator.data) {
-      locatorObj.type = 'css';
-      locatorObj.value = `[data-element=${providedLocator.data}]`
-    }
-});
-```
-
-That's all. New locator type is ready to use:
-
-```js
-I.click({ data: 'user-login' });
-```
-
-#### Custom String Locators
-
-What if we want to locators prefixed with `=` to match elements with exact text value.
-We can do that too:
-
-```js
-// inside a plugin or a bootstrap script:
-codeceptjs.locator.addFilter((providedLocator, locatorObj) => {
-    if (typeof providedLocator === 'string') {
-      // this is a string
-      if (providedLocator[0] === '=') {
-        locatorObj.value = `.//*[text()="${providedLocator.substring(1)}"]`;
-        locatorObj.type = 'xpath';
-      }
-    }
-});
-```
-New locator strategy is ready to use:
-
-
-```js
-I.click('=Login');
-```
-
-#### Custom Strategy Locators
-
-CodeceptJS provides the option to specify custom locators that uses Custom Locator Strategies defined in the WebDriver configuration. It uses the WebDriverIO's [custom$](https://webdriver.io/docs/api/browser/custom$.html) locators internally to locate the elements on page.
-To use the defined Custom Locator Strategy add your custom strategy to your configuration.
-
-```js
-// in codecept.conf.js
-
-const myStrat = (selector) => {
-  return document.querySelectorAll(selector)
-}
-
-// under WebDriver Helpers Configuration
-WebDriver: {
-  ...
-  customLocatorStrategies: {
-    custom: myStrat
+  if (providedLocator.data) {
+    locatorObj.type = 'css'
+    locatorObj.value = `[data-element=${providedLocator.data}]`
   }
-}
+})
 ```
+
+After registration, `{ data: 'user-login' }` is a valid strict locator:
 
 ```js
-I.click({custom: 'my-shadow-element-unique-css'})
+I.click({ data: 'user-login' })
 ```
 
-
-> For more details on locator object see [Locator](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/locator.js) class implementation.
+Further reading: Mozilla's [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/) and the [Locator Advicer](https://davertmik.github.io/locator/).

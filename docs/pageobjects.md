@@ -319,77 +319,7 @@ export default AdminSteps
 
 ## Data Objects
 
-Data Objects are page objects designed to manage test data via API. They use the REST helper (through `I`) to create data in a test and clean it up automatically via the `_after()` hook.
-
-This is a lightweight alternative to [ApiDataFactory](/helpers/ApiDataFactory) — ideal when you want full control over data creation and cleanup logic without factory configuration.
-
-### Defining a Data Object
-
-```js
-const { I } = inject();
-
-class UserData {
-  constructor() {
-    this._created = [];
-  }
-
-  async createUser(data = {}) {
-    const response = await I.sendPostRequest('/api/users', {
-      name: data.name || 'Test User',
-      email: data.email || `test-${Date.now()}@example.com`,
-      ...data,
-    });
-    this._created.push(response.data.id);
-    return response.data;
-  }
-
-  async createPost(userId, data = {}) {
-    const response = await I.sendPostRequest('/api/posts', {
-      userId,
-      title: data.title || 'Test Post',
-      body: data.body || 'Test body',
-      ...data,
-    });
-    this._created.push({ type: 'post', id: response.data.id });
-    return response.data;
-  }
-
-  async _after() {
-    for (const record of this._created.reverse()) {
-      const id = typeof record === 'object' ? record.id : record;
-      const type = typeof record === 'object' ? record.type : 'user';
-      try {
-        await I.sendDeleteRequest(`/api/${type}s/${id}`);
-      } catch (e) {
-        // cleanup errors should not fail the test
-      }
-    }
-    this._created = [];
-  }
-}
-
-export default UserData
-```
-
-### Configuration
-
-Add the REST helper and the Data Object to your config:
-
-```js
-helpers: {
-  Playwright: { url: 'http://localhost', browser: 'chromium' },
-  REST: {
-    endpoint: 'http://localhost/api',
-    defaultHeaders: { 'Content-Type': 'application/json' },
-  },
-},
-include: {
-  I: './steps_file.js',
-  userData: './data/UserData.js',
-}
-```
-
-### Usage in Tests
+Page objects can also be used to manage test data via API. **Data Objects** are page object classes that create data using the REST helper and automatically clean it up via the `_after()` hook.
 
 ```js
 Scenario('user sees their profile', async ({ I, userData }) => {
@@ -400,20 +330,51 @@ Scenario('user sees their profile', async ({ I, userData }) => {
 });
 ```
 
-Data Objects can use any helper methods available via `I`, including `sendGetRequest`, `sendPutRequest`, and browser actions. They combine the convenience of managed test data with the flexibility of page objects.
+This is useful for tests that need API-created data with automatic cleanup, without the overhead of factory configuration.
+
+**Learn more:** See [Data Objects](/data#data-objects) for complete documentation, examples, and configuration.
 
 ## Dynamic Injection
 
-You can inject objects per test by calling `injectDependencies` function in a Scenario:
+Sometimes you need to use a page object in only one or a few tests without adding it to global configuration. Use `injectDependencies()` to inject page objects dynamically per test:
 
 ```js
-Scenario('search @grop', ({ I, Data }) => {
-  I.fillField('Username', Data.username);
-  I.pressKey('Enter');
-}).injectDependencies({ Data: require('./data.js') });
+// pages/searchPage.js
+const { I } = inject();
+
+class SearchPage {
+  constructor() {
+    this.searchField = '#search-input';
+    this.searchButton = 'button[type=submit]';
+  }
+
+  search(query) {
+    I.fillField(this.searchField, query);
+    I.click(this.searchButton);
+  }
+}
+
+export default new SearchPage();
 ```
 
-This requires the `./data.js` module and assigns it to a `Data` argument in a test.
+Inject the page object into a specific scenario:
+
+```js
+Scenario('user searches for products', ({ I, searchPage }) => {
+  I.amOnPage('/');
+  searchPage.search('laptop');
+  I.see('Search Results');
+}).injectDependencies({ 
+  searchPage: require('./pages/searchPage.js') 
+});
+```
+
+**Use cases:**
+- Page objects needed only in a few tests
+- Test-specific configurations or data objects
+- Experimenting with new page objects before adding them globally
+
+**Note:** For page objects used across multiple tests, add them to the `include` section in `codecept.conf.js` instead.
 
 ## Plain Object Page Objects (Legacy)
 

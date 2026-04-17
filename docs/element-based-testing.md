@@ -272,7 +272,7 @@ Scenario('filter products by price', async ({ I }) => {
 ## API Reference
 
 - **[Element Access](els.md)** - Complete reference for `element()`, `eachElement()`, `expectElement()`, `expectAnyElement()`, `expectAllElements()` functions
-- **[WebElement API](WebElement.md)** - Complete reference for WebElement class methods (`getText()`, `getAttribute()`, `click()`, `$$()`, etc.)
+- **[WebElement API](web-element.md)** - Complete reference for WebElement class methods (`getText()`, `getAttribute()`, `click()`, `$$()`, etc.)
 
 ## Portability
 
