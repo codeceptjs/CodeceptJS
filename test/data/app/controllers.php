@@ -319,3 +319,12 @@ class basic_auth {
         include __DIR__.'/view/basic_auth.php';
     }
 }
+
+class richtext_submit {
+    function POST() {
+        $content = isset($_POST['content']) ? $_POST['content'] : '';
+        echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Submitted</title></head><body>';
+        echo '<pre id="result">' . htmlspecialchars($content, ENT_QUOTES | ENT_HTML5, 'UTF-8') . '</pre>';
+        echo '</body></html>';
+    }
+}

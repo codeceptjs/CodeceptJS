@@ -828,6 +828,75 @@ export function tests() {
     })
   })
 
+  describe('#fillField - rich text editors', function () {
+    this.timeout(60000)
+
+    const longContent = fs.readFileSync(path.join(__dirname, '../data/richtext-long.txt'), 'utf8').trim()
+
+    const editors = [
+      { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor' },
+      { name: 'Quill',          page: 'quill',          selector: '#editor' },
+      { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor' },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor' },
+      { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor' },
+      { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
+      { name: 'Monaco',         page: 'monaco',         selector: '#editor' },
+      { name: 'ACE',            page: 'ace',            selector: '#editor' },
+      { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor' },
+      { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor' },
+      { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor' },
+    ]
+
+    async function open(page, initial) {
+      const q = initial != null ? `?initial=${encodeURIComponent(initial)}` : ''
+      await I.amOnPage(`/form/richtext/${page}${q}`)
+      await I.waitForFunction(() => window.__editorReady === true, [], 30)
+    }
+
+    async function submitAndGrab() {
+      await I.click('#submit')
+      await I.waitForElement('#result', 15)
+      return I.grabTextFrom('#result')
+    }
+
+    for (const ed of editors) {
+      describe(ed.name, () => {
+        it('submits filled value', async () => {
+          await open(ed.page)
+          await I.fillField(ed.selector, 'Hello rich text world')
+          expect(await submitAndGrab()).to.include('Hello rich text world')
+        })
+
+        it('rewrites pre-populated content', async () => {
+          await open(ed.page, 'PREVIOUSLY ENTERED DATA')
+          await I.fillField(ed.selector, 'fresh replacement text')
+          const submitted = await submitAndGrab()
+          expect(submitted).to.include('fresh replacement text')
+          expect(submitted).to.not.include('PREVIOUSLY ENTERED DATA')
+        })
+
+        it('preserves special characters', async () => {
+          await open(ed.page)
+          await I.fillField(ed.selector, 'Test: "quotes", & ampersand, 100% done!')
+          const submitted = await submitAndGrab()
+          expect(submitted).to.include('"quotes"')
+          expect(submitted).to.include('& ampersand')
+          expect(submitted).to.include('100%')
+        })
+
+        it('fills large multi-paragraph content', async () => {
+          await open(ed.page)
+          await I.fillField(ed.selector, longContent)
+          const submitted = await submitAndGrab()
+          expect(submitted).to.include('Opening paragraph')
+          expect(submitted).to.include('Middle paragraph')
+          expect(submitted).to.include('Closing paragraph')
+        })
+      })
+    }
+  })
+
   describe('#clearField', () => {
     it('should clear a given element', async () => {
       await I.amOnPage('/form/field')
