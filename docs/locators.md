@@ -237,21 +237,60 @@ I.click(editAcme)
 
 #### Builder methods
 
+The `with*` family filters elements positively; `without*` excludes; `and` / `andNot` / `or` compose raw predicates or union locators.
+
 | Method | Purpose | Example |
 |--------|---------|---------|
 | `find(loc)` | Descendant lookup | `locate('table').find('td')` |
 | `withAttr(obj)` | Match attributes | `locate('input').withAttr({ placeholder: 'Name' })` |
-| `withClassAttr(str)` | Class contains substring | `locate('div').withClassAttr('form')` |
+| `withAttrContains(attr, str)` | Attr value contains substring | `locate('a').withAttrContains('href', 'google')` |
+| `withAttrStartsWith(attr, str)` | Attr value starts with | `locate('a').withAttrStartsWith('href', 'https://')` |
+| `withAttrEndsWith(attr, str)` | Attr value ends with | `locate('a').withAttrEndsWith('href', '.pdf')` |
+| `withClass(...classes)` | Has all classes (word-exact) | `locate('button').withClass('btn-primary', 'btn-lg')` |
+| `withClassAttr(str)` | Class attribute contains substring (legacy — prefer `withClass`) | `locate('div').withClassAttr('form')` |
 | `withText(str)` | Visible text contains | `locate('span').withText('Warning')` |
 | `withTextEquals(str)` | Visible text matches exactly | `locate('button').withTextEquals('Add')` |
 | `withChild(loc)` | Has a direct child | `locate('form').withChild('select')` |
 | `withDescendant(loc)` | Has a descendant anywhere below | `locate('tr').withDescendant('img.avatar')` |
+| `withoutClass(...classes)` | None of these classes | `locate('tr').withoutClass('deleted')` |
+| `withoutText(str)` | Visible text does not contain | `locate('li').withoutText('Archived')` |
+| `withoutAttr(obj)` | None of these attr/value pairs | `locate('button').withoutAttr({ disabled: '' })` |
+| `withoutChild(loc)` | No direct child matching | `locate('form').withoutChild('input[type=submit]')` |
+| `withoutDescendant(loc)` | No descendant matching | `locate('button').withoutDescendant('svg')` |
 | `inside(loc)` | Sits inside an ancestor | `locate('select').inside('form#user')` |
 | `before(loc)` | Appears before another element | `locate('button').before('.btn-cancel')` |
 | `after(loc)` | Appears after another element | `locate('button').after('.btn-cancel')` |
+| `or(loc)` | Union of two locators | `locate('button.submit').or('input[type=submit]')` |
+| `and(expr)` | Append raw XPath predicate | `locate('input').and('@type="text" or @type="email"')` |
+| `andNot(expr)` | Append negated raw XPath predicate | `locate('button').andNot('.//svg')` |
 | `first()` / `last()` | Bound position | `locate('#table td').first()` |
 | `at(n)` | Pick nth element (negative counts from end) | `locate('#table td').at(-2)` |
 | `as(name)` | Rename in logs | `locate('//table').as('orders table')` |
+
+#### Translating complex XPath
+
+Long XPath expressions become readable with the DSL. For example:
+
+```
+//*[self::button
+    and contains(@class,"red-btn")
+    and contains(@class,"btn-text-and-icon")
+    and contains(@class,"btn-lg")
+    and contains(@class,"btn-selected")
+    and normalize-space(.)="Button selected"
+    and not(.//svg)]
+```
+
+becomes:
+
+```js
+locate('button')
+  .withClass('red-btn', 'btn-text-and-icon', 'btn-lg', 'btn-selected')
+  .withText('Button selected')
+  .withoutDescendant('svg')
+```
+
+> `withClass` uses word-exact matching (same as CSS `.foo`), so `.withClass('btn')` will not accidentally match `class="btn-lg"`. Use `withAttrContains('class', …)` if you need the old substring behavior.
 
 ## Custom locators
 

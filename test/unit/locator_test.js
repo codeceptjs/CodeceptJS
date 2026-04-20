@@ -407,6 +407,161 @@ describe('Locator', () => {
     expect(nodes).to.have.length(9)
   })
 
+  it('withClass: single class (word-exact)', () => {
+    const l = Locator.build('a').withClass('ps-menu-button')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(10, l.toXPath())
+  })
+
+  it('withClass: variadic ANDs class conditions', () => {
+    const l = Locator.build('a').withClass('ps-menu-button', 'active')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('withClass: word-exact (does not match partial class)', () => {
+    const l = Locator.build('div').withClass('form-')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
+
+  it('withoutClass: excludes elements carrying the class', () => {
+    const l = Locator.build('a').withClass('ps-menu-button').withoutClass('active')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(9, l.toXPath())
+  })
+
+  it('withoutText: excludes elements containing text', () => {
+    const l = Locator.build('span').withoutText('Hey')
+    const nodes = xpath.select(l.toXPath(), doc)
+    const matchesHey = nodes.find(n => n.firstChild && n.firstChild.data === 'Hey boy')
+    expect(matchesHey).to.be.undefined
+  })
+
+  it('withoutAttr: excludes matching attribute value', () => {
+    const l = Locator.build('input').withoutAttr({ type: 'hidden' })
+    const nodes = xpath.select(l.toXPath(), doc)
+    nodes.forEach(n => expect(n.getAttribute('type')).to.not.equal('hidden'))
+  })
+
+  it('withoutDescendant: excludes elements with a descendant match', () => {
+    const l = Locator.build('a').withClass('ps-menu-button').withoutDescendant('.ps-submenu-expand-icon')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('withoutChild: excludes elements with a direct child match', () => {
+    const l = Locator.build('p').withoutChild('span')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(0, l.toXPath())
+  })
+
+  it('and: appends raw xpath predicate', () => {
+    const l = Locator.build('input').and('@type="checkbox"')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  it('andNot: wraps raw xpath predicate in not()', () => {
+    const l = Locator.build('a').withClass('ps-menu-button').andNot('.//span[contains(@class, "ps-submenu-expand-icon")]')
+    const nodes = xpath.select(l.toXPath(), doc)
+    expect(nodes).to.have.length(1, l.toXPath())
+  })
+
+  describe('combined filters', () => {
+    it('withClass + withoutClass: active vs inactive menu buttons', () => {
+      const l = Locator.build('a').withClass('ps-menu-button').withoutClass('active')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(9, l.toXPath())
+    })
+
+    it('withClass + withAttr + withDescendant: dashboard menu with expand icon', () => {
+      const l = Locator.build('a')
+        .withClass('ps-menu-button')
+        .withAttr({ title: 'Dashboard' })
+        .withDescendant('.ps-submenu-expand-icon')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+    })
+
+    it('withClass + withoutDescendant: single active menu without expand icon (user red-btn pattern)', () => {
+      const l = Locator.build('a').withClass('ps-menu-button', 'active').withoutDescendant('.ps-submenu-expand-icon')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+    })
+
+    it('withText + withoutText: td with Edit but not Also Edit', () => {
+      const l = Locator.build('td').withText('Edit').withoutText('Also')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+      expect(nodes[0].firstChild.data).to.eql('Edit')
+    })
+
+    it('withClass + withDescendant(locate(...).withTextEquals(...)): Authoring menu item', () => {
+      const l = Locator.build('a')
+        .withClass('ps-menu-button')
+        .withDescendant(Locator.build('span').withTextEquals('Authoring'))
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+    })
+
+    it('withClass + withDescendant(nested withClass) + withoutDescendant', () => {
+      // active home menu, reached via its icon
+      const l = Locator.build('a')
+        .withClass('ps-menu-button', 'active')
+        .withDescendant(Locator.build('i').withClass('icon', 'home'))
+        .withoutDescendant('.ps-submenu-expand-icon')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+    })
+
+    it('or: union of two distinct filtered locators', () => {
+      const active = Locator.build('a').withClass('ps-menu-button', 'active')
+      const dashboard = Locator.build('a').withAttr({ title: 'Dashboard' })
+      const l = active.or(dashboard)
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(2, l.toXPath())
+    })
+
+    it('and: raw predicate combined with DSL filters', () => {
+      const l = Locator.build('a').withClass('ps-menu-button').and('@title="Dashboard"')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+    })
+
+    it('andNot + withClass: class present but no matching descendant', () => {
+      const l = Locator.build('li').withClass('ps-submenu-root').andNot('.//span[text()="Authoring"]')
+      const nodes = xpath.select(l.toXPath(), doc)
+      // 9 submenu-root items total, 1 contains "Authoring" → 8 remain
+      expect(nodes).to.have.length(8, l.toXPath())
+    })
+
+    it('deep chain: find + withClass + first + find + withText', () => {
+      const l = Locator.build('#fieldset-buttons').find('tr').first().find('td').withText('Edit').withoutText('Also')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+      expect(nodes[0].firstChild.data).to.eql('Edit')
+    })
+
+    it('withClass + withoutChild: submenu-root li with no child named `i`', () => {
+      const l = Locator.build('li').withClass('ps-submenu-root').withoutChild('i')
+      const nodes = xpath.select(l.toXPath(), doc)
+      // every submenu li has no direct `i` child (i is wrapped in a span) — all 9 match
+      expect(nodes).to.have.length(9, l.toXPath())
+    })
+
+    it('user button example: multi-class + text + not-descendant (applied to menu fixture)', () => {
+      // mirrors:
+      //   locate('button').withClass('red-btn', 'btn-lg').withText('Save').withoutDescendant('svg')
+      const l = Locator.build('a')
+        .withClass('ps-menu-button', 'active')
+        .withText('aaa')
+        .withoutDescendant('.ps-submenu-expand-icon')
+      const nodes = xpath.select(l.toXPath(), doc)
+      expect(nodes).to.have.length(1, l.toXPath())
+    })
+  })
+
   it('should build locator to match element containing a text', () => {
     const l = Locator.build('span').withText('Hey')
     const nodes = xpath.select(l.toXPath(), doc)
