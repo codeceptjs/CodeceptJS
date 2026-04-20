@@ -41,7 +41,8 @@
     "./els": "./lib/els.js",
     "./effects": "./lib/effects.js",
     "./steps": "./lib/steps.js",
-    "./store": "./lib/store.js"
+    "./store": "./lib/store.js",
+    "./assertions": "./lib/assertions.js"
   },
   "bin": {
     "codeceptjs": "./bin/codecept.js",
