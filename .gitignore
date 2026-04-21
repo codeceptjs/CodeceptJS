@@ -27,3 +27,4 @@ yarn.lock
 /.vs
 typings/types.d.ts
 typings/promiseBasedTypes.d.ts
+reflection/

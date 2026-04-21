@@ -8,15 +8,40 @@ Browser and Mobile tests can fail for vareity of reasons. However, on a big proj
 
 ![](/img/healing.png)
 
-Let's start with an example the most basic healing recipe. If after a click test has failed, try to reload page, and continue.
+Let's start with a common scenario. If a user suddenly becomes unauthorized and is moved to a sign-in page, or receives an unauthorized message on the page, we can heal by navigating to the `/login` page and trying to enter credentials again.
+
+```js
+heal.addRecipe('loginOnUnauthorized', {
+  priority: 10,
+  steps: ['click', 'see', 'amOnPage'],
+  prepare: {
+    url: ({ I }) => I.grabCurrentUrl(),
+    html: ({ I }) => I.grabHTMLFrom('body'),
+  },
+  fn: async ({ url, error, step, html }) => {
+    if (!url.includes('/login') && !error.message.toLowerCase().includes('unauthorized') && !html.toLowerCase().includes('unauthorized')) return;
+    
+    return ({ I }) => {
+      I.amOnPage('/login');
+      I.fillField('Email', 'test@example.com');
+      I.fillField('Password', '123456');
+      I.click('Sign in');
+      I[step.name](...step.args);
+    };
+  },
+});
+```
+
+Another example is a very basic healing recipe. If after a click test has failed, try to reload page, and continue.
 
 ```js
 heal.addRecipe('reload', {
   priority: 10,
   steps: ['click'],
-  fn: async () => {
+  fn: async ({ step }) => {
     return ({ I }) => {
       I.refreshPage();
+      I[step.name](...step.args);
     };
   },
 });
@@ -32,6 +57,7 @@ The example above is only one way a test can be healed. But you can define as ma
 
 There are some ideas where healing can be useful to you:
 
+* **Authorization**. If a user suddenly becomes unauthorized and is moved to a sign-in page, or receives an unauthorized message on the page, we can heal by navigating to the `/login` page and trying to enter credentials.
 * **Networking**. If a test depends on a remote resource, and fails because this resource is not available, you may try to send API request to restore that resource before throwing an error.
 * **Data Consistency**. A test may fail because you noticed the data glitch in a system. Instead of failing a test you may try to clean up the data and try again to proceed.
 * **UI Change**. If there is a planned UI migration of a component, for instance Button was changed to Dropdown. You can prepare test so if it fails clicking Button it can try to do so with Dropdown.
@@ -67,9 +93,9 @@ Require `recipes` file and add `heal` plugin to `codecept.conf` file:
 
 ```js
 
-require('./heal')
+import './heal';
 
-exports.config = {
+export const config = {
   // ...
   plugins: {
     heal: {
@@ -134,7 +160,8 @@ heal.addRecipe('reloadPageOnUserAccount', {
       // probably you should do something more sophisticated
       // to heal the test
       I.reloadPage();
-      I.wait(1); 
+      I.wait(1);
+      I[step.name](...stepArgs);
     };
   },
 });
