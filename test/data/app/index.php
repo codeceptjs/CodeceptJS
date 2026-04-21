@@ -46,7 +46,8 @@ $urls = array(
     '/download' => 'download',
     '/basic_auth' => 'basic_auth',
     '/image' => 'basic_image',
-    '/invisible_elements' => 'invisible_elements'
+    '/invisible_elements' => 'invisible_elements',
+    '/richtext_submit' => 'richtext_submit'
 );
 
 glue::stick($urls);
