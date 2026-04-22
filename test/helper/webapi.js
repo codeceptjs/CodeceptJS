@@ -895,6 +895,56 @@ export function tests() {
         })
       })
     }
+
+    describe('rich editor with sibling focused input — no keystroke leak', function () {
+      async function openSiblingPage(page, initial) {
+        const q = initial != null ? `?initial=${encodeURIComponent(initial)}` : ''
+        await I.amOnPage(`/form/richtext/${page}${q}`)
+        await I.waitForFunction(() => window.__editorReady === true, [], 30)
+      }
+
+      const siblingCases = [
+        { name: 'iframe editor (Monaco)',              page: 'monaco-with-sibling',      selector: 'iframe',       path: 'IFRAME' },
+        { name: 'hidden-textarea editor (CodeMirror)', page: 'codemirror5-with-sibling', selector: '#editor',      path: 'HIDDEN_TEXTAREA' },
+        { name: 'contenteditable editor (CKEditor 5)', page: 'ckeditor5-with-sibling',   selector: '#editor',      path: 'CONTENTEDITABLE' },
+      ]
+
+      for (const tc of siblingCases) {
+        describe(tc.name, () => {
+          it(`fillField via ${tc.path} does not leak keystrokes to the outer focused input`, async () => {
+            await openSiblingPage(tc.page)
+            await I.fillField(tc.selector, 'Hello rich text world')
+            expect(await I.grabValueFrom('#outer-title')).to.equal('')
+            await I.click('#submit')
+            await I.waitForElement('#result', 15)
+            expect(await I.grabTextFrom('#result')).to.include('Hello rich text world')
+          })
+
+          it(`fillField via ${tc.path} clears pre-populated content without touching the outer input`, async () => {
+            await openSiblingPage(tc.page, 'PREVIOUSLY ENTERED DATA')
+            await I.fillField(tc.selector, 'fresh replacement text')
+            expect(await I.grabValueFrom('#outer-title')).to.equal('')
+            await I.click('#submit')
+            await I.waitForElement('#result', 15)
+            const submitted = await I.grabTextFrom('#result')
+            expect(submitted).to.include('fresh replacement text')
+            expect(submitted).to.not.include('PREVIOUSLY ENTERED DATA')
+          })
+        })
+      }
+
+      it('throws instead of leaking when locator points at a hidden backing element', async () => {
+        await openSiblingPage('codemirror5-with-sibling')
+        let caught = null
+        try {
+          await I.fillField('#editor-inner', 'should-not-leak')
+        } catch (e) {
+          caught = e
+        }
+        expect(caught, 'fillField on a display:none backing textarea must throw').to.not.equal(null)
+        expect(await I.grabValueFrom('#outer-title')).to.equal('')
+      })
+    })
   })
 
   describe('#clearField', () => {
