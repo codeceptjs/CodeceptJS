@@ -3,13 +3,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>CodeMirror 5</title>
+    <title>CodeMirror 5 with sibling input</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css">
     <style>.CodeMirror { border: 1px solid #ccc; height: 200px; }</style>
 </head>
 <body>
-    <h1>CodeMirror 5</h1>
+    <h1>CodeMirror 5 with sibling input</h1>
     <form id="richtext-form" method="post" action="/richtext_submit">
+        <input id="outer-title" name="outer-title" placeholder="Title" type="search" autofocus>
         <div id="editor">
             <textarea id="editor-inner"><?php echo htmlspecialchars($initial, ENT_QUOTES | ENT_HTML5, 'UTF-8'); ?></textarea>
         </div>
@@ -26,6 +27,7 @@
         document.getElementById('richtext-form').addEventListener('submit', function() {
             document.getElementById('content-sync').value = window.__editorContent ? window.__editorContent() : '';
         });
+        document.getElementById('outer-title').focus();
     </script>
 </body>
 </html>
