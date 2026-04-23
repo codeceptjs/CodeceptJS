@@ -1,3 +1,15 @@
+## 3.7.9
+
+❤️ Thanks all to those who contributed to make this release! ❤️
+
+## 🧹 Chores & Maintenance
+
+- Fix all occurrences of @xmldom/xmldom to 0.9.10 and removed override (#5534) - by @thomashohn
+- Fix security issue in axios and updated deps (#5530) - by @thomashohn
+- Update outdated packages and security fixes (#5523) - by @thomashohn
+- Align docker playwright version with composer (#5521) - by @thomashohn
+- Fix critical security issue in axios (#5517) - by @thomashohn
+
 ## 3.7.8
 
 ❤️ Thanks all to those who contributed to make this release! ❤️
