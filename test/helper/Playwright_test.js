@@ -1192,6 +1192,36 @@ describe('Playwright', function () {
       I.see('Information')
     })
   })
+
+  describe('#click - with tag selector as context', () => {
+    it('clicks <a><span>text</span></a> when context is the tag "a"', async () => {
+      await I.amOnPage('/form/example7')
+      await I.click('Buy Chocolate Bar', 'a')
+      await I.seeCurrentUrlEquals('/')
+    })
+  })
+
+  describe('#click - tablist regression', () => {
+    // https://github.com/codeceptjs/CodeceptJS — click(text, container) was matching
+    // the container itself when its concatenated string-value contained the text,
+    // clicking the <ul role="tablist"> center instead of the intended <li role="tab">.
+    it('clicks the correct tab by text when container has many text-bearing children', async () => {
+      await I.amOnPage('/form/tablist')
+      await I.seeTextEquals('description', '#selected-tab')
+
+      await I.click('History', 'ul[role="tablist"]')
+      await I.seeTextEquals('history', '#selected-tab')
+
+      await I.click('Description', 'ul[role="tablist"]')
+      await I.seeTextEquals('description', '#selected-tab')
+
+      await I.click('Runs', 'ul[role="tablist"]')
+      await I.seeTextEquals('runs', '#selected-tab')
+
+      await I.click('Code template', 'ul[role="tablist"]')
+      await I.seeTextEquals('code', '#selected-tab')
+    })
+  })
 })
 
 let remoteBrowser
