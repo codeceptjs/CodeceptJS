@@ -6,6 +6,7 @@ on:
 
 jobs:
   gitleaks:
+    if: github.repository_owner == 'codeceptjs'
     runs-on: ubuntu-latest
     permissions:
       contents: read
