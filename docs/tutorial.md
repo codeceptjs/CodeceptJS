@@ -207,7 +207,7 @@ Now open this file:
 ```js
 const { I } = inject();
 
-module.exports = {
+export default {
 
   // insert your locators and methods here
 }
@@ -218,7 +218,7 @@ Feels really empty. What should we do about it? Should we write more code? No, w
 ```js
 const { I } = inject();
 
-module.exports = {
+export default {
 
   fillShippingAddress(name, address, city, state, zip) {
     I.fillField('Name', name);

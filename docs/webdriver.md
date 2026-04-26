@@ -39,7 +39,7 @@ npm i @wdio/selenium-standalone-service --save-dev
 Enable it in config inside plugins section:
 
 ```js
-exports.config = {
+export const config = {
   // ...
   // inside condecept.conf.js
   plugins: {
@@ -160,15 +160,22 @@ CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load
 
 ### Headless Mode
 
-It is recommended to use `@codeceptjs/configure` package to easily toggle headless mode for WebDriver:
+The bundled `@codeceptjs/configure` toggles headless mode for WebDriver — for chrome/firefox it injects `--headless` into the matching capability args automatically:
 
 ```js
 // inside codecept.conf.js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+import { setHeadlessWhen, setWindowSize } from '@codeceptjs/configure'
 
-setHeadlessWhen(process.env.HEADLESS); // enables headless mode when HEADLESS environment variable exists
+setHeadlessWhen(process.env.HEADLESS) // enables headless mode when HEADLESS env var is set
+setWindowSize(1280, 720)
 ```
-This requires `@codeceptjs/configure` package to be installed.
+
+For one-off runs without editing config, the [`browser` plugin](/commands#browser-control) does the same from the CLI:
+
+```sh
+npx codeceptjs run -p browser:hide                      # force headless
+npx codeceptjs run -p browser:hide:windowSize=1280x720  # combined
+```
 
 Alternatively, you can enable headless mode manually via desired capabilities.
 
@@ -352,7 +359,7 @@ WebDriver helper supports standard [CSS/XPath and text locators](/locators) as w
 If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
 
 ```js
-const assert = require('assert');
+import assert from 'assert';
 Scenario('get value of current tasks', async ({ I }) => {
   I.fillField('.todo', 'my first item');
   I.pressKey('Enter')
@@ -414,7 +421,7 @@ By default, they will wait for 1 second. This number can be changed in WebDriver
 
 ```js
 // inside codecept.conf.js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       // WebDriver config goes here
@@ -434,7 +441,7 @@ Add `smartWait: 5000` to wait for additional 5s.
 
 ```js
 // inside codecept.conf.js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       // WebDriver config goes here
@@ -509,7 +516,7 @@ With `autoLogin` plugin you can save cookies into a file and reuse same session 
 CodeceptJS allows to use several browser windows inside a test. Sometimes we are testing the functionality of websites that we cannot control, such as a closed-source managed package, and there are popups that either remain open for configuring data on the screen, or close as a result of clicking a window. We can use these functions in order to gain more control over which page is being tested with Codecept at any given time. For example:
 
 ```js
-const assert = require('assert');
+import assert from 'assert';
 
 Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async ({ I }) => {
     I.amOnPage('/');
@@ -637,7 +644,7 @@ npx codeceptjs gh
 Name a new helper "Web". Now each method of a created class can be added to I object. Be sure to enable this helper in config:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: { /* WebDriver config goes here */ },
     WebHelper: {

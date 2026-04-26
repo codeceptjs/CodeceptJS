@@ -100,8 +100,42 @@ await Container.create(config, opts)
 | `Protractor` | Switch to `Playwright` or `WebDriver`. |
 | `TestCafe` | Switch to `Playwright`. |
 | `AI` | Use the top-level `ai:` config option and the new `aiTrace` plugin. |
+| `SoftExpectHelper` | Use the `hopeThat` effect instead — see below. |
 
 `Container.STANDARD_ACTING_HELPERS` no longer lists `TestCafe`.
+
+### `SoftExpectHelper` → `hopeThat`
+
+3.x shipped a `SoftExpectHelper` (`I.softAssert`, `I.softExpectEqual`, `I.flushSoftAssertions`, etc.) for soft assertions. It is gone in 4.x. Use the `hopeThat` effect — it works with **any** assertion that throws (built-in `I.see*`, your custom helper, `expect` from chai/jest, Node's `assert`).
+
+3.x:
+
+```js
+helpers: { SoftExpectHelper: {} }
+
+// in scenario
+I.softExpectEqual(user.name, 'jon')
+I.softExpectContain(emails, 'jon@doe.com')
+I.flushSoftAssertions()
+```
+
+4.x:
+
+```js
+import { hopeThat } from 'codeceptjs/effects'
+
+await hopeThat(() => assert.strictEqual(user.name, 'jon'))
+await hopeThat(() => assert.ok(emails.includes('jon@doe.com')))
+hopeThat.noErrors()
+```
+
+Each `hopeThat()` call records the failure as a note on the test and lets the scenario continue; `hopeThat.noErrors()` throws once at the end with every recorded failure if any happened. See [Effects: hopeThat](/effects#hopethat).
+
+### Custom Assertion Libraries
+
+No code changes are required for chai, expect, jest-style matchers, or Node's `assert` — just import them in your test files. With `noGlobals: true`, they work the same as before.
+
+Heads up on chai: 3.x pinned `chai@4`; 4.x devDep is `chai@6`, which is **ESM-only** and drops some legacy APIs. If you import chai in your tests, switch to `import { expect } from 'chai'` and verify your matchers still resolve.
 
 ## 4. Replace or Remove Plugins
 
@@ -287,6 +321,21 @@ I.fillField('Email', 'a@b.c', step.timeout(10))
 I.click('Add', step.opts({ elementIndex: 2 }))
 ```
 
+### `within` Is Now an Effect
+
+In 3.x, `within(...)` was a global statement available everywhere. In 4.x it's an effect alongside `tryTo`, `retryTo`, and `hopeThat`. Under `noGlobals: true` you must import it:
+
+```js
+import { within } from 'codeceptjs/effects'
+
+await within('.signup-form', () => {
+  I.fillField('Email', 'a@b.c')
+  I.click('Submit')
+})
+```
+
+`within` returns a Promise — `await` it whenever you need its return value or want subsequent steps to wait for it. The same applies to `session`, which moved from global to a regular import (`import { session } from 'codeceptjs'`).
+
 ### Effects and Assertions Are Subpath Imports
 
 ```js
@@ -400,6 +449,49 @@ I.fillField('input', 'x', step.opts({ elementIndex: -1 }))
 - `attachFile` — supports drag-and-drop dropzones.
 - `fillField` — supports rich text editors (CKEditor, ProseMirror, etc.).
 - BDD: `But` keyword is recognized.
+
+### CLI Plugin Arguments
+
+`-p` accepts colon-chained arguments, so plugins can be enabled and configured from the command line without editing config:
+
+```bash
+npx codeceptjs run -p pauseOn:fail              # pause on every failure
+npx codeceptjs run -p pauseOn:url:/checkout/*   # pause when URL matches
+npx codeceptjs run -p browser:show              # force visible browser
+npx codeceptjs run -p browser:browser=firefox:windowSize=1024x768
+npx codeceptjs run -p plugin1,plugin2:arg       # multiple plugins
+```
+
+The `browser` plugin is new in 4.x — it overrides the active browser helper (Playwright, Puppeteer, WebDriver, Appium) from the CLI, useful for ad-hoc local runs and CI matrices. See [Commands](/commands).
+
+The old `-p all` magic keyword is gone (it conflicted with the colon syntax). Enable specific plugins explicitly: `-p pluginA,pluginB`.
+
+### Workers: Events and Plugin Scope
+
+Two notable changes for parallel runs:
+
+- **Event dispatcher fires inside workers.** In 3.x, listeners attached to `event.dispatcher` only saw events from the main process. In 4.x, plugins and listeners observe per-test events inside each worker, so things like custom reporters and screenshot hooks work the same in single-process and worker modes ([#5464](https://github.com/codeceptjs/CodeceptJS/pull/5464)).
+- **`runInParent` / `runInMain` plugin option.** Set to `false` on plugins that should only run inside worker children (default is `true`). Useful for plugins that aggregate per-worker state from the parent.
+
+```js
+plugins: {
+  myReporter: {
+    enabled: true,
+    runInParent: false,   // only run in worker children
+  },
+}
+```
+
+### TypeScript Improvements
+
+If you write tests in TypeScript, 4.x is significantly better:
+
+- **`tsx` loader** instead of `ts-node/esm` — faster startup, better ESM compatibility. Install `tsx` (optional peer dep). `ts-node/esm` still works but emits a deprecation warning.
+- **Error stack traces** point at `.ts` source lines, not transpiled output.
+- **`__dirname` / `__filename`** are injected for TypeScript files that use them (ESM normally hides these globals).
+- **Path aliases** from `tsconfig.json` (`paths`) are resolved at runtime — `import x from '@/utils'` works without extra runtime config.
+- **`codecept.conf.ts`** supports top-level `await` via dynamic imports.
+- **`steps_file.ts`** and TypeScript support objects load correctly across files.
 
 ## 7. Update Dependency Versions
 

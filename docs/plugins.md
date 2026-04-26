@@ -18,7 +18,7 @@ When enabled with --ai flag, it generates reports after test execution.
 
 ```js
 // in codecept.conf.js
-exports.config = {
+export const config = {
   plugins: {
     analyze: {
       enabled: true,
@@ -77,7 +77,7 @@ Enable this plugin in your config:
 
 ```js
 // in codecept.conf.js
-exports.config = {
+export const config = {
   plugins: {
     aiTrace: {
       enabled: true

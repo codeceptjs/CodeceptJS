@@ -291,7 +291,7 @@ Examples of tables using:
     | Chuck | Norris  |
 ```
 ```js
-const { DataTableArgument } = require('codeceptjs');
+import { dataTableArgument as DataTableArgument } from 'codeceptjs';
 //...
 Given('I have a short employees card', (table) => {
   const dataTableArgument = new DataTableArgument(table);
@@ -309,7 +309,7 @@ Given('I have a short employees card', (table) => {
     | Harry | Potter  | Seeker   |
 ```
 ```js
-const { DataTableArgument } = require('codeceptjs');
+import { dataTableArgument as DataTableArgument } from 'codeceptjs';
 //...
 Given('I have an employee card', (table) => {
   const dataTableArgument = new DataTableArgument(table);
@@ -327,7 +327,7 @@ Given('I have an employee card', (table) => {
     | position | Seeker |
 ```
 ```js
-const { DataTableArgument } = require('codeceptjs');
+import { dataTableArgument as DataTableArgument } from 'codeceptjs';
 //...
 Given('I have a formatted employee card', (table) => {
   const dataTableArgument = new DataTableArgument(table);

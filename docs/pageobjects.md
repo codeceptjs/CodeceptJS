@@ -358,13 +358,13 @@ export default new SearchPage();
 Inject the page object into a specific scenario:
 
 ```js
+import searchPage from './pages/searchPage.js'
+
 Scenario('user searches for products', ({ I, searchPage }) => {
   I.amOnPage('/');
   searchPage.search('laptop');
   I.see('Search Results');
-}).injectDependencies({ 
-  searchPage: require('./pages/searchPage.js') 
-});
+}).injectDependencies({ searchPage });
 ```
 
 **Use cases:**
@@ -381,7 +381,7 @@ Plain object page objects are still supported for backward compatibility:
 ```js
 const { I } = inject();
 
-module.exports = {
+export default {
   fields: {
     email: '#user_basic_email',
     password: '#user_basic_password'

@@ -34,7 +34,7 @@ Helpers are classes inherited from [corresponding abstract class](https://github
 Created helper file should look like this:
 
 ```js
-const Helper = require('@codeceptjs/helper')
+import Helper from '@codeceptjs/helper'
 
 class MyHelper extends Helper {
   // before/after hooks
@@ -51,14 +51,14 @@ class MyHelper extends Helper {
   // use: this.helpers['helperName']
 }
 
-module.exports = MyHelper
+export default MyHelper
 ```
 
 When the helper is enabled in config all methods of a helper class are available in `I` object.
 For instance, if we add a new method to helper class:
 
 ```js
-const Helper = require('@codeceptjs/helper')
+import Helper from '@codeceptjs/helper'
 
 class MyHelper extends Helper {
   doAwesomeThings() {
@@ -202,8 +202,9 @@ This can be done inside a helper using the global [promise recorder](/hooks/#api
 Example: Retrying rendering errors in Puppeteer.
 
 ```js
+import { recorder } from 'codeceptjs'
+
 _before() {
-  const recorder = require('codeceptjs').recorder;
   recorder.retry({
     retries: 2,
     when: err => err.message.indexOf('Cannot find context with specified id') > -1,
@@ -217,7 +218,7 @@ Retry rules are available in array `recorder.retries`. The last retry rule can b
 
 ## Using Typescript
 
-With Typescript, just simply replacing `module.exports` with `export` for autocompletion.
+With Typescript, just simply replacing `export default` with `export` for autocompletion.
 
 ## Helper Examples
 
@@ -226,7 +227,7 @@ With Typescript, just simply replacing `module.exports` with `export` for autoco
 In this example we take the power of Playwright to change geolocation in our tests:
 
 ```js
-const Helper = require('@codeceptjs/helper')
+import Helper from '@codeceptjs/helper'
 
 class MyHelper extends Helper {
   async setGeoLocation(longitude, latitude) {
@@ -242,10 +243,10 @@ class MyHelper extends Helper {
 Next example demonstrates how to use WebDriver library to create your own test action. Method `seeAuthentication` will use `browser` instance of WebDriver to get access to cookies. Standard NodeJS assertion library will be used (you can use any).
 
 ```js
-const Helper = require('@codeceptjs/helper')
+import Helper from '@codeceptjs/helper'
 
 // use any assertion library you like
-const assert = require('assert')
+import assert from 'assert'
 
 class MyHelper extends Helper {
   /**
@@ -271,7 +272,7 @@ class MyHelper extends Helper {
   }
 }
 
-module.exports = MyHelper
+export default MyHelper
 ```
 
 ### Puppeteer Example
@@ -281,8 +282,8 @@ Puppeteer has [nice and elegant API](https://github.com/puppeteer/puppeteer/blob
 Let's see how we can use [emulate](https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.emulate.md) function to emulate iPhone browser in a test.
 
 ```js
-const Helper = require('@codeceptjs/helper')
-const puppeteer = require('puppeteer')
+import Helper from '@codeceptjs/helper'
+import puppeteer from 'puppeteer'
 const iPhone = puppeteer.devices['iPhone 6']
 
 class MyHelper extends Helper {
@@ -292,5 +293,5 @@ class MyHelper extends Helper {
   }
 }
 
-module.exports = MyHelper
+export default MyHelper
 ```

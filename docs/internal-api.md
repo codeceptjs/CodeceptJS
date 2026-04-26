@@ -8,11 +8,11 @@ title: Internal API
 In this guide we will overview the internal API of CodeceptJS.
 This knowledge is required for customization, writing plugins, etc.
 
-CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally. Otherwise, you can load codeceptjs API via global `codeceptjs` object:
+CodeceptJS provides an API which can be loaded via `import codeceptjs, { recorder, event, output } from 'codeceptjs'` when CodeceptJS is installed locally. Otherwise, you can load codeceptjs API via global `codeceptjs` object:
 
 ```js
 // via module
-const { recorder, event, output } = require('codeceptjs');
+import { recorder, event, output } from 'codeceptjs';
 // or using global object
 const { recorder, event, output } = codeceptjs;
 ```
@@ -37,7 +37,7 @@ CodeceptJS has a dependency injection container with helpers and support objects
 They can be retrieved from the container:
 
 ```js
-const { container } = require('codeceptjs');
+import { container } from 'codeceptjs';
 
 // get object with all helpers
 const helpers = container.helpers();
@@ -58,14 +58,15 @@ const plugins = container.plugins();
 New objects can also be added to container in runtime:
 
 ```js
-const { container } = require('codeceptjs');
+import { container } from 'codeceptjs';
+import UserPage from './pages/user.js';
 
 container.append({
   helpers: { // add helper
     MyHelper: new MyHelper({ config1: 'val1' });
   },
   support: { // add page object
-    UserPage: require('./pages/user');
+    UserPage,
   }
 })
 ```
@@ -85,9 +86,9 @@ CodeceptJS provides a module with an [event dispatcher and set of predefined eve
 It can be required from codeceptjs package if it is installed locally.
 
 ```js
-const { event } = require('codeceptjs');
+import { event } from 'codeceptjs';
 
-module.exports = function() {
+export default function() {
 
   event.dispatcher.on(event.test.before, function (test) {
 
@@ -135,13 +136,12 @@ To inject asynchronous functions in a test or before/after a test you can subscr
 Provide a function in the first parameter, a function must be async or must return a promise:
 
 ```js
-const { event, recorder } = require('codeceptjs');
+import { event, recorder } from 'codeceptjs';
+import request from 'request';
 
-module.exports = function() {
+export default function() {
 
   event.dispatcher.on(event.test.before, function (test) {
-
-    const request = require('request');
 
     recorder.add('create fixture data via API', function() {
       return new Promise((doneFn, errFn) => {
@@ -162,10 +162,10 @@ module.exports = function() {
 
 ### Config
 
-CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
+CodeceptJS config can be accessed from `import { config } from 'codeceptjs'` then `config.get()`:
 
 ```js
-const { config } = require('codeceptjs');
+import { config } from 'codeceptjs';
 
 // config object has access to all values of the current config file
 
@@ -187,7 +187,7 @@ Output module provides four verbosity levels. Depending on the mode you can have
 It is recommended to avoid `console.log` and use output.* methods for printing.
 
 ```js
-const output = require('codeceptjs').output;
+import { output } from 'codeceptjs';
 
 output.print('This is basic information');
 output.debug('This is debug information');
@@ -230,7 +230,7 @@ Whenever you execute tests with `--verbose` option you will see registered event
 You can run CodeceptJS tests from your script.
 
 ```js
-const { codecept: Codecept } = require('codeceptjs');
+import { codecept as Codecept } from 'codeceptjs';
 
 // define main config
 const config = { 
