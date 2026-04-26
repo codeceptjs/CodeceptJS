@@ -53,15 +53,17 @@ For each test, a `trace_<sha256>` directory is created with the following files:
 
 **0000_step_name_screenshot.png** - Screenshot for each step (file names include step names)
 
-**0000_step_name_page.html** - Full HTML of the page at each step
+**0000_step_name_page.html** - Full HTML of the page at each step. Processed through a `minify -> clean -> beautify` pipeline so the file is multi-line indented, free of `<script>` / `<style>` / `<noscript>` content, free of inline `style=""` attributes, and free of trash class names (Tailwind utilities, framework-generated `v-*` / `ember-*`, hashed classes, scoped `xl:hidden`-style classes). Semantic attributes (`id`, `aria-*`, `data-*`, `role`, etc.) are preserved.
 
-**0000_step_name_aria.txt** - ARIA accessibility snapshot (AI-readable structure without HTML noise)
+**0000_step_name_aria.txt** - ARIA accessibility snapshot (AI-readable structure without HTML noise; Playwright only)
 
-**0000_step_name_console.json** - Browser console logs
+**0000_step_name_console.json** - Browser console logs, normalized to plain `{ type, text }` objects (Playwright `ConsoleMessage` instances are coerced via their `.type()` / `.text()` methods so the JSON file is genuinely useful — not full of empty objects).
 
 When HAR or trace recording is enabled in your helper config, links to those files are also included.
 
 **Note:** Artifact files are named using step names for easier identification (e.g., `0000_I_see_Product_screenshot.png` instead of just `0000_screenshot.png`).
+
+**Storage state:** Cookies and `localStorage` are intentionally **not** captured per-step by `aiTrace` (they rarely change between actions, so per-step `_storage.json` files would be noise). Use the `pageInfo` plugin or the MCP `snapshot()` tool when you need a storage snapshot.
 
 ## Trace File Format
 
