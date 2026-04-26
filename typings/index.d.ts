@@ -211,9 +211,6 @@ declare namespace CodeceptJS {
        */
       JSONResponse?: any
 
-      /** Enable AI features for development purposes */
-      AI?: any
-
       [key: string]: any
     }
     /**

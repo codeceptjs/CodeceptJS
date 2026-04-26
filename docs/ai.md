@@ -58,7 +58,7 @@ import { openai } from '@ai-sdk/openai'
 export default {
   // ... other config
   ai: {
-    model: openai('gpt-4o-mini'),
+    model: openai('gpt-5'),
   },
 }
 ```
@@ -92,7 +92,7 @@ import { openai } from '@ai-sdk/openai'
 
 export default {
   ai: {
-    model: openai('gpt-4o-mini'),
+    model: openai('gpt-5'),
     // or use gpt-4o, gpt-3.5-turbo, etc.
   },
 }
@@ -119,8 +119,8 @@ import { anthropic } from '@ai-sdk/anthropic'
 
 export default {
   ai: {
-    model: anthropic('claude-3-5-sonnet-20241022'),
-    // or use claude-3-opus-20240229, claude-3-haiku-20240307, etc.
+    model: anthropic('claude-sonnet-4-6'),
+    // or use claude-opus-4-7, claude-haiku-4-5, etc.
   },
 }
 ```

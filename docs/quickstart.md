@@ -5,101 +5,72 @@ layout: Section
 sidebar: true
 ---
 
-::: slot sidebar
-
-#### Use WebDriver for classical Selenium setup
-
-<small>
-This gives you access to rich Selenium ecosystem and cross-browser support for majority of browsers and devices.
-</small>
-
-
-<a href="/webdriver" class="button extended" >Start with WebDriver &raquo;</a>
-
-<small> WebDriver support is implemented via [webdriverio](https://webdriver.io) library </small>
-
----
-
-* [Mobile Testing with Appium »](/mobile)
-
-:::
-
 # Quickstart
 
-
-Use [CodeceptJS all-in-one installer](https://github.com/codeceptjs/create-codeceptjs) to get CodeceptJS, a demo project, and Playwright.
+Install CodeceptJS into your project:
 
 ```
-npx create-codeceptjs .
+npm install codeceptjs playwright --save-dev
 ```
 
-If you prefer not to use Playwright see other [installation options](/installation/).
+Then install the browser binaries:
 
-![Installation](/img/codeceptinstall.gif)
+```
+npx playwright install --with-deps
+```
 
-> To install codeceptjs into a different folder, like `tests` use `npx create-codeceptjs tests`
+The `--with-deps` flag also installs required system dependencies for the browsers.
 
-After CodeceptJS is installed, try running **demo tests** using this commands:
-
-* `npm run codeceptjs:demo` - executes demo tests in window mode
-* `npm run codeceptjs:demo:headless` - executes demo tests in headless mode
-* `npm run codeceptjs:demo:ui` - open CodeceptJS UI to list and run demo tests. 
-
-[CodeceptJS UI](/ui) application:
-
-![](https://user-images.githubusercontent.com/220264/93860826-4d5fbc80-fcc8-11ea-99dc-af816f3db466.png)
+> Prefer WebDriver or Appium? See [installation options](/installation/) for all supported helpers.
 
 ---
 
 ### Init
 
-To start a new project initialize CodeceptJS to create main config file: `codecept.conf.js`.
+Initialize CodeceptJS to set up the config file and test directory:
 
 ```
 npx codeceptjs init
 ```
 
-Answer questions, agree on defaults:
+This command walks you through a short setup wizard and creates `codecept.conf.js`, a sample test file, and any required browser binaries.
 
+Answer the questions, accepting defaults to get started quickly:
 
 | Question | Default Answer  | Alternative
 |---|---|---|
 | Do you plan to write tests in TypeScript?  | **n** (No)  | or [learn how to use TypeScript](/typescript)
 | Where are your tests located? | `**./*_test.js` | or any glob pattern like `**.spec.js`
-| What helpers do you want to use? | **Playwright** | Which helper to use for: [web testing](https://codecept.io/basics/#architecture), [mobile testing](https://codecept.io/mobile/), [API testing](https://codecept.io/api/)
-| Where should logs, screenshots, and reports to be stored? | `./output` | path to store artifacts and temporary files 
-| Do you want to enable localization for tests? | **n** English (no localization) | or write [localized tests](https://codecept.io/translation/) in your language
-  
+| What helpers do you want to use? | **Playwright** | See options for [web testing](https://codecept.io/basics/#architecture), [mobile testing](https://codecept.io/mobile/), [API testing](https://codecept.io/api/)
+| Where should logs, screenshots, and reports be stored? | `./output` | path to store artifacts and temporary files
 
-Sample output:
-
-```js
-? Do you plan to write tests in TypeScript? 'No'
-? Where are your tests located? '**./*_test.js'
-? What helpers do you want to use? 'Playwright'
-? Where should logs, screenshots, and reports to be stored? '**./output**'
-? Do you want to enable localization for tests? 'English (no localization)'
-```
-
-For Playwright helper provide a website to be tested and browser to be used:
+For Playwright, you'll also be asked about the site and browser:
 
 | Question | Default Answer  | Alternative
 |---|---|---|
-| Base url of site to be tested | http://localhost | Base URL of website you plan to test. Use http://github.com or [sample checkout page](https://getbootstrap.com/docs/5.2/examples/checkout/) if you just want to play around
-| Show browser window | **y** Yes | or run browser in **headless mode** 
-| Browser in which testing will be performed | **chromium** | or run tests in firefox, webkit (which is opensource version of Safari) or launch electron app
+| Base url of site to be tested | http://localhost | URL of the site you plan to test
+| Show browser window | **y** Yes | or run in **headless mode**
+| Browser | **chromium** | or `firefox`, `webkit` (open-source Safari), or `electron`
 
-```js
-? [Playwright] Base url of site to be tested 'http://mysite.com'
-? [Playwright] Show browser window 'Yes'
-? [Playwright] Browser in which testing will be performed. Possible options: chromium, firefox, webkit or electron 'chromium'
+Sample output:
 
 ```
+? Do you plan to write tests in TypeScript? No
+? Where are your tests located? **./*_test.js
+? What helpers do you want to use? Playwright
+? Where should logs, screenshots, and reports be stored? ./output
+? [Playwright] Base url of site to be tested http://localhost
+? [Playwright] Show browser window Yes
+? [Playwright] Browser in which testing will be performed chromium
+```
 
-Create first feature and test when asked
+When asked, create your first feature and test file.
 
-Open a newly created file in your favorite JavaScript editor. 
-The file should look like this:
+---
+
+### Write Your First Test
+
+Open the generated test file. It will look like this:
 
 ```js
 Feature('My First Test');
@@ -108,7 +79,8 @@ Scenario('test something', ({ I }) => {
 
 });
 ```
-Write a simple test scenario:
+
+Add a simple scenario:
 
 ```js
 Feature('My First Test');
@@ -119,13 +91,15 @@ Scenario('test something', ({ I }) => {
 });
 ```
 
-Run a test:
+---
+
+### Run Tests
 
 ```
 npx codeceptjs run
 ```
 
-The output should be similar to this:
+Expected output:
 
 ```bash
 My First Test --
@@ -135,18 +109,12 @@ My First Test --
  ✓ OK
 ```
 
-To quickly execute tests use following npm scripts:
+Run in headless mode:
 
-After CodeceptJS is installed, try running **demo tests** using this commands:
+```
+npx codeceptjs run --headless
+```
 
-* `npm run codeceptjs` - executes tests in window mode
-* `npm run codeceptjs:headless` - executes tests in headless mode
-* `npm run codeceptjs:ui` - open CodeceptJS UI to list and run tests. 
-
-More commands available in [CodeceptJS CLI runner](https://codecept.io/commands/).
-
+See all available commands in the [CLI reference](https://codecept.io/commands/).
 
 > [▶ Next: CodeceptJS Basics](/basics/)
-
-> [▶ Next: CodeceptJS with Playwright](/playwright/)
-
