@@ -9,7 +9,9 @@
 <body>
     <h1>Summernote</h1>
     <form id="richtext-form" method="post" action="/richtext_submit">
-        <div id="editor"></div>
+        <div id="editor">
+            <div id="editor-inner"></div>
+        </div>
         <input type="hidden" name="content" id="content-sync">
         <button type="submit" id="submit">Submit</button>
     </form>
@@ -17,13 +19,13 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#editor').summernote({ height: 150 });
+            $('#editor-inner').summernote({ height: 150 });
             const initial = <?php echo json_encode($initial, JSON_UNESCAPED_UNICODE); ?>;
-            if (initial) $('#editor').summernote('code', initial.split(/\n{2,}/).map(p => '<p>' + p.replace(/</g, '&lt;') + '</p>').join(''));
-            window.__editor = $('#editor');
+            if (initial) $('#editor-inner').summernote('code', initial.split(/\n{2,}/).map(p => '<p>' + p.replace(/</g, '&lt;') + '</p>').join(''));
+            window.__editor = $('#editor-inner');
             window.__editorContent = () => {
                 const div = document.createElement('div');
-                div.innerHTML = $('#editor').summernote('code') || '';
+                div.innerHTML = $('#editor-inner').summernote('code') || '';
                 return (div.textContent || '').replace(/\u00a0/g, ' ').trim();
             };
             window.__editorReady = true;
