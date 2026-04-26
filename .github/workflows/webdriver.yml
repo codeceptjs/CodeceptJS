@@ -41,6 +41,11 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      # @codeceptjs/configure & @codeceptjs/expect-helper do `require('codeceptjs')`;
+      # in this repo (where the project IS codeceptjs) Node has nothing at
+      # node_modules/codeceptjs to resolve to. `npm link` fills the gap.
+      # End users don't need this.
+      - run: npm link && npm link codeceptjs
       - name: Start mock server
         run: nohup npm run mock-server:start &
       - name: Wait for mock server

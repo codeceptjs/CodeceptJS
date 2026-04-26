@@ -197,11 +197,12 @@ setCommonPlugins()
 | Plugin             | Default        | Notes                                                                          |
 | :----------------- | :------------- | :----------------------------------------------------------------------------- |
 | `retryFailedStep`  | enabled        | Retry steps that fail with transient errors                                    |
-| `eachElement`      | enabled        | Provides `eachElement` effect                                                  |
 | `screenshotOnFail` | enabled        | Capture a screenshot when a test fails                                         |
-| `pauseOnFail`      | registered     | Activate via `-p pauseOnFail`                                                  |
+| `pauseOn`          | registered     | Pause on failure / step / file / URL — `-p pauseOn:fail`, `-p pauseOn:step`, `-p pauseOn:file:tests/login_test.js`, `-p pauseOn:url:/checkout/*` |
 | `browser`          | registered     | CLI overrides for browser helpers — `-p browser:show`, `-p browser:browser=firefox`, see [commands](/commands#browser-control) |
 | `aiTrace`          | registered     | Capture AI traces — `-p aiTrace`                                               |
+
+> `eachElement`, `tryTo`, and `retryTo` are no longer plugins in 4.x — import them from `codeceptjs/effects`.
 
 ## Profile
 
