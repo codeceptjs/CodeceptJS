@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><script>
+window.addEventListener('load',()=>setTimeout(()=>{
+  const s=document.querySelector('.sheet');
+  const g=document.querySelector('.grid');
+  const c=document.querySelector('.colophon');
+  const o=document.getElementById('out');
+  o.textContent=JSON.stringify({
+    viewport:[innerWidth,innerHeight],
+    sheet:[Math.round(s.offsetWidth),Math.round(s.offsetHeight)],
+    sheetRect:s.getBoundingClientRect().bottom,
+    grid:[Math.round(g.offsetWidth),Math.round(g.offsetHeight)],
+    gridScroll:[g.scrollWidth,g.scrollHeight],
+    colophon:c.getBoundingClientRect(),
+  },null,2);
+},800);
+</script></head>
+<body>
+<iframe src="cheatsheet.html" style="width:1123px;height:794px;border:0"></iframe>
+<pre id="out" style="position:fixed;top:0;right:0;background:yellow;font:10px monospace;padding:4px;z-index:999"></pre>
+</body></html>

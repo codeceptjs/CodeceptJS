@@ -166,6 +166,38 @@ npx codeceptjs run -p pauseOn:url:/checkout/*
 
 This is useful when you want to inspect a specific page regardless of which test step navigates there.
 
+## Browser Control
+
+For ad-hoc overrides of browser helper config without editing `codecept.conf`, use the `browser` plugin via `-p`. Works for Playwright, Puppeteer, WebDriver and Appium in one call.
+
+Force a visible browser:
+
+```bash
+npx codeceptjs run -p browser:show
+```
+
+Force headless (also injects `--headless` into WebDriver chrome/firefox capability args):
+
+```bash
+npx codeceptjs run -p browser:hide
+```
+
+Switch the browser engine for Playwright / Puppeteer / WebDriver / TestCafe in one shot — no per-helper config gymnastics:
+
+```bash
+npx codeceptjs run -p browser:browser=firefox
+npx codeceptjs run -p browser:browser=webkit:hide
+```
+
+Pass any other helper config as `key=value`. Values are coerced (`true`/`false` → boolean, digits → Number, otherwise string). Tokens are colon-chained on a single `-p`:
+
+```bash
+npx codeceptjs run -p browser:windowSize=1024x768:video=false
+npx codeceptjs run -p browser:hide:video=true
+```
+
+`browser=<name>` routes through `setBrowser` (so Puppeteer correctly receives `product`, Playwright receives `browser`, etc.); `windowSize=WxH` routes through `setWindowSize` (which also injects `--window-size=W,H` into chromium/chrome args). Anything else is shallow-merged onto every browser helper present in config.
+
 ## IDE Debugging
 
 ### VS Code
