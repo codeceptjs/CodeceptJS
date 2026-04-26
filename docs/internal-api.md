@@ -8,14 +8,13 @@ title: Internal API
 In this guide we will overview the internal API of CodeceptJS.
 This knowledge is required for customization, writing plugins, etc.
 
-CodeceptJS provides an API which can be loaded via `import codeceptjs, { recorder, event, output } from 'codeceptjs'` when CodeceptJS is installed locally. Otherwise, you can load codeceptjs API via global `codeceptjs` object:
+CodeceptJS exposes its internal API as named exports of the `codeceptjs` package. Import only what you need:
 
 ```js
-// via module
-import { recorder, event, output } from 'codeceptjs';
-// or using global object
-const { recorder, event, output } = codeceptjs;
+import { recorder, event, output, container, config } from 'codeceptjs'
 ```
+
+> Older code may have relied on a global `codeceptjs` object (`const { recorder } = codeceptjs`). That global only exists under `noGlobals: false` (the deprecated 3.x default) — prefer named imports.
 
 These internal objects are available:
 

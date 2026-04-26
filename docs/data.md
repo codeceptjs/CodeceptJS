@@ -258,13 +258,13 @@ Just define how many items of any kind you need and the data factory helper will
 
 To make this work some preparations are required.
 
-At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker). Faker can generate random names, emails, texts, and Rosie uses them
+At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://fakerjs.dev). Faker can generate random names, emails, texts, and Rosie uses them
 to generate objects using factories.
 
 Install rosie and faker to create a first factory:
 
-```js
-npm i rosie faker --save-dev
+```sh
+npm i rosie @faker-js/faker --save-dev
 ```
 
 Then create a module which will export a factory for an entity.
@@ -290,7 +290,7 @@ See the example providing a factory for User generation:
 ```js
 // factories/post.js
 import { Factory } from 'rosie'
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 
 export default new Factory().attr('name', () => faker.person.findName()).attr('email', () => faker.internet.email())
 ```
@@ -342,7 +342,7 @@ See the example providing a factory for User generation:
 ```js
 // factories/post.js
 import { Factory } from 'rosie'
-import faker from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 
 export default new Factory((buildObj) => {
   return {
