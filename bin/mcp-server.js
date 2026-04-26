@@ -5,13 +5,13 @@ import Codecept from '../lib/codecept.js'
 import container from '../lib/container.js'
 import { getParamsToString } from '../lib/parser.js'
 import { methodsOfObject, safeStringify, truncateString } from '../lib/utils.js'
-import { captureSnapshot } from '../lib/utils/captureSnapshot.js'
 import {
+  captureSnapshot,
   pickActingHelper,
   traceDirFor,
   snapshotDirFor,
-  artifactLinks,
   artifactsToFileUrls,
+  writeTraceMarkdown,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
 import { fileURLToPath } from 'url'
@@ -19,7 +19,7 @@ import { dirname, resolve as resolvePath } from 'path'
 import path from 'path'
 import { spawn } from 'child_process'
 import { createRequire } from 'module'
-import { existsSync, readdirSync, writeFileSync } from 'fs'
+import { existsSync, readdirSync } from 'fs'
 import { mkdirp } from 'mkdirp'
 
 const require = createRequire(import.meta.url)
@@ -233,30 +233,6 @@ async function resolveTestToFile({ cli, root, configPath, test }) {
 
 function outputBaseDir() {
   return global.output_dir || resolvePath(process.cwd(), 'output')
-}
-
-function writeTraceMarkdown({ dir, title, file, durationMs, commands, captured, error }) {
-  let md = `file: ${file || 'mcp'}\n`
-  md += `name: ${title}\n`
-  md += `time: ${(durationMs / 1000).toFixed(2)}s\n`
-  md += `---\n\n`
-
-  if (error) md += `Error: ${error}\n\n---\n\n`
-
-  if (commands && commands.length) {
-    md += `### Commands\n`
-    for (const c of commands) md += `- ${c}\n`
-    md += `\n`
-  }
-
-  md += `### Final State\n`
-  if (captured.url) md += `  > URL: ${captured.url}\n`
-  const links = artifactLinks(captured)
-  if (links) md += links + '\n'
-
-  const traceFile = path.join(dir, 'trace.md')
-  writeFileSync(traceFile, md)
-  return traceFile
 }
 
 async function initCodecept(configPath) {
