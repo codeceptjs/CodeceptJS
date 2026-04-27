@@ -28,10 +28,5 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      # @codeceptjs/configure & @codeceptjs/expect-helper do `require('codeceptjs')`;
-      # in this repo (where the project IS codeceptjs) Node has nothing at
-      # node_modules/codeceptjs to resolve to. `npm link` fills the gap.
-      # End users don't need this.
-      - run: npm link && npm link codeceptjs
       - run: npm run def
       - run: npm run dtslint

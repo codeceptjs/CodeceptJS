@@ -7,16 +7,6 @@ This project is migrating from 3.x to ESM replacing all require() calls with imp
 Each time unsure what to do refer to the same file implementation in **3.x branch**
 3.x branch contains stable version of all core classes that work
 
-## Local Development Setup
-
-After `npm install`, run once:
-
-```
-npm link && npm link codeceptjs
-```
-
-This makes `node_modules/codeceptjs` resolve back to the project root. Required because `@codeceptjs/configure` (a runtime dep) does `import 'codeceptjs'` — and in this repo the project itself IS codeceptjs, so without the link Node has nothing at `node_modules/codeceptjs` to resolve to. CI runs the same two commands automatically (see `.github/workflows/test.yml`). End users don't need this — they install codeceptjs into their own project's node_modules normally.
-
 ## Running Tests
 
 Focus on acceptance tests:
