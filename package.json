@@ -138,7 +138,7 @@
   },
   "devDependencies": {
     "@apollo/server": "^5",
-    "@codeceptjs/expect-helper": "^1.0.2",
+    "@codeceptjs/expect-helper": "^4.0.0-beta.3",
     "@codeceptjs/mock-request": "0.3.1",
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.2",
