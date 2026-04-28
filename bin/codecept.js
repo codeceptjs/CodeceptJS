@@ -93,7 +93,14 @@ program
   .option(commandFlags.config.flag, commandFlags.config.description)
   .action(commandHandler('../lib/command/interactive.js'))
 
-program.command('list [path]').alias('l').description('List all actions for I.').action(commandHandler('../lib/command/list.js'))
+program
+  .command('list [path]')
+  .alias('l')
+  .description('List all actions for I.')
+  .option(commandFlags.config.flag, commandFlags.config.description)
+  .option('--docs', 'show documentation for each action')
+  .option('--action <name>', 'show docs for a single action (e.g. amOnPage or I.amOnPage)')
+  .action(commandHandler('../lib/command/list.js'))
 
 program
   .command('def [path]')
