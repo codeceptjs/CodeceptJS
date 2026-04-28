@@ -21,7 +21,7 @@ const defaultConfig = {
   someDefaultOption: true
 }
 
-module.exports = function(config) {
+export default function(config) {
   config = Object.assign(defaultConfig, config);
   // do stuff
 }
@@ -63,9 +63,9 @@ Let's say we need to populate database for a group of tests.
 
 ```js
 // populate database for slow tests
-const event = require('codeceptjs').event;
+import { event } from 'codeceptjs';
 
-module.exports = function() {
+export default function() {
 
   event.dispatcher.on(event.test.before, function (test) {
 
@@ -84,9 +84,9 @@ If you want to share bootstrap script or run multiple bootstraps, it's a good id
 Plugin can also execute JS before tests but you need to use internal APIs to synchronize promises.
 
 ```js
-const { recorder } = require('codeceptjs');
+import { recorder } from 'codeceptjs';
 
-module.exports = function(options) {
+export default function(options) {
 
   event.dispatcher.on(event.all.before, function () {
     recorder.startUnlessRunning(); // start recording promises
@@ -101,7 +101,7 @@ module.exports = function(options) {
 
 **Use local CodeceptJS installation to get access to `codeceptjs` module**
 
-CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
+CodeceptJS provides an API which can be loaded via `import codeceptjs, { recorder, event, output } from 'codeceptjs'` when CodeceptJS is installed locally.
 These internal objects are available:
 
 * [`codecept`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/codecept.js): test runner class
@@ -123,9 +123,9 @@ CodeceptJS provides a module with [event dispatcher and set of predefined events
 It can be required from codeceptjs package if it is installed locally.
 
 ```js
-const event = require('codeceptjs').event;
+import { event } from 'codeceptjs';
 
-module.exports = function() {
+export default function() {
 
   event.dispatcher.on(event.test.before, function (test) {
 
@@ -198,13 +198,12 @@ To inject asynchronous functions in a test or before/after a test you can subscr
 Provide a function description as a first parameter, function should return a promise:
 
 ```js
-const event = require('codeceptjs').event;
-const recorder = require('codeceptjs').recorder;
-module.exports = function() {
+import { event, recorder } from 'codeceptjs';
+import request from 'request';
+
+export default function() {
 
   event.dispatcher.on(event.test.before, function (test) {
-
-    const request = require('request');
 
     recorder.add('create fixture data via API', function() {
       return new Promise((doneFn, errFn) => {
@@ -239,7 +238,7 @@ Output module provides 4 verbosity levels. Depending on the mode you can have di
 It is recommended to avoid `console.log` and use output.* methods for printing.
 
 ```js
-const output = require('codeceptjs').output;
+import { output } from 'codeceptjs';
 
 output.print('This is basic information');
 output.debug('This is debug information');
@@ -252,7 +251,7 @@ CodeceptJS has a dependency injection container with Helpers and Support objects
 They can be retrieved from the container:
 
 ```js
-let container = require('codeceptjs').container;
+import { container } from 'codeceptjs';
 
 // get object with all helpers
 let helpers = container.helpers();
@@ -273,14 +272,15 @@ let plugins = container.plugins();
 New objects can also be added to container in runtime:
 
 ```js
-let container = require('codeceptjs').container;
+import { container } from 'codeceptjs';
+import UserPage from './pages/user.js';
 
 container.append({
   helpers: { // add helper
     MyHelper: new MyHelper({ config1: 'val1' });
   },
   support: { // add page object
-    UserPage: require('./pages/user');
+    UserPage,
   }
 })
 ```
@@ -293,13 +293,12 @@ let mocha = container.mocha();
 
 ### Config
 
-CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
+CodeceptJS config can be accessed from `import { config } from 'codeceptjs'` then `config.get()`:
 
 ```js
+import { config } from 'codeceptjs';
 
-let config = require('codeceptjs').config.get();
-
-if (config.myKey == 'value') {
+if (config.get().myKey == 'value') {
   // run hook
 }
 ```
@@ -313,7 +312,7 @@ CodeceptJS can be imported and used in custom runners.
 To initialize Codecept you need to create Config and Container objects.
 
 ```js
-const { codecept: Codecept } = require('codeceptjs');
+import { codecept as Codecept } from 'codeceptjs';
 
 const config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
 const opts = { steps: true };

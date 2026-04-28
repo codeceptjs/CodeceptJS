@@ -230,10 +230,9 @@ npx codeceptjs generate:heal
 Heal recipes should be included into `codecept.conf.js` or `codecept.conf.ts` config file:
 
 ```js
+import './heal.js'
 
-require('./heal')
-
-exports.config = {
+export const config = {
   // ... your codeceptjs config
 ```
 
@@ -491,8 +490,8 @@ It is recommended to try HTML processing on one of your web pages before launchi
 To do that open the common page of your application and using DevTools copy the outerHTML of `<html>` element. Don't use `Page Source` for that, as it may not include dynamically added HTML elements. Save this HTML into a file and create a NodeJS script:
 
 ```js
-const { removeNonInteractiveElements } = require('codeceptjs/lib/html')
-const fs = require('fs')
+import { removeNonInteractiveElements } from 'codeceptjs/lib/html'
+import fs from 'fs'
 
 const htmlOpts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],

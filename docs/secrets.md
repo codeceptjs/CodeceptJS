@@ -55,7 +55,7 @@ Enable basic masking with predefined patterns:
 
 ```js
 // codecept.conf.js
-exports.config = {
+export const config = {
   // ... other config
   maskSensitiveData: true,
 }
@@ -75,7 +75,7 @@ Define your own masking patterns:
 
 ```js
 // codecept.conf.js
-exports.config = {
+export const config = {
   // ... other config
   maskSensitiveData: {
     enabled: true,

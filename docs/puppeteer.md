@@ -169,7 +169,7 @@ Scenario('create todo item', ({ I }) => {
 If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
 
 ```js
-const assert = require('assert')
+import assert from 'assert'
 Scenario('get value of current tasks', async ({ I }) => {
   I.fillField('.todo', 'my first item')
   I.pressKey('Enter')

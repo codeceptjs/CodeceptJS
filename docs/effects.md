@@ -12,14 +12,10 @@ Effects are functions that can modify scenario flow. They provide ways to handle
 Effects can be imported directly from CodeceptJS:
 
 ```js
-// ESM
-import { tryTo, retryTo, within } from 'codeceptjs/effects'
-
-// CommonJS
-const { tryTo, retryTo, within } = require('codeceptjs/effects')
+import { tryTo, retryTo, hopeThat, within } from 'codeceptjs/effects'
 ```
 
-> 📝 Note: Prior to v3.7, `tryTo` and `retryTo` were available globally via plugins. This behavior is deprecated and will be removed in v4.0.
+> 📝 Note: Prior to v4, `tryTo` and `retryTo` were enabled via plugins (`tryTo`, `retryTo`) that registered them as globals. Those plugins are removed in v4 — import effects from `codeceptjs/effects` instead.
 
 ## tryTo
 
@@ -46,6 +42,40 @@ If the steps inside `tryTo` fail:
 - The failure will be logged in debug output
 - `tryTo` returns `false`
 - Auto-retries are disabled inside `tryTo` blocks
+
+## hopeThat
+
+`hopeThat` is the soft-assertion effect. It wraps a block of steps; if any step inside fails, the failure is recorded as a note on the test and `hopeThat` returns `false`, but the scenario keeps running. Call `hopeThat.noErrors()` once at the end to fail the scenario if any soft assertion failed.
+
+```js
+import { hopeThat } from 'codeceptjs/effects'
+
+Scenario('form shows every validation error', ({ I }) => {
+  I.amOnPage('/signup')
+  I.click('Submit')
+
+  await hopeThat(() => I.see('Email is required', '#email-error'))
+  await hopeThat(() => I.see('Password is required', '#password-error'))
+  await hopeThat(() => I.see('You must accept the terms', '#terms-error'))
+
+  hopeThat.noErrors()  // throws once, listing every recorded failure
+})
+```
+
+`hopeThat` returns `Promise<boolean>` — `true` on success, `false` on caught failure — which is handy for branching:
+
+```js
+const cookieAccepted = await hopeThat(() => I.click('Accept cookies'))
+if (!cookieAccepted) I.say('No cookie banner')
+```
+
+> 💡 In 3.x, soft assertions were provided by `SoftExpectHelper` (`I.softAssert`, `I.softExpectEqual`, `I.flushSoftAssertions`). That helper is gone in 4.x — use `hopeThat()` and `hopeThat.noErrors()` instead. `hopeThat` works with **any** assertion you can write inside a step: built-in `I.see*`, custom-helper assertions, `expect()` from your own assertion library, plain `assert` from Node — anything that throws on failure.
+
+The same `hopeThat` is also re-exported from `codeceptjs/assertions` if you prefer that subpath:
+
+```js
+import { hopeThat } from 'codeceptjs/assertions'
+```
 
 ## retryTo
 
@@ -147,4 +177,3 @@ const success = await tryTo(async () => {
 })
 ```
 
-This documentation covers the main effects functionality while providing practical examples and important notes about deprecation and future changes. Let me know if you'd like me to expand any section or add more examples!

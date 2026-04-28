@@ -174,7 +174,7 @@ Scenario('create todo item', ({ I }) => {
 If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
 
 ```js
-const assert = require('assert')
+import assert from 'assert'
 Scenario('get value of current tasks', async ({ I }) => {
   I.fillField('.todo', 'my first item')
   I.pressKey('Enter')
@@ -246,7 +246,7 @@ To use this functionality, all you need to do is set the browser to `electron` i
 `main.js` - main Electron application file
 
 ```js
-const { app, BrowserWindow } = require('electron')
+import { app, BrowserWindow } from 'electron'
 
 function createWindow() {
   const window = new BrowserWindow({ width: 800, height: 600 })
@@ -259,14 +259,15 @@ app.whenReady().then(createWindow)
 `codecept.conf.js` - CodeceptJS configuration file
 
 ```js
-const path = require('path')
+import path from 'path'
+import electron from 'electron'
 
-exports.config = {
+export const config = {
   helpers: {
     Playwright: {
       browser: 'electron',
       electron: {
-        executablePath: require('electron'),
+        executablePath: electron,
         args: [path.join(__dirname, 'main.js')],
       },
     },
@@ -283,14 +284,15 @@ Sometimes, the Electron app is built with [electron-forge](https://www.electronf
 `codecept.conf.js` - CodeceptJS configuration file
 
 ```js
-const path = require('path')
+import path from 'path'
+import electron from 'electron'
 
-exports.config = {
+export const config = {
   helpers: {
     Playwright: {
       browser: 'electron',
       electron: {
-        executablePath: require('electron'),
+        executablePath: electron,
         args: [path.join(__dirname, '.webpack/main/index.js')],
       },
     },
@@ -319,7 +321,7 @@ Device emulation can be enabled in CodeceptJS globally in a config or per sessio
 Playwright contains a [list of predefined devices](https://github.com/microsoft/playwright/blob/master/src/server/deviceDescriptors.js) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
 
 ```js
-const { devices } = require('playwright');
+import { devices } from 'playwright';
 
 helpers: {
   Playwright: {
@@ -344,7 +346,7 @@ helpers: {
 To enable device emulation for a specific test, create an additional browser session and pass in config as a second parameter:
 
 ```js
-const { devices } = require('playwright')
+import { devices } from 'playwright'
 
 Scenario('website looks nice on iPhone', () => {
   session('mobile user', devices['iPhone 6'], () => {
@@ -448,7 +450,7 @@ To master request intercepting [use `route` object](https://playwright.dev/docs/
 Playwright may record videos for failed tests. This can be enabled in a config with `video: true` option:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     Playwright: {
       // ...
@@ -491,7 +493,7 @@ Inside a trace you get screenshots, DOM snapshots, console logs, network request
 Enable trace with `trace: true` option in a config:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     Playwright: {
       // ...
@@ -646,7 +648,7 @@ Minimal examples:
 helpers: { Playwright: { url: 'http://localhost', browser: 'chromium', storageState: 'authState.json' } }
 
 // Inline object
-const state = require('./authState.json');
+import state from './authState.json' with { type: 'json' };
 helpers: { Playwright: { url: 'http://localhost', browser: 'chromium', storageState: state } }
 ```
 
@@ -663,12 +665,14 @@ Scenario('Dashboard (authenticated)', { cookies: authCookies }, ({ I }) => {
 Helper snippet:
 
 ```js
+import fs from 'fs'
+
 // Grab current state as object
 const state = await I.grabStorageState()
 // Persist manually (sensitive file!)
-require('fs').writeFileSync('authState.json', JSON.stringify(state))
+fs.writeFileSync('authState.json', JSON.stringify(state))
 
 // Include IndexedDB (Playwright >= 1.51) if your app relies on it (e.g. Firebase Auth persistence)
 const stateWithIDB = await I.grabStorageState({ indexedDB: true })
-require('fs').writeFileSync('authState-with-idb.json', JSON.stringify(stateWithIDB))
+fs.writeFileSync('authState-with-idb.json', JSON.stringify(stateWithIDB))
 ```

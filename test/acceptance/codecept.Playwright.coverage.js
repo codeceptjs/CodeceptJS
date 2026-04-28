@@ -1,4 +1,5 @@
 import TestHelper from '../support/TestHelper.js'
+import installCodeceptjs from '../support/install-codeceptjs.js'
 
 export const config = {
   tests: './*_test.js',
@@ -28,7 +29,7 @@ export const config = {
     },
   },
   include: {},
-  bootstrap: false,
+  bootstrap: installCodeceptjs,
   mocha: {},
   plugins: {
     screenshotOnFail: {
