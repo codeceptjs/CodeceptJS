@@ -32,8 +32,6 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      # Self-link so deps that `import 'codeceptjs'` (configure, expect-helper) resolve.
-      - run: ln -sfn .. node_modules/codeceptjs
       - name: Start mock server
         run: nohup npm run mock-server:start &
       - name: Wait for mock server
@@ -74,8 +72,6 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      # Self-link so deps that `import 'codeceptjs'` (configure, expect-helper) resolve.
-      - run: ln -sfn .. node_modules/codeceptjs
       - name: Start mock server
         run: nohup npm run mock-server:start &
       - name: Wait for mock server

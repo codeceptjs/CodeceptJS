@@ -40,8 +40,6 @@ jobs:
           npm i --force
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      # Self-link so deps that `import 'codeceptjs'` (configure, expect-helper) resolve.
-      - run: ln -sfn .. node_modules/codeceptjs
       - name: Allow Release info Change
         run: |
           sudo apt-get update --allow-releaseinfo-change
