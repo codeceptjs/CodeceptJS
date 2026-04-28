@@ -392,7 +392,10 @@ Enable it via `-p` option with one or more colon-chained args:
     *   `show=true|false` — toggles `show` on Playwright/Puppeteer; injects/strips
         `--headless` in WebDriver chrome/firefox capability args
 
-Values are coerced: `true`/`false` → boolean, numbers → Number, otherwise string.
+Values stay as strings. `true` / `false` are coerced to booleans.
+
+Requires `@codeceptjs/configure` to be installed; if missing, the plugin
+logs a hint and skips the override.
 
 ### Parameters
 
