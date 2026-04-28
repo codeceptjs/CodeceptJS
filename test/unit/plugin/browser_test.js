@@ -1,16 +1,6 @@
 import { expect } from 'chai'
-import Config from '../../../lib/config.js'
-import container from '../../../lib/container.js'
-import event from '../../../lib/event.js'
-import output from '../../../lib/output.js'
-import recorder from '../../../lib/recorder.js'
-
-// This test imports the plugin directly, bypassing the runner. The runner
-// (lib/codecept.js) is what normally installs globalThis.codeceptjs so that
-// @codeceptjs/configure can reach framework singletons; do the same here.
-globalThis.codeceptjs = { config: Config, container, event, output, recorder }
-
 import browser from '../../../lib/plugin/browser.js'
+import Config from '../../../lib/config.js'
 
 async function applyAndCreate(args, base = {}) {
   Config.reset()
