@@ -201,7 +201,7 @@ Scenario('ログインできる', ({ 私は }) => {
 To add localized aliases to more actions create a new JSON or JavaScript file returning an object with following fields:
 
 ```js
-module.exports = {
+export default {
   actions: {
     // add action aliases, translating method name to your language
     rightClick: 'Rechtsklick'
@@ -223,7 +223,7 @@ Then enable this vocabulary file in codecept conf:
 Create translation file like this:
 
 ```js
-module.exports = {
+export default {
   I: 'Ya',
   contexts: {
     Feature: 'Feature',

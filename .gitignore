@@ -28,3 +28,4 @@ yarn.lock
 typings/types.d.ts
 typings/promiseBasedTypes.d.ts
 reflection/
+skills/

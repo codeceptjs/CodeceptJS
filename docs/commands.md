@@ -100,6 +100,47 @@ Display complete debug output including scheduled promises
 DEBUG=codeceptjs:* npx codeceptjs run
 ```
 
+## Plugin Arguments
+
+`run`, `run-workers`, `run-multiple`, `run-rerun` and `dry-run` accept a `-p` (`--plugins`) flag to enable plugins on the command line, with optional arguments per plugin. Tokens are colon-chained per plugin, comma-separated across plugins:
+
+```sh
+npx codeceptjs run -p <name>                       # enable plugin
+npx codeceptjs run -p <name>:<arg1>:<arg2>         # enable + pass args
+npx codeceptjs run -p <plugin1>,<plugin2>:<arg>    # multiple plugins
+```
+
+Plugins listed via `-p` are activated even when their config has `enabled: false` (or no `enabled` flag). This is the supported way to switch a plugin on for a single run without editing `codecept.conf`.
+
+A few examples:
+
+```sh
+npx codeceptjs run -p pauseOnFail                  # pause on first failure
+npx codeceptjs run -p pauseOn:step                 # pause before every step
+npx codeceptjs run -p pauseOn:url:/checkout/*      # pause on URL match
+npx codeceptjs run -p stepByStepReport             # produce a step-by-step HTML report
+```
+
+### Browser Control
+
+The built-in `browser` plugin overrides browser-helper config from the CLI — works for Playwright, Puppeteer, WebDriver and Appium without editing `codecept.conf`.
+
+```sh
+npx codeceptjs run -p browser:show                       # force visible browser
+npx codeceptjs run -p browser:hide                       # force headless
+npx codeceptjs run -p browser:browser=firefox            # switch engine
+npx codeceptjs run -p browser:windowSize=1024x768        # set viewport
+npx codeceptjs run -p browser:hide:browser=webkit:windowSize=800x600
+```
+
+Tokens after `browser:` are either flags (`show`, `hide`) or `key=value` pairs. Three keys get per-helper translation:
+
+- `browser=<name>` — Puppeteer receives `product`, Playwright/WebDriver receive `browser`. Validated per helper (`chromium`/`webkit`/`firefox` for Playwright, `chrome`/`firefox` for Puppeteer).
+- `show=true|false` (or the `show`/`hide` flag) — sets `show` on Playwright/Puppeteer; injects/strips `--headless` in WebDriver chrome/firefox capability args.
+- `windowSize=WxH` — sets `windowSize` on every helper; also adds `--window-size=W,H` to chromium/chrome args for Playwright/Puppeteer.
+
+Anything else (`-p browser:video=false:waitForTimeout=10000`) is shallow-merged onto every browser helper present in config. Values are coerced (`true`/`false` → boolean, digits → Number, otherwise string).
+
 ## Run Workers
 
 Run tests in parallel threads. CodeceptJS supports different distribution strategies for optimal performance.

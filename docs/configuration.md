@@ -119,7 +119,7 @@ Create `codecept.conf.js` file and make it export `config` property.
 See the config example:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       // load variables from the environment and provide defaults
@@ -158,20 +158,51 @@ codeceptjs run --config=./path/to/my/config.js
 
 > 📺 [Watch this material](https://www.youtube.com/watch?v=onBnfo_rJa4&t=4s) on YouTube
 
-[`@codeceptjs/configure` package](https://github.com/codeceptjs/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
+[`@codeceptjs/configure`](https://github.com/codeceptjs/configure) ships with CodeceptJS as a dependency and contains shared recipes for common configuration patterns. It lets you set meta-configuration that's independent of the active helper.
 
-Install it and enable to easily switch to headless/window mode, change window size, etc.
+Toggle headless/headed mode, change window size, etc.:
 
 ```js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure')
+import { setHeadlessWhen, setWindowSize } from '@codeceptjs/configure'
 
 setHeadlessWhen(process.env.CI)
 setWindowSize(1600, 1200)
 
-exports.config = {
+export const config = {
   // ...
 }
 ```
+
+For one-shot bundles use `setBrowserConfig` — pass any subset of `{ browser, show, windowSize, url, ... }` and the right per-helper translation happens automatically (Puppeteer receives `product` for `browser`, WebDriver gets `--headless` injected, etc.). Keys whose value is `undefined` are skipped, so unset env vars don't clobber existing config:
+
+```js
+import { setBrowserConfig } from '@codeceptjs/configure'
+
+setBrowserConfig({
+  browser: process.env.BROWSER,        // optional engine override
+  show: !process.env.HEADLESS,         // headed unless HEADLESS is set
+  windowSize: '1280x720',
+  url: process.env.URL,                // overrides helper.url when set
+})
+```
+
+`setCommonPlugins()` enables a curated set of plugins and registers a few more as discoverable (so they can be activated ad-hoc via [`-p` plugin arguments](/commands#plugin-arguments) without editing config):
+
+```js
+import { setCommonPlugins } from '@codeceptjs/configure'
+
+setCommonPlugins()
+```
+
+| Plugin             | Default        | Notes                                                                          |
+| :----------------- | :------------- | :----------------------------------------------------------------------------- |
+| `retryFailedStep`  | enabled        | Retry steps that fail with transient errors                                    |
+| `screenshotOnFail` | enabled        | Capture a screenshot when a test fails                                         |
+| `pauseOn`          | registered     | Pause on failure / step / file / URL — `-p pauseOn:fail`, `-p pauseOn:step`, `-p pauseOn:file:tests/login_test.js`, `-p pauseOn:url:/checkout/*` |
+| `browser`          | registered     | CLI overrides for browser helpers — `-p browser:show`, `-p browser:browser=firefox`, see [commands](/commands#browser-control) |
+| `aiTrace`          | registered     | Capture AI traces — `-p aiTrace`                                               |
+
+> `eachElement`, `tryTo`, and `retryTo` are no longer plugins in 4.x — import them from `codeceptjs/effects`.
 
 ## Profile
 
@@ -186,7 +217,7 @@ codeceptjs run --profile firefox
 ```
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       url: 'http://localhost:3000',

@@ -64,7 +64,7 @@ CodeceptJS v4.x supports ECMAScript Modules (ESM) format. To use ESM:
 1. Add `"type": "module"` to your `package.json`
 2. Update import syntax in configuration files to use ESM format
 
-For detailed migration instructions and important behavioral changes, see the **[ESM Migration Guide](esm-migration.md)**.
+For detailed migration instructions and important behavioral changes, see the **[3.x → 4.x Migration Guide](migration-4.md)**.
 
 ## WebDriver
 

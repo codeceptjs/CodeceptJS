@@ -4,7 +4,6 @@
 /// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
-/// <reference types="joi" />
 /// <reference types="playwright" />
 
 declare namespace CodeceptJS {
@@ -210,9 +209,6 @@ declare namespace CodeceptJS {
        * ```
        */
       JSONResponse?: any
-
-      /** Enable AI features for development purposes */
-      AI?: any
 
       [key: string]: any
     }
