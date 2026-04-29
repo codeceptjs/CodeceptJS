@@ -33,11 +33,6 @@ export const config = {
   },
   mocha: {},
   name: 'acceptance',
-  plugins: {
-    screenshotOnFail: {
-      enabled: true,
-    },
-  },
   gherkin: {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],

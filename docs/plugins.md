@@ -595,47 +595,42 @@ Additional config options:
 
 *   `config`   (optional, default `{}`)
 
-## pauseOn
+## pause
 
-Pauses test execution in different modes. Unlike `pauseOnFail`, this plugin supports
-multiple triggers for pausing and is controlled via CLI arguments.
+Pauses test execution interactively. Replaces the legacy `pauseOnFail` plugin.
+Default `on=fail` matches the old `pauseOnFail` behavior.
 
-Enable it via `-p` option with a mode:
+```js
+plugins: {
+  pause: {
+    enabled: false,
+    on: 'fail',
+  }
+}
+```
 
-    npx codeceptjs run -p pauseOn:fail
-    npx codeceptjs run -p pauseOn:step
-    npx codeceptjs run -p pauseOn:file:tests/login_test.js
-    npx codeceptjs run -p pauseOn:file:tests/login_test.js:43
-    npx codeceptjs run -p pauseOn:url:/users/*
+#### `on=` modes
 
-#### Modes
+*   **fail** — pause when a step fails (default)
+*   **test** — pause after each test
+*   **step** — pause before the first step (interactive walk-through)
+*   **file** — pause when execution reaches `path=...[;line=...]`
+*   **url** — pause when the current URL matches `pattern=...`
 
-*   **fail** — pause when a step fails (same as `pauseOnFail` plugin)
-*   **step** — pause before first step, use `next` to advance step-by-step
-*   **file** — pause when execution reaches a specific file (and optionally line)
-*   **url** — pause when the browser URL matches a pattern (supports `*` wildcards)
+CLI examples:
+
+    npx codeceptjs run -p pause
+    npx codeceptjs run -p pause:on=step
+    npx codeceptjs run -p pause:on=file:path=tests/login_test.js
+    npx codeceptjs run -p pause:on=file:path=tests/login_test.js;line=43
+    npx codeceptjs run -p pause:on=url:pattern=/users/*
+
+> The legacy `pauseOnFail` plugin remains as a deprecated alias that emits a
+> deprecation warning and forwards to `pause` with `on=fail`.
 
 ### Parameters
 
 *   `config`   (optional, default `{}`)
-
-## pauseOnFail
-
-Automatically launches [interactive pause][5] when a test fails.
-
-Useful for debugging flaky tests on local environment.
-Add this plugin to config file:
-
-```js
-plugins: {
-  pauseOnFail: {},
-}
-```
-
-Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
-Enable it manually on each run via `-p` option:
-
-    npx codeceptjs run -p pauseOnFail
 
 ## retryFailedStep
 
@@ -705,70 +700,60 @@ Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
 
 *   `config` &#x20;
 
-## screenshotOnFail
+## screenshot
 
-Creates screenshot on failure. Screenshot is saved into `output` directory.
-
-Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4
+Saves screenshots from the browser at points triggered by `on=`. Replaces the
+legacy `screenshotOnFail` plugin. Default `on=fail` preserves the old behavior.
 
 This plugin is **enabled by default**.
 
-#### Configuration
-
-Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
-
 ```js
 plugins: {
-   screenshotOnFail: {
-     enabled: true
-   }
+  screenshot: {
+    enabled: true,
+    on: 'fail',
+  }
 }
 ```
+
+#### `on=` modes
+
+*   **fail** — screenshot when a test fails (default)
+*   **test** — screenshot at the end of every test
+*   **step** — screenshot after every step
+*   **file** — screenshot for steps in `path=...[;line=...]`
+*   **url** — screenshot when the current URL matches `pattern=...`
+
+CLI examples:
+
+    npx codeceptjs run -p screenshot
+    npx codeceptjs run -p screenshot:on=step
+    npx codeceptjs run -p screenshot:on=step;slides=true
+    npx codeceptjs run -p screenshot:on=file:path=tests/login_test.js
+    npx codeceptjs run -p screenshot:on=url:pattern=/users/*
 
 Possible config options:
 
 *   `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
 *   `fullPageScreenshots`: make full page screenshots. Default: false.
+*   `slides`: generate a step-by-step slideshow report (works with `on=step|file|url`). Replaces the legacy `stepByStepReport` plugin. Default: false.
+*   `deleteSuccessful`: when `slides=true`, drop slideshow folders for passing tests. Default: true.
+*   `animateSlides`: when `slides=true`, animate transitions between slides. Default: true.
+*   `ignoreSteps`: when `slides=true`, RegExps of step names to skip in the slideshow.
+
+#### Step-by-step slideshow
+
+`screenshot:on=step;slides=true` writes a per-test `record_<hash>/index.html`
+slideshow and a top-level `records.html` index. The output is a self-contained
+HTML page with keyboard / dot navigation — no external assets, no JavaScript
+frameworks.
+
+> The legacy `screenshotOnFail` plugin remains as a deprecated alias. The legacy
+> `stepByStepReport` plugin has been replaced by `screenshot:slides=true`.
 
 ### Parameters
 
 *   `config` &#x20;
-
-## stepByStepReport
-
-![step-by-step-report][6]
-
-Generates step by step report for a test.
-After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
-By default, reports are generated only for failed tests.
-
-Run tests with plugin enabled:
-
-    npx codeceptjs run --plugins stepByStepReport
-
-#### Configuration
-
-```js
-"plugins": {
-   "stepByStepReport": {
-     "enabled": true
-   }
-}
-```
-
-Possible config options:
-
-*   `deleteSuccessful`: do not save screenshots for successfully executed tests. Default: true.
-*   `animateSlides`: should animation for slides to be used. Default: true.
-*   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
-*   `fullPageScreenshots`: should full page screenshots be used. Default: false.
-*   `output`: a directory where reports should be stored. Default: `output`.
-*   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
-*   \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
-
-### Parameters
-
-*   `config` **any**&#x20;
 
 ## stepTimeout
 
