@@ -478,9 +478,45 @@ When a test fails and video was enabled a video file is shown under the `artifac
 
 Open video and use it to debug a failed test case. Video helps when running tests on CI. Configure your CI system to enable artifacts storage for `output/video` and review videos of failed test case to understand failures.
 
-It is recommended to enable [subtitles](https://codecept.io/plugins/#subtitles) plugin which will generate subtitles from steps in `.srt` format. Subtitles file will be saved into after a video file so video player (like VLC) would load them automatically:
+## Screencast <Badge text="Since 4.0" type="warning"/>
+
+For richer evidence than helper-level `video`, enable the [`screencast`](https://codecept.io/plugins/#screencast) plugin. It uses Playwright's `page.screencast` API (Playwright >= 1.59) to record WebM video with optional burned-in action captions and a standalone `.srt` subtitle track.
+
+```js
+plugins: {
+  screencast: {
+    enabled: true,
+    on: 'fail',
+  }
+}
+```
+
+`on: 'fail'` (default) deletes the recording when the test passes; `on: 'test'` keeps every test's video.
+
+`captions: true` (default) burns `I.click()` / `I.fillField()` annotations into the video via `page.screencast.showActions()`. `subtitles: true` writes a standalone `.srt` file alongside the video — VLC and most players auto-load it.
+
+```js
+plugins: {
+  screencast: {
+    enabled: true,
+    on: 'test',
+    captions: true,
+    subtitles: true,
+  }
+}
+```
 
 ![](https://user-images.githubusercontent.com/220264/131644090-38d1ca55-1ba1-41fa-8fd1-7dea2b7ae995.png)
+
+CLI usage:
+
+    npx codeceptjs run -p screencast
+    npx codeceptjs run -p screencast:on=test
+    npx codeceptjs run -p screencast:on=test;captions=false;subtitles=true
+
+The recording is attached to the test as `test.artifacts.screencast`; the `.srt` (when enabled) is attached as `test.artifacts.subtitle`.
+
+> Enabling helper-level `video: true` **and** the `screencast` plugin produces two independent recordings (one in `output/videos/`, one in `output/screencast/`). Pick one.
 
 ## Trace <Badge text="Since 3.1" type="warning"/>
 
