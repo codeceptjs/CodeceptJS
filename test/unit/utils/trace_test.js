@@ -161,6 +161,11 @@ describe('lib/utils/trace.js', () => {
     it('joins dir + basename and prefixes with file://', () => {
       expect(fileToUrl('/output/run', 'p.html')).to.equal('file:///output/run/p.html')
     })
+
+    it('encodes spaces and special characters via pathToFileURL', () => {
+      const url = fileToUrl('/output/run dir', 'p age.html')
+      expect(url).to.equal('file:///output/run%20dir/p%20age.html')
+    })
   })
 
   describe('artifactsToFileUrls', () => {
@@ -337,6 +342,16 @@ describe('lib/utils/trace.js', () => {
       expect(html).to.not.include('style=')
       expect(html).to.include('my-real-class')
       expect(html.split('\n').length).to.be.greaterThan(2)
+    })
+
+    it('exposes pre-cleanup HTML in out.htmlRaw for class-scanning consumers', async () => {
+      const raw = '<html><body><div class="text-error alert-1">boom</div></body></html>'
+      const helper = fullHelper({ grabSource: sinon.stub().resolves(raw) })
+      const out = await captureSnapshot(helper, { dir, prefix: 'p' })
+      expect(out.htmlRaw).to.equal(raw)
+      const formatted = fs.readFileSync(path.join(dir, 'p_page.html'), 'utf8')
+      expect(formatted).to.not.include('text-error')
+      expect(formatted).to.not.include('alert-1')
     })
 
     it('normalizes Playwright ConsoleMessage objects to {type, text}', async () => {

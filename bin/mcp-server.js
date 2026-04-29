@@ -14,7 +14,7 @@ import {
   writeTraceMarkdown,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 import { dirname, resolve as resolvePath } from 'path'
 import path from 'path'
 import { spawn } from 'child_process'
@@ -453,7 +453,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             text: JSON.stringify({
               status: 'success',
               dir,
-              traceFile: `file://${traceFile}`,
+              traceFile: pathToFileURL(traceFile).href,
               artifacts: artifactsToFileUrls(captured, dir),
             }, null, 2),
           }],
@@ -551,7 +551,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           error: result.error,
         })
         result.dir = traceDir
-        result.traceFile = `file://${traceFile}`
+        result.traceFile = pathToFileURL(traceFile).href
 
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
       }
@@ -642,10 +642,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               if (t.err) r.error = t.err.message
 
               if (t.artifacts?.aiTrace) {
-                r.traceFile = `file://${t.artifacts.aiTrace}`
+                r.traceFile = pathToFileURL(t.artifacts.aiTrace).href
               }
-              if (t.artifacts?.har) r.har = `file://${t.artifacts.har}`
-              if (t.artifacts?.trace) r.trace = `file://${t.artifacts.trace}`
+              if (t.artifacts?.har) r.har = pathToFileURL(t.artifacts.har).href
+              if (t.artifacts?.trace) r.trace = pathToFileURL(t.artifacts.trace).href
 
               if (!t.artifacts?.aiTrace) {
                 try {
@@ -664,7 +664,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                       captured,
                       error: r.error,
                     })
-                    r.traceFile = `file://${tracePath}`
+                    r.traceFile = pathToFileURL(tracePath).href
                   }
                 } catch {}
               }
