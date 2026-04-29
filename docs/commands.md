@@ -318,10 +318,29 @@ npx codeceptjs def -o ./tests/typings
 
 ## List Commands
 
-Prints all available methods of `I` to console
+Prints all available methods of `I` to console.
 
 ```sh
 npx codeceptjs list
+```
+
+Use `-c` to point at a specific config (same as `run`):
+
+```sh
+npx codeceptjs list -c ./test/acceptance/codecept.Playwright.js
+```
+
+Add `--docs` to print full documentation (description, examples, `@param` annotations) below each action — pulled from helper JSDoc and `docs/webapi/*` snippets:
+
+```sh
+npx codeceptjs list --docs
+```
+
+Use `--action` to show docs for a single action. The `I.` prefix is optional and `--docs` is implied:
+
+```sh
+npx codeceptjs list --action amOnPage
+npx codeceptjs list --action I.click -c ./test/acceptance/codecept.Playwright.js
 ```
 
 ## Local Environment Information
