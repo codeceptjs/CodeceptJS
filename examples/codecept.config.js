@@ -50,7 +50,7 @@ export const config = {
       enabled: false,
       services: ['selenium-standalone'],
     },
-    stepByStepReport: {},
+    screenshot: { on: 'step', slides: true },
     autoDelay: {
       enabled: false,
     },

@@ -31,7 +31,7 @@ describe('CodeceptJS plugin', function () {
 
       try {
         // Check that the coverage plugin is loaded and starts attempting coverage collection
-        expect(lines).toEqual(expect.arrayContaining([expect.stringContaining('Plugins: screenshotOnFail, coverage'), expect.stringContaining('writing output/coverage')]))
+        expect(lines).toEqual(expect.arrayContaining([expect.stringContaining('Plugins: screenshot, coverage'), expect.stringContaining('writing output/coverage')]))
 
         // Test should pass regardless of whether coverage data is found (depends on external site)
         // The test may fail due to network issues or browser problems, but the coverage plugin should still initialize

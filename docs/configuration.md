@@ -194,13 +194,14 @@ import { setCommonPlugins } from '@codeceptjs/configure'
 setCommonPlugins()
 ```
 
-| Plugin             | Default        | Notes                                                                          |
-| :----------------- | :------------- | :----------------------------------------------------------------------------- |
-| `retryFailedStep`  | enabled        | Retry steps that fail with transient errors                                    |
-| `screenshotOnFail` | enabled        | Capture a screenshot when a test fails                                         |
-| `pauseOn`          | registered     | Pause on failure / step / file / URL — `-p pauseOn:fail`, `-p pauseOn:step`, `-p pauseOn:file:tests/login_test.js`, `-p pauseOn:url:/checkout/*` |
-| `browser`          | registered     | CLI overrides for browser helpers — `-p browser:show`, `-p browser:browser=firefox`, see [commands](/commands#browser-control) |
-| `aiTrace`          | registered     | Capture AI traces — `-p aiTrace`                                               |
+| Plugin            | Default        | Notes                                                                          |
+| :---------------- | :------------- | :----------------------------------------------------------------------------- |
+| `retryFailedStep` | enabled        | Retry steps that fail with transient errors                                    |
+| `screenshot`      | enabled        | Screenshot on `fail` (default) / `test` / `step` / `file` / `url`              |
+| `pause`           | registered     | Pause on failure / step / file / URL — `-p pause:on=fail`, `-p pause:on=step`, `-p pause:on=file:path=tests/login_test.js`, `-p pause:on=url:pattern=/checkout/*` |
+| `browser`         | registered     | CLI overrides for browser helpers — `-p browser:show`, `-p browser:browser=firefox`, see [commands](/commands#browser-control) |
+| `aiTrace`         | registered     | Capture AI traces — `-p aiTrace`, narrow with `on=fail|test|step|file|url`     |
+| `heal`            | registered     | Self-heal failing steps — `-p heal`, narrow with `on=file|url`                 |
 
 > `eachElement`, `tryTo`, and `retryTo` are no longer plugins in 4.x — import them from `codeceptjs/effects`.
 

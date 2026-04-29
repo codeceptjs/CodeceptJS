@@ -35,9 +35,6 @@ export const config = {
   bootstrap: installCodeceptjs,
   mocha: {},
   plugins: {
-    screenshotOnFail: {
-      enabled: true,
-    },
     retryFailedStep: {
       enabled: true,
     },
