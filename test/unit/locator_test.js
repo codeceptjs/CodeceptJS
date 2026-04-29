@@ -241,20 +241,6 @@ describe('Locator', () => {
         expect(l.toString()).to.equal('foo')
       })
 
-      it('should create playwright locator - _react', () => {
-        const l = new Locator({ pw: '_react=button' })
-        expect(l.type).to.equal('pw')
-        expect(l.value).to.equal('_react=button')
-        expect(l.toString()).to.equal('{pw: _react=button}')
-      })
-
-      it('should create playwright locator - _vue', () => {
-        const l = new Locator({ pw: '_vue=button' })
-        expect(l.type).to.equal('pw')
-        expect(l.value).to.equal('_vue=button')
-        expect(l.toString()).to.equal('{pw: _vue=button}')
-      })
-
       it('should create playwright locator - data-testid', () => {
         const l = new Locator({ pw: '[data-testid="directions"]' })
         expect(l.type).to.equal('pw')
