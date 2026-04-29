@@ -235,6 +235,118 @@ function outputBaseDir() {
   return global.output_dir || resolvePath(process.cwd(), 'output')
 }
 
+let pauseChild = null
+let pausePending = new Map() // id -> { resolve, reject, timer }
+let pauseLogs = []
+let pauseStdoutBuf = ''
+let pauseStderrBuf = ''
+let pausePausedWaiters = []
+let pauseExitInfo = null
+
+function pauseProcessLine(line) {
+  const trimmed = line.trim()
+  if (!trimmed) return
+  let msg = null
+  if (trimmed.startsWith('{')) {
+    try { msg = JSON.parse(trimmed) } catch {}
+  }
+  if (msg && msg.__mcpPause) {
+    if (msg.event === 'paused') {
+      const waiters = pausePausedWaiters
+      pausePausedWaiters = []
+      for (const w of waiters) w.resolve(msg)
+      return
+    }
+    if (msg.id != null && pausePending.has(msg.id)) {
+      const pending = pausePending.get(msg.id)
+      pausePending.delete(msg.id)
+      clearTimeout(pending.timer)
+      pending.resolve(msg)
+      return
+    }
+    if (msg.event === 'error') {
+      pauseLogs.push({ stream: 'protocol-error', line: trimmed })
+      return
+    }
+    pauseLogs.push({ stream: 'protocol', line: trimmed })
+    return
+  }
+  pauseLogs.push({ stream: 'stdout', line })
+  if (pauseLogs.length > 500) pauseLogs.splice(0, pauseLogs.length - 500)
+}
+
+function pauseProcessChunk(buf, chunk, stream) {
+  buf += chunk.toString('utf8')
+  let idx
+  while ((idx = buf.indexOf('\n')) !== -1) {
+    const line = buf.slice(0, idx)
+    buf = buf.slice(idx + 1)
+    if (stream === 'stdout') pauseProcessLine(line)
+    else {
+      pauseLogs.push({ stream: 'stderr', line })
+      if (pauseLogs.length > 500) pauseLogs.splice(0, pauseLogs.length - 500)
+    }
+  }
+  return buf
+}
+
+function pauseSendCommand(payload, { timeout = 30000 } = {}) {
+  if (!pauseChild) return Promise.reject(new Error('No active pause_session. Call action: "start" first.'))
+  if (pauseChild.exitCode != null) return Promise.reject(new Error('pause_session subprocess has exited'))
+
+  let id = payload.id
+  if (id == null) {
+    id = `req-${Date.now()}-${Math.floor(Math.random() * 1e6)}`
+    payload = { ...payload, id }
+  }
+
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      pausePending.delete(id)
+      reject(new Error(`Timeout waiting for pause_session response (${payload.type}) after ${timeout}ms`))
+    }, timeout)
+    pausePending.set(id, { resolve, reject, timer })
+    try {
+      pauseChild.stdin.write(JSON.stringify(payload) + '\n')
+    } catch (e) {
+      clearTimeout(timer)
+      pausePending.delete(id)
+      reject(e)
+    }
+  })
+}
+
+function pauseWaitForPaused({ timeout = 60000 } = {}) {
+  if (!pauseChild) return Promise.reject(new Error('No active pause_session. Call action: "start" first.'))
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      const idx = pausePausedWaiters.findIndex(w => w.resolve === wrapped)
+      if (idx >= 0) pausePausedWaiters.splice(idx, 1)
+      reject(new Error(`Timeout waiting for paused event after ${timeout}ms`))
+    }, timeout)
+    const wrapped = msg => {
+      clearTimeout(timer)
+      resolve(msg)
+    }
+    pausePausedWaiters.push({ resolve: wrapped, reject })
+  })
+}
+
+function pauseTeardown(reason) {
+  for (const [id, p] of pausePending.entries()) {
+    clearTimeout(p.timer)
+    p.reject(new Error(reason || 'pause_session ended'))
+  }
+  pausePending.clear()
+  for (const w of pausePausedWaiters) {
+    if (typeof w.reject === 'function') {
+      try { w.reject(new Error(reason || 'pause_session ended')) } catch {}
+    }
+  }
+  pausePausedWaiters = []
+  pauseChild = null
+}
+
 async function initCodecept(configPath) {
   if (containerInitialized) return
 
@@ -348,6 +460,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         },
       },
     },
+    {
+      name: 'pause_session',
+      description: 'Drive a paused test through pause(). Sub-actions: start (spawn test, wait for first paused event), run (execute CodeceptJS code in the paused session), snapshot (capture state without acting), step (let the test run one step then re-pause), resume (continue test to completion), exit (abort the paused test), status (return current state).',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          action: { type: 'string', enum: ['start', 'run', 'snapshot', 'step', 'resume', 'exit', 'status'] },
+          test: { type: 'string' },
+          code: { type: 'string' },
+          config: { type: 'string' },
+          timeout: { type: 'number' },
+        },
+        required: ['action'],
+      },
+    },
   ],
 }))
 
@@ -458,6 +585,170 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             }, null, 2),
           }],
         }
+      }
+
+      case 'pause_session': {
+        const action = args?.action
+        if (!action) throw new Error('pause_session requires "action" parameter')
+
+        if (action === 'start') {
+          if (pauseChild && pauseChild.exitCode == null) {
+            throw new Error('pause_session already running. Call action: "exit" or "resume" first.')
+          }
+          const { test, config: configPathArg, timeout = 60000 } = args
+          if (!test) throw new Error('pause_session start requires "test" parameter')
+
+          const { configPath, configDir } = resolveConfigPath(configPathArg)
+          const { cli, root } = findCodeceptCliUpwards(configDir)
+          const isNodeScript = cli.endsWith('.js')
+
+          const resolvedFile = await resolveTestToFile({ cli, root, configPath, test })
+          const runArgs = ['run', '--config', configPath]
+          if (resolvedFile) runArgs.push(resolvedFile)
+          else if (looksLikePath(test)) runArgs.push(test)
+          else runArgs.push('--grep', String(test))
+
+          pauseLogs = []
+          pauseStdoutBuf = ''
+          pauseStderrBuf = ''
+          pauseExitInfo = null
+
+          const env = {
+            ...process.env,
+            CODECEPTJS_MCP: '1',
+            CODECEPTJS_MCP_PAUSE: '1',
+            NODE_ENV: process.env.NODE_ENV || 'test',
+          }
+
+          const cmd = isNodeScript ? process.execPath : cli
+          const cmdArgs = isNodeScript ? [cli, ...runArgs] : runArgs
+
+          pauseChild = spawn(cmd, cmdArgs, {
+            cwd: root,
+            env,
+            stdio: ['pipe', 'pipe', 'pipe'],
+          })
+
+          pauseChild.stdout.on('data', d => {
+            pauseStdoutBuf = pauseProcessChunk(pauseStdoutBuf, d, 'stdout')
+          })
+          pauseChild.stderr.on('data', d => {
+            pauseStderrBuf = pauseProcessChunk(pauseStderrBuf, d, 'stderr')
+          })
+          pauseChild.on('exit', (code, signal) => {
+            pauseExitInfo = { code, signal }
+            pauseTeardown(`subprocess exited (code=${code}, signal=${signal})`)
+          })
+          pauseChild.on('error', err => {
+            pauseTeardown(`subprocess error: ${err.message}`)
+          })
+
+          let pausedMsg
+          try {
+            pausedMsg = await pauseWaitForPaused({ timeout })
+          } catch (err) {
+            try { pauseChild?.kill('SIGKILL') } catch {}
+            const stderr = pauseLogs.filter(l => l.stream === 'stderr').map(l => l.line).join('\n')
+            throw new Error(`pause_session start: ${err.message}. stderr=${stderr.slice(0, 2000)}`)
+          }
+
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify({
+                status: 'paused',
+                resolvedFile: resolvedFile || null,
+                paused: pausedMsg,
+              }, null, 2),
+            }],
+          }
+        }
+
+        if (action === 'status') {
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify({
+                running: !!(pauseChild && pauseChild.exitCode == null),
+                exitInfo: pauseExitInfo,
+                logs: pauseLogs.slice(-50),
+              }, null, 2),
+            }],
+          }
+        }
+
+        if (action === 'run') {
+          const { code, timeout = 60000 } = args
+          if (!code) throw new Error('pause_session run requires "code"')
+          const resp = await pauseSendCommand({ type: 'run', code }, { timeout })
+          return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] }
+        }
+
+        if (action === 'snapshot') {
+          const { timeout = 30000 } = args
+          const resp = await pauseSendCommand({ type: 'snapshot' }, { timeout })
+          return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] }
+        }
+
+        if (action === 'step') {
+          const { timeout = 60000 } = args
+          const resumed = await pauseSendCommand({ type: 'step' }, { timeout })
+          let pausedAgain = null
+          try {
+            pausedAgain = await pauseWaitForPaused({ timeout })
+          } catch {
+            // test may have ended after the step — that's fine
+          }
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify({ resumed, paused: pausedAgain, exitInfo: pauseExitInfo }, null, 2),
+            }],
+          }
+        }
+
+        if (action === 'resume') {
+          const { timeout = 60000 } = args
+          const resumed = await pauseSendCommand({ type: 'resume' }, { timeout })
+          await new Promise(resolve => {
+            if (!pauseChild || pauseChild.exitCode != null) return resolve()
+            pauseChild.once('exit', resolve)
+            setTimeout(resolve, timeout)
+          })
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify({ resumed, exitInfo: pauseExitInfo }, null, 2),
+            }],
+          }
+        }
+
+        if (action === 'exit') {
+          if (!pauseChild) {
+            return { content: [{ type: 'text', text: JSON.stringify({ status: 'no-active-session' }, null, 2) }] }
+          }
+          const { timeout = 30000 } = args
+          let resp = null
+          try {
+            resp = await pauseSendCommand({ type: 'exit' }, { timeout: Math.min(timeout, 5000) })
+          } catch {}
+          await new Promise(resolve => {
+            if (!pauseChild || pauseChild.exitCode != null) return resolve()
+            const t = setTimeout(() => {
+              try { pauseChild?.kill('SIGKILL') } catch {}
+              resolve()
+            }, timeout)
+            pauseChild.once('exit', () => { clearTimeout(t); resolve() })
+          })
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify({ exited: resp, exitInfo: pauseExitInfo }, null, 2),
+            }],
+          }
+        }
+
+        throw new Error(`pause_session unknown action: ${action}`)
       }
 
       case 'run_code': {
