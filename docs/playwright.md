@@ -478,7 +478,7 @@ When a test fails and video was enabled a video file is shown under the `artifac
 
 Open video and use it to debug a failed test case. Video helps when running tests on CI. Configure your CI system to enable artifacts storage for `output/video` and review videos of failed test case to understand failures.
 
-## Screencast <Badge text="Since 4.0" type="warning"/>
+## Screencast
 
 For richer evidence than helper-level `video`, enable the [`screencast`](https://codecept.io/plugins/#screencast) plugin. It uses Playwright's `page.screencast` API (Playwright >= 1.59) to record WebM video with optional burned-in action captions and a standalone `.srt` subtitle track.
 
