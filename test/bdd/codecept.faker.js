@@ -20,8 +20,9 @@ export const config = {
   bootstrap: false,
   mocha: {},
   plugins: {
-    screenshotOnFail: {
+    screenshot: {
       enabled: true,
+      on: 'fail',
     },
     fakerTransform: {
       enabled: true,

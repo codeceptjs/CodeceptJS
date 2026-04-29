@@ -153,13 +153,13 @@ Please note, that you shouldn't use a real credit card number here. Good news, y
 Run the test with next command:
 
 ```
-npx codeceptjs run --debug -p pauseOnFail
+npx codeceptjs run --debug -p pause
 ```
 
 What are special options here?
 
 * `--debug` flag is used to output additional information to the console, such as the details of each step in the test, the values of variables, and the results of test assertions. This can help you to identify and fix any issues in your tests.
-* `-p pauseOnFail` option is also used to keep the browser opened even if a test fails. It will help us to identify to which point test was executed and what can be improved.
+* `-p pause` option is also used to keep the browser opened even if a test fails (default `on=fail`). It will help us to identify to which point test was executed and what can be improved.
 
 Add more test steps if needed, update locators, and notify business owners that all that purchases are made by you so your collegues won't call you in the night asking when you want to get a coffee cup 😀 Also the good idea is to run tests on staging website, to not interfere with business process.
 

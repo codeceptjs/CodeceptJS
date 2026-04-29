@@ -187,10 +187,21 @@ plugins: {
 
 Inject `login` and call `login('admin')` — same as before.
 
+### Renamed Plugins
+
+4.x unifies four plugins (`screenshot`, `pause`, `aiTrace`, `heal`) under a shared `on=` parameter. The old names live on as deprecated aliases that emit a warning and forward to the new plugin.
+
+| Old plugin          | New plugin   | Notes                                              |
+| :------------------ | :----------- | :------------------------------------------------- |
+| `screenshotOnFail`  | `screenshot` | Default `on='fail'`, same behavior                 |
+| `pauseOnFail`       | `pause`      | Default `on='fail'`, same behavior                 |
+| `pauseOn`           | `pause`      | Use `on=fail|test|step|file|url` instead           |
+
 ### New Plugins You Can Enable
 
 - **`aiTrace`** — captures failure traces (DOM, console, network, screenshots) for AI debugging. See [AI Trace](/aitrace).
-- **`pauseOn`** — pauses execution on a chosen event or on failure. See [Debugging](/debugging).
+- **`pause`** — pauses execution on a chosen event or on failure. See [Debugging](/debugging).
+- **`heal`** — self-heals failing steps with AI; narrow with `on=file|url`.
 
 ## 5. Update Removed and Changed APIs
 
@@ -455,12 +466,15 @@ I.fillField('input', 'x', step.opts({ elementIndex: -1 }))
 `-p` accepts colon-chained arguments, so plugins can be enabled and configured from the command line without editing config:
 
 ```bash
-npx codeceptjs run -p pauseOn:fail              # pause on every failure
-npx codeceptjs run -p pauseOn:url:/checkout/*   # pause when URL matches
-npx codeceptjs run -p browser:show              # force visible browser
+npx codeceptjs run -p pause                                   # pause on every failure
+npx codeceptjs run -p pause:on=url:pattern=/checkout/*        # pause when URL matches
+npx codeceptjs run -p screenshot:on=step                      # screenshot every step
+npx codeceptjs run -p browser:show                            # force visible browser
 npx codeceptjs run -p browser:browser=firefox:windowSize=1024x768
-npx codeceptjs run -p plugin1,plugin2:arg       # multiple plugins
+npx codeceptjs run -p plugin1,plugin2:arg                     # multiple plugins
 ```
+
+Each argument after the plugin name is a `key=value` pair. `:` separates pairs. `;` is an inline alternative for visually grouping related pairs (e.g. `path=...;line=...`). Reserved keys: `on`, `path`, `line`, `pattern`.
 
 The `browser` plugin is new in 4.x — it overrides the active browser helper (Playwright, Puppeteer, WebDriver, Appium) from the CLI, useful for ad-hoc local runs and CI matrices. See [Commands](/commands).
 

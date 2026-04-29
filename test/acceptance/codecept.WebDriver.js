@@ -34,8 +34,9 @@ export const config = {
   mocha: {},
   name: 'acceptance',
   plugins: {
-    screenshotOnFail: {
+    screenshot: {
       enabled: true,
+      on: 'fail',
     },
   },
   gherkin: {

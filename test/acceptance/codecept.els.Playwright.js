@@ -23,8 +23,9 @@ export const config = {
   bootstrap: false,
   mocha: {},
   plugins: {
-    screenshotOnFail: {
+    screenshot: {
       enabled: true,
+      on: 'fail',
     },
   },
   name: 'acceptance',

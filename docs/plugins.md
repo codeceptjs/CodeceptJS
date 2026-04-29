@@ -595,47 +595,42 @@ Additional config options:
 
 *   `config`   (optional, default `{}`)
 
-## pauseOn
+## pause
 
-Pauses test execution in different modes. Unlike `pauseOnFail`, this plugin supports
-multiple triggers for pausing and is controlled via CLI arguments.
+Pauses test execution interactively. Replaces the legacy `pauseOn` and `pauseOnFail`
+plugins. Default `on=fail` matches the old `pauseOnFail` behavior.
 
-Enable it via `-p` option with a mode:
+```js
+plugins: {
+  pause: {
+    enabled: false,
+    on: 'fail',
+  }
+}
+```
 
-    npx codeceptjs run -p pauseOn:fail
-    npx codeceptjs run -p pauseOn:step
-    npx codeceptjs run -p pauseOn:file:tests/login_test.js
-    npx codeceptjs run -p pauseOn:file:tests/login_test.js:43
-    npx codeceptjs run -p pauseOn:url:/users/*
+#### `on=` modes
 
-#### Modes
+*   **fail** — pause when a step fails (default)
+*   **test** — pause after each test
+*   **step** — pause before the first step (interactive walk-through)
+*   **file** — pause when execution reaches `path=...[;line=...]`
+*   **url** — pause when the current URL matches `pattern=...`
 
-*   **fail** — pause when a step fails (same as `pauseOnFail` plugin)
-*   **step** — pause before first step, use `next` to advance step-by-step
-*   **file** — pause when execution reaches a specific file (and optionally line)
-*   **url** — pause when the browser URL matches a pattern (supports `*` wildcards)
+CLI examples:
+
+    npx codeceptjs run -p pause
+    npx codeceptjs run -p pause:on=step
+    npx codeceptjs run -p pause:on=file:path=tests/login_test.js
+    npx codeceptjs run -p pause:on=file:path=tests/login_test.js;line=43
+    npx codeceptjs run -p pause:on=url:pattern=/users/*
+
+> The legacy `pauseOn` and `pauseOnFail` plugins remain as deprecated aliases
+> that translate to the new syntax and emit a deprecation warning.
 
 ### Parameters
 
 *   `config`   (optional, default `{}`)
-
-## pauseOnFail
-
-Automatically launches [interactive pause][5] when a test fails.
-
-Useful for debugging flaky tests on local environment.
-Add this plugin to config file:
-
-```js
-plugins: {
-  pauseOnFail: {},
-}
-```
-
-Unlike other plugins, `pauseOnFail` is not recommended to be enabled by default.
-Enable it manually on each run via `-p` option:
-
-    npx codeceptjs run -p pauseOnFail
 
 ## retryFailedStep
 
@@ -705,30 +700,43 @@ Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
 
 *   `config` &#x20;
 
-## screenshotOnFail
+## screenshot
 
-Creates screenshot on failure. Screenshot is saved into `output` directory.
-
-Initially this functionality was part of corresponding helper but has been moved into plugin since 1.4
+Saves screenshots from the browser at points triggered by `on=`. Replaces the
+legacy `screenshotOnFail` plugin. Default `on=fail` preserves the old behavior.
 
 This plugin is **enabled by default**.
 
-#### Configuration
-
-Configuration can either be taken from a corresponding helper (deprecated) or a from plugin config (recommended).
-
 ```js
 plugins: {
-   screenshotOnFail: {
-     enabled: true
-   }
+  screenshot: {
+    enabled: true,
+    on: 'fail',
+  }
 }
 ```
+
+#### `on=` modes
+
+*   **fail** — screenshot when a test fails (default)
+*   **test** — screenshot at the end of every test
+*   **step** — screenshot after every step
+*   **file** — screenshot for steps in `path=...[;line=...]`
+*   **url** — screenshot when the current URL matches `pattern=...`
+
+CLI examples:
+
+    npx codeceptjs run -p screenshot
+    npx codeceptjs run -p screenshot:on=step
+    npx codeceptjs run -p screenshot:on=file:path=tests/login_test.js
+    npx codeceptjs run -p screenshot:on=url:pattern=/users/*
 
 Possible config options:
 
 *   `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
 *   `fullPageScreenshots`: make full page screenshots. Default: false.
+
+> The legacy `screenshotOnFail` plugin remains as a deprecated alias.
 
 ### Parameters
 
