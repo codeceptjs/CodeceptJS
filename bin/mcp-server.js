@@ -4,15 +4,22 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprot
 import Codecept from '../lib/codecept.js'
 import container from '../lib/container.js'
 import { getParamsToString } from '../lib/parser.js'
-import { methodsOfObject } from '../lib/utils.js'
+import { methodsOfObject, safeStringify, truncateString } from '../lib/utils.js'
+import {
+  captureSnapshot,
+  pickActingHelper,
+  traceDirFor,
+  snapshotDirFor,
+  artifactsToFileUrls,
+  writeTraceMarkdown,
+} from '../lib/utils/trace.js'
 import event from '../lib/event.js'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 import { dirname, resolve as resolvePath } from 'path'
 import path from 'path'
-import crypto from 'crypto'
 import { spawn } from 'child_process'
 import { createRequire } from 'module'
-import { existsSync, readdirSync, writeFileSync } from 'fs'
+import { existsSync, readdirSync } from 'fs'
 import { mkdirp } from 'mkdirp'
 
 const require = createRequire(import.meta.url)
@@ -224,15 +231,8 @@ async function resolveTestToFile({ cli, root, configPath, test }) {
   return fsFound ? normalizePath(fsFound) : null
 }
 
-function clearString(str) {
-  return str.replace(/[^a-zA-Z0-9]/g, '_')
-}
-
-function getTraceDir(testTitle, testFile) {
-  const hash = crypto.createHash('sha256').update(testFile + testTitle).digest('hex').slice(0, 8)
-  const cleanTitle = clearString(testTitle).slice(0, 200)
-  const outputDir = global.output_dir || resolvePath(process.cwd(), 'output')
-  return resolvePath(outputDir, `trace_${cleanTitle}_${hash}`)
+function outputBaseDir() {
+  return global.output_dir || resolvePath(process.cwd(), 'output')
 }
 
 async function initCodecept(configPath) {
@@ -337,6 +337,17 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       description: 'Stop the browser session.',
       inputSchema: { type: 'object', properties: {} },
     },
+    {
+      name: 'snapshot',
+      description: 'Capture current browser state (HTML, ARIA, screenshot, console, URL) without performing any action.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          config: { type: 'string' },
+          fullPage: { type: 'boolean' },
+        },
+      },
+    },
   ],
 }))
 
@@ -416,6 +427,39 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser stopped successfully' }, null, 2) }] }
       }
 
+      case 'snapshot': {
+        const { config: configPath, fullPage = false } = args || {}
+        await initCodecept(configPath)
+
+        const helper = pickActingHelper(container.helpers())
+        if (!helper) throw new Error('No supported acting helper available (Playwright, Puppeteer, WebDriver).')
+
+        const dir = snapshotDirFor(outputBaseDir())
+        mkdirp.sync(dir)
+
+        const captured = await captureSnapshot(helper, { dir, prefix: 'snapshot', fullPage })
+        const traceFile = writeTraceMarkdown({
+          dir,
+          title: 'snapshot',
+          file: 'mcp',
+          durationMs: 0,
+          commands: [],
+          captured,
+        })
+
+        return {
+          content: [{
+            type: 'text',
+            text: JSON.stringify({
+              status: 'success',
+              dir,
+              traceFile: pathToFileURL(traceFile).href,
+              artifacts: artifactsToFileUrls(captured, dir),
+            }, null, 2),
+          }],
+        }
+      }
+
       case 'run_code': {
         const { code, timeout = 60000, config: configPath, saveArtifacts = true } = args
         await initCodecept(configPath)
@@ -423,66 +467,91 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const I = container.support('I')
         if (!I) throw new Error('I object not available. Make sure helpers are configured.')
 
-        const result = { status: 'unknown', output: '', error: null, artifacts: {} }
+        const result = { status: 'unknown', output: '', error: null, commands: [], artifacts: {} }
 
+        const commands = []
+        const onStepAfter = step => {
+          try { commands.push(step.toString()) } catch {}
+        }
+        event.dispatcher.on(event.step.after, onStepAfter)
+
+        const traceDir = traceDirFor(`mcp_${Date.now()}`, 'run_code', outputBaseDir())
+        mkdirp.sync(traceDir)
+        const startedAt = Date.now()
+
+        const MAX_LOG_ENTRIES = 100
+        const MAX_LOG_MSG_BYTES = 2000
+        const MAX_RETURN_BYTES = 20000
+        const consoleLogs = []
+        const consoleMethods = ['log', 'info', 'warn', 'error', 'debug']
+        const origConsoleMethods = {}
+        const captureLog = level => (...args) => {
+          if (consoleLogs.length >= MAX_LOG_ENTRIES) return
+          const message = args.map(a => {
+            if (typeof a === 'string') return a
+            return truncateString(safeStringify(a, [], 2), MAX_LOG_MSG_BYTES).value
+          }).join(' ')
+          consoleLogs.push({ level, message, t: Date.now() - startedAt })
+        }
+        for (const m of consoleMethods) {
+          origConsoleMethods[m] = console[m]
+          console[m] = captureLog(m)
+        }
+
+        let returnValue
         try {
           const asyncFn = new Function('I', `return (async () => { ${code} })()`)
-          await Promise.race([
+          returnValue = await Promise.race([
             asyncFn(I),
             new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
           ])
 
           result.status = 'success'
           result.output = 'Code executed successfully'
-
-          if (saveArtifacts) {
-            const helpers = container.helpers()
-            const helper = Object.values(helpers)[0]
-            if (helper) {
-              try {
-                const traceDir = getTraceDir('mcp', 'run_code')
-                mkdirp.sync(traceDir)
-
-                if (helper.grabAriaSnapshot) {
-                  const aria = await helper.grabAriaSnapshot()
-                  const ariaFile = path.join(traceDir, 'aria.txt')
-                  writeFileSync(ariaFile, aria)
-                  result.artifacts.aria = `file://${ariaFile}`
-                }
-
-                if (helper.grabCurrentUrl) {
-                  result.artifacts.url = await helper.grabCurrentUrl()
-                }
-
-                if (helper.grabBrowserLogs) {
-                  const logs = (await helper.grabBrowserLogs()) || []
-                  const logsFile = path.join(traceDir, 'console.json')
-                  writeFileSync(logsFile, JSON.stringify(logs, null, 2))
-                  result.artifacts.consoleLogs = `file://${logsFile}`
-                }
-
-                if (helper.grabSource) {
-                  const html = await helper.grabSource()
-                  const htmlFile = path.join(traceDir, 'page.html')
-                  writeFileSync(htmlFile, html)
-                  result.artifacts.html = `file://${htmlFile}`
-                }
-
-                if (helper.saveScreenshot) {
-                  const screenshotFile = path.join(traceDir, 'screenshot.png')
-                  await helper.saveScreenshot(screenshotFile)
-                  result.artifacts.screenshot = `file://${screenshotFile}`
-                }
-              } catch (e) {
-                result.output += ` (Warning: ${e.message})`
-              }
-            }
-          }
         } catch (error) {
           result.status = 'failed'
           result.error = error.message
           result.output = error.stack || error.message
+        } finally {
+          for (const m of consoleMethods) console[m] = origConsoleMethods[m]
+          try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
         }
+
+        result.commands = commands
+        result.logs = consoleLogs
+        if (consoleLogs.length === MAX_LOG_ENTRIES) result.logsTruncated = true
+
+        if (returnValue !== undefined) {
+          const json = typeof returnValue === 'string' ? returnValue : safeStringify(returnValue, [], 2)
+          const stringified = truncateString(json, MAX_RETURN_BYTES)
+          result.returnValue = stringified.value
+          if (stringified.truncated) result.returnValueTruncated = true
+        }
+
+        let captured = {}
+        if (saveArtifacts) {
+          const helper = pickActingHelper(container.helpers())
+          if (helper) {
+            try {
+              captured = await captureSnapshot(helper, { dir: traceDir, prefix: 'mcp' })
+              result.artifacts = artifactsToFileUrls(captured, traceDir)
+            } catch (e) {
+              result.output += ` (Warning: ${e.message})`
+            }
+          }
+        }
+
+        const traceFile = writeTraceMarkdown({
+          dir: traceDir,
+          title: 'run_code',
+          file: 'mcp',
+          durationMs: Date.now() - startedAt,
+          commands,
+          captured,
+          error: result.error,
+        })
+        result.dir = traceDir
+        result.traceFile = pathToFileURL(traceFile).href
 
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
       }
@@ -549,27 +618,56 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
           const results = []
           const currentSteps = {}
+          const traceDirs = {}
           let currentTestTitle = null
           const testFile = testFiles[0]
 
           const onBefore = (t) => {
-            const traceDir = getTraceDir(t.title, t.file)
+            const traceDir = traceDirFor(t.file, t.title, outputBaseDir())
             currentTestTitle = t.title
             currentSteps[t.title] = []
+            traceDirs[t.title] = traceDir
             results.push({
               test: t.title,
               file: t.file,
-              traceFile: `file://${resolvePath(traceDir, 'trace.md')}`,
               status: 'running',
               steps: [],
             })
           }
 
-          const onAfter = (t) => {
+          const onAfter = async (t) => {
             const r = results.find(x => x.test === t.title)
             if (r) {
               r.status = t.err ? 'failed' : 'completed'
               if (t.err) r.error = t.err.message
+
+              if (t.artifacts?.aiTrace) {
+                r.traceFile = pathToFileURL(t.artifacts.aiTrace).href
+              }
+              if (t.artifacts?.har) r.har = pathToFileURL(t.artifacts.har).href
+              if (t.artifacts?.trace) r.trace = pathToFileURL(t.artifacts.trace).href
+
+              if (!t.artifacts?.aiTrace) {
+                try {
+                  const helper = pickActingHelper(container.helpers())
+                  const dir = traceDirs[t.title]
+                  if (helper && dir) {
+                    mkdirp.sync(dir)
+                    const captured = await captureSnapshot(helper, { dir, prefix: 'final' })
+                    r.artifacts = artifactsToFileUrls(captured, dir)
+                    const tracePath = writeTraceMarkdown({
+                      dir,
+                      title: t.title,
+                      file: t.file,
+                      durationMs: 0,
+                      commands: (currentSteps[t.title] || []).map(s => s.step),
+                      captured,
+                      error: r.error,
+                    })
+                    r.traceFile = pathToFileURL(tracePath).href
+                  }
+                } catch {}
+              }
             }
             currentTestTitle = null
           }

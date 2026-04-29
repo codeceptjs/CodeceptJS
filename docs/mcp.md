@@ -7,11 +7,12 @@ Model Context Protocol (MCP) server for CodeceptJS enables AI agents (like Claud
 The MCP server provides AI agents with tools to:
 - List all tests in a CodeceptJS project
 - List all available CodeceptJS actions (I.* methods)
-- Run arbitrary CodeceptJS code with artifacts capture
+- Run arbitrary CodeceptJS code with artifacts capture, return value, and `console.log` capture
 - Run specific tests with detailed output
 - Run tests step by step for detailed analysis
+- Capture a point-in-time snapshot of the browser without any action
 - Start and stop browser sessions
-- Capture screenshots, ARIA snapshots, HTML, and console logs
+- Capture screenshots, ARIA snapshots, formatted HTML, browser console logs, and storage state (cookies + localStorage)
 
 ## Installation
 
@@ -145,13 +146,13 @@ List all available CodeceptJS actions (I.* methods) from enabled helpers and sup
 
 ### run_code
 
-Run arbitrary CodeceptJS code. Returns status, ARIA snapshot, URL, console logs, and HTML.
+Run arbitrary CodeceptJS code. The tool captures the value the code returns, every `I.*` step it runs, anything written to `console.log` / `console.info` / `console.warn` / `console.error` / `console.debug`, plus a final-state snapshot of the page.
 
 **Parameters:**
-- `code` (required): CodeceptJS code to execute
+- `code` (required): CodeceptJS code to execute. May `return` a value and use `console.*` for debugging.
 - `timeout` (optional): Timeout in milliseconds (default: 60000)
 - `config` (optional): Path to codecept.conf.js
-- `saveArtifacts` (optional): Save artifacts like ARIA, URL, console logs, HTML (default: true)
+- `saveArtifacts` (optional): Save final-state artifacts to disk (default: true)
 
 **Returns:**
 ```json
@@ -159,11 +160,69 @@ Run arbitrary CodeceptJS code. Returns status, ARIA snapshot, URL, console logs,
   "status": "success",
   "output": "Code executed successfully",
   "error": null,
+  "commands": [
+    "I.amOnPage(\"/\")",
+    "I.grabTextFrom(\"h1\")"
+  ],
+  "logs": [
+    { "level": "log", "message": "headline Welcome", "t": 47 }
+  ],
+  "returnValue": "{\n  \"url\": \"http://localhost:8000/\",\n  \"text\": \"Welcome\"\n}",
   "artifacts": {
-    "aria": "main -> \"Welcome\"...",
     "url": "http://localhost:8000/",
-    "consoleLogs": [],
-    "html": "<html>...</html>"
+    "html": "file:///output/trace_run_code_.../mcp_page.html",
+    "aria": "file:///output/trace_run_code_.../mcp_aria.txt",
+    "screenshot": "file:///output/trace_run_code_.../mcp_screenshot.png",
+    "console": "file:///output/trace_run_code_.../mcp_console.json",
+    "storage": "file:///output/trace_run_code_.../mcp_storage.json",
+    "cookieCount": 3,
+    "localStorageCount": 5
+  },
+  "dir": "/output/trace_run_code_...",
+  "traceFile": "file:///output/trace_run_code_.../trace.md"
+}
+```
+
+**Notes:**
+- `returnValue` is the value the code's last `return` statement produced, JSON-stringified with circular-ref handling. Capped at 20 KB; `returnValueTruncated: true` is set if it was cut.
+- `logs` is an in-order list of console output captured during execution. Each entry has `{ level, message, t }` where `t` is ms since the code started. Capped at 100 entries × 2 KB per message; `logsTruncated: true` is set if hit. `console.*` writes do not pollute MCP stdio — they're captured in-memory only.
+- `commands` is the list of `I.*` calls observed during execution (via the recorder).
+- `artifacts.storage` is omitted when both cookies and localStorage are empty.
+
+**Example:**
+```json
+{
+  "name": "run_code",
+  "arguments": {
+    "code": "await I.amOnPage('/'); const t = await I.grabTextFrom('h1'); console.log('headline', t); return { url: await I.grabCurrentUrl(), text: t };",
+    "timeout": 30000
+  }
+}
+```
+
+### snapshot
+
+Capture the current state of the browser without performing any action. Useful for inspecting what's on the page right now (URL, cookies, localStorage, formatted HTML, ARIA, screenshot, browser console logs) when reasoning between actions.
+
+**Parameters:**
+- `config` (optional): Path to codecept.conf.js
+- `fullPage` (optional): Take a full-page screenshot (default: false)
+
+**Returns:**
+```json
+{
+  "status": "success",
+  "dir": "/output/snapshot_1700000000000_abcd1234",
+  "traceFile": "file:///output/snapshot_.../trace.md",
+  "artifacts": {
+    "url": "http://localhost:8000/dashboard",
+    "html": "file:///output/snapshot_.../snapshot_page.html",
+    "aria": "file:///output/snapshot_.../snapshot_aria.txt",
+    "screenshot": "file:///output/snapshot_.../snapshot_screenshot.png",
+    "console": "file:///output/snapshot_.../snapshot_console.json",
+    "storage": "file:///output/snapshot_.../snapshot_storage.json",
+    "cookieCount": 3,
+    "localStorageCount": 5
   }
 }
 ```
@@ -171,12 +230,8 @@ Run arbitrary CodeceptJS code. Returns status, ARIA snapshot, URL, console logs,
 **Example:**
 ```json
 {
-  "name": "run_code",
-  "arguments": {
-    "code": "await I.amOnPage('/'); await I.see('Welcome');",
-    "timeout": 30000,
-    "saveArtifacts": true
-  }
+  "name": "snapshot",
+  "arguments": { "fullPage": true }
 }
 ```
 
@@ -378,16 +433,19 @@ When using `run_step_by_step`, the server generates trace files that provide ric
 ```
 output/
 └── trace_Test_Name_abc123/
-    ├── 0000_screenshot.png     # Screenshot after step 0
-    ├── 0000_page.html         # HTML snapshot after step 0
-    ├── 0000_aria.txt          # ARIA snapshot after step 0
-    ├── 0000_console.json      # Console logs after step 0
-    ├── 0001_screenshot.png     # Screenshot after step 1
-    ├── 0001_page.html
-    ├── 0001_aria.txt
-    ├── 0001_console.json
-    └── trace.md               # AI-friendly summary
+    ├── 0000_<step>_screenshot.png   # Screenshot after step 0
+    ├── 0000_<step>_page.html        # Formatted HTML (minified -> trash classes/scripts/styles stripped -> beautified)
+    ├── 0000_<step>_aria.txt         # ARIA snapshot after step 0 (Playwright only)
+    ├── 0000_<step>_console.json     # Browser console logs (normalized to {type, text})
+    ├── 0001_<step>_screenshot.png
+    ├── 0001_<step>_page.html
+    ├── 0001_<step>_aria.txt
+    ├── 0001_<step>_console.json
+    ├── final_storage.json           # Cookies + localStorage at test end (run_step_by_step fallback)
+    └── trace.md                     # AI-friendly summary with links to all of the above
 ```
+
+For ad-hoc `run_code` and `snapshot()` runs, only a single set of artifacts is produced (`mcp_*` / `snapshot_*` prefix), since there are no per-step iterations.
 
 ### Using Trace Files with AI
 
@@ -423,6 +481,22 @@ AI agents can use these artifacts to:
 - Analyze page structure via ARIA
 - Debug issues using HTML snapshots
 - Identify errors from console logs
+
+## HTML Formatting
+
+Every HTML snapshot saved by the MCP server (and the aiTrace / pageInfo plugins, since they share the same `captureSnapshot` funnel in `lib/utils/captureSnapshot.js`) is processed through a three-stage pipeline before being written to disk:
+
+1. **Minify** (via `html-minifier-terser`) — strips comments, collapses whitespace, removes redundant attributes.
+2. **Clean** — drops `<style>`, `<noscript>`, and inline `<script>` (no `src`) blocks entirely; preserves `<script src="...">`; strips trash class names (Tailwind utilities `text-*`, `flex-*`, `border-*`, framework-generated `v-*`, `ember-*`, `Header__title`, hashed classes containing digits, and `xl:hidden`-style scoped classes); drops `style="..."` attributes. Semantic attributes (`id`, `aria-*`, `data-*`, `role`, `href`, `src`, `alt`, `title`, `name`) are kept.
+3. **Beautify** (via `js-beautify`) — re-indents with 2-space indentation; keeps inline elements like `<strong>` / `<a>` on the same line as their text.
+
+The result is a multi-line, low-noise HTML document that's far cheaper for an LLM to reason about than raw page source.
+
+## Storage State
+
+When a Playwright helper is configured, `captureSnapshot` calls `helper.grabStorageState()` to dump cookies + localStorage in one go. For Puppeteer / WebDriver, it falls back to `helper.grabCookie()` plus an `executeScript()` call that walks `window.localStorage`. Both paths produce the same shape (`{ cookies: [...], origins: [{ origin, localStorage: [...] }] }`) so AI agents see a consistent storage payload regardless of the helper.
+
+Storage capture is **disabled per-step in aiTrace** (cookies / localStorage rarely change between actions, so per-step files would be noise) and **enabled by default** for `run_code`, `snapshot`, `run_step_by_step` fallback, and `pageInfo`.
 
 ## Architecture
 
