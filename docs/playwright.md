@@ -518,7 +518,7 @@ The recording is attached to the test as `test.artifacts.screencast`; the `.srt`
 
 > Enabling helper-level `video: true` **and** the `screencast` plugin produces two independent recordings (one in `output/videos/`, one in `output/screencast/`). Pick one.
 
-## Trace <Badge text="Since 3.1" type="warning"/>
+## Trace 
 
 If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer/) can be recorded.
 
