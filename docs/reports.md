@@ -251,7 +251,7 @@ npm install @testomatio/reporter --save-dev
 Add the `testomatio` plugin to your `codecept.conf.js`:
 
 ```js
-exports.config = {
+export const config = {
   plugins: {
     testomatio: {
       enabled: true,

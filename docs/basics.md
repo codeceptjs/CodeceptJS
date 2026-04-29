@@ -387,6 +387,15 @@ import { setHeadlessWhen } from '@codeceptjs/configure'
 setHeadlessWhen(process.env.CI)  // headless only on CI, show browser locally
 ```
 
+For a single run without editing config, use the `browser` plugin:
+
+```sh
+npx codeceptjs run -p browser:show   # force visible browser
+npx codeceptjs run -p browser:hide   # force headless
+```
+
+See [Plugin Arguments](/commands#plugin-arguments).
+
 
 ## Configuration
 

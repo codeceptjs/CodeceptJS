@@ -55,8 +55,6 @@ export default function() {
 
 ## PageObject
 
-> CodeceptJS can [generate PageObjects using AI](/ai#generate-pageobjects). It fetches all interactive elements from a page, generates locators and methods page and writes JS code. Generated page object can be tested on the fly within the same browser session.
-
 If an application has different pages (login, admin, etc) you should use a page object.
 CodeceptJS can generate a template for it with the following command:
 
@@ -360,13 +358,13 @@ export default new SearchPage();
 Inject the page object into a specific scenario:
 
 ```js
+import searchPage from './pages/searchPage.js'
+
 Scenario('user searches for products', ({ I, searchPage }) => {
   I.amOnPage('/');
   searchPage.search('laptop');
   I.see('Search Results');
-}).injectDependencies({ 
-  searchPage: require('./pages/searchPage.js') 
-});
+}).injectDependencies({ searchPage });
 ```
 
 **Use cases:**
@@ -383,7 +381,7 @@ Plain object page objects are still supported for backward compatibility:
 ```js
 const { I } = inject();
 
-module.exports = {
+export default {
   fields: {
     email: '#user_basic_email',
     password: '#user_basic_password'

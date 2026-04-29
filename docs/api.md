@@ -119,12 +119,12 @@ Or you can use the browser cookies if you are running browser session.
 In this case use `setSharedCookies()` from `@codeceptjs/configure` package:
 
 ```js
-const { setSharedCookies } = require('@codeceptjs/configure');
+import { setSharedCookies } from '@codeceptjs/configure'
 
-// add this before exports.config
-setSharedCookies();
+// call before exporting config
+setSharedCookies()
 
-exports.config = {
+export const config = {
   // ...
   helpers: {  
     // also works with Playwright or Puppeteer

@@ -258,13 +258,13 @@ Just define how many items of any kind you need and the data factory helper will
 
 To make this work some preparations are required.
 
-At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker). Faker can generate random names, emails, texts, and Rosie uses them
+At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://fakerjs.dev). Faker can generate random names, emails, texts, and Rosie uses them
 to generate objects using factories.
 
 Install rosie and faker to create a first factory:
 
-```js
-npm i rosie faker --save-dev
+```sh
+npm i rosie @faker-js/faker --save-dev
 ```
 
 Then create a module which will export a factory for an entity.
@@ -289,10 +289,10 @@ See the example providing a factory for User generation:
 
 ```js
 // factories/post.js
-var Factory = require('rosie').Factory
-var faker = require('@faker-js/faker')
+import { Factory } from 'rosie'
+import { faker } from '@faker-js/faker'
 
-module.exports = new Factory().attr('name', () => faker.person.findName()).attr('email', () => faker.internet.email())
+export default new Factory().attr('name', () => faker.person.findName()).attr('email', () => faker.internet.email())
 ```
 
 Next is to configure helper to match factories with API:
@@ -341,10 +341,10 @@ See the example providing a factory for User generation:
 
 ```js
 // factories/post.js
-var Factory = require('rosie').Factory
-var faker = require('@faker-js/faker')
+import { Factory } from 'rosie'
+import { faker } from '@faker-js/faker'
 
-module.exports = new Factory((buildObj) => {
+export default new Factory((buildObj) => {
   return {
     input: { ...buildObj },
   }
@@ -393,23 +393,16 @@ By doing this we can make requests within the current browser session without a 
 
 > Sharing browser session with ApiDataFactory or GraphQLDataFactory can be especially useful when you test Single Page Applications
 
-Since CodeceptJS 2.3.3 there is a simple way to enable shared session for browser and data helpers.
-Install [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package:
-
-```
-npm i @codeceptjs/configure --save
-```
-
-Import `setSharedCookies` function and call it inside a config:
+CodeceptJS bundles [`@codeceptjs/configure`](https://github.com/codeceptjs/configure), which exposes `setSharedCookies` for this case. Call it before exporting your config:
 
 ```js
 // in codecept.conf.js
-const { setSharedCookies } = require('@codeceptjs/configure')
+import { setSharedCookies } from '@codeceptjs/configure'
 
 // share cookies between browser helpers and REST/GraphQL
 setSharedCookies()
 
-exports.config = {}
+export const config = {}
 ```
 
 Without `setSharedCookies` you will need to update the config manually, so a data helper could receive cookies from a browser to make a request. If you would like to configure this process manually, here is an example of doing so:
@@ -418,7 +411,7 @@ Without `setSharedCookies` you will need to update the config manually, so a dat
 
 let cookies; // share cookies
 
-exports.config = {
+export const config = {
 helpers: {
   ApiDataFactory: {
     endpoint: 'http://local.app/api',

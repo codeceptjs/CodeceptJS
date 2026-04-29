@@ -714,4 +714,85 @@ describe('Locator', () => {
     const nodes = xpath.select(l.toXPath(), doc)
     expect(nodes).to.have.length(1, l.toXPath())
   })
+
+  describe('Locator.clickable.self', () => {
+    it('picks deepest descendant, not a container whose string-value merely concatenates the literal (tablist regression)', () => {
+      const tabsXml = `<root>
+        <ul role="tablist" id="tabs">
+          <li role="tab" data-tab="description"><span class="tab-text">Description</span></li>
+          <li role="tab" data-tab="code"><span class="tab-text">Code template</span></li>
+          <li role="tab" data-tab="attachments"><span class="tab-text">Attachments</span></li>
+          <li role="tab" data-tab="runs"><span class="tab-text">Runs</span></li>
+          <li role="tab" data-tab="history"><span class="tab-text">History</span></li>
+        </ul>
+      </root>`
+      const tabsDoc = new DOMParser().parseFromString(tabsXml, 'text/xml')
+      const ul = xpath.select1('//ul', tabsDoc)
+      const xp = Locator.clickable.self("'Description'")
+      const nodes = xpath.select(xp, ul)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].tagName).to.eql('span')
+      expect(nodes[0].textContent.trim()).to.eql('Description')
+    })
+
+    it('matches self when context element has the literal in direct text and no descendants contain it', () => {
+      const leafXml = '<root><div id="btn">Submit</div></root>'
+      const leafDoc = new DOMParser().parseFromString(leafXml, 'text/xml')
+      const div = xpath.select1('//div', leafDoc)
+      const xp = Locator.clickable.self("'Submit'")
+      const nodes = xpath.select(xp, div)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].getAttribute('id')).to.eql('btn')
+    })
+
+    it('matches self when @value attribute contains the literal', () => {
+      const inputXml = '<root><input type="submit" value="Submit" id="inp"/></root>'
+      const inputDoc = new DOMParser().parseFromString(inputXml, 'text/xml')
+      const input = xpath.select1('//input', inputDoc)
+      const xp = Locator.clickable.self("'Submit'")
+      const nodes = xpath.select(xp, input)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].getAttribute('id')).to.eql('inp')
+    })
+  })
+
+  describe('Locator.clickable.wide', () => {
+    it('matches an ARIA widget role (tab) by text within a container', () => {
+      const tabsXml = `<root>
+        <ul role="tablist" id="tabs">
+          <li role="tab" data-tab="description"><span class="tab-text">Description</span></li>
+          <li role="tab" data-tab="code"><span class="tab-text">Code template</span></li>
+          <li role="tab" data-tab="attachments"><span class="tab-text">Attachments</span></li>
+          <li role="tab" data-tab="runs"><span class="tab-text">Runs</span></li>
+          <li role="tab" data-tab="history"><span class="tab-text">History</span></li>
+        </ul>
+      </root>`
+      const tabsDoc = new DOMParser().parseFromString(tabsXml, 'text/xml')
+      const ul = xpath.select1('//ul', tabsDoc)
+      const xp = Locator.clickable.wide("'Description'")
+      const nodes = xpath.select(xp, ul)
+
+      const tabMatches = nodes.filter(n => n.getAttribute && n.getAttribute('role') === 'tab')
+      expect(tabMatches).to.have.length(1, xp)
+      expect(tabMatches[0].getAttribute('data-tab')).to.eql('description')
+    })
+
+    it('matches role="menuitem" by text', () => {
+      const menuXml = `<root>
+        <ul role="menu">
+          <li role="menuitem" id="save">Save</li>
+          <li role="menuitem" id="rename">Rename</li>
+        </ul>
+      </root>`
+      const menuDoc = new DOMParser().parseFromString(menuXml, 'text/xml')
+      const menu = xpath.select1('//ul', menuDoc)
+      const nodes = xpath.select(Locator.clickable.wide("'Rename'"), menu)
+      const items = nodes.filter(n => n.getAttribute && n.getAttribute('role') === 'menuitem')
+      expect(items).to.have.length(1)
+      expect(items[0].getAttribute('id')).to.eql('rename')
+    })
+  })
 })

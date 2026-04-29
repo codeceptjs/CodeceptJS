@@ -1,4 +1,5 @@
 import TestHelper from '../support/TestHelper.js'
+import installCodeceptjs from '../support/install-codeceptjs.js'
 
 export const config = {
   tests: './*_test.js',
@@ -26,17 +27,12 @@ export const config = {
     },
   },
   include: {},
-  bootstrap: async () =>
-    new Promise(done => {
-      setTimeout(done, 5000)
-    }), // let's wait for selenium
+  bootstrap: async () => {
+    installCodeceptjs()
+    await new Promise(done => setTimeout(done, 5000)) // let's wait for selenium
+  },
   mocha: {},
   name: 'acceptance',
-  plugins: {
-    screenshotOnFail: {
-      enabled: true,
-    },
-  },
   gherkin: {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],

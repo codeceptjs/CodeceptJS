@@ -178,9 +178,9 @@ npx codeceptjs run-workers 3 --by pool   # ✓ Best for mixed test execution tim
 ## Test stats with Parallel Execution by Workers
 
 ```js
-const { event } = require('codeceptjs');
+import { event } from 'codeceptjs';
 
-module.exports = function() {
+export default function() {
 
   event.dispatcher.on(event.workers.result, function (result) {
 
@@ -271,9 +271,9 @@ FAIL  | 7 passed, 1 failed, 1 skipped   // 2s
 CodeceptJS also exposes the env var `process.env.RUNS_WITH_WORKERS` when running tests with `run-workers` command so that you could handle the events better in your plugins/helpers
 
 ```js
-const { event } = require('codeceptjs')
+import { event } from 'codeceptjs'
 
-module.exports = function () {
+export default function () {
   // this event would trigger the  `_publishResultsToTestrail` when running `run-workers` command
   event.dispatcher.on(event.workers.result, async () => {
     await _publishResultsToTestrail()
@@ -294,7 +294,7 @@ To run tests in parallel across multiple browsers, modify your `codecept.conf.js
 Start with modifying the `codecept.conf.js` file. Add multiple key inside the config which will be used to configure multiple profiles.
 
 ```
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       url: 'http://localhost:3000',
@@ -369,7 +369,7 @@ Create a placeholder in file:
 
 ```js
 #!/usr/bin/env node
-const { Workers, event } = require('codeceptjs')
+import { Workers, event } from 'codeceptjs'
 // here will go magic
 ```
 
@@ -530,7 +530,7 @@ For complex scenarios where you need to initialize shared data before tests run,
 
 ```js
 // inside codecept.conf.js
-exports.config = {
+export const config = {
   bootstrap() {
     // Initialize shared data container
     share({ userData: null, config: { retries: 3 } })

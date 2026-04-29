@@ -10,9 +10,17 @@ Locators tell CodeceptJS which element on the page a step acts on. Every action 
 CodeceptJS accepts locators in two forms:
 
 - **Strict locator** — an object whose single key names the strategy: `{ css: 'button' }`, `{ role: 'button', name: 'Submit' }`, `{ xpath: '//td[1]' }`, `{ id: 'email' }`. The strategy is explicit, so the helper runs exactly one query.
-- **Fuzzy locator** — a plain string. CodeceptJS guesses the strategy from shape (`#foo` → id, `//td` → xpath, `.row` → css) and falls back to semantic matching (labels, button text, placeholders). Convenient, but slower and sometimes ambiguous.
+- **Semantic locator** — a plain string like `'Sign In'` or `'Email'`. CodeceptJS matches it against labels, button text, placeholders, and `aria-*` attributes the way a user would read the page.
 
-Prefer strict locators in stable test suites. Reach for fuzzy strings when prototyping.
+Both are idiomatic. The strongest pattern in CodeceptJS — readable, resilient, and unambiguous — is a **semantic locator scoped to a context**:
+
+```js
+I.click('Save', '.header')
+I.fillField('Search', 'Item 1', '.topbar')
+I.click({ role: 'button', name: 'Submit' }, '#login-form')
+```
+
+The context narrows the search to one region of the page, and the semantic string says what the user actually clicks. This is **more precise than ARIA or CSS alone** because it combines structural scope with human-readable intent.
 
 Supported strategies: `css`, `xpath`, `id`, `name`, `role`, `frame`, `shadow`, `pw`. Shadow DOM and React selectors have their own pages — see [Shadow DOM](/shadow) and [React](/react). Playwright-specific locators (`_react`, `_vue`, `data-testid`) use the `pw` strategy: `{ pw: '_react=Button[name="Save"]' }`.
 
@@ -20,10 +28,11 @@ Supported strategies: `css`, `xpath`, `id`, `name`, `role`, `frame`, `shadow`, `
 
 | Type | Example | Strengths | Weaknesses | Reach for it when |
 |------|---------|-----------|------------|-------------------|
+| **Semantic + context** | `I.click('Save', '.header')` | Reads like prose; survives CSS and ARIA refactors; the context disambiguates duplicates | Needs a stable region to scope into | **Default for stable suites.** Anywhere a label, button text, or placeholder identifies the element |
 | **ARIA role** | `{ role: 'button', name: 'Save' }` | Survives markup changes; matches how users and screen readers identify elements; exposes accessibility gaps | Needs correct ARIA roles and accessible names; slower than CSS | The app follows accessibility guidelines and you want tests that mirror user intent |
+| **Semantic (no context)** | `'Sign In'`, `'Email'` | No locator to maintain; reads like prose | Ambiguous when the same label appears more than once on the page | A label is unique on the page, or you are prototyping |
 | **CSS** | `{ css: '.btn-save' }` or `.btn-save` | Fast; familiar to every web developer; composes with class, attribute, and pseudo-selectors | Couples tests to styling; breaks on CSS refactors; cannot match by visible text | A stable class, id, or data-attribute exists on the target |
 | **XPath** | `{ xpath: '//table//tr[2]/td[last()]' }` | Walks the tree in any direction (`ancestor`, `following-sibling`); matches visible text | Verbose; slow; harder to read than CSS | You need text matching or axis navigation that CSS cannot express |
-| **Semantic (fuzzy)** | `'Sign In'`, `'Email'` | No locator to maintain; reads like prose | Several lookups per call; ambiguous when labels repeat | Writing a quick scenario or prototyping |
 | **ID / name** | `#email`, `{ name: 'user[email]' }` | Shortest possible locator; unambiguous | Requires an `id` or `name` attribute to exist | Forms and elements with stable ids |
 | **Accessibility id** | `~login-button` | Works in both web (`aria-label`) and mobile | Mobile apps need to expose the id | Cross-platform web and mobile tests |
 | **Custom (`$foo`)** | `$register_button` | Encodes team convention (`data-qa`, `data-test`) in two characters | Needs the [customLocator plugin](/plugins#customlocator) | Your team uses dedicated test attributes |
@@ -97,26 +106,41 @@ Long XPath expressions become unreadable fast. The [`locate()` builder](#combini
 
 ## Semantic locators
 
-When you pass a plain string to a form or click action, CodeceptJS tries several strategies in order: links, buttons, labels, placeholders, `aria-label`.
+A plain string is a semantic locator. CodeceptJS reads it the way a user would: as a button label, a link, a field name, a placeholder, or an `aria-label`.
 
 ```js
-I.click('Sign In')                      // matches <a>, <button>, or <input type="submit">
-I.fillField('Email', 'u@t.com')         // matches label, placeholder, or name
+I.click('Sign In')                       // matches <a>, <button>, or <input type="submit">
+I.fillField('Email', 'u@t.com')          // matches label, placeholder, name, or aria-label
 I.checkOption('I accept the terms')
 ```
 
-The order `fillField` actually uses is:
+### Pair semantic locators with a context
 
-1. Is the locator an ARIA role locator (`{ role: 'textbox', name: 'Email' }`)? If so, resolve through the accessibility tree and stop.
-2. Is it a strict locator (`{ css: ... }`, `{ xpath: ... }`, `{ id: ... }`, …)? Run it directly and stop.
-3. Otherwise treat the string as fuzzy and try, in order:
-   1. A field whose `name`, `id`+`label[for]`, or `placeholder` **equals** the string — or a `<label>` with that exact text wrapping an input.
+The same label often appears in more than one place — a "Save" button in the toolbar, the modal, and the inline editor. **Pass a context as the last argument** and the lookup is unambiguous, fast, and still readable:
+
+```js
+I.click('Save', '.toolbar')
+I.fillField('Search', 'Item 1', '.topbar')
+I.click('Edit', { css: 'tr.acme' })
+I.see('Welcome', '.header')
+```
+
+The context can be any locator (CSS, XPath, ARIA, [`locate()` chain](#locate-builder-compose-css-and-xpath)). The action runs only inside it, so duplicate labels elsewhere on the page no longer cause flaky matches. This is the recommended default for stable scenarios — production-grade, not a prototyping shortcut.
+
+### How matching works
+
+For `fillField` and similar actions, CodeceptJS resolves the locator in this order:
+
+1. ARIA role locator (`{ role: 'textbox', name: 'Email' }`) — resolved through the accessibility tree.
+2. Strict locator (`{ css: ... }`, `{ xpath: ... }`, `{ id: ... }`, …) — run directly.
+3. Plain string treated as semantic, tried in order:
+   1. Field whose `name`, `id`+`label[for]`, or `placeholder` **equals** the string — or a `<label>` with that exact text wrapping an input.
    2. The same match with **contains**, extended to `aria-label`, `aria-labelledby`, and `title`.
    3. An input with that `name` attribute.
-   4. Finally, the string as a CSS selector.
+   4. The string as a CSS selector.
 4. Nothing matched? Throw `ElementNotFound`.
 
-So fuzzy `fillField` already covers labels, placeholders, names, ids referenced by labels, and the ARIA attributes (`aria-label`, `aria-labelledby`, `title`) — no extra syntax needed. Each lookup runs several queries, though, so switch to strict locators (`{ role: ... }` or `{ css: ... }`) once a scenario is stable.
+A semantic lookup runs several queries, but each query is cheap and the second argument (context) prunes the search space dramatically.
 
 ## ID locators
 
@@ -164,7 +188,7 @@ Two mechanisms narrow a locator to a region of the page:
 
 ### Context: scope any locator to a region
 
-Every action that targets an element accepts a context locator as its last argument. The action searches only inside the context.
+Every action that targets an element accepts a context locator as its last argument. The action searches only inside the context. **Use it by default** — even a one-line scenario reads better and survives more refactors when the lookup is scoped:
 
 ```js
 I.click('Login', '#login-form')
@@ -172,7 +196,14 @@ I.fillField('Email', 'u@t.com', '.modal')
 I.seeElement({ role: 'button', name: 'Delete' }, '.toolbar')
 ```
 
-Context is the right tool when the locator types differ on each side — for example, an ARIA button inside a CSS-selected container.
+Why scope every action:
+
+- Duplicate labels stop being a problem ("Save" in the toolbar vs. the modal).
+- The semantic locator stays semantic — no need to rewrite as `[data-testid="save-toolbar"]` to disambiguate.
+- The lookup is faster: each strategy queries only inside the context, not the whole DOM.
+- Tests read like a sentence about the page: "click Save in the header".
+
+The two sides can be any combination — semantic+CSS, ARIA+CSS, semantic+`locate()`. Mix freely.
 
 **Example: a dropdown inside a top bar**
 
