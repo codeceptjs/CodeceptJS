@@ -22,11 +22,5 @@ export const config = {
   include: {},
   bootstrap: false,
   mocha: {},
-  plugins: {
-    screenshot: {
-      enabled: true,
-      on: 'fail',
-    },
-  },
   name: 'acceptance',
 }

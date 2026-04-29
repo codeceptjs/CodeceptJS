@@ -32,10 +32,6 @@ export const config = {
   bootstrap: installCodeceptjs,
   mocha: {},
   plugins: {
-    screenshot: {
-      enabled: true,
-      on: 'fail',
-    },
     coverage: {
       enabled: true,
       debug: true,

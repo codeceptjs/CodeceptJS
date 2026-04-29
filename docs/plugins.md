@@ -597,8 +597,8 @@ Additional config options:
 
 ## pause
 
-Pauses test execution interactively. Replaces the legacy `pauseOn` and `pauseOnFail`
-plugins. Default `on=fail` matches the old `pauseOnFail` behavior.
+Pauses test execution interactively. Replaces the legacy `pauseOnFail` plugin.
+Default `on=fail` matches the old `pauseOnFail` behavior.
 
 ```js
 plugins: {
@@ -625,8 +625,8 @@ CLI examples:
     npx codeceptjs run -p pause:on=file:path=tests/login_test.js;line=43
     npx codeceptjs run -p pause:on=url:pattern=/users/*
 
-> The legacy `pauseOn` and `pauseOnFail` plugins remain as deprecated aliases
-> that translate to the new syntax and emit a deprecation warning.
+> The legacy `pauseOnFail` plugin remains as a deprecated alias that emits a
+> deprecation warning and forwards to `pause` with `on=fail`.
 
 ### Parameters
 
@@ -728,6 +728,7 @@ CLI examples:
 
     npx codeceptjs run -p screenshot
     npx codeceptjs run -p screenshot:on=step
+    npx codeceptjs run -p screenshot:on=step;slides=true
     npx codeceptjs run -p screenshot:on=file:path=tests/login_test.js
     npx codeceptjs run -p screenshot:on=url:pattern=/users/*
 
@@ -735,48 +736,24 @@ Possible config options:
 
 *   `uniqueScreenshotNames`: use unique names for screenshot. Default: false.
 *   `fullPageScreenshots`: make full page screenshots. Default: false.
+*   `slides`: generate a step-by-step slideshow report (works with `on=step|file|url`). Replaces the legacy `stepByStepReport` plugin. Default: false.
+*   `deleteSuccessful`: when `slides=true`, drop slideshow folders for passing tests. Default: true.
+*   `animateSlides`: when `slides=true`, animate transitions between slides. Default: true.
+*   `ignoreSteps`: when `slides=true`, RegExps of step names to skip in the slideshow.
 
-> The legacy `screenshotOnFail` plugin remains as a deprecated alias.
+#### Step-by-step slideshow
+
+`screenshot:on=step;slides=true` writes a per-test `record_<hash>/index.html`
+slideshow and a top-level `records.html` index. The output is a self-contained
+HTML page with keyboard / dot navigation — no external assets, no JavaScript
+frameworks.
+
+> The legacy `screenshotOnFail` plugin remains as a deprecated alias. The legacy
+> `stepByStepReport` plugin has been replaced by `screenshot:slides=true`.
 
 ### Parameters
 
 *   `config` &#x20;
-
-## stepByStepReport
-
-![step-by-step-report][6]
-
-Generates step by step report for a test.
-After each step in a test a screenshot is created. After test executed screenshots are combined into slideshow.
-By default, reports are generated only for failed tests.
-
-Run tests with plugin enabled:
-
-    npx codeceptjs run --plugins stepByStepReport
-
-#### Configuration
-
-```js
-"plugins": {
-   "stepByStepReport": {
-     "enabled": true
-   }
-}
-```
-
-Possible config options:
-
-*   `deleteSuccessful`: do not save screenshots for successfully executed tests. Default: true.
-*   `animateSlides`: should animation for slides to be used. Default: true.
-*   `ignoreSteps`: steps to ignore in report. Array of RegExps is expected. Recommended to skip `grab*` and `wait*` steps.
-*   `fullPageScreenshots`: should full page screenshots be used. Default: false.
-*   `output`: a directory where reports should be stored. Default: `output`.
-*   `screenshotsForAllureReport`: If Allure plugin is enabled this plugin attaches each saved screenshot to allure report. Default: false.
-*   \`disableScreenshotOnFail : Disables the capturing of screeshots after the failed step. Default: true.
-
-### Parameters
-
-*   `config` **any**&#x20;
 
 ## stepTimeout
 

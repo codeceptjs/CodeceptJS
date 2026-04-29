@@ -24,12 +24,6 @@ export const config = {
   include: {},
   bootstrap: installCodeceptjs,
   mocha: {},
-  plugins: {
-    screenshot: {
-      enabled: true,
-      on: 'fail',
-    },
-  },
   name: 'acceptance',
   gherkin: {
     features: './gherkin/*.feature',

@@ -123,7 +123,7 @@ npx codeceptjs run -p pause:on=fail
 
 This is the most common debug workflow — run your tests, and when one fails, you land in the interactive shell with the browser in the exact state of the failure. You can inspect elements, try different selectors, and figure out what went wrong.
 
-> The legacy `pauseOnFail` and `pauseOn` plugins still work as deprecated aliases.
+> The legacy `pauseOnFail` plugin still works as a deprecated alias.
 
 ### Pause on Every Step
 
@@ -270,12 +270,14 @@ plugins: {
 
 ### Step-by-Step Report
 
-Generates a slideshow of screenshots taken after every step — a visual replay of what the test did:
+Generates a slideshow of screenshots taken after every step — a visual replay of what the test did. Set `slides: true` on the `screenshot` plugin (with `on=step`):
 
 ```js
 plugins: {
-  stepByStepReport: {
+  screenshot: {
     enabled: true,
+    on: 'step',
+    slides: true,
     deleteSuccessful: true,   // keep only failed tests
     fullPageScreenshots: true,
   }
@@ -283,7 +285,7 @@ plugins: {
 ```
 
 ```bash
-npx codeceptjs run -p stepByStepReport
+npx codeceptjs run -p screenshot:on=step;slides=true
 ```
 
 After the run, open `output/records.html` to browse through the slideshows.

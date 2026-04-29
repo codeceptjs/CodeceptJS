@@ -191,11 +191,11 @@ Inject `login` and call `login('admin')` — same as before.
 
 4.x unifies four plugins (`screenshot`, `pause`, `aiTrace`, `heal`) under a shared `on=` parameter. The old names live on as deprecated aliases that emit a warning and forward to the new plugin.
 
-| Old plugin          | New plugin   | Notes                                              |
-| :------------------ | :----------- | :------------------------------------------------- |
-| `screenshotOnFail`  | `screenshot` | Default `on='fail'`, same behavior                 |
-| `pauseOnFail`       | `pause`      | Default `on='fail'`, same behavior                 |
-| `pauseOn`           | `pause`      | Use `on=fail|test|step|file|url` instead           |
+| Old plugin          | New plugin                       | Notes                                              |
+| :------------------ | :------------------------------- | :------------------------------------------------- |
+| `screenshotOnFail`  | `screenshot`                     | Default `on='fail'`, same behavior                 |
+| `pauseOnFail`       | `pause`                          | Default `on='fail'`, same behavior                 |
+| `stepByStepReport`  | `screenshot` with `slides: true` | Use `on=step` to capture every step                |
 
 ### New Plugins You Can Enable
 

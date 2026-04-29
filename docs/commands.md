@@ -118,7 +118,7 @@ A few examples:
 npx codeceptjs run -p pause                              # pause on first failure (default on=fail)
 npx codeceptjs run -p pause:on=step                      # pause before every step
 npx codeceptjs run -p pause:on=url:pattern=/checkout/*   # pause on URL match
-npx codeceptjs run -p stepByStepReport                   # produce a step-by-step HTML report
+npx codeceptjs run -p "screenshot:on=step;slides=true"   # produce a step-by-step HTML report
 ```
 
 ### Browser Control
