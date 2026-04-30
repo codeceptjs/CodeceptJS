@@ -360,6 +360,13 @@ declare namespace CodeceptJS {
      */
     teardownAll?: (() => Promise<void>) | boolean | string
 
+    /**
+     * Overall timeout for `run-workers` (milliseconds). After this time, any worker
+     * still running is force-terminated and the run finishes. Default: `600000` (10 min).
+     * Set to `0` to disable. Can also be overridden via `CODECEPT_WORKERS_TIMEOUT` env var.
+     */
+    workersTimeout?: number
+
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string
 

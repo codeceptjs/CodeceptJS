@@ -382,4 +382,55 @@ describe('Workers', function () {
 
     workers.run()
   })
+
+  describe('_getWorkersTimeoutMs', () => {
+    let savedEnv
+    let workers
+
+    beforeEach(() => {
+      savedEnv = process.env.CODECEPT_WORKERS_TIMEOUT
+      delete process.env.CODECEPT_WORKERS_TIMEOUT
+      workers = new Workers(1, { by: 'test', testConfig: './test/data/sandbox/codecept.workers.conf.js' })
+      // Stub the codecept config so we don't need to await initialization for this pure-logic test
+      workers.codecept = { config: {} }
+    })
+
+    afterEach(() => {
+      if (savedEnv === undefined) {
+        delete process.env.CODECEPT_WORKERS_TIMEOUT
+      } else {
+        process.env.CODECEPT_WORKERS_TIMEOUT = savedEnv
+      }
+    })
+
+    it('returns default 10 minutes when nothing is configured', () => {
+      expect(workers._getWorkersTimeoutMs()).to.equal(600000)
+    })
+
+    it('uses CODECEPT_WORKERS_TIMEOUT env var when set', () => {
+      process.env.CODECEPT_WORKERS_TIMEOUT = '90000'
+      expect(workers._getWorkersTimeoutMs()).to.equal(90000)
+    })
+
+    it('uses workersTimeout from config when env is not set', () => {
+      workers.codecept.config.workersTimeout = 120000
+      expect(workers._getWorkersTimeoutMs()).to.equal(120000)
+    })
+
+    it('env var takes precedence over config', () => {
+      process.env.CODECEPT_WORKERS_TIMEOUT = '15000'
+      workers.codecept.config.workersTimeout = 999999
+      expect(workers._getWorkersTimeoutMs()).to.equal(15000)
+    })
+
+    it('returns 0 when env var is "0" so the timeout can be disabled in run()', () => {
+      process.env.CODECEPT_WORKERS_TIMEOUT = '0'
+      expect(workers._getWorkersTimeoutMs()).to.equal(0)
+    })
+
+    it('falls back to default when env var is non-numeric', () => {
+      process.env.CODECEPT_WORKERS_TIMEOUT = 'not-a-number'
+      expect(workers._getWorkersTimeoutMs()).to.equal(600000)
+    })
+  })
 })
