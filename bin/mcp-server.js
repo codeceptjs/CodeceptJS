@@ -244,7 +244,9 @@ function outputBaseDir() {
 let pausedController = null   // { resolveContinue, registeredVariables }
 let pendingRunPromise = null  // run_test's run() promise while paused
 let pendingRunResults = null  // results array being collected while paused
-let pendingRunCleanup = null  // cleanup callback to detach test.after listener
+let pendingRunCleanup = null  // cleanup callback to detach test.after / step.after listeners
+let pendingTestFile = null    // file path of the test currently running
+let pendingStepInfo = null    // { index, name, status } of the last step that fired step.after
 const pauseEvents = new EventEmitter()
 
 setPauseHandler(({ registeredVariables }) => {
@@ -294,10 +296,25 @@ function collectRunCompletion(errorMessage) {
   if (typeof pendingRunCleanup === 'function') pendingRunCleanup()
   pendingRunPromise = null
   pendingRunResults = null
+  pendingTestFile = null
+  pendingStepInfo = null
   return {
     status: 'completed',
     reporterJson: { stats, tests: results },
     error: errorMessage,
+  }
+}
+
+function pausedPayload() {
+  return {
+    status: 'paused',
+    file: pendingTestFile,
+    pausedAfter: pendingStepInfo,
+    suggestions: [
+      'Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point',
+      'Call run_code to inspect or manipulate state (e.g. return await I.grabText("h1"))',
+      'Call continue to release the pause and let the test run the next step (or finish)',
+    ],
   }
 }
 
@@ -383,7 +400,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: 'run_step_by_step',
-      description: 'Run a test step by step with pauses between steps.',
+      description: 'Run a test interactively, pausing after every step. Returns paused payload after the first step (URL/title/contentSize, last step info, suggestions). Call continue to advance one step (and re-pause), or run_code/snapshot to inspect state. The test runs to completion when no more steps remain.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -538,16 +555,33 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'continue': {
-        if (!pausedController) throw new Error('No paused test. Run a test first via run_test; this tool becomes available if the test calls pause().')
+        if (!pausedController) throw new Error('No paused test. Run a test first via run_test or run_step_by_step; this tool becomes available if the test pauses.')
+        const { timeout = 60000 } = args || {}
         return await withSilencedIO(async () => {
           pausedController.resolveContinue()
           if (!pendingRunPromise) {
             return { content: [{ type: 'text', text: JSON.stringify({ status: 'continued' }, null, 2) }] }
           }
+
+          // Race: test pauses again (step-by-step or another pause()) vs test finishes.
+          const pausedAgain = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
+          const completed = pendingRunPromise.then(() => 'completed', () => 'completed')
+          const which = await Promise.race([
+            pausedAgain,
+            completed,
+            new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
+          ])
+
+          if (which === 'paused') {
+            const page = await gatherPageBrief()
+            return { content: [{ type: 'text', text: JSON.stringify({ ...pausedPayload(), page }, null, 2) }] }
+          }
+
           let runError = null
           try { await pendingRunPromise } catch (err) { runError = err }
+          const file = pendingTestFile
           const final = collectRunCompletion(runError?.message)
-          return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
+          return { content: [{ type: 'text', text: JSON.stringify({ ...final, file }, null, 2) }] }
         })
       }
 
@@ -671,8 +705,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             const testFile = testFiles[0]
 
             pendingRunResults = []
+            pendingTestFile = testFile
+            pendingStepInfo = null
             let stepIndex = 0
-            let lastStepInfo = null
 
             const onAfter = t => {
               pendingRunResults.push({
@@ -686,9 +721,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             const onStepAfter = step => {
               stepIndex += 1
               try {
-                lastStepInfo = { index: stepIndex, name: step.toString(), status: step.status }
+                pendingStepInfo = { index: stepIndex, name: step.toString(), status: step.status }
               } catch {
-                lastStepInfo = { index: stepIndex }
+                pendingStepInfo = { index: stepIndex }
               }
               if (typeof pauseAt === 'number' && stepIndex === pauseAt) {
                 pauseNow()
@@ -728,17 +763,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               return {
                 content: [{
                   type: 'text',
-                  text: JSON.stringify({
-                    status: 'paused',
-                    file: testFile,
-                    pausedAfter: lastStepInfo,
-                    page,
-                    suggestions: [
-                      'Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point',
-                      'Call run_code to inspect or manipulate state (e.g. return await I.grabText("h1"))',
-                      'Call continue to release the pause and let the test finish',
-                    ],
-                  }, null, 2),
+                  text: JSON.stringify({ ...pausedPayload(), page }, null, 2),
                 }],
               }
             }
@@ -750,115 +775,95 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'run_step_by_step': {
-        const { test, timeout = 60000, config: configPath } = args
-        await initCodecept(configPath)
-
-        return await withSilencedIO(async () => {
-          codecept.loadTests()
-
-          let testFiles = codecept.testFiles
-          if (test) {
-            const testName = normalizePath(test).toLowerCase()
-            testFiles = codecept.testFiles.filter(f => {
-              const filePath = normalizePath(f).toLowerCase()
-              return filePath.includes(testName) || filePath.endsWith(testName)
-            })
+        return await withLock(async () => {
+          if (pausedController) {
+            throw new Error('A previous run is still paused. Call "continue" first.')
           }
+          const { test, timeout = 60000, config: configPath } = args || {}
+          await initCodecept(configPath)
 
-          if (!testFiles.length) throw new Error(`No tests found matching: ${test}`)
+          return await withSilencedIO(async () => {
+            codecept.loadTests()
 
-          const results = []
-          const currentSteps = {}
-          const traceDirs = {}
-          let currentTestTitle = null
-          const testFile = testFiles[0]
-
-          const onBefore = (t) => {
-            const traceDir = traceDirFor(t.file, t.title, outputBaseDir())
-            currentTestTitle = t.title
-            currentSteps[t.title] = []
-            traceDirs[t.title] = traceDir
-            results.push({
-              test: t.title,
-              file: t.file,
-              status: 'running',
-              steps: [],
-            })
-          }
-
-          const onAfter = async (t) => {
-            const r = results.find(x => x.test === t.title)
-            if (r) {
-              r.status = t.err ? 'failed' : 'completed'
-              if (t.err) r.error = t.err.message
-
-              if (t.artifacts?.aiTrace) {
-                r.traceFile = pathToFileURL(t.artifacts.aiTrace).href
-              }
-              if (t.artifacts?.har) r.har = pathToFileURL(t.artifacts.har).href
-              if (t.artifacts?.trace) r.trace = pathToFileURL(t.artifacts.trace).href
-
-              if (!t.artifacts?.aiTrace) {
-                try {
-                  const helper = pickActingHelper(container.helpers())
-                  const dir = traceDirs[t.title]
-                  if (helper && dir) {
-                    mkdirp.sync(dir)
-                    const captured = await captureSnapshot(helper, { dir, prefix: 'final' })
-                    r.artifacts = artifactsToFileUrls(captured, dir)
-                    const tracePath = writeTraceMarkdown({
-                      dir,
-                      title: t.title,
-                      file: t.file,
-                      durationMs: 0,
-                      commands: (currentSteps[t.title] || []).map(s => s.step),
-                      captured,
-                      error: r.error,
-                    })
-                    r.traceFile = pathToFileURL(tracePath).href
-                  }
-                } catch {}
-              }
+            let testFiles = codecept.testFiles
+            if (test) {
+              const testName = normalizePath(test).toLowerCase()
+              testFiles = codecept.testFiles.filter(f => {
+                const filePath = normalizePath(f).toLowerCase()
+                return filePath.includes(testName) || filePath.endsWith(testName)
+              })
             }
-            currentTestTitle = null
-          }
 
-          const onStepAfter = (step) => {
-            if (!currentTestTitle || !currentSteps[currentTestTitle]) return
-            currentSteps[currentTestTitle].push({
-              step: step.toString(),
-              status: step.status,
-              time: step.endTime - step.startTime,
-            })
-            const r = results.find(x => x.test === currentTestTitle)
-            if (r) r.steps = [...currentSteps[currentTestTitle]]
-          }
+            if (!testFiles.length) throw new Error(`No tests found matching: ${test}`)
+            const testFile = testFiles[0]
 
-          event.dispatcher.on(event.test.before, onBefore)
-          event.dispatcher.on(event.test.after, onAfter)
-          event.dispatcher.on(event.step.after, onStepAfter)
+            pendingRunResults = []
+            pendingTestFile = testFile
+            pendingStepInfo = null
+            let stepIndex = 0
 
-          try {
-            await Promise.race([
-              (async () => {
+            const onAfter = t => {
+              pendingRunResults.push({
+                title: t.title,
+                file: t.file,
+                status: t.err ? 'failed' : 'passed',
+                error: t.err?.message,
+                duration: t.duration,
+              })
+            }
+            const onStepAfter = step => {
+              stepIndex += 1
+              try {
+                pendingStepInfo = { index: stepIndex, name: step.toString(), status: step.status }
+              } catch {
+                pendingStepInfo = { index: stepIndex }
+              }
+              // Pause after every step — agent calls continue to advance.
+              pauseNow()
+            }
+            event.dispatcher.on(event.test.after, onAfter)
+            event.dispatcher.on(event.step.after, onStepAfter)
+            pendingRunCleanup = () => {
+              try { event.dispatcher.removeListener(event.test.after, onAfter) } catch {}
+              try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
+              pendingRunCleanup = null
+            }
+
+            let runError = null
+            const runPromise = (async () => {
+              try {
                 await codecept.bootstrap()
                 await codecept.run(testFile)
-              })(),
+              } catch (err) {
+                runError = err
+                throw err
+              }
+            })()
+
+            const pausedPromise = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
+            const completedPromise = runPromise.then(() => 'completed', () => 'completed')
+
+            const which = await Promise.race([
+              completedPromise,
+              pausedPromise,
               new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
             ])
-          } catch (error) {
-            const lastRunning = results.filter(r => r.status === 'running').pop()
-            if (lastRunning) {
-              lastRunning.status = 'failed'
-              lastRunning.error = error.message
-            }
-          } finally {
-            try { event.dispatcher.removeListener(event.test.before, onBefore) } catch {}
-            try { event.dispatcher.removeListener(event.test.after, onAfter) } catch {}
-            try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
-          }
 
-          return { content: [{ type: 'text', text: JSON.stringify({ results, stepByStep: true }, null, 2) }] }
+            if (which === 'paused') {
+              pendingRunPromise = runPromise
+              const page = await gatherPageBrief()
+              return {
+                content: [{
+                  type: 'text',
+                  text: JSON.stringify({ ...pausedPayload(), page }, null, 2),
+                }],
+              }
+            }
+
+            // Test had zero steps (or finished before first pause) — return completion
+            const final = collectRunCompletion(runError?.message)
+            return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
+          })
         })
       }
 

@@ -328,56 +328,51 @@ Run a specific test by name or file path. Runs in-process so it shares the same 
 
 ### run_step_by_step
 
-Run a test step by step with detailed step information including timing and status. Generates AI-friendly trace files.
+Run a test interactively, pausing after every step. Returns a paused payload after the first step completes — the agent then calls `continue` to advance one step at a time, or `run_code` / `snapshot` to inspect state at any pause.
 
 **Parameters:**
 - `test` (required): Test name or file path
-- `timeout` (optional): Timeout in milliseconds (default: 60000)
+- `timeout` (optional): per-call timeout in milliseconds (default: 60000)
 - `config` (optional): Path to codecept.conf.js
 
-**Returns:**
+**Returns (after each step):**
 ```json
 {
-  "stepByStep": true,
-  "results": [
-    {
-      "test": "Navigate to homepage",
-      "file": "/path/to/test.js",
-      "traceFile": "file:///output/trace_Test_Name_abc123/trace.md",
-      "status": "completed",
-      "steps": [
-        {
-          "step": "I.amOnPage(\"/\")",
-          "status": "passed",
-          "time": 150
-        },
-        {
-          "step": "I.seeInTitle(\"Test App\")",
-          "status": "passed",
-          "time": 50
-        }
-      ]
-    }
+  "status": "paused",
+  "file": "/path/to/test.js",
+  "pausedAfter": { "index": 1, "name": "I.amOnPage(\"/\")", "status": "passed" },
+  "page": { "url": "http://localhost:8000/", "title": "Test App", "contentSize": 1832 },
+  "suggestions": [
+    "Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point",
+    "Call run_code to inspect or manipulate state ...",
+    "Call continue to release the pause and let the test run the next step (or finish)"
   ]
 }
 ```
 
-**Trace Files:**
-- Generated in `{output_dir}/trace_{TestName}_{hash}/`
-- Includes screenshots (PNG), page HTML, ARIA snapshots, console logs
-- `trace.md` file provides structured summary for AI analysis
-- Named with test title and hash for uniqueness
-
-**Example:**
+**Returns (after the last step):**
 ```json
-{
-  "name": "run_step_by_step",
-  "arguments": {
-    "test": "authentication_test",
-    "timeout": 90000
-  }
-}
+{ "status": "completed", "file": "...", "reporterJson": { "stats": {...}, "tests": [...] } }
 ```
+
+**Flow:**
+```json
+{ "name": "run_step_by_step", "arguments": { "test": "checkout_test" } }
+// → { "status": "paused", "pausedAfter": { "index": 1, ... } }
+
+{ "name": "snapshot", "arguments": {} }
+// → full artifact bundle for step 1
+
+{ "name": "continue", "arguments": {} }
+// → { "status": "paused", "pausedAfter": { "index": 2, ... } }
+
+{ "name": "continue", "arguments": {} }
+// → ... and so on, until { "status": "completed", "reporterJson": {...} }
+```
+
+For a one-shot breakpoint (pause once at a specific step rather than every step), use `run_test` with `pauseAt: N` instead.
+
+For per-step trace artifacts written to disk (HTML / ARIA / screenshot / console / storage per step) without the interactive flow, enable the `aiTrace` plugin.
 
 ### start_browser
 
