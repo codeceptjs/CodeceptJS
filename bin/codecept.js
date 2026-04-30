@@ -258,6 +258,7 @@ program
   .option(commandFlags.steps.flag, commandFlags.steps.description)
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option(commandFlags.debug.flag, commandFlags.debug.description)
+  .option('--no-ansi', 'disable colored / ANSI-styled output')
   .action(commandHandler('../lib/command/dryRun.js'))
 
 program
