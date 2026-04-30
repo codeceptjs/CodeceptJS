@@ -271,7 +271,7 @@ To inspect or manipulate state while the test is paused, use [`run_code`](#run_c
 
 **Notes:**
 - Pause runs in-process: `run_code` and the test share the same `I` / browser. There's no subprocess, no IPC.
-- `run_test` runs in-process too. While paused, stdout/stderr are redirected to a no-op so test output doesn't corrupt the MCP protocol; they're restored when the test completes.
+- `run_test` and `continue` wrap test execution in the same `withSilencedIO` helper that `run_step_by_step` uses, so step output doesn't interleave with the MCP JSON-RPC stream. Stdout/stderr are restored before each tool call returns.
 - TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — `pause()` opens the readline REPL whenever `process.stdin.isTTY` is true.
 
 ### run_test

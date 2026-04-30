@@ -245,7 +245,6 @@ let pausedController = null   // { resolveContinue, registeredVariables }
 let pendingRunPromise = null  // run_test's run() promise while paused
 let pendingRunResults = null  // results array being collected while paused
 let pendingRunCleanup = null  // cleanup callback to detach test.after listener
-let pendingRunIO = null       // saved stdout/stderr handles to restore after run completes
 const pauseEvents = new EventEmitter()
 
 setPauseHandler(({ registeredVariables }) => {
@@ -278,11 +277,6 @@ function collectRunCompletion(errorMessage) {
     failures: results.filter(r => r.status === 'failed').length,
   }
   if (typeof pendingRunCleanup === 'function') pendingRunCleanup()
-  if (pendingRunIO) {
-    process.stdout.write = pendingRunIO.origOut
-    process.stderr.write = pendingRunIO.origErr
-    pendingRunIO = null
-  }
   pendingRunPromise = null
   pendingRunResults = null
   return {
@@ -529,14 +523,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'continue': {
         if (!pausedController) throw new Error('No paused test. Run a test first via run_test; this tool becomes available if the test calls pause().')
-        pausedController.resolveContinue()
-        if (!pendingRunPromise) {
-          return { content: [{ type: 'text', text: JSON.stringify({ status: 'continued' }, null, 2) }] }
-        }
-        let runError = null
-        try { await pendingRunPromise } catch (err) { runError = err }
-        const final = collectRunCompletion(runError?.message)
-        return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
+        return await withSilencedIO(async () => {
+          pausedController.resolveContinue()
+          if (!pendingRunPromise) {
+            return { content: [{ type: 'text', text: JSON.stringify({ status: 'continued' }, null, 2) }] }
+          }
+          let runError = null
+          try { await pendingRunPromise } catch (err) { runError = err }
+          const final = collectRunCompletion(runError?.message)
+          return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
+        })
       }
 
       case 'run_code': {
@@ -638,20 +634,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case 'run_test': {
         return await withLock(async () => {
           if (pausedController) {
-            throw new Error('A previous run_test is still paused. Send code:"resume" or code:"exit" via the "pause" tool first.')
+            throw new Error('A previous run_test is still paused. Call "continue" first.')
           }
           const { test, timeout = 60000, config: configPathArg } = args || {}
           await initCodecept(configPathArg)
 
-          // Silence stdout/stderr for the duration of the test (and across any
-          // pause window). Restored in collectRunCompletion or on early throw.
-          const origOut = process.stdout.write.bind(process.stdout)
-          const origErr = process.stderr.write.bind(process.stderr)
-          process.stdout.write = () => true
-          process.stderr.write = () => true
-          pendingRunIO = { origOut, origErr }
-
-          try {
+          return await withSilencedIO(async () => {
             codecept.loadTests()
 
             let testFiles = codecept.testFiles
@@ -710,7 +698,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                   text: JSON.stringify({
                     status: 'paused',
                     file: testFile,
-                    note: 'Test hit pause(). Use the "pause" tool to send code; send code:"resume" to let the test finish.',
+                    note: 'Test hit pause(). Inspect/manipulate state with run_code; call continue to let the test finish.',
                   }, null, 2),
                 }],
               }
@@ -718,18 +706,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
             const final = collectRunCompletion(runError?.message)
             return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
-          } catch (err) {
-            // Restore IO if we're throwing out of run_test before collectRunCompletion
-            if (pendingRunIO) {
-              process.stdout.write = pendingRunIO.origOut
-              process.stderr.write = pendingRunIO.origErr
-              pendingRunIO = null
-            }
-            if (typeof pendingRunCleanup === 'function') pendingRunCleanup()
-            pendingRunPromise = null
-            pendingRunResults = null
-            throw err
-          }
+          })
         })
       }
 
