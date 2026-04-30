@@ -380,7 +380,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: 'run_test',
-      description: 'Run a specific test.',
+      description: 'Run a specific test. If the test calls pause(), this tool returns early with status "paused" — call the "pause" tool to interact, then send code:"resume" to let the test finish. Otherwise returns when the test completes with the json reporter result.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -426,18 +426,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
-      name: 'pause_session',
-      description: 'Run code inside a paused test, mirroring the human pause() REPL. Two actions: "start" spawns a test and waits for it to hit pause(); "run" sends a code line (same syntax as the TTY pause REPL — empty string steps to the next test step, "resume" continues the test, "exit" aborts; any other input is treated as I.<expr> unless prefixed with "=>"). Each run returns the value plus an artifact bundle (URL, ARIA, HTML, screenshot, console, storage), like run_code.',
+      name: 'pause',
+      description: 'Send a single line of code to a paused test (one that called pause() during run_test). Same syntax as the TTY pause REPL: an expression like "click(\'Save\')" runs as I.click(\'Save\'); prefix "=>" for raw JS; empty string steps to the next test step; "resume" continues the test to completion; "exit" aborts. Returns the next protocol message — typically {event:"result", ok, value, artifacts, error}, or {event:"paused"} after a step, or {event:"exited", exitInfo} if the test ended.',
       inputSchema: {
         type: 'object',
         properties: {
-          action: { type: 'string', enum: ['start', 'run'] },
-          test: { type: 'string' },
           code: { type: 'string' },
-          config: { type: 'string' },
           timeout: { type: 'number' },
         },
-        required: ['action'],
       },
     },
   ],
@@ -552,78 +548,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
       }
 
-      case 'pause_session': {
-        const action = args?.action
-        if (!action) throw new Error('pause_session requires "action" parameter')
-
-        if (action === 'start') {
-          if (pauseChild && pauseChild.exitCode == null) {
-            throw new Error('pause_session already running. Send code: "exit" via action: "run" first.')
-          }
-          const { test, config: configPathArg, timeout = 60000 } = args
-          if (!test) throw new Error('pause_session start requires "test" parameter')
-
-          const { configPath, configDir } = resolveConfigPath(configPathArg)
-          const { cli, root } = findCodeceptCliUpwards(configDir)
-          const isNodeScript = cli.endsWith('.js')
-
-          const resolvedFile = await resolveTestToFile({ cli, root, configPath, test })
-          const runArgs = ['run', '--config', configPath]
-          if (resolvedFile) runArgs.push(resolvedFile)
-          else if (looksLikePath(test)) runArgs.push(test)
-          else runArgs.push('--grep', String(test))
-
-          pauseLogs = []
-          pauseStdoutBuf = ''
-          pauseExitInfo = null
-          pauseProtocolWaiters = []
-
-          const env = {
-            ...process.env,
-            CODECEPTJS_MCP: '1',
-            CODECEPTJS_MCP_PAUSE: '1',
-            NODE_ENV: process.env.NODE_ENV || 'test',
-          }
-
-          const cmd = isNodeScript ? process.execPath : cli
-          const cmdArgs = isNodeScript ? [cli, ...runArgs] : runArgs
-
-          pauseChild = spawn(cmd, cmdArgs, { cwd: root, env, stdio: ['pipe', 'pipe', 'pipe'] })
-          let stderrBuf = ''
-          pauseChild.stdout.on('data', d => { pauseStdoutBuf = pauseProcessChunk(pauseStdoutBuf, d, 'stdout') })
-          pauseChild.stderr.on('data', d => { stderrBuf = pauseProcessChunk(stderrBuf, d, 'stderr') })
-          pauseChild.on('exit', (code, signal) => {
-            pauseExitInfo = { code, signal }
-            pauseTeardown()
-          })
-
-          let pausedMsg
-          try {
-            pausedMsg = await pauseAwaitProtocol({ timeout })
-          } catch (err) {
-            try { pauseChild?.kill('SIGKILL') } catch {}
-            const stderr = pauseLogs.filter(l => l.stream === 'stderr').map(l => l.line).join('\n')
-            throw new Error(`pause_session start: ${err.message}. stderr=${stderr.slice(0, 2000)}`)
-          }
-
-          return {
-            content: [{
-              type: 'text',
-              text: JSON.stringify({ status: 'paused', resolvedFile: resolvedFile || null, paused: pausedMsg }, null, 2),
-            }],
-          }
-        }
-
-        if (action === 'run') {
-          if (!pauseChild) throw new Error('No active pause_session. Call action: "start" first.')
-          if (pauseChild.exitCode != null) throw new Error('pause_session subprocess has exited')
-          const { code = '', timeout = 60000 } = args
-          pauseChild.stdin.write(code + '\n')
-          const resp = await pauseAwaitProtocol({ timeout })
-          return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] }
-        }
-
-        throw new Error(`pause_session unknown action: ${action}`)
+      case 'pause': {
+        if (!pauseChild) throw new Error('No paused test. Run a test first via run_test; if it calls pause(), this tool becomes available.')
+        if (pauseChild.exitCode != null) throw new Error('Test subprocess has already exited.')
+        const { code = '', timeout = 60000 } = args || {}
+        pauseChild.stdin.write(code + '\n')
+        const resp = await pauseAwaitProtocol({ timeout })
+        return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] }
       }
 
       case 'run_code': {
@@ -724,6 +655,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'run_test': {
         return await withLock(async () => {
+          if (pauseChild && pauseChild.exitCode == null) {
+            throw new Error('A previous run_test is still paused. Send code:"resume" or code:"exit" via the "pause" tool first.')
+          }
           const { test, timeout = 60000, config: configPathArg } = args || {}
           const { configPath, configDir } = resolveConfigPath(configPathArg)
 
@@ -737,27 +671,70 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           else if (looksLikePath(test)) runArgs.push(test)
           else runArgs.push('--grep', String(test))
 
-          const res = isNodeScript
-            ? await runCmd(process.execPath, [cli, ...runArgs], { cwd: root, timeout })
-            : await runCmd(cli, runArgs, { cwd: root, timeout })
+          pauseLogs = []
+          pauseStdoutBuf = ''
+          pauseExitInfo = null
+          pauseProtocolWaiters = []
 
-          const { code, out, err } = res
+          const env = {
+            ...process.env,
+            CODECEPTJS_MCP: '1',
+            CODECEPTJS_MCP_PAUSE: '1',
+            NODE_ENV: process.env.NODE_ENV || 'test',
+          }
 
+          const cmd = isNodeScript ? process.execPath : cli
+          const cmdArgs = isNodeScript ? [cli, ...runArgs] : runArgs
+
+          pauseChild = spawn(cmd, cmdArgs, { cwd: root, env, stdio: ['pipe', 'pipe', 'pipe'] })
+          let stderrBuf = ''
+          pauseChild.stdout.on('data', d => { pauseStdoutBuf = pauseProcessChunk(pauseStdoutBuf, d, 'stdout') })
+          pauseChild.stderr.on('data', d => { stderrBuf = pauseProcessChunk(stderrBuf, d, 'stderr') })
+          pauseChild.on('exit', (code, signal) => {
+            pauseExitInfo = { code, signal }
+            pauseTeardown()
+          })
+
+          let first
+          try {
+            first = await pauseAwaitProtocol({ timeout })
+          } catch (err) {
+            try { pauseChild?.kill('SIGKILL') } catch {}
+            throw err
+          }
+
+          if (first.event === 'paused') {
+            return {
+              content: [{
+                type: 'text',
+                text: JSON.stringify({
+                  status: 'paused',
+                  resolvedFile: resolvedFile || null,
+                  paused: first,
+                  note: 'Test hit pause(). Use the "pause" tool to send code; send code:"resume" to let the test finish.',
+                }, null, 2),
+              }],
+            }
+          }
+
+          // Subprocess exited without pausing — collect normal reporter output
+          const stdoutText = pauseLogs.filter(l => l.stream === 'stdout').map(l => l.line).join('\n')
+          const stderrText = pauseLogs.filter(l => l.stream === 'stderr').map(l => l.line).join('\n')
           let parsed = null
-          const jsonStart = out.indexOf('{')
-          const jsonEnd = out.lastIndexOf('}')
+          const jsonStart = stdoutText.indexOf('{')
+          const jsonEnd = stdoutText.lastIndexOf('}')
           if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
-            try { parsed = JSON.parse(out.slice(jsonStart, jsonEnd + 1)) } catch {}
+            try { parsed = JSON.parse(stdoutText.slice(jsonStart, jsonEnd + 1)) } catch {}
           }
 
           return {
             content: [{
               type: 'text',
               text: JSON.stringify({
-                meta: { exitCode: code, cli, root, configPath, args: runArgs, resolvedFile: resolvedFile || null },
+                meta: { exitCode: first.exitInfo?.code ?? null, cli, root, configPath, args: runArgs, resolvedFile: resolvedFile || null },
                 reporterJson: parsed,
-                stderr: err ? err.slice(0, 20000) : '',
-                rawStdout: parsed ? '' : out.slice(0, 20000),
+                stderr: stderrText.slice(0, 20000),
+                rawStdout: parsed ? '' : stdoutText.slice(0, 20000),
               }, null, 2),
             }],
           }

@@ -235,71 +235,76 @@ Capture the current state of the browser without performing any action. Useful f
 }
 ```
 
-### pause_session
+### pause
 
-Mirrors the human `pause()` REPL for an AI agent: send a code string, get a result with artifacts (same shape as `run_code`).
+Send one line of input to a test that's currently paused at `pause()`. Mirrors the human pause REPL — send code, get a result with the same artifact bundle as `run_code`.
 
-Two actions:
+`pause` is only valid while a `run_test` invocation is yielded at a paused subprocess. The flow is:
 
-| Action | Params | Effect |
-|---|---|---|
-| `start` | `test`, `config?`, `timeout?` | Spawn the test subprocess in pause yield mode. Resolves when the test hits `pause()` and emits `{event:"paused"}`. |
-| `run` | `code`, `timeout?` | Send one line of input — same syntax as the TTY REPL. Returns the next protocol message from the subprocess. |
+1. Agent calls `run_test`. If the test reaches `pause()`, `run_test` returns `{status:"paused", paused:{event:"paused"}}` and keeps the subprocess alive.
+2. Agent calls `pause` with `code` strings to drive the REPL.
+3. Agent sends `code:"resume"` (or `code:"exit"`) to let the test finish; the subprocess exits and pause state is cleared.
 
-`code` follows the TTY pause REPL conventions:
-- An expression like `click('Save')` runs as `I.click('Save')` and returns `{event:"result", ok, value, artifacts, error}`.
-- Prefix `=>` to evaluate raw JS: `=> myVar.id`.
-- `""` (empty) → step to the next test step. The subprocess re-pauses; response is `{event:"step"}` followed by `{event:"paused"}` on the next `run` call.
-- `"resume"` → continue the test to completion. Response is `{event:"resumed"}`; the subprocess will exit on its own.
-- `"exit"` → abort the paused test. Same `{event:"resumed"}` response, then exit.
+`code` syntax (same as the TTY pause REPL):
 
-Each result includes the artifact bundle (URL, ARIA, HTML, screenshot, console, storage), like `run_code`. If the subprocess exits during a `run`, the response is `{event:"exited", exitInfo:{code, signal}}`.
+| Input | Effect |
+|---|---|
+| `"click('Save')"` | Runs as `I.click('Save')`. Returns `{event:"result", ok, value, artifacts, error}`. |
+| `"=> myVar.id"` | Evaluates raw JS in the paused scope. Returns `{event:"result", ...}`. |
+| `""` (empty) | Step to the next test step. Returns `{event:"step"}`; the subprocess re-pauses, and the next `pause` call returns `{event:"paused"}` again. |
+| `"resume"` | Continue the test to completion. Returns `{event:"resumed"}`; the subprocess will exit on its own. |
+| `"exit"` | Abort the paused test. Returns `{event:"resumed"}`, then the subprocess exits. |
 
-**Lifecycle example:**
+If the subprocess exits during a call, the response is `{event:"exited", exitInfo:{code, signal}}` and pause state is cleared.
+
+**Parameters:**
+- `code` (optional, default `""`): the line to send.
+- `timeout` (optional): ms to wait for the response (default 60000).
+
+**Example:**
 
 ```json
-{ "name": "pause_session", "arguments": { "action": "start", "test": "checkout_test" } }
-{ "name": "pause_session", "arguments": { "action": "run", "code": "grabCurrentUrl()" } }
-{ "name": "pause_session", "arguments": { "action": "run", "code": "click('Save')" } }
-{ "name": "pause_session", "arguments": { "action": "run", "code": "resume" } }
+{ "name": "run_test", "arguments": { "test": "checkout_test" } }
+// → { "status": "paused", "paused": { "event": "paused" }, ... }
+
+{ "name": "pause", "arguments": { "code": "grabCurrentUrl()" } }
+// → { "event": "result", "ok": true, "value": "http://...", "artifacts": { ... } }
+
+{ "name": "pause", "arguments": { "code": "resume" } }
+// → { "event": "resumed" }
 ```
 
-A single `pause_session` instance owns one subprocess. Concurrent `start` calls are rejected — send `code: "exit"` (or `"resume"`) first.
-
 **Notes:**
-- The subprocess is spawned with `CODECEPTJS_MCP=1` and `CODECEPTJS_MCP_PAUSE=1` so `pause()` calls in the test land in yield mode.
-- `pause()` calls running under `CODECEPTJS_MCP=1` *without* `CODECEPTJS_MCP_PAUSE=1` print a notice and return immediately so leftover `pause()` calls don't deadlock CI runs invoked through MCP.
+- `run_test` always spawns its subprocess with `CODECEPTJS_MCP=1` and `CODECEPTJS_MCP_PAUSE=1`, so any `pause()` call in the test lands in yield mode.
+- A `pause()` call running with `CODECEPTJS_MCP=1` set but `CODECEPTJS_MCP_PAUSE` unset (e.g., a different MCP-aware caller, or future tooling) prints a notice and returns immediately, so leftover `pause()` calls don't deadlock.
 - TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — the readline REPL is used whenever `process.stdin.isTTY` is true.
 
 ### run_test
 
-Run a specific test by name or file path. Uses subprocess to run tests with isolation.
+Run a specific test by name or file path. Subprocess is spawned with pause yield mode enabled — if the test calls `pause()`, this tool returns early and the agent drives the REPL via the [`pause`](#pause) tool.
 
 **Parameters:**
 - `test` (required): Test name or file path
 - `timeout` (optional): Timeout in milliseconds (default: 60000)
 - `config` (optional): Path to codecept.conf.js
 
-**Returns:**
+**Returns (test completed normally):**
 ```json
 {
-  "meta": {
-    "exitCode": 0,
-    "cli": "/path/to/codecept.js",
-    "root": "/project/root",
-    "configPath": "/path/to/codecept.conf.js",
-    "args": ["run", "--config", "...", "--reporter", "json", "test_file.js"],
-    "resolvedFile": "/full/path/to/test_file.js"
-  },
-  "reporterJson": {
-    "stats": {
-      "tests": 3,
-      "passes": 2,
-      "failures": 1
-    }
-  },
+  "meta": { "exitCode": 0, "cli": "...", "root": "...", "configPath": "...", "args": [...], "resolvedFile": "..." },
+  "reporterJson": { "stats": { "tests": 3, "passes": 2, "failures": 1 } },
   "stderr": "",
   "rawStdout": ""
+}
+```
+
+**Returns (test reached `pause()`):**
+```json
+{
+  "status": "paused",
+  "resolvedFile": "/path/to/test.js",
+  "paused": { "__mcpPause": true, "event": "paused" },
+  "note": "Test hit pause(). Use the \"pause\" tool to send code; send code:\"resume\" to let the test finish."
 }
 ```
 
@@ -309,6 +314,7 @@ Run a specific test by name or file path. Uses subprocess to run tests with isol
 - Uses json reporter for structured output
 - Executes in subprocess for isolation
 - Includes stderr for debugging
+- Yields on `pause()` so an agent can drive the REPL through the `pause` tool
 
 **Example:**
 ```json
