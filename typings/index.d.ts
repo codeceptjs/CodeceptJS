@@ -461,7 +461,6 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
-    | { vue: string }
     | { shadow: string[] }
     | { custom: string }
     | { pw: string }

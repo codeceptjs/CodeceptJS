@@ -107,6 +107,13 @@ After(({ I }) => {
 })
 ```
 
+### Pause Modes
+
+`pause()` adapts to who's driving the test:
+
+- **TTY (humans)** — when `process.stdin` is a terminal (running `npx codeceptjs run --debug` yourself), the readline REPL described above opens.
+- **MCP server (agent-driven debug)** — the MCP server registers an in-process pause handler before running tests, so when `pause()` fires inside a `run_test` invocation, control yields back to the agent. The agent drives the REPL through the [`pause` MCP tool](/mcp#pause). The same `I` container the test uses runs the agent's code, so artifacts (URL, ARIA, HTML, screenshot, console, storage) are captured against the live page.
+
 ## Pause Plugin
 
 For automated debugging without modifying test code, use the `pause` plugin. It pauses tests based on different triggers, controlled entirely from the command line. The default is `on=fail`.

@@ -700,6 +700,47 @@ Scenario('scenario tite', { disableRetryFailedStep: true }, () => {
 
 *   `config` &#x20;
 
+## screencast
+
+Records WebM video of tests using Playwright's screencast API (Playwright >= 1.59).
+When `captions` is enabled, action annotations are burned into the video; when
+`subtitles` is enabled, a standalone `.srt` file is also produced.
+
+```js
+plugins: {
+  screencast: {
+    enabled: true,
+    on: 'fail',
+  }
+}
+```
+
+#### `on=` modes
+
+*   **fail** — record while running; delete on pass, keep on fail (default)
+*   **test** — record and keep every test's video
+
+CLI examples:
+
+    npx codeceptjs run -p screencast
+    npx codeceptjs run -p screencast:on=test
+    npx codeceptjs run -p screencast:on=test;captions=false;subtitles=true
+
+Possible config options:
+
+*   `captions`: burn-in action overlays via `page.screencast.showActions()`. Default: true.
+*   `subtitles`: also write a standalone `.srt` file alongside the video. Default: false.
+*   `video`: record a video. With `video=false, subtitles=true`, only the `.srt` is produced (next to `test.artifacts.video` if a helper recorded one). Default: true.
+*   `size`: pass-through `{ width, height }` for `screencast.start`.
+*   `quality`: pass-through 0–100 for `screencast.start`.
+
+> Enabling Playwright's helper-level `video: true` and this plugin together
+> produces two independent recordings. Pick one.
+
+### Parameters
+
+*   `config` &#x20;
+
 ## screenshot
 
 Saves screenshots from the browser at points triggered by `on=`. Replaces the
@@ -811,20 +852,6 @@ plugins: {
 ### Parameters
 
 *   `config` &#x20;
-
-## subtitles
-
-Automatically captures steps as subtitle, and saves it as an artifact when a video is found for a failed test
-
-#### Configuration
-
-```js
-plugins: {
- subtitles: {
-   enabled: true
- }
-}
-```
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 

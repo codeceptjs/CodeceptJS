@@ -57,8 +57,10 @@ export const config = {
     retryFailedStep: {
       enabled: false,
     },
-    subtitles: {
+    screencast: {
       enabled: true,
+      on: 'test',
+      subtitles: true,
     },
     aiTrace: {
       enabled: true,

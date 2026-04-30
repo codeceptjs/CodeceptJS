@@ -235,44 +235,85 @@ Capture the current state of the browser without performing any action. Useful f
 }
 ```
 
+### continue
+
+Release a paused test (one that called `pause()` during `run_test`) and let it run to completion. Returns the final reporter result.
+
+To inspect or manipulate state while the test is paused, use [`run_code`](#run_code) — it operates on the same container the test is using.
+
+**Parameters:**
+- `timeout` (optional): ms to wait for the test to finish after continuing (default 60000).
+
+**Returns:**
+```json
+{
+  "status": "completed",
+  "reporterJson": { "stats": { "tests": 1, "passes": 1, "failures": 0 }, "tests": [...] },
+  "error": null
+}
+```
+
+**Example flow:**
+
+```json
+{ "name": "run_test", "arguments": { "test": "checkout_test" } }
+// → { "status": "paused", "file": "...", "note": "..." }
+
+{ "name": "run_code", "arguments": { "code": "return await I.grabCurrentUrl()" } }
+// → { "status": "success", "returnValue": "http://...", "artifacts": { ... } }
+
+{ "name": "run_code", "arguments": { "code": "await I.click('Save')" } }
+// → { "status": "success", "artifacts": { ... } }
+
+{ "name": "continue", "arguments": {} }
+// → { "status": "completed", "reporterJson": { ... } }
+```
+
+**Notes:**
+- Pause runs in-process: `run_code` and the test share the same `I` / browser. There's no subprocess, no IPC.
+- `run_test` and `continue` wrap test execution in the same `withSilencedIO` helper that `run_step_by_step` uses, so step output doesn't interleave with the MCP JSON-RPC stream. Stdout/stderr are restored before each tool call returns.
+- TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — `pause()` opens the readline REPL whenever `process.stdin.isTTY` is true.
+
 ### run_test
 
-Run a specific test by name or file path. Uses subprocess to run tests with isolation.
+Run a specific test by name or file path. Runs in-process so it shares the same `I` / browser as `run_code` and `snapshot`. If the test calls `pause()` — or if `pauseAt` is set and the Nth step completes — this tool returns early and the agent drives the session through `run_code` and `continue`.
 
 **Parameters:**
 - `test` (required): Test name or file path
 - `timeout` (optional): Timeout in milliseconds (default: 60000)
 - `config` (optional): Path to codecept.conf.js
+- `pauseAt` (optional): 1-based step index. The test pauses after the Nth step completes. Use this as a programmatic breakpoint without editing the test. Discover step indices via the `list` CLI (`--steps`) or via `run_step_by_step`.
 
-**Returns:**
+**Returns (test completed normally):**
 ```json
 {
-  "meta": {
-    "exitCode": 0,
-    "cli": "/path/to/codecept.js",
-    "root": "/project/root",
-    "configPath": "/path/to/codecept.conf.js",
-    "args": ["run", "--config", "...", "--reporter", "json", "test_file.js"],
-    "resolvedFile": "/full/path/to/test_file.js"
-  },
-  "reporterJson": {
-    "stats": {
-      "tests": 3,
-      "passes": 2,
-      "failures": 1
-    }
-  },
-  "stderr": "",
-  "rawStdout": ""
+  "status": "completed",
+  "file": "/path/to/test.js",
+  "reporterJson": { "stats": { "tests": 1, "passes": 1, "failures": 0 }, "tests": [...] },
+  "error": null
+}
+```
+
+**Returns (test reached `pause()` or `pauseAt`):**
+```json
+{
+  "status": "paused",
+  "file": "/path/to/test.js",
+  "pausedAfter": { "index": 3, "name": "I.click(\"Save\")", "status": "passed" },
+  "page": { "url": "https://example.com/checkout", "title": "Checkout", "contentSize": 18432 },
+  "suggestions": [
+    "Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point",
+    "Call run_code to inspect or manipulate state (e.g. return await I.grabText(\"h1\"))",
+    "Call continue to release the pause and let the test finish"
+  ]
 }
 ```
 
 **Features:**
 - Automatically resolves test names to file paths
 - Supports partial test name matching
-- Uses json reporter for structured output
-- Executes in subprocess for isolation
-- Includes stderr for debugging
+- Runs in-process; results assembled from CodeceptJS test events
+- Yields on `pause()` (or `pauseAt`) so the agent can inspect via `run_code` and release with `continue`
 
 **Example:**
 ```json
@@ -287,56 +328,51 @@ Run a specific test by name or file path. Uses subprocess to run tests with isol
 
 ### run_step_by_step
 
-Run a test step by step with detailed step information including timing and status. Generates AI-friendly trace files.
+Run a test interactively, pausing after every step. Returns a paused payload after the first step completes — the agent then calls `continue` to advance one step at a time, or `run_code` / `snapshot` to inspect state at any pause.
 
 **Parameters:**
 - `test` (required): Test name or file path
-- `timeout` (optional): Timeout in milliseconds (default: 60000)
+- `timeout` (optional): per-call timeout in milliseconds (default: 60000)
 - `config` (optional): Path to codecept.conf.js
 
-**Returns:**
+**Returns (after each step):**
 ```json
 {
-  "stepByStep": true,
-  "results": [
-    {
-      "test": "Navigate to homepage",
-      "file": "/path/to/test.js",
-      "traceFile": "file:///output/trace_Test_Name_abc123/trace.md",
-      "status": "completed",
-      "steps": [
-        {
-          "step": "I.amOnPage(\"/\")",
-          "status": "passed",
-          "time": 150
-        },
-        {
-          "step": "I.seeInTitle(\"Test App\")",
-          "status": "passed",
-          "time": 50
-        }
-      ]
-    }
+  "status": "paused",
+  "file": "/path/to/test.js",
+  "pausedAfter": { "index": 1, "name": "I.amOnPage(\"/\")", "status": "passed" },
+  "page": { "url": "http://localhost:8000/", "title": "Test App", "contentSize": 1832 },
+  "suggestions": [
+    "Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point",
+    "Call run_code to inspect or manipulate state ...",
+    "Call continue to release the pause and let the test run the next step (or finish)"
   ]
 }
 ```
 
-**Trace Files:**
-- Generated in `{output_dir}/trace_{TestName}_{hash}/`
-- Includes screenshots (PNG), page HTML, ARIA snapshots, console logs
-- `trace.md` file provides structured summary for AI analysis
-- Named with test title and hash for uniqueness
-
-**Example:**
+**Returns (after the last step):**
 ```json
-{
-  "name": "run_step_by_step",
-  "arguments": {
-    "test": "authentication_test",
-    "timeout": 90000
-  }
-}
+{ "status": "completed", "file": "...", "reporterJson": { "stats": {...}, "tests": [...] } }
 ```
+
+**Flow:**
+```json
+{ "name": "run_step_by_step", "arguments": { "test": "checkout_test" } }
+// → { "status": "paused", "pausedAfter": { "index": 1, ... } }
+
+{ "name": "snapshot", "arguments": {} }
+// → full artifact bundle for step 1
+
+{ "name": "continue", "arguments": {} }
+// → { "status": "paused", "pausedAfter": { "index": 2, ... } }
+
+{ "name": "continue", "arguments": {} }
+// → ... and so on, until { "status": "completed", "reporterJson": {...} }
+```
+
+For a one-shot breakpoint (pause once at a specific step rather than every step), use `run_test` with `pauseAt: N` instead.
+
+For per-step trace artifacts written to disk (HTML / ARIA / screenshot / console / storage per step) without the interactive flow, enable the `aiTrace` plugin.
 
 ### start_browser
 
