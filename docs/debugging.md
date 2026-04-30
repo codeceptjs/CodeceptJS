@@ -112,8 +112,7 @@ After(({ I }) => {
 `pause()` adapts to who's driving the test:
 
 - **TTY (humans)** — when `process.stdin` is a terminal (running `npx codeceptjs run --debug` yourself), the readline REPL described above opens.
-- **MCP without yield (CI/agent runs)** — when `CODECEPTJS_MCP=1` is set and stdin is a pipe, `pause()` prints a notice and returns immediately. Leftover `pause()` calls don't deadlock CI runs invoked through the MCP server.
-- **MCP yield (agent-driven debug)** — when both `CODECEPTJS_MCP=1` and `CODECEPTJS_MCP_PAUSE=1` are set, `pause()` accepts JSON-line commands on stdin and emits artifact responses on stdout. The MCP server's `pause_session` tool drives this. See [MCP Server](/mcp) for the protocol.
+- **MCP server (agent-driven debug)** — the MCP server registers an in-process pause handler before running tests, so when `pause()` fires inside a `run_test` invocation, control yields back to the agent. The agent drives the REPL through the [`pause` MCP tool](/mcp#pause). The same `I` container the test uses runs the agent's code, so artifacts (URL, ARIA, HTML, screenshot, console, storage) are captured against the live page.
 
 ## Pause Plugin
 

@@ -14,6 +14,8 @@ import {
   writeTraceMarkdown,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
+import { setPauseHandler, setNextStep } from '../lib/pause.js'
+import { EventEmitter } from 'events'
 import { fileURLToPath, pathToFileURL } from 'url'
 import { dirname, resolve as resolvePath } from 'path'
 import path from 'path'
@@ -235,81 +237,59 @@ function outputBaseDir() {
   return global.output_dir || resolvePath(process.cwd(), 'output')
 }
 
-let pauseChild = null
-let pauseLogs = []
-let pauseStdoutBuf = ''
-let pauseProtocolWaiters = []
-let pauseExitInfo = null
+// In-process pause coordination. When a test running through run_test calls
+// pause(), the handler registered via setPauseHandler resolves a "paused"
+// promise that run_test is racing against test completion. The "pause" tool
+// then drives the REPL by mutating next/abort and resolving the controller.
+let pausedController = null   // { resolveContinue, registeredVariables }
+let pendingRunPromise = null  // run_test's run() promise while paused
+let pendingRunResults = null  // results array being collected while paused
+let pendingRunCleanup = null  // cleanup callback to detach test.after listener
+let pendingRunIO = null       // saved stdout/stderr handles to restore after run completes
+const pauseEvents = new EventEmitter()
 
-function pauseProcessStdoutLine(line) {
-  if (!line) return
-  if (line.trim().startsWith('{')) {
-    try {
-      const msg = JSON.parse(line.trim())
-      if (msg && msg.__mcpPause) {
-        const waiter = pauseProtocolWaiters.shift()
-        if (waiter) waiter(msg)
-        else pauseLogs.push({ stream: 'protocol-unwaited', line })
-        return
-      }
-    } catch {}
-  }
-  pauseLogs.push({ stream: 'stdout', line })
-  if (pauseLogs.length > 500) pauseLogs.splice(0, pauseLogs.length - 500)
-}
-
-function pauseProcessChunk(buf, chunk, stream) {
-  buf += chunk.toString('utf8')
-  let idx
-  while ((idx = buf.indexOf('\n')) !== -1) {
-    const line = buf.slice(0, idx)
-    buf = buf.slice(idx + 1)
-    if (stream === 'stdout') pauseProcessStdoutLine(line)
-    else {
-      pauseLogs.push({ stream: 'stderr', line })
-      if (pauseLogs.length > 500) pauseLogs.splice(0, pauseLogs.length - 500)
+setPauseHandler(({ registeredVariables }) => {
+  return new Promise(resolve => {
+    pausedController = {
+      registeredVariables,
+      resolveContinue: () => {
+        pausedController = null
+        resolve()
+      },
     }
-  }
-  return buf
-}
-
-function pauseAwaitProtocol({ timeout = 60000 } = {}) {
-  return new Promise((resolve, reject) => {
-    if (!pauseChild) return reject(new Error('No active pause_session. Call action: "start" first.'))
-    let done = false
-    const timer = setTimeout(() => {
-      if (done) return
-      done = true
-      const i = pauseProtocolWaiters.indexOf(receiver)
-      if (i >= 0) pauseProtocolWaiters.splice(i, 1)
-      pauseChild?.removeListener('exit', onExit)
-      reject(new Error(`Timeout waiting for pause_session response after ${timeout}ms`))
-    }, timeout)
-    const cleanup = () => {
-      done = true
-      clearTimeout(timer)
-      pauseChild?.removeListener('exit', onExit)
-    }
-    const receiver = msg => {
-      if (done) return
-      cleanup()
-      resolve(msg)
-    }
-    const onExit = () => {
-      if (done) return
-      const i = pauseProtocolWaiters.indexOf(receiver)
-      if (i >= 0) pauseProtocolWaiters.splice(i, 1)
-      cleanup()
-      resolve({ event: 'exited', exitInfo: pauseExitInfo })
-    }
-    pauseProtocolWaiters.push(receiver)
-    pauseChild.once('exit', onExit)
+    pauseEvents.emit('paused')
   })
+})
+
+async function captureLiveArtifacts(prefix = 'pause') {
+  const helper = pickActingHelper(container.helpers())
+  if (!helper) return {}
+  const dir = snapshotDirFor(outputBaseDir())
+  mkdirp.sync(dir)
+  const captured = await captureSnapshot(helper, { dir, prefix })
+  return artifactsToFileUrls(captured, dir)
 }
 
-function pauseTeardown() {
-  pauseProtocolWaiters = []
-  pauseChild = null
+function collectRunCompletion(errorMessage) {
+  const results = pendingRunResults || []
+  const stats = {
+    tests: results.length,
+    passes: results.filter(r => r.status === 'passed').length,
+    failures: results.filter(r => r.status === 'failed').length,
+  }
+  if (typeof pendingRunCleanup === 'function') pendingRunCleanup()
+  if (pendingRunIO) {
+    process.stdout.write = pendingRunIO.origOut
+    process.stderr.write = pendingRunIO.origErr
+    pendingRunIO = null
+  }
+  pendingRunPromise = null
+  pendingRunResults = null
+  return {
+    status: 'completed',
+    reporterJson: { stats, tests: results },
+    error: errorMessage,
+  }
 }
 
 async function initCodecept(configPath) {
@@ -549,12 +529,78 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'pause': {
-        if (!pauseChild) throw new Error('No paused test. Run a test first via run_test; if it calls pause(), this tool becomes available.')
-        if (pauseChild.exitCode != null) throw new Error('Test subprocess has already exited.')
+        if (!pausedController) throw new Error('No paused test. Run a test first via run_test; if it calls pause(), this tool becomes available.')
         const { code = '', timeout = 60000 } = args || {}
-        pauseChild.stdin.write(code + '\n')
-        const resp = await pauseAwaitProtocol({ timeout })
-        return { content: [{ type: 'text', text: JSON.stringify(resp, null, 2) }] }
+        const I = container.support('I')
+        if (!I) throw new Error('I object not available. Make sure helpers are configured.')
+
+        // Mirror TTY parseInput: empty -> step; resume/exit -> end pause
+        if (code === '' || code === 'resume' || code === 'exit') {
+          setNextStep(code === '')
+          const ctrl = pausedController
+          ctrl.resolveContinue()
+
+          if (code === '') {
+            // Wait for the next paused event (test runs one step then re-pauses)
+            // or for the test to finish.
+            const finished = pendingRunPromise
+              ? pendingRunPromise.then(() => ({ event: 'completed' }), err => ({ event: 'completed', error: err.message }))
+              : new Promise(() => {})
+            const next = await Promise.race([
+              new Promise(r => pauseEvents.once('paused', () => r({ event: 'paused' }))),
+              finished,
+              new Promise(r => setTimeout(() => r({ event: 'step', note: 'Test did not re-pause within timeout' }), timeout)),
+            ])
+
+            if (next.event === 'completed') {
+              const final = collectRunCompletion(next.error)
+              return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
+            }
+            return { content: [{ type: 'text', text: JSON.stringify(next, null, 2) }] }
+          }
+
+          // resume / exit — let the test run to completion and return the final reporter result
+          if (!pendingRunPromise) {
+            return { content: [{ type: 'text', text: JSON.stringify({ event: 'resumed' }, null, 2) }] }
+          }
+          let runError = null
+          try { await pendingRunPromise } catch (err) { runError = err }
+          const final = collectRunCompletion(runError?.message)
+          return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
+        }
+
+        // Run code via the same I container that the test is using
+        const registeredVariables = pausedController.registeredVariables || {}
+        let cmd = code
+        if (cmd.trim().startsWith('=>')) cmd = cmd.trim().substring(2)
+        else cmd = `I.${cmd}`
+
+        let value
+        let error = null
+        try {
+          for (const k of Object.keys(registeredVariables)) {
+            // eslint-disable-next-line no-eval
+            eval(`var ${k} = registeredVariables['${k}'];`)
+          }
+          // eslint-disable-next-line no-eval
+          const locate = global.locate
+          // eslint-disable-next-line no-eval
+          value = await Promise.race([
+            // eslint-disable-next-line no-eval
+            eval(`(async () => (${cmd}))()`),
+            new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
+          ])
+        } catch (err) {
+          error = err.message
+        }
+
+        const artifacts = await captureLiveArtifacts('pause')
+        const result = { event: 'result', ok: !error, artifacts }
+        if (error) result.error = error
+        if (value !== undefined) {
+          try { result.value = JSON.parse(JSON.stringify(value)) } catch { result.value = String(value) }
+        }
+        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
       }
 
       case 'run_code': {
@@ -655,88 +701,98 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'run_test': {
         return await withLock(async () => {
-          if (pauseChild && pauseChild.exitCode == null) {
+          if (pausedController) {
             throw new Error('A previous run_test is still paused. Send code:"resume" or code:"exit" via the "pause" tool first.')
           }
           const { test, timeout = 60000, config: configPathArg } = args || {}
-          const { configPath, configDir } = resolveConfigPath(configPathArg)
+          await initCodecept(configPathArg)
 
-          const { cli, root } = findCodeceptCliUpwards(configDir)
-          const isNodeScript = cli.endsWith('.js')
+          // Silence stdout/stderr for the duration of the test (and across any
+          // pause window). Restored in collectRunCompletion or on early throw.
+          const origOut = process.stdout.write.bind(process.stdout)
+          const origErr = process.stderr.write.bind(process.stderr)
+          process.stdout.write = () => true
+          process.stderr.write = () => true
+          pendingRunIO = { origOut, origErr }
 
-          const resolvedFile = await resolveTestToFile({ cli, root, configPath, test })
-          const runArgs = ['run', '--config', configPath, '--reporter', 'json']
-
-          if (resolvedFile) runArgs.push(resolvedFile)
-          else if (looksLikePath(test)) runArgs.push(test)
-          else runArgs.push('--grep', String(test))
-
-          pauseLogs = []
-          pauseStdoutBuf = ''
-          pauseExitInfo = null
-          pauseProtocolWaiters = []
-
-          const env = {
-            ...process.env,
-            CODECEPTJS_MCP: '1',
-            CODECEPTJS_MCP_PAUSE: '1',
-            NODE_ENV: process.env.NODE_ENV || 'test',
-          }
-
-          const cmd = isNodeScript ? process.execPath : cli
-          const cmdArgs = isNodeScript ? [cli, ...runArgs] : runArgs
-
-          pauseChild = spawn(cmd, cmdArgs, { cwd: root, env, stdio: ['pipe', 'pipe', 'pipe'] })
-          let stderrBuf = ''
-          pauseChild.stdout.on('data', d => { pauseStdoutBuf = pauseProcessChunk(pauseStdoutBuf, d, 'stdout') })
-          pauseChild.stderr.on('data', d => { stderrBuf = pauseProcessChunk(stderrBuf, d, 'stderr') })
-          pauseChild.on('exit', (code, signal) => {
-            pauseExitInfo = { code, signal }
-            pauseTeardown()
-          })
-
-          let first
           try {
-            first = await pauseAwaitProtocol({ timeout })
-          } catch (err) {
-            try { pauseChild?.kill('SIGKILL') } catch {}
-            throw err
-          }
+            codecept.loadTests()
 
-          if (first.event === 'paused') {
-            return {
-              content: [{
-                type: 'text',
-                text: JSON.stringify({
-                  status: 'paused',
-                  resolvedFile: resolvedFile || null,
-                  paused: first,
-                  note: 'Test hit pause(). Use the "pause" tool to send code; send code:"resume" to let the test finish.',
-                }, null, 2),
-              }],
+            let testFiles = codecept.testFiles
+            if (test) {
+              const testName = normalizePath(test).toLowerCase()
+              testFiles = codecept.testFiles.filter(f => {
+                const filePath = normalizePath(f).toLowerCase()
+                return filePath.includes(testName) || filePath.endsWith(testName)
+              })
             }
-          }
 
-          // Subprocess exited without pausing — collect normal reporter output
-          const stdoutText = pauseLogs.filter(l => l.stream === 'stdout').map(l => l.line).join('\n')
-          const stderrText = pauseLogs.filter(l => l.stream === 'stderr').map(l => l.line).join('\n')
-          let parsed = null
-          const jsonStart = stdoutText.indexOf('{')
-          const jsonEnd = stdoutText.lastIndexOf('}')
-          if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
-            try { parsed = JSON.parse(stdoutText.slice(jsonStart, jsonEnd + 1)) } catch {}
-          }
+            if (!testFiles.length) throw new Error(`No tests found matching: ${test}`)
+            const testFile = testFiles[0]
 
-          return {
-            content: [{
-              type: 'text',
-              text: JSON.stringify({
-                meta: { exitCode: first.exitInfo?.code ?? null, cli, root, configPath, args: runArgs, resolvedFile: resolvedFile || null },
-                reporterJson: parsed,
-                stderr: stderrText.slice(0, 20000),
-                rawStdout: parsed ? '' : stdoutText.slice(0, 20000),
-              }, null, 2),
-            }],
+            pendingRunResults = []
+            const onAfter = t => {
+              pendingRunResults.push({
+                title: t.title,
+                file: t.file,
+                status: t.err ? 'failed' : 'passed',
+                error: t.err?.message,
+                duration: t.duration,
+              })
+            }
+            event.dispatcher.on(event.test.after, onAfter)
+            pendingRunCleanup = () => {
+              try { event.dispatcher.removeListener(event.test.after, onAfter) } catch {}
+              pendingRunCleanup = null
+            }
+
+            let runError = null
+            const runPromise = (async () => {
+              try {
+                await codecept.bootstrap()
+                await codecept.run(testFile)
+              } catch (err) {
+                runError = err
+                throw err
+              }
+            })()
+
+            const pausedPromise = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
+            const completedPromise = runPromise.then(() => 'completed', () => 'completed')
+
+            const which = await Promise.race([
+              completedPromise,
+              pausedPromise,
+              new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
+            ])
+
+            if (which === 'paused') {
+              pendingRunPromise = runPromise
+              return {
+                content: [{
+                  type: 'text',
+                  text: JSON.stringify({
+                    status: 'paused',
+                    file: testFile,
+                    note: 'Test hit pause(). Use the "pause" tool to send code; send code:"resume" to let the test finish.',
+                  }, null, 2),
+                }],
+              }
+            }
+
+            const final = collectRunCompletion(runError?.message)
+            return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
+          } catch (err) {
+            // Restore IO if we're throwing out of run_test before collectRunCompletion
+            if (pendingRunIO) {
+              process.stdout.write = pendingRunIO.origOut
+              process.stderr.write = pendingRunIO.origErr
+              pendingRunIO = null
+            }
+            if (typeof pendingRunCleanup === 'function') pendingRunCleanup()
+            pendingRunPromise = null
+            pendingRunResults = null
+            throw err
           }
         })
       }

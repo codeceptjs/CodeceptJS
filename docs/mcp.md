@@ -239,11 +239,11 @@ Capture the current state of the browser without performing any action. Useful f
 
 Send one line of input to a test that's currently paused at `pause()`. Mirrors the human pause REPL — send code, get a result with the same artifact bundle as `run_code`.
 
-`pause` is only valid while a `run_test` invocation is yielded at a paused subprocess. The flow is:
+`pause` is only valid while a `run_test` invocation is yielded at a `pause()` call. The flow is:
 
-1. Agent calls `run_test`. If the test reaches `pause()`, `run_test` returns `{status:"paused", paused:{event:"paused"}}` and keeps the subprocess alive.
-2. Agent calls `pause` with `code` strings to drive the REPL.
-3. Agent sends `code:"resume"` (or `code:"exit"`) to let the test finish; the subprocess exits and pause state is cleared.
+1. Agent calls `run_test`. If the test reaches `pause()`, `run_test` returns `{status:"paused", ...}` and keeps the test promise alive.
+2. Agent calls `pause` with `code` strings to drive the REPL. Each call runs through the same `I` container the test is using and returns the value plus an artifact bundle.
+3. Agent sends `code:"resume"` (or `code:"exit"`) to let the test finish; `pause` waits for completion and returns the final reporter result.
 
 `code` syntax (same as the TTY pause REPL):
 
@@ -251,11 +251,9 @@ Send one line of input to a test that's currently paused at `pause()`. Mirrors t
 |---|---|
 | `"click('Save')"` | Runs as `I.click('Save')`. Returns `{event:"result", ok, value, artifacts, error}`. |
 | `"=> myVar.id"` | Evaluates raw JS in the paused scope. Returns `{event:"result", ...}`. |
-| `""` (empty) | Step to the next test step. Returns `{event:"step"}`; the subprocess re-pauses, and the next `pause` call returns `{event:"paused"}` again. |
-| `"resume"` | Continue the test to completion. Returns `{event:"resumed"}`; the subprocess will exit on its own. |
-| `"exit"` | Abort the paused test. Returns `{event:"resumed"}`, then the subprocess exits. |
-
-If the subprocess exits during a call, the response is `{event:"exited", exitInfo:{code, signal}}` and pause state is cleared.
+| `""` (empty) | Step to the next test step. Test runs one step then re-pauses. Returns `{event:"paused"}` (or the final reporter result if the test ends). |
+| `"resume"` | Continue the test to completion. Returns the final `{status:"completed", reporterJson, error}`. |
+| `"exit"` | Abort the paused test. Same as `"resume"` but with `next` cleared. |
 
 **Parameters:**
 - `code` (optional, default `""`): the line to send.
@@ -265,19 +263,19 @@ If the subprocess exits during a call, the response is `{event:"exited", exitInf
 
 ```json
 { "name": "run_test", "arguments": { "test": "checkout_test" } }
-// → { "status": "paused", "paused": { "event": "paused" }, ... }
+// → { "status": "paused", "file": "...", "note": "..." }
 
 { "name": "pause", "arguments": { "code": "grabCurrentUrl()" } }
 // → { "event": "result", "ok": true, "value": "http://...", "artifacts": { ... } }
 
 { "name": "pause", "arguments": { "code": "resume" } }
-// → { "event": "resumed" }
+// → { "status": "completed", "reporterJson": { "stats": {...}, "tests": [...] } }
 ```
 
 **Notes:**
-- `run_test` always spawns its subprocess with `CODECEPTJS_MCP=1` and `CODECEPTJS_MCP_PAUSE=1`, so any `pause()` call in the test lands in yield mode.
-- A `pause()` call running with `CODECEPTJS_MCP=1` set but `CODECEPTJS_MCP_PAUSE` unset (e.g., a different MCP-aware caller, or future tooling) prints a notice and returns immediately, so leftover `pause()` calls don't deadlock.
-- TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — the readline REPL is used whenever `process.stdin.isTTY` is true.
+- `pause` runs in-process: code executes against the same `I` / browser the test was using when it hit `pause()`. There's no subprocess, no IPC.
+- `run_test` runs in-process too. While paused, stdout/stderr are redirected to a no-op so test output doesn't corrupt the MCP protocol; they're restored when the test completes.
+- TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — `pause()` opens the readline REPL whenever `process.stdin.isTTY` is true.
 
 ### run_test
 
