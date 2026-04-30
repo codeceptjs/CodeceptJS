@@ -14,7 +14,7 @@ import {
   writeTraceMarkdown,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
-import { setPauseHandler } from '../lib/pause.js'
+import { setPauseHandler, pauseNow } from '../lib/pause.js'
 import { EventEmitter } from 'events'
 import { fileURLToPath, pathToFileURL } from 'url'
 import { dirname, resolve as resolvePath } from 'path'
@@ -269,6 +269,21 @@ async function captureLiveArtifacts(prefix = 'pause') {
   return artifactsToFileUrls(captured, dir)
 }
 
+async function gatherPageBrief() {
+  const helper = pickActingHelper(container.helpers())
+  if (!helper) return {}
+  const out = {}
+  try { if (helper.grabCurrentUrl) out.url = await helper.grabCurrentUrl() } catch {}
+  try { if (helper.grabTitle) out.title = await helper.grabTitle() } catch {}
+  try {
+    if (helper.grabSource) {
+      const html = await helper.grabSource()
+      out.contentSize = typeof html === 'string' ? html.length : null
+    }
+  } catch {}
+  return out
+}
+
 function collectRunCompletion(errorMessage) {
   const results = pendingRunResults || []
   const stats = {
@@ -354,13 +369,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: 'run_test',
-      description: 'Run a specific test. If the test calls pause(), this tool returns early with status "paused" — call the "pause" tool to interact, then send code:"resume" to let the test finish. Otherwise returns when the test completes with the json reporter result.',
+      description: 'Run a specific test. If the test calls pause() — or if pauseAt is set and reached — returns early with status "paused" so the agent can inspect via run_code and release with continue. Otherwise returns the json reporter result on completion. To learn step indices for pauseAt, run "list" with --steps or call run_step_by_step first.',
       inputSchema: {
         type: 'object',
         properties: {
           test: { type: 'string' },
           timeout: { type: 'number' },
           config: { type: 'string' },
+          pauseAt: { type: 'number', description: '1-based step index. Test will pause after the Nth step completes. Useful as a programmatic breakpoint without editing the test.' },
         },
         required: ['test'],
       },
@@ -636,7 +652,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           if (pausedController) {
             throw new Error('A previous run_test is still paused. Call "continue" first.')
           }
-          const { test, timeout = 60000, config: configPathArg } = args || {}
+          const { test, timeout = 60000, config: configPathArg, pauseAt } = args || {}
           await initCodecept(configPathArg)
 
           return await withSilencedIO(async () => {
@@ -655,6 +671,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             const testFile = testFiles[0]
 
             pendingRunResults = []
+            let stepIndex = 0
+            let lastStepInfo = null
+
             const onAfter = t => {
               pendingRunResults.push({
                 title: t.title,
@@ -664,9 +683,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 duration: t.duration,
               })
             }
+            const onStepAfter = step => {
+              stepIndex += 1
+              try {
+                lastStepInfo = { index: stepIndex, name: step.toString(), status: step.status }
+              } catch {
+                lastStepInfo = { index: stepIndex }
+              }
+              if (typeof pauseAt === 'number' && stepIndex === pauseAt) {
+                pauseNow()
+              }
+            }
             event.dispatcher.on(event.test.after, onAfter)
+            event.dispatcher.on(event.step.after, onStepAfter)
             pendingRunCleanup = () => {
               try { event.dispatcher.removeListener(event.test.after, onAfter) } catch {}
+              try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
               pendingRunCleanup = null
             }
 
@@ -692,13 +724,20 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
             if (which === 'paused') {
               pendingRunPromise = runPromise
+              const page = await gatherPageBrief()
               return {
                 content: [{
                   type: 'text',
                   text: JSON.stringify({
                     status: 'paused',
                     file: testFile,
-                    note: 'Test hit pause(). Inspect/manipulate state with run_code; call continue to let the test finish.',
+                    pausedAfter: lastStepInfo,
+                    page,
+                    suggestions: [
+                      'Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point',
+                      'Call run_code to inspect or manipulate state (e.g. return await I.grabText("h1"))',
+                      'Call continue to release the pause and let the test finish',
+                    ],
                   }, null, 2),
                 }],
               }

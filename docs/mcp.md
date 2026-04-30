@@ -276,29 +276,36 @@ To inspect or manipulate state while the test is paused, use [`run_code`](#run_c
 
 ### run_test
 
-Run a specific test by name or file path. Subprocess is spawned with pause yield mode enabled — if the test calls `pause()`, this tool returns early and the agent drives the REPL via the [`pause`](#pause) tool.
+Run a specific test by name or file path. Runs in-process so it shares the same `I` / browser as `run_code` and `snapshot`. If the test calls `pause()` — or if `pauseAt` is set and the Nth step completes — this tool returns early and the agent drives the session through `run_code` and `continue`.
 
 **Parameters:**
 - `test` (required): Test name or file path
 - `timeout` (optional): Timeout in milliseconds (default: 60000)
 - `config` (optional): Path to codecept.conf.js
+- `pauseAt` (optional): 1-based step index. The test pauses after the Nth step completes. Use this as a programmatic breakpoint without editing the test. Discover step indices via the `list` CLI (`--steps`) or via `run_step_by_step`.
 
 **Returns (test completed normally):**
 ```json
 {
-  "meta": { "exitCode": 0, "cli": "...", "root": "...", "configPath": "...", "args": [...], "resolvedFile": "..." },
-  "reporterJson": { "stats": { "tests": 3, "passes": 2, "failures": 1 } },
-  "stderr": "",
-  "rawStdout": ""
+  "status": "completed",
+  "file": "/path/to/test.js",
+  "reporterJson": { "stats": { "tests": 1, "passes": 1, "failures": 0 }, "tests": [...] },
+  "error": null
 }
 ```
 
-**Returns (test reached `pause()`):**
+**Returns (test reached `pause()` or `pauseAt`):**
 ```json
 {
   "status": "paused",
   "file": "/path/to/test.js",
-  "note": "Test hit pause(). Use the \"continue\" tool to let the test finish; use run_code to inspect state."
+  "pausedAfter": { "index": 3, "name": "I.click(\"Save\")", "status": "passed" },
+  "page": { "url": "https://example.com/checkout", "title": "Checkout", "contentSize": 18432 },
+  "suggestions": [
+    "Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point",
+    "Call run_code to inspect or manipulate state (e.g. return await I.grabText(\"h1\"))",
+    "Call continue to release the pause and let the test finish"
+  ]
 }
 ```
 
@@ -306,7 +313,7 @@ Run a specific test by name or file path. Subprocess is spawned with pause yield
 - Automatically resolves test names to file paths
 - Supports partial test name matching
 - Runs in-process; results assembled from CodeceptJS test events
-- Yields on `pause()` so the agent can inspect via `run_code` and release with `continue`
+- Yields on `pause()` (or `pauseAt`) so the agent can inspect via `run_code` and release with `continue`
 
 **Example:**
 ```json
