@@ -259,6 +259,7 @@ program
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)
   .option(commandFlags.debug.flag, commandFlags.debug.description)
   .option('--no-ansi', 'disable colored / ANSI-styled output')
+  .option('--numbers', 'prefix each step with a per-test index number')
   .action(commandHandler('../lib/command/dryRun.js'))
 
 program
