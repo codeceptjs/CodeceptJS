@@ -235,45 +235,42 @@ Capture the current state of the browser without performing any action. Useful f
 }
 ```
 
-### pause
+### continue
 
-Send one line of input to a test that's currently paused at `pause()`. Mirrors the human pause REPL — send code, get a result with the same artifact bundle as `run_code`.
+Release a paused test (one that called `pause()` during `run_test`) and let it run to completion. Returns the final reporter result.
 
-`pause` is only valid while a `run_test` invocation is yielded at a `pause()` call. The flow is:
-
-1. Agent calls `run_test`. If the test reaches `pause()`, `run_test` returns `{status:"paused", ...}` and keeps the test promise alive.
-2. Agent calls `pause` with `code` strings to drive the REPL. Each call runs through the same `I` container the test is using and returns the value plus an artifact bundle.
-3. Agent sends `code:"resume"` (or `code:"exit"`) to let the test finish; `pause` waits for completion and returns the final reporter result.
-
-`code` syntax (same as the TTY pause REPL):
-
-| Input | Effect |
-|---|---|
-| `"click('Save')"` | Runs as `I.click('Save')`. Returns `{event:"result", ok, value, artifacts, error}`. |
-| `"=> myVar.id"` | Evaluates raw JS in the paused scope. Returns `{event:"result", ...}`. |
-| `""` (empty) | Step to the next test step. Test runs one step then re-pauses. Returns `{event:"paused"}` (or the final reporter result if the test ends). |
-| `"resume"` | Continue the test to completion. Returns the final `{status:"completed", reporterJson, error}`. |
-| `"exit"` | Abort the paused test. Same as `"resume"` but with `next` cleared. |
+To inspect or manipulate state while the test is paused, use [`run_code`](#run_code) — it operates on the same container the test is using.
 
 **Parameters:**
-- `code` (optional, default `""`): the line to send.
-- `timeout` (optional): ms to wait for the response (default 60000).
+- `timeout` (optional): ms to wait for the test to finish after continuing (default 60000).
 
-**Example:**
+**Returns:**
+```json
+{
+  "status": "completed",
+  "reporterJson": { "stats": { "tests": 1, "passes": 1, "failures": 0 }, "tests": [...] },
+  "error": null
+}
+```
+
+**Example flow:**
 
 ```json
 { "name": "run_test", "arguments": { "test": "checkout_test" } }
 // → { "status": "paused", "file": "...", "note": "..." }
 
-{ "name": "pause", "arguments": { "code": "grabCurrentUrl()" } }
-// → { "event": "result", "ok": true, "value": "http://...", "artifacts": { ... } }
+{ "name": "run_code", "arguments": { "code": "return await I.grabCurrentUrl()" } }
+// → { "status": "success", "returnValue": "http://...", "artifacts": { ... } }
 
-{ "name": "pause", "arguments": { "code": "resume" } }
-// → { "status": "completed", "reporterJson": { "stats": {...}, "tests": [...] } }
+{ "name": "run_code", "arguments": { "code": "await I.click('Save')" } }
+// → { "status": "success", "artifacts": { ... } }
+
+{ "name": "continue", "arguments": {} }
+// → { "status": "completed", "reporterJson": { ... } }
 ```
 
 **Notes:**
-- `pause` runs in-process: code executes against the same `I` / browser the test was using when it hit `pause()`. There's no subprocess, no IPC.
+- Pause runs in-process: `run_code` and the test share the same `I` / browser. There's no subprocess, no IPC.
 - `run_test` runs in-process too. While paused, stdout/stderr are redirected to a no-op so test output doesn't corrupt the MCP protocol; they're restored when the test completes.
 - TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — `pause()` opens the readline REPL whenever `process.stdin.isTTY` is true.
 
@@ -300,19 +297,16 @@ Run a specific test by name or file path. Subprocess is spawned with pause yield
 ```json
 {
   "status": "paused",
-  "resolvedFile": "/path/to/test.js",
-  "paused": { "__mcpPause": true, "event": "paused" },
-  "note": "Test hit pause(). Use the \"pause\" tool to send code; send code:\"resume\" to let the test finish."
+  "file": "/path/to/test.js",
+  "note": "Test hit pause(). Use the \"continue\" tool to let the test finish; use run_code to inspect state."
 }
 ```
 
 **Features:**
 - Automatically resolves test names to file paths
 - Supports partial test name matching
-- Uses json reporter for structured output
-- Executes in subprocess for isolation
-- Includes stderr for debugging
-- Yields on `pause()` so an agent can drive the REPL through the `pause` tool
+- Runs in-process; results assembled from CodeceptJS test events
+- Yields on `pause()` so the agent can inspect via `run_code` and release with `continue`
 
 **Example:**
 ```json

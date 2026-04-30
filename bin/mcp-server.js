@@ -14,7 +14,7 @@ import {
   writeTraceMarkdown,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
-import { setPauseHandler, setNextStep } from '../lib/pause.js'
+import { setPauseHandler } from '../lib/pause.js'
 import { EventEmitter } from 'events'
 import { fileURLToPath, pathToFileURL } from 'url'
 import { dirname, resolve as resolvePath } from 'path'
@@ -406,12 +406,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
-      name: 'pause',
-      description: 'Send a single line of code to a paused test (one that called pause() during run_test). Same syntax as the TTY pause REPL: an expression like "click(\'Save\')" runs as I.click(\'Save\'); prefix "=>" for raw JS; empty string steps to the next test step; "resume" continues the test to completion; "exit" aborts. Returns the next protocol message — typically {event:"result", ok, value, artifacts, error}, or {event:"paused"} after a step, or {event:"exited", exitInfo} if the test ended.',
+      name: 'continue',
+      description: 'Release a paused test (one that called pause() during run_test) and let it run to completion. Returns the final reporter result. Use run_code to inspect or manipulate state while the test is paused — both tools share the same container.',
       inputSchema: {
         type: 'object',
         properties: {
-          code: { type: 'string' },
           timeout: { type: 'number' },
         },
       },
@@ -528,79 +527,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
       }
 
-      case 'pause': {
-        if (!pausedController) throw new Error('No paused test. Run a test first via run_test; if it calls pause(), this tool becomes available.')
-        const { code = '', timeout = 60000 } = args || {}
-        const I = container.support('I')
-        if (!I) throw new Error('I object not available. Make sure helpers are configured.')
-
-        // Mirror TTY parseInput: empty -> step; resume/exit -> end pause
-        if (code === '' || code === 'resume' || code === 'exit') {
-          setNextStep(code === '')
-          const ctrl = pausedController
-          ctrl.resolveContinue()
-
-          if (code === '') {
-            // Wait for the next paused event (test runs one step then re-pauses)
-            // or for the test to finish.
-            const finished = pendingRunPromise
-              ? pendingRunPromise.then(() => ({ event: 'completed' }), err => ({ event: 'completed', error: err.message }))
-              : new Promise(() => {})
-            const next = await Promise.race([
-              new Promise(r => pauseEvents.once('paused', () => r({ event: 'paused' }))),
-              finished,
-              new Promise(r => setTimeout(() => r({ event: 'step', note: 'Test did not re-pause within timeout' }), timeout)),
-            ])
-
-            if (next.event === 'completed') {
-              const final = collectRunCompletion(next.error)
-              return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
-            }
-            return { content: [{ type: 'text', text: JSON.stringify(next, null, 2) }] }
-          }
-
-          // resume / exit — let the test run to completion and return the final reporter result
-          if (!pendingRunPromise) {
-            return { content: [{ type: 'text', text: JSON.stringify({ event: 'resumed' }, null, 2) }] }
-          }
-          let runError = null
-          try { await pendingRunPromise } catch (err) { runError = err }
-          const final = collectRunCompletion(runError?.message)
-          return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
+      case 'continue': {
+        if (!pausedController) throw new Error('No paused test. Run a test first via run_test; this tool becomes available if the test calls pause().')
+        pausedController.resolveContinue()
+        if (!pendingRunPromise) {
+          return { content: [{ type: 'text', text: JSON.stringify({ status: 'continued' }, null, 2) }] }
         }
-
-        // Run code via the same I container that the test is using
-        const registeredVariables = pausedController.registeredVariables || {}
-        let cmd = code
-        if (cmd.trim().startsWith('=>')) cmd = cmd.trim().substring(2)
-        else cmd = `I.${cmd}`
-
-        let value
-        let error = null
-        try {
-          for (const k of Object.keys(registeredVariables)) {
-            // eslint-disable-next-line no-eval
-            eval(`var ${k} = registeredVariables['${k}'];`)
-          }
-          // eslint-disable-next-line no-eval
-          const locate = global.locate
-          // eslint-disable-next-line no-eval
-          value = await Promise.race([
-            // eslint-disable-next-line no-eval
-            eval(`(async () => (${cmd}))()`),
-            new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
-          ])
-        } catch (err) {
-          error = err.message
-        }
-
-        const artifacts = await captureLiveArtifacts('pause')
-        const result = { event: 'result', ok: !error, artifacts }
-        if (error) result.error = error
-        if (value !== undefined) {
-          try { result.value = JSON.parse(JSON.stringify(value)) } catch { result.value = String(value) }
-        }
-        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+        let runError = null
+        try { await pendingRunPromise } catch (err) { runError = err }
+        const final = collectRunCompletion(runError?.message)
+        return { content: [{ type: 'text', text: JSON.stringify(final, null, 2) }] }
       }
 
       case 'run_code': {
