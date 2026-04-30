@@ -12,6 +12,8 @@ import {
   snapshotDirFor,
   artifactsToFileUrls,
   writeTraceMarkdown,
+  TraceReader,
+  ariaDiff,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
 import recorder from '../lib/recorder.js'
@@ -36,6 +38,14 @@ let browserStarted = false
 let shellSessionActive = false
 let bootstrapDone = false
 let currentPluginsSig = ''
+let currentAiTraceDir = null  // mirrors the dir aiTrace plugin computes per test/session
+
+event.dispatcher.on(event.test.before, test => {
+  try {
+    const title = (test && (test.fullTitle ? test.fullTitle() : test.title)) || 'MCP Session'
+    currentAiTraceDir = traceDirFor(test?.file, title, outputBaseDir())
+  } catch {}
+})
 
 const SESSION_REQUIRED_ERROR = 'No active CodeceptJS session. Call `start_browser` to open a shell session, or `run_test` (use `pause()` in the test, or set `pauseAt`) to inspect during a test run.'
 
@@ -430,7 +440,10 @@ async function initCodecept(configPath, pluginOverrides) {
   const { getConfig } = await import('../lib/command/utils.js')
   const config = await getConfig(configPath)
 
-  applyPluginOverrides(config, plugins)
+  // aiTrace is the canonical per-step ARIA/HTML/screenshot capture for MCP.
+  // Always on so run_code / continue can read the latest snapshot from disk
+  // instead of double-capturing through grabAriaSnapshot etc.
+  applyPluginOverrides(config, { aiTrace: {}, ...plugins })
 
   codecept = new Codecept(config, {})
   await codecept.init(testRoot)
@@ -691,6 +704,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         mkdirp.sync(traceDir)
         const startedAt = Date.now()
 
+        // Pin the latest aiTrace ARIA file before running the code, so we
+        // can diff after. aiTrace owns per-step capture; we just read it.
+        const reader = new TraceReader(currentAiTraceDir)
+        const ariaBefore = reader.last('aria')
+
         const MAX_LOG_ENTRIES = 100
         const MAX_LOG_MSG_BYTES = 2000
         const MAX_RETURN_BYTES = 20000
@@ -751,6 +769,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               result.output += ` (Warning: ${e.message})`
             }
           }
+        }
+
+        // Diff against the latest aiTrace ARIA file produced by the steps
+        // that just ran inside this run_code call.
+        const ariaAfter = reader.last('aria')
+        if (ariaBefore && ariaAfter && ariaBefore !== ariaAfter) {
+          const diff = ariaDiff(ariaBefore, ariaAfter)
+          if (diff) result.ariaDiff = diff
         }
 
         const traceFile = writeTraceMarkdown({
