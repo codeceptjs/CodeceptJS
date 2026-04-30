@@ -237,43 +237,38 @@ Capture the current state of the browser without performing any action. Useful f
 
 ### pause_session
 
-Drive a paused test through `pause()` over MCP. Replaces the human-only readline REPL with a JSON-line protocol the agent can speak. Useful when a test hits `pause()` or you want to pause-on-failure without a TTY.
+Mirrors the human `pause()` REPL for an AI agent: send a code string, get a result with artifacts (same shape as `run_code`).
 
-The subprocess is spawned with `CODECEPTJS_MCP=1` and `CODECEPTJS_MCP_PAUSE=1` so any `pause()` calls in the test land in yield mode (instead of the default skip-on-MCP behaviour).
+Two actions:
 
-**Sub-actions** (selected via `action`):
+| Action | Params | Effect |
+|---|---|---|
+| `start` | `test`, `config?`, `timeout?` | Spawn the test subprocess in pause yield mode. Resolves when the test hits `pause()` and emits `{event:"paused"}`. |
+| `run` | `code`, `timeout?` | Send one line of input — same syntax as the TTY REPL. Returns the next protocol message from the subprocess. |
 
-| Action | Effect |
-|---|---|
-| `start` | Spawn the test subprocess in pause yield mode. Resolves when the first `paused` event arrives. |
-| `run` | Execute a CodeceptJS expression in the paused session (`I.click('Save')` or `=> myVar`). Returns artifacts + return value. |
-| `snapshot` | Capture browser state without acting. Returns the same artifact bundle as the `snapshot` tool. |
-| `step` | Let the test run one step, then re-pause. Returns the `resumed` ack and the next `paused` event (or `exitInfo` if the test ended). |
-| `resume` | Continue the test to completion. Returns when the subprocess exits. |
-| `exit` | Abort the paused test and tear down the subprocess. |
-| `status` | Inspect the current session — running flag, exit info, last stdout/stderr lines. |
+`code` follows the TTY pause REPL conventions:
+- An expression like `click('Save')` runs as `I.click('Save')` and returns `{event:"result", ok, value, artifacts, error}`.
+- Prefix `=>` to evaluate raw JS: `=> myVar.id`.
+- `""` (empty) → step to the next test step. The subprocess re-pauses; response is `{event:"step"}` followed by `{event:"paused"}` on the next `run` call.
+- `"resume"` → continue the test to completion. Response is `{event:"resumed"}`; the subprocess will exit on its own.
+- `"exit"` → abort the paused test. Same `{event:"resumed"}` response, then exit.
 
-**Parameters:**
-- `action` (required): one of the values above
-- `test` (`start` only): test name or file path
-- `code` (`run` only): expression to evaluate (defaults to `I.<expr>`; prefix with `=>` for raw JS)
-- `config` (`start` only): path to codecept.conf.js
-- `timeout` (optional): per-action timeout in ms
+Each result includes the artifact bundle (URL, ARIA, HTML, screenshot, console, storage), like `run_code`. If the subprocess exits during a `run`, the response is `{event:"exited", exitInfo:{code, signal}}`.
 
 **Lifecycle example:**
 
 ```json
 { "name": "pause_session", "arguments": { "action": "start", "test": "checkout_test" } }
 { "name": "pause_session", "arguments": { "action": "run", "code": "grabCurrentUrl()" } }
-{ "name": "pause_session", "arguments": { "action": "snapshot" } }
-{ "name": "pause_session", "arguments": { "action": "step" } }
-{ "name": "pause_session", "arguments": { "action": "resume" } }
+{ "name": "pause_session", "arguments": { "action": "run", "code": "click('Save')" } }
+{ "name": "pause_session", "arguments": { "action": "run", "code": "resume" } }
 ```
 
-A single `pause_session` instance owns one subprocess. Concurrent `start` calls are rejected — `exit` (or `resume`) the running session first.
+A single `pause_session` instance owns one subprocess. Concurrent `start` calls are rejected — send `code: "exit"` (or `"resume"`) first.
 
 **Notes:**
-- `pause()` calls in tests run through MCP without yield mode (env `CODECEPTJS_MCP=1` only) print a notice and return immediately so leftover `pause()` calls don't deadlock CI runs.
+- The subprocess is spawned with `CODECEPTJS_MCP=1` and `CODECEPTJS_MCP_PAUSE=1` so `pause()` calls in the test land in yield mode.
+- `pause()` calls running under `CODECEPTJS_MCP=1` *without* `CODECEPTJS_MCP_PAUSE=1` print a notice and return immediately so leftover `pause()` calls don't deadlock CI runs invoked through MCP.
 - TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — the readline REPL is used whenever `process.stdin.isTTY` is true.
 
 ### run_test

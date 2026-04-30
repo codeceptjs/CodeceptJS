@@ -137,134 +137,93 @@ describe('pause MCP integration', () => {
         .filter(m => m && m.__mcpPause)
     }
 
-    it('emits paused on entry and resumed on resume', async () => {
-      // Replace process.stdin with a controllable readable
-      const fakeStdin = new Readable({ read() {} })
-      const stdinDesc = Object.getOwnPropertyDescriptor(process, 'stdin')
-      Object.defineProperty(process, 'stdin', { value: fakeStdin, configurable: true })
-
-      try {
-        const sessionPromise = mcpYieldSession()
-
-        // Wait a tick for paused event to be emitted
+    async function waitForMessage(predicate, attempts = 50) {
+      for (let i = 0; i < attempts; i++) {
         await new Promise(r => setImmediate(r))
-        const afterPaused = findProtocolMessages()
-        expect(afterPaused.some(m => m.event === 'paused')).to.equal(true)
-
-        // Send resume
-        fakeStdin.push(JSON.stringify({ id: 'r1', type: 'resume' }) + '\n')
-        await sessionPromise
-
-        const all = findProtocolMessages()
-        expect(all.some(m => m.id === 'r1' && m.type === 'resumed')).to.equal(true)
-      } finally {
-        if (stdinDesc) Object.defineProperty(process, 'stdin', stdinDesc)
+        const m = findProtocolMessages().find(predicate)
+        if (m) return m
       }
+      return null
+    }
+
+    function withFakeStdin(fakeStdin, fn) {
+      const desc = Object.getOwnPropertyDescriptor(process, 'stdin')
+      Object.defineProperty(process, 'stdin', { value: fakeStdin, configurable: true })
+      try { return fn() } finally {
+        if (desc) Object.defineProperty(process, 'stdin', desc)
+      }
+    }
+
+    it('emits paused on entry and resumed on "resume" line', async () => {
+      const fakeStdin = new Readable({ read() {} })
+      await withFakeStdin(fakeStdin, async () => {
+        const sessionPromise = mcpYieldSession()
+        await new Promise(r => setImmediate(r))
+        expect(findProtocolMessages().some(m => m.event === 'paused')).to.equal(true)
+
+        fakeStdin.push('resume\n')
+        await sessionPromise
+        expect(findProtocolMessages().some(m => m.event === 'resumed')).to.equal(true)
+      })
     })
 
-    it('responds to snapshot with artifacts shape', async () => {
+    it('treats empty line as step', async () => {
       const fakeStdin = new Readable({ read() {} })
-      const stdinDesc = Object.getOwnPropertyDescriptor(process, 'stdin')
-      Object.defineProperty(process, 'stdin', { value: fakeStdin, configurable: true })
-
-      try {
+      await withFakeStdin(fakeStdin, async () => {
         const sessionPromise = mcpYieldSession()
         await new Promise(r => setImmediate(r))
 
-        fakeStdin.push(JSON.stringify({ id: 's1', type: 'snapshot' }) + '\n')
-
-        let resp = null
-        for (let i = 0; i < 50 && !resp; i++) {
-          await new Promise(r => setImmediate(r))
-          const msgs = findProtocolMessages()
-          resp = msgs.find(m => m.id === 's1')
-        }
-        expect(resp).to.exist
-        expect(resp.type).to.equal('result')
-        expect(resp.ok).to.equal(true)
-        expect(resp.artifacts).to.be.an('object')
-
-        fakeStdin.push(JSON.stringify({ id: 'r1', type: 'resume' }) + '\n')
+        fakeStdin.push('\n')
         await sessionPromise
-      } finally {
-        if (stdinDesc) Object.defineProperty(process, 'stdin', stdinDesc)
-      }
+        expect(findProtocolMessages().some(m => m.event === 'step')).to.equal(true)
+      })
     })
 
-    it('responds with error to invalid JSON', async () => {
+    it('runs code lines and emits a result with artifacts', async () => {
       const fakeStdin = new Readable({ read() {} })
-      const stdinDesc = Object.getOwnPropertyDescriptor(process, 'stdin')
-      Object.defineProperty(process, 'stdin', { value: fakeStdin, configurable: true })
-
-      try {
+      await withFakeStdin(fakeStdin, async () => {
         const sessionPromise = mcpYieldSession()
         await new Promise(r => setImmediate(r))
 
-        fakeStdin.push('not json\n')
+        fakeStdin.push('grabCurrentUrl()\n')
+        const result = await waitForMessage(m => m.event === 'result')
+        expect(result).to.exist
+        expect(result.ok).to.equal(true)
+        expect(result.value).to.equal('http://test.local/page')
+        expect(result.artifacts).to.be.an('object')
 
-        let errResp = null
-        for (let i = 0; i < 50 && !errResp; i++) {
-          await new Promise(r => setImmediate(r))
-          const msgs = findProtocolMessages()
-          errResp = msgs.find(m => m.event === 'error' && /Invalid JSON/.test(m.message || ''))
-        }
-        expect(errResp).to.exist
-
-        fakeStdin.push(JSON.stringify({ id: 'r1', type: 'resume' }) + '\n')
+        fakeStdin.push('resume\n')
         await sessionPromise
-      } finally {
-        if (stdinDesc) Object.defineProperty(process, 'stdin', stdinDesc)
-      }
+      })
     })
 
-    it('responds with error to unknown command type', async () => {
+    it('reports errors from failing code', async () => {
       const fakeStdin = new Readable({ read() {} })
-      const stdinDesc = Object.getOwnPropertyDescriptor(process, 'stdin')
-      Object.defineProperty(process, 'stdin', { value: fakeStdin, configurable: true })
-
-      try {
+      await withFakeStdin(fakeStdin, async () => {
         const sessionPromise = mcpYieldSession()
         await new Promise(r => setImmediate(r))
 
-        fakeStdin.push(JSON.stringify({ id: 'x1', type: 'frobnicate' }) + '\n')
+        fakeStdin.push('thisDoesNotExist()\n')
+        const result = await waitForMessage(m => m.event === 'result')
+        expect(result).to.exist
+        expect(result.ok).to.equal(false)
+        expect(result.error).to.be.a('string')
 
-        let errResp = null
-        for (let i = 0; i < 50 && !errResp; i++) {
-          await new Promise(r => setImmediate(r))
-          const msgs = findProtocolMessages()
-          errResp = msgs.find(m => m.id === 'x1' && m.event === 'error')
-        }
-        expect(errResp).to.exist
-        expect(errResp.message).to.match(/Unknown command type/)
-
-        fakeStdin.push(JSON.stringify({ id: 'r1', type: 'resume' }) + '\n')
+        fakeStdin.push('resume\n')
         await sessionPromise
-      } finally {
-        if (stdinDesc) Object.defineProperty(process, 'stdin', stdinDesc)
-      }
+      })
     })
 
-    it('exit rejects the session promise', async () => {
+    it('"exit" line ends the session', async () => {
       const fakeStdin = new Readable({ read() {} })
-      const stdinDesc = Object.getOwnPropertyDescriptor(process, 'stdin')
-      Object.defineProperty(process, 'stdin', { value: fakeStdin, configurable: true })
-
-      try {
+      await withFakeStdin(fakeStdin, async () => {
         const sessionPromise = mcpYieldSession()
         await new Promise(r => setImmediate(r))
 
-        fakeStdin.push(JSON.stringify({ id: 'e1', type: 'exit' }) + '\n')
-
-        let caught = null
-        try { await sessionPromise } catch (e) { caught = e }
-        expect(caught).to.exist
-        expect(caught.message).to.match(/aborted from MCP/)
-
-        const msgs = findProtocolMessages()
-        expect(msgs.some(m => m.id === 'e1' && m.type === 'exited')).to.equal(true)
-      } finally {
-        if (stdinDesc) Object.defineProperty(process, 'stdin', stdinDesc)
-      }
+        fakeStdin.push('exit\n')
+        await sessionPromise
+        expect(findProtocolMessages().some(m => m.event === 'resumed')).to.equal(true)
+      })
     })
   })
 })

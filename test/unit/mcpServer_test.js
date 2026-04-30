@@ -353,48 +353,35 @@ describe('MCP Server Integration', () => {
 
   describe('pause_session line classification', () => {
     function classifyLine(line) {
-      const trimmed = line.trim()
-      if (!trimmed) return { kind: 'empty' }
-      if (!trimmed.startsWith('{')) return { kind: 'log', line }
+      if (!line || !line.trim()) return { kind: 'empty' }
+      if (!line.trim().startsWith('{')) return { kind: 'log' }
       let msg
-      try { msg = JSON.parse(trimmed) } catch { return { kind: 'log', line } }
-      if (!msg || !msg.__mcpPause) return { kind: 'log', line }
-      if (msg.event === 'paused') return { kind: 'paused', msg }
-      if (msg.event === 'error') return { kind: 'error', msg }
-      if (msg.id != null) return { kind: 'response', msg }
+      try { msg = JSON.parse(line.trim()) } catch { return { kind: 'log' } }
+      if (!msg || !msg.__mcpPause) return { kind: 'log' }
       return { kind: 'protocol', msg }
     }
 
-    it('classifies a paused event', () => {
+    it('classifies a protocol JSON line', () => {
       const r = classifyLine('{"__mcpPause":true,"event":"paused"}')
-      expect(r.kind).to.equal('paused')
+      expect(r.kind).to.equal('protocol')
       expect(r.msg.event).to.equal('paused')
     })
 
-    it('classifies an id-keyed response', () => {
-      const r = classifyLine('{"__mcpPause":true,"id":"r1","type":"result","ok":true}')
-      expect(r.kind).to.equal('response')
-      expect(r.msg.id).to.equal('r1')
-      expect(r.msg.type).to.equal('result')
+    it('classifies a result message', () => {
+      const r = classifyLine('{"__mcpPause":true,"event":"result","ok":true,"value":"x"}')
+      expect(r.kind).to.equal('protocol')
+      expect(r.msg.event).to.equal('result')
     })
 
-    it('classifies an error event', () => {
-      const r = classifyLine('{"__mcpPause":true,"event":"error","message":"bad"}')
-      expect(r.kind).to.equal('error')
-      expect(r.msg.message).to.equal('bad')
+    it('treats non-JSON as a log line', () => {
+      expect(classifyLine('I.click("Save")').kind).to.equal('log')
     })
 
-    it('treats non-JSON lines as logs', () => {
-      const r = classifyLine('I.click("Save")')
-      expect(r.kind).to.equal('log')
+    it('treats JSON without __mcpPause as a log line', () => {
+      expect(classifyLine('{"foo":"bar"}').kind).to.equal('log')
     })
 
-    it('treats JSON without __mcpPause as logs', () => {
-      const r = classifyLine('{"foo":"bar"}')
-      expect(r.kind).to.equal('log')
-    })
-
-    it('ignores empty lines', () => {
+    it('ignores empty/whitespace lines', () => {
       expect(classifyLine('').kind).to.equal('empty')
       expect(classifyLine('   ').kind).to.equal('empty')
     })
