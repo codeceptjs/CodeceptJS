@@ -12,8 +12,11 @@ import {
   snapshotDirFor,
   artifactsToFileUrls,
   writeTraceMarkdown,
+  TraceReader,
+  ariaDiff,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
+import recorder from '../lib/recorder.js'
 import { setPauseHandler, pauseNow } from '../lib/pause.js'
 import { EventEmitter } from 'events'
 import { fileURLToPath, pathToFileURL } from 'url'
@@ -32,6 +35,93 @@ const __dirname = dirname(__filename)
 let codecept = null
 let containerInitialized = false
 let browserStarted = false
+let shellSessionActive = false
+let bootstrapDone = false
+let currentPluginsSig = ''
+let currentAiTraceDir = null  // mirrors the dir aiTrace plugin computes per test/session
+
+event.dispatcher.on(event.test.before, test => {
+  try {
+    const title = (test && (test.fullTitle ? test.fullTitle() : test.title)) || 'MCP Session'
+    currentAiTraceDir = traceDirFor(test?.file, title, outputBaseDir())
+  } catch {}
+})
+
+const SESSION_REQUIRED_ERROR = 'No active CodeceptJS session. Call `start_browser` to open a shell session, or `run_test` (use `pause()` in the test, or set `pauseAt`) to inspect during a test run.'
+
+async function ensureBootstrap() {
+  if (bootstrapDone) return
+  await codecept.bootstrap()
+  bootstrapDone = true
+}
+
+async function startShellSession() {
+  if (shellSessionActive) return
+  await ensureBootstrap()
+  recorder.start()
+  event.emit(event.suite.before, {
+    fullTitle: () => 'MCP Session',
+    tests: [],
+    retries: () => {},
+  })
+  event.emit(event.test.before, {
+    title: 'MCP Session',
+    artifacts: {},
+    retries: () => {},
+  })
+  shellSessionActive = true
+}
+
+async function endShellSession() {
+  if (!shellSessionActive) return
+  try { event.emit(event.test.after, {}) } catch {}
+  try { event.emit(event.suite.after, {}) } catch {}
+  try { event.emit(event.all.result, {}) } catch {}
+  shellSessionActive = false
+}
+
+function ensureSession() {
+  if (shellSessionActive || pausedController) return
+  throw new Error(SESSION_REQUIRED_ERROR)
+}
+
+function normalizePluginOverrides(plugins) {
+  if (!plugins || typeof plugins !== 'object') return {}
+  const out = {}
+  for (const [name, opts] of Object.entries(plugins)) {
+    if (opts === false) continue
+    out[name] = (opts === true || opts == null) ? {} : opts
+  }
+  return out
+}
+
+function applyPluginOverrides(config, plugins) {
+  config.plugins = config.plugins || {}
+  for (const [name, opts] of Object.entries(plugins)) {
+    config.plugins[name] = { ...(config.plugins[name] || {}), ...opts, enabled: true }
+  }
+}
+
+function pluginsSignature(plugins) {
+  const keys = Object.keys(plugins).sort()
+  return JSON.stringify(keys.map(k => [k, plugins[k]]))
+}
+
+async function teardownContainer() {
+  if (!containerInitialized) return
+  await endShellSession()
+  const helpers = container.helpers()
+  for (const helperName in helpers) {
+    const helper = helpers[helperName]
+    try { if (helper._finish) await helper._finish() } catch {}
+  }
+  try { if (codecept?.teardown) await codecept.teardown() } catch {}
+  containerInitialized = false
+  browserStarted = false
+  bootstrapDone = false
+  codecept = null
+  currentPluginsSig = ''
+}
 
 let runLock = Promise.resolve()
 async function withLock(fn) {
@@ -318,8 +408,14 @@ function pausedPayload() {
   }
 }
 
-async function initCodecept(configPath) {
-  if (containerInitialized) return
+async function initCodecept(configPath, pluginOverrides) {
+  const plugins = normalizePluginOverrides(pluginOverrides)
+  const sig = pluginsSignature(plugins)
+
+  if (containerInitialized) {
+    if (!Object.keys(plugins).length || sig === currentPluginsSig) return
+    await teardownContainer()
+  }
 
   const testRoot = process.env.CODECEPTJS_PROJECT_DIR || process.cwd()
 
@@ -344,6 +440,11 @@ async function initCodecept(configPath) {
   const { getConfig } = await import('../lib/command/utils.js')
   const config = await getConfig(configPath)
 
+  // aiTrace is the canonical per-step ARIA/HTML/screenshot capture for MCP.
+  // Always on so run_code / continue can read the latest snapshot from disk
+  // instead of double-capturing through grabAriaSnapshot etc.
+  applyPluginOverrides(config, { aiTrace: {}, ...plugins })
+
   codecept = new Codecept(config, {})
   await codecept.init(testRoot)
   await container.create(config, {})
@@ -351,7 +452,10 @@ async function initCodecept(configPath) {
 
   containerInitialized = true
   browserStarted = true
+  currentPluginsSig = sig
 }
+
+const PLUGINS_DESCRIPTION = 'Enable CodeceptJS plugins for this run, mirroring the CLI `-p` flag. Keys are plugin names (e.g. screencast, aiTrace, pause, pageInfo, heal, retryFailedStep, screenshotOnFail, autoDelay). Value `true` or `{}` enables with defaults; an object merges options, e.g. {"screencast": {"saveScreenshots": true}, "aiTrace": {"on": "fail"}}. Changing the plugin set tears down and re-initializes the container (closes the browser).'
 
 const server = new Server(
   { name: 'codeceptjs-mcp-server', version: '1.0.0' },
@@ -394,6 +498,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           timeout: { type: 'number' },
           config: { type: 'string' },
           pauseAt: { type: 'number', description: '1-based step index. Test will pause after the Nth step completes. Useful as a programmatic breakpoint without editing the test.' },
+          plugins: { type: 'object', description: PLUGINS_DESCRIPTION, additionalProperties: true },
         },
         required: ['test'],
       },
@@ -407,6 +512,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           test: { type: 'string' },
           timeout: { type: 'number' },
           config: { type: 'string' },
+          plugins: { type: 'object', description: PLUGINS_DESCRIPTION, additionalProperties: true },
         },
         required: ['test'],
       },
@@ -497,33 +603,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'start_browser': {
         const configPath = args?.config
-        if (browserStarted) {
-          return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser already started' }, null, 2) }] }
+        if (browserStarted && shellSessionActive) {
+          return { content: [{ type: 'text', text: JSON.stringify({ status: 'Session already active' }, null, 2) }] }
         }
         await initCodecept(configPath)
-        return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser started successfully' }, null, 2) }] }
+        await startShellSession()
+        return { content: [{ type: 'text', text: JSON.stringify({ status: 'Session started — run_code and snapshot are now available' }, null, 2) }] }
       }
 
       case 'stop_browser': {
         if (!containerInitialized) {
           return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser not initialized' }, null, 2) }] }
         }
-
-        const helpers = container.helpers()
-        for (const helperName in helpers) {
-          const helper = helpers[helperName]
-          try { if (helper._finish) await helper._finish() } catch {}
-        }
-
-        browserStarted = false
-        containerInitialized = false
-
+        await teardownContainer()
         return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser stopped successfully' }, null, 2) }] }
       }
 
       case 'snapshot': {
         const { config: configPath, fullPage = false } = args || {}
         await initCodecept(configPath)
+        ensureSession()
 
         const helper = pickActingHelper(container.helpers())
         if (!helper) throw new Error('No supported acting helper available (Playwright, Puppeteer, WebDriver).')
@@ -588,6 +687,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case 'run_code': {
         const { code, timeout = 60000, config: configPath, saveArtifacts = true } = args
         await initCodecept(configPath)
+        ensureSession()
 
         const I = container.support('I')
         if (!I) throw new Error('I object not available. Make sure helpers are configured.')
@@ -603,6 +703,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const traceDir = traceDirFor(`mcp_${Date.now()}`, 'run_code', outputBaseDir())
         mkdirp.sync(traceDir)
         const startedAt = Date.now()
+
+        // Pin the latest aiTrace ARIA file before running the code, so we
+        // can diff after. aiTrace owns per-step capture; we just read it.
+        const reader = new TraceReader(currentAiTraceDir)
+        const ariaBefore = reader.last('aria')
 
         const MAX_LOG_ENTRIES = 100
         const MAX_LOG_MSG_BYTES = 2000
@@ -666,6 +771,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           }
         }
 
+        // Diff against the latest aiTrace ARIA file produced by the steps
+        // that just ran inside this run_code call.
+        const ariaAfter = reader.last('aria')
+        if (ariaBefore && ariaAfter && ariaBefore !== ariaAfter) {
+          const diff = ariaDiff(ariaBefore, ariaAfter)
+          if (diff) result.ariaDiff = diff
+        }
+
         const traceFile = writeTraceMarkdown({
           dir: traceDir,
           title: 'run_code',
@@ -686,8 +799,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           if (pausedController) {
             throw new Error('A previous run_test is still paused. Call "continue" first.')
           }
-          const { test, timeout = 60000, config: configPathArg, pauseAt } = args || {}
-          await initCodecept(configPathArg)
+          const { test, timeout = 60000, config: configPathArg, pauseAt, plugins } = args || {}
+          await initCodecept(configPathArg, plugins)
+          await endShellSession()
 
           return await withSilencedIO(async () => {
             codecept.loadTests()
@@ -740,7 +854,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             let runError = null
             const runPromise = (async () => {
               try {
-                await codecept.bootstrap()
+                await ensureBootstrap()
                 await codecept.run(testFile)
               } catch (err) {
                 runError = err
@@ -779,8 +893,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           if (pausedController) {
             throw new Error('A previous run is still paused. Call "continue" first.')
           }
-          const { test, timeout = 60000, config: configPath } = args || {}
-          await initCodecept(configPath)
+          const { test, timeout = 60000, config: configPath, plugins } = args || {}
+          await initCodecept(configPath, plugins)
+          await endShellSession()
 
           return await withSilencedIO(async () => {
             codecept.loadTests()
@@ -832,7 +947,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             let runError = null
             const runPromise = (async () => {
               try {
-                await codecept.bootstrap()
+                await ensureBootstrap()
                 await codecept.run(testFile)
               } catch (err) {
                 runError = err
