@@ -154,3 +154,48 @@ You can use this options for build your own [plugins](https://codecept.io/hooks/
     ...
   });
 ```
+
+## Direct Helper Access
+
+Some scenarios need the underlying SDK directly — a raw `page.evaluate`, a `page.on('request')` listener, an experimental Playwright API, or a wdio command the `WebDriver` helper doesn't expose. The `expose` plugin injects helper internals as scenario arguments so you can call them inline.
+
+```js
+Scenario('intercept network', async ({ I, page }) => {
+  page.on('request', req => console.log(req.method(), req.url()))
+  I.amOnPage('/')
+  const title = await page.evaluate(() => document.title)
+  I.see(title)
+})
+```
+Enable `expose` plugin in config and use public properties from a corresponding helper.
+Map each injection name to `HelperName.propertyName`:
+
+```js
+plugins: {
+  expose: {
+    enabled: true,
+    inject: {
+      page: 'Playwright.page',
+      browser: 'Playwright.browser',
+      browserContext: 'Playwright.browserContext',
+      wdio: 'WebDriver.browser',
+    }
+  }
+}
+```
+
+There is a shorthand mode:
+
+```js
+plugins: {
+  expose: {
+    enabled: true,
+    inject: { page: 'page' }   // resolves Playwright.page or Puppeteer.page
+  }
+}
+```
+A value with no dot is shorthand for "the first configured browser helper that exposes this property". Allowed properties: `page`, `browser`, `browserContext`, `context`.
+
+The injected value is a live proxy. Every property access reads the current helper property at that moment, so tab switches (`I.openNewTab`, `I.switchToNextTab`) propagate automatically — the next call through `page` targets the new tab.
+
+Calls pass straight to the underlying SDK. They aren't wrapped as CodeceptJS steps and don't appear in step output, so `await page.evaluate(...)` behaves as native Playwright.
