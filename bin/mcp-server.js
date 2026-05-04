@@ -237,6 +237,11 @@ function outputBaseDir() {
   return global.output_dir || resolvePath(process.cwd(), 'output')
 }
 
+function computeTraceDir(test) {
+  const title = test.fullTitle ? test.fullTitle() : test.title
+  return traceDirFor(test.file, title, outputBaseDir())
+}
+
 // In-process pause coordination. When a test running through run_test calls
 // pause(), the handler registered via setPauseHandler resolves a "paused"
 // promise that run_test is racing against test completion. The "pause" tool
@@ -247,6 +252,7 @@ let pendingRunResults = null  // results array being collected while paused
 let pendingRunCleanup = null  // cleanup callback to detach test.after / step.after listeners
 let pendingTestFile = null    // file path of the test currently running
 let pendingStepInfo = null    // { index, name, status } of the last step that fired step.after
+let pendingTraceDir = null    // aiTrace per-test dir for the running test
 const pauseEvents = new EventEmitter()
 
 setPauseHandler(({ registeredVariables }) => {
@@ -293,13 +299,16 @@ function collectRunCompletion(errorMessage) {
     passes: results.filter(r => r.status === 'passed').length,
     failures: results.filter(r => r.status === 'failed').length,
   }
+  const aiTraceDir = pendingTraceDir
   if (typeof pendingRunCleanup === 'function') pendingRunCleanup()
   pendingRunPromise = null
   pendingRunResults = null
   pendingTestFile = null
   pendingStepInfo = null
+  pendingTraceDir = null
   return {
     status: 'completed',
+    aiTraceDir,
     reporterJson: { stats, tests: results },
     error: errorMessage,
   }
@@ -309,11 +318,13 @@ function pausedPayload() {
   return {
     status: 'paused',
     file: pendingTestFile,
+    aiTraceDir: pendingTraceDir,
     pausedAfter: pendingStepInfo,
     suggestions: [
       'Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point',
       'Call run_code to inspect or manipulate state (e.g. return await I.grabText("h1"))',
       'Call continue to release the pause and let the test run the next step (or finish)',
+      'Query a saved step snapshot offline: codeceptq <locator> --file <aiTraceDir>/<NNNN>_<step>_page.html',
     ],
   }
 }
@@ -709,6 +720,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             pendingStepInfo = null
             let stepIndex = 0
 
+            const onBefore = t => {
+              pendingTraceDir = computeTraceDir(t)
+            }
             const onAfter = t => {
               pendingRunResults.push({
                 title: t.title,
@@ -716,6 +730,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 status: t.err ? 'failed' : 'passed',
                 error: t.err?.message,
                 duration: t.duration,
+                aiTraceDir: pendingTraceDir,
               })
             }
             const onStepAfter = step => {
@@ -729,9 +744,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 pauseNow()
               }
             }
+            event.dispatcher.on(event.test.before, onBefore)
             event.dispatcher.on(event.test.after, onAfter)
             event.dispatcher.on(event.step.after, onStepAfter)
             pendingRunCleanup = () => {
+              try { event.dispatcher.removeListener(event.test.before, onBefore) } catch {}
               try { event.dispatcher.removeListener(event.test.after, onAfter) } catch {}
               try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
               pendingRunCleanup = null
@@ -802,6 +819,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             pendingStepInfo = null
             let stepIndex = 0
 
+            const onBefore = t => {
+              pendingTraceDir = computeTraceDir(t)
+            }
             const onAfter = t => {
               pendingRunResults.push({
                 title: t.title,
@@ -809,6 +829,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 status: t.err ? 'failed' : 'passed',
                 error: t.err?.message,
                 duration: t.duration,
+                aiTraceDir: pendingTraceDir,
               })
             }
             const onStepAfter = step => {
@@ -821,9 +842,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               // Pause after every step — agent calls continue to advance.
               pauseNow()
             }
+            event.dispatcher.on(event.test.before, onBefore)
             event.dispatcher.on(event.test.after, onAfter)
             event.dispatcher.on(event.step.after, onStepAfter)
             pendingRunCleanup = () => {
+              try { event.dispatcher.removeListener(event.test.before, onBefore) } catch {}
               try { event.dispatcher.removeListener(event.test.after, onAfter) } catch {}
               try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
               pendingRunCleanup = null
