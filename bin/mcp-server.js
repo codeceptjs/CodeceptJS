@@ -60,7 +60,20 @@ function aiTraceHint() {
 }
 
 function applyMochaGrep(grep) {
-  if (grep && typeof container.mocha?.grep === 'function') container.mocha.grep(grep)
+  if (!grep) return
+  const mocha = typeof container.mocha === 'function' ? container.mocha() : container.mocha
+  if (mocha && typeof mocha.grep === 'function') mocha.grep(grep)
+}
+
+function pauseAtMatcher(pauseAt) {
+  if (pauseAt == null) return () => false
+  if (typeof pauseAt === 'number') return (idx) => idx === pauseAt
+  if (typeof pauseAt === 'string') {
+    const m = pauseAt.match(/^\/(.+)\/([gimsuy]*)$/)
+    const re = m ? new RegExp(m[1], m[2]) : new RegExp(pauseAt.replace(/[.+?^${}()|[\]\\]/g, '\\$&'), 'i')
+    return (_idx, name) => re.test(name)
+  }
+  return () => false
 }
 
 async function ensureBootstrap() {
@@ -124,12 +137,7 @@ function pluginsSignature(plugins) {
 async function teardownContainer() {
   if (!containerInitialized) return
   try {
-    await endShellSession()
-    const helpers = container.helpers()
-    for (const helperName in helpers) {
-      const helper = helpers[helperName]
-      try { if (helper._finish) await helper._finish() } catch {}
-    }
+    await closeBrowser()
     try { if (codecept?.teardown) await codecept.teardown() } catch {}
   } finally {
     containerInitialized = false
@@ -365,15 +373,17 @@ function outputBaseDir() {
 // pause(), the handler registered via setPauseHandler resolves a "paused"
 // promise that run_test is racing against test completion. The "pause" tool
 // then drives the REPL by mutating next/abort and resolving the controller.
-let pausedController = null   // { resolveContinue, registeredVariables }
-let pendingRunPromise = null  // run_test's run() promise while paused
-let pendingRunResults = null  // results array being collected while paused
-let pendingRunCleanup = null  // cleanup callback to detach test.after / step.after listeners
-let pendingTestFile = null    // file path of the test currently running
-let pendingStepInfo = null    // { index, name, status } of the last step that fired step.after
+let pausedController = null
+let pendingRunPromise = null
+let pendingRunResults = null
+let pendingRunCleanup = null
+let pendingTestFile = null
+let pendingStepInfo = null
+let abortRun = false
 const pauseEvents = new EventEmitter()
 
 setPauseHandler(({ registeredVariables }) => {
+  if (abortRun) return Promise.reject(new Error('MCP session aborted'))
   return new Promise(resolve => {
     pausedController = {
       registeredVariables,
@@ -385,6 +395,33 @@ setPauseHandler(({ registeredVariables }) => {
     pauseEvents.emit('paused')
   })
 })
+
+async function cancelRun() {
+  if (!pendingRunPromise && !pausedController) return false
+  abortRun = true
+  if (typeof pendingRunCleanup === 'function') { try { pendingRunCleanup() } catch {} }
+  if (pausedController) { try { pausedController.resolveContinue() } catch {} ; pausedController = null }
+  if (pendingRunPromise) {
+    try { await Promise.race([pendingRunPromise.catch(() => {}), new Promise(r => setTimeout(r, 5000))]) } catch {}
+  }
+  pendingRunPromise = null
+  pendingRunResults = null
+  pendingTestFile = null
+  pendingStepInfo = null
+  abortRun = false
+  return true
+}
+
+async function closeBrowser() {
+  if (!containerInitialized) return
+  await cancelRun()
+  await endShellSession()
+  for (const helper of Object.values(container.helpers() || {})) {
+    try { if (helper._cleanup) await helper._cleanup() } catch {}
+    try { if (helper._finishTest) await helper._finishTest() } catch {}
+  }
+  browserStarted = false
+}
 
 async function captureLiveArtifacts(prefix = 'pause') {
   const helper = pickActingHelper(container.helpers())
@@ -558,7 +595,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           test: { type: 'string' },
           timeout: { type: 'number' },
           grep: { type: 'string', description: 'Filter scenarios by title (passed to mocha.grep). Mirrors --grep on the CLI.' },
-          pauseAt: { type: 'number', description: '1-based step index. Test will pause after the Nth step completes. Useful as a programmatic breakpoint without editing the test.' },
+          pauseAt: {
+            description: 'Programmatic breakpoint. Either a 1-based step index (number) or a step-name match (string — substring case-insensitive, or `/regex/i` literal). Examples: 5 / "fill field" / "/grab.*url/i".',
+            oneOf: [{ type: 'number' }, { type: 'string' }],
+          },
           plugins: PLUGINS_PROP,
         },
         required: ['test'],
@@ -619,6 +659,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         },
       },
     },
+    {
+      name: 'cancel',
+      description: 'Abort the currently paused or in-progress test run without closing the browser. Use when you want to bail out of a paused test and start something else without going through stop_browser/start_browser. The browser session and Mocha state stay alive.',
+      inputSchema: { type: 'object', properties: {} },
+    },
   ],
 }))
 
@@ -676,6 +721,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           return { content: [{ type: 'text', text: JSON.stringify({ status: 'Session already active', plugins: plugins ?? null }, null, 2) }] }
         }
         await initCodecept(configPath, plugins)
+        if (containerInitialized && !browserStarted) {
+          for (const helper of Object.values(container.helpers() || {})) {
+            try { if (helper._beforeSuite) await helper._beforeSuite() } catch {}
+          }
+          browserStarted = true
+        }
         await startShellSession()
         return { content: [{ type: 'text', text: JSON.stringify({ status: 'Session started — run_code and snapshot are now available', plugins: plugins ?? null }, null, 2) }] }
       }
@@ -684,8 +735,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (!containerInitialized) {
           return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser not initialized' }, null, 2) }] }
         }
-        await teardownContainer()
-        return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser stopped successfully' }, null, 2) }] }
+        await closeBrowser()
+        return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser stopped — Mocha and config preserved; call start_browser to reopen' }, null, 2) }] }
       }
 
       case 'snapshot': {
@@ -755,6 +806,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         })
       }
 
+      case 'cancel': {
+        const cancelled = await cancelRun()
+        await ensureSession()
+        return { content: [{ type: 'text', text: JSON.stringify({ status: cancelled ? 'Run cancelled — browser kept open' : 'No run in progress' }, null, 2) }] }
+      }
+
       case 'run_code': {
         const { code, timeout = 60000, saveArtifacts = true, settleMs = 300 } = args
         await initCodecept()
@@ -814,6 +871,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const paramNames = ['I', ...Object.keys(scope).filter(k => k !== 'I').sort()]
         const paramValues = paramNames.map(k => scope[k])
 
+        const wasPaused = !!pausedController
+        if (wasPaused) recorder.session.start('mcp_run_code')
+
         let returnValue
         try {
           const asyncFn = new Function(...paramNames, `return (async () => { ${code} })()`)
@@ -833,7 +893,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           for (const m of consoleMethods) console[m] = origConsoleMethods[m]
           try { event.dispatcher.removeListener(event.step.after, onStepAfter) } catch {}
           try { event.dispatcher.removeListener(event.step.passed, onStepPassed) } catch {}
-          try { recorder.reset() } catch {}
+          if (wasPaused) {
+            try { recorder.session.restore('mcp_run_code') } catch {}
+          } else {
+            try { recorder.reset() } catch {}
+          }
         }
 
         result.commands = commands
@@ -918,6 +982,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             pendingTestFile = testFile
             pendingStepInfo = null
             let stepIndex = 0
+            const matchPauseAt = pauseAtMatcher(pauseAt)
 
             const onAfter = t => {
               const aiTrace = t.artifacts?.aiTrace
@@ -932,14 +997,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             }
             const onStepAfter = step => {
               stepIndex += 1
-              try {
-                pendingStepInfo = { index: stepIndex, name: step.toString(), status: step.status }
-              } catch {
-                pendingStepInfo = { index: stepIndex }
-              }
-              if (typeof pauseAt === 'number' && stepIndex === pauseAt) {
-                pauseNow()
-              }
+              const idx = stepIndex
+              const name = (() => { try { return step.toString() } catch { return '' } })()
+              recorder.add('mcp pause info', () => {
+                pendingStepInfo = { index: idx, name, status: step.status }
+              })
+              if (matchPauseAt(idx, name)) pauseNow()
             }
             event.dispatcher.on(event.test.after, onAfter)
             event.dispatcher.on(event.step.after, onStepAfter)
@@ -1030,11 +1093,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             }
             const onStepAfter = step => {
               stepIndex += 1
-              try {
-                pendingStepInfo = { index: stepIndex, name: step.toString(), status: step.status }
-              } catch {
-                pendingStepInfo = { index: stepIndex }
-              }
+              const idx = stepIndex
+              const name = (() => { try { return step.toString() } catch { return '' } })()
+              recorder.add('mcp pause info', () => {
+                pendingStepInfo = { index: idx, name, status: step.status }
+              })
               pauseNow()
             }
             event.dispatcher.on(event.test.after, onAfter)
