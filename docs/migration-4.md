@@ -387,16 +387,16 @@ What changes when `noGlobals: true`:
 | Symbol | With `noGlobals: true` |
 |--------|------------------------|
 | `Feature`, `Scenario`, `xFeature`, `xScenario`, `BeforeSuite`, `AfterSuite`, `Before`, `After`, `Background`, `BeforeAll`, `AfterAll` | **Still work in test files** — Mocha injects these into the test context. No import needed. |
-| `inject()`, `share()` | **Still global.** No package export — keep using them as globals. |
+| `pause()`, `inject()`, `share()` | **Still global.** Always available (with or without `noGlobals`) — they're the standard wiring/debugging entry points and run before any import would resolve. `pause` and `inject` are also exported from `codeceptjs` if you prefer explicit imports. |
 | `codecept_dir`, `output_dir` | **Still global** (kept for backward compatibility with external plugins). |
-| `pause`, `within`, `session`, `secret`, `locate`, `dataTable`, `actor`, `codeceptjs` | Import from `codeceptjs`. |
+| `within`, `session`, `secret`, `locate`, `dataTable`, `actor`, `codeceptjs` | Import from `codeceptjs`. |
 | `Helper` (base class) | Import from `@codeceptjs/helper`. |
 | `Given`, `When`, `Then`, `And`, `DefineParameterType` (BDD step definitions) | Available as globals **inside Gherkin step definition files** (CodeceptJS scope-injects them while loading the step files). No import needed. |
 
 Imports for the new style:
 
 ```js
-import { pause, within, session, secret, locate, dataTable, actor } from 'codeceptjs'
+import { within, session, secret, locate, dataTable, actor } from 'codeceptjs'
 import Helper from '@codeceptjs/helper'
 ```
 

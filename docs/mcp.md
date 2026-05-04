@@ -1,158 +1,186 @@
 # CodeceptJS MCP Server
 
-Model Context Protocol (MCP) server for CodeceptJS enables AI agents (like Claude) to interact with and control CodeceptJS tests programmatically.
+Model Context Protocol (MCP) server for CodeceptJS. Lets AI agents drive a CodeceptJS browser session — list tests, run arbitrary `I.*` code, pause-and-poke through a scenario, capture artifacts, and read aiTrace markdown — all in-process, sharing one browser and one container.
 
 ## Overview
 
-The MCP server provides AI agents with tools to:
-- List all tests in a CodeceptJS project
-- List all available CodeceptJS actions (I.* methods)
-- Run arbitrary CodeceptJS code with artifacts capture, return value, and `console.log` capture
-- Run specific tests with detailed output
-- Run tests step by step for detailed analysis
-- Capture a point-in-time snapshot of the browser without any action
-- Start and stop browser sessions
-- Capture screenshots, ARIA snapshots, formatted HTML, browser console logs, and storage state (cookies + localStorage)
+The MCP server exposes the following tools:
 
-## Installation
+- `list_tests` / `list_actions` — enumerate tests and `I.*` methods
+- `start_browser` / `stop_browser` — open / close the session (only place plugin overrides go)
+- `run_code` — run arbitrary JS with `I` and the full CodeceptJS scope; captures steps, console, return value, and a settled-state snapshot
+- `snapshot` — capture URL/HTML/ARIA/screenshot/console/storage at any moment
+- `run_test` — run a specific scenario; supports `pauseAt` for programmatic breakpoints
+- `run_step_by_step` — pause after every step
+- `continue` — release a paused test (run-to-end, run-to-next-pause, or run-to-finish)
+- `cancel` — abort the in-progress / paused run without closing the browser
 
-Install the MCP SDK dependency:
+## Invocation
 
-```bash
-npm install @modelcontextprotocol/sdk
-```
+Two ways to launch the server:
 
-The MCP server binary is available at `bin/mcp-server.js`.
+- `npx codeceptjs-mcp` — the published bin
+- `node node_modules/codeceptjs/bin/mcp-server.js` — direct path, useful for editor / agent configs
+
+> ⚠️ **Run from the project's local `codeceptjs`, never a global install.**
+> The MCP server resolves helpers, plugins, page objects, and custom support from the project's `node_modules`. A globally installed `codeceptjs` won't see project-local helpers (`@codeceptjs/helper`, `@codeceptjs/configure`, custom plugins) or your `include:` support objects, and per-project versions can drift from the global one. Always invoke via `npx codeceptjs-mcp` from inside the project directory, or point your MCP client config at `<project>/node_modules/codeceptjs/bin/mcp-server.js` directly.
 
 ## Configuration
 
-Configure the MCP server in your Claude Desktop or MCP-compatible client configuration:
+Set up the MCP server in your client (Claude Desktop, Cursor, Continue, etc.):
 
-### Basic Configuration
+### Basic
 
 ```json
 {
   "mcpServers": {
     "codeceptjs": {
-      "command": "node",
-      "args": ["path/to/codeceptjs/bin/mcp-server.js"]
+      "command": "npx",
+      "args": ["codeceptjs-mcp"]
     }
   }
 }
 ```
 
-With basic configuration, the server looks for `codecept.conf.js` in the current working directory.
+The server looks for `codecept.conf.js` (then `.cjs`) in the current working directory.
 
-### Configuration with Environment Variables
-
-Use environment variables to specify the CodeceptJS project directory and config file:
+### With env vars
 
 ```json
 {
   "mcpServers": {
     "codeceptjs": {
-      "command": "node",
-      "args": ["path/to/codeceptjs/bin/mcp-server.js"],
+      "command": "npx",
+      "args": ["codeceptjs-mcp"],
       "env": {
-        "CODECEPTJS_CONFIG": "/path/to/your/codecept.conf.js",
-        "CODECEPTJS_PROJECT_DIR": "/path/to/your/project"
+        "CODECEPTJS_CONFIG": "/absolute/path/to/codecept.conf.js",
+        "CODECEPTJS_PROJECT_DIR": "/absolute/path/to/project"
       }
     }
   }
 }
 ```
-
-**Environment Variables:**
 
 | Variable | Description |
 |----------|-------------|
-| `CODECEPTJS_CONFIG` | Absolute path to the CodeceptJS configuration file |
-| `CODECEPTJS_PROJECT_DIR` | Absolute path to the project root directory |
+| `CODECEPTJS_CONFIG` | Absolute path to `codecept.conf.js`. Overrides cwd lookup. |
+| `CODECEPTJS_PROJECT_DIR` | Absolute path to the project root. Used as the resolution base for the config file. |
 
-### Example: Full Claude Desktop Configuration
+## Session Defaults
 
-```json
-{
-  "mcpServers": {
-    "codeceptjs-mcp": {
-      "command": "node",
-      "args": ["D:/projects/my-project/node_modules/codeceptjs/bin/mcp-server.js"],
-      "env": {
-        "CODECEPTJS_CONFIG": "D:/projects/my-project/codecept.conf.js",
-        "CODECEPTJS_PROJECT_DIR": "D:/projects/my-project"
-      }
-    }
-  }
-}
-```
+When the session starts, the MCP server enforces two plugin defaults so the agent gets useful telemetry out of the box:
+
+- **`aiTrace: { enabled: true, on: 'step' }`** — every step persists DOM/ARIA/screenshot/console artifacts to `output/trace_<TestName>_<hash>/`. Each scenario's `traceFile` is returned in run results so the agent can `Read` the markdown directly.
+- **`browser: { enabled: true, show: false }`** — headless. Switch to headed via `start_browser` `plugins` arg.
+
+Both can be overridden (or disabled) via `start_browser`'s `plugins` argument. The `codecept.conf.js`'s own plugin config still merges in for keys the user explicitly set there.
 
 ## Available Tools
 
-### list_tests
+### `start_browser`
 
-List all tests in the CodeceptJS project.
+Initializes the session — loads config, builds the container, opens the browser, kicks off the synthetic test scope so `run_code` and `snapshot` work. This is the only tool that customizes initialization; every other tool either uses the active session or auto-inits with project defaults.
 
 **Parameters:**
-- `config` (optional): Path to codecept.conf.js (default: codecept.conf.js)
+- `config` (string, optional) — absolute path to `codecept.conf.js`. Defaults to `$CODECEPTJS_CONFIG`, then `./codecept.conf.js` in `$CODECEPTJS_PROJECT_DIR` or cwd.
+- `plugins` (object, optional) — plugin configs keyed by name. Same shape as `plugins` in `codecept.conf.js`; `enabled: true` is added automatically. Most useful entries:
+  - `{ browser: { show: true } }` — visible browser
+  - `{ browser: { browser: "firefox", windowSize: "1280x720" } }` — switch browser + viewport
+  - `{ aiTrace: { enabled: false } }` — disable per-step trace overhead on a re-run
+  - `{ pause: { on: "fail" } }` / `{ screenshot: { on: "step" } }` — any other plugin works the same way
+
+**Returns:**
+```json
+{
+  "status": "Session started — run_code and snapshot are now available",
+  "plugins": { "browser": { "show": false } }
+}
+```
+
+### `stop_browser`
+
+Closes the browser handles, drops the synthetic test scope, but **keeps the container, codecept, and Mocha alive**. Subsequent `start_browser` reopens the browser without rebuilding everything — important because ESM-loaded test files don't re-execute their top-level `Scenario(...)` on reload, so a fresh Mocha would have no suites.
+
+**Parameters:** none
+
+**Returns:**
+```json
+{ "status": "Browser stopped — Mocha and config preserved; call start_browser to reopen" }
+```
+
+### `cancel`
+
+Aborts the currently paused or in-progress test run **without closing the browser**. Use when you want to bail out of a paused test and start something else. Mocha + container stay alive; the next `run_test` / `run_step_by_step` works immediately.
+
+**Parameters:** none
+
+**Returns:**
+```json
+{ "status": "Run cancelled — browser kept open" }
+```
+
+### `list_tests`
+
+Lists all tests resolved from the project's `tests:` glob.
+
+**Parameters:** none
 
 **Returns:**
 ```json
 {
   "count": 5,
   "tests": [
-    {
-      "file": "/full/path/to/test/file.js",
-      "relativePath": "tests/example_test.js"
-    }
+    { "file": "/abs/path/to/work_orders_test.js", "relativePath": "work_orders_test.js" }
   ]
 }
 ```
 
-**Example:**
-```json
-{
-  "name": "list_tests",
-  "arguments": {
-    "config": "/path/to/codecept.conf.js"
-  }
-}
-```
+### `list_actions`
 
-### list_actions
+Lists every `I.*` method from enabled helpers and support objects.
 
-List all available CodeceptJS actions (I.* methods) from enabled helpers and support objects.
-
-**Parameters:**
-- `config` (optional): Path to codecept.conf.js
+**Parameters:** none
 
 **Returns:**
 ```json
 {
   "count": 120,
   "actions": [
-    {
-      "helper": "Playwright",
-      "action": "amOnPage",
-      "signature": "I.amOnPage(url)"
-    },
-    {
-      "helper": "Playwright",
-      "action": "click",
-      "signature": "I.click(locator, context)"
-    }
+    { "helper": "Playwright", "action": "amOnPage", "signature": "I.amOnPage(url)" },
+    { "helper": "SupportObject", "action": "loginAsAdmin", "signature": "I.loginAsAdmin()" }
   ]
 }
 ```
 
-### run_code
+### `run_code`
 
-Run arbitrary CodeceptJS code. The tool captures the value the code returns, every `I.*` step it runs, anything written to `console.log` / `console.info` / `console.warn` / `console.error` / `console.debug`, plus a final-state snapshot of the page.
+Run arbitrary JavaScript inside the live test scope. Captures steps, console output, return value, and a final-state snapshot.
 
 **Parameters:**
-- `code` (required): CodeceptJS code to execute. May `return` a value and use `console.*` for debugging.
-- `timeout` (optional): Timeout in milliseconds (default: 60000)
-- `config` (optional): Path to codecept.conf.js
-- `saveArtifacts` (optional): Save final-state artifacts to disk (default: true)
+- `code` (string, required) — JS source. Use `await` on `I.*` calls.
+- `timeout` (number, optional) — ms (default `60000`).
+- `saveArtifacts` (boolean, optional) — capture final-state artifacts (default `true`).
+- `settleMs` (number, optional) — wait this many ms after the code finishes before capturing artifacts (default `300`). Bump to `1000`+ for slow re-renders, `0` to skip.
+
+**Scope (everything reachable as a bare identifier in `code`):**
+
+| Symbol | Source |
+|--------|--------|
+| `I` | The actor (with all helper methods) |
+| Custom support objects | `include:` in `codecept.conf.js` (e.g. page objects, `login` from `auth` plugin) |
+| `locate`, `within`, `session`, `secret`, `inject`, `pause`, `share` | from `codeceptjs` |
+| `tryTo`, `retryTo`, `hopeThat` | from `codeceptjs/effects` |
+| `step` | from `codeceptjs/steps` |
+| `element`, `eachElement`, `expectElement`, `expectAnyElement`, `expectAllElements` | from `codeceptjs/els` |
+| `container` | the DI container |
+| `helpers` | live helpers map (e.g. `helpers.Playwright.page` for raw Playwright access) |
+
+The full live list is returned in every response under `availableObjects`.
+
+**Return-value handling:**
+- An explicit `return X` is JSON-stringified (with circular-ref handling). Capped at 20 KB.
+- If you forget `return`, the last grabbed step value is returned automatically (`await I.grabTitle()` on the last line works).
+- A returned `WebElement` (or array of them, from `I.grabWebElement(s)`) is auto-described to a plain object: `{ text, html, visible, enabled, attrs }`.
 
 **Returns:**
 ```json
@@ -160,14 +188,10 @@ Run arbitrary CodeceptJS code. The tool captures the value the code returns, eve
   "status": "success",
   "output": "Code executed successfully",
   "error": null,
-  "commands": [
-    "I.amOnPage(\"/\")",
-    "I.grabTextFrom(\"h1\")"
-  ],
-  "logs": [
-    { "level": "log", "message": "headline Welcome", "t": 47 }
-  ],
+  "commands": ["I am on page \"/\"", "I grab text from \"h1\""],
+  "logs": [{ "level": "log", "message": "headline Welcome", "t": 47 }],
   "returnValue": "{\n  \"url\": \"http://localhost:8000/\",\n  \"text\": \"Welcome\"\n}",
+  "availableObjects": ["I", "container", "eachElement", "element", "expectAllElements", "expectAnyElement", "expectElement", "helpers", "hopeThat", "inject", "locate", "login", "pause", "retryTo", "secret", "session", "share", "step", "tryTo", "within"],
   "artifacts": {
     "url": "http://localhost:8000/",
     "html": "file:///output/trace_run_code_.../mcp_page.html",
@@ -178,35 +202,33 @@ Run arbitrary CodeceptJS code. The tool captures the value the code returns, eve
     "cookieCount": 3,
     "localStorageCount": 5
   },
+  "ariaDiff": "...",
   "dir": "/output/trace_run_code_...",
   "traceFile": "file:///output/trace_run_code_.../trace.md"
 }
 ```
 
-**Notes:**
-- `returnValue` is the value the code's last `return` statement produced, JSON-stringified with circular-ref handling. Capped at 20 KB; `returnValueTruncated: true` is set if it was cut.
-- `logs` is an in-order list of console output captured during execution. Each entry has `{ level, message, t }` where `t` is ms since the code started. Capped at 100 entries × 2 KB per message; `logsTruncated: true` is set if hit. `console.*` writes do not pollute MCP stdio — they're captured in-memory only.
-- `commands` is the list of `I.*` calls observed during execution (via the recorder).
-- `artifacts.storage` is omitted when both cookies and localStorage are empty.
+- `traceFile` — markdown summary of this call. `Read` it for full context.
+- `ariaDiff` — present when the call mutated the page; diff between the previous aiTrace ARIA snapshot and the new one.
+- `aiTraceHint` — appears when aiTrace is disabled, suggesting how to re-enable it.
 
 **Example:**
 ```json
 {
   "name": "run_code",
   "arguments": {
-    "code": "await I.amOnPage('/'); const t = await I.grabTextFrom('h1'); console.log('headline', t); return { url: await I.grabCurrentUrl(), text: t };",
-    "timeout": 30000
+    "code": "await I.amOnPage('/'); const t = await I.grabTextFrom('h1'); return { url: await I.grabCurrentUrl(), text: t };"
   }
 }
 ```
 
-### snapshot
+### `snapshot`
 
-Capture the current state of the browser without performing any action. Useful for inspecting what's on the page right now (URL, cookies, localStorage, formatted HTML, ARIA, screenshot, browser console logs) when reasoning between actions.
+Capture the current browser state without performing any action.
 
 **Parameters:**
-- `config` (optional): Path to codecept.conf.js
-- `fullPage` (optional): Take a full-page screenshot (default: false)
+- `fullPage` (boolean, optional) — full-page screenshot (default `false`).
+- `settleMs` (number, optional) — wait before capture (default `300`).
 
 **Returns:**
 ```json
@@ -227,135 +249,100 @@ Capture the current state of the browser without performing any action. Useful f
 }
 ```
 
-**Example:**
-```json
-{
-  "name": "snapshot",
-  "arguments": { "fullPage": true }
-}
-```
+### `run_test`
 
-### continue
+Run a specific scenario. Returns reporter JSON with one entry per scenario; each entry has a `traceFile` (file:// URL) pointing to the per-scenario aiTrace markdown — `Read` it on failures to see the failing step's DOM/ARIA/screenshot.
 
-Release a paused test (one that called `pause()` during `run_test`) and let it run to completion. Returns the final reporter result.
-
-To inspect or manipulate state while the test is paused, use [`run_code`](#run_code) — it operates on the same container the test is using.
+If the test calls `pause()` — or if `pauseAt` matches a step — returns early with `status: "paused"` so the agent can inspect via `run_code` and release with `continue` (or abort with `cancel`).
 
 **Parameters:**
-- `timeout` (optional): ms to wait for the test to finish after continuing (default 60000).
+- `test` (string, required) — file path or partial test name; resolved to a single test file.
+- `timeout` (number, optional) — overall ms (default `60000`).
+- `grep` (string, optional) — filter scenarios by title; passed to `mocha.grep`. Mirrors `--grep` on the CLI.
+- `pauseAt` (number | string, optional) — programmatic breakpoint. Either:
+  - `number` — 1-based step index (test pauses after the Nth step completes)
+  - `string` — case-insensitive substring match against step name
+  - `"/regex/i"` — regex literal (the `/.../i` form is honored verbatim)
 
-**Returns:**
-```json
-{
-  "status": "completed",
-  "reporterJson": { "stats": { "tests": 1, "passes": 1, "failures": 0 }, "tests": [...] },
-  "error": null
-}
-```
-
-**Example flow:**
-
-```json
-{ "name": "run_test", "arguments": { "test": "checkout_test" } }
-// → { "status": "paused", "file": "...", "note": "..." }
-
-{ "name": "run_code", "arguments": { "code": "return await I.grabCurrentUrl()" } }
-// → { "status": "success", "returnValue": "http://...", "artifacts": { ... } }
-
-{ "name": "run_code", "arguments": { "code": "await I.click('Save')" } }
-// → { "status": "success", "artifacts": { ... } }
-
-{ "name": "continue", "arguments": {} }
-// → { "status": "completed", "reporterJson": { ... } }
-```
-
-**Notes:**
-- Pause runs in-process: `run_code` and the test share the same `I` / browser. There's no subprocess, no IPC.
-- `run_test` and `continue` wrap test execution in the same `withSilencedIO` helper that `run_step_by_step` uses, so step output doesn't interleave with the MCP JSON-RPC stream. Stdout/stderr are restored before each tool call returns.
-- TTY behaviour (`npx codeceptjs run --debug` at a terminal) is unchanged — `pause()` opens the readline REPL whenever `process.stdin.isTTY` is true.
-
-### run_test
-
-Run a specific test by name or file path. Runs in-process so it shares the same `I` / browser as `run_code` and `snapshot`. If the test calls `pause()` — or if `pauseAt` is set and the Nth step completes — this tool returns early and the agent drives the session through `run_code` and `continue`.
-
-**Parameters:**
-- `test` (required): Test name or file path
-- `timeout` (optional): Timeout in milliseconds (default: 60000)
-- `config` (optional): Path to codecept.conf.js
-- `pauseAt` (optional): 1-based step index. The test pauses after the Nth step completes. Use this as a programmatic breakpoint without editing the test. Discover step indices via the `list` CLI (`--steps`) or via `run_step_by_step`.
-
-**Returns (test completed normally):**
+**Returns (completed normally):**
 ```json
 {
   "status": "completed",
   "file": "/path/to/test.js",
-  "reporterJson": { "stats": { "tests": 1, "passes": 1, "failures": 0 }, "tests": [...] },
+  "reporterJson": {
+    "stats": { "tests": 1, "passes": 1, "failures": 0 },
+    "tests": [
+      {
+        "title": "lists materials",
+        "file": "/path/to/materials_test.js",
+        "status": "passed",
+        "duration": 4123,
+        "traceFile": "file:///output/trace_materials__lists_materials_xxxx/trace.md"
+      }
+    ]
+  },
   "error": null
 }
 ```
 
-**Returns (test reached `pause()` or `pauseAt`):**
+**Returns (paused):**
 ```json
 {
   "status": "paused",
   "file": "/path/to/test.js",
-  "pausedAfter": { "index": 3, "name": "I.click(\"Save\")", "status": "passed" },
-  "page": { "url": "https://example.com/checkout", "title": "Checkout", "contentSize": 18432 },
+  "pausedAfter": { "index": 7, "name": "I select option {\"css\":\"main select\"}, \"Flux\"", "status": "success" },
+  "page": { "url": "https://app.example.com/materials", "title": "Materials", "contentSize": 18432 },
   "suggestions": [
     "Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point",
     "Call run_code to inspect or manipulate state (e.g. return await I.grabText(\"h1\"))",
-    "Call continue to release the pause and let the test finish"
+    "Call continue to release the pause and let the test run the next step (or finish)"
   ]
 }
 ```
 
-**Features:**
-- Automatically resolves test names to file paths
-- Supports partial test name matching
-- Runs in-process; results assembled from CodeceptJS test events
-- Yields on `pause()` (or `pauseAt`) so the agent can inspect via `run_code` and release with `continue`
-
-**Example:**
+**Examples:**
 ```json
-{
-  "name": "run_test",
-  "arguments": {
-    "test": "basic_navigation_test",
-    "timeout": 60000
-  }
-}
+{ "name": "run_test", "arguments": { "test": "checkout_test", "pauseAt": 5 } }
+{ "name": "run_test", "arguments": { "test": "checkout_test", "pauseAt": "fill field" } }
+{ "name": "run_test", "arguments": { "test": "checkout_test", "pauseAt": "/grab.*url/i" } }
 ```
 
-### run_step_by_step
+### `run_step_by_step`
 
-Run a test interactively, pausing after every step. Returns a paused payload after the first step completes — the agent then calls `continue` to advance one step at a time, or `run_code` / `snapshot` to inspect state at any pause.
+Run a test interactively, pausing after every step. The agent advances with `continue` or inspects with `run_code` / `snapshot`.
 
 **Parameters:**
-- `test` (required): Test name or file path
-- `timeout` (optional): per-call timeout in milliseconds (default: 60000)
-- `config` (optional): Path to codecept.conf.js
+- `test` (string, required)
+- `timeout` (number, optional)
+- `grep` (string, optional)
+- `plugins` (object, optional) — same as `start_browser`. Most useful is `{ browser: { show: true } }` so you can watch the run between pauses.
 
 **Returns (after each step):**
 ```json
 {
   "status": "paused",
   "file": "/path/to/test.js",
-  "pausedAfter": { "index": 1, "name": "I.amOnPage(\"/\")", "status": "passed" },
+  "pausedAfter": { "index": 1, "name": "I am on page \"/\"", "status": "success" },
   "page": { "url": "http://localhost:8000/", "title": "Test App", "contentSize": 1832 },
-  "suggestions": [
-    "Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point",
-    "Call run_code to inspect or manipulate state ...",
-    "Call continue to release the pause and let the test run the next step (or finish)"
-  ]
+  "suggestions": [...]
 }
 ```
 
-**Returns (after the last step):**
-```json
-{ "status": "completed", "file": "...", "reporterJson": { "stats": {...}, "tests": [...] } }
-```
+**Returns (after the last step):** same shape as `run_test`'s completed response — every scenario carries its `traceFile`.
 
-**Flow:**
+### `continue`
+
+Release a paused test. The test runs until the next pause (`run_step_by_step`), the next `pause()` call, or completion.
+
+**Parameters:**
+- `timeout` (number, optional) — ms to wait for the next pause / completion (default `60000`).
+
+**Returns (re-paused):** same shape as `run_test`'s paused response, with the new `pausedAfter` index.
+
+**Returns (completed):** same shape as `run_test`'s completed response.
+
+## Pause-and-poke flow
+
 ```json
 { "name": "run_step_by_step", "arguments": { "test": "checkout_test" } }
 // → { "status": "paused", "pausedAfter": { "index": 1, ... } }
@@ -363,129 +350,45 @@ Run a test interactively, pausing after every step. Returns a paused payload aft
 { "name": "snapshot", "arguments": {} }
 // → full artifact bundle for step 1
 
+{ "name": "run_code", "arguments": { "code": "return await I.grabCurrentUrl()" } }
+// → { "status": "success", "returnValue": "http://...", "artifacts": { ... } }
+
+{ "name": "run_code", "arguments": { "code": "await I.click('Save')" } }
+// → { "status": "success", ... } — actually mutates the live page
+
 { "name": "continue", "arguments": {} }
 // → { "status": "paused", "pausedAfter": { "index": 2, ... } }
 
-{ "name": "continue", "arguments": {} }
-// → ... and so on, until { "status": "completed", "reporterJson": {...} }
+// ... or bail out:
+{ "name": "cancel", "arguments": {} }
+// → { "status": "Run cancelled — browser kept open" }
 ```
 
-For a one-shot breakpoint (pause once at a specific step rather than every step), use `run_test` with `pauseAt: N` instead.
+Notes:
+- Pause runs in-process: `run_code` and the test share the same `I` / browser. There's no subprocess, no IPC.
+- `run_test` / `run_step_by_step` / `continue` silence stdout/stderr while running so step output doesn't interleave with the MCP JSON-RPC stream.
+- TTY behaviour is unchanged — `npx codeceptjs run --debug` at a terminal still opens the readline REPL when `process.stdin.isTTY` is true. The MCP server only intercepts pause when its handler is registered.
 
-For per-step trace artifacts written to disk (HTML / ARIA / screenshot / console / storage per step) without the interactive flow, enable the `aiTrace` plugin.
+## Trace files (aiTrace)
 
-### start_browser
-
-Start the browser session (initializes CodeceptJS container).
-
-**Parameters:**
-- `config` (optional): Path to codecept.conf.js
-
-**Returns:**
-```json
-{
-  "status": "Browser started successfully"
-}
-```
-
-**Note:** Browser is automatically started on first code execution. This tool is useful for pre-initialization.
-
-### stop_browser
-
-Stop the browser session and cleanup resources.
-
-**Parameters:**
-- None
-
-**Returns:**
-```json
-{
-  "status": "Browser stopped successfully"
-}
-```
-
-**Note:** Useful for releasing resources between long-running sessions.
-
-## Testing
-
-### Run MCP Server Tests
-
-The MCP server includes a comprehensive test suite:
-
-```bash
-node test/mcp/mcp_server_test.js
-```
-
-Tests cover:
-- Tool listing and schema validation
-- Test enumeration
-- Action listing
-- Code execution with artifacts
-- Test execution (run_test)
-- Step-by-step execution
-- Browser lifecycle
-- Error handling
-
-### Run Demo Tests with MCP
-
-**Important: Start the test web server first!**
-
-The MCP test scenarios require a web server running on port 8000. Start it in a separate terminal:
-
-```bash
-# Option 1: Using http-server (recommended)
-cd test/mcp
-npx http-server -p 8000
-
-# Option 2: Using Python
-cd test/mcp
-python -m http.server 8000
-
-# Option 3: Using PHP
-cd test/mcp
-php -S localhost:8000
-```
-
-The server will start at http://127.0.0.1:8000
-
-**Keep this terminal open** while running tests through MCP/Claude.
-
-Once the server is running, you can use Claude to run tests:
-
-```
-"List all tests"
-"Run basic navigation test"
-"Run form interaction test step by step"
-```
-
-**Note:** If tests fail with ERR_CONNECTION_REFUSED, make sure the web server is running on port 8000.
-
-## Trace Files for AI Debugging
-
-When using `run_step_by_step`, the server generates trace files that provide rich context for AI agents:
-
-### Trace File Structure
+When `aiTrace` is on (the default for MCP sessions), every step in a scenario produces:
 
 ```
 output/
-└── trace_Test_Name_abc123/
-    ├── 0000_<step>_screenshot.png   # Screenshot after step 0
-    ├── 0000_<step>_page.html        # Formatted HTML (minified -> trash classes/scripts/styles stripped -> beautified)
-    ├── 0000_<step>_aria.txt         # ARIA snapshot after step 0 (Playwright only)
-    ├── 0000_<step>_console.json     # Browser console logs (normalized to {type, text})
+└── trace_Materials__lists_materials_<hash>/
     ├── 0001_<step>_screenshot.png
-    ├── 0001_<step>_page.html
-    ├── 0001_<step>_aria.txt
+    ├── 0001_<step>_page.html       # minified → trash classes/scripts/styles stripped → beautified
+    ├── 0001_<step>_aria.txt        # Playwright only
     ├── 0001_<step>_console.json
-    ├── final_storage.json           # Cookies + localStorage at test end (run_step_by_step fallback)
-    └── trace.md                     # AI-friendly summary with links to all of the above
+    ├── 0002_...
+    └── trace.md                    # AI-friendly markdown index
 ```
 
-For ad-hoc `run_code` and `snapshot()` runs, only a single set of artifacts is produced (`mcp_*` / `snapshot_*` prefix), since there are no per-step iterations.
+`run_test` / `run_step_by_step` results expose the `trace.md` URL per scenario (`reporterJson.tests[].traceFile`) — `Read` it on failure to see exactly what the failing step saw.
 
-### Using Trace Files with AI
+For ad-hoc `run_code` / `snapshot` runs, only a single set of artifacts is produced (`mcp_*` / `snapshot_*` prefix), packaged with their own `trace.md`.
 
-The `trace.md` file provides structured information perfect for AI analysis:
+### `trace.md` shape
 
 ```markdown
 # Test: Login functionality
@@ -495,11 +398,10 @@ The `trace.md` file provides structured information perfect for AI analysis:
 
 ## Steps
 
-1. **I.amOnPage("/login")** - passed (150ms)
-2. **I.fillField("#username", "user")** - passed (80ms)
-3. **I.fillField("#password", "pass")** - passed (75ms)
-4. **I.click("#login")** - passed (100ms)
-5. **I.see("Welcome")** - failed (50ms)
+1. **I.amOnPage("/login")** — passed (150ms)
+2. **I.fillField("#username", "user")** — passed (80ms)
+3. **I.click("#login")** — passed (100ms)
+4. **I.see("Welcome")** — failed (50ms)
 
 ## Error
 
@@ -507,148 +409,76 @@ Element "Welcome" not found
 
 ## Artifacts
 
-- Screenshot: 0005_screenshot.png
-- HTML: 0005_page.html
-- ARIA: 0005_aria.txt
+- Screenshot: 0004_screenshot.png
+- HTML: 0004_page.html
+- ARIA: 0004_aria.txt
 ```
 
-AI agents can use these artifacts to:
-- Visualize what the test saw at each step
-- Analyze page structure via ARIA
-- Debug issues using HTML snapshots
-- Identify errors from console logs
+## HTML formatting
 
-## HTML Formatting
+Every HTML snapshot saved by the MCP server (and the `aiTrace` / `pageInfo` plugins, since they all funnel through `captureSnapshot` in `lib/utils/trace.js`) goes through:
 
-Every HTML snapshot saved by the MCP server (and the aiTrace / pageInfo plugins, since they share the same `captureSnapshot` funnel in `lib/utils/captureSnapshot.js`) is processed through a three-stage pipeline before being written to disk:
+1. **Minify** (`html-minifier-terser`) — strip comments, collapse whitespace, drop redundant attributes.
+2. **Clean** — drop `<style>`, `<noscript>`, and inline `<script>` (no `src`); keep `<script src="...">`; strip trash class names (Tailwind utilities, framework hashes, `xl:hidden`-style scoped classes); drop `style="..."` attributes. Semantic attributes (`id`, `aria-*`, `data-*`, `role`, `href`, `src`, `alt`, `title`, `name`) are preserved.
+3. **Beautify** (`js-beautify`) — re-indent at 2 spaces; keep inline elements with their text.
 
-1. **Minify** (via `html-minifier-terser`) — strips comments, collapses whitespace, removes redundant attributes.
-2. **Clean** — drops `<style>`, `<noscript>`, and inline `<script>` (no `src`) blocks entirely; preserves `<script src="...">`; strips trash class names (Tailwind utilities `text-*`, `flex-*`, `border-*`, framework-generated `v-*`, `ember-*`, `Header__title`, hashed classes containing digits, and `xl:hidden`-style scoped classes); drops `style="..."` attributes. Semantic attributes (`id`, `aria-*`, `data-*`, `role`, `href`, `src`, `alt`, `title`, `name`) are kept.
-3. **Beautify** (via `js-beautify`) — re-indents with 2-space indentation; keeps inline elements like `<strong>` / `<a>` on the same line as their text.
+Result: a multi-line, low-noise HTML doc that's far cheaper for an LLM to reason about than raw page source.
 
-The result is a multi-line, low-noise HTML document that's far cheaper for an LLM to reason about than raw page source.
+## Storage state
 
-## Storage State
+For Playwright, `captureSnapshot` calls `helper.grabStorageState()`. For Puppeteer / WebDriver, it falls back to `helper.grabCookie()` plus an `executeScript` walking `window.localStorage`. Both produce the same shape (`{ cookies: [...], origins: [{ origin, localStorage: [...] }] }`).
 
-When a Playwright helper is configured, `captureSnapshot` calls `helper.grabStorageState()` to dump cookies + localStorage in one go. For Puppeteer / WebDriver, it falls back to `helper.grabCookie()` plus an `executeScript()` call that walks `window.localStorage`. Both paths produce the same shape (`{ cookies: [...], origins: [{ origin, localStorage: [...] }] }`) so AI agents see a consistent storage payload regardless of the helper.
-
-Storage capture is **disabled per-step in aiTrace** (cookies / localStorage rarely change between actions, so per-step files would be noise) and **enabled by default** for `run_code`, `snapshot`, `run_step_by_step` fallback, and `pageInfo`.
+Storage capture is **enabled** for `run_code`, `snapshot`, `run_step_by_step` fallback, and `pageInfo`. **Disabled per-step in aiTrace** — cookies / localStorage rarely change between actions, and per-step files would just be noise.
 
 ## Architecture
 
-### Request Flow
-
-1. MCP Client sends JSON-RPC request via stdin/stdout
-2. Server processes request and calls appropriate tool
-3. Tool executes CodeceptJS code or runs tests
-4. Results formatted as JSON and returned
-5. MCP Client receives response
-
-### Session Management
-
-- **Initialization**: CodeceptJS container initialized on first request
-- **Browser**: Started once and reused across requests
-- **Locking**: `run_test` uses locking to prevent concurrent test runs
-- **Cleanup**: `stop_browser` releases all resources
-
-### Error Handling
-
-- All errors returned as JSON with error message and stack
-- Invalid tools return error response
-- Test failures included in results (not thrown)
-- Timeout protection on all long-running operations
+- **In-process.** No subprocess, no IPC. The MCP tool calls and the running test share one container, one helper, one browser.
+- **Synthetic test scope.** On first init the server emits `suite.before` + `test.before` and calls each helper's `_beforeSuite` + `_before`, so `run_code` / `snapshot` have a live `helper.page` to act on.
+- **Mocha is reused.** `cleanReferencesAfterRun` is forced to `false` (Mocha 11's constructor ignores the option, so the setter is called explicitly). `stop_browser` closes the browser but keeps Mocha alive — re-running `run_test` after `start_browser` works without ESM cache invalidation tricks.
+- **Locking.** `run_test` / `run_step_by_step` use a single-call lock so concurrent runs can't trample each other.
 
 ## Troubleshooting
 
-### MCP Server Not Starting
+### Server doesn't start
 
-- Ensure `@modelcontextprotocol/sdk` is installed
-- Check Node.js version (requires Node.js 16+)
-- Verify the path to mcp-server.js in your MCP client config
-- Check file permissions
+- Node 18+ recommended.
+- Verify the path / `npx` resolution in your client config.
 
-### Configuration Not Found
+### Config not found
 
-- Set `CODECEPTJS_CONFIG` environment variable to absolute path of your config file
-- Set `CODECEPTJS_PROJECT_DIR` environment variable to your project directory
-- Use absolute paths in environment variables (e.g., `D:/projects/my-project/codecept.conf.js`)
-- Verify config file exists and is valid JavaScript
+- Set `CODECEPTJS_CONFIG` to the absolute path of `codecept.conf.js` (or `.cjs`).
+- Set `CODECEPTJS_PROJECT_DIR` if your config lives outside cwd.
 
-### Tests Not Found
+### Tests not found
 
-- Verify you're in the correct working directory
-- Check that `codecept.conf.js` exists
-- Use absolute paths for tests if relative paths don't work
-- Check test patterns in config file match your test files
+- Confirm the project's `tests:` glob in `codecept.conf.js` matches your files.
+- `list_tests` runs from the same project — if it returns `[]`, the config is the issue, not MCP.
 
-### Browser Launch Issues
+### Browser launch issues
 
-- Ensure browser dependencies are installed (Chromium for Playwright)
-- Check if browser is already running
-- Verify `show: false` in config (headless mode recommended)
-- Check firewall/proxy settings
+- Playwright requires its browsers installed (`npx playwright install`).
+- For visible runs use `start_browser` with `plugins={ browser: { show: true } }` — the default is headless.
 
-### Tests Stuck or Timing Out
+### Tests stuck or timing out
 
-- Increase timeout parameter (default 60s)
-- Check if web server is running (for tests that need it)
-- Disable video recording and other heavy features
-- Use `run_test` instead of `run_step_by_step` for faster execution
+- Bump `timeout` per call.
+- Check that the app under test is actually reachable.
+- For long re-renders that confuse `snapshot` / `run_code`'s artifact capture, raise `settleMs` (default `300`).
 
-## Advanced Usage
+## Security
 
-### Custom Test Patterns
-
-```javascript
-// In codecept.conf.js
-export const config = {
-  tests: './tests/**/*_test.js',
-  // ... rest of config
-}
-```
-
-### AI-Friendly Trace Integration
-
-For best results with AI agents:
-
-1. **Enable aiTrace plugin** in config (automatically enabled for `run_step_by_step`)
-2. **Use descriptive test names** for better trace file organization
-3. **Keep tests focused** - one scenario per test for clearer traces
-4. **Add assertions with clear messages** - better error reporting
-
-### Running Tests from Different Directories
-
-```json
-{
-  "mcpServers": {
-    "codeceptjs": {
-      "command": "node",
-      "args": ["node_modules/codeceptjs/bin/mcp-server.js"],
-      "env": {
-        "CODECEPTJS_CONFIG": "/absolute/path/to/codecept.conf.js",
-        "CODECEPTJS_PROJECT_DIR": "/absolute/path/to/project"
-      }
-    }
-  }
-}
-```
-
-## Security Considerations
-
-- MCP server runs with same permissions as calling process
-- `run_code` allows arbitrary CodeceptJS execution - use in trusted environments only
-- Test files should validate input if exposed to external systems
-- Environment variables may contain sensitive paths - secure accordingly
+- The MCP server runs with the same permissions as the calling process.
+- `run_code` runs arbitrary JavaScript in the project context — only expose to trusted agents / environments.
+- Environment variables may contain absolute project paths; treat them like any other config.
 
 ## Contributing
 
-When contributing to MCP server:
+When changing the MCP server:
 
-1. Add tests for new tools in `test/mcp/mcp_server_test.js`
-2. Update this documentation with new tools/parameters
-3. Ensure error handling is consistent
-4. Test with both Playwright and Puppeteer helpers
-5. Verify trace files are generated correctly for `run_step_by_step`
+1. Add coverage in `test/mcp/mcp_server_test.js`.
+2. Update this doc with new tools / parameters.
+3. Verify against a real project (e.g. the `examples/playwright/` setup) — the in-process recorder + lifecycle integration is sensitive to ordering.
+4. Test with both Playwright and Puppeteer.
 
 ## License
 

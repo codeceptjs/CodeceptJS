@@ -26,7 +26,8 @@
     "lib",
     "translations",
     "typings/**/*.d.ts",
-    "docs/webapi/**"
+    "docs/*.md",
+    "docs/helpers/**"
   ],
   "main": "lib/index.js",
   "module": "lib/index.js",

@@ -72,7 +72,11 @@ if (process.versions.node && process.versions.node.split('.') && process.version
 program.usage('<command> [options]')
 program.version(Codecept.version())
 
-program.command('init [path]').description('Creates dummy config in current dir or [path]').action(commandHandler('../lib/command/init.js'))
+program
+  .command('init [path]')
+  .description('Creates dummy config in current dir or [path]')
+  .option('-y, --yes', 'skip prompts and use defaults (Playwright + chromium, BASE_URL env for url)')
+  .action(commandHandler('../lib/command/init.js'))
 
 program
   .command('check')
