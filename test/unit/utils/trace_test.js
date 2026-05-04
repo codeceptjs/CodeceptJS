@@ -12,6 +12,8 @@ import {
   artifactsToFileUrls,
   writeTraceMarkdown,
   captureSnapshot,
+  TraceReader,
+  ariaDiff,
 } from '../../../lib/utils/trace.js'
 
 function makeTmpDir(prefix = 'trace-test') {
@@ -428,6 +430,72 @@ describe('lib/utils/trace.js', () => {
       const helper = fullHelper()
       const out = await captureSnapshot(helper, { dir })
       expect(out.html).to.equal('snapshot_page.html')
+    })
+  })
+
+  describe('TraceReader', () => {
+    let dir
+
+    beforeEach(() => {
+      dir = makeTmpDir('trace-reader')
+      fs.writeFileSync(path.join(dir, '0000_amOnPage_aria.txt'), '- button "Login"')
+      fs.writeFileSync(path.join(dir, '0001_fillField_aria.txt'), '- button "Login"\n- textbox "Email"')
+      fs.writeFileSync(path.join(dir, '0002_click_aria.txt'), '- button "Logout"')
+      fs.writeFileSync(path.join(dir, '0000_amOnPage_page.html'), '<html>1</html>')
+      fs.writeFileSync(path.join(dir, '0002_click_page.html'), '<html>3</html>')
+    })
+
+    afterEach(() => rmDir(dir))
+
+    it('list returns files of a kind in capture order', () => {
+      const reader = new TraceReader(dir)
+      expect(reader.list('aria')).to.deep.equal([
+        '0000_amOnPage_aria.txt',
+        '0001_fillField_aria.txt',
+        '0002_click_aria.txt',
+      ])
+      expect(reader.list('html')).to.deep.equal([
+        '0000_amOnPage_page.html',
+        '0002_click_page.html',
+      ])
+    })
+
+    it('first / last / nth read content with python-style indexing', () => {
+      const reader = new TraceReader(dir)
+      expect(reader.first('aria')).to.equal('- button "Login"')
+      expect(reader.last('aria')).to.equal('- button "Logout"')
+      expect(reader.nth(0, 'aria')).to.equal('- button "Login"')
+      expect(reader.nth(1, 'aria')).to.equal('- button "Login"\n- textbox "Email"')
+      expect(reader.nth(-1, 'aria')).to.equal('- button "Logout"')
+      expect(reader.nth(-2, 'aria')).to.equal('- button "Login"\n- textbox "Email"')
+    })
+
+    it('returns null for out-of-range or missing kinds', () => {
+      const reader = new TraceReader(dir)
+      expect(reader.nth(99, 'aria')).to.be.null
+      expect(reader.nth(-99, 'aria')).to.be.null
+      expect(reader.first('storage')).to.be.null
+      expect(reader.first('bogus')).to.be.null
+    })
+
+    it('returns empty list for missing or non-existent dir', () => {
+      expect(new TraceReader(null).list('aria')).to.deep.equal([])
+      expect(new TraceReader('/no/such/path').list('aria')).to.deep.equal([])
+      expect(new TraceReader(null).last('aria')).to.be.null
+    })
+
+    it('count returns the number of files for a kind', () => {
+      const reader = new TraceReader(dir)
+      expect(reader.count('aria')).to.equal(3)
+      expect(reader.count('html')).to.equal(2)
+      expect(reader.count('storage')).to.equal(0)
+    })
+
+    it('ariaDiff(prev, last) reports what changed between two captures', () => {
+      const reader = new TraceReader(dir)
+      const diff = ariaDiff(reader.nth(-2, 'aria'), reader.last('aria'))
+      expect(diff).to.be.a('string')
+      expect(diff).to.match(/button "Logout"/)
     })
   })
 })

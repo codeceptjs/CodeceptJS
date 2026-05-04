@@ -13,6 +13,8 @@ import {
   snapshotDirFor,
   artifactsToFileUrls,
   writeTraceMarkdown,
+  TraceReader,
+  ariaDiff,
 } from '../lib/utils/trace.js'
 import event from '../lib/event.js'
 import recorder from '../lib/recorder.js'
@@ -39,7 +41,18 @@ const __dirname = dirname(__filename)
 let codecept = null
 let containerInitialized = false
 let browserStarted = false
+let shellSessionActive = false
+let bootstrapDone = false
+let currentPluginsSig = ''
+let currentAiTraceDir = null  // mirrors the dir aiTrace plugin computes per test/session
 let aiTraceEnabled = false  // tracked across the session so tool responses can surface a hint when off
+
+event.dispatcher.on(event.test.before, test => {
+  try {
+    const title = (test && (test.fullTitle ? test.fullTitle() : test.title)) || 'MCP Session'
+    currentAiTraceDir = traceDirFor(test?.file, title, outputBaseDir())
+  } catch {}
+})
 
 function aiTraceHint() {
   if (aiTraceEnabled) return undefined
@@ -50,19 +63,81 @@ function applyMochaGrep(grep) {
   if (grep && typeof container.mocha?.grep === 'function') container.mocha.grep(grep)
 }
 
+async function ensureBootstrap() {
+  if (bootstrapDone) return
+  await codecept.bootstrap()
+  bootstrapDone = true
+}
+
+async function startShellSession() {
+  if (shellSessionActive) return
+  await ensureBootstrap()
+  recorder.start()
+  event.emit(event.suite.before, {
+    fullTitle: () => 'MCP Session',
+    tests: [],
+    retries: () => {},
+  })
+  event.emit(event.test.before, {
+    title: 'MCP Session',
+    artifacts: {},
+    retries: () => {},
+  })
+  shellSessionActive = true
+}
+
+async function endShellSession() {
+  if (!shellSessionActive) return
+  try { event.emit(event.test.after, {}) } catch {}
+  try { event.emit(event.suite.after, {}) } catch {}
+  try { event.emit(event.all.result, {}) } catch {}
+  shellSessionActive = false
+}
+
+async function ensureSession() {
+  if (shellSessionActive || pausedController) return
+  await startShellSession()
+}
+
+function normalizePluginOverrides(plugins) {
+  if (!plugins || typeof plugins !== 'object') return {}
+  const out = {}
+  for (const [name, opts] of Object.entries(plugins)) {
+    if (opts === false) continue
+    out[name] = (opts === true || opts == null) ? {} : opts
+  }
+  return out
+}
+
+function applyPluginOverrides(config, plugins) {
+  config.plugins = config.plugins || {}
+  for (const [name, opts] of Object.entries(plugins)) {
+    config.plugins[name] = { ...(config.plugins[name] || {}), ...opts, enabled: true }
+  }
+}
+
+function pluginsSignature(plugins) {
+  const keys = Object.keys(plugins).sort()
+  return JSON.stringify(keys.map(k => [k, plugins[k]]))
+}
+
 async function teardownContainer() {
   if (!containerInitialized) return
   try {
-    await closeSession()
-    for (const helper of Object.values(container.helpers() || {})) {
-      if (helper._cleanup) await helper._cleanup()
-      else if (helper._finishTest) await helper._finishTest()
+    await endShellSession()
+    const helpers = container.helpers()
+    for (const helperName in helpers) {
+      const helper = helpers[helperName]
+      try { if (helper._finish) await helper._finish() } catch {}
     }
-    if (codecept?.teardown) await codecept.teardown()
+    try { if (codecept?.teardown) await codecept.teardown() } catch {}
   } finally {
     containerInitialized = false
     browserStarted = false
+    bootstrapDone = false
     aiTraceEnabled = false
+    codecept = null
+    currentPluginsSig = ''
   }
 }
 
@@ -372,10 +447,13 @@ function pausedPayload() {
   }
 }
 
-async function initCodecept(configPath, { plugins } = {}) {
+async function initCodecept(configPath, pluginOverrides) {
+  const plugins = normalizePluginOverrides(pluginOverrides)
+  const sig = pluginsSignature(plugins)
+
   if (containerInitialized) {
-    if (plugins) throw new Error('Container is already running. Call stop_browser before passing plugins again.')
-    return
+    if (!Object.keys(plugins).length || sig === currentPluginsSig) return
+    await teardownContainer()
   }
 
   const testRoot = process.env.CODECEPTJS_PROJECT_DIR || process.cwd()
@@ -401,15 +479,10 @@ async function initCodecept(configPath, { plugins } = {}) {
   const { getConfig } = await import('../lib/command/utils.js')
   const config = await getConfig(configPath)
 
-  config.plugins ??= {}
-  config.plugins.aiTrace = { on: 'step', ...config.plugins.aiTrace, enabled: true }
-  config.plugins.browser = { show: false, ...config.plugins.browser, enabled: true }
-
-  if (plugins) {
-    for (const [name, pluginConfig] of Object.entries(plugins)) {
-      config.plugins[name] = { ...config.plugins[name], enabled: true, ...pluginConfig }
-    }
-  }
+  // aiTrace is the canonical per-step ARIA/HTML/screenshot capture for MCP.
+  // Always on so run_code / continue can read the latest snapshot from disk
+  // instead of double-capturing through grabAriaSnapshot etc.
+  applyPluginOverrides(config, { aiTrace: { on: 'step' }, browser: { show: false }, ...plugins })
 
   codecept = new Codecept(config, {})
   await codecept.init(testRoot)
@@ -418,27 +491,7 @@ async function initCodecept(configPath, { plugins } = {}) {
   containerInitialized = true
   browserStarted = true
   aiTraceEnabled = config.plugins?.aiTrace?.enabled === true
-
-  await establishSession()
-}
-
-async function establishSession() {
-  if (recorder.isRunning()) return
-  recorder.start()
-  const syntheticTest = { title: 'mcp_session', artifacts: {}, opts: {} }
-  for (const helper of Object.values(container.helpers() || {})) {
-    if (typeof helper._beforeSuite === 'function') {
-      try { await helper._beforeSuite() } catch {}
-    }
-  }
-  event.emit(event.suite.before, { fullTitle: () => 'MCP Session', tests: [], retries: undefined })
-  event.emit(event.test.before, syntheticTest)
-  for (const helper of Object.values(container.helpers() || {})) {
-    if (typeof helper._before === 'function') {
-      try { await helper._before(syntheticTest) } catch {}
-    }
-  }
-  await recorder.promise()
+  currentPluginsSig = sig
 }
 
 async function formatReturnValue(value) {
@@ -447,13 +500,6 @@ async function formatReturnValue(value) {
     return await Promise.all(value.map(v => v.describe()))
   }
   return value
-}
-
-async function closeSession() {
-  if (!recorder.isRunning()) return
-  event.emit(event.test.after, { title: 'mcp_session', artifacts: {} })
-  event.emit(event.suite.after, { title: 'MCP Session' })
-  try { await recorder.promise() } catch {}
 }
 
 const server = new Server(
@@ -513,6 +559,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           timeout: { type: 'number' },
           grep: { type: 'string', description: 'Filter scenarios by title (passed to mocha.grep). Mirrors --grep on the CLI.' },
           pauseAt: { type: 'number', description: '1-based step index. Test will pause after the Nth step completes. Useful as a programmatic breakpoint without editing the test.' },
+          plugins: PLUGINS_PROP,
         },
         required: ['test'],
       },
@@ -526,6 +573,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           test: { type: 'string' },
           timeout: { type: 'number' },
           grep: { type: 'string', description: 'Filter scenarios by title (passed to mocha.grep). Mirrors --grep on the CLI.' },
+          plugins: PLUGINS_PROP,
         },
         required: ['test'],
       },
@@ -624,11 +672,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'start_browser': {
         const { config: configPath, plugins } = args || {}
-        if (browserStarted) {
-          return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser already started', plugins: plugins ?? null }, null, 2) }] }
+        if (browserStarted && shellSessionActive) {
+          return { content: [{ type: 'text', text: JSON.stringify({ status: 'Session already active', plugins: plugins ?? null }, null, 2) }] }
         }
-        await initCodecept(configPath, { plugins })
-        return { content: [{ type: 'text', text: JSON.stringify({ status: 'Browser started successfully', plugins: plugins ?? null }, null, 2) }] }
+        await initCodecept(configPath, plugins)
+        await startShellSession()
+        return { content: [{ type: 'text', text: JSON.stringify({ status: 'Session started — run_code and snapshot are now available', plugins: plugins ?? null }, null, 2) }] }
       }
 
       case 'stop_browser': {
@@ -642,6 +691,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case 'snapshot': {
         const { fullPage = false, settleMs = 300 } = args || {}
         await initCodecept()
+        await ensureSession()
 
         const helper = pickActingHelper(container.helpers())
         if (!helper) throw new Error('No supported acting helper available (Playwright, Puppeteer, WebDriver).')
@@ -708,6 +758,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case 'run_code': {
         const { code, timeout = 60000, saveArtifacts = true, settleMs = 300 } = args
         await initCodecept()
+        await ensureSession()
 
         const support = container.supportObjects() || {}
         if (!support.I) throw new Error('I object not available. Make sure helpers are configured.')
@@ -728,6 +779,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const traceDir = traceDirFor(`mcp_${Date.now()}`, 'run_code', outputBaseDir())
         mkdirp.sync(traceDir)
         const startedAt = Date.now()
+
+        // Pin the latest aiTrace ARIA file before running the code, so we
+        // can diff after. aiTrace owns per-step capture; we just read it.
+        const reader = new TraceReader(currentAiTraceDir)
+        const ariaBefore = reader.last('aria')
 
         const MAX_LOG_ENTRIES = 100
         const MAX_LOG_MSG_BYTES = 2000
@@ -809,6 +865,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           }
         }
 
+        // Diff against the latest aiTrace ARIA file produced by the steps
+        // that just ran inside this run_code call.
+        const ariaAfter = reader.last('aria')
+        if (ariaBefore && ariaAfter && ariaBefore !== ariaAfter) {
+          const diff = ariaDiff(ariaBefore, ariaAfter)
+          if (diff) result.ariaDiff = diff
+        }
+
         const traceFile = writeTraceMarkdown({
           dir: traceDir,
           title: 'run_code',
@@ -830,8 +894,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           if (pausedController) {
             throw new Error('A previous run_test is still paused. Call "continue" first.')
           }
-          const { test, timeout = 60000, pauseAt, grep } = args || {}
-          await initCodecept()
+          const { test, timeout = 60000, pauseAt, grep, plugins } = args || {}
+          await initCodecept(undefined, plugins)
+          await endShellSession()
           applyMochaGrep(grep)
 
           return await withSilencedIO(async () => {
@@ -887,7 +952,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             let runError = null
             const runPromise = (async () => {
               try {
-                await codecept.bootstrap()
+                await ensureBootstrap()
                 await codecept.run(testFile)
               } catch (err) {
                 runError = err
@@ -916,7 +981,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             }
 
             const final = collectRunCompletion(runError?.message)
-            await establishSession()
+            await startShellSession()
             return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
           })
         })
@@ -927,8 +992,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           if (pausedController) {
             throw new Error('A previous run is still paused. Call "continue" first.')
           }
-          const { test, timeout = 60000, grep } = args || {}
-          await initCodecept()
+          const { test, timeout = 60000, grep, plugins } = args || {}
+          await initCodecept(undefined, plugins)
+          await endShellSession()
           applyMochaGrep(grep)
 
           return await withSilencedIO(async () => {
@@ -982,7 +1048,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             let runError = null
             const runPromise = (async () => {
               try {
-                await codecept.bootstrap()
+                await ensureBootstrap()
                 await codecept.run(testFile)
               } catch (err) {
                 runError = err
@@ -1011,7 +1077,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             }
 
             const final = collectRunCompletion(runError?.message)
-            await establishSession()
+            await startShellSession()
             return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
           })
         })
