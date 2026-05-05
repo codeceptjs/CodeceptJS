@@ -766,6 +766,33 @@ describe('Locator', () => {
       expect(tabMatches[0].getAttribute('data-tab')).to.eql('description')
     })
 
+    it('matches an element labelled via aria-labelledby pointing at text', () => {
+      const xml = `<root>
+        <button id="open" aria-labelledby="lbl"></button>
+        <span id="lbl">Open dialog</span>
+        <button>Other</button>
+      </root>`
+      const xdoc = new DOMParser().parseFromString(xml, 'text/xml')
+      const root = xpath.select1('//root', xdoc)
+      const xp = Locator.clickable.wide("'Open dialog'")
+      const nodes = xpath.select(xp, root)
+      const buttons = nodes.filter(n => n.tagName === 'button' && n.getAttribute('id') === 'open')
+      expect(buttons).to.have.length(1, xp)
+    })
+
+    it('does not match elements without aria-labelledby when no other branch hits', () => {
+      const xml = `<root>
+        <span id="lbl">Some text</span>
+        <button>Unrelated</button>
+      </root>`
+      const xdoc = new DOMParser().parseFromString(xml, 'text/xml')
+      const root = xpath.select1('//root', xdoc)
+      const xp = Locator.clickable.wide("'Some text'")
+      const nodes = xpath.select(xp, root)
+      // No buttons or links match; only the <span> via .//label[contains...] won't fire either.
+      expect(nodes.filter(n => n.tagName === 'button')).to.have.length(0, xp)
+    })
+
     it('matches role="menuitem" by text', () => {
       const menuXml = `<root>
         <ul role="menu">
