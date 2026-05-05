@@ -45,7 +45,11 @@ const runWithStdin = (args, html) => {
 // For long snippets, assert first 50 chars only.
 const head = matches => matches.map(m => ({ line: m.line, snippet: m.snippet.slice(0, 50) }))
 
-describe('codeceptq', () => {
+describe('codeceptq', function () {
+  // Each test spawns a node process; the github.html semantic-click case
+  // chews ~8s locally, so give the suite headroom over the default 10s.
+  this.timeout(30000)
+
   describe('XPath locators', () => {
     it('.//input — finds every input on checkout.html', async () => {
       const { parsed, code } = await runJson(`'.//input' --file ${checkoutHtml}`)
