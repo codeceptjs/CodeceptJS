@@ -47,7 +47,8 @@
   },
   "bin": {
     "codeceptjs": "./bin/codecept.js",
-    "codeceptjs-mcp": "./bin/mcp-server.js"
+    "codeceptjs-mcp": "./bin/mcp-server.js",
+    "codeceptq": "./bin/codeceptq.js"
   },
   "repository": "codeceptjs/CodeceptJS",
   "scripts": {
@@ -132,6 +133,7 @@
     "resq": "1.11.0",
     "sprintf-js": "1.1.3",
     "uuid": "11.1.0",
+    "xpath": "0.0.34",
     "zod": "^4.1.11"
   },
   "optionalDependencies": {
@@ -193,8 +195,7 @@
     "typescript": "5.9.3",
     "wdio-docker-service": "3.2.1",
     "webdriverio": "9.23.0",
-    "xml2js": "0.6.2",
-    "xpath": "0.0.34"
+    "xml2js": "0.6.2"
   },
   "peerDependencies": {
     "tsx": "^4.0.0"

@@ -465,6 +465,7 @@ function collectRunCompletion(errorMessage) {
   }
   return {
     status: error ? 'failed' : 'completed',
+    aiTraceDir: currentAiTraceDir,
     reporterJson: { stats, tests: results },
     error,
     aiTraceHint: aiTraceHint(),
@@ -475,11 +476,13 @@ function pausedPayload() {
   return {
     status: 'paused',
     file: pendingTestFile,
+    aiTraceDir: currentAiTraceDir,
     pausedAfter: pendingStepInfo,
     suggestions: [
       'Call snapshot to capture URL/HTML/ARIA/screenshot/console/storage at this point',
       'Call run_code to inspect or manipulate state (e.g. return await I.grabText("h1"))',
       'Call continue to release the pause and let the test run the next step (or finish)',
+      'Query a saved step snapshot offline: codeceptq <locator> --file <aiTraceDir>/<NNNN>_<step>_page.html',
     ],
   }
 }
