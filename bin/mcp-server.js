@@ -412,7 +412,7 @@ async function cancelRun() {
   return true
 }
 
-async function raceRunOutcome(runPromise, timeout) {
+async function waitForTestResult(runPromise, timeout) {
   const pausedPromise = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
   const completedPromise = runPromise.then(() => 'completed', () => 'completed')
   let timeoutId
@@ -420,10 +420,10 @@ async function raceRunOutcome(runPromise, timeout) {
     timeoutId = setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)
   })
   try {
-    return { outcome: await Promise.race([completedPromise, pausedPromise, timeoutPromise]) }
+    return { status: await Promise.race([completedPromise, pausedPromise, timeoutPromise]) }
   } catch (err) {
     await cancelRun()
-    return { outcome: 'aborted', error: err.message }
+    return { status: 'aborted', error: err.message }
   } finally {
     clearTimeout(timeoutId)
   }
@@ -1044,13 +1044,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             })()
             pendingRunPromise = runPromise
 
-            const { outcome, error: abortError } = await raceRunOutcome(runPromise, timeout)
-            if (outcome === 'aborted') {
+            const result = await waitForTestResult(runPromise, timeout)
+            if (result.status === 'aborted') {
               await startShellSession()
-              return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', file: testFile, error: abortError }, null, 2) }] }
+              return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', file: testFile, error: result.error }, null, 2) }] }
             }
 
-            if (outcome === 'paused') {
+            if (result.status === 'paused') {
               const page = await gatherPageBrief()
               return {
                 content: [{
@@ -1138,13 +1138,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             })()
             pendingRunPromise = runPromise
 
-            const { outcome, error: abortError } = await raceRunOutcome(runPromise, timeout)
-            if (outcome === 'aborted') {
+            const result = await waitForTestResult(runPromise, timeout)
+            if (result.status === 'aborted') {
               await startShellSession()
-              return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', file: testFile, error: abortError }, null, 2) }] }
+              return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', file: testFile, error: result.error }, null, 2) }] }
             }
 
-            if (outcome === 'paused') {
+            if (result.status === 'paused') {
               const page = await gatherPageBrief()
               return {
                 content: [{
