@@ -412,6 +412,23 @@ async function cancelRun() {
   return true
 }
 
+async function waitForTestResult(runPromise, timeout) {
+  const pausedPromise = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
+  const completedPromise = runPromise.then(() => 'completed', () => 'completed')
+  let timeoutId
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)
+  })
+  try {
+    return { status: await Promise.race([completedPromise, pausedPromise, timeoutPromise]) }
+  } catch (err) {
+    await cancelRun()
+    return { status: 'aborted', error: err.message }
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
 async function closeBrowser() {
   if (!containerInitialized) return
   await cancelRun()
@@ -1025,18 +1042,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 throw err
               }
             })()
+            pendingRunPromise = runPromise
 
-            const pausedPromise = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
-            const completedPromise = runPromise.then(() => 'completed', () => 'completed')
+            const result = await waitForTestResult(runPromise, timeout)
+            if (result.status === 'aborted') {
+              await startShellSession()
+              return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', file: testFile, error: result.error }, null, 2) }] }
+            }
 
-            const which = await Promise.race([
-              completedPromise,
-              pausedPromise,
-              new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
-            ])
-
-            if (which === 'paused') {
-              pendingRunPromise = runPromise
+            if (result.status === 'paused') {
               const page = await gatherPageBrief()
               return {
                 content: [{
@@ -1046,6 +1060,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               }
             }
 
+            pendingRunPromise = null
             const final = collectRunCompletion(runError?.message)
             await startShellSession()
             return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
@@ -1121,18 +1136,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 throw err
               }
             })()
+            pendingRunPromise = runPromise
 
-            const pausedPromise = new Promise(resolve => pauseEvents.once('paused', () => resolve('paused')))
-            const completedPromise = runPromise.then(() => 'completed', () => 'completed')
+            const result = await waitForTestResult(runPromise, timeout)
+            if (result.status === 'aborted') {
+              await startShellSession()
+              return { content: [{ type: 'text', text: JSON.stringify({ status: 'failed', file: testFile, error: result.error }, null, 2) }] }
+            }
 
-            const which = await Promise.race([
-              completedPromise,
-              pausedPromise,
-              new Promise((_, reject) => setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)),
-            ])
-
-            if (which === 'paused') {
-              pendingRunPromise = runPromise
+            if (result.status === 'paused') {
               const page = await gatherPageBrief()
               return {
                 content: [{
@@ -1142,6 +1154,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               }
             }
 
+            pendingRunPromise = null
             const final = collectRunCompletion(runError?.message)
             await startShellSession()
             return { content: [{ type: 'text', text: JSON.stringify({ ...final, file: testFile }, null, 2) }] }
