@@ -188,7 +188,7 @@ describe('dry-run command', () => {
 
   it('should enable a particular plugin in dry-mode when passing it to -p', done => {
     exec(`${codecept_run_config('codecept.customLocator.js')} --verbose -p customLocator`, (err, stdout) => {
-      expect(stdout).toContain('Plugins: customLocator')
+      expect(stdout).toMatch(/Plugins:[^\n]*customLocator/)
       expect(stdout).toContain("I see element {xpath: .//*[@data-testid='COURSE']//a}")
       expect(stdout).toContain('OK  | 1 passed')
       expect(stdout).toContain('--- DRY MODE: No tests were executed ---')
