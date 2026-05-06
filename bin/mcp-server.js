@@ -401,14 +401,6 @@ async function cancelRun() {
   abortRun = true
   if (typeof pendingRunCleanup === 'function') { try { pendingRunCleanup() } catch {} }
   if (pausedController) { try { pausedController.resolveContinue() } catch {} ; pausedController = null }
-
-  const mocha = typeof container.mocha === 'function' ? container.mocha() : container.mocha
-  const runner = mocha?._runner || mocha?._previousRunner || mocha?.runner
-  if (runner && typeof runner.abort === 'function') {
-    try { runner.abort() } catch {}
-  }
-  try { recorder.reset() } catch {}
-
   if (pendingRunPromise) {
     try { await Promise.race([pendingRunPromise.catch(() => {}), new Promise(r => setTimeout(r, 5000))]) } catch {}
   }
