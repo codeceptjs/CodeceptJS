@@ -5,6 +5,26 @@ title: Agentic Testing
 
 # Agentic Testing
 
+## What Makes CodeceptJS Agent-friendly
+
+CodeceptJS 4 is designed for agent testing. It ships with its own MCP and official skills that teach agents best practices in test automation—how to write tests, choose locators, test them live in the browser, and refactor to page objects.
+
+Agents get full control over test and browser execution: 
+
+- **Full HTML access, not ARIA snapshots.** Agents see buttons with icons, empty labels, and other elements Playwright MCP's accessibility tree omits.
+
+- **Query HTML directly with codeceptq.** Agents use XPath or CSS to search HTML instead of tool calls, cutting tokens and overhead.
+
+- **Browser logs and page state as files.** Agents read via native filesystem tools instead of extra requests, eliminating redundant context dumps.
+
+- **Same locators for tests and agents.** Tests and agent scripts share identical selectors—agents inherit battle-tested patterns without guessing.
+
+- **Testing-first framework, not browser control.** CodeceptJS is built for testing, so agents stay focused on test scenarios instead of raw browser commands.
+
+CodeceptJS is token-efficient: it stores HTML, ARIA, logs, and HTTP request data as files instead of streaming them through MCP. Agents read these files with their native shell tools—no extra API calls, no redundant context.
+
+## How It Works
+
 CodeceptJS ships an **MCP server and a skillset** that lets an AI agent (Claude Code, Cursor, Codex, others) write and fix tests by driving the real browser. The agent runs the same `I.*` commands the test does, reads how the page responds, and only commits the lines that succeeded.
 
 ## Why MCP
