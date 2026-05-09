@@ -11,13 +11,13 @@ CodeceptJS 4 is designed for agent testing. It ships with its own MCP and offici
 
 Agents get full control over test and browser execution: 
 
-- **Full HTML access, not ARIA snapshots.** Agents see buttons with icons, empty labels, and other elements Playwright MCP's accessibility tree omits.
+- **Full HTML access and ARIA snapshots.** Agents see buttons with icons, empty labels, and other elements Playwright MCP's accessibility tree omits.
 
-- **Query HTML directly with codeceptq.** Agents use XPath or CSS to search HTML instead of tool calls, cutting tokens and overhead.
+- **Query HTML directly with CSS, ARIA, Semantic Locators or XPath** Agents can freely run XPath or CSS to efficiently search over HTML.
 
 - **Browser logs and page state as files.** Agents read via native filesystem tools instead of extra requests, eliminating redundant context dumps.
 
-- **Same locators for tests and agents.** Tests and agent scripts share identical selectors—agents inherit battle-tested patterns without guessing.
+- **Same locators for tests and agents.** Tests and agent scripts share identical selectors. No elements by reference indexes, no clicks by coordinates. Agents inherit battle-tested patterns without guessing.
 
 - **Testing-first framework, not browser control.** CodeceptJS is built for testing, so agents stay focused on test scenarios instead of raw browser commands.
 
