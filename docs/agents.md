@@ -23,6 +23,18 @@ Agents get full control over test and browser execution:
 
 CodeceptJS is token-efficient: it stores HTML, ARIA, logs, and HTTP request data as files instead of streaming them through MCP. Agents read these files with their native shell tools—no extra API calls, no redundant context.
 
+## The loop
+
+Whether the agent is writing a new test or fixing an old one, it follows the same cycle.
+
+1. **Open the page.** Run a stub test (new work) or set a breakpoint at the failing step (fix). The browser lands at the right starting point and yields control to the agent.
+2. **Read the page.** MCP saves HTML, ARIA, and screenshot of the page to files (and the agent can call the `snapshot` tool to refresh them). The agent reads those files before deciding what to try next, controlling its token usage.
+3. **Run a CodeceptJS command.** The agent tries `I.*` commands like `I.click('Add to cart')`, `I.fillField('Email', secret(process.env.EMAIL))`, `I.see('Confirmed')`. On success, that line goes into the test — same syntax.
+4. **Check the result.** The response after each command shows the new page state. If the URL changed and the modal opened, the line goes into the verified sequence. If not, the agent reads the page again and tries a different locator or a wait.
+5. **Move forward.** The agent looks at the new state and chooses the next command. Steps 2–4 repeat until the scenario is whole.
+6. **Commit to the file.** The agent edits the test — replaces `pause()` (new tests) or the broken line (fixes) with the verified sequence — then reruns end-to-end and reads the trace to confirm.
+
+
 ## How It Works
 
 CodeceptJS ships an **MCP server and a skillset** that lets an AI agent (Claude Code, Cursor, Codex, others) write and fix tests by driving the real browser. The agent runs the same `I.*` commands the test does, reads how the page responds, and only commits the lines that succeeded.
@@ -50,16 +62,6 @@ This lets the agent get a test working in one iteration. The agent can live-writ
 
 The MCP server is the agent-facing equivalent of the `pause()` REPL — same access, driven by tool calls instead of keystrokes. Full tool reference at [/mcp](/mcp).
 
-## The loop
-
-Whether the agent is writing a new test or fixing an old one, it follows the same cycle.
-
-1. **Open the page.** Run a stub test (new work) or set a breakpoint at the failing step (fix). The browser lands at the right starting point and yields control to the agent.
-2. **Read the page.** MCP saves HTML, ARIA, and screenshot of the page to files (and the agent can call the `snapshot` tool to refresh them). The agent reads those files before deciding what to try next, controlling its token usage.
-3. **Run a CodeceptJS command.** The agent tries `I.*` commands like `I.click('Add to cart')`, `I.fillField('Email', secret(process.env.EMAIL))`, `I.see('Confirmed')`. On success, that line goes into the test — same syntax.
-4. **Check the result.** The response after each command shows the new page state. If the URL changed and the modal opened, the line goes into the verified sequence. If not, the agent reads the page again and tries a different locator or a wait.
-5. **Move forward.** The agent looks at the new state and chooses the next command. Steps 2–4 repeat until the scenario is whole.
-6. **Commit to the file.** The agent edits the test — replaces `pause()` (new tests) or the broken line (fixes) with the verified sequence — then reruns end-to-end and reads the trace to confirm.
 
 ## How the agent reads the page
 
