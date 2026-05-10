@@ -401,14 +401,17 @@ async function cancelRun() {
   abortRun = true
   if (typeof pendingRunCleanup === 'function') { try { pendingRunCleanup() } catch {} }
   if (pausedController) { try { pausedController.resolveContinue() } catch {} ; pausedController = null }
+
+  const mocha = typeof container.mocha === 'function' ? container.mocha() : container.mocha
+  try { mocha?.runner?.abort?.() } catch {}
+
   if (pendingRunPromise) {
-    try { await Promise.race([pendingRunPromise.catch(() => {}), new Promise(r => setTimeout(r, 5000))]) } catch {}
+    try { await pendingRunPromise.catch(() => {}) } catch {}
   }
   pendingRunPromise = null
   pendingRunResults = null
   pendingTestFile = null
   pendingStepInfo = null
-  abortRun = false
   return true
 }
 
@@ -1032,6 +1035,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               pendingRunCleanup = null
             }
 
+            abortRun = false
             let runError = null
             const runPromise = (async () => {
               try {
@@ -1126,6 +1130,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               pendingRunCleanup = null
             }
 
+            abortRun = false
             let runError = null
             const runPromise = (async () => {
               try {
