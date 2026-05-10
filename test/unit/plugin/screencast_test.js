@@ -34,7 +34,7 @@ function fakeHelper(screencastApi) {
 
 function detachAll() {
   for (const evt of [
-    event.test.before, event.test.after, event.test.failed,
+    event.test.before, event.test.started, event.test.after, event.test.failed,
     event.step.started, event.step.finished,
   ]) {
     event.dispatcher.removeAllListeners(evt)
@@ -73,6 +73,7 @@ describe('screencast', () => {
     const test = createTest('keep-on-pass')
 
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     event.dispatcher.emit(event.step.started, aStep())
     await recorder.promise()
 
@@ -93,6 +94,7 @@ describe('screencast', () => {
     const test = createTest('delete-on-pass')
 
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     event.dispatcher.emit(event.step.started, aStep())
     await recorder.promise()
 
@@ -114,6 +116,7 @@ describe('screencast', () => {
     const test = createTest('keep-on-fail')
 
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     event.dispatcher.emit(event.step.started, aStep())
     await recorder.promise()
 
@@ -132,6 +135,7 @@ describe('screencast', () => {
     screencast({ on: 'test', captions: true })
     let test = createTest('with-captions')
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     event.dispatcher.emit(event.step.started, aStep())
     await recorder.promise()
     event.dispatcher.emit(event.test.after, test)
@@ -144,6 +148,7 @@ describe('screencast', () => {
     screencast({ on: 'test', captions: false })
     test = createTest('no-captions')
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     event.dispatcher.emit(event.step.started, aStep())
     await recorder.promise()
     event.dispatcher.emit(event.test.after, test)
@@ -159,6 +164,7 @@ describe('screencast', () => {
     const test = createTest('with-srt')
 
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     await recorder.promise()
 
     const step = { name: 'click', actor: 'I', args: ['Continue'] }
@@ -183,6 +189,7 @@ describe('screencast', () => {
     test.artifacts.video = '/tmp/some-video-dir/myrun.webm'
 
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     const step = { name: 'see', actor: 'I', args: ['Github'] }
     event.dispatcher.emit(event.step.started, step)
     event.dispatcher.emit(event.step.finished, step)
@@ -202,6 +209,7 @@ describe('screencast', () => {
     const test = createTest('no-api')
 
     event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
     await recorder.promise()
     event.dispatcher.emit(event.test.after, test)
     await recorder.promise()
