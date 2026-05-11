@@ -60,9 +60,7 @@ function aiTraceHint() {
 }
 
 function applyMochaGrep(grep) {
-  if (!grep) return
-  const mocha = typeof container.mocha === 'function' ? container.mocha() : container.mocha
-  if (mocha && typeof mocha.grep === 'function') mocha.grep(grep)
+  if (grep) container.mocha().grep(grep)
 }
 
 function pauseAtMatcher(pauseAt) {
@@ -402,8 +400,7 @@ async function cancelRun() {
   if (typeof pendingRunCleanup === 'function') { try { pendingRunCleanup() } catch {} }
   if (pausedController) { try { pausedController.resolveContinue() } catch {} ; pausedController = null }
 
-  const mocha = typeof container.mocha === 'function' ? container.mocha() : container.mocha
-  try { mocha?.runner?.abort?.() } catch {}
+  try { container.mocha().runner?.abort() } catch {}
 
   if (pendingRunPromise) {
     try { await pendingRunPromise.catch(() => {}) } catch {}
