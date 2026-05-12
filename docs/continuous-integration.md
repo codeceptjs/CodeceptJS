@@ -5,119 +5,63 @@ title: Continuous Integration
 
 # Continuous Integration
 
-CodeceptJS runs in any CI system that can install Node.js. The work is in the surrounding environment: a headless browser, a driver server for WebDriver, failure artifacts to upload, and a parallelization strategy that keeps the wall-clock time reasonable. This guide covers each step and provides drop-in configs for the major CI systems.
+CodeceptJS runs in any CI that can install Node.js. This page covers the setup, then provides ready-to-use configs for the major CI systems.
 
-## Preparing tests for CI
+## Setup
 
-A CI-ready suite needs only a few things:
+- **Node.js** — install it on the runner (`actions/setup-node`, the `node:20` image, `NodeTool@0` on Azure). Examples below use Node 20.
+- **Headless** — `codecept.conf.js` must contain `setHeadlessWhen(process.env.HEADLESS || process.env.CI)`. `codeceptjs init` adds it; since CI sets `CI=true`, the suite runs headless automatically.
 
-- **Headless mode.** Playwright runs headless by default — only act if you set `show: true` locally. To toggle it from CI, export `HEADLESS=true` and read it from your config.
-- **Colored logs.** Export `FORCE_COLOR=1` so CodeceptJS output renders correctly in CI log viewers.
-- **Failure artifacts.** Keep `screenshotOnFail` enabled (it is on by default). For Playwright, also enable `trace` and `video` in the helper config — they make a remote failure diagnosable from a single artifact.
-- **Self-healing for flaky tests.** Use the [`heal` plugin](/heal) to recover from broken locators. The `retryFailedStep` plugin is already enabled by default — you do not need to configure it.
+  ```js
+  import { setHeadlessWhen } from '@codeceptjs/configure'
 
-You do **not** need to set `CI=true`. Every CI provider exports it automatically, and CodeceptJS reads it to relax certain timeouts.
+  setHeadlessWhen(process.env.HEADLESS || process.env.CI)
+  ```
 
-## Installing browsers and drivers
+  Override the browser or viewport per run with the [`browser` plugin](/plugins#browser): `-p browser:browser=firefox:windowSize=1280x1024`.
+- **Artifacts** — enable the on-failure capture plugins:
 
-### Playwright
-
-Playwright needs browser binaries plus Linux system libraries. The recommended approach (per the [official Playwright CI docs](https://playwright.dev/docs/ci)) is:
-
-```bash
-npm ci
-npx playwright install --with-deps chromium
-```
-
-`--with-deps` pulls in `libnss`, fonts, and other OS packages. To install all engines, drop the `chromium` argument. Playwright explicitly recommends against caching browser binaries — restoring the cache takes about as long as a fresh download.
-
-If you prefer the official Playwright Docker image, see the [Playwright Docker docs](https://playwright.dev/docs/docker). Pin the image tag to **the same version as your installed `playwright` package** — a mismatched image will fail to find browser executables. The examples below use `node:20` + `npx playwright install --with-deps` to avoid this version-pin problem entirely.
-
-### WebDriver
-
-CodeceptJS's WebDriver helper talks to any WebDriver-protocol endpoint. In CI, the simplest setup is a [Selenium Docker container](https://github.com/SeleniumHQ/docker-selenium):
-
-```bash
-docker run -d --net=host --shm-size=2g selenium/standalone-chrome
-```
-
-Point the helper at it:
-
-```js
-helpers: {
-  WebDriver: {
-    url: 'http://localhost:8000',
-    browser: 'chrome',
-    host: process.env.SELENIUM_HOST || 'localhost',
-    port: parseInt(process.env.SELENIUM_PORT || '4444', 10),
+  ```js
+  plugins: {
+    screenshot: { enabled: true },          // screenshot on failure
+    pageInfo:   { enabled: true },          // page URL, HTML errors, console logs
+    aiTrace:    { enabled: true, on: 'fail' }, // AI-friendly trace.md
   }
-}
-```
+  ```
 
-For an alternative without Selenium, see the [WebDriver helper docs](/webdriver) — recent WebdriverIO versions can manage drivers (chromedriver, geckodriver) directly. Selenium is still the most portable choice for CI.
+  [`screencast`](/plugins#screencast) records video of failed tests (Playwright). Everything lands in `output/` — upload that directory as a build artifact. Every example below does.
 
-`--shm-size=2g` matters. The default 64 MB causes Chrome tabs to crash on heavy pages.
+## Browsers and drivers
 
-## Running tests
+- **Playwright** — `npx playwright install --with-deps`. Docs: [Playwright CI](https://playwright.dev/docs/ci), [Playwright Docker image](https://playwright.dev/docs/docker) (pin the tag to your installed `playwright` version).
+- **WebDriver** — run a Selenium server: `selenium/standalone-chrome` on port `4444`. Docs: [WebDriver helper](/webdriver), [WebdriverIO Selenium Grid](https://webdriver.io/docs/seleniumgrid), [Selenium Docker images](https://github.com/SeleniumHQ/docker-selenium).
 
-A single process:
+## Check before running
+
+`npx codeceptjs check` loads the config, opens the browser (or connects to Selenium), and counts tests. Prepend it so a broken environment fails fast with a clear message:
 
 ```bash
+npx codeceptjs check
 npx codeceptjs run
 ```
 
-Parallel workers on one machine:
+Every CI example below does this.
 
-```bash
-npx codeceptjs run-workers 4 --by pool
-```
+## Parallel execution
 
-`--by pool` distributes tests dynamically: each worker grabs the next test as it finishes, so no worker sits idle. See [Parallel Execution](/parallel) for `--by test` and `--by suite`.
+- `npx codeceptjs run` — one process.
+- `npx codeceptjs run-workers 4` — parallel on one machine, tests handed to workers dynamically.
+- `npx codeceptjs run --shard 1/4` — split the suite across CI matrix jobs (one shard per machine).
 
-Sharded across multiple machines (CI matrix):
-
-```bash
-npx codeceptjs run --shard 1/4
-npx codeceptjs run --shard 2/4
-npx codeceptjs run --shard 3/4
-npx codeceptjs run --shard 4/4
-```
-
-You can combine the two — each shard runs on its own machine, and `run-workers` parallelizes within the shard.
-
-Filter by tag:
-
-```bash
-npx codeceptjs run --grep "@smoke"
-npx codeceptjs run --grep "@slow" --invert
-```
+Shards and workers combine. Full reference: [Parallel Execution](/parallel).
 
 ## Reporting
 
-For CI test reporting, use [`@testomatio/reporter`](https://github.com/testomatio/reporter). It ships built-in **pipes** that publish results directly into the CI platform's UI — no XML wrangling required.
+Use [`@testomatio/reporter`](https://github.com/testomatio/reporter). It ships pipes that publish results into GitHub PR checks, GitLab merge-request widgets, and Bitbucket pipeline reports. [See Reporting](/reports).
 
-| CI | Recommended pipes | Result |
-|---|---|---|
-| GitHub Actions | `github` + `html` | PR check annotations + a self-contained HTML report |
-| GitLab CI | `gitlab` | Merge request widget with test results |
-| Bitbucket Pipelines | `bitbucket` | Pipeline test report |
-| Any | `html` | HTML report you can upload as an artifact |
+## CI examples
 
-Install:
-
-```bash
-npm i --save-dev @testomatio/reporter
-```
-
-See the [reporter README](https://github.com/testomatio/reporter) for the per-pipe environment variables.
-
-Whatever reporter you use, also upload the `output/` directory as a build artifact. It contains failure screenshots and, with Playwright, traces and videos.
-
-For other reporter formats, see [Reports](/reports).
-
-## CI system examples
-
-The examples below use Playwright by default. A WebDriver-with-Selenium variant follows where it differs.
+Each example uses Playwright by default; a WebDriver-with-Selenium variant follows where it differs. A `node:20` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
 
 ### GitHub Actions — Playwright
 
@@ -145,6 +89,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npx codeceptjs check
       - run: npx codeceptjs run-workers 4 --by pool
       - uses: actions/upload-artifact@v4
         if: failure()
@@ -178,6 +123,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      - run: npx codeceptjs check
       - run: npx codeceptjs run-workers 2 --by pool
       - uses: actions/upload-artifact@v4
         if: failure()
@@ -186,7 +132,7 @@ jobs:
           path: output/
 ```
 
-### GitHub Actions — Sharding matrix
+### GitHub Actions — sharded matrix
 
 Each shard runs on its own runner in parallel:
 
@@ -205,11 +151,43 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npx codeceptjs check
       - run: npx codeceptjs run --shard ${{ matrix.shard }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: output-shard-${{ strategy.job-index }}
+          name: output-${{ strategy.job-index }}
+          path: output/
+```
+
+### GitHub Actions — browser matrix
+
+Run the same suite across browsers and viewports via the [`browser` plugin](/plugins#browser) (`npm i --save-dev @codeceptjs/configure`):
+
+```yaml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { browser: chromium, size: 1920x1080 }
+          - { browser: firefox,  size: 1366x768 }
+          - { browser: webkit,   size: 414x896 }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx codeceptjs check
+      - run: npx codeceptjs run -p browser:browser=${{ matrix.browser }}:windowSize=${{ matrix.size }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: output-${{ matrix.browser }}-${{ matrix.size }}
           path: output/
 ```
 
@@ -230,11 +208,11 @@ playwright:
     - npm ci
     - npx playwright install --with-deps chromium
   script:
+    - npx codeceptjs check
     - npx codeceptjs run --shard $CI_NODE_INDEX/$CI_NODE_TOTAL
   artifacts:
     when: on_failure
-    paths:
-      - output/
+    paths: [output/]
     expire_in: 1 week
 
 webdriver:
@@ -248,13 +226,14 @@ webdriver:
     SELENIUM_PORT: "4444"
   script:
     - npm ci
+    - npx codeceptjs check
     - npx codeceptjs run-workers 2 --by pool
   artifacts:
     when: on_failure
     paths: [output/]
 ```
 
-`$CI_NODE_INDEX` is 1-based, which matches CodeceptJS's `--shard` syntax exactly.
+`$CI_NODE_INDEX` is 1-based — it maps directly to CodeceptJS's `--shard` index.
 
 ### Bitbucket Pipelines
 
@@ -264,6 +243,8 @@ webdriver:
 image: node:20
 
 definitions:
+  caches:
+    playwright: ~/.cache/ms-playwright
   services:
     selenium:
       image: selenium/standalone-chrome
@@ -271,37 +252,25 @@ definitions:
 
 pipelines:
   default:
-    - step:
-        name: Install
-        caches: [node]
-        script:
-          - npm ci
-          - npx playwright install --with-deps chromium
     - parallel:
         - step:
-            name: Shard 1/4
+            name: Playwright — shard 1/2
+            caches: [node, playwright]
             script:
-              - npx codeceptjs run --shard 1/4
-            artifacts:
-              - output/**
+              - npm ci
+              - npx playwright install --with-deps chromium
+              - npx codeceptjs check
+              - npx codeceptjs run --shard 1/2
+            artifacts: [output/**]
         - step:
-            name: Shard 2/4
+            name: Playwright — shard 2/2
+            caches: [node, playwright]
             script:
-              - npx codeceptjs run --shard 2/4
-            artifacts:
-              - output/**
-        - step:
-            name: Shard 3/4
-            script:
-              - npx codeceptjs run --shard 3/4
-            artifacts:
-              - output/**
-        - step:
-            name: Shard 4/4
-            script:
-              - npx codeceptjs run --shard 4/4
-            artifacts:
-              - output/**
+              - npm ci
+              - npx playwright install --with-deps chromium
+              - npx codeceptjs check
+              - npx codeceptjs run --shard 2/2
+            artifacts: [output/**]
 ```
 
 For WebDriver, attach the Selenium service to the step:
@@ -310,14 +279,13 @@ For WebDriver, attach the Selenium service to the step:
 pipelines:
   default:
     - step:
-        image: node:20
         services: [selenium]
         script:
           - npm ci
           - export SELENIUM_HOST=localhost SELENIUM_PORT=4444
+          - npx codeceptjs check
           - npx codeceptjs run-workers 2 --by pool
-        artifacts:
-          - output/**
+        artifacts: [output/**]
 ```
 
 ### Jenkins
@@ -344,10 +312,10 @@ pipeline {
     }
     stage('Test') {
       parallel {
-        stage('Shard 1/4') { steps { sh 'npx codeceptjs run --shard 1/4' } }
-        stage('Shard 2/4') { steps { sh 'npx codeceptjs run --shard 2/4' } }
-        stage('Shard 3/4') { steps { sh 'npx codeceptjs run --shard 3/4' } }
-        stage('Shard 4/4') { steps { sh 'npx codeceptjs run --shard 4/4' } }
+        stage('Shard 1/4') { steps { sh 'npx codeceptjs check && npx codeceptjs run --shard 1/4' } }
+        stage('Shard 2/4') { steps { sh 'npx codeceptjs check && npx codeceptjs run --shard 2/4' } }
+        stage('Shard 3/4') { steps { sh 'npx codeceptjs check && npx codeceptjs run --shard 3/4' } }
+        stage('Shard 4/4') { steps { sh 'npx codeceptjs check && npx codeceptjs run --shard 4/4' } }
       }
     }
   }
@@ -359,18 +327,17 @@ pipeline {
 }
 ```
 
-For WebDriver, launch Selenium alongside the test container:
+For WebDriver, run Selenium alongside the test container:
 
 ```groovy
 stage('Test') {
   steps {
     script {
-      docker.image('selenium/standalone-chrome')
-            .withRun('--shm-size=2g -p 4444:4444') { c ->
-        sh '''
-          export SELENIUM_HOST=localhost SELENIUM_PORT=4444
-          npx codeceptjs run-workers 2 --by pool
-        '''
+      docker.image('selenium/standalone-chrome').withRun('--shm-size=2g -p 4444:4444') { c ->
+        withEnv(['SELENIUM_HOST=localhost', 'SELENIUM_PORT=4444']) {
+          sh 'npx codeceptjs check'
+          sh 'npx codeceptjs run-workers 2 --by pool'
+        }
       }
     }
   }
@@ -393,6 +360,7 @@ jobs:
       - checkout
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npx codeceptjs check
       - run:
           name: Run shard
           command: |
@@ -411,6 +379,7 @@ jobs:
     steps:
       - checkout
       - run: npm ci
+      - run: npx codeceptjs check
       - run: npx codeceptjs run-workers 2 --by pool
       - store_artifacts:
           path: output
@@ -444,9 +413,10 @@ steps:
   - script: npm ci
     displayName: Install dependencies
   - script: npx playwright install --with-deps chromium
-    displayName: Install Playwright browsers
-  - script: |
-      npx codeceptjs run --shard $(System.JobPositionInPhase)/$(System.TotalJobsInPhase)
+    displayName: Install browsers
+  - script: npx codeceptjs check
+    displayName: Check setup
+  - script: npx codeceptjs run --shard $(System.JobPositionInPhase)/$(System.TotalJobsInPhase)
     displayName: Run shard $(System.JobPositionInPhase)/$(System.TotalJobsInPhase)
     env:
       FORCE_COLOR: 1
@@ -457,35 +427,27 @@ steps:
       artifactName: codeceptjs-output-$(System.JobPositionInPhase)
 ```
 
-For WebDriver, run Selenium as a sidecar before tests:
+For WebDriver, run Selenium as a sidecar before the tests:
 
 ```yaml
   - script: docker run -d --net=host --shm-size=2g selenium/standalone-chrome
     displayName: Start Selenium
   - script: |
       export SELENIUM_HOST=localhost SELENIUM_PORT=4444
+      npx codeceptjs check
       npx codeceptjs run-workers 2 --by pool
     displayName: Run tests
 ```
 
 ## Docker
 
-The official `codeceptjs/codeceptjs` image runs Playwright, Puppeteer, and WebDriver suites without further setup. Pass runtime flags through `CODECEPT_ARGS` and the worker count through `NO_OF_WORKERS`. See [Docker](/docker) for the full reference and Compose examples.
-
-## Tips
-
-- **Raise per-test timeouts in CI.** CI machines are slower than your laptop. Bump `timeout` in `codecept.conf.js` when assertions race the page.
-- **Diagnose from logs.** Re-run with `--debug` or `DEBUG=codeceptjs:*` when a job fails and you cannot reproduce locally.
-- **Selenium Chrome: always `--shm-size=2g`.** The default 64 MB causes tab crashes on heavy pages.
-- **Custom Playwright images: install OS deps.** When you cannot use `mcr.microsoft.com/playwright`, run `npx playwright install --with-deps` to pull in `libnss`, fonts, and other system libraries.
-- **Upload `output/` only on failure.** Successful runs produce no useful artifacts.
+The official `codeceptjs/codeceptjs` image runs Playwright, Puppeteer, and WebDriver suites with no extra setup. Pass runner flags through `CODECEPT_ARGS` and the worker count through `NO_OF_WORKERS`. See [Docker](/docker).
 
 ## See also
 
-- [Playwright CI guide](https://playwright.dev/docs/ci) — upstream notes on browser install, sharding, and per-platform config.
-- [Playwright Docker image](https://playwright.dev/docs/docker) — image tags and the version-pinning rule.
-- [WebdriverIO Selenium Grid](https://webdriver.io/docs/seleniumgrid) — connection options for `host`/`port`/`path`.
-- [Selenium Docker images](https://github.com/SeleniumHQ/docker-selenium) — image variants (`standalone-chrome`, `standalone-firefox`, debug images with VNC).
+- [Playwright CI guide](https://playwright.dev/docs/ci) · [Playwright Docker image](https://playwright.dev/docs/docker)
+- [WebdriverIO Selenium Grid](https://webdriver.io/docs/seleniumgrid) · [Selenium Docker images](https://github.com/SeleniumHQ/docker-selenium)
+- [Parallel Execution](/parallel) · [Reports](/reports) · [Plugins](/plugins) · [Docker](/docker)
 
 ## Community recipes
 

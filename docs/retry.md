@@ -7,6 +7,17 @@ title: Retry Mechanisms
 
 CodeceptJS provides flexible retry mechanisms to handle flaky tests. Use retries when dealing with unstable environments, network delays, or timing issues — not to mask bugs in your code.
 
+## Retry Levels
+
+* [helper retries](#helper-retries) — happen low level on browser interaction (resolves rendering of elements)
+* [failed step retries](#failed-step-retries) — performed by CodeceptJS on step fail
+* [manual step retries](#manual-step-retries) — on known flaky steps
+* [multiple steps retry](#multiple-steps-retry) — retry a group of steps together as a single operation
+* [self-healing steps](#self-healing-steps) — AI-powered recovery that continues tests without changing test code
+* [scenario retry](#scenario-retry) — retry entire test scenarios on failure
+* [feature retry](#feature-retry) — retry all scenarios within a feature
+* [hook retries](#hook-retries) — retry `Before`/`After` hooks on failure
+
 ## Helper Retries
 
 Browser automation helpers (Playwright, Puppeteer, WebDriver) have **built-in retry mechanisms** for element interactions. When you call `I.click('Button')`, Playwright automatically waits for the element to exist, be visible, stable, and enabled — retrying for up to 5 seconds.
@@ -24,38 +35,7 @@ helpers: {
 
 **Learn more:** [Playwright Helper](/helpers/Playwright), [Timeouts](/timeouts)
 
-## CodeceptJS Retry Levels
-
-When helper retries aren't enough, CodeceptJS adds retry layers on top.
-
-### 1. Manual Step Retry
-
-Retry a specific step known to be flaky:
-
-```js
-import step from 'codeceptjs/steps'
-
-Scenario('checkout', ({ I }) => {
-  I.amOnPage('/cart')
-  I.click('Proceed to Checkout', step.retry(5))  // retry up to 5 times
-  I.see('Payment')
-})
-```
-
-Configure timing with exponential backoff:
-
-```js
-I.click('Submit', step.retry({
-  retries: 3,
-  minTimeout: 1000,  // wait 1 second before first retry
-  maxTimeout: 5000,  // max 5 seconds between retries
-  factor: 1.5        // exponential backoff multiplier
-}))
-```
-
-Pass `0` for infinite retries.
-
-### 2. Automatic Step Retry
+## Failed Step Retries
 
 Automatically retry all failed steps without modifying test code:
 
@@ -99,7 +79,34 @@ Full plugin options:
 | `deferToScenarioRetries` | `true` | Disable step retries when scenario retries exist |
 | `when` | `() => true` | Function receiving error; return `true` to retry |
 
-### 3. Multiple Steps Retry (retryTo)
+## Manual Step Retries
+
+Retry a specific step known to be flaky:
+
+```js
+import step from 'codeceptjs/steps'
+
+Scenario('checkout', ({ I }) => {
+  I.amOnPage('/cart')
+  I.click('Proceed to Checkout', step.retry(5))  // retry up to 5 times
+  I.see('Payment')
+})
+```
+
+Configure timing with exponential backoff:
+
+```js
+I.click('Submit', step.retry({
+  retries: 3,
+  minTimeout: 1000,  // wait 1 second before first retry
+  maxTimeout: 5000,  // max 5 seconds between retries
+  factor: 1.5        // exponential backoff multiplier
+}))
+```
+
+Pass `0` for infinite retries.
+
+## Multiple Steps Retry
 
 Retry a group of steps together as a single operation:
 
@@ -116,7 +123,7 @@ If any step inside fails, the entire block retries. Use this for sequences that 
 
 **Learn more:** [Effects](/effects#retryto)
 
-### 4. Self-Healing Steps
+## Self-Healing Steps
 
 When a step fails, a healing recipe runs recovery actions and continues the test — without touching test code. With AI healing enabled:
 
@@ -143,7 +150,7 @@ You can also write custom recipes for non-UI failures — network errors, data g
 
 **Learn more:** [Self-Healing Tests](/heal), [AI Configuration](/ai)
 
-### 5. Scenario Retry
+## Scenario Retry
 
 Retry an entire test when it fails:
 
@@ -165,7 +172,7 @@ export const config = {
 }
 ```
 
-### 6. Feature Retry
+## Feature Retry
 
 Retry all scenarios within a feature:
 
@@ -186,7 +193,7 @@ export const config = {
 }
 ```
 
-### 7. Hook Retries
+## Hook Retries
 
 Retry `Before`/`After` hooks when they fail:
 

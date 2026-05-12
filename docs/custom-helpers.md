@@ -197,7 +197,7 @@ Each implemented method should return a value as they will be added to global pr
 It is possible to execute global conditional retries to handle unforseen errors.
 Lost connections and network issues are good candidates to be retried whenever they appear.
 
-This can be done inside a helper using the global [promise recorder](/hooks/#api):
+This can be done inside a helper using the global [promise recorder](/architecture#the-recorder):
 
 Example: Retrying rendering errors in Puppeteer.
 

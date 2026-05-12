@@ -134,7 +134,7 @@ Feature('My feature', {key: val});
 Scenario('My scenario', {key: val},({ I }) => {});
 ```
 
-You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
+You can use these options to build your own [plugins](https://codecept.io/hooks#plugins) with [event listeners](https://codecept.io/architecture#events). Example: 
 
 ```js
   // for test
