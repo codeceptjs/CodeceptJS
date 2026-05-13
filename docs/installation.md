@@ -5,79 +5,134 @@ title: Installation
 
 # Installation
 
-## QuickStart Via Installer
+For the quickest start (CodeceptJS + Playwright) follow the [Quickstart](/quickstart). This page covers every browser, mobile, and API helper and what each one needs installed.
 
-Creating a new project via [`create-codeceptjs` installer](https://github.com/codeceptjs/create-codeceptjs) is the simplest way to start
+## Set up a project
 
-Install CodeceptJS + Playwright into current directory
-
-```
-npx create-codeceptjs .
-```
-
-Install CodeceptJS + Puppeteer into current directory
-
-```
-npx create-codeceptjs . --puppeteer
+```sh
+npm init -y                  # if you don't have a package.json yet
+npm i codeceptjs --save-dev
 ```
 
-Install CodeceptJS + webdriverio into current directory
-
-```
-npx create-codeceptjs . --webdriverio
-```
-
-Install CodeceptJS + webdriverio into `e2e-tests` directory:
-
-```
-npx create-codeceptjs e2e-tests --webdriverio
-```
-
-If you plan to use CodeceptJS for **API testing** only proceed to standard installation
-
-## Standard Installation
-
-Open a directory where you want to install CodeceptJS tests.
-If it is an empty directory - create a new NPM package with
-
-```
-npm init -y
-```
-
-Install CodeceptJS with NPM:
+Install one of the helpers below, then scaffold the config and a sample test:
 
 ```sh
 npx codeceptjs init
 ```
 
-After choosing default helper (Playwright, Puppeteer, WebDriver, etc) a corresponding package should be installed automatically.
+`init` runs a short wizard, writes `codecept.conf.js` and a sample test, and installs the helper's driver package if it's missing. The [Quickstart](/quickstart) walks through the questions.
 
-> If you face issues installing additional packages while running `npx codeceptjs init` command, install required packages manually using npm
+## Playwright
 
-Unless you are using WebDriver - CodeceptJS is ready to go!
-For WebDriver installation Selenium Server is required 👇
+Fast, modern browser automation — the recommended helper for web testing.
 
-## ESM Support
+```sh
+npm i playwright --save-dev
+npx playwright install --with-deps
+```
 
-CodeceptJS v4.x supports ECMAScript Modules (ESM) format. To use ESM:
+`playwright install` downloads the browser binaries; `--with-deps` also installs the Linux system libraries they need (run it with `sudo` if your user can't install packages).
 
-1. Add `"type": "module"` to your `package.json`
-2. Update import syntax in configuration files to use ESM format
+Set `browser` in the helper config to one of:
 
-For detailed migration instructions and important behavioral changes, see the **[3.x → 4.x Migration Guide](migration-4.md)**.
+- `chromium` — default
+- `firefox`
+- `webkit` — the open-source Safari engine
+- `electron` — test an Electron app (set `electron.executablePath`)
+
+To drive branded Chrome or Edge instead of bundled Chromium, install that channel — `npx playwright install chrome` (or `msedge`) — and set `channel` in the config. See the [Playwright helper](/playwright).
+
+## Puppeteer
+
+Chrome/Chromium automation over the DevTools protocol.
+
+```sh
+npm i puppeteer --save-dev
+```
+
+Puppeteer downloads a matching Chromium when it installs — nothing else to set up. To drive an existing Chrome instead, set `chrome.executablePath` in the helper config (or install `puppeteer-core` and point it at your browser). See the [Puppeteer helper](/puppeteer).
 
 ## WebDriver
 
-WebDriver based helpers like WebDriver will require [Selenium Server](https://codecept.io/helpers/WebDriver/#selenium-installation) installed. They will also require ChromeDriver or GeckoDriver to run corresponding browsers.
-
-We recommend to install them manually or use NPM packages:
-
-[Selenium Standalone](https://www.npmjs.com/package/selenium-standalone) to install and run Selenium, ChromeDriver, Firefox Driver with one package.
-
-Alternatively, you can execute headless Selenium in [Docker](https://github.com/SeleniumHQ/docker-selenium) for headless browser testing.
-
-Launch Selenium with Chrome browser inside a Docker container:
+W3C WebDriver — runs Chrome, Firefox, Edge, Safari, and remote or cloud grids.
 
 ```sh
-docker run --net=host selenium/standalone-chrome
+npm i webdriverio --save-dev
 ```
+
+WebDriver talks to a Selenium server (or a cloud grid). Pick one:
+
+- **[`selenium-standalone`](https://www.npmjs.com/package/selenium-standalone)** — one npm package that installs and runs Selenium with ChromeDriver and GeckoDriver:
+
+  ```sh
+  npm i selenium-standalone --save-dev
+  npx selenium-standalone install
+  npx selenium-standalone start
+  ```
+
+- **[Docker](https://github.com/SeleniumHQ/docker-selenium)** — a headless Selenium + browser container:
+
+  ```sh
+  docker run --net=host --shm-size=2g selenium/standalone-chrome
+  # or selenium/standalone-firefox
+  ```
+
+- **A cloud grid** — Sauce Labs, BrowserStack, LambdaTest, and so on. Set the grid's `host`, `port`, `user`, and `key` (or `protocol` / `path`) in the helper config.
+
+Set `browser` (`chrome`, `firefox`, `MicrosoftEdge`, `safari`) and the server `host` / `port` in `codecept.conf.js` — see the [WebDriver helper](/webdriver). For running this on CI, see [Continuous Integration](/continuous-integration).
+
+## Appium (mobile)
+
+Native iOS and Android testing. Appium speaks the WebDriver protocol, so CodeceptJS drives it through `webdriverio`:
+
+```sh
+npm i webdriverio --save-dev
+npm i -g appium
+```
+
+Install the platform driver(s) and start the server:
+
+```sh
+appium driver install uiautomator2   # Android
+appium driver install xcuitest       # iOS
+appium
+```
+
+You'll also need the Android SDK and an emulator or device, or Xcode and a simulator or device (or a device-cloud account). Set `platformName`, `deviceName`, and `app` in the helper config — see [Mobile Testing](/mobile).
+
+## API testing
+
+REST and GraphQL tests need no browser — the helpers are built in (they use `axios`, already a dependency):
+
+```sh
+npm i codeceptjs --save-dev
+```
+
+Choose `REST` or `GraphQL` when `init` asks, set `endpoint` in the config, and add the `JSONResponse` helper if you want response assertions. See [Testing APIs](/api).
+
+## ESM
+
+CodeceptJS 4.x uses ECMAScript Modules. A project created by `init` is set up for it; an existing project needs `"type": "module"` in `package.json` and `import` syntax in the config and tests. Coming from 3.x — see the [Migration Guide](/migration-4).
+
+## TypeScript
+
+`npx codeceptjs init` scaffolds a TypeScript project when you answer **Yes** to "Do you plan to write tests in TypeScript?" — it writes `codecept.conf.ts` and `*_test.ts` files.
+
+The config file (`codecept.conf.ts`) and helpers are transpiled automatically. Test files need a loader; install [`tsx`](https://tsx.is) and add it to `require`:
+
+```sh
+npm i tsx --save-dev
+```
+
+```ts
+// codecept.conf.ts
+export const config = {
+  tests: './**/*_test.ts',
+  require: ['tsx/cjs'],   // loads the *_test.ts files
+  helpers: {
+    Playwright: { url: 'http://localhost', browser: 'chromium' },
+  },
+}
+```
+
+Run tests as usual with `npx codeceptjs run`. For promise-based typings, types for page objects and custom helpers, and custom locator types, see the [TypeScript guide](/typescript).
