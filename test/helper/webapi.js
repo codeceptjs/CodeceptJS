@@ -1659,6 +1659,13 @@ export function tests() {
         if (!err) assert.fail('seen "Information"')
       }
     })
+
+    it('within on css locator should use locator scope in see without explicit context', async function () {
+      await I.amOnPage('/form/example4')
+      await I._withinBegin({ css: '#register' })
+      await I.see('E-Mail')
+      await I.dontSee('Toggle navigation')
+    })
   })
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
