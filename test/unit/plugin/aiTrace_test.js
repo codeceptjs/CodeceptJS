@@ -51,7 +51,7 @@ describe('aiTrace plugin', () => {
     await recorder.promise()
 
     const step = {
-      name: 'amOnPage',
+      title: 'amOnPage',
       toString: () => 'I am on page',
       meta: { url: 'https://example.com' },
       status: 'success',
@@ -81,7 +81,7 @@ describe('aiTrace plugin', () => {
     await recorder.promise()
 
     const step = {
-      name: 'see',
+      title: 'see',
       toString: () => 'I see test',
       status: 'success',
       startTime: Date.now(),
@@ -114,7 +114,7 @@ describe('aiTrace plugin', () => {
     await recorder.promise()
 
     const step = {
-      name: 'see',
+      title: 'see',
       toString: () => 'I see test',
       status: 'failed',
       startTime: Date.now(),
@@ -142,7 +142,7 @@ describe('aiTrace plugin', () => {
     await recorder.promise()
 
     const step = {
-      name: 'grabText',
+      title: 'grabText',
       toString: () => 'I grab text',
       status: 'success',
       startTime: Date.now(),
@@ -165,7 +165,7 @@ describe('aiTrace plugin', () => {
     await recorder.promise()
 
     const step = {
-      name: 'see',
+      title: 'see',
       toString: () => 'I see test',
       status: 'success',
       startTime: Date.now(),
@@ -228,7 +228,7 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       const step = {
-        name: 'amOnPage',
+        title: 'amOnPage',
         toString: () => 'I am on page',
         status: 'success',
         startTime: Date.now(),
@@ -253,7 +253,7 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       const step = {
-        name: 'amOnPage',
+        title: 'amOnPage',
         toString: () => 'I am on page',
         status: 'success',
         startTime: Date.now(),
@@ -278,7 +278,7 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       const step = {
-        name: 'amOnPage',
+        title: 'amOnPage',
         toString: () => 'I am on page',
         status: 'success',
         startTime: Date.now(),
@@ -309,7 +309,7 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       const step1 = {
-        name: 'see',
+        title: 'see',
         toString: () => 'I see success',
         status: 'success',
         startTime: Date.now(),
@@ -317,7 +317,7 @@ describe('aiTrace plugin', () => {
       }
 
       const step2 = {
-        name: 'click',
+        title: 'click',
         toString: () => 'I click button',
         status: 'failed',
         startTime: Date.now() + 100,
@@ -325,7 +325,7 @@ describe('aiTrace plugin', () => {
       }
 
       const step3 = {
-        name: 'fillField',
+        title: 'fillField',
         toString: () => 'I fill field',
         status: 'queued',
         startTime: Date.now() + 200,
@@ -363,7 +363,7 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       const step = {
-        name: 'see',
+        title: 'see',
         toString: () => 'I see "Test Element"',
         status: 'success',
         startTime: Date.now(),
@@ -396,7 +396,7 @@ describe('aiTrace plugin', () => {
       await recorder.promise()
 
       const step = {
-        name: 'see',
+        title: 'see',
         toString: () => 'I see test',
         status: 'success',
         startTime: Date.now(),

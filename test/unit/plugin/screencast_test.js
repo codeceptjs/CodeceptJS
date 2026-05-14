@@ -63,7 +63,7 @@ describe('screencast', () => {
     store.outputDir = outputDirOriginal
   })
 
-  const aStep = () => ({ name: 'click', actor: 'I', args: ['x'] })
+  const aStep = () => ({ title: 'click', actor: 'I', args: ['x'] })
 
   it('on=test keeps the file on pass and sets test.artifacts.screencast', async () => {
     const sc = makeFakeScreencast()
@@ -167,7 +167,7 @@ describe('screencast', () => {
     event.dispatcher.emit(event.test.started, test)
     await recorder.promise()
 
-    const step = { name: 'click', actor: 'I', args: ['Continue'] }
+    const step = { title: 'click', actor: 'I', args: ['Continue'] }
     event.dispatcher.emit(event.step.started, step)
     event.dispatcher.emit(event.step.finished, step)
     event.dispatcher.emit(event.test.after, test)
@@ -190,7 +190,7 @@ describe('screencast', () => {
 
     event.dispatcher.emit(event.test.before, test)
     event.dispatcher.emit(event.test.started, test)
-    const step = { name: 'see', actor: 'I', args: ['Github'] }
+    const step = { title: 'see', actor: 'I', args: ['Github'] }
     event.dispatcher.emit(event.step.started, step)
     event.dispatcher.emit(event.step.finished, step)
     event.dispatcher.emit(event.test.after, test)

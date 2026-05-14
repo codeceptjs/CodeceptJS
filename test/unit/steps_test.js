@@ -26,8 +26,8 @@ describe('Steps', () => {
       step = new Step({ doSomething: action }, 'doSomething')
     })
 
-    it('has name', () => {
-      expect(step.name).eql('doSomething')
+    it('has title', () => {
+      expect(step.title).eql('doSomething')
     })
 
     it('should convert method names for output', () => {
