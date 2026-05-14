@@ -26,7 +26,7 @@ describe('heal', () => {
       },
     })
 
-    expect(heal.hasCorrespondingRecipes({ name: 'click' })).to.be.true
+    expect(heal.hasCorrespondingRecipes({ title: 'click' })).to.be.true
   })
 
   it('should respect the priority of recipes', async () => {
@@ -58,7 +58,7 @@ describe('heal', () => {
   it('should have corresponding recipes', () => {
     heal.recipes = { test: { steps: ['step1', 'step2'], fn: () => {} } }
     heal.contextName = 'TestSuite'
-    const result = heal.hasCorrespondingRecipes({ name: 'step1' })
+    const result = heal.hasCorrespondingRecipes({ title: 'step1' })
     expect(result).to.be.true
   })
 
@@ -95,9 +95,9 @@ describe('heal', () => {
     })
 
     heal.contextName = 'TestSuite @slow'
-    expect(heal.hasCorrespondingRecipes({ name: 'step1' })).to.be.true
+    expect(heal.hasCorrespondingRecipes({ title: 'step1' })).to.be.true
     heal.contextName = 'TestSuite @fast'
-    expect(heal.hasCorrespondingRecipes({ name: 'step1' })).not.to.be.true
+    expect(heal.hasCorrespondingRecipes({ title: 'step1' })).not.to.be.true
   })
 
   it('should contain info', async () => {

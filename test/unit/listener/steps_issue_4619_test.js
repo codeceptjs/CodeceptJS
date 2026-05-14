@@ -59,7 +59,7 @@ describe('Steps Listener - Issue Fix #4619', () => {
     const stepCountAfter = currentTest.steps.length
 
     // The manually emitted step should not appear in the main test trace
-    const stepNames = currentTest.steps.map(step => step.name)
+    const stepNames = currentTest.steps.map(step => step.title)
     expect(stepNames).to.not.include('optionalAction')
 
     return recorder.promise()
@@ -72,7 +72,7 @@ describe('Steps Listener - Issue Fix #4619', () => {
     })
 
     // The manually emitted step should not appear in the main test trace
-    const stepNames = currentTest.steps.map(step => step.name)
+    const stepNames = currentTest.steps.map(step => step.title)
     expect(stepNames).to.not.include('softAssertion')
 
     return recorder.promise()
@@ -83,7 +83,7 @@ describe('Steps Listener - Issue Fix #4619', () => {
     const regularStep = new Step({ normalAction: () => 'done' }, 'normalAction')
     event.emit(event.step.started, regularStep)
 
-    const stepNames = currentTest.steps.map(step => step.name)
+    const stepNames = currentTest.steps.map(step => step.title)
     expect(stepNames).to.include('normalAction')
   })
 
@@ -104,7 +104,7 @@ describe('Steps Listener - Issue Fix #4619', () => {
     const anotherRegularStep = new Step({ anotherRegularAction: () => 'done' }, 'anotherRegularAction')
     event.emit(event.step.started, anotherRegularStep)
 
-    const stepNames = currentTest.steps.map(step => step.name)
+    const stepNames = currentTest.steps.map(step => step.title)
 
     // Regular steps should be present
     expect(stepNames).to.include('regularAction')
