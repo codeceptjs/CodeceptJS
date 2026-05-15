@@ -29,7 +29,7 @@ describe('retryFailedStep', () => {
   it.skip('should retry failed step', async () => {
     retryFailedStep({ retries: 2, minTimeout: 1 })
     event.dispatcher.emit(event.test.before, createTest('test'))
-    event.dispatcher.emit(event.step.started, { name: 'click' })
+    event.dispatcher.emit(event.step.started, { title: 'click' })
 
     let counter = 0
     await recorder.add(
@@ -53,7 +53,7 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.test.before, test)
 
     let counter = 0
-    event.dispatcher.emit(event.step.started, { name: 'click' })
+    event.dispatcher.emit(event.step.started, { title: 'click' })
     try {
       within('foo', () => {
         recorder.add(
@@ -81,7 +81,7 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.test.before, createTest('test'))
 
     let counter = 0
-    event.dispatcher.emit(event.step.started, { name: 'waitForElement' })
+    event.dispatcher.emit(event.step.started, { title: 'waitForElement' })
     try {
       await recorder.add(
         () => {
@@ -108,7 +108,7 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.test.before, createTest('test'))
 
     let counter = 0
-    event.dispatcher.emit(event.step.started, { name: 'amOnPage' })
+    event.dispatcher.emit(event.step.started, { title: 'amOnPage' })
     try {
       await recorder.add(
         () => {
@@ -135,7 +135,7 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.test.before, createTest('test'))
 
     let counter = 0
-    event.dispatcher.emit(event.step.started, { name: 'somethingNew' })
+    event.dispatcher.emit(event.step.started, { title: 'somethingNew' })
     try {
       await recorder.add(
         () => {
@@ -162,7 +162,7 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.test.before, createTest('test'))
 
     let counter = 0
-    event.dispatcher.emit(event.step.started, { name: 'somethingNew' })
+    event.dispatcher.emit(event.step.started, { title: 'somethingNew' })
     try {
       await recorder.add(
         () => {
@@ -188,7 +188,7 @@ describe('retryFailedStep', () => {
   it.skip('should not retry session', async () => {
     retryFailedStep({ retries: 1, minTimeout: 1 })
     event.dispatcher.emit(event.test.before, createTest('test'))
-    event.dispatcher.emit(event.step.started, { name: 'click' })
+    event.dispatcher.emit(event.step.started, { title: 'click' })
     let counter = 0
 
     try {
@@ -258,7 +258,7 @@ describe('retryFailedStep', () => {
     let counter = 0
 
     // without tryTo effect
-    event.dispatcher.emit(event.step.started, { name: 'click' })
+    event.dispatcher.emit(event.step.started, { title: 'click' })
     recorder.add('failed step', () => {
       counter++
       if (counter < 3) throw new Error('Ups')
@@ -270,7 +270,7 @@ describe('retryFailedStep', () => {
 
     // with tryTo effect
     let res = await tryTo(async () => {
-      event.dispatcher.emit(event.step.started, { name: 'click' })
+      event.dispatcher.emit(event.step.started, { title: 'click' })
       recorder.add('failed step', () => {
         counter++
         throw new Error('Ups')
