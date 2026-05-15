@@ -14,7 +14,7 @@ title: WebDriver
 WebDriver helper which wraps [webdriverio][1] library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-No Selenium Server, ChromeDriver, or GeckoDriver to install or start. Since WebdriverIO 9, driver management is fully automatic — WebdriverIO downloads and starts the matching driver for you. Read more [here][3]. Please check [Testing with WebDriver][2] for more details.
+No Selenium Server, ChromeDriver, or GeckoDriver to install or start. Since WebdriverIO 9, driver management is fully automatic — WebdriverIO downloads and starts the matching driver for you. Read more [here][2]. Please check [Testing with WebDriver][3] for more details.
 
 For those who require custom driver options, fear not; WebDriver Helper allows you to pass in driver options through custom WebDriver configuration.
 If you have a custom grid, use a cloud service, or prefer to run your own driver, there's no need to worry since WebDriver Helper will only start a driver when there are no other connection information settings like hostname or port specified.
@@ -2599,9 +2599,9 @@ Returns **void** automatically synchronized promise through #recorder
 
 [1]: http://webdriver.io/
 
-[2]: https://codecept.io/webdriver/#testing-with-webdriver
+[2]: https://webdriver.io/blog/2023/07/31/driver-management/
 
-[3]: https://webdriver.io/blog/2023/07/31/driver-management/
+[3]: https://codecept.io/webdriver/#testing-with-webdriver
 
 [4]: http://webdriver.io/guide/getstarted/configuration.html
 
