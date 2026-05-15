@@ -60,26 +60,9 @@ W3C WebDriver — runs Chrome, Firefox, Edge, Safari, and remote or cloud grids.
 npm i webdriverio --save-dev
 ```
 
-WebDriver talks to a Selenium server (or a cloud grid). Pick one:
+WebdriverIO 9 downloads and starts the matching driver automatically — no Selenium server, ChromeDriver, or GeckoDriver to install or run. Just set `browser` (`chrome`, `firefox`, `MicrosoftEdge`, `safari`) in `codecept.conf.js` — see the [WebDriver helper](/webdriver).
 
-- **[`selenium-standalone`](https://www.npmjs.com/package/selenium-standalone)** — one npm package that installs and runs Selenium with ChromeDriver and GeckoDriver:
-
-  ```sh
-  npm i selenium-standalone --save-dev
-  npx selenium-standalone install
-  npx selenium-standalone start
-  ```
-
-- **[Docker](https://github.com/SeleniumHQ/docker-selenium)** — a headless Selenium + browser container:
-
-  ```sh
-  docker run --net=host --shm-size=2g selenium/standalone-chrome
-  # or selenium/standalone-firefox
-  ```
-
-- **A cloud grid** — Sauce Labs, BrowserStack, LambdaTest, and so on. Set the grid's `host`, `port`, `user`, and `key` (or `protocol` / `path`) in the helper config.
-
-Set `browser` (`chrome`, `firefox`, `MicrosoftEdge`, `safari`) and the server `host` / `port` in `codecept.conf.js` — see the [WebDriver helper](/webdriver). For running this on CI, see [Continuous Integration](/continuous-integration).
+To run against a cloud grid (Sauce Labs, BrowserStack, LambdaTest, and so on) instead, set the grid's `host`, `port`, `user`, and `key` (or `protocol` / `path`) in the helper config. For running this on CI, see [Continuous Integration](/continuous-integration).
 
 ## Appium (mobile)
 

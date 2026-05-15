@@ -6,7 +6,7 @@ title: Bootstrap
 # Bootstrap
 
 In case you need to execute arbitrary code before or after the tests,
-you can use the `bootstrap` and `teardown` config. Use it to start and stop a webserver, Selenium, etc.
+you can use the `bootstrap` and `teardown` config. Use it to start and stop a webserver, seed a database, etc.
 
 When using the [parallel execution](/parallel) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [bootstrapAll & teardownAll](#bootstrapall-teardownall) for more information.
 

@@ -34,11 +34,11 @@ CodeceptJS runs in any CI that can install Node.js. This page covers the setup, 
 ## Browsers and drivers
 
 - **Playwright** — `npx playwright install --with-deps`. Docs: [Playwright CI](https://playwright.dev/docs/ci), [Playwright Docker image](https://playwright.dev/docs/docker) (pin the tag to your installed `playwright` version).
-- **WebDriver** — run a Selenium server: `selenium/standalone-chrome` on port `4444`. Docs: [WebDriver helper](/webdriver), [WebdriverIO Selenium Grid](https://webdriver.io/docs/seleniumgrid), [Selenium Docker images](https://github.com/SeleniumHQ/docker-selenium).
+- **WebDriver** — WebdriverIO 9 starts the matching driver automatically; just make sure the browser (e.g. Chrome) is available on the runner. No Selenium server required. Docs: [WebDriver helper](/webdriver).
 
 ## Check before running
 
-`npx codeceptjs check` loads the config, opens the browser (or connects to Selenium), and counts tests. Prepend it so a broken environment fails fast with a clear message:
+`npx codeceptjs check` loads the config, opens the browser, and counts tests. Prepend it so a broken environment fails fast with a clear message:
 
 ```bash
 npx codeceptjs check
@@ -61,7 +61,7 @@ Use [`@testomatio/reporter`](https://github.com/testomatio/reporter). It ships p
 
 ## CI examples
 
-Each example uses Playwright by default; a WebDriver-with-Selenium variant follows where it differs. A `node:20` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
+Each example uses Playwright by default; a WebDriver variant follows where it differs. WebdriverIO 9 manages drivers itself, so the WebDriver variants need no Selenium server — only the browser available on the runner. A `node:20` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
 
 ### GitHub Actions — Playwright
 
@@ -98,7 +98,9 @@ jobs:
           path: output/
 ```
 
-### GitHub Actions — WebDriver + Selenium
+### GitHub Actions — WebDriver
+
+The `ubuntu-latest` runner ships with Chrome preinstalled, and WebdriverIO 9 starts the driver automatically — no Selenium service needed.
 
 ```yaml
 name: WebDriver Tests
@@ -107,15 +109,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      selenium:
-        image: selenium/standalone-chrome
-        ports:
-          - 4444:4444
-        options: --shm-size=2g
     env:
-      SELENIUM_HOST: localhost
-      SELENIUM_PORT: 4444
       FORCE_COLOR: 1
     steps:
       - uses: actions/checkout@v4
@@ -217,13 +211,8 @@ playwright:
 
 webdriver:
   stage: test
-  image: node:20
-  services:
-    - name: selenium/standalone-chrome
-      alias: selenium
-  variables:
-    SELENIUM_HOST: selenium
-    SELENIUM_PORT: "4444"
+  # image with Chrome preinstalled; WebdriverIO 9 starts the driver itself
+  image: mcr.microsoft.com/playwright:v1.49.0-noble
   script:
     - npm ci
     - npx codeceptjs check
@@ -245,10 +234,6 @@ image: node:20
 definitions:
   caches:
     playwright: ~/.cache/ms-playwright
-  services:
-    selenium:
-      image: selenium/standalone-chrome
-      memory: 2048
 
 pipelines:
   default:
@@ -273,16 +258,16 @@ pipelines:
             artifacts: [output/**]
 ```
 
-For WebDriver, attach the Selenium service to the step:
+For WebDriver, run the step on an image that has a browser; WebdriverIO 9 starts the driver itself:
 
 ```yaml
+image: mcr.microsoft.com/playwright:v1.49.0-noble
+
 pipelines:
   default:
     - step:
-        services: [selenium]
         script:
           - npm ci
-          - export SELENIUM_HOST=localhost SELENIUM_PORT=4444
           - npx codeceptjs check
           - npx codeceptjs run-workers 2 --by pool
         artifacts: [output/**]
@@ -327,19 +312,20 @@ pipeline {
 }
 ```
 
-For WebDriver, run Selenium alongside the test container:
+For WebDriver, run the agent on an image that has a browser; WebdriverIO 9 starts the driver itself, so no Selenium container is needed:
 
 ```groovy
+agent {
+  docker {
+    image 'mcr.microsoft.com/playwright:v1.49.0-noble'
+    args '-u root'
+  }
+}
+// ...
 stage('Test') {
   steps {
-    script {
-      docker.image('selenium/standalone-chrome').withRun('--shm-size=2g -p 4444:4444') { c ->
-        withEnv(['SELENIUM_HOST=localhost', 'SELENIUM_PORT=4444']) {
-          sh 'npx codeceptjs check'
-          sh 'npx codeceptjs run-workers 2 --by pool'
-        }
-      }
-    }
+    sh 'npx codeceptjs check'
+    sh 'npx codeceptjs run-workers 2 --by pool'
   }
 }
 ```
@@ -371,11 +357,8 @@ jobs:
 
   webdriver:
     docker:
-      - image: cimg/node:20.18
-      - image: selenium/standalone-chrome
-    environment:
-      SELENIUM_HOST: localhost
-      SELENIUM_PORT: 4444
+      # -browsers image ships Chrome; WebdriverIO 9 starts the driver itself
+      - image: cimg/node:20.18-browsers
     steps:
       - checkout
       - run: npm ci
@@ -427,13 +410,10 @@ steps:
       artifactName: codeceptjs-output-$(System.JobPositionInPhase)
 ```
 
-For WebDriver, run Selenium as a sidecar before the tests:
+For WebDriver, no extra setup is needed — the `ubuntu-latest` image has Chrome, and WebdriverIO 9 starts the driver itself:
 
 ```yaml
-  - script: docker run -d --net=host --shm-size=2g selenium/standalone-chrome
-    displayName: Start Selenium
   - script: |
-      export SELENIUM_HOST=localhost SELENIUM_PORT=4444
       npx codeceptjs check
       npx codeceptjs run-workers 2 --by pool
     displayName: Run tests
@@ -446,7 +426,7 @@ The official `codeceptjs/codeceptjs` image runs Playwright, Puppeteer, and WebDr
 ## See also
 
 - [Playwright CI guide](https://playwright.dev/docs/ci) · [Playwright Docker image](https://playwright.dev/docs/docker)
-- [WebdriverIO Selenium Grid](https://webdriver.io/docs/seleniumgrid) · [Selenium Docker images](https://github.com/SeleniumHQ/docker-selenium)
+- [WebdriverIO driver management](https://webdriver.io/blog/2023/07/31/driver-management/)
 - [Parallel Execution](/parallel) · [Reports](/reports) · [Plugins](/plugins) · [Docker](/docker)
 
 ## Community recipes

@@ -43,7 +43,7 @@ Scenario('user can log in', ({ I }) => {
 });
 ```
 
-The CSS lookups and the `.should(...)` assertion grammar are gone, and the steps no longer queue: they read as a sequence.
+Cypress commands run on a `.then()` queue, so any condition or loop becomes nested callbacks. CodeceptJS is **async/await native**: complex tests stay flat JavaScript, and shared steps move into built-in page objects.
 
 And here is how the test looks while it runs. Every step is printed live, in the same order it was written:
 

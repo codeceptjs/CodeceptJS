@@ -23,42 +23,9 @@ We use [webdriverio](https://webdriver.io) library to run tests over WebDriver.
 
 To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
 
-Selenium WebDriver may be complicated from start, as it requires following tools to be installed and started.
+🛩️ No Selenium Server, ChromeDriver, GeckoDriver, or driver services to install or start. Since WebdriverIO 9, driver management is fully automatic — WebdriverIO downloads and starts the matching driver for you. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
 
-1. Selenium Server - to execute and send commands to browser
-2. ChromeDriver or GeckoDriver - to allow browsers to run in automated mode.
-
-> Those tools can be easily installed via NPM. Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) to automatically install them.
-
-You can also use `@wdio/selenium-standalone-service` package, to install and start Selenium Server for your tests automatically.
-
-```
-npm i @wdio/selenium-standalone-service --save-dev
-```
-
-Enable it in config inside plugins section:
-
-```js
-export const config = {
-  // ...
-  // inside condecept.conf.js
-  plugins: {
-    wdio: {
-      enabled: true,
-      services: ['selenium-standalone']
-    }
-  }
-}
-```
-
-> ⚠ It is not recommended to use wdio plugin & selenium-standalone when running tests in parallel. Consider **switching to Selenoid** if you need parallel run or using cloud services.
-
-🛩️ With the release of WebdriverIO version v8.14.0, and onwards, all driver management hassles are now a thing of the past 🙌. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
-One of the significant advantages of this update is that you can now get rid of any driver services you previously had to manage, such as
-`wdio-chromedriver-service`, `wdio-geckodriver-service`, `wdio-edgedriver-service`, `wdio-safaridriver-service`, and even `@wdio/selenium-standalone-service`.
-
-For those who require custom driver options, fear not; WebDriver Helper allows you to pass in driver options through custom WebDriver configuration.
-If you have a custom grid, use a cloud service, or prefer to run your own driver, there's no need to worry since WebDriver Helper will only start a driver when there are no other connection information settings like hostname or port specified.
+WebDriver Helper only starts a driver automatically when no connection information (like `host` or `port`) is specified. If you have a custom grid, use a cloud service, or prefer to run your own driver, set those connection options and that endpoint is used instead.
 
 Example:
 
@@ -138,26 +105,6 @@ keepCookies: true,
 
 > ▶ More config options available on [WebDriver helper reference](/helpers/WebDriver#configuration)
 
-### ChromeDriver without Selenium
-
-If you want to run tests using raw ChromeDriver (which also supports WebDriver protocol) avoiding Selenium Server, you should provide following configuration:
-
-```js
-port: 9515,
-browser: 'chrome',
-path: '/',
-```
-
-> If you face issues connecting to WebDriver, please check that corresponding server is running on a specified port. If host is other than `localhost` or port is other than `4444`, update the configuration.
-
-### Selenium in Docker (Selenoid)
-
-Browsers can be executed in Docker containers. This is useful when testing on Continous Integration server.
-We recommend using [Selenoid](https://aerokube.com/selenoid/) to run browsers in container.
-
-CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load browser container setup.
-
-
 ### Headless Mode
 
 The bundled `@codeceptjs/configure` toggles headless mode for WebDriver — for chrome/firefox it injects `--headless` into the matching capability args automatically:
@@ -203,9 +150,7 @@ desiredCapabilities: {
 
 ### Cloud Providers
 
-WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or any other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
-
-By default, those parameters are set to connect to local Selenium Server, but they should be changed if you want to run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
+By default, WebdriverIO starts a local driver automatically, so no connection parameters are needed. To run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers) instead, specify `host`, `port`, `protocol`, and `path` parameters pointing to the service. You may also need `user` and `key` parameters to authenticate on the cloud service.
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
@@ -481,7 +426,7 @@ If it's hard to define what to wait, it is recommended to use [retries](/basics/
 
 ## Configuring CI
 
-To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
+Locally, WebdriverIO starts the driver for you and tests run in window mode. On a remote CI (Continuous Integration) server there is usually no desktop, so window mode is not available.
 
 There are following options available:
 

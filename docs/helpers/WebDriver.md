@@ -14,11 +14,7 @@ title: WebDriver
 WebDriver helper which wraps [webdriverio][1] library to
 manipulate browser using Selenium WebDriver or PhantomJS.
 
-WebDriver requires Selenium Server and ChromeDriver/GeckoDriver to be installed. Those tools can be easily installed via NPM. Please check [Testing with WebDriver][2] for more details.
-
-With the release of WebdriverIO version v8.14.0, and onwards, all driver management hassles are now a thing of the past 🙌. Read more [here][3].
-One of the significant advantages of this update is that you can now get rid of any driver services you previously had to manage, such as
-`wdio-chromedriver-service`, `wdio-geckodriver-service`, `wdio-edgedriver-service`, `wdio-safaridriver-service`, and even `@wdio/selenium-standalone-service`.
+No Selenium Server, ChromeDriver, or GeckoDriver to install or start. Since WebdriverIO 9, driver management is fully automatic — WebdriverIO downloads and starts the matching driver for you. Read more [here][3]. Please check [Testing with WebDriver][2] for more details.
 
 For those who require custom driver options, fear not; WebDriver Helper allows you to pass in driver options through custom WebDriver configuration.
 If you have a custom grid, use a cloud service, or prefer to run your own driver, there's no need to worry since WebDriver Helper will only start a driver when there are no other connection information settings like hostname or port specified.
