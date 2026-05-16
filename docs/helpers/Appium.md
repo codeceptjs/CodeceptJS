@@ -936,7 +936,11 @@ I.click('//form/*[@type=submit]');
 I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
+// using ARIA role locator
+I.click({role: 'button', name: 'Submit'});
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][17].
 
 #### Parameters
 
@@ -1034,9 +1038,13 @@ I.fillField('password', secret('123456'));
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
+// by ARIA role locator
+I.fillField({role: 'textbox', name: 'Email'}, 'hello@world.com');
 // within a context
 I.fillField('Name', 'John', '#section2');
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match fields by their accessible name and survive markup refactors. See [Locators][17].
 
 #### Parameters
 
@@ -1188,7 +1196,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 *   `locator` **([string][5] | [object][11])** located by CSS|XPath|strict locator.
-*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][7])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][17].
+*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][7])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][18].
 
 Returns **void** automatically synchronized promise through #recorderSupported only for web testing
 
@@ -1218,7 +1226,11 @@ The second parameter is a context (CSS or XPath locator) to narrow the search.
 ```js
 I.seeElement('#modal');
 I.seeElement('#modal', '#container');
+// using ARIA role locator
+I.seeElement({role: 'dialog'});
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][17].
 
 #### Parameters
 
@@ -1402,4 +1414,6 @@ Returns **void** automatically synchronized promise through #recorder
 
 [16]: http://webdriver.io/api/mobile/setImmediateValue.html
 
-[17]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[17]: /locators#aria-locators
+
+[18]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
