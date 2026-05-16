@@ -96,13 +96,26 @@ await Container.create(config, opts)
 
 | Removed helper | What to do |
 |----------------|------------|
-| `Nightmare` | Switch to `Playwright`, `Puppeteer`, or `WebDriver`. |
-| `Protractor` | Switch to `Playwright` or `WebDriver`. |
+| `Nightmare` | Switch to `Playwright`, `Puppeteer`, or `WebDriver`. Nightmare is unmaintained; `Playwright` is the closest drop-in for headless flows. |
+| `Protractor` | Switch to `Playwright` or `WebDriver`. Angular apps work without the Protractor-specific waits — use `waitForElement`/`waitForClickable`. |
 | `TestCafe` | Switch to `Playwright`. |
 | `AI` | Use the top-level `ai:` config option and the new `aiTrace` plugin. |
 | `SoftExpectHelper` | Use the `hopeThat` effect instead — see below. |
+| `Mochawesome` | Removed. Use the [Testomat.io Reporter](https://github.com/testomatio/reporter) HTML pipe for HTML reports — see below. |
 
 `Container.STANDARD_ACTING_HELPERS` no longer lists `TestCafe`.
+
+If you relied on a removed helper for behavior none of the built-in helpers cover, **write a custom helper**. A helper is a plain class extending `@codeceptjs/helper`; you can wrap any Node library and expose `I.*` actions. See [Custom Helpers](/helpers).
+
+```js
+import Helper from '@codeceptjs/helper'
+
+class MyHelper extends Helper {
+  async doSomething() { /* wrap any library here */ }
+}
+
+export default MyHelper
+```
 
 ### `SoftExpectHelper` → `hopeThat`
 
@@ -131,6 +144,146 @@ hopeThat.noErrors()
 
 Each `hopeThat()` call records the failure as a note on the test and lets the scenario continue; `hopeThat.noErrors()` throws once at the end with every recorded failure if any happened. See [Effects: hopeThat](/effects#hopethat).
 
+### `Mochawesome` → Testomat.io Reporter
+
+3.x bundled a `Mochawesome` helper that pushed steps and screenshots into a [`mochawesome`](https://www.npmjs.com/package/mochawesome) Mocha report. The helper, the `mochawesome` dependency, and the worker-level report-dir wiring are all gone in 4.x.
+
+For an HTML report, use the [Testomat.io Reporter](https://github.com/testomatio/reporter) with the HTML pipe — it includes steps, screenshots, videos, and traces, works under `--workers`, and needs no helper in your config. See [Reports](/reports).
+
+3.x:
+
+```js
+helpers: { Mochawesome: { uniqueScreenshotNames: true } }
+```
+
+```bash
+npx codeceptjs run --reporter mochawesome --reporter-options reportDir=output
+```
+
+4.x:
+
+```bash
+npm install --save-dev @testomatio/reporter
+```
+
+```js
+// codecept.conf.js
+plugins: {
+  testomatio: {
+    enabled: true,
+    require: '@testomatio/reporter/lib/adapter/codecept',
+  },
+}
+```
+
+```bash
+TESTOMATIO_DISABLE_UPLOAD=1 npx codeceptjs run
+```
+
+The HTML report is written to `output/reports/`. See [Reports → HTML](/reports) for pipe options.
+
+Reporting notes:
+
+- **JUnit XML** (CI servers, GitHub Actions test tab): enable the [`junitReporter`](/plugins#junitreporter) plugin instead of `mocha-junit-reporter`. It includes CodeceptJS steps. See [Reports → JUnit XML](/reports#junit-xml).
+- **Multiple Mocha reporters** via `mocha-multi` / `cmr` is **not recommended** in 4.x — the Testomat.io HTML pipe plus the `junitReporter` plugin cover the HTML + JUnit combination without chaining reporters.
+
+#### Keeping Mochawesome (not recommended)
+
+The `mochawesome` reporter itself is a stock Mocha reporter — it never depended on CodeceptJS bundling it, so it keeps working. Only the bundled **helper** (which embedded failure screenshots into the report) was removed. If you must stay on Mochawesome, you own that glue now.
+
+**Report only — no screenshots embedded.** This works as-is:
+
+```bash
+npm install --save-dev mochawesome
+npx codeceptjs run --reporter mochawesome --reporter-options reportDir=output
+```
+
+**Report with embedded failure screenshots.** Re-create the old helper as a project-local custom helper. This is a faithful port of the 3.x helper:
+
+```js
+// helpers/Mochawesome.js
+import Helper from '@codeceptjs/helper'
+import { createRequire } from 'module'
+// ⚠️ Internal, NOT semver-stable subpaths. Pin your codeceptjs version —
+// a future minor may move these. This coupling is why core dropped the helper.
+import { clearString } from 'codeceptjs/lib/utils.js'
+import { testToFileName } from 'codeceptjs/lib/mocha/test.js'
+
+const addContext = createRequire(import.meta.url)('mochawesome/addContext')
+
+class Mochawesome extends Helper {
+  constructor(config) {
+    super(config)
+    this.options = { uniqueScreenshotNames: false, disableScreenshots: false, ...config }
+    this.currentTest = ''
+    this.currentSuite = null
+  }
+
+  _beforeSuite(suite) {
+    this.currentSuite = suite
+    this.currentTest = ''
+  }
+
+  _before() {
+    if (this.currentSuite?.ctx) {
+      this.currentTest = { test: this.currentSuite.ctx.currentTest }
+    }
+  }
+
+  _test(test) {
+    this.currentTest = { test }
+  }
+
+  _failed(test) {
+    if (this.options.disableScreenshots) return
+    let fileName
+    if (test.ctx?.test?.type === 'hook') {
+      this.currentTest = { test: test.ctx.test }
+      test._retries = -1
+      fileName = clearString(`${test.title}_${this.currentTest.test.title}`)
+    } else {
+      this.currentTest = { test }
+      fileName = testToFileName(test)
+    }
+    if (this.options.uniqueScreenshotNames) {
+      fileName = testToFileName(test, { unique: true })
+    }
+    if (test._retries < 1 || test._retries === test.retryNum) {
+      return addContext(this.currentTest, `${fileName}.failed.png`)
+    }
+  }
+
+  // exposed as I.addMochawesomeContext(...) for manual attachments
+  addMochawesomeContext(context) {
+    if (this.currentTest === '') this.currentTest = { test: this.currentSuite.ctx.test }
+    return addContext(this.currentTest, context)
+  }
+}
+
+export default Mochawesome
+```
+
+Register it and run with the reporter:
+
+```js
+// codecept.conf.js
+helpers: {
+  Mochawesome: {
+    require: './helpers/Mochawesome.js',
+    uniqueScreenshotNames: true,
+  },
+}
+```
+
+```bash
+npx codeceptjs run --reporter mochawesome --reporter-options reportDir=output
+```
+
+Two caveats this port cannot fully solve:
+
+- The internal imports (`codeceptjs/lib/utils.js`, `codeceptjs/lib/mocha/test.js`) are reachable but **not part of the public API** — pin `codeceptjs` and re-test on upgrades.
+- The 3.x `screenshot`/`screenshotOnFail` plugin read `helpers.Mochawesome.config.uniqueScreenshotNames` to keep the embedded reference and the saved screenshot file in sync. Core no longer does this. Set `uniqueScreenshotNames` to the **same value** on both this helper and the `screenshot` plugin, or the embedded filename and the saved file can diverge on retries.
+
 ### Custom Assertion Libraries
 
 No code changes are required for chai, expect, jest-style matchers, or Node's `assert` — just import them in your test files. With `noGlobals: true`, they work the same as before.
@@ -148,8 +301,8 @@ Heads up on chai: 3.x pinned `chai@4`; 4.x devDep is `chai@6`, which is **ESM-on
 | `commentStep` | `import step from 'codeceptjs/steps'` then `step.section('name')` / `step.endSection()` |
 | `fakerTransform` | Import `@faker-js/faker` directly in tests. |
 | `enhancedRetryFailedStep` | Merged into `retryFailedStep`. Rename in config. |
-| `allure` | Use [@testomatio/reporter](https://testomat.io) or Mochawesome. |
-| `htmlReporter` | Use an external reporter. |
+| `allure` | Use [@testomatio/reporter](https://testomat.io). |
+| `htmlReporter` | Use the [Testomat.io Reporter](https://github.com/testomatio/reporter) HTML pipe — see [Reports](/reports). |
 | `wdio` | Configure WebdriverIO services directly in `helpers.WebDriver`. |
 | `selenoid` | Run Selenoid externally. |
 | `standardActingHelpers` | No longer needed; the list lives in core. |

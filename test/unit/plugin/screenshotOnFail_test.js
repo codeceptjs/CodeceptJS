@@ -6,7 +6,6 @@ import event from '../../../lib/event.js'
 import recorder from '../../../lib/recorder.js'
 import { createTest } from '../../../lib/mocha/test.js'
 import { deserializeSuite } from '../../../lib/mocha/suite.js'
-import MochawesomeHelper from '../../../lib/helper/Mochawesome.js'
 
 let screenshotSaved
 
@@ -91,42 +90,6 @@ describe('screenshotOnFail', () => {
     event.dispatcher.emit(event.test.failed, test, null, 'AfterSuite')
     await recorder.promise()
     expect(!screenshotSaved.called).is.ok
-  })
-
-  it('should have the same unique file name as the mochawesome helper when the uuid is present', async () => {
-    screenshotOnFail({ uniqueScreenshotNames: true })
-    const test = createTest('test1')
-    test.uid = '1234'
-
-    const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
-    const spy = sinon.spy(helper, '_addContext')
-    helper._failed(test)
-
-    event.dispatcher.emit(event.test.failed, test)
-    await recorder.promise()
-
-    const screenshotFileName = screenshotSaved.getCall(0).args[0]
-    expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
-  })
-
-  it('should have the same unique file name as the mochawesome helper when the uuid is not present', async () => {
-    screenshotOnFail({ uniqueScreenshotNames: true })
-    const test = createTest('test1')
-
-    // Use sinon to stub Date.now to return consistent timestamp
-    const clock = sinon.useFakeTimers(1755596785000) // Fixed timestamp
-
-    const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
-    const spy = sinon.spy(helper, '_addContext')
-    helper._failed(test)
-
-    event.dispatcher.emit(event.test.failed, test)
-    await recorder.promise()
-
-    clock.restore()
-
-    const screenshotFileName = screenshotSaved.getCall(0).args[0]
-    expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
   })
 
   describe('Data() scenarios', () => {

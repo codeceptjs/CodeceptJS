@@ -22,7 +22,11 @@ I.click('//form/*[@type=submit]');
 I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
+// using ARIA role locator
+I.click({role: 'button', name: 'Submit'});
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators](/locators#aria-locators).
 
 @param {CodeceptJS.LocatorOrString} [locator='//body'] (optional, `'//body'` by default) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 @param {?CodeceptJS.LocatorOrString | null} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.

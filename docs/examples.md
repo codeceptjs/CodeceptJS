@@ -107,7 +107,6 @@ This repository demonstrates usage of
 
 - Puppeteer helper
 - Working with Angular CLI
-- Reports with Mochawesome helper
 
 ## [REST Example Tests](https://github.com/PeterNgTr/codeceptjs-rest-demo)
 

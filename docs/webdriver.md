@@ -9,19 +9,7 @@ How does your client, manager, or tester, or any other non-technical person, kno
 
 End-to-End tests can cover standard but complex scenarios from a user's perspective. With e2e tests you can be confident that users, following all defined scenarios, won't get errors. We check **functionality of application and a user interface** (UI) as well.
 
-## What is Selenium WebDriver
-
-The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standardized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](/mobile).
-
-Let's clarify the terms:
-
-* Selenium - is a toolset for browser test automation
-* WebDriver - a standard protocol for communicating between test framework and browsers
-* JSON Wire - an older version of such protocol
-
-We use [webdriverio](https://webdriver.io) library to run tests over WebDriver.
-
-To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
+We use [webdriverio](https://webdriver.io) library to run tests over WebDriver. To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
 
 🛩️ No Selenium Server, ChromeDriver, GeckoDriver, or driver services to install or start. Since WebdriverIO 9, driver management is fully automatic — WebdriverIO downloads and starts the matching driver for you. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
 

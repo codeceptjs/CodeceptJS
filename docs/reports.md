@@ -161,11 +161,13 @@ plugins: {
 
 Hooks: `onHookFinished`, `onTestBefore`, `onTestPassed`, `onTestFailed`, `onTestSkipped`, `onTestFinished`, `onResult`.
 
-For Mocha reporters, use `--reporter`:
+For built-in Mocha reporters, use `--reporter`:
 
 ```sh
-npx codeceptjs run --reporter mochawesome --reporter-options reportDir=output
+npx codeceptjs run --reporter dot
 ```
+
+> The bundled `Mochawesome` helper was removed in 4.x. For an HTML report use the [Testomat.io Reporter](https://github.com/testomatio/reporter) HTML pipe (see above); for JUnit XML use the [`junitReporter`](#junit-xml) plugin. Wiring multiple Mocha reporters through `mocha-multi`/`cmr` is not recommended — prefer these instead.
 
 Plugins exist for [TestRail](https://www.npmjs.com/package/codeceptjs-testrail) and [Tesults](https://www.npmjs.com/package/codeceptjs-tesults).
 
