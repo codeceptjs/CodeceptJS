@@ -27,7 +27,8 @@
     "translations",
     "typings/**/*.d.ts",
     "docs/*.md",
-    "docs/helpers/**"
+    "docs/helpers/**",
+    "docs/plugins/**"
   ],
   "main": "lib/index.js",
   "module": "lib/index.js",

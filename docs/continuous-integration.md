@@ -34,7 +34,7 @@ CodeceptJS runs in any CI that can install Node.js. This page covers the setup, 
 ## Browsers and drivers
 
 - **Playwright** — `npx playwright install --with-deps`. Docs: [Playwright CI](https://playwright.dev/docs/ci), [Playwright Docker image](https://playwright.dev/docs/docker) (pin the tag to your installed `playwright` version).
-- **WebDriver** — WebdriverIO 9 starts the matching driver automatically; just make sure the browser (e.g. Chrome) is available on the runner. No Selenium server required. Docs: [WebDriver helper](/webdriver).
+- **WebDriver** — nothing to provision. WebdriverIO 9 downloads and starts both the browser (Chrome, Chromium, or Firefox) and the matching driver automatically. No Selenium server, no browser-install step. Docs: [WebDriver helper](/webdriver), [WebdriverIO driver/browser management](https://webdriver.io/docs/driverbinaries/).
 
 ## Check before running
 
@@ -61,7 +61,7 @@ Use [`@testomatio/reporter`](https://github.com/testomatio/reporter). It ships p
 
 ## CI examples
 
-Each example uses Playwright by default; a WebDriver variant follows where it differs. WebdriverIO 9 manages drivers itself, so the WebDriver variants need no Selenium server — only the browser available on the runner. A `node:20` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
+Each example uses Playwright by default; a WebDriver variant follows where it differs. WebdriverIO 9 downloads its own browser and driver, so the WebDriver variants run on a plain `node:20` image with no Selenium service and no browser-install step. For Playwright, a `node:20` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
 
 ### GitHub Actions — Playwright
 
@@ -100,7 +100,7 @@ jobs:
 
 ### GitHub Actions — WebDriver
 
-The `ubuntu-latest` runner ships with Chrome preinstalled, and WebdriverIO 9 starts the driver automatically — no Selenium service needed.
+WebdriverIO 9 downloads its own browser and driver, so the job is just `npm ci` + run — no Selenium service, no browser-install step. This mirrors [WebdriverIO's own boilerplate CI](https://github.com/webdriverio/jasmine-boilerplate/blob/master/.github/workflows/ci.yaml).
 
 ```yaml
 name: WebDriver Tests
@@ -211,8 +211,7 @@ playwright:
 
 webdriver:
   stage: test
-  # image with Chrome preinstalled; WebdriverIO 9 starts the driver itself
-  image: mcr.microsoft.com/playwright:v1.49.0-noble
+  image: node:20  # WebdriverIO 9 downloads its own browser and driver
   script:
     - npm ci
     - npx codeceptjs check
@@ -258,10 +257,10 @@ pipelines:
             artifacts: [output/**]
 ```
 
-For WebDriver, run the step on an image that has a browser; WebdriverIO 9 starts the driver itself:
+For WebDriver, no Selenium service or browser image is needed — WebdriverIO 9 downloads its own browser and driver:
 
 ```yaml
-image: mcr.microsoft.com/playwright:v1.49.0-noble
+image: node:20
 
 pipelines:
   default:
@@ -312,16 +311,9 @@ pipeline {
 }
 ```
 
-For WebDriver, run the agent on an image that has a browser; WebdriverIO 9 starts the driver itself, so no Selenium container is needed:
+For WebDriver, keep the same `node:20` agent — WebdriverIO 9 downloads its own browser and driver, so no Selenium container is needed:
 
 ```groovy
-agent {
-  docker {
-    image 'mcr.microsoft.com/playwright:v1.49.0-noble'
-    args '-u root'
-  }
-}
-// ...
 stage('Test') {
   steps {
     sh 'npx codeceptjs check'
@@ -357,8 +349,8 @@ jobs:
 
   webdriver:
     docker:
-      # -browsers image ships Chrome; WebdriverIO 9 starts the driver itself
-      - image: cimg/node:20.18-browsers
+      # WebdriverIO 9 downloads its own browser and driver
+      - image: cimg/node:20.18
     steps:
       - checkout
       - run: npm ci
@@ -410,7 +402,7 @@ steps:
       artifactName: codeceptjs-output-$(System.JobPositionInPhase)
 ```
 
-For WebDriver, no extra setup is needed — the `ubuntu-latest` image has Chrome, and WebdriverIO 9 starts the driver itself:
+For WebDriver, no extra setup is needed — WebdriverIO 9 downloads its own browser and driver:
 
 ```yaml
   - script: |

@@ -19,6 +19,9 @@ import('documentation').then(mod => (documentation = mod))
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`
 }
+const pluginMarkDownFile = function (name) {
+  return `docs/plugins/${name}.md`
+}
 const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alpha'
 
 stopOnFail()
@@ -44,55 +47,81 @@ module.exports = {
   },
 
   async docsPlugins() {
-    // generate documentation for plugins
+    // generate documentation for plugins: each plugin gets a dedicated page
 
-    await npx(`documentation build lib/plugin/*.js -o docs/plugins.md ${documentjsCliArgs}`)
-    await replaceInFile('docs/plugins.md', cfg => {
-      cfg.replace(/^/, '---\npermalink: plugins\nsidebarDepth: \nsidebar: auto\ntitle: Plugins\n---\n\n')
-    })
-  },
+    if (!fs.existsSync('docs/plugins')) fs.mkdirSync('docs/plugins')
 
-  async docsCi() {
-    // generate docs for CI services
-    stopOnFail()
+    const files = fs.readdirSync('lib/plugin').filter(f => path.extname(f) === '.js')
 
-    writeToFile('docs/docker.md', cfg => {
-      cfg.line('---')
-      cfg.line('permalink: /docker')
-      cfg.line('layout: Section')
-      cfg.line('sidebar: false')
-      cfg.line('title: Docker')
-      cfg.line('editLink: false')
-      cfg.line('---')
-      cfg.line('')
-      cfg.textFromFile('docker/README.md')
-    })
+    const sharedPartials = fs.readdirSync('docs/shared').filter(f => path.extname(f) === '.mustache')
+    const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`)
+    const sharedTemplates = sharedPartials.map(file => fs.readFileSync(`docs/shared/${file}`).toString()).map(template => `\n\n\n${template}`)
 
-    let body = `---
-permalink: /continuous-integration
-title: Continuous Integration
+    const index = []
+
+    for (const file of files) {
+      const name = path.basename(file, '.js')
+      console.log(`Writing documentation for ${name} plugin`)
+
+      await npx(`documentation build lib/plugin/${file} -o ${pluginMarkDownFile(name)} ${documentjsCliArgs}`)
+
+      replaceInFile(pluginMarkDownFile(name), cfg => {
+        cfg.replace(/\(optional, default.*?\)/gm, '')
+        cfg.replace(/\\*/gm, '')
+      })
+
+      replaceInFile(pluginMarkDownFile(name), cfg => {
+        for (const i in sharedPlaceholders) {
+          cfg.replace(sharedPlaceholders[i], sharedTemplates[i])
+        }
+      })
+
+      const lines = fs.readFileSync(pluginMarkDownFile(name)).toString().split('\n')
+      const headingAt = lines.findIndex(l => l.startsWith('## '))
+      const summary = []
+      for (let i = headingAt + 1; i < lines.length; i++) {
+        const line = lines[i].trim()
+        if (!summary.length && !line) continue
+        if (summary.length && (!line || line.startsWith('#') || line.startsWith('```'))) break
+        summary.push(line)
+      }
+      index.push({ name, summary: summary.join(' ').trim() })
+
+      await writeToFile(pluginMarkDownFile(name), cfg => {
+        cfg.append(`---
+permalink: /plugins/${name}
+editLink: false
+sidebar: auto
+title: ${name}
 ---
 
-<!-- this file is auto generated from CI category https://codecept.discourse.group/c/CodeceptJS-issues-in-general/ci/9 -->
-
-# Continuous Integration
-
-> Help us improve this article. [Write how did you set up CodeceptJS for CI](https://codecept.discourse.group/c/CodeceptJS-issues-in-general/ci/9) and see your post listed here!
-
-Continuous Integration services allows you to delegate the control of running tests to external system.
-CodeceptJS plays well with all types of CI even when there is no documentation on this topic, it is still easy to set up with any kind of hosted or cloud CI.
-Our community prepared some valuable recipes for setting up CI systems with CodeceptJS.
-
-## Recipes
-
-`
-    const res = await axios.get('https://codecept.discourse.group/search.json?q=category%3A9')
-    for (const topic of res.data.topics) {
-      if (topic.slug === 'about-the-continuous-integration-category') continue
-      body += `* ### [${topic.title}](https://codecept.discourse.group/t/${topic.slug}/)\n`
+`)
+        cfg.textFromFile(pluginMarkDownFile(name))
+      })
     }
-    writeToFile('docs/continuous-integration.md', cfg => cfg.line(body))
+
+    // overview page links to every dedicated plugin page (keeps /plugins permalink)
+    await writeToFile('docs/plugins.md', cfg => {
+      cfg.line('---')
+      cfg.line('permalink: /plugins')
+      cfg.line('editLink: false')
+      cfg.line('sidebar: auto')
+      cfg.line('title: Plugins')
+      cfg.line('---')
+      cfg.line('')
+      cfg.line('# Plugins')
+      cfg.line('')
+      cfg.line('CodeceptJS bundles the following plugins. Each plugin has its own page with full configuration reference.')
+      cfg.line('')
+      for (const { name, summary } of index) {
+        cfg.line(`## [${name}](/plugins/${name})`)
+        cfg.line('')
+        if (summary) cfg.line(summary)
+        cfg.line('')
+      }
+    })
   },
+
 
   async docsExternalHelpers() {
     // generate documentation for helpers outside of main repo
@@ -638,7 +667,7 @@ const exec = require('child_process').exec
 const { codecept_dir, codecept_run } = require('./consts')
 const debug = require('debug')('codeceptjs:tests')
 
-const config_run_config = (config, grep, verbose = false) => 
+const config_run_config = (config, grep, verbose = false) =>
   \`\${codecept_run} \${verbose ? '--verbose' : ''} --config \${codecept_dir}/configs/${featureName}/\${config} \${grep ? \`--grep "\${grep}"\` : ''}\`
 
 describe('CodeceptJS ${featureName}', function () {
