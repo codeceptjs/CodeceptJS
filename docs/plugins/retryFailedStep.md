@@ -61,7 +61,7 @@ plugins: {
 
 #### Disable Per Test
 
-This plugin can be disabled per test. In this case you will need to stet `I.retry()` to all flaky steps:
+This plugin can be disabled per test. In this case you will need to add `step.retry()` to all flaky steps:
 
 Use scenario configuration to disable plugin for a test
 

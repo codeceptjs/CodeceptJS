@@ -29,7 +29,7 @@ Run tests with plugin enabled:
 
 *   `timeout` - global step timeout, default 150 seconds
 
-*   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with I.limitTime(x).action(...), default false
+*   `overrideStepLimits` - whether to use timeouts set in plugin config to override step timeouts set in code with `I.action(..., step.timeout(x))`, default false
 
 *   `noTimeoutSteps` - an array of steps with no timeout. Default:
 

@@ -1,4 +1,5 @@
 import assert from 'assert';
+import step from 'codeceptjs/steps';
 
 const recorder = codeceptjs.recorder;
 
@@ -8,10 +9,10 @@ Feature('Retry');
 
 Scenario('flaky step @test1', async ({ I }) => {
   tries++;
-  await I.retry(3).failWhen(() => {
+  await I.failWhen(() => {
     tries++;
     return tries < 4;
-  });
+  }, step.retry(3));
   assert.equal(tries, 4);
 });
 
@@ -20,7 +21,7 @@ Scenario('flaky step passed globally @test2', ({ I }) => {
     retries: 3,
     when: () => false,
   });
-  I.retry(5).asyncStep();
+  I.asyncStep(step.retry(5));
   I.failWhen(() => {
     tries++;
     return tries < 4;

@@ -118,7 +118,7 @@ plugins: {
 When multiple timeouts are configured, CodeceptJS applies them in priority order:
 
 1. **stepTimeoutHard** — plugin with `overrideStepLimits: true`
-2. **codeLimitTime** — `step.timeout()` or `I.limitTime()`
+2. **codeLimitTime** — `step.timeout()`
 3. **stepTimeoutSoft** — plugin with `overrideStepLimits: false`
 4. **testOrSuite** — global test/suite timeout
 
