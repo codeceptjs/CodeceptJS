@@ -285,7 +285,7 @@ Scenario('create todo item', ({ I }) => {
 
 > [▶ Working example of CodeceptJS WebDriver tests](https://github.com/DavertMik/codeceptjs-webdriver-example) for TodoMVC application.
 
-WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as non-trivial [React locators](/react) and [Shadow DOM](/shadow).
+WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as [Shadow DOM](/shadow). For testing React applications see [Testing React Applications](/react).
 
 ### Grabbers
 

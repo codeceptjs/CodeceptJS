@@ -5,11 +5,9 @@ title: Testing React Applications
 
 # Testing React Applications
 
-React applications require some additional love for end to end testing.
-At first, it is very hard to test an application which was never designed to be tested!
-This happens to many React application. While building components developers often forget to keep the element's semantic.
+React applications need extra care in end-to-end testing. Many React apps were never designed to be tested. While building components, developers often drop the element's semantics.
 
-Generated HTML code may often look like this:
+Generated HTML often looks like this:
 
 ```js
 <div class="jss607 jss869 jss618 jss871 jss874 jss876" tabindex="0" role="tab" aria-selected="true" style="pointer-events: auto;">
@@ -21,50 +19,74 @@ Generated HTML code may often look like this:
 <span class="jss610"></span></div>
 ```
 
-It's quite common that clickable elements are not actual `a` or `button` elements. This way `I.click('Click Me!');` won't work, as well as `fillField('name', 'value)`. Finding a correct locator for such cases turns to be almost impossible.
+Clickable elements are often not real `a` or `button` elements. So `I.click('Click Me!')` won't work, and neither will `fillField('name', 'value')`. Finding a stable locator for such markup is hard.
 
-In this case test engineers have two options:
+Test engineers have two options:
 
-1. Update JSX files to change output HTML and rebuild the application
-1. Test the application how it is.
+1. Update the JSX, fix the output HTML, and rebuild the app.
+2. Test the app as it is.
 
-We recommend for long-running projects to go with the first option. The better you write your initial HTML the cleaner and less fragile will be your tests. Replace divs with correct HTML elements, add `data-` attributes, add labels, and names to input fields to make all CodeceptJS magic like clicking link by a text to work.
+For long-running projects, choose the first option. The cleaner your HTML, the less fragile your tests. Replace `div`s with correct HTML elements, add `data-` attributes, and add labels and names to input fields so CodeceptJS magic — like clicking a link by its text — works.
 
-However, if you can't update the code you can go to the second option. In this case, you should bind your locators to visible text on page and available semantic attribues. For instance, instead of using generated locator as this one:
+If you can't change the code, choose the second option. Bind locators to visible text and semantic attributes. Instead of a generated locator like this:
 
 ```
 //*[@id="document"]/div[2]/div/div[2]/div
 ```
 
-use [Locator Builder](/locators#locator-builder) to make clean semantic locator:
+use the [Locator Builder](/locators#locator-builder) to write a clean semantic locator:
 
 ```js
 locate('[role=tab]').withText('Click Me!');
 ```
 
-This way you can build very flexible and stable locators even on application never designed for testing.
+This builds flexible, stable locators even on an app never designed for testing.
 
-## Locators
+## How to Locate Elements
 
-For React apps a special `react` locator is available. It allows to select an element by its component name, props and state.
-
-```js
-{ react: 'MyComponent' }
-{ react: 'Button', props: { title: 'Click Me' }}
-{ react: 'Button', state: { some: 'state' }}
-{ react: 'Input', state: 'valid'}
-```
-
-In WebDriver, Puppeteer, and Playwright you can use React locators in any method where locator is required:
+Locate elements the way a user perceives them: by visible text, label, or accessibility role. These locators survive refactoring and minification, and they read clearly:
 
 ```js
-I.click({ react: 'Tab', props: { title: 'Click Me!' }});
-I.seeElement({ react: 't', props: { title: 'Clicked' }});
+I.click('Click Me!');
+I.click(locate('[role=tab]').withText('Click Me!'));
+I.fillField('Email', 'user@example.com');
+I.click({ role: 'button', name: 'Submit' });
 ```
 
-To find React element names and props in a tree use [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) extension.
+When the rendered markup gives you nothing stable and you cannot change the source, fall back to a [`pw` locator](/locators) — a raw Playwright selector — under the Playwright helper:
 
-> Turn off minification for application builds otherwise component names will be uglified as well
+```js
+I.click({ pw: '[data-testid="save"]' });
+```
 
-- With WebDriver and Puppeteer, React locators work via [resq](https://github.com/baruchvlz/resq) library, which handles React 16 and above.
-- With Playwright, React locators work via [Playwright React Locator](https://playwright.dev/docs/other-locators#react-locator).
+## React Component Locators Were Removed
+
+Earlier versions shipped a `react` locator that selected elements by React component name, props, and state:
+
+```js
+// no longer supported
+I.click({ react: 'Button', props: { title: 'Click Me' } });
+```
+
+This locator was removed in CodeceptJS 4. It relied on the [resq](https://github.com/baruchvlz/resq) library, which is unmaintained, pinned to an old release, and supports only React 16. It read React's private internal tree, broke under production minification, and had no working path for React 17, 18, or 19. WebdriverIO's `react$`/`react$$` and Playwright's `_react=`/`_vue=` selector engines share the same limitations, and Playwright has since removed its engines.
+
+### Migrating Away From `react` Locators
+
+Replace component locators with user-facing locators:
+
+| Before                                                  | After                                            |
+|---------------------------------------------------------|--------------------------------------------------|
+| `I.click({ react: 'SubmitButton' })`                    | `I.click({ role: 'button', name: 'Submit' })`    |
+| `I.seeElement({ react: 'Alert' })`                      | `I.seeElement('[role=alert]')`                   |
+| `I.fillField({ react: 'EmailInput' }, 'a@b.com')`       | `I.fillField('Email', 'a@b.com')`                |
+| `I.click({ react: 'Tab', props: { title: 'Stats' } })` | `I.click(locate('[role=tab]').withText('Stats'))`|
+
+If a component renders no stable text, role, or attribute, add a `data-testid` (or your configured test-id attribute) in the JSX and locate by it. This is the most robust option for components you control:
+
+```jsx
+<button data-testid="submit">Save</button>
+```
+
+```js
+I.click('[data-testid="submit"]');
+```
