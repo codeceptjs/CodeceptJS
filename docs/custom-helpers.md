@@ -212,7 +212,7 @@ _before() {
 }
 ```
 
-`recorder.retry` acts similarly to `I.retry()` and accepts the same parameters. It expects the `when` parameter to be set so it would handle only specific errors and not to retry for every failed step.
+`recorder.retry` registers a retry rule at the recorder level and accepts the same options as `step.retry()` (`retries`, `minTimeout`, `when`, ...). It expects the `when` parameter to be set so it would handle only specific errors and not to retry for every failed step.
 
 Retry rules are available in array `recorder.retries`. The last retry rule can be disabled by running `recorder.retries.pop()`;
 

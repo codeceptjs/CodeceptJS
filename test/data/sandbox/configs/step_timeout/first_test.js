@@ -1,3 +1,5 @@
+import step from 'codeceptjs/steps'
+
 const { I } = inject()
 
 Feature('Steps')
@@ -11,7 +13,7 @@ Scenario('Wait command timeout', ({ I }) => {
 })
 
 Scenario('Rerun sleep', ({ I }) => {
-  I.retry(2).statefulSleep(2250)
+  I.statefulSleep(2250, step.retry(2))
 })
 
 Scenario('Wait with longer timeout', ({ I }) => {

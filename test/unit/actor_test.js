@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import recorder from '../../lib/recorder.js'
+import step from '../../lib/steps.js'
 import event from '../../lib/event.js'
 import store from '../../lib/store.js'
 
@@ -107,7 +108,7 @@ describe('Actor', () => {
   })
 
   it('should take all methods from helpers and built in', () => {
-    ;['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach(key => {
+    ;['hello', 'bye', 'die', 'failAfter', 'say', 'greeting'].forEach(key => {
       expect(I).toHaveProperty(key)
     })
   })
@@ -135,16 +136,6 @@ describe('Actor', () => {
     })
   })
 
-  it('should retry failed step with #retry', () => {
-    recorder.start()
-    return I.retry({ retries: 2, minTimeout: 0 }).failAfter(1)
-  })
-
-  it('should retry once step with #retry', () => {
-    recorder.start()
-    return I.retry().failAfter(1)
-  })
-
   it('should alway use the latest global retry options', () => {
     recorder.start()
     recorder.retry({
@@ -168,7 +159,7 @@ describe('Actor', () => {
       minTimeout: 0,
       when: () => true,
     })
-    I.retry(1).failAfter(1) // before fix: this changed the order of retries
+    I.failAfter(1, step.retry(1)) // before fix: this changed the order of retries
     return I.failAfter(2)
   })
 

@@ -473,17 +473,25 @@ Use one of:
 
 The `customLocators` strategy registration in Playwright config is removed. Use the `customLocator` plugin or built-in ARIA locators (`{ role: 'button', name: 'Submit' }`).
 
-### `I.retry()` is deprecated
+### `I.retry()` and `I.limitTime()` removed
 
-Use the step options API:
+Both were deprecated in 3.x and are **removed in 4.x**. They configured the *next* step through a chained call; the replacement is the step options API — pass a `step.*` config as the **last argument** of the step itself.
 
 ```js
 import step from 'codeceptjs/steps'
 
-I.click('Submit', step.retry(3))
-I.fillField('Email', 'a@b.c', step.timeout(10))
+// 3.x (removed)            →  4.x
+I.retry(3).click('Submit')  //  I.click('Submit', step.retry(3))
+I.limitTime(10).fillField('Email', 'a@b.c') // I.fillField('Email', 'a@b.c', step.timeout(10))
+```
+
+`step.*` configs are also composable with the other step options:
+
+```js
 I.click('Add', step.opts({ elementIndex: 2 }))
 ```
+
+The behavior is unchanged — the option applies only to the step it is attached to, not to subsequent steps (this also fixes the 3.x footgun where `I.retry()` could leak retry settings onto the following step). `recorder.retry()` is unaffected and remains available for custom helpers.
 
 ### `within` Is Now an Effect
 

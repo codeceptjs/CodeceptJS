@@ -100,7 +100,7 @@ Scenario('Create a new store', async ({ I, login, SettingsPage }) => {
   I.fillField('Email', faker.internet.email());
   I.fillField('Telephone', faker.phone.phoneNumberFormat());
   I.selectInDropdown('Status', 'Active');                     // Use custom methods
-  I.retry(2).click('Create');                                 // Retry flaky step
+  I.click('Create', step.retry(2));                           // Retry flaky step
   I.waitInUrl('/settings/setup/stores');                      // Explicit waiter
   I.see(storeName, '.settings');                              // Assert text present inside an element (located by CSS)
   const storeId = await I.grabTextFrom('#store-id');          // Use await to get information from browser

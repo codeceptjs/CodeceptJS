@@ -55,7 +55,6 @@ expectType<Promise<void>>(playwright.handleDownloads(str));
 expectType<void>(playwright.click(str));
 expectType<void>(playwright.click(str, str));
 expectType<void>(playwright.click(str, null, { position }));
-expectType<void>(playwright.clickLink());
 expectType<void>(playwright.forceClick(str));
 expectType<void>(playwright.focus(str));
 expectType<void>(playwright.blur(str));
