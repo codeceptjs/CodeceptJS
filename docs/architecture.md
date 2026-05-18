@@ -35,6 +35,7 @@ import { recorder, event, output, container, config } from 'codeceptjs'
 | [`recorder`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/recorder.js) | the global promise chain that orders every step |
 | [`event`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/event.js) | the event dispatcher and the names of all lifecycle events |
 | [`output`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/output.js) | the printer used for all console output |
+| [`store`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/store.js) | global state of the run — current test/step, run modes, directories |
 | [`helper`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/helper.js) | the base class every helper extends |
 | [`actor`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/actor.js) | the base class behind the `I` object |
 
@@ -182,6 +183,21 @@ output.log('verbose logging information')
 ```
 
 Use these instead of `console.log` so messages respect the chosen verbosity.
+
+## Store
+
+`store` holds the state of the current run — the executing test, suite, and step, the active run modes (`dryRun`, `debugMode`, `workerMode`, …), and the project directories. Listeners, plugins, and helpers read it to know where in the [lifecycle](#events) they are without that information being passed to them:
+
+```js
+import { store } from 'codeceptjs'
+
+event.dispatcher.on(event.step.before, () => {
+  if (store.dryRun) return                    // no side effects on a dry run
+  output.debug(`in ${store.currentTest?.title}`)
+})
+```
+
+CodeceptJS keeps the state fields up to date for you. See the [Store reference](/store) for every field and when to write to it.
 
 ## Helpers and the Actor
 

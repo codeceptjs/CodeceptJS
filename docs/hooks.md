@@ -40,7 +40,17 @@ event.dispatcher.on(event.test.before, () => {
 })
 ```
 
-See [Architecture › Events](/architecture#events) for the full event list and the test and step object fields.
+A listener often needs to know *where* in the run it is — which test is active, or whether this is a dry run. Read that from [`store`](/store) instead of tracking it yourself:
+
+```js
+import { event, store } from 'codeceptjs'
+
+event.dispatcher.on(event.step.before, () => {
+  if (store.dryRun) return            // skip side effects on a dry run
+})
+```
+
+See [Architecture › Events](/architecture#events) for the full event list and the test and step object fields, and the [Store reference](/store) for every state field.
 
 ## Plugins
 
