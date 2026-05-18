@@ -1,15 +1,15 @@
 ---
 permalink: /ai
-title: Testing with AI 🪄
+title: Testing with AI
 ---
 
-# 🪄 Testing with AI
+# Testing with AI
 
 **CodeceptJS is the first open-source test automation framework with AI** features to improve the testing experience. CodeceptJS uses AI provider like OpenAI or Anthropic to auto-heal failing tests, assist in writing tests, and more...
 
 Think of it as your testing co-pilot built into the testing framework
 
-> 🪄 **AI features for testing are experimental**. AI works only for web based testing with Playwright, WebDriver, etc. Those features will be improved based on user's experience.
+> This is guide on using AI features inside CodeceptJS. To control CodeceptJS via AI Agents, see [Agentic Testing Guide](/agents/).
 
 ## How AI Improves Automated Testing
 
@@ -164,50 +164,6 @@ The AI SDK supports 20+ providers including:
 
 See [AI SDK Providers](https://ai-sdk.dev/docs/foundations/providers-and-models) for complete list and configuration details.
 
-## Writing Tests with AI Copilot
-
-If AI features are enabled when using [interactive pause](/basics/#debug) with `pause()` command inside tests:
-
-For instance, let's create a test to try ai features via `gt` command:
-
-```
-npx codeceptjs gt
-```
-
-Name a test and write the code. We will use `Scenario.only` instead of Scenario to execute only this exact test.
-
-```js
-Feature('ai')
-
-Scenario.only('test ai features', ({ I }) => {
-  I.amOnPage('https://getbootstrap.com/docs/5.1/examples/checkout/')
-  pause()
-})
-```
-
-Now run the test in debug mode with AI enabled:
-
-```
-npx codeceptjs run --debug --ai
-```
-
-When pause mode started you can ask GPT to fill in the fields on this page. Use natural language to describe your request, and provide enough details that AI could operate with it. It is important to include at least a space char in your input, otherwise, CodeceptJS will consider the input to be JavaScript code.
-
-```
- I.fill checkout form with valid values without submitting it
-```
-
-![](/img/fill_form_1.png)
-
-GPT will generate code and data and CodeceptJS will try to execute its code. If it succeeds, the code will be saved to history and you will be able to copy it to your test.
-
-![](/img/fill_form2.png)
-
-This AI copilot works best with long static forms. In the case of complex and dynamic single-page applications, it may not perform as well, as the form may not be present on HTML page yet. For instance, interacting with calendars or inputs with real-time validations (like credit cards) can not yet be performed by AI.
-
-Please keep in mind that GPT can't react to page changes and operates with static text only. This is why it is not ready yet to write the test completely. However, if you are new to CodeceptJS and automated testing AI copilot may help you write tests more efficiently.
-
-> 👶 Enable AI copilot for junior test automation engineers. It may help them to get started with CodeceptJS and to write good semantic locators.
 
 ## Self-Healing Tests
 
@@ -409,9 +365,7 @@ ai: {
 
 CodeceptJS uses three main prompts for AI features:
 
-- `writeStep` - generates test code in interactive pause mode
 - `healStep` - suggests fixes for failing tests
-- `generatePageObject` - creates page objects from HTML
 
 To customize a prompt, generate it using:
 
@@ -452,9 +406,7 @@ You can also override prompts programmatically in config:
 ```js
 ai: {
   prompts: {
-    writeStep: (html, input) => [{ role: 'user', content: 'As a test engineer...' }]
     healStep: (html, { step, error, prevSteps }) => [{ role: 'user', content: 'As a test engineer...' }]
-    generatePageObject: (html, extraPrompt = '', rootLocator = null) => [{ role: 'user', content: 'As a test engineer...' }]
   }
 }
 ```
