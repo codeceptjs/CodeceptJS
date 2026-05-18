@@ -76,6 +76,35 @@ describe('retryFailedStep', () => {
     expect(counter).to.equal(2)
   })
 
+  describe('config', () => {
+    it('applies default retry timing', () => {
+      retryFailedStep({})
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      expect(cfg.retries).to.equal(3)
+      expect(cfg.minTimeout).to.equal(150)
+      expect(cfg.maxTimeout).to.equal(10000)
+      expect(cfg.factor).to.equal(1.5)
+    })
+
+    it('overrides retry timing from config', () => {
+      retryFailedStep({ retries: 5, minTimeout: 1000, maxTimeout: 3000, factor: 2 })
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      expect(cfg.retries).to.equal(5)
+      expect(cfg.minTimeout).to.equal(1000)
+      expect(cfg.maxTimeout).to.equal(3000)
+      expect(cfg.factor).to.equal(2)
+    })
+
+    it('does not leak config between instances', () => {
+      retryFailedStep({ retries: 5, minTimeout: 1000 })
+      recorder.retries = []
+      retryFailedStep({})
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      expect(cfg.retries).to.equal(3)
+      expect(cfg.minTimeout).to.equal(150)
+    })
+  })
+
   it('should not retry steps with wait*', async () => {
     retryFailedStep({ retries: 2, minTimeout: 1 })
     event.dispatcher.emit(event.test.before, createTest('test'))
