@@ -22,7 +22,7 @@ I.click({ role: 'button', name: 'Submit' }, '#login-form')
 
 The context narrows the search to one region of the page, and the semantic string says what the user actually clicks. This is **more precise than ARIA or CSS alone** because it combines structural scope with human-readable intent.
 
-Supported strategies: `css`, `xpath`, `id`, `name`, `role`, `frame`, `shadow`, `pw`. Shadow DOM and React selectors have their own pages — see [Shadow DOM](/shadow) and [React](/react). Playwright-specific locators use the `pw` strategy: `{ pw: '[data-testid="save"]' }`.
+Supported strategies: `css`, `xpath`, `id`, `name`, `role`, `frame`, `shadow`, `pw`. Shadow DOM has its own page — see [Shadow DOM](/shadow). Playwright-specific locators use the `pw` strategy: `{ pw: '[data-testid="save"]' }`. To test components by their accessible role, use [ARIA locators](#aria-locators).
 
 ## Locator types at a glance
 

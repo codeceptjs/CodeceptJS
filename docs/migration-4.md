@@ -473,6 +473,30 @@ Use one of:
 
 The `customLocators` strategy registration in Playwright config is removed. Use the `customLocator` plugin or built-in ARIA locators (`{ role: 'button', name: 'Submit' }`).
 
+### React and Vue Locators removed
+
+The `react` component locator and the bare-string `_react=`/`_vue=` Playwright selectors are removed from the Playwright, Puppeteer, and WebDriver helpers. The `resq` dependency is dropped.
+
+```js
+// 3.x (removed)
+I.click({ react: 'SubmitButton' })
+I.seeElement({ react: 'Alert' })
+I.fillField({ react: 'EmailInput' }, 'a@b.com')
+```
+
+They relied on `resq`, which is unmaintained, supports only React 16, reads React's private internal tree, and breaks under production minification. There is no working path for React 17, 18, or 19.
+
+Use [ARIA locators](/locators#aria-locators) instead — they match how a user perceives the page and survive refactoring and minification:
+
+```js
+// 4.x
+I.click({ role: 'button', name: 'Submit' })
+I.seeElement('[role=alert]')
+I.fillField('Email', 'a@b.com')
+```
+
+For a component that renders no stable role, label, or text, add a `data-testid` in the JSX and locate by it: `I.click('[data-testid="submit"]')`.
+
 ### `I.retry()` and `I.limitTime()` removed
 
 Both were deprecated in 3.x and are **removed in 4.x**. They configured the *next* step through a chained call; the replacement is the step options API — pass a `step.*` config as the **last argument** of the step itself.
@@ -688,6 +712,7 @@ If your project depends on these directly, check for breakage:
 | `testcafe` | 3.7.2 | **removed** |
 | `inquirer-test` | 2.0.1 | **removed** |
 | `joi` | 18 | **removed** — use `zod` |
+| `resq` | 1.11 | **removed** — `react`/`vue` locators dropped; use ARIA locators |
 | `zod` | — | added (^4) — schema validation in `JSONResponse` |
 | `tsx` | — | added as optional peer |
 | `@modelcontextprotocol/sdk` | — | added |

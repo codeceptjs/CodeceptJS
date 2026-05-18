@@ -46,14 +46,14 @@ Type: [object][6]
 *   `url` **[string][9]?** base url of website to be tested
 *   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
 *   `show` **[boolean][27]?** show browser window.
-*   `restart` **([string][9] | [boolean][27])?** restart strategy between tests. Possible values:*   'context' or **false** - restarts [browser context][45] but keeps running browser. Recommended by Playwright team to keep tests isolated.
+*   `restart` **([string][9] | [boolean][27])?** restart strategy between tests. Possible values:*   'context' or **false** - restarts [browser context][44] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     *   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
-*   `timeout` **[number][18]?** *   [timeout][46] in ms of all Playwright actions .
+*   `timeout` **[number][18]?** *   [timeout][45] in ms of all Playwright actions .
 *   `disableScreenshots` **[boolean][27]?** don't save screenshot on failure.
 *   `emulate` **any?** browser in device emulation mode.
 *   `video` **[boolean][27]?** enables video recording for failed tests; videos are saved into `output/videos` folder
 *   `keepVideoForPassedTests` **[boolean][27]?** save videos for passed tests; videos are saved into `output/videos` folder
-*   `trace` **[boolean][27]?** record [tracing information][47] with screenshots and snapshots.
+*   `trace` **[boolean][27]?** record [tracing information][46] with screenshots and snapshots.
 *   `keepTraceForPassedTests` **[boolean][27]?** save trace for passed tests.
 *   `fullPageScreenshots` **[boolean][27]?** make full page screenshots on failure.
 *   `uniqueScreenshotNames` **[boolean][27]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
@@ -73,13 +73,13 @@ Type: [object][6]
 *   `chromium` **[object][6]?** pass additional chromium options
 *   `firefox` **[object][6]?** pass additional firefox options
 *   `electron` **[object][6]?** (pass additional electron options
-*   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][48].
-*   `ignoreLog` **[Array][10]<[string][9]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][49].
+*   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][47].
+*   `ignoreLog` **[Array][10]<[string][9]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][48].
 *   `ignoreHTTPSErrors` **[boolean][27]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
 *   `bypassCSP` **[boolean][27]?** bypass Content Security Policy or CSP
 *   `highlightElement` **[boolean][27]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 *   `recordHar` **[object][6]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
-*   `testIdAttribute` **[string][9]?** locate elements based on the testIdAttribute. See more of [locate by test id][50].
+*   `testIdAttribute` **[string][9]?** locate elements based on the testIdAttribute. See more of [locate by test id][49].
 *   `storageState` **([string][9] | [object][6])?** Playwright storage state (path to JSON file or object)
     passed directly to `browser.newContext`.
     If a Scenario is declared with a `cookies` option (e.g. `Scenario('name', { cookies: [...] }, fn)`),
@@ -2794,8 +2794,6 @@ Returns **void** automatically synchronized promise through #recorder
 
 ### waitForVisible
 
-This method accepts [React selectors][44].
-
 Waits for an element to become visible on a page (by default waits for 1sec).
 Element can be located by CSS or XPath.
 
@@ -2959,16 +2957,14 @@ Returns **void** automatically synchronized promise through #recorder
 
 [43]: https://playwright.dev/docs/api/class-page#page-wait-for-url
 
-[44]: https://codecept.io/react
+[44]: https://playwright.dev/docs/api/class-browsercontext
 
-[45]: https://playwright.dev/docs/api/class-browsercontext
+[45]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
 
-[46]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
+[46]: https://playwright.dev/docs/trace-viewer
 
-[47]: https://playwright.dev/docs/trace-viewer
+[47]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
-[48]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
+[48]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
 
-[49]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
-
-[50]: https://playwright.dev/docs/locators#locate-by-test-id
+[49]: https://playwright.dev/docs/locators#locate-by-test-id
