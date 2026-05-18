@@ -20,24 +20,36 @@ CodeceptJS provides flexible retry mechanisms to handle flaky tests. Use retries
 
 ## Helper Retries
 
-Browser automation helpers (Playwright, Puppeteer, WebDriver) have **built-in retry mechanisms** for element interactions. When you call `I.click('Button')`, Playwright automatically waits for the element to exist, be visible, stable, and enabled — retrying for up to 5 seconds.
+Plawright has a built-in retry mechanism for element interactions. When you call `I.click('Button')`, after the element is located Playwright keeps retrying until it is actionable — up to `timeout` (default 5s).
 
-Configure the timeout in your helper settings:
+> WebDriver has a different auto-retry option: [smartWait](/webdriver#smartwait)
+
+Even though the handle exists (from `.all()`), Playwright still waits for it to become visible, stable (not mid-animation), enabled, not covered by an overlay/modal, and not rerendering.
 
 ```js
 helpers: {
   Playwright: {
-    timeout: 5000,      // retry actions for up to 5 seconds
-    waitForAction: 100  // wait 100ms before each action
+    timeout: 5000,      // retry the action until the element is actionable
+    waitForAction: 100  // fixed pause AFTER click/doubleClick/pressKey
   }
 }
 ```
 
-**Learn more:** [Playwright Helper](/helpers/Playwright), [Timeouts](/timeouts)
+What each setting does:
+
+```
+find element (no wait — fails instantly if locator matches nothing)
+  → wait up to `timeout` for it to become actionable   ← timeout
+  → perform action
+  → sleep `waitForAction` ms                            ← waitForAction (settle pause, not a wait)
+```
+
+`timeout` covers the action. If the locator matches nothing yet, the step fails immediately. Use [Failed Step Retries](#failed-step-retries) to cover that gap.
+
 
 ## Failed Step Retries
 
-Automatically retry all failed steps without modifying test code:
+CodeceptJS retries all failed steps by default by using the `retryFailedStep` plugin.
 
 ```js
 plugins: {
@@ -66,18 +78,36 @@ Scenario('manual retries only', { disableRetryFailedStep: true }, ({ I }) => {
 })
 ```
 
-Full plugin options:
+Defaults: `minTimeout: 150`, `factor: 1.5`, `maxTimeout: 10000`.
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `retries` | — | Retries per step |
-| `minTimeout` | — | Milliseconds before first retry |
-| `maxTimeout` | `Infinity` | Max milliseconds between retries |
-| `factor` | — | Exponential backoff multiplier |
-| `randomize` | `false` | Randomize timeout intervals |
-| `ignoredSteps` | `[]` | Patterns/regex of steps to never retry |
-| `deferToScenarioRetries` | `true` | Disable step retries when scenario retries exist |
-| `when` | `() => true` | Function receiving error; return `true` to retry |
+
+> See [plugin reference](/plugins/retry-failed-step) for more options
+
+Retries are calculated via this formula:
+
+```
+gap(N) = min(minTimeout × factor^(N-1), maxTimeout)
+```
+
+Practically if step fails it will trigger a retry with increasing delay until `maxTimeout` is reached:
+
+```
+retries: 2                              => 0.15s-0.4s (150,225ms)
+retries: 3                              => 0.15s-0.7s (150,225,338ms)
+retries: 3, minTimeout: 1000            => 1s-4.75s   (1s,1.5s,2.25s)
+retries: 3, minTimeout: 1000, factor: 2 => 1s-7s      (1s,2s,4s)
+retries: 5, minTimeout: 1000, factor: 2 => 1s-25s     (1s,2s,4s,8s,10s)
+```
+
+Playwright `timeout` adds to each attempt only when the element is found:
+
+- `Playwright.timeout: 5000`
+- `retries: 2, minTimeout: 1000`
+
+```
+element not found => 0 + (1s+1s)    = 2s
+element found but not interactable  => 3×5s + (1s+1s) = 17s
+```
 
 ## Manual Step Retries
 
