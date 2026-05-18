@@ -251,20 +251,22 @@ Add the `testomatio` plugin to your `codecept.conf.js`:
 plugins: {
   testomatio: {
     enabled: true,
-    require: '@testomatio/reporter/lib/adapter/codecept',
+    require: '@testomatio/reporter/codecept',
+    html: true,
+    reportDir: 'output/report',
   },
 }
 ```
 
 ### Usage
 
-Generate HTML reports by setting the `TESTOMATIO_HTML_REPORT_SAVE` environment variable:
+Run tests normally:
 
 ```sh
-TESTOMATIO_HTML_REPORT_SAVE=1 npx codeceptjs run
+npx codeceptjs run
 ```
 
-The report will be saved to `html-report/testomatio-report.html`.
+The report will be saved to `output/report/testomatio-report.html` by default. You can also keep using `TESTOMATIO_HTML_REPORT_SAVE=1` and related environment variables if you prefer env-based setup.
 
 ### Features
 
@@ -278,14 +280,11 @@ The report will be saved to `html-report/testomatio-report.html`.
 ### Customization
 
 ```sh
-# Custom output folder
-TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO_HTML_REPORT_FOLDER=./reports npx codeceptjs run
-
-# Custom filename
-TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO_HTML_FILENAME=my-report.html npx codeceptjs run
+# Custom output folder in codecept.conf.js
+# reportDir: './reports'
 
 # Integrate with Testomat.io cloud
-TESTOMATIO_HTML_REPORT_SAVE=1 TESTOMATIO=your_api_key npx codeceptjs run
+TESTOMATIO=your_api_key npx codeceptjs run
 ```
 
 ## PageObjects
