@@ -95,6 +95,54 @@ describe('Recorder', () => {
       return recorder.promise()
     })
 
+    it('should not leak custom minTimeout to subsequent recorder runs', async function () {
+      // Regression: Object.assign(defaultRetryOptions, retryOpts) mutated the
+      // module-level defaultRetryOptions object. A custom minTimeout in one run
+      // leaked into the defaults for every later run.
+      this.timeout(5000)
+
+      let attempts = []
+      recorder.retry({ retries: 1, minTimeout: 800, factor: 1, maxTimeout: 1000 })
+      recorder.add(
+        () => {
+          attempts.push(Date.now())
+          if (attempts.length < 2) throw new Error('first run')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      try {
+        await recorder.promise()
+      } catch (e) {
+        await recorder.catchWithoutStop(err => err)
+      }
+
+      expect(attempts[1] - attempts[0]).to.be.greaterThan(700, 'first retry should honor minTimeout=800')
+
+      // Fresh recorder, do not pass minTimeout — should fall back to default (150ms),
+      // not 800 leaked from the previous run.
+      recorder.start()
+      attempts = []
+      recorder.retry({ retries: 1, factor: 1, maxTimeout: 1000 })
+      recorder.add(
+        () => {
+          attempts.push(Date.now())
+          if (attempts.length < 2) throw new Error('second run')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      try {
+        await recorder.promise()
+      } catch (e) {
+        await recorder.catchWithoutStop(err => err)
+      }
+
+      expect(attempts[1] - attempts[0]).to.be.lessThan(500, 'second retry must use default minTimeout, not leaked 800ms')
+    })
+
     it('should prefer opts for non-when retry when possible', () => {
       let counter = 0
       const errorText = 'noerror'
