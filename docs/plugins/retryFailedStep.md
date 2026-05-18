@@ -29,7 +29,6 @@ Run tests with plugin enabled:
 #### Configuration:
 
 *   `retries` - number of retries (by default 3),
-*   `when` - function, when to perform a retry (accepts error as parameter)
 *   `factor` - The exponential factor to use. Default is 1.5.
 *   `minTimeout` - The number of milliseconds before starting the first retry. Default is 150.
 *   `maxTimeout` - The maximum number of milliseconds between two retries. Default is 10000.
