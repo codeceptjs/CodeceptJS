@@ -171,16 +171,17 @@ npm install --save-dev @testomatio/reporter
 plugins: {
   testomatio: {
     enabled: true,
-    require: '@testomatio/reporter/lib/adapter/codecept',
+    require: '@testomatio/reporter/codecept',
+    html: true,
   },
 }
 ```
 
 ```bash
-TESTOMATIO_DISABLE_UPLOAD=1 npx codeceptjs run
+npx codeceptjs run
 ```
 
-The HTML report is written to `output/reports/`. See [Reports → HTML](/reports) for pipe options.
+The HTML report is written to `output/report/` by default. See [Reports > HTML](/reports) for pipe options.
 
 Reporting notes:
 

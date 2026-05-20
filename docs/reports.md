@@ -21,13 +21,19 @@ plugins: {
   testomatio: {
     enabled: true,
     require: '@testomatio/reporter/codecept',
+    html: true,
+    markdown: true,
+    csv: true,
+    reportDir: 'output/report',
   },
 }
 ```
 
+The local reports above are enabled directly from CodeceptJS config. If `reportDir` is omitted, reports are written to `output/report` using the CodeceptJS `output` directory.
+
 ### Enable an output
 
-Each output turns on when you set its environment variable. Run your tests as usual — one run feeds every output you enabled.
+Each output can also be enabled with environment variables. Run your tests as usual and one run feeds every output you enabled.
 
 | To get… | Set | Details |
 | --- | --- | --- |
@@ -63,7 +69,9 @@ The GitHub pipe also needs the job to grant `permissions: pull-requests: write`.
 
 A single self-contained HTML file with the run summary and, per test, its steps, screenshots, logs, and error. It needs no API key and no service, so it works anywhere — open it locally or attach it to a CI build.
 
-![HTML report](https://raw.githubusercontent.com/testomatio/reporter/master/docs/pipes/images/html-pipe.png)
+![HTML report](./images/testomatio-html-report.png)
+
+- Preferred in CodeceptJS 4: enable `html: true` in `plugins.testomatio` and run `npx codeceptjs run`
 
 - `TESTOMATIO_HTML_REPORT_SAVE=1` — enable the report
 - `TESTOMATIO_HTML_REPORT_FOLDER=output/reports` — keep it inside CodeceptJS's `output/` dir (default folder is `html-report`)
@@ -117,6 +125,10 @@ Posts a comment to the Pull Request with the same summary. Comments are created 
 - `BITBUCKET_KEEP_OUTDATED_REPORTS=1` — keep previous comments
 
 ### Markdown Report
+
+- Preferred in CodeceptJS 4: enable `markdown: true` in `plugins.testomatio` and run `npx codeceptjs run`
+
+![Markdown report](./images/testomatio-markdown-report.png)
 
 A single self-contained Markdown file — renders in PR comments, CI job summaries, and Slack, and is convenient for AI agents reading test results. Needs no API key.
 
