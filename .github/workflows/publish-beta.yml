@@ -11,7 +11,6 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: ${{ github.event.release.prerelease || contains(github.event.release.tag_name, 'alpha') || contains(github.event.release.tag_name, 'beta') || contains(github.event.release.tag_name, 'rc') }}
 
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +32,15 @@ jobs:
           npm version "$VERSION" --no-git-tag-version
 
       - name: Publish to npm
-        run: npm publish --provenance --tag beta
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          if [ "${{ github.event.release.prerelease }}" = "true" ] || echo "$TAG" | grep -qE 'rc|beta'; then
+            echo "Publishing $TAG with 'beta' dist-tag"
+            npm publish --provenance --tag beta
+          else
+            echo "Publishing $TAG with 'latest' dist-tag"
+            npm publish --provenance
+          fi
 
       - name: Trigger website deployment
         run: |
