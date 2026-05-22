@@ -5,7 +5,15 @@ title: Reporters
 
 # Reporters
 
-CodeceptJS prints test results to the console by default (see [CLI output](#cli-output)). For an HTML report, a pull-request comment, JUnit XML, or a hosted dashboard, it is recommeded to use **[Testomat.io Reporter](https://github.com/testomatio/reporter)**. It sends results to whichever destinations you turn on with steps, screenshots, videos, traces, and logs.
+CodeceptJS prints test results to the console by default (see [CLI output](#cli-output)). For an HTML report, a pull-request comment, JUnit XML, or a hosted dashboard, use **[Testomat.io Reporter](https://github.com/testomatio/reporter)**.
+
+Testomat.io Reporter is open source. It can send create reports of various types:
+
+- **Local files** — HTML, CSV, and Markdown reports written to disk.
+- **CI/CD pipeline reports** — reports added as comments to GitHub, GitLab, or Bitbucket pull requests.
+- **Cloud Services** — a hosted dashboard on [app.testomat.io](https://testomat.io) to keep track of results history and get analytics.
+
+You choose the destinations. The reporter collects steps, screenshots, videos, traces, and logs once and sends them everywhere you enabled.
 
 ### Install
 
@@ -13,7 +21,7 @@ CodeceptJS prints test results to the console by default (see [CLI output](#cli-
 npm install @testomatio/reporter --save-dev
 ```
 
-Enable reporter plugin:
+Enable the reporter plugin and turn on the local reports you want:
 
 ```js
 // codecept.conf.js
@@ -22,39 +30,41 @@ plugins: {
     enabled: true,
     require: '@testomatio/reporter/codecept',
     html: true,
-    markdown: true,
-    csv: true,
-    reportDir: 'output/report',
+    // markdown: true,
+    // csv: true,
+    // reportDir: 'output/report',
   },
 }
 ```
 
-The local reports above are enabled directly from CodeceptJS config. If `reportDir` is omitted, reports are written to `output/report` using the CodeceptJS `output` directory.
+> `html`, `markdown`, and `csv` are config switches for local reports. Local reports are stored in filesystem in `output/report` dir by default.
 
-### Enable an output
+### Local reports and remote destinations
 
-Each output can also be enabled with environment variables. Run your tests as usual and one run feeds every output you enabled.
+Local reports are turned on with config switches and saved to disk:
 
-| To get… | Set | Details |
-| --- | --- | --- |
-| HTML report | `TESTOMATIO_HTML_REPORT_SAVE=1` | [HTML Report](#html-report) |
-| Markdown report | `TESTOMATIO_MARKDOWN_REPORT_SAVE=1` | [Markdown Report](#markdown-report) |
-| Run Result on [app.testomat.io](https://testomat.io) | `TESTOMATIO` (project API key) | [Cloud Report](#cloud-report) |
-| A comment on a GitHub Pull Request | `GH_PAT` (`${{ github.token }}` in Actions) | [GitHub Report](#github-report) |
-| A comment on a GitLab Merge Request | `GITLAB_PAT` (token with `api` scope) | [GitLab Report](#gitlab-report) |
-| A comment on a Bitbucket Pull Request | `BITBUCKET_ACCESS_TOKEN` (repo access token) | [Bitbucket Report](#bitbucket-report) |
+| Config switch | File in `reportDir` |
+| --- | --- |
+| `html: true` | `testomatio-report.html` |
+| `markdown: true` | `testomatio-report.md` |
+| `csv: true` | `report.csv` |
 
-Screenshots and videos in these reports are uploaded to your own storage — see [Artifacts](#artifacts).
+Remote destinations need an access token. A token is a secret, so pass it through an environment variable or CI secret instead of committing it to the config file:
 
-Put the variables on CI when running tests:
+| Destination | Token variable |
+| --- | --- |
+| Run result on [app.testomat.io](https://testomat.io) | `TESTOMATIO` |
+| Comment on a GitHub Pull Request | `GH_PAT` (`${{ github.token }}` in Actions) |
+| Comment on a GitLab Merge Request | `GITLAB_PAT` (token with `api` scope) |
+| Comment on a Bitbucket Pull Request | `BITBUCKET_ACCESS_TOKEN` (repo access token) |
+
+One run feeds every destination you enabled. On CI, keep the report switches in the config and pass only the tokens as environment variables:
 
 ```yaml
 - run: npx codeceptjs run
   env:
-    TESTOMATIO_HTML_REPORT_SAVE: 1                  # → output/reports/testomatio-report.html
-    TESTOMATIO_HTML_REPORT_FOLDER: output/reports   # keep it with the rest of output/
-    GH_PAT: ${{ github.token }}                     # → PR comment
-    # TESTOMATIO: ${{ secrets.TESTOMATIO }}         # → testomat.io run
+    GH_PAT: ${{ github.token }}             # → Print report as PR comment
+    # TESTOMATIO: ${{ secrets.TESTOMATIO }} # → Send report to testomat.io
 - uses: actions/upload-artifact@v4
   if: always()
   with:
@@ -62,82 +72,67 @@ Put the variables on CI when running tests:
     path: output/
 ```
 
-The GitHub pipe also needs the job to grant `permissions: pull-requests: write`.
+The GitHub destination also needs the job to grant `permissions: pull-requests: write`.
 
+For the full list of options and environment variables, see the [reporter configuration reference](https://github.com/testomatio/reporter/blob/master/docs/configuration.md).
 
 ### HTML Report
 
-A single self-contained HTML file with the run summary and, per test, its steps, screenshots, logs, and error. It needs no API key and no service, so it works anywhere — open it locally or attach it to a CI build.
+A local, self-contained HTML file saved to `output/report/testomatio-report.html`. It holds the run summary and, per test, its steps, screenshots, logs, and error. It needs no API key and no service, so it works anywhere — open it locally or attach it to a CI build.
 
 ![HTML report](./images/testomatio-html-report.png)
 
-- Preferred in CodeceptJS 4: enable `html: true` in `plugins.testomatio` and run `npx codeceptjs run`
+Enable it with `html: true` in `plugins.testomatio` and run `npx codeceptjs run`. To change the file name or folder, see the [HTML pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/html.md).
 
-- `TESTOMATIO_HTML_REPORT_SAVE=1` — enable the report
-- `TESTOMATIO_HTML_REPORT_FOLDER=output/reports` — keep it inside CodeceptJS's `output/` dir (default folder is `html-report`)
-- `TESTOMATIO_HTML_FILENAME` — file name, must end in `.html` (default `testomatio-report.html`)
+### CSV Report
 
-### Cloud Report
+A local CSV file saved to `output/report/report.csv`, with one row per test — suite, title, and status. Use it in spreadsheets or data pipelines.
 
-Sends the run to [app.testomat.io](https://testomat.io) — a hosted dashboard with run history, flaky-test detection, parallel-run merging, re-running failed tests, and notifications. Free for small teams.
+Enable it with `csv: true` in `plugins.testomatio`. See the [CSV pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/csv.md).
+
+### Testomat.io Cloud Report
+
+A remote destination: the run is sent to [app.testomat.io](https://testomat.io), a hosted dashboard with run history, flaky-test detection, parallel-run merging, re-running failed tests, and notifications. Free for small teams.
 
 ![Testomat.io report](https://user-images.githubusercontent.com/220264/151728836-b52d2b2b-56e1-4640-8d3a-b39de817b1fd.png)
 
-- `TESTOMATIO` — project API key; enables the pipe
-- `TESTOMATIO_CREATE=1` — create tests in Testomat.io that were not imported beforehand
-- `TESTOMATIO_TITLE` — report title
-- `TESTOMATIO_RUNGROUP_TITLE` — add the run to a group (e.g. `"Build ${BUILD_ID}"`)
-- `TESTOMATIO_PUBLISH=1` — make the report publicly accessible
+Set the `TESTOMATIO` environment variable to your project API key and run the tests. Run titles, run groups, shared runs, and publishing options: [Testomat.io pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/testomatio.md).
 
-More options (shared runs, rungroups, run management): [Testomat.io pipe](https://github.com/testomatio/reporter/blob/master/docs/pipes/testomatio.md).
-
-To view artifacts on cloud they must be uploaded to S3 storages. Images from [`screenshot`](/plugins#screenshot) plugin, videos from the [`screencast`](/plugins#screencast) plugin (or the Playwright helper's `video` and `trace`). Can be used with any S3 provider: AWS S3, Cloudflare R2, Google Cloud Storage (interoperability mode), DigitalOcean Spaces, MinIO. 
+To view artifacts on the cloud, upload them to S3 storage. Images come from the [`screenshot`](/plugins#screenshot) plugin, videos from the [`screencast`](/plugins#screencast) plugin (or the Playwright helper's `video` and `trace`). Any S3 provider works: AWS S3, Cloudflare R2, Google Cloud Storage (interoperability mode), DigitalOcean Spaces, MinIO.
 
 ### GitHub Report
 
-Posts a comment to the Pull Request: run status, pass/fail/skip counts, stack traces of the failures, screenshots, and the slowest tests. Re-running the workflow replaces the previous comment.
+A remote destination: a comment on the Pull Request with run status, pass/fail/skip counts, stack traces of the failures, screenshots, and the slowest tests. Re-running the workflow replaces the previous comment.
 
 ![GitHub report](https://raw.githubusercontent.com/testomatio/reporter/master/docs/pipes/images/github.png)
 
-- `GH_PAT` — GitHub token; `${{ github.token }}` works in Actions
-- the job must grant `permissions: pull-requests: write`
-- `GH_KEEP_OUTDATED_REPORTS=1` — keep previous comments instead of deleting them
+Set `GH_PAT` to a GitHub token (`${{ github.token }}` works in Actions) and grant the job `permissions: pull-requests: write`. More options: [GitHub pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/github.md).
 
 ### GitLab Report
 
-Posts a comment to the Merge Request with the same summary. It needs Merge Request context, so run it in merge-request pipelines.
+A remote destination: a comment on the Merge Request with the same summary. Run it in merge-request pipelines (`$CI_PIPELINE_SOURCE == "merge_request_event"`).
 
 ![GitLab report](https://raw.githubusercontent.com/testomatio/reporter/master/docs/pipes/images/gitlab.png)
 
-- `GITLAB_PAT` — Personal or Project Access Token with `api` scope
-- run in merge-request pipelines (`$CI_PIPELINE_SOURCE == "merge_request_event"`)
-- `GITLAB_KEEP_OUTDATED_REPORTS=1` — keep previous comments
-- `GITLAB_REMOVE_ALL_OUTDATED_REPORTS=1` — remove all previous comments, not just the latest
+Set `GITLAB_PAT` to a Personal or Project Access Token with `api` scope. More options: [GitLab pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/gitlab.md).
 
 ### Bitbucket Report
 
-Posts a comment to the Pull Request with the same summary. Comments are created only in `pull-requests` pipelines.
+A remote destination: a comment on the Pull Request with the same summary. Comments are created only in `pull-requests` pipelines.
 
 ![Bitbucket report](https://raw.githubusercontent.com/testomatio/reporter/master/docs/pipes/images/bitbucket.png)
 
-- `BITBUCKET_ACCESS_TOKEN` — repository access token with `Pull requests: Write` and `Repository: Read`
-- run in `pull-requests` pipelines
-- `BITBUCKET_KEEP_OUTDATED_REPORTS=1` — keep previous comments
+Set `BITBUCKET_ACCESS_TOKEN` to a repository access token with `Pull requests: Write` and `Repository: Read`. More options: [Bitbucket pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/bitbucket.md).
 
 ### Markdown Report
 
-- Preferred in CodeceptJS 4: enable `markdown: true` in `plugins.testomatio` and run `npx codeceptjs run`
+A local, self-contained Markdown file saved to `output/report/testomatio-report.md`. It renders in PR comments, CI job summaries, and Slack, and is convenient for AI agents reading test results. It needs no API key.
 
 ![Markdown report](./images/testomatio-markdown-report.png)
 
-A single self-contained Markdown file — renders in PR comments, CI job summaries, and Slack, and is convenient for AI agents reading test results. Needs no API key.
+Enable it with `markdown: true` in `plugins.testomatio`. To change the file name, folder, or title, see the [Markdown pipe docs](https://github.com/testomatio/reporter/blob/master/docs/pipes/markdown.md).
 
-- `TESTOMATIO_MARKDOWN_REPORT_SAVE=1` — enable the report
-- `TESTOMATIO_MARKDOWN_REPORT_FOLDER=output/reports` — keep it inside CodeceptJS's `output/` dir (default folder is `md-report`)
-- `TESTOMATIO_MARKDOWN_FILENAME` — file name, must end in `.md` (default `testomatio-report.md`)
-- `TESTOMATIO_TITLE` — document title (default `Test Results`)
-
-On GitHub Actions, append it to the job summary: `cat output/reports/testomatio-report.md >> "$GITHUB_STEP_SUMMARY"`.
+On GitHub Actions, append it to the job summary: `cat output/report/testomatio-report.md >> "$GITHUB_STEP_SUMMARY"`.
 
 ## JUnit XML
 
@@ -189,6 +184,8 @@ By default CodeceptJS prints test names and failures. Add `--steps` to see each 
 
 ```sh
 npx codeceptjs run --steps
+npx codeceptjs run --debug
+npx codeceptjs run --verbose
 ```
 
 `dry-run` lists tests and steps without running them:
