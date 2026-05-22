@@ -7,6 +7,8 @@ title: Migrating from 3.x to 4.x
 
 CodeceptJS 4.x is a major release. It moves the codebase from CommonJS to native ESM, drops several long-deprecated helpers and plugins, replaces legacy plugins with first-class APIs, and bumps most third-party dependencies.
 
+> Migrate automatically! Install CodeceptJS skills `npx skills add codeceptjs/skills` and run `/codeceptjs-3-to-4-migration` in your coding agent
+
 This guide tells you exactly what to change in your project to upgrade.
 
 ## 1. Update Node and Package
