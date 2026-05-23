@@ -157,34 +157,21 @@ describe('retryFailedStep', () => {
     // expects to retry only once
   })
 
-  it('should not treat exact-name ignoredSteps entries as wildcard prefixes', async () => {
+  it('should not treat exact-name ignoredSteps entries as wildcard prefixes', () => {
     // Regression: ignored.indexOf('*') was used as truthy check.
     // -1 is truthy, so entries without '*' were matched via startsWith(slice(0, -1)).
     // ignoredSteps: ['see'] would silently ignore seeElement, seeInField, selectOption, etc.
     retryFailedStep({ retries: 2, minTimeout: 1, ignoredSteps: ['see'] })
-    event.dispatcher.emit(event.test.before, createTest('test'))
+    store.autoRetries = true
+    const retryConfig = recorder.retries[recorder.retries.length - 1]
 
-    let counter = 0
     event.dispatcher.emit(event.step.started, { title: 'seeElement' })
-    try {
-      await recorder.add(
-        () => {
-          counter++
-          if (counter < 3) {
-            throw new Error()
-          }
-        },
-        undefined,
-        undefined,
-        true,
-      )
-      await recorder.promise()
-    } catch (e) {
-      await recorder.catchWithoutStop(err => err)
-    }
+    expect(retryConfig.when(new Error()), "'seeElement' must not be ignored when only 'see' is configured").to.equal(true)
 
-    // seeElement is NOT in ignoredSteps (only 'see' is) — should be retried.
-    expect(counter).to.be.greaterThan(1)
+    event.dispatcher.emit(event.step.passed, {})
+
+    event.dispatcher.emit(event.step.started, { title: 'see' })
+    expect(retryConfig.when(new Error()), "exact match 'see' must still be ignored").to.not.equal(true)
   })
 
   it('should add custom regexp steps to ignore', async () => {
