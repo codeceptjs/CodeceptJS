@@ -200,15 +200,14 @@ describe('Playwright', function () {
       await I.waitToHide('h9')
     })
 
-    it('should wait for invisible combined with dontseeElement', async function () {
-      this.timeout(30000) // Increase timeout for external URL test
-      await I.amOnPage('https://codecept.io/')
-      await I.waitForVisible('.frameworks', 10)
-      await I.waitForVisible('[alt="React"]', 10)
-      await I.waitForVisible('.mountains', 10)
-      await I._withinBegin('.mountains', async () => {
-        await I.dontSeeElement('[alt="React"]')
-        await I.waitForInvisible('[alt="React"]', 2)
+    it('should wait for invisible combined with dontseeElement', async () => {
+      await I.amOnPage('/info')
+      await I.waitForVisible('#grab-multiple', 10)
+      await I.waitForVisible('a[id="first-link"]', 10)
+      await I.waitForVisible('#grab-css', 10)
+      await I._withinBegin('#grab-css', async () => {
+        await I.dontSeeElement('a[id="first-link"]')
+        await I.waitForInvisible('a[id="first-link"]', 2)
       })
     })
   })
