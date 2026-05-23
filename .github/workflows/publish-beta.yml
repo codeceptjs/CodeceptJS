@@ -25,6 +25,9 @@ jobs:
       - run: npm install
       - run: npm install -g npm@latest
 
+      - name: Generate TypeScript definitions
+        run: npm run def
+
       - name: Set package version
         run: |
           TAG="${{ github.event.release.tag_name }}"

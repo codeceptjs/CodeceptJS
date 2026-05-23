@@ -112,7 +112,7 @@ My First Test --
 Run in headless mode:
 
 ```
-npx codeceptjs run --headless
+npx codeceptjs run --p browser:hide
 ```
 
 See all available commands in the [CLI reference](https://codecept.io/commands/).

@@ -424,14 +424,14 @@ describe('WebDriver', function () {
     })
 
     it('should check text is not equal to empty string of element text', async () => {
-      await wd.amOnPage('https://codecept.io')
+      await wd.amOnPage('/info')
 
       try {
-        await wd.seeTextEquals('', '.logo')
-        await wd.seeTextEquals('This is not empty', '.logo')
+        await wd.seeTextEquals('', '#p-no-text')
+        await wd.seeTextEquals('This is not empty', '#p-no-text')
       } catch (e) {
         expect(e).to.be.instanceOf(Error)
-        expect(e.message).to.equal('expected element .logo "This is not empty" to equal ""')
+        expect(e.message).to.equal('expected element #p-no-text "This is not empty" to equal ""')
       }
     })
   })
