@@ -520,9 +520,9 @@ declare namespace CodeceptJS {
   }
 }
 
-type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>
-type HopeThat = <T>(fn: () => Promise<T> | T) => Promise<T | false>
-type RetryTo = <T>(fn: () => Promise<T> | T, retries?: number) => Promise<T>
+type TryTo = (fn: () => void) => Promise<boolean>
+type HopeThat = (fn: () => void) => Promise<boolean>
+type RetryTo = (fn: (tries: number) => Promise<void> | void, maxTries: number, pollInterval?: number) => Promise<boolean>
 
 // Globals
 declare const codecept_dir: string
