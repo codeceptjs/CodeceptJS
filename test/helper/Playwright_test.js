@@ -286,6 +286,29 @@ describe('Playwright', function () {
         .then(() => I.grabNumberOfOpenTabs())
         .then(numPages => assert.equal(numPages, 1)))
 
+    it('should switch to tab', () =>
+      I.amOnPage('/info')
+        .then(() => I.wait(1))
+        .then(() => I.grabNumberOfOpenTabs())
+        .then(numPages => assert.equal(numPages, 1))
+        .then(() => I.click('New tab'))
+        .then(() => I.switchToTab(2))
+        .then(() => I.wait(2))
+        .then(() => I.seeCurrentUrlEquals('/login'))
+        .then(() => I.grabNumberOfOpenTabs())
+        .then(numPages => assert.equal(numPages, 2)))
+
+    it('should assert when there is no ability to switch to tab', () =>
+      I.amOnPage('/')
+        .then(() => I.click('More info'))
+        .then(() => I.wait(1)) // Wait is required because the url is change by previous statement (maybe related to #914)
+        .then(() => I.switchToTab(2))
+        .then(() => I.wait(2))
+        .then(() => assert.equal(true, false, 'Throw an error if it gets this far (which it should not)!'))
+        .catch(e => {
+          assert.equal(e.message, 'There is no ability to switch to tab with index 2')
+        }))
+
     it('should switch to next tab', () =>
       I.amOnPage('/info')
         .then(() => I.wait(1))
@@ -1573,6 +1596,17 @@ describe('Playwright - Electron', () => {
         throw Error('It should never get this far')
       } catch (e) {
         e.message.should.include('Cannot open new tabs inside an Electron container')
+      }
+    })
+  })
+
+  describe('#switchToTab', () => {
+    it('should throw an error', async () => {
+      try {
+        await I.switchToTab()
+        throw Error('It should never get this far')
+      } catch (e) {
+        e.message.should.include('Cannot switch tabs inside an Electron container')
       }
     })
   })

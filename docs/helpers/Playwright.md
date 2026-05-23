@@ -2335,6 +2335,19 @@ I.switchToPreviousTab(2);
 
 *   `num` **[number][20]**  
 
+### switchToTab
+
+Switch focus to a particular tab by its number. It waits tabs loading and then switch tab
+
+```js
+I.switchToTab(2);
+```
+
+#### Parameters
+
+*   `num` &#x20;
+*   `number` &#x20;
+
 ### type
 
 Types out the given text into an active field.
