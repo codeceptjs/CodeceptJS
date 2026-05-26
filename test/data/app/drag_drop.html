@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Drop Test</title>
+    <style>
+      #draggable {
+        width: 100px;
+        height: 100px;
+        padding: 0.5em;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+        cursor: move;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+      #droppable {
+        width: 200px;
+        height: 200px;
+        padding: 0.5em;
+        border: 1px solid #ccc;
+        background-color: #e0e0e0;
+        position: absolute;
+        top: 10px;
+        left: 150px;
+      }
+      #droppable.dropped {
+        background-color: #90ee90;
+        border-color: #4caf50;
+      }
+      .iframe-container {
+        margin-top: 250px;
+      }
+      iframe {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="draggable" draggable="true">
+      <p>Drag me to my target</p>
+    </div>
+
+    <div id="droppable">
+      <p>Drop here</p>
+    </div>
+
+    <div class="iframe-container">
+      <h3>iframe Test</h3>
+      <iframe
+        id="test-iframe"
+        srcdoc='
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    #iframe-draggable {
+                        width: 80px;
+                        height: 80px;
+                        background: lightblue;
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        cursor: move;
+                    }
+                    #iframe-droppable {
+                        width: 150px;
+                        height: 150px;
+                        background: lightyellow;
+                        position: absolute;
+                        top: 10px;
+                        left: 120px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div id="iframe-draggable" draggable="true">Drag me</div>
+                <div id="iframe-droppable">Drop here</div>
+                <script>
+                    let draggedElement = null;
+                    document.getElementById("iframe-draggable").addEventListener("dragstart", function(e) {
+                        draggedElement = this;
+                        e.dataTransfer.effectAllowed = "move";
+                    });
+                    document.getElementById("iframe-droppable").addEventListener("dragover", function(e) {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = "move";
+                    });
+                    document.getElementById("iframe-droppable").addEventListener("drop", function(e) {
+                        e.preventDefault();
+                        if (draggedElement) {
+                            this.style.background = "lightgreen";
+                            this.innerHTML = "Dropped!";
+                        }
+                    });
+                </script>
+            </body>
+            </html>
+        '
+      ></iframe>
+    </div>
+
+    <script>
+      // Simple drag and drop implementation
+      let draggedElement = null
+
+      document.getElementById('draggable').addEventListener('dragstart', function (e) {
+        draggedElement = this
+        e.dataTransfer.effectAllowed = 'move'
+      })
+
+      document.getElementById('droppable').addEventListener('dragover', function (e) {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = 'move'
+      })
+
+      document.getElementById('droppable').addEventListener('drop', function (e) {
+        e.preventDefault()
+        if (draggedElement) {
+          this.classList.add('dropped')
+          this.innerHTML = '<p>Dropped!</p>'
+        }
+      })
+    </script>
+  </body>
+</html>

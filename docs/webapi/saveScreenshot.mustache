@@ -2,10 +2,14 @@ Saves a screenshot to output folder (set in codecept.conf.ts or codecept.conf.js
 Filename is relative to output folder.
 Optionally resize the window to the full available page `scrollHeight` and `scrollWidth` to capture the entire page by passing `true` in as the second argument.
 
+If an absolute path is provided, the screenshot will be saved to that exact path.
+If a relative path with subdirectories is provided (e.g. `custom/debug.png`), it will be saved inside the output folder, creating subdirectories as needed.
+
 ```js
 I.saveScreenshot('debug.png');
 I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scrollWidth before taking screenshot
-I.saveScreenshot('customFolder/debug.png') //saves to customFolder/debug.png
+I.saveScreenshot('customFolder/debug.png') //saves to output/customFolder/debug.png, creating customFolder if needed
+I.saveScreenshot(path.join('/absolute/path', 'debug.png')) //saves to the absolute path
 ```
 
 @param {string} fileName file name to save.
