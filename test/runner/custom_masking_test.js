@@ -1,0 +1,47 @@
+import { exec } from 'child_process'
+import { assert } from 'chai'
+import path from 'path'
+import { fileURLToPath } from 'url'
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const runner = path.join(__dirname, '/../../bin/codecept.js')
+const codecept_dir = path.join(__dirname, '/../data/sandbox')
+const codecept_run = `${runner} run`
+const config_run_config = config => `${codecept_run} --config ${codecept_dir}/${config}`
+
+describe('Custom Masking Integration Tests', () => {
+  it.skip('should mask custom patterns in debug mode', done => {
+    exec(config_run_config('codecept.bdd.masking.cjs') + ' --debug --grep "Custom Data Masking"', (err, stdout, stderr) => {
+      console.log('STDOUT:', stdout)
+      console.log('STDERR:', stderr)
+
+      // Check that the step descriptions are masked (these go through CodeceptJS output)
+      stdout.should.include('I have user email "[MASKED_EMAIL]"')
+      stdout.should.include('I have credit card "[MASKED_CARD]"')
+      stdout.should.include('I have phone number "[MASKED_PHONE]"')
+
+      // Check that CodeceptJS debug output is masked
+      stdout.should.include('I debug "User email is: [MASKED_EMAIL]"')
+      stdout.should.include('I debug "Credit card is: [MASKED_CARD]"')
+      stdout.should.include('I debug "Phone number is: [MASKED_PHONE]"')
+
+      assert(!err)
+      done()
+    })
+  })
+
+  it.skip('should mask custom patterns in regular run mode', done => {
+    exec(config_run_config('codecept.bdd.masking.cjs') + ' --grep "Custom Data Masking"', (err, stdout, stderr) => {
+      console.log('STDOUT:', stdout)
+      console.log('STDERR:', stderr)
+
+      // In regular mode, we should still see the step names are present and test passes
+      stdout.should.include('✔ mask custom sensitive data in output')
+
+      assert(!err)
+      done()
+    })
+  })
+})

@@ -1,9 +1,7 @@
-import { expectError } from 'tsd';
-
 // @ts-ignore
 const I = actor();
 
-I.retry();
-I.retry(1);
-I.retry({ retries: 3, minTimeout: 100 });
-expectError(I.retry(1, 2));
+// I.retry() and I.limitTime() were removed in 4.x.
+// Use step.retry() / step.timeout() as the last step argument instead.
+// `I` resolves to `any` in this typing test, so the removal cannot be
+// asserted at the type level here.

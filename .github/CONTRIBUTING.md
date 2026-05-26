@@ -2,19 +2,16 @@
 
 Thanks for getting here. If you have a good will to improve CodeceptJS we are always glad to help. Ask questions, raise issues, ping in Twitter.
 
-Go over the steps in [this](https://github.com/firstcontributions/first-contributions) guide as first contributions
-
 To start you need:
 
-1.  Fork and clone the repo.
-2.  Run `npm i --force` to install all required libraries
-3.  Do the changes.
-4.  Add/Update Test (if possible)
-5.  Update documentation
-6.  Run `npm run def` to generate types
-7.  Run `npm run docs` if you change the documentation
-8.  Commit and Push to your fork
-9.  Make Pull Request
+1.  Fork the repo.
+2.  Run `npm install` to install all required libraries
+3.  Run `npm run def`to generate types
+4.  Do the changes.
+5.  Add/Update Test (if possible)
+6.  Update documentation
+7.  Commit and Push to your fork
+8.  Make Pull Request
 
 To run codeceptjs from this repo use:
 
@@ -28,28 +25,21 @@ To run examples:
 node bin/codecept.js run -c examples
 ```
 
-Depending on a type of change you should do the following.
 
-## Debugging
-
-To see recorder queue in logs enable NodeJS debug output by passing `DEBUG=codeceptjs:*` env variable:
-
-```
-DEBUG=codeceptjs:* npx codeceptjs run
-```
+Depending on a type of a change you should do the following.
 
 ## Helpers
 
-Please keep in mind that CodeceptJS have **unified API** for Playwright, WebDriverIO, Appium, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Playwright doesn't, you can implement XXX inside Playwright using the same method signature.
+Please keep in mind that CodeceptJS have **unified API** for WebDriver, Appium, Playwright, and Puppeteer. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriver has method XXX and Playwright doesn't, you can implement XXX inside Playwright using the same method signature.
 
-### Updating Playwright | Puppeteer | WebDriver
+### Updating a WebDriver | Playwright | Puppeteer
 
-_Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! _
+*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
 Working test is highly appreciated. To run the test suite you need:
 
-- selenium server + chromedriver
-- PHP installed
+* selenium server + chromedriver
+* PHP installed
 
 To launch PHP demo application run:
 
@@ -60,8 +50,9 @@ php -S 127.0.0.1:8000 -t test/data/app
 Execute test suite:
 
 ```sh
-mocha test/helper/WebDriver_test.js
+mocha test/helper/WebDriverIO_test.js
 mocha test/helper/Puppeteer_test.js
+mocha test/helper/Nightmare_test.js
 ```
 
 Use `--grep` to execute tests only for changed parts.
@@ -80,9 +71,21 @@ Then is should be accessible at:
 http://localhost:8000/form/myexample
 ```
 
+### Updating Protractor
+
+*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
+
+Protractor helper is based on [Protractor library](http://www.protractortest.org)
+
+In case you do Protractor-specific change, please add a test:To run the test suite you need:
+
+* selenium server + chromedriver
+
+Demo application is located at: [http://davertmik.github.io/angular-demo-app](http://davertmik.github.io/angular-demo-app)
+
 ### Updating REST | ApiDataFactory
 
-_Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required!_
+*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required!*
 
 Adding a test is highly appreciated.
 
@@ -96,20 +99,30 @@ Edit a test at `test/rest/REST_test.js` or `test/rest/ApiDataFactory_test.js`
 
 ## Appium
 
-_Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! _
+*Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 
 It is recommended to run mobile tests on CI.
 So do the changes, make pull request, see the CI status.
-Appium tests are executed at **Saucelabs**.
+Appium tests are executed at **Semaphore CI**.
 
 ## Core Changes
 
 Before applying any Core changes please raise an issue to discuss that change with core team.
 Please try to add corresponding testcase to runner or unit.
 
+## Typings
+
+Typings is generated in `typings/` directory via `jsdoc`
+
+After you updated docblock in JS file, generate typing files with next command:
+
+```
+npm run def
+```
+
 ## Documentation
 
-Documentation is stored in `/docs` directory in Markdown format.
+Documentation is stored in `/docs` directory in markdown format.
 
 **Documentation for helpers is a part of a source code**.
 
@@ -121,7 +134,7 @@ After you updated docblock in JS file, generate markdown files with next command
 npm run docs
 ```
 
-Documentation parts can be shared across helpers. Those parts are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
+Documentation parts can be shared accross helpers. Those parts are located in `docs/webapi/*.mustache`. Inside a docblock those files can be included like this:
 
 ```js
   /**
@@ -130,41 +143,6 @@ Documentation parts can be shared across helpers. Those parts are located in `do
   click() {
     // ...
   }
-```
-
-_Note:_ Due to the (lib)[https://documentation.js.org/] that we are using to generate docs, the fast and cheap way to fix format issue that text after the mustache template is appended without formatting is moving the texts to above the mustache template.
-
-```js
-  /**
-   * // Before
-   * Click action
-   * {{> click }}
-   * Click action
-   */
-  click() {
-    // ...
-  }
-```
-
-```js
-  /**
-   * // After
-   * Click action
-   * {{> click }}
-   */
-  click() {
-    // ...
-  }
-```
-
-## Typings
-
-Typings are generated in `typings/` directory via `jsdoc`
-
-After you updated docblock in JS file, generate typing files with next command:
-
-```
-npm run def
 ```
 
 ## Testing
@@ -188,7 +166,7 @@ mocha test/runner
 Instead of manually running php, json_server and selenium for before tests you
 can use `docker-compose` to run those automatically.
 You can find `docker-compose.yml` file in `test` directory and run all commands
-from this directory. Currently, we provide following commands to run tests with
+from this directory. Currently we provide following commands to run tests with
 respective dependencies:
 
 #### Run unit tests
@@ -203,8 +181,8 @@ docker-compose run --rm test-unit
 docker-compose run --rm test-helpers
 
 # or pass path to helper test to run specific helper,
-# for example to run only WebDriver tests:
-docker-compose run --rm test-helpers test/helper/WebDriver_test.js
+# for example to run only WebDriverIO tests:
+docker-compose run --rm test-helpers test/helper/WebDriverIO_test.js
 
 # Or to run only rest and ApiDataFactory tests
 docker-compose run --rm test-helpers test/rest
@@ -212,16 +190,19 @@ docker-compose run --rm test-helpers test/rest
 
 #### Run acceptance tests
 
-To that we provide three separate services respectively for WebDriver, Nightmare and Puppeteer tests:
+To that we provide three separate services respectively for WebDriverIO, Nightmare, Puppeteer and
+Protractor tests:
 
 ```sh
 docker-compose run --rm test-acceptance.webdriverio
+docker-compose run --rm test-acceptance.nightmare
 docker-compose run --rm test-acceptance.puppeteer
+docker-compose run --rm test-acceptance.protractor
 ```
 
 #### Running against specific Node version
 
-By default, dockerized tests are run against node 12.10.0, you can run it against
+By default dockerized tests are run against node 12.10.0, you can run it against
 specific version as long as there is Docker container available for such
 version. To do that you need to build codecept's Docker image prior to running
 tests and pass `NODE_VERSION` as build argument.
@@ -236,13 +217,19 @@ And now every command based on `test-helpers` service will use node 9.4.0. The
 same argument can be passed when building unit and acceptance tests services.
 
 ### CI flow
-
-We're currently using a bunch of CI services to build and test codecept in
+We're currently using bunch of CI services to build and test codecept in
 different environments. Here's short summary of what are differences between
 separate services
 
-#### CircleCI
+#### TravisCI
+Travis CI uses runs tests against Node 8 and Node 9. In total it uses 8 jobs to
+build each helper against both Node versions. For every job it runs unit tests
+first, then  `ApiDataFactory` and `REST` tests present in `test/rest` directory.
+Finally if those pass we run specific helper tests found in `test/helper`
+directory. It doesn't run acceptance tests.
+Config is present in `.travis.yml` file.
 
+#### CircleCI
 Here we use CodeceptJS docker image to build and execute tests inside it. We
 start with building Docker container based on Dockerfile present in main project
 directory. Then we run (in this order) unit tests, all helpers present in
@@ -250,3 +237,6 @@ directory. Then we run (in this order) unit tests, all helpers present in
 passed so far it executes acceptance tests. For easier maintenance and local
 debugging CircleCI uses `docker-compose.yml` file from `test` directory.
 You can find Circle config in `.circleci` directory.
+
+#### Semaphore
+Currently Semaphore runs only Appium helper tests.

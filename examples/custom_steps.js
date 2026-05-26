@@ -1,1 +1,3 @@
-module.exports = actor;
+import { actor } from 'codeceptjs'
+
+export default actor

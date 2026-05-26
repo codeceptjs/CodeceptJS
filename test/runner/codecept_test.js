@@ -1,12 +1,18 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const assert = require('assert')
-const path = require('path')
-const exec = require('child_process').exec
-const debug = require('debug')('codeceptjs:test')
-const event = require('../../lib').event
+import * as chai from 'chai';
+import { expect } from 'chai'
+import assert from 'assert'
+chai.should();
+import { fileURLToPath } from 'url';
+import path from 'path'
+import { exec } from 'child_process'
+import debug from 'debug'
+import codeceptjs from '../../lib/index.js'
+const { event } = codeceptjs
+
+const debugLog = debug('codeceptjs:test')
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')

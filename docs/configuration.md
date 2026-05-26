@@ -5,155 +5,180 @@ title: Configuration
 
 # Configuration
 
-CodeceptJS configuration is set in `codecept.conf.js` file.
+`codeceptjs init` creates a `codecept.conf.js` (or `codecept.conf.ts`) in your test root. It exports a `config` object:
 
-After running `codeceptjs init` it should be saved in test root.
+```js
+export const config = {
+  tests: './**/*_test.js',
+  output: './output',
+  helpers: {
+    Playwright: { url: 'http://localhost', browser: 'chromium' },
+  },
+  include: {
+    I: './steps_file.js',
+  },
+}
+```
 
-| Name                 | Type                                                         | Description                                                                                                                                                                                                                                                                                                                                                                          |
-| :------------------- | :----------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bootstrap?`         | (() => `Promise`<`void`\>) \| `boolean` \| `string`          | [Execute code before](https://codecept.io/bootstrap/) tests are run. Can be either JS module file or async function: `bootstrap: async () => server.launch(), ` or `bootstrap: 'bootstrap.js', `                                                                                                                                                                                     |
-| `bootstrapAll?`      | (() => `Promise`<`void`\>) \| `boolean` \| `string`          | [Execute code before launching tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)                                                                                                                                                                                                                                                                      |
-| `gherkin?`           | { `features`: `string` \| `string`[] ; `steps`: `string`[] } | Enable [BDD features](https://codecept.io/bdd/#configuration). Sample configuration: `gherkin: {   features: "./features/*.feature",   steps: ["./step_definitions/steps.js"] } `                                                                                                                                                                                                    |
-| `gherkin.features`   | `string` \| `string`[]                                       | load feature files by pattern. Multiple patterns can be specified as array                                                                                                                                                                                                                                                                                                           |
-| `gherkin.steps`      | `string`[]                                                   | load step definitions from JS files                                                                                                                                                                                                                                                                                                                                                  |
-| `grep?`              | `string`                                                     | Pattern to filter tests by name. This option is useful if you plan to use multiple configs for different environments. To execute only tests with @firefox tag use `grep: '@firefox' `                                                                                                                                                                                               |
-| `helpers?`           | {}                                                           | Enable and configure helpers: `helpers: {   Playwright: {     url: 'https://mysite.com',     browser: 'firefox'   } } `                                                                                                                                                                                                                                                              |
-| `include?`           | `any`                                                        | Include page objects to access them via dependency injection `I: "./custom_steps.js", loginPage: "./pages/Login.js", User: "./pages/User.js", ` Configured modules can be injected by name in a Scenario: `Scenario('test', { I, loginPage, User }) `                                                                                                                                |
-| `mocha?`             | `any`                                                        | [Mocha test runner options](https://mochajs.org/#configuring-mocha-nodejs), additional [reporters](https://codecept.io/reports/#xml) can be configured here. Example: `mocha: {   "mocha-junit-reporter": {      stdout: "./output/console.log",      options: {        mochaFile: "./output/result.xml",        attachments: true //add screenshot for a failed test      }   } } ` |
-| `noGlobals?`         | `boolean`                                                    | Disable registering global functions (Before, Scenario, etc). Not recommended                                                                                                                                                                                                                                                                                                        |
-| `output`             | `string`                                                     | Where to store failure screenshots, artifacts, etc `output: './output' `                                                                                                                                                                                                                                                                                                             |
-| `plugins?`           | `any`                                                        | Enable CodeceptJS plugins. Example: `plugins: {   autoDelay: {     enabled: true   }  } `                                                                                                                                                                                                                                                                                            |
-| `require?`           | `string`[]                                                   | [Require additional JS modules](https://codecept.io/configuration/#require) Example: `require: ["should"]`                                                                                                                                                                                                                                                                           |
-| `teardown?`          | (() => `Promise`<`void`\>) \| `boolean` \| `string`          | [Execute code after tests](https://codecept.io/bootstrap/) finished. Can be either JS module file or async function: `teardown: async () => server.stop(), ` or `teardown: 'teardown.js', `                                                                                                                                                                                          |
-| `teardownAll?`       | (() => `Promise`<`void`\>) \| `boolean` \| `string`          | [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)                                                                                                                                                                                                                                                                    |
-| `tests`              | `string`                                                     | Pattern to locate CodeceptJS tests. Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names. For tests in JavaScript: `tests: 'tests/**.test.js' ` For tests in TypeScript: `tests: 'tests/**.test.ts' `                                                                                                                                       |
-| `timeout?`           | `number`                                                     | Set default tests timeout in seconds. Tests will be killed on no response after timeout. `timeout: 20, `                                                                                                                                                                                                                                                                             |
-| `translation?`       | `string`                                                     | Enable [localized test commands](https://codecept.io/translation/)                                                                                                                                                                                                                                                                                                                   |
-| `maskSensitiveData?` | `boolean`                                                    | Enable to mask Sensitive Data in console.                                                                                                                                                                                                                                                                                                                                            |
+## Options
+
+**Tests and files**
+
+- `tests` — glob pattern (or array of patterns) locating your test files, e.g. `'tests/**/*_test.js'` (or `*_test.ts` for TypeScript).
+- `output` — directory for failure screenshots, artifacts, and temporary files. Default `./output`.
+- `include` — page objects and support objects exposed via dependency injection: `{ I: './steps_file.js', loginPage: './pages/Login.js' }`. They can then be injected by name — `Scenario('test', ({ I, loginPage }) => …)`.
+- `require` — extra modules to load before tests run: assertion libraries, TypeScript loaders, setup files. See [Require](#require).
+- `grep` — run only tests whose name matches this pattern, e.g. `grep: '@firefox'`. Handy when you keep separate configs per environment.
+
+**Helpers and plugins**
+
+- `helpers` — enable and configure [helpers](/helpers): `{ Playwright: { url: 'https://mysite.com', browser: 'firefox' } }`.
+- `plugins` — enable [plugins](/plugins): `{ autoDelay: { enabled: true } }`.
+
+**Hooks**
+
+- `bootstrap` / `teardown` — run code before / after the whole run; an async function or a path to a JS module. See [Bootstrap](/bootstrap).
+- `bootstrapAll` / `teardownAll` — run once around a parallel run (before any worker starts / after all finish). See [bootstrapAll / teardownAll](/bootstrap#bootstrapall-teardownall).
+
+**Test runner**
+
+- `timeout` — default per-test timeout in seconds; a test is killed if it stops responding.
+- `mocha` — [Mocha options](https://mochajs.org/#configuring-mocha-nodejs), including extra reporters. See [Reporters](/reports).
+
+**BDD**
+
+- `gherkin` — enable [BDD features](/bdd#configuration): `{ features: './features/*.feature', steps: ['./step_definitions/steps.js'] }`.
+  - `gherkin.features` — feature file glob, or an array of globs.
+  - `gherkin.steps` — JS files with step definitions.
+
+**TypeScript**
+
+- `fullPromiseBased` — generate typings where `I.*` methods return promises, so you can `await` each command. See [TypeScript](/typescript#promise-based-typings).
+
+**Other**
+
+- `translation` — enable [localized commands](/translation).
+- `maskSensitiveData` — mask secrets in console output.
+- `noGlobals` — don't register the global functions (`Feature`, `Scenario`, `Before`, …). Not recommended.
 
 ## Require
 
-Requires described module before run. This option is useful for assertion libraries, so you may `--require should` instead of manually invoking `require('should')` within each test file. It can be used with relative paths, e.g. `"require": ["/lib/somemodule"]`, and installed packages.
+`require` loads modules before tests run — assertion libraries (`'should'`), setup files (`'./lib/setup'`), and TypeScript loaders. Modules load in the order listed.
 
-You can register ts-node, so you can use Typescript in tests with ts-node package
+For TypeScript test files in CodeceptJS 4.x, use the [`tsx`](https://tsx.is) loader:
 
-```js
-exports.config = {
-  tests: './*_test.js',
-  timeout: 10000,
-  output: '',
+```ts
+// codecept.conf.ts
+export const config = {
+  tests: './**/*_test.ts',
+  require: ['tsx/cjs'],
   helpers: {},
   include: {},
-  bootstrap: false,
-  mocha: {},
-  // require modules
-  require: ['ts-node/register', 'should'],
 }
 ```
 
-For array of test pattern
+Combine several modules:
 
-```js
-exports.config = {
-  tests: ['./*_test.js', './sampleTest.js'],
-  timeout: 10000,
-  output: '',
-  helpers: {},
-  include: {},
-  bootstrap: false,
-  mocha: {},
-  // require modules
-  require: ['ts-node/register', 'should'],
-}
+```ts
+require: ['tsx/cjs', 'should', './lib/testSetup']
 ```
 
-## Dynamic Configuration
+The config file itself (`codecept.conf.ts`) and helpers are transpiled automatically — only test files need the loader. See [TypeScript](/typescript) for the full setup.
 
-By default `codecept.json` is used for configuration. You can override its values in runtime by using `--override` or `-o` option in command line, passing valid JSON as a value:
+## Dynamic configuration
 
-```sh
-codeceptjs run -o '{ "helpers": {"WebDriver": {"browser": "firefox"}}}'
-```
-
-You can also switch to JS configuration format for more dynamic options.
-Create `codecept.conf.js` file and make it export `config` property.
-
-See the config example:
+A JS/TS config file is plain code, so you can read environment variables and build the config at runtime:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
-      // load variables from the environment and provide defaults
       url: process.env.CODECEPT_URL || 'http://localhost:3000',
-
       user: process.env.CLOUDSERVICE_USER,
       key: process.env.CLOUDSERVICE_KEY,
-
-      coloredLogs: true,
       waitForTimeout: 10000,
     },
   },
-
-  // don't build monolithic configs
-  mocha: require('./mocha.conf.js') || {},
   include: {
     I: './src/steps_file.js',
-    loginPage: './src/pages/login_page',
-    dashboardPage: new DashboardPage(),
+    loginPage: './src/pages/login_page.js',
   },
-
-  // here goes config as it was in codecept.conf.ts
-  // ....
 }
 ```
 
-(Don't copy-paste this config, it's just demo)
-
-If you prefer to store your configuration files in a different location, or with a different name, you can do that with `--config` or `-c:
+Override config values at runtime with `--override` / `-o`, passing JSON:
 
 ```sh
-codeceptjs run --config=./path/to/my/config.js
+npx codeceptjs run -o '{ "helpers": { "WebDriver": { "browser": "firefox" } } }'
 ```
 
-## Common Configuration Patterns
+Point at a non-default config file with `--config` / `-c`:
 
-> 📺 [Watch this material](https://www.youtube.com/watch?v=onBnfo_rJa4&t=4s) on YouTube
+```sh
+npx codeceptjs run --config ./path/to/config.js
+```
 
-[`@codeceptjs/configure` package](https://github.com/codeceptjs/configure) contains shared recipes for common configuration patterns. This allows to set meta-configuration, independent from a current helper enabled.
+## Common configuration patterns
 
-Install it and enable to easily switch to headless/window mode, change window size, etc.
+[`@codeceptjs/configure`](https://github.com/codeceptjs/configure) ships with CodeceptJS as a dependency. It holds shared recipes for config that's independent of the active helper.
+
+Toggle headless mode, set window size, and so on:
 
 ```js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure')
+import { setHeadlessWhen, setWindowSize } from '@codeceptjs/configure'
 
-setHeadlessWhen(process.env.CI)
+setHeadlessWhen(process.env.HEADLESS || process.env.CI)
 setWindowSize(1600, 1200)
 
-exports.config = {
+export const config = {
   // ...
 }
 ```
 
+For one-shot bundles use `setBrowserConfig` — pass any subset of `{ browser, show, windowSize, url }` and the right per-helper translation happens automatically (Puppeteer gets `product`, WebDriver gets `--headless` injected, …). Keys whose value is `undefined` are skipped, so an unset env var won't clobber existing config:
+
+```js
+import { setBrowserConfig } from '@codeceptjs/configure'
+
+setBrowserConfig({
+  browser: process.env.BROWSER,     // optional engine override
+  show: !process.env.HEADLESS,      // headed unless HEADLESS is set
+  windowSize: '1280x720',
+  url: process.env.URL,             // overrides helper.url when set
+})
+```
+
+`setCommonPlugins()` enables a curated set of plugins and registers a few more as discoverable, so they can be switched on ad-hoc with [`-p` plugin arguments](/commands#plugin-arguments) without editing the config:
+
+```js
+import { setCommonPlugins } from '@codeceptjs/configure'
+
+setCommonPlugins()
+```
+
+- `retryFailedStep` — *enabled*. Retries steps that fail with transient errors.
+- `screenshot` — *enabled*. Screenshot on `fail` (default), or `test` / `step` / `file` / `url`.
+- `pause` — *registered*. Pause on failure / step / file / URL: `-p pause:on=fail`, `-p pause:on=step`, `-p pause:on=file:path=tests/login_test.js`, `-p pause:on=url:pattern=/checkout/*`.
+- `browser` — *registered*. CLI overrides for browser helpers: `-p browser:show`, `-p browser:browser=firefox`. See [browser control](/commands#browser-control).
+- `aiTrace` — *registered*. Capture AI traces: `-p aiTrace`, narrow with `on=fail|test|step|file|url`.
+- `heal` — *registered*. Self-heal failing steps: `-p heal`, narrow with `on=file|url`.
+
+> `eachElement`, `tryTo`, and `retryTo` are no longer plugins in 4.x — import them from `codeceptjs/effects`.
+
 ## Profile
 
-Using `process.env.profile` you can change the config dynamically.
-It provides value of `--profile` option passed to runner.
-Use its value to change config value on the fly.
-
-For instance, with the config above we can change browser value using `profile` option
+`process.env.profile` carries the value of the `--profile` CLI option, so you can branch the config on it:
 
 ```sh
-codeceptjs run --profile firefox
+npx codeceptjs run --profile firefox
 ```
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       url: 'http://localhost:3000',
-      // load value from `profile`
-      browser: process.env.profile || 'firefox',
+      browser: process.env.profile || 'chrome',
     },
   },
 }

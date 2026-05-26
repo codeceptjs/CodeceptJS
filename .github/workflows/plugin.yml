@@ -3,10 +3,14 @@ name: Plugins tests
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
   pull_request:
     branches:
       - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   CI: true
@@ -16,15 +20,16 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    timeout-minutes: 20
 
     strategy:
       matrix:
         node-version: [20.x]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
       - uses: shivammathur/setup-php@v2

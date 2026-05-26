@@ -1,0 +1,8 @@
+Opening paragraph discusses the rationale for robust editor testing, covering typed input, clipboard round-trips, and multi-line content flow through the DOM.
+A follow-up sentence ensures the first paragraph has enough substance for the editor to wrap, break, or reformat as needed.
+
+Middle paragraph exists to verify that paragraph breaks survive the fill operation intact across rich-text, code, and iframe-backed editors.
+It also exercises mixed punctuation: commas, periods, semicolons, and the occasional colon turn up here to keep the tokenizer honest.
+
+Closing paragraph caps the fixture with a third block of prose to confirm that longer payloads get typed and submitted without truncation.
+A final line restates the intent so that assertions on the last paragraph can key off distinctive phrasing.

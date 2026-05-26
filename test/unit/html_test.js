@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { expect } from 'chai'
+import { fileURLToPath } from 'url'
+import * as cheerio from 'cheerio'
+import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks, cleanHtml, formatHtml, isTrashClass } from '../../lib/html.js'
 
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const cheerio = require('cheerio')
-const { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks } = require('../../lib/html')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const opts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],
@@ -113,9 +113,9 @@ describe('HTML module', () => {
     it('should cut out all non-interactive elements from GitLab HTML', () => {
       html = fs.readFileSync(path.join(__dirname, '../data/gitlab.html'), 'utf8')
       const result = removeNonInteractiveElements(html, opts)
-      result.should.include('Get free trial')
-      result.should.include('Sign in')
-      result.should.include('<button')
+      expect(result).to.include('Get free trial')
+      expect(result).to.include('Sign in')
+      expect(result).to.include('<button')
 
       const $ = cheerio.load(result)
       const nodes = $('input[placeholder="Search"]')
@@ -125,7 +125,7 @@ describe('HTML module', () => {
     it('should cut out and minify Testomatio HTML', () => {
       html = fs.readFileSync(path.join(__dirname, '../data/testomat.html'), 'utf8')
       const result = removeNonInteractiveElements(html, opts)
-      result.should.include('<svg class="md-icon md-icon-check-bold')
+      expect(result).to.include('<svg class="md-icon md-icon-check-bold')
     })
   })
 
@@ -137,6 +137,91 @@ describe('HTML module', () => {
       for (const chunk of result) {
         expect(chunk.startsWith('<')).to.be.true
       }
+    })
+  })
+
+  describe('#isTrashClass', () => {
+    it('flags Tailwind/utility/framework/scoped/digit-bearing classes', () => {
+      expect(isTrashClass('text-sm')).to.be.true
+      expect(isTrashClass('flex-row')).to.be.true
+      expect(isTrashClass('color-red')).to.be.true
+      expect(isTrashClass('float-left')).to.be.true
+      expect(isTrashClass('border-2')).to.be.true
+      expect(isTrashClass('d-flex')).to.be.true
+      expect(isTrashClass('v-btn')).to.be.true
+      expect(isTrashClass('ember-view')).to.be.true
+      expect(isTrashClass('bg-gray-200')).to.be.true
+      expect(isTrashClass('xl:hidden')).to.be.true
+      expect(isTrashClass('Header__title')).to.be.true
+      expect(isTrashClass('component-3xZ9')).to.be.true
+    })
+
+    it('keeps real semantic class names', () => {
+      expect(isTrashClass('login-form')).to.be.false
+      expect(isTrashClass('primary')).to.be.false
+      expect(isTrashClass('my-real-class')).to.be.false
+      expect(isTrashClass('error')).to.be.false
+    })
+  })
+
+  describe('#cleanHtml', () => {
+    const fixture = '<html><head><style>body{color:red}</style></head>'
+      + '<body>'
+      + '<div class="text-sm flex-row Header__title bg-gray-200 my-real-class" style="color: red">'
+      + '<script>alert(1)</script>'
+      + '<span data-keep="x" id="ok" aria-label="hi">hi</span>'
+      + '</div>'
+      + '<script src="/app.js"></script>'
+      + '<noscript>fallback</noscript>'
+      + '</body></html>'
+
+    it('drops <style>, <noscript>, and inline <script> (no src)', () => {
+      const out = cleanHtml(fixture)
+      expect(out).not.to.include('<style')
+      expect(out).not.to.include('<noscript')
+      expect(out).not.to.include('alert(1)')
+    })
+
+    it('keeps <script src="...">', () => {
+      const out = cleanHtml(fixture)
+      expect(out).to.include('<script src="/app.js"></script>')
+    })
+
+    it('strips trash classes but keeps real ones', () => {
+      const out = cleanHtml(fixture)
+      expect(out).to.include('class="my-real-class"')
+      expect(out).not.to.include('text-sm')
+      expect(out).not.to.include('Header__title')
+      expect(out).not.to.include('bg-gray-200')
+    })
+
+    it('drops inline style="" and preserves data-* / id / aria-*', () => {
+      const out = cleanHtml(fixture)
+      expect(out).not.to.include('style=')
+      expect(out).to.include('data-keep="x"')
+      expect(out).to.include('id="ok"')
+      expect(out).to.include('aria-label="hi"')
+    })
+  })
+
+  describe('#formatHtml', () => {
+    it('minifies, cleans, and beautifies', async () => {
+      const fixture = '<html><head><!-- a comment --><style>body{color:red}</style></head>'
+        + '<body><div class="text-sm my-real-class" style="color: red">'
+        + '<span>hi</span></div></body></html>'
+      const out = await formatHtml(fixture)
+      // beautify: multiline output
+      expect(out.split('\n').length).to.be.greaterThan(3)
+      // comment removed by minifier
+      expect(out).not.to.include('<!--')
+      // cleanHtml: trash class and inline style gone, semantic class kept
+      expect(out).not.to.include('text-sm')
+      expect(out).not.to.include('style=')
+      expect(out).to.include('class="my-real-class"')
+      // <style> block removed entirely
+      expect(out).not.to.include('<style')
+      // structure preserved
+      expect(out).to.include('<span>hi</span>')
     })
   })
 })

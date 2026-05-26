@@ -18,7 +18,94 @@ The most efficient way would be to allow test to control its data, i.e. the 3rd 
 However, accessing database directly is not a good idea as database vendor, schema and data are used by application internally and are out of scope of acceptance test.
 
 Today all modern web applications have REST or GraphQL API . So it is a good idea to use it to create data for a test and delete it after.
-API is supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides 4 helpers for Data Management via REST and GraphQL API.
+API is supposed to be a stable interface and it can be used by acceptance tests. CodeceptJS provides helpers for Data Management via REST and GraphQL API, as well as **[Data Objects](/pageobjects#data-objects)** — class-based page objects with automatic cleanup via lifecycle hooks.
+
+## Data Objects
+
+Data Objects are page object classes designed to manage test data via API. They use the REST helper (through `I`) to create data in a test and clean it up automatically via the `_after()` hook.
+
+This is a lightweight alternative to [ApiDataFactory](#api-data-factory) — ideal when you want full control over data creation and cleanup logic without factory configuration.
+
+### Defining a Data Object
+
+```js
+const { I } = inject();
+
+class UserData {
+  constructor() {
+    this._created = [];
+  }
+
+  async createUser(data = {}) {
+    const response = await I.sendPostRequest('/api/users', {
+      name: data.name || 'Test User',
+      email: data.email || `test-${Date.now()}@example.com`,
+      ...data,
+    });
+    this._created.push(response.data.id);
+    return response.data;
+  }
+
+  async createPost(userId, data = {}) {
+    const response = await I.sendPostRequest('/api/posts', {
+      userId,
+      title: data.title || 'Test Post',
+      body: data.body || 'Test body',
+      ...data,
+    });
+    this._created.push({ type: 'post', id: response.data.id });
+    return response.data;
+  }
+
+  async _after() {
+    for (const record of this._created.reverse()) {
+      const id = typeof record === 'object' ? record.id : record;
+      const type = typeof record === 'object' ? record.type : 'user';
+      try {
+        await I.sendDeleteRequest(`/api/${type}s/${id}`);
+      } catch (e) {
+        // cleanup errors should not fail the test
+      }
+    }
+    this._created = [];
+  }
+}
+
+export default UserData
+```
+
+### Configuration
+
+Add the REST helper and the Data Object to your config:
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost', browser: 'chromium' },
+  REST: {
+    endpoint: 'http://localhost/api',
+    defaultHeaders: { 'Content-Type': 'application/json' },
+  },
+},
+include: {
+  I: './steps_file.js',
+  userData: './data/UserData.js',
+}
+```
+
+### Usage in Tests
+
+```js
+Scenario('user sees their profile', async ({ I, userData }) => {
+  const user = await userData.createUser({ name: 'John Doe' });
+  I.amOnPage(`/users/${user.id}`);
+  I.see('John Doe');
+  // userData._after() runs automatically — deletes the created user
+});
+```
+
+Data Objects can use any helper methods available via `I`, including `sendGetRequest`, `sendPutRequest`, and browser actions. They combine the convenience of managed test data with the flexibility of page objects.
+
+**Learn more:** See [Page Objects](/pageobjects) for general page object patterns.
 
 ## REST
 
@@ -171,13 +258,13 @@ Just define how many items of any kind you need and the data factory helper will
 
 To make this work some preparations are required.
 
-At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://www.npmjs.com/package/faker). Faker can generate random names, emails, texts, and Rosie uses them
+At first, you need data generation libraries which are [Rosie](https://github.com/rosiejs/rosie) and [Faker](https://fakerjs.dev). Faker can generate random names, emails, texts, and Rosie uses them
 to generate objects using factories.
 
 Install rosie and faker to create a first factory:
 
-```js
-npm i rosie faker --save-dev
+```sh
+npm i rosie @faker-js/faker --save-dev
 ```
 
 Then create a module which will export a factory for an entity.
@@ -202,10 +289,10 @@ See the example providing a factory for User generation:
 
 ```js
 // factories/post.js
-var Factory = require('rosie').Factory
-var faker = require('@faker-js/faker')
+import { Factory } from 'rosie'
+import { faker } from '@faker-js/faker'
 
-module.exports = new Factory().attr('name', () => faker.person.findName()).attr('email', () => faker.internet.email())
+export default new Factory().attr('name', () => faker.person.findName()).attr('email', () => faker.internet.email())
 ```
 
 Next is to configure helper to match factories with API:
@@ -254,10 +341,10 @@ See the example providing a factory for User generation:
 
 ```js
 // factories/post.js
-var Factory = require('rosie').Factory
-var faker = require('@faker-js/faker')
+import { Factory } from 'rosie'
+import { faker } from '@faker-js/faker'
 
-module.exports = new Factory((buildObj) => {
+export default new Factory((buildObj) => {
   return {
     input: { ...buildObj },
   }
@@ -306,23 +393,16 @@ By doing this we can make requests within the current browser session without a 
 
 > Sharing browser session with ApiDataFactory or GraphQLDataFactory can be especially useful when you test Single Page Applications
 
-Since CodeceptJS 2.3.3 there is a simple way to enable shared session for browser and data helpers.
-Install [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package:
-
-```
-npm i @codeceptjs/configure --save
-```
-
-Import `setSharedCookies` function and call it inside a config:
+CodeceptJS bundles [`@codeceptjs/configure`](https://github.com/codeceptjs/configure), which exposes `setSharedCookies` for this case. Call it before exporting your config:
 
 ```js
 // in codecept.conf.js
-const { setSharedCookies } = require('@codeceptjs/configure')
+import { setSharedCookies } from '@codeceptjs/configure'
 
 // share cookies between browser helpers and REST/GraphQL
 setSharedCookies()
 
-exports.config = {}
+export const config = {}
 ```
 
 Without `setSharedCookies` you will need to update the config manually, so a data helper could receive cookies from a browser to make a request. If you would like to configure this process manually, here is an example of doing so:
@@ -331,7 +411,7 @@ Without `setSharedCookies` you will need to update the config manually, so a dat
 
 let cookies; // share cookies
 
-exports.config = {
+export const config = {
 helpers: {
   ApiDataFactory: {
     endpoint: 'http://local.app/api',

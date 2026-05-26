@@ -1,6 +1,6 @@
-require('./heal_recipes')
+import './heal_recipes.js'
 
-exports.config = {
+export const config = {
   output: './output',
   helpers: {
     Playwright: {
@@ -37,9 +37,9 @@ exports.config = {
     steps: ['./step_definitions/steps.js'],
   },
   plugins: {
-    analyze: {
-      enabled: true,
-    },
+    // analyze: {
+    //   enabled: true,
+    // },
     // heal: {
     //   enabled: true,
     // },
@@ -50,15 +50,25 @@ exports.config = {
       enabled: false,
       services: ['selenium-standalone'],
     },
-    stepByStepReport: {},
+    screenshot: { on: 'step', slides: true },
     autoDelay: {
       enabled: false,
     },
     retryFailedStep: {
       enabled: false,
     },
-    subtitles: {
+    screencast: {
       enabled: true,
+      on: 'test',
+      subtitles: true,
+    },
+    aiTrace: {
+      enabled: true,
+      captureHTML: true,
+      captureARIA: true,
+      captureBrowserLogs: true,
+      captureHTTP: true,
+      ignoreSteps: [/^grab/, /^wait/],
     },
   },
 

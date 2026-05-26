@@ -1,15 +1,15 @@
 ---
 permalink: /ai
-title: Testing with AI 🪄
+title: Testing with AI
 ---
 
-# 🪄 Testing with AI
+# Testing with AI
 
 **CodeceptJS is the first open-source test automation framework with AI** features to improve the testing experience. CodeceptJS uses AI provider like OpenAI or Anthropic to auto-heal failing tests, assist in writing tests, and more...
 
 Think of it as your testing co-pilot built into the testing framework
 
-> 🪄 **AI features for testing are experimental**. AI works only for web based testing with Playwright, WebDriver, etc. Those features will be improved based on user's experience.
+> This is guide on using AI features inside CodeceptJS. To control CodeceptJS via AI Agents, see [Agentic Testing Guide](/agents/).
 
 ## How AI Improves Automated Testing
 
@@ -22,9 +22,7 @@ So, instead of asking "write me a test" it can ask "write a test for **this** pa
 CodeceptJS AI can do the following:
 
 - 🏋️‍♀️ **assist writing tests** in `pause()` or interactive shell mode
-- 📃 **generate page objects** in `pause()` or interactive shell mode
 - 🚑 **self-heal failing tests** (can be used on CI)
-- 💬 send arbitrary prompts to AI provider from any tested page attaching its HTML contents
 
 ![](/img/fill_form.gif)
 
@@ -40,25 +38,30 @@ Even though, the HTML is still quite big and may exceed the token limit. So we r
 
 ## Set up AI Provider
 
-To enable AI features in CodeceptJS you should pick an AI provider and add `ai` section to `codecept.conf` file. This section should contain `request` function which will take a prompt from CodeceptJS, send it to AI provider and return a result.
+CodeceptJS uses [Vercel AI SDK](https://ai-sdk.dev) to connect to different AI providers. To enable AI features, add an `ai` section to your `codecept.conf` file with a configured model.
+
+### Quick Start
+
+Install the AI SDK and your preferred provider package:
+
+```bash
+npm install ai @ai-sdk/openai
+# or
+npm install ai @ai-sdk/anthropic
+```
+
+Then configure the model in your `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async messages => {
-    // implement OpenAI or any other provider like this
-    const ai = require('my-ai-provider')
-    return ai.send(messages)
-  }
+import { openai } from '@ai-sdk/openai'
+
+export default {
+  // ... other config
+  ai: {
+    model: openai('gpt-5'),
+  },
 }
 ```
-
-In `request` function `messages` is an array of prompt messages in format
-
-```js
-;[{ role: 'user', content: 'prompt text' }]
-```
-
-Which is natively supported by OpenAI, Anthropic, and others. You can adjust messages to expected format before sending a request. The expected response from AI provider is a text in markdown format with code samples, which can be interpreted by CodeceptJS.
 
 Once AI provider is configured run tests with `--ai` flag to enable AI features
 
@@ -70,240 +73,97 @@ Below we list sample configuration for popular AI providers
 
 ### OpenAI GPT
 
-Prerequisite:
+Install the OpenAI provider:
 
-- Install `openai` package
-- obtain `OPENAI_API_KEY` from OpenAI
-- set `OPENAI_API_KEY` as environment variable
-
-Sample OpenAI configuration:
-
-```js
-ai: {
-  request: async messages => {
-    const OpenAI = require('openai')
-    const openai = new OpenAI({ apiKey: process.env['OPENAI_API_KEY'] })
-
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages,
-    })
-
-    return completion?.choices[0]?.message?.content
-  }
-}
+```bash
+npm install @ai-sdk/openai
 ```
 
-### Mixtral
+Set your API key as environment variable:
 
-Mixtral is opensource and can be used via Cloudflare, Google Cloud, Azure or installed locally.
-
-The simplest way to try Mixtral on your case is using [Groq Cloud](https://groq.com) which provides Mixtral access with GPT-like API:
-
-Prerequisite:
-
-- Install `groq-sdk` package
-- obtain `GROQ_API_KEY` from Groq Cloud
-- set `GROQ_API_KEY` as environment variable
-
-Sample Groq configuration with Mixtral model:
-
-```js
-ai: {
-  request: async messages => {
-    const Groq = require('groq-sdk')
-
-    const client = new Groq({
-      apiKey: process.env['GROQ_API_KEY'], // This is the default and can be omitted
-    })
-
-    const chatCompletion = await groq.chat.completions.create({
-      messages,
-      model: 'mixtral-8x7b-32768',
-    })
-    return chatCompletion.choices[0]?.message?.content || ''
-  }
-}
+```bash
+export OPENAI_API_KEY=your-api-key
 ```
 
-> Groq also provides access to other opensource models like llama or gemma
+Configure in `codecept.conf.js`:
+
+```js
+import { openai } from '@ai-sdk/openai'
+
+export default {
+  ai: {
+    model: openai('gpt-5'),
+    // or use gpt-4o, gpt-3.5-turbo, etc.
+  },
+}
+```
 
 ### Anthropic Claude
 
-Prerequisite:
+Install the Anthropic provider:
 
-- Install `@anthropic-ai/sdk` package
-- obtain `CLAUDE_API_KEY` from Anthropic
-- set `CLAUDE_API_KEY` as environment variable
+```bash
+npm install @ai-sdk/anthropic
+```
+
+Set your API key as environment variable:
+
+```bash
+export ANTHROPIC_API_KEY=your-api-key
+```
+
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async messages => {
-    const Anthropic = require('@anthropic-ai/sdk')
+import { anthropic } from '@ai-sdk/anthropic'
 
-    const anthropic = new Anthropic({
-      apiKey: process.env.CLAUDE_API_KEY,
-    })
-
-    const resp = await anthropic.messages.create({
-      model: 'claude-2.1',
-      max_tokens: 1024,
-      messages,
-    })
-    return resp.content.map(c => c.text).join('\n\n')
-  }
+export default {
+  ai: {
+    model: anthropic('claude-sonnet-4-6'),
+    // or use claude-opus-4-7, claude-haiku-4-5, etc.
+  },
 }
 ```
 
-### Azure OpenAI
+### Google Gemini
 
-When your setup using Azure API key
+Install the Google provider:
 
-Prerequisite:
+```bash
+npm install @ai-sdk/google
+```
 
-- Install `@azure/openai` package
-- obtain `Azure API key`, `resource name` and `deployment ID`
+Set your API key as environment variable:
+
+```bash
+export GOOGLE_GENERATIVE_AI_API_KEY=your-api-key
+```
+
+Configure in `codecept.conf.js`:
 
 ```js
-ai: {
-  request: async messages => {
-    const { OpenAIClient, AzureKeyCredential } = require('@azure/openai')
+import { google } from '@ai-sdk/google'
 
-    const client = new OpenAIClient('https://<resource name>.openai.azure.com/', new AzureKeyCredential('<Azure API key>'))
-    const { choices } = await client.getCompletions('<deployment ID>', messages)
-
-    return choices[0]?.message?.content
-  }
+export default {
+  ai: {
+    model: google('gemini-1.5-flash'),
+    // or use gemini-1.5-pro, gemini-2.0-flash-exp, etc.
+  },
 }
 ```
 
-When your setup using `bearer token`
+### Other Providers
 
-Prerequisite:
+The AI SDK supports 20+ providers including:
 
-- Install `@azure/openai`, `@azure/identity` packages
-- obtain `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET`
+- **xAI (Grok)**: `npm install @ai-sdk/xai`
+- **Mistral**: `npm install @ai-sdk/mistral`
+- **Groq**: `npm install @ai-sdk/groq`
+- **Cohere**: `npm install @ai-sdk/cohere`
+- **Azure OpenAI**: `npm install @ai-sdk/azure`
 
-```js
-ai: {
-  request: async messages => {
-    try {
-      const { OpenAIClient } = require('@azure/openai')
-      const { DefaultAzureCredential } = require('@azure/identity')
+See [AI SDK Providers](https://ai-sdk.dev/docs/foundations/providers-and-models) for complete list and configuration details.
 
-      const endpoint = process.env.API_ENDPOINT
-      const deploymentId = process.env.DEPLOYMENT_ID
-
-      const client = new OpenAIClient(endpoint, new DefaultAzureCredential())
-      const result = await client.getCompletions(deploymentId, {
-        prompt: messages,
-        model: 'gpt-3.5-turbo', // your preferred model
-      })
-
-      return result.choices[0]?.text
-    } catch (error) {
-      console.error('Error calling API:', error)
-      throw error
-    }
-  }
-}
-```
-
-Or you could try with direct API request
-
-```js
-ai: {
-  request: async (messages) => {
-    try {
-      const endpoint = process.env.API_ENDPOINT;
-      const deploymentId = process.env.DEPLOYMENT_ID;
-
-      const result = await makeApiRequest(endpoint, deploymentId, messages)
-
-      return result.choices[0]?.message.content
-    } catch (error) {
-      console.error("Error calling API:", error);
-      throw error;
-    }
-  }
-}
-...
-
-async function getAccessToken() {
-  const credential = new DefaultAzureCredential();
-  const scope = "https://cognitiveservices.azure.com/.default";
-
-  try {
-    const accessToken = await credential.getToken(scope);
-    return `Bearer ${accessToken.token}`;
-  } catch (err) {
-    console.error("Failed to get access token:", err);
-  }
-}
-
-async function makeApiRequest(endpoint, deploymentId, messages) {
-  const token = await getAccessToken();
-  const url = `${endpoint}/openai/deployments/${deploymentId}/chat/completions?api-version=2024-06-01`;
-
-  const data = { messages };
-
-  try {
-    const response = await axios.post(url, data, {
-      headers: {
-        'Authorization': `${token}`
-      }
-    });
-    return response.data
-  } catch (err) {
-    console.error("API request failed:", err.response);
-  }
-}
-```
-
-## Writing Tests with AI Copilot
-
-If AI features are enabled when using [interactive pause](/basics/#debug) with `pause()` command inside tests:
-
-For instance, let's create a test to try ai features via `gt` command:
-
-```
-npx codeceptjs gt
-```
-
-Name a test and write the code. We will use `Scenario.only` instead of Scenario to execute only this exact test.
-
-```js
-Feature('ai')
-
-Scenario.only('test ai features', ({ I }) => {
-  I.amOnPage('https://getbootstrap.com/docs/5.1/examples/checkout/')
-  pause()
-})
-```
-
-Now run the test in debug mode with AI enabled:
-
-```
-npx codeceptjs run --debug --ai
-```
-
-When pause mode started you can ask GPT to fill in the fields on this page. Use natural language to describe your request, and provide enough details that AI could operate with it. It is important to include at least a space char in your input, otherwise, CodeceptJS will consider the input to be JavaScript code.
-
-```
- I.fill checkout form with valid values without submitting it
-```
-
-![](/img/fill_form_1.png)
-
-GPT will generate code and data and CodeceptJS will try to execute its code. If it succeeds, the code will be saved to history and you will be able to copy it to your test.
-
-![](/img/fill_form2.png)
-
-This AI copilot works best with long static forms. In the case of complex and dynamic single-page applications, it may not perform as well, as the form may not be present on HTML page yet. For instance, interacting with calendars or inputs with real-time validations (like credit cards) can not yet be performed by AI.
-
-Please keep in mind that GPT can't react to page changes and operates with static text only. This is why it is not ready yet to write the test completely. However, if you are new to CodeceptJS and automated testing AI copilot may help you write tests more efficiently.
-
-> 👶 Enable AI copilot for junior test automation engineers. It may help them to get started with CodeceptJS and to write good semantic locators.
 
 ## Self-Healing Tests
 
@@ -326,10 +186,9 @@ npx codeceptjs generate:heal
 Heal recipes should be included into `codecept.conf.js` or `codecept.conf.ts` config file:
 
 ```js
+import './heal.js'
 
-require('./heal')
-
-exports.config = {
+export const config = {
   // ... your codeceptjs config
 ```
 
@@ -479,135 +338,15 @@ Run tests with both AI and analyze enabled:
 npx codeceptjs run --ai
 ```
 
-## Arbitrary Prompts
-
-What if you want to take AI on the journey of test automation and ask it questions while browsing pages?
-
-This is possible with the new `AI` helper. Enable it in your config file in `helpers` section:
-
-```js
-// inside codecept.conf
-helpers: {
-  // Playwright, Puppeteer, or WebDrver helper should be enabled too
-  Playwright: {
-  },
-
-  AI: {}
-}
-```
-
-AI helper will be automatically attached to Playwright, WebDriver, or another web helper you use. It includes the following methods:
-
-- `askGptOnPage` - sends GPT prompt attaching the HTML of the page. Large pages will be split into chunks, according to `chunkSize` config. You will receive responses for all chunks.
-- `askGptOnPageFragment` - sends GPT prompt attaching the HTML of the specific element. This method is recommended over `askGptOnPage` as you can reduce the amount of data to be processed.
-- `askGptGeneralPrompt` - sends GPT prompt without HTML.
-- `askForPageObject` - creates PageObject for you, explained in next section.
-
-`askGpt` methods won't remove non-interactive elements, so it is recommended to manually control the size of the sent HTML.
-
-Here are some good use cases for this helper:
-
-- get page summaries
-- inside pause mode navigate through your application and ask to document pages
-- etc...
-
-```js
-// use it inside test or inside interactive pause
-// pretend you are technical writer asking for documentation
-const pageDoc = await I.askGptOnPageFragment('Act as technical writer, describe what is this page for', '#container')
-```
-
-As of now, those use cases do not apply to test automation but maybe you can apply them to your testing setup.
-
-## Generate PageObjects
-
-Last but not the least. AI helper can be used to quickly prototype PageObjects on pages browsed within interactive session.
-
-![](/img/ai_page_object.png)
-
-Enable AI helper as explained in previous section and launch shell:
-
-```
-npx codeceptjs shell --ai
-```
-
-Also this is availble from `pause()` if AI helper is enabled,
-
-Ensure that browser is started in window mode, then browse the web pages on your site.
-On a page you want to create PageObject execute `askForPageObject()` command. The only required parameter is the name of a page:
-
-```js
-I.askForPageObject('login')
-```
-
-This command sends request to AI provider should create valid CodeceptJS PageObject.
-Run it few times or switch AI provider if response is not satisfactory to you.
-
-> You can change the style of PageObject and locator preferences by adjusting prompt in a config file
-
-When completed successfully, page object is saved to **output** directory and loaded into the shell as `page` variable so locators and methods can be checked on the fly.
-
-If page object has `signInButton` locator you can quickly check it by typing:
-
-```js
-I.click(page.signInButton)
-```
-
-If page object has `clickForgotPassword` method you can execute it as:
-
-```js
-=> page.clickForgotPassword()
-```
-
-Here is an example of a session:
-
-```shell
-Page object for login is saved to .../output/loginPage-1718579784751.js
-Page object registered for this session as `page` variable
-Use `=>page.methodName()` in shell to run methods of page object
-Use `click(page.locatorName)` to check locators of page object
-
- I.=>page.clickSignUp()
- I.click(page.signUpLink)
- I.=> page.enterPassword('asdasd')
- I.=> page.clickSignIn()
-```
-
-You can improve prompt by passing custom request as a second parameter:
-
-```js
-I.askForPageObject('login', 'implement signIn(username, password) method')
-```
-
-To generate page object for the part of a page, pass in root locator as third parameter.
-
-```js
-I.askForPageObject('login', '', '#auth')
-```
-
-In this case, all generated locators, will use `#auth` as their root element.
-
-Don't aim for perfect PageObjects but find a good enough one, which you can use for writing your tests.
-All created page objects are considered temporary, that's why saved to `output` directory.
-
-Rename created PageObject to remove timestamp and move it from `output` to `pages` folder and include it into codecept.conf file:
-
-```js
-  include: {
-    loginPage: "./pages/loginPage.js",
-    // ...
-```
-
 ## Advanced Configuration
 
-GPT prompts and HTML compression can also be configured inside `ai` section of `codecept.conf` file:
+AI prompts and HTML compression can be configured inside `ai` section of `codecept.conf` file:
 
 ```js
 ai: {
-  // define how requests to AI are sent
-  request: (messages) => {
-    // ...
-  }
+  // configure AI model (required)
+  model: openai('gpt-4o-mini'),
+
   // redefine prompts
   prompts: {
     // {}
@@ -622,14 +361,52 @@ ai: {
 }
 ```
 
-Default prompts for healing steps or writing steps can be re-declared. Use function that accepts HTML as the first parameter and additional information as second and create a prompt from that information. Prompt should be an array of messages with `role` and `content` data set.
+### Customizing Prompts
+
+CodeceptJS uses three main prompts for AI features:
+
+- `healStep` - suggests fixes for failing tests
+
+To customize a prompt, generate it using:
+
+```bash
+npx codeceptjs generate:prompt <promptName>
+# or use alias
+npx codeceptjs gp <promptName>
+```
+
+For example, to customize the heal step prompt:
+
+```bash
+npx codeceptjs generate:prompt healStep
+```
+
+This creates `prompts/healStep.js` file in your project root:
+
+```js
+export default (html, { step, error, prevSteps }) => {
+  return [
+    {
+      role: 'user',
+      content: `As a test automation engineer I am testing web application using CodeceptJS.
+      I want to heal a test that fails. Here is the list of executed steps: ${prevSteps.map(s => s.toString()).join(', ')}
+      Propose how to adjust ${step.toCode()} step to fix the test.
+      Use locators in order of preference: semantic locator by text, CSS, XPath. Use codeblocks marked with \`\`\`
+      Here is the error message: ${error.message}
+      Here is HTML code of a page where the failure has happened: \n\n${html}`,
+    },
+  ]
+}
+```
+
+Modify this prompt to fit your needs. CodeceptJS will automatically load custom prompts from the `prompts/` directory when AI features are enabled.
+
+You can also override prompts programmatically in config:
 
 ```js
 ai: {
   prompts: {
-    writeStep: (html, input) => [{ role: 'user', content: 'As a test engineer...' }]
     healStep: (html, { step, error, prevSteps }) => [{ role: 'user', content: 'As a test engineer...' }]
-    generatePageObject: (html, extraPrompt = '', rootLocator = null) => [{ role: 'user', content: 'As a test engineer...' }]
   }
 }
 ```
@@ -665,8 +442,8 @@ It is recommended to try HTML processing on one of your web pages before launchi
 To do that open the common page of your application and using DevTools copy the outerHTML of `<html>` element. Don't use `Page Source` for that, as it may not include dynamically added HTML elements. Save this HTML into a file and create a NodeJS script:
 
 ```js
-const { removeNonInteractiveElements } = require('codeceptjs/lib/html')
-const fs = require('fs')
+import { removeNonInteractiveElements } from 'codeceptjs/lib/html'
+import fs from 'fs'
 
 const htmlOpts = {
   interactiveElements: ['a', 'input', 'button', 'select', 'textarea', 'label', 'option'],

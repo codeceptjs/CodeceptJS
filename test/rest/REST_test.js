@@ -1,14 +1,20 @@
-const path = require('path')
-const { expect } = require('expect')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
+import { expect } from 'expect'
 
-const TestHelper = require('../support/TestHelper')
-const REST = require('../../lib/helper/REST')
-const Container = require('../../lib/container')
-const Secret = require('../../lib/secret')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+import '../support/setup.js'
+import TestHelper from '../support/TestHelper.js'
+import REST from '../../lib/helper/REST.js'
+import Container from '../../lib/container.js'
+import Secret from '../../lib/secret.js'
 
 const api_url = TestHelper.jsonServerUrl()
-global.codeceptjs = require('../../lib')
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 let I
 const dbFile = path.join(__dirname, '/../data/rest/db.json')
@@ -133,13 +139,14 @@ describe('REST', () => {
   describe('JSONResponse integration', () => {
     let jsonResponse
 
-    beforeEach(() => {
-      Container.create({
+    beforeEach(async () => {
+      await Container.create({
         helpers: {
           REST: {},
           JSONResponse: {},
         },
       })
+      await Container.started()
       I = Container.helpers('REST')
       jsonResponse = Container.helpers('JSONResponse')
       jsonResponse._beforeSuite()
@@ -150,7 +157,8 @@ describe('REST', () => {
     })
 
     it('should be able to parse JSON responses', async () => {
-      await I.sendGetRequest('https://reqres.in/api/comments/1', { 'x-api-key': 'reqres-free-v1'})
+      const mockServerHost = process.env.MOCK_SERVER_HOST || 'localhost'
+      await I.sendGetRequest(`http://${mockServerHost}:3001/api/comments/1`, { 'x-api-key': 'reqres-free-v1' })
       await jsonResponse.seeResponseCodeIsSuccessful()
       await jsonResponse.seeResponseContainsKeys(['data', 'support'])
     })

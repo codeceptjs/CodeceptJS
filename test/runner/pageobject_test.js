@@ -1,8 +1,14 @@
-const path = require('path')
-const exec = require('child_process').exec
-const { expect } = require('expect')
-const figures = require('figures')
-const debug = require('debug')('codeceptjs:test')
+import * as chai from 'chai';
+chai.should();
+import path from 'path';
+import { exec } from 'child_process';
+import { expect } from 'expect';
+import debugFactory from 'debug';
+import figures from 'figures';
+const debug = debugFactory('codeceptjs:test');
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox/configs/pageObjects')
 const codecept_run = `${runner} run`
@@ -159,6 +165,56 @@ describe('CodeceptJS PageObject', () => {
       exec(`${config_run_config('../../../inject-fail-example')} --debug`, (err, stdout) => {
         expect(stdout).toContain('newdomain')
         expect(stdout).toContain('veni,vedi,vici')
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+  })
+
+  describe('PageObject Hooks', () => {
+    it('should run _before on first method call and _after after test', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectHooks$')} --debug`, (err, stdout) => {
+        expect(stdout).toContain('HookPage._before called')
+        expect(stdout).toContain('HookPage action')
+        expect(stdout).toContain('HookPage._after called')
+        expect(stdout).toContain('HookPage._afterSuite called')
+        const beforeIdx = stdout.indexOf('HookPage._before called')
+        const actionIdx = stdout.indexOf('HookPage action')
+        const afterIdx = stdout.indexOf('HookPage._after called')
+        expect(beforeIdx).toBeLessThan(actionIdx)
+        expect(actionIdx).toBeLessThan(afterIdx)
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+
+    it('should call _before only once for multiple method calls', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectHooksMultipleCalls')} --steps`, (err, stdout) => {
+        const lines = stdout.split('\n').filter(l => l.trim() === 'HookPage._before called')
+        expect(lines).toHaveLength(1)
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+
+    it('should not call _before/_after for unused page objects', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectNotUsed')} --debug`, (err, stdout) => {
+        expect(stdout).not.toContain('HookPage._before called')
+        expect(stdout).not.toContain('HookPage._after called')
+        expect(stdout).toContain('only I used')
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toBeFalsy()
+        done()
+      })
+    })
+
+    it('should not call _before/_after for page objects without hooks', done => {
+      exec(`${config_run_config('codecept.hooks.js', '@PageObjectNoHooksUsed')} --debug`, (err, stdout) => {
+        expect(stdout).not.toContain('_before called')
+        expect(stdout).toContain('NoHookPage action')
         expect(stdout).toContain('OK  | 1 passed')
         expect(err).toBeFalsy()
         done()

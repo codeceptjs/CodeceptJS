@@ -3,10 +3,14 @@ name: Typings tests
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
   pull_request:
     branches:
       - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -15,14 +19,14 @@ jobs:
       matrix:
         node-version: [20.x]
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm i --force
-      env:
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    - run: npm run def
-    - run: npm run dtslint
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i --force
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - run: npm run def
+      - run: npm run dtslint

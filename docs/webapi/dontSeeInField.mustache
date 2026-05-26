@@ -1,11 +1,16 @@
 Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeInField('email', 'user@user.com'); // field by name
 I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
+// within a context
+I.dontSeeInField('Name', 'old_value', '.form-container');
 ```
 
 @param {CodeceptJS.LocatorOrString} field located by label|name|CSS|XPath|strict locator.
 @param {CodeceptJS.StringOrSecret} value value to check.
+@param {?CodeceptJS.LocatorOrString} [context=null] (optional, `null` by default) element located by CSS | XPath | strict locator.
 @returns {void} automatically synchronized promise through #recorder

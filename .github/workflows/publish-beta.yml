@@ -1,0 +1,54 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm install
+      - run: npm install -g npm@latest
+
+      - name: Generate TypeScript definitions
+        run: npm run def
+
+      - name: Set package version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          npm version "$VERSION" --no-git-tag-version
+
+      - name: Publish to npm
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          if [ "${{ github.event.release.prerelease }}" = "true" ] || echo "$TAG" | grep -qE 'rc|beta'; then
+            echo "Publishing $TAG with 'beta' dist-tag"
+            npm publish --provenance --tag beta
+          else
+            echo "Publishing $TAG with 'latest' dist-tag"
+            npm publish --provenance
+          fi
+
+      - name: Trigger website deployment
+        run: |
+          curl -fsS -X POST \
+            -H "Authorization: Bearer ${{ secrets.GH_WEBSITE_TRIGGER_PAT }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/codeceptjs/website/dispatches \
+            -d '{"event_type":"codeceptjs-release"}'

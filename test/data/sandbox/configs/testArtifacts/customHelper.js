@@ -1,11 +1,11 @@
-// const Helper = require('../../lib/helper');
+import Helper from '../../../../../lib/helper.js'
 
 class CustomHelper extends Helper {
   shouldDoSomething(s) {}
 
   fail() {
-    throw new Error('Failed from helper');
+    throw new Error('Failed from helper')
   }
 }
 
-module.exports = CustomHelper;
+export default CustomHelper

@@ -32,16 +32,16 @@ Scenario('change config 5 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
 
 Scenario('make API call and check response @Playwright', ({ I }) => {
   I.amOnPage('/')
-  I.makeApiRequest('get', 'https://reqres.in/api/users?page=2', { headers: {'x-api-key': 'reqres-free-v1'}})
+  I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2', { headers: { 'x-api-key': 'reqres-free-v1' } })
   I.seeResponseCodeIsSuccessful()
 })
 
 Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
   I.amOnPage('/')
   I.seeInCurrentUrl('codecept.io')
-}).config(async () => {
-  await new Promise(r => {
-    setTimeout(r, 50)
-  })
-  return { url: 'https://codecept.io' }
+}).config({ url: 'https://codecept.io' })
+
+Scenario('simple page test @WebDriverIO @Puppeteer @Playwright', ({ I }) => {
+  I.amOnPage('https://example.com')
+  I.see('Example Domain')
 })

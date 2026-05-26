@@ -3,338 +3,146 @@ permalink: /hooks
 title: Extending CodeceptJS
 ---
 
-# Extending 
+# Extending CodeceptJS
 
-CodeceptJS provides API to run custom code before and after the test and inject custom listeners into the event system.
+CodeceptJS has four extension points. Pick the lightest one that does the job:
 
+| Use | To |
+| --- | --- |
+| [`bootstrap` / `teardown`](/bootstrap) | run setup or teardown code once, around the whole suite |
+| [Event listeners](#event-listeners) | react to test, suite, or step events without packaging anything |
+| [Plugins](#plugins) | bundle reusable behavior — listeners, recorder hooks, config — into a module |
+| [Custom helpers](/helpers) | add new `I.*` actions backed by a browser or an HTTP library |
 
-## Plugins
+Listeners and plugins use CodeceptJS internals — the `event` dispatcher, the `recorder` promise chain, the `container`, `output`. See [Architecture](/architecture) for what those are and how a test runs.
 
-Plugins allow to use CodeceptJS internal API to extend functionality. Use internal event dispatcher, container, output, promise recorder, to create your own reporters, test listeners, etc.
+## Event Listeners
 
-CodeceptJS includes [built-in plugins](/plugins/) which extend basic functionality and can be turned on and off on purpose. Taking them as [examples](https://github.com/codeceptjs/CodeceptJS/tree/master/lib/plugin) you can develop your custom plugins.
-
-A plugin is a basic JS module returning a function. Plugins can have individual configs which are passed into this function:
-
-```js
-const defaultConfig = {
-  someDefaultOption: true
-}
-
-module.exports = function(config) {
-  config = Object.assign(defaultConfig, config);
-  // do stuff
-}
-```
-
-Plugin can register event listeners or hook into promise chain with recorder. See [API reference](https://github.com/codeceptjs/CodeceptJS/tree/master/lib/helper).
-
-To enable your custom plugin in config add it to `plugins` section. Specify path to node module using `require`.
+Attach a listener to `event.dispatcher` to run code at any point in the [test lifecycle](/architecture#events). A listener can live in a [plugin](#plugins) or in your [`bootstrap`](/bootstrap) script.
 
 ```js
-"plugins": {
-  "myPlugin": {
-    "require": "./path/to/my/module",
-    "enabled": true
-  }
-}
-```
+import { event } from 'codeceptjs'
 
-* `require` - specifies relative path to a plugin file. Path is relative to config file.
-* `enabled` - to enable this plugin.
-
-If a plugin is disabled (`enabled` is not set or false) this plugin can be enabled from command line:
-
-```
-npx codeceptjs run --plugin myPlugin
-```
-
-Several plugins can be enabled as well:
-
-```
-npx codeceptjs run --plugin myPlugin,allure
-```
-
-### Example: Execute code for a specific group of tests
-
-If you need to execute some code before a group of tests, you can [mark these tests with a same tag](/advanced/#tags). Then to listen for tests where this tag is included (see [test object api](#test-object)).
-
-Let's say we need to populate database for a group of tests.
-
-```js
-// populate database for slow tests
-const event = require('codeceptjs').event;
-
-module.exports = function() {
-
-  event.dispatcher.on(event.test.before, function (test) {
-
-    if (test.tags.indexOf('@populate') >= 0) {
-      recorder.add('populate database', async () => {
-        // populate database for this test
-      })
-    }
-  });
-}
-```
-
-### Example: Check URL before running a test
-
-If you want to share bootstrap script or run multiple bootstraps, it's a good idea to wrap that script into a plugin.
-Plugin can also execute JS before tests but you need to use internal APIs to synchronize promises.
-
-```js
-const { recorder } = require('codeceptjs');
-
-module.exports = function(options) {
-
-  event.dispatcher.on(event.all.before, function () {
-    recorder.startUnlessRunning(); // start recording promises
-    recorder.add('do some async stuff', async () => {
-      // your code
-    });
-  });
-}
-```
-
-## API
-
-**Use local CodeceptJS installation to get access to `codeceptjs` module**
-
-CodeceptJS provides an API which can be loaded via `require('codeceptjs')` when CodeceptJS is installed locally.
-These internal objects are available:
-
-* [`codecept`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/codecept.js): test runner class
-* [`config`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/config.js): current codecept config
-* [`event`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/event.js): event listener
-* [`recorder`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/recorder.js): global promise chain
-* [`output`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/output.js): internal printer
-* [`container`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/container.js): dependency injection container for tests, includes current helpers and support objects
-* [`helper`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/helper.js): basic helper class
-* [`actor`](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/actor.js): basic actor (I) class
-
-[API reference](https://github.com/codeceptjs/CodeceptJS/tree/master/docs/api) is available on GitHub.
-Also please check the source code of corresponding modules.
-
-### Event Listeners
-
-CodeceptJS provides a module with [event dispatcher and set of predefined events](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/event.js).
-
-It can be required from codeceptjs package if it is installed locally.
-
-```js
-const event = require('codeceptjs').event;
-
-module.exports = function() {
-
-  event.dispatcher.on(event.test.before, function (test) {
-
-    console.log('--- I am before test --');
-
-  });
-}
-```
-
-Available events:
-
-* `event.test.before(test)` - *async* when `Before` hooks from helpers and from test is executed
-* `event.test.after(test)` - *async* after each test
-* `event.test.started(test)` - *sync* at the very beginning of a test. Passes a current test object.
-* `event.test.passed(test)` - *sync* when test passed
-* `event.test.failed(test, error)` - *sync* when test failed
-* `event.test.finished(test)` - *sync* when test finished
-* `event.suite.before(suite)` - *async* before a suite
-* `event.suite.after(suite)` - *async* after a suite
-* `event.step.before(step)` - *async* when the step is scheduled for execution
-* `event.step.after(step)` - *async* after a step
-* `event.step.started(step)` - *sync* when step starts.
-* `event.step.passed(step)` - *sync* when step passed.
-* `event.step.failed(step, err)` - *sync* when step failed.
-* `event.step.finished(step)` - *sync* when step finishes.
-* `event.step.comment(step)` - *sync* fired for comments like `I.say`.
-* `event.bddStep.before(bddStep)` - *async* when the gherkin step is scheduled for execution
-* `event.bddStep.after(bddStep)` - *async* after a gherkin step
-* `event.all.before` - before running tests
-* `event.all.after` - after running tests
-* `event.all.result` - when results are printed
-
-* *sync* - means that event is fired in the moment of action happens.
-* *async* - means that event is fired when an actions is scheduled. Use `recorder` to schedule your actions.
-
-For further reference look for [currently available listeners](https://github.com/codeceptjs/CodeceptJS/tree/master/lib/listener) using event system.
-
-#### Test Object
-
-Test events provide a test object with following fields:
-
-* `title` title of a test
-* `body` test function as a string
-* `opts` additional test options like retries, and others
-* `pending` true if test is scheduled for execution and false if a test has finished
-* `tags` array of tags for this test
-* `file` path to a file with a test.
-* `steps` array of executed steps (available only in `test.passed`, `test.failed`, `test.finished` event)
-* `skipInfo` additional test options when test skipped 
-* * `message` string with reason for skip
-* * `description` string with test body
-and others
-
-#### Step Object
-
-Step events provide step objects with following fields:
-
-* `name` name of a step, like 'see', 'click', and others
-* `actor` current actor, in most cases it `I`
-* `helper` current helper instance used to execute this step
-* `helperMethod` corresponding helper method, in most cases is the same as `name`
-* `status` status of a step (passed or failed)
-* `prefix` if a step is executed inside `within` block contain within text, like: 'Within .js-signup-form'.
-* `args` passed arguments
-
-### Recorder
-
-To inject asynchronous functions in a test or before/after a test you can subscribe to corresponding event and register a function inside a recorder object. [Recorder](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/recorder.js) represents a global promises chain.
-
-Provide a function description as a first parameter, function should return a promise:
-
-```js
-const event = require('codeceptjs').event;
-const recorder = require('codeceptjs').recorder;
-module.exports = function() {
-
-  event.dispatcher.on(event.test.before, function (test) {
-
-    const request = require('request');
-
-    recorder.add('create fixture data via API', function() {
-      return new Promise((doneFn, errFn) => {
-        request({
-          baseUrl: 'http://api.site.com/',
-          method: 'POST',
-          url: '/users',
-          json: { name: 'john', email: 'john@john.com' }
-        }), (err, httpResponse, body) => {
-          if (err) return errFn(err);
-          doneFn();
-        }
-      });
-    }
-  });
-}
-
-```
-
-Whenever you execute tests with `--verbose` option you will see registered events and promises executed by a recorder.
-
-
-### Output
-
-Output module provides 4 verbosity levels. Depending on the mode you can have different information printed using corresponding functions.
-
-* `default`: prints basic information using `output.print`
-* `steps`: toggled by `--steps` option, prints step execution
-* `debug`: toggled by `--debug` option, prints steps, and debug information with `output.debug`
-* `verbose`: toggled by `--verbose` prints debug information and internal logs with `output.log`
-
-It is recommended to avoid `console.log` and use output.* methods for printing.
-
-```js
-const output = require('codeceptjs').output;
-
-output.print('This is basic information');
-output.debug('This is debug information');
-output.log('This is verbose logging information');
-```
-
-### Container
-
-CodeceptJS has a dependency injection container with Helpers and Support objects.
-They can be retrieved from the container:
-
-```js
-let container = require('codeceptjs').container;
-
-// get object with all helpers
-let helpers = container.helpers();
-
-// get helper by name
-let WebDriver = container.helpers('WebDriver');
-
-// get support objects
-let support = container.support();
-
-// get support object by name
-let UserPage = container.support('UserPage');
-
-// get all registered plugins
-let plugins = container.plugins();
-```
-
-New objects can also be added to container in runtime:
-
-```js
-let container = require('codeceptjs').container;
-
-container.append({
-  helpers: { // add helper
-    MyHelper: new MyHelper({ config1: 'val1' });
-  },
-  support: { // add page object
-    UserPage: require('./pages/user');
-  }
+event.dispatcher.on(event.test.before, test => {
+  console.log(`starting ${test.title}`)
 })
 ```
 
-Container also contains current Mocha instance:
+[Sync events](/architecture#events) run inline. For async work, queue it on the recorder so it runs in order with the test's steps:
 
 ```js
-let mocha = container.mocha();
+import { event, recorder } from 'codeceptjs'
+
+event.dispatcher.on(event.test.before, () => {
+  recorder.add('seed fixture data', async () => {
+    await api.post('/users', { name: 'john', email: 'john@example.com' })
+  })
+})
 ```
 
-### Config
-
-CodeceptJS config can be accessed from `require('codeceptjs').config.get()`:
+A listener often needs to know *where* in the run it is — which test is active, or whether this is a dry run. Read that from [`store`](/store) instead of tracking it yourself:
 
 ```js
+import { event, store } from 'codeceptjs'
 
-let config = require('codeceptjs').config.get();
+event.dispatcher.on(event.step.before, () => {
+  if (store.dryRun) return            // skip side effects on a dry run
+})
+```
 
-if (config.myKey == 'value') {
-  // run hook
+See [Architecture › Events](/architecture#events) for the full event list and the test and step object fields, and the [Store reference](/store) for every state field.
+
+## Plugins
+
+A plugin packages listeners, recorder hooks, container changes, and config into one module. CodeceptJS ships [built-in plugins](/plugins) — [their source](https://github.com/codeceptjs/CodeceptJS/tree/master/lib/plugin) doubles as example code.
+
+A plugin is a module that exports a function. CodeceptJS calls it once at startup with the plugin's config:
+
+```js
+import { event } from 'codeceptjs'
+
+const defaultConfig = {
+  someOption: true,
+}
+
+export default function (config) {
+  config = { ...defaultConfig, ...config }
+
+  event.dispatcher.on(event.test.before, test => {
+    // use config, register listeners, hook into the recorder
+  })
 }
 ```
 
+### Enabling a plugin
 
-## Custom Runner
-
-> 📺 [Watch this](https://www.youtube.com/watch?v=3eZtVL0Ad0A) material on YouTube
-
-CodeceptJS can be imported and used in custom runners.
-To initialize Codecept you need to create Config and Container objects.
+Add it to the `plugins` section of the config and point `require` at the module:
 
 ```js
-const { codecept: Codecept } = require('codeceptjs');
-
-const config = { helpers: { WebDriver: { browser: 'chrome', url: 'http://localhost' } } };
-const opts = { steps: true };
-
-const codecept = new Codecept(config, options);
-codecept.init(testRoot);
-
-// run tests
-try {
-  await codecept.bootstrap();
-  codecept.loadTests('*_test.js');
-  await codecept.run(test);
-} catch (err) {
-  printError(err);
-  process.exitCode = 1;
-} finally {
-  await codecept.teardown();
+plugins: {
+  myPlugin: {
+    require: './path/to/plugin',   // relative to the config file
+    enabled: true,
+  }
 }
-
-
 ```
 
-In this way Codecept runner class can be extended.
+- `require` — path to the plugin file, relative to the config file.
+- `enabled` — set `true` to load it.
+- any other key is passed straight to the plugin function as config.
 
+A disabled or unlisted plugin can be turned on for a single run from the command line:
+
+```
+npx codeceptjs run --plugin myPlugin
+npx codeceptjs run --plugin myPlugin,allure
+```
+
+### Example: run code for a tagged group of tests
+
+[Tag](/test-structure#tags) the tests you want to target, then check the tag on `event.test.before`:
+
+```js
+import { event, recorder } from 'codeceptjs'
+
+export default function () {
+  event.dispatcher.on(event.test.before, test => {
+    if (!test.tags.includes('@populate')) return
+
+    recorder.add('populate database', async () => {
+      // seed data for this test
+    })
+  })
+}
+```
+
+### Example: run async setup before all tests
+
+`event.all.before` can fire before the recorder chain is running, so start it first:
+
+```js
+import { event, recorder } from 'codeceptjs'
+
+export default function () {
+  event.dispatcher.on(event.all.before, () => {
+    recorder.startUnlessRunning()
+    recorder.add('warm up cache', async () => {
+      // your async setup
+    })
+  })
+}
+```
+
+Wrapping bootstrap logic in a plugin like this lets you share it across projects and combine several setup scripts.
+
+## Custom Helpers
+
+To add new `I.*` actions — a higher-level step, a wrapper around a browser SDK, an assertion against your backend — write a helper class. Helpers can also be published as npm packages. See [Custom Helpers](/helpers).
+
+## Bootstrap & Teardown
+
+For setup and teardown that needs no packaging — start a server, create a database — use the `bootstrap` and `teardown` config hooks. In [parallel runs](/parallel), `bootstrapAll` / `teardownAll` run once in the parent process. See [Bootstrap & Teardown](/bootstrap).
+
+---
+
+**See also:** [Architecture](/architecture) · [Plugins reference](/plugins) · [Custom Helpers](/helpers) · [Bootstrap & Teardown](/bootstrap)

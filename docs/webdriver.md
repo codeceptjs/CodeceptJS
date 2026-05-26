@@ -9,56 +9,11 @@ How does your client, manager, or tester, or any other non-technical person, kno
 
 End-to-End tests can cover standard but complex scenarios from a user's perspective. With e2e tests you can be confident that users, following all defined scenarios, won't get errors. We check **functionality of application and a user interface** (UI) as well.
 
-## What is Selenium WebDriver
+We use [webdriverio](https://webdriver.io) library to run tests over WebDriver. To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
 
-The standard and proved way to run browser test automation over years is Selenium WebDriver. Over years this technology was standardized and works over all popular browsers and operating systems. There are cloud services like SauceLabs or BrowserStack which allow executing such browsers in the cloud. The superset of WebDriver protocol is also used to test [native and hybrid mobile applications](/mobile).
+🛩️ No Selenium Server, ChromeDriver, GeckoDriver, or driver services to install or start. Since WebdriverIO 9, driver management is fully automatic — WebdriverIO downloads and starts the matching driver for you. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
 
-Let's clarify the terms:
-
-* Selenium - is a toolset for browser test automation
-* WebDriver - a standard protocol for communicating between test framework and browsers
-* JSON Wire - an older version of such protocol
-
-We use [webdriverio](https://webdriver.io) library to run tests over WebDriver.
-
-To proceed you need to have [CodeceptJS installed](/quickstart#using-selenium-webdriver) and `WebDriver` helper selected.
-
-Selenium WebDriver may be complicated from start, as it requires following tools to be installed and started.
-
-1. Selenium Server - to execute and send commands to browser
-2. ChromeDriver or GeckoDriver - to allow browsers to run in automated mode.
-
-> Those tools can be easily installed via NPM. Use [selenium-standalone](https://www.npmjs.com/package/selenium-standalone) to automatically install them.
-
-You can also use `@wdio/selenium-standalone-service` package, to install and start Selenium Server for your tests automatically.
-
-```
-npm i @wdio/selenium-standalone-service --save-dev
-```
-
-Enable it in config inside plugins section:
-
-```js
-exports.config = {
-  // ...
-  // inside condecept.conf.js
-  plugins: {
-    wdio: {
-      enabled: true,
-      services: ['selenium-standalone']
-    }
-  }
-}
-```
-
-> ⚠ It is not recommended to use wdio plugin & selenium-standalone when running tests in parallel. Consider **switching to Selenoid** if you need parallel run or using cloud services.
-
-🛩️ With the release of WebdriverIO version v8.14.0, and onwards, all driver management hassles are now a thing of the past 🙌. Read more [here](https://webdriver.io/blog/2023/07/31/driver-management/).
-One of the significant advantages of this update is that you can now get rid of any driver services you previously had to manage, such as
-`wdio-chromedriver-service`, `wdio-geckodriver-service`, `wdio-edgedriver-service`, `wdio-safaridriver-service`, and even `@wdio/selenium-standalone-service`.
-
-For those who require custom driver options, fear not; WebDriver Helper allows you to pass in driver options through custom WebDriver configuration.
-If you have a custom grid, use a cloud service, or prefer to run your own driver, there's no need to worry since WebDriver Helper will only start a driver when there are no other connection information settings like hostname or port specified.
+WebDriver Helper only starts a driver automatically when no connection information (like `host` or `port`) is specified. If you have a custom grid, use a cloud service, or prefer to run your own driver, set those connection options and that endpoint is used instead.
 
 Example:
 
@@ -138,37 +93,24 @@ keepCookies: true,
 
 > ▶ More config options available on [WebDriver helper reference](/helpers/WebDriver#configuration)
 
-### ChromeDriver without Selenium
-
-If you want to run tests using raw ChromeDriver (which also supports WebDriver protocol) avoiding Selenium Server, you should provide following configuration:
-
-```js
-port: 9515,
-browser: 'chrome',
-path: '/',
-```
-
-> If you face issues connecting to WebDriver, please check that corresponding server is running on a specified port. If host is other than `localhost` or port is other than `4444`, update the configuration.
-
-### Selenium in Docker (Selenoid)
-
-Browsers can be executed in Docker containers. This is useful when testing on Continous Integration server.
-We recommend using [Selenoid](https://aerokube.com/selenoid/) to run browsers in container.
-
-CodeceptJS has [Selenoid plugin](/plugins#selenoid) which can automagically load browser container setup.
-
-
 ### Headless Mode
 
-It is recommended to use `@codeceptjs/configure` package to easily toggle headless mode for WebDriver:
+The bundled `@codeceptjs/configure` toggles headless mode for WebDriver — for chrome/firefox it injects `--headless` into the matching capability args automatically:
 
 ```js
 // inside codecept.conf.js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+import { setHeadlessWhen, setWindowSize } from '@codeceptjs/configure'
 
-setHeadlessWhen(process.env.HEADLESS); // enables headless mode when HEADLESS environment variable exists
+setHeadlessWhen(process.env.HEADLESS) // enables headless mode when HEADLESS env var is set
+setWindowSize(1280, 720)
 ```
-This requires `@codeceptjs/configure` package to be installed.
+
+For one-off runs without editing config, the [`browser` plugin](/commands#browser-control) does the same from the CLI:
+
+```sh
+npx codeceptjs run -p browser:hide                      # force headless
+npx codeceptjs run -p browser:hide:windowSize=1280x720  # combined
+```
 
 Alternatively, you can enable headless mode manually via desired capabilities.
 
@@ -196,9 +138,7 @@ desiredCapabilities: {
 
 ### Cloud Providers
 
-WebDriver protocol works over HTTP, so you need to have a Selenium Server to be running or any other service that will launch a browser for you. That's why you may need to specify `host`, `port`, `protocol`, and `path` parameters.
-
-By default, those parameters are set to connect to local Selenium Server, but they should be changed if you want to run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers). You may also need `user` and `key` parameters to authenticate on cloud service.
+By default, WebdriverIO starts a local driver automatically, so no connection parameters are needed. To run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers) instead, specify `host`, `port`, `protocol`, and `path` parameters pointing to the service. You may also need `user` and `key` parameters to authenticate on the cloud service.
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
@@ -345,14 +285,14 @@ Scenario('create todo item', ({ I }) => {
 
 > [▶ Working example of CodeceptJS WebDriver tests](https://github.com/DavertMik/codeceptjs-webdriver-example) for TodoMVC application.
 
-WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as non-trivial [React locators](/react) and [Shadow DOM](/shadow).
+WebDriver helper supports standard [CSS/XPath and text locators](/locators) as well as [Shadow DOM](/shadow) and [ARIA locators](/locators#aria-locators).
 
 ### Grabbers
 
 If you need to get element's value inside a test you can use `grab*` methods. They should be used with `await` operator inside `async` function:
 
 ```js
-const assert = require('assert');
+import assert from 'assert';
 Scenario('get value of current tasks', async ({ I }) => {
   I.fillField('.todo', 'my first item');
   I.pressKey('Enter')
@@ -414,7 +354,7 @@ By default, they will wait for 1 second. This number can be changed in WebDriver
 
 ```js
 // inside codecept.conf.js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       // WebDriver config goes here
@@ -434,7 +374,7 @@ Add `smartWait: 5000` to wait for additional 5s.
 
 ```js
 // inside codecept.conf.js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: {
       // WebDriver config goes here
@@ -474,7 +414,7 @@ If it's hard to define what to wait, it is recommended to use [retries](/basics/
 
 ## Configuring CI
 
-To develop tests it's fine to use local Selenium Server and window mode. Setting up WebDriver on remote CI (Continous Integration) server is different. If there is no desktop and no window mode on CI.
+Locally, WebdriverIO starts the driver for you and tests run in window mode. On a remote CI (Continuous Integration) server there is usually no desktop, so window mode is not available.
 
 There are following options available:
 
@@ -509,7 +449,7 @@ With `autoLogin` plugin you can save cookies into a file and reuse same session 
 CodeceptJS allows to use several browser windows inside a test. Sometimes we are testing the functionality of websites that we cannot control, such as a closed-source managed package, and there are popups that either remain open for configuring data on the screen, or close as a result of clicking a window. We can use these functions in order to gain more control over which page is being tested with Codecept at any given time. For example:
 
 ```js
-const assert = require('assert');
+import assert from 'assert';
 
 Scenario('should open main page of configured site, open a popup, switch to main page, then switch to popup, close popup, and go back to main page', async ({ I }) => {
     I.amOnPage('/');
@@ -637,7 +577,7 @@ npx codeceptjs gh
 Name a new helper "Web". Now each method of a created class can be added to I object. Be sure to enable this helper in config:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
     WebDriver: { /* WebDriver config goes here */ },
     WebHelper: {

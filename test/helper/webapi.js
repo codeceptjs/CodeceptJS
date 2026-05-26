@@ -1,33 +1,40 @@
-const chai = require('chai')
-const store = require('../../lib/store')
+import * as chai from 'chai'
+import storeModule from '../../lib/store.js'
+const store = storeModule.default || storeModule
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-const formContents = require('../../lib/utils').test.submittedData(dataFile)
-const fileExists = require('../../lib/utils').fileExists
-const secret = require('../../lib/secret').secret
+import { test as testUtils, fileExists } from '../../lib/utils.js'
+const formContents = testUtils.submittedData(dataFile)
+import { secret } from '../../lib/secret.js'
 
-const Locator = require('../../lib/locator')
-const customLocators = require('../../lib/plugin/customLocator')
+import Locator from '../../lib/locator.js'
+import customLocators from '../../lib/plugin/customLocator.js'
 
 let originalLocators
 let I
 let data
 let siteUrl
 
-module.exports.init = function (testData) {
+export function init(testData) {
   data = testData
 }
 
-module.exports.tests = function () {
+export function tests() {
   const isHelper = helperName => I.constructor.name === helperName
 
   beforeEach(() => {
     I = data.I
     siteUrl = data.siteUrl
-    if (fileExists(dataFile)) require('fs').unlinkSync(dataFile)
+    if (fileExists(dataFile)) fs.unlinkSync(dataFile)
   })
 
   describe('#saveElementScreenshot', () => {
@@ -68,6 +75,78 @@ module.exports.tests = function () {
       const url = await I.grabCurrentUrl()
       assert.equal(url, `${siteUrl}/info`)
     })
+
+    it('should check for equality with query strings', async () => {
+      await I.amOnPage('/info?user=test')
+      // Query strings matter for exact equality
+      await I.seeCurrentUrlEquals('/info?user=test')
+      await I.dontSeeCurrentUrlEquals('/info')
+      // But substring check works
+      await I.seeInCurrentUrl('/info')
+      await I.seeInCurrentUrl('user=test')
+    })
+
+    it('should handle root path with query strings', async () => {
+      await I.amOnPage('/?user=ok')
+      // Query strings matter - exact equality requires query string
+      await I.seeCurrentUrlEquals('/?user=ok')
+      await I.dontSeeCurrentUrlEquals('/')
+      // But substring check works for path fragment
+      await I.seeInCurrentUrl('/')
+    })
+
+    it('should check path equality ignoring query strings', async () => {
+      await I.amOnPage('/info?user=test')
+      // Path equality ignores query strings
+      await I.seeCurrentPathEquals('/info')
+      await I.dontSeeCurrentPathEquals('/form')
+      await I.dontSeeCurrentPathEquals('/info?user=test')
+    })
+
+    it('should check root path equality ignoring query strings', async () => {
+      await I.amOnPage('/?user=ok')
+      await I.seeCurrentPathEquals('/')
+      await I.dontSeeCurrentPathEquals('/info')
+    })
+
+    it('should check path equality ignoring hash fragments', async () => {
+      await I.amOnPage('/info#section')
+      await I.seeCurrentPathEquals('/info')
+      await I.dontSeeCurrentPathEquals('/info#section')
+    })
+
+    it('should normalize trailing slashes in path comparison', async () => {
+      await I.amOnPage('/info/')
+      await I.seeCurrentPathEquals('/info')
+      await I.seeCurrentPathEquals('/info/')
+
+      await I.amOnPage('/form/field/')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form/field/')
+    })
+
+    it('should normalize multiple consecutive slashes in path', async () => {
+      await I.amOnPage('/form//field')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form//field')
+    })
+
+    it('should handle root path correctly', async () => {
+      await I.amOnPage('/')
+      await I.seeCurrentPathEquals('/')
+      await I.seeCurrentPathEquals('')
+      await I.dontSeeCurrentPathEquals('/info')
+    })
+
+    it('should normalize both expected and actual paths', async () => {
+      await I.amOnPage('/form/field/')
+      await I.seeCurrentPathEquals('/form/field/')
+      await I.seeCurrentPathEquals('/form/field')
+
+      await I.amOnPage('/form//field//')
+      await I.seeCurrentPathEquals('/form/field')
+      await I.seeCurrentPathEquals('/form/field/')
+    })
   })
 
   describe('#waitInUrl, #waitUrlEquals', () => {
@@ -77,7 +156,7 @@ module.exports.tests = function () {
         await I.waitInUrl('/info')
         await I.waitInUrl('/info2', 0.1)
       } catch (e) {
-        assert.include(e.message, `expected url to include /info2, but found ${siteUrl}/info`)
+        assert.include(e.message, `expected url to include ${siteUrl}/info2, but found ${siteUrl}/info`)
       }
     })
 
@@ -93,6 +172,28 @@ module.exports.tests = function () {
     })
   })
 
+  describe('#waitCurrentPathEquals', () => {
+    it('should wait for path to match (ignoring query strings)', async () => {
+      await I.amOnPage('/info')
+      await I.waitCurrentPathEquals('/info')
+    })
+
+    it('should wait timeout with proper error message', async () => {
+      try {
+        await I.amOnPage('/info')
+        await I.waitCurrentPathEquals('/nonexistent', 0.1)
+      } catch (e) {
+        assert.include(e.message, 'expected path to be /nonexistent')
+      }
+    })
+
+    it('should normalize paths when comparing', async () => {
+      await I.amOnPage('/form/field/')
+      await I.waitCurrentPathEquals('/form/field')
+      await I.waitCurrentPathEquals('/form/field/')
+    })
+  })
+
   describe('see text : #see', () => {
     it('should check text on site', async () => {
       await I.amOnPage('/')
@@ -102,7 +203,6 @@ module.exports.tests = function () {
     })
 
     it('should check text on site with ignoreCase option', async () => {
-      if (isHelper('TestCafe')) return // It won't be implemented
       await I.amOnPage('/')
       await I.see('Welcome')
       store.currentStep = { opts: { ignoreCase: true } }
@@ -129,7 +229,7 @@ module.exports.tests = function () {
     })
 
     it('should verify text with &nbsp', async () => {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) return
+      if (isHelper('WebDriver')) return
       await I.amOnPage('/')
       await I.see('With special space chars')
     })
@@ -281,10 +381,6 @@ module.exports.tests = function () {
   })
 
   describe('#forceClick', () => {
-    beforeEach(function () {
-      if (isHelper('TestCafe')) this.skip()
-    })
-
     it('should forceClick by inner text', async () => {
       await I.amOnPage('/')
       await I.forceClick('More info')
@@ -316,11 +412,11 @@ module.exports.tests = function () {
 
   // Could not get double click to work
   describe('#doubleClick', () => {
-    it('it should doubleClick', async () => {
+    it('it should doubleClick', async function () {
       await I.amOnPage('/form/doubleclick')
-      await I.dontSee('Done')
+      await I.dontSee('Done!')
       await I.doubleClick('#block')
-      await I.see('Done')
+      await I.see('Done!')
     })
   })
 
@@ -345,6 +441,28 @@ module.exports.tests = function () {
       await I.dontSee('right clicked')
       await I.rightClick('Lorem Ipsum', '.context')
       await I.see('right clicked')
+    })
+  })
+
+  describe('#clickXY', () => {
+    it('should click at global coordinates', async () => {
+      await I.amOnPage('/form/click_coordinates')
+      await I.dontSee('Global click at:')
+      await I.clickXY(100, 50)
+      await I.see('Global click at: X=100, Y=50')
+    })
+
+    it('should click at coordinates relative to element', async () => {
+      await I.amOnPage('/form/click_coordinates')
+      await I.dontSee('Clicked at:')
+      await I.clickXY('#clickArea', 50, 30)
+      await I.see('Clicked at: X=50, Y=30')
+    })
+
+    it('should click at different relative coordinates', async () => {
+      await I.amOnPage('/form/click_coordinates')
+      await I.clickXY('#clickArea', 100, 75)
+      await I.see('Clicked at: X=100, Y=75')
     })
   })
 
@@ -380,13 +498,7 @@ module.exports.tests = function () {
       assert.equal(formContents('terms'), 'agree')
     })
 
-    // TODO Having problems with functional style selectors in testcafe
-    // cannot do Selector(css).find(elementByXPath(xpath))
-    // testcafe always says "xpath is not defined"
-    // const el = Selector(context).find(elementByXPath(Locator.checkable.byText(xpathLocator.literal(field))).with({ boundTestRun: this.t })).with({ boundTestRun: this.t });
-    it.skip('should check option by context', async () => {
-      if (isHelper('TestCafe')) this.skip()
-
+    it('should check option by context', async () => {
       await I.amOnPage('/form/example1')
       await I.checkOption('Remember me next time', '.rememberMe')
       await I.click('Login')
@@ -438,10 +550,7 @@ module.exports.tests = function () {
       assert.equal(formContents('select'), 'option2')
     })
 
-    // Could not get multiselect to work with testcafe
-    it('should select multiple options', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
+    it('should select multiple options', async () => {
       await I.amOnPage('/form/select_multiple')
       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex'])
       await I.click('Submit')
@@ -453,6 +562,140 @@ module.exports.tests = function () {
       await I.selectOption('Select your age', '21-60')
       await I.click('Submit')
       assert.equal(formContents('age'), 'adult')
+    })
+
+    describe('custom combobox/listbox', () => {
+      it('should select from custom combobox by fuzzy label', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Country', 'Porto')
+        await I.see('country: pt', '#result')
+      })
+
+      it('should select from multiple custom comboboxes', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Country', 'New York')
+        await I.selectOption('City', 'Madrid')
+        await I.see('country: us', '#result')
+        await I.see('city: madrid', '#result')
+      })
+
+      it('should select from standalone listbox', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Favorite Color', 'Blue')
+        await I.see('color: blue', '#result')
+      })
+
+      it('should select from combobox using strict css locator', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption({ css: '#country-trigger' }, 'Paris')
+        await I.see('country: fr', '#result')
+      })
+
+      it('should select from listbox using strict css locator', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption({ css: '#color-listbox' }, 'Green')
+        await I.see('color: green', '#result')
+      })
+
+      it('should select multiple options from multiselect listbox', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption('Tags', ['Important', 'Urgent'])
+        await I.see('tags: important,urgent', '#result')
+      })
+
+      it('should select multiple options using strict css locator', async () => {
+        await I.amOnPage('/form/custom_select')
+        await I.selectOption({ css: '#tags-listbox' }, ['Review', 'Later'])
+        await I.see('tags: review,later', '#result')
+      })
+    })
+  })
+
+  describe('context parameter', () => {
+    it('should see element within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.seeElement('.unique-element', '#area2')
+      await I.dontSeeElement('.unique-element', '#area1')
+    })
+
+    it('should fill field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.fillField('Name', 'davert', '#area2')
+      const val = await I.grabValueFrom('#name2')
+      assert.equal(val, 'davert')
+      await I.seeInField('#name1', '')
+    })
+
+    it('should select option within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.selectOption('select', '21-60', '#area2')
+      const val = await I.grabValueFrom('#age2')
+      assert.equal(val, 'adult')
+      const val1 = await I.grabValueFrom('#age1')
+      assert.equal(val1, 'child')
+    })
+
+    it('should append field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.appendField('Name', '_appended', '#area2')
+      const val = await I.grabValueFrom('#name2')
+      assert.equal(val, 'old2_appended')
+      const val1 = await I.grabValueFrom('#name1')
+      assert.equal(val1, 'old1')
+    })
+
+    it('should clear field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.clearField('Name', '#area2')
+      await I.seeInField('#name2', '')
+      await I.seeInField('#name1', 'old1')
+    })
+
+    it('should attach file within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.attachFile('Avatar', 'app/avatar.jpg', '#area2')
+      const val2 = await I.executeScript(() => document.getElementById('file2').files.length)
+      assert.equal(val2, 1, 'file2 should have a file attached')
+      const val1 = await I.executeScript(() => document.getElementById('file1').files.length)
+      assert.equal(val1, 0, 'file1 should have no files')
+    })
+
+    it('should see in field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.seeInField('Name', 'old2', '#area2')
+      await I.seeInField('Name', 'old1', '#area1')
+    })
+
+    it('should not see in field within context', async () => {
+      await I.amOnPage('/form/context')
+      await I.dontSeeInField('Name', 'old1', '#area2')
+      await I.dontSeeInField('Name', 'old2', '#area1')
+    })
+  })
+
+  describe('#shadow DOM', () => {
+    it('should click button inside shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click({ shadow: ['my-button', 'button'] })
+      await I.see('my-button > button', '#clicked-element')
+    })
+
+    it('should click button in nested shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click({ shadow: ['my-app', 'my-form', 'button'] })
+      await I.see('my-app > my-form > button', '#clicked-element')
+    })
+
+    it('should fill field inside nested shadow DOM', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.fillField({ shadow: ['my-app', 'my-form', 'input'] }, 'Shadow Test')
+      await I.see('Shadow Test', '#input-value')
+    })
+
+    it('should work with shadow locator as JSON string', async () => {
+      await I.amOnPage('/form/shadow_dom')
+      await I.click('{"shadow": ["my-button", "button"]}')
+      await I.see('my-button > button', '#clicked-element')
     })
   })
 
@@ -472,9 +715,6 @@ module.exports.tests = function () {
     })
 
     it('should return value from sync script in iframe', async function () {
-      // TODO Not yet implemented
-      if (isHelper('TestCafe')) this.skip() // TODO Not yet implemented
-
       await I.amOnPage('/iframe')
       await I.switchTo({ css: 'iframe' })
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText)
@@ -482,7 +722,6 @@ module.exports.tests = function () {
     })
 
     it('should execute async script', async function () {
-      if (isHelper('TestCafe')) this.skip() // TODO Not yet implemented
       if (isHelper('Playwright')) return // It won't be implemented
 
       await I.amOnPage('/')
@@ -531,15 +770,6 @@ module.exports.tests = function () {
       assert.equal(formContents('name'), 'Nothing special')
     })
 
-    it('should fill field by name', async () => {
-      await I.amOnPage('/form/example1')
-      await I.fillField('LoginForm[username]', 'davert')
-      await I.fillField('LoginForm[password]', '123456')
-      await I.click('Login')
-      assert.equal(formContents('LoginForm').username, 'davert')
-      assert.equal(formContents('LoginForm').password, '123456')
-    })
-
     it('should fill textarea by css', async () => {
       await I.amOnPage('/form/textarea')
       await I.fillField('textarea', 'Nothing special')
@@ -578,6 +808,15 @@ module.exports.tests = function () {
       assert.equal(formContents('name'), 'OLD_VALUE_AND_NEW')
     })
 
+    it('should fill field by name', async () => {
+      await I.amOnPage('/form/example1')
+      await I.fillField('LoginForm[username]', 'davert')
+      await I.fillField('LoginForm[password]', '123456')
+      await I.click('Login')
+      assert.equal(formContents('LoginForm').username, 'davert')
+      assert.equal(formContents('LoginForm').password, '123456')
+    })
+
     it.skip('should not fill invisible fields', async () => {
       if (isHelper('Playwright')) return // It won't be implemented
       await I.amOnPage('/form/field')
@@ -586,6 +825,127 @@ module.exports.tests = function () {
       } catch (e) {
         await assert.equal(e.message, 'Error: Field "email" was not found by text|CSS|XPath')
       }
+    })
+  })
+
+  describe('#fillField - rich text editors', function () {
+    this.timeout(60000)
+
+    const longContent = fs.readFileSync(path.join(__dirname, '../data/richtext-long.txt'), 'utf8').trim()
+
+    const editors = [
+      { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor' },
+      { name: 'Quill',          page: 'quill',          selector: '#editor' },
+      { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor' },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor' },
+      { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor' },
+      { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
+      { name: 'Monaco',         page: 'monaco',         selector: '#editor' },
+      { name: 'ACE',            page: 'ace',            selector: '#editor' },
+      { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor' },
+      { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor' },
+      { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor' },
+    ]
+
+    async function open(page, initial) {
+      const q = initial != null ? `?initial=${encodeURIComponent(initial)}` : ''
+      await I.amOnPage(`/form/richtext/${page}${q}`)
+      await I.waitForFunction(() => window.__editorReady === true, [], 30)
+    }
+
+    async function submitAndGrab() {
+      await I.click('#submit')
+      await I.waitForElement('#result', 15)
+      return I.grabTextFrom('#result')
+    }
+
+    for (const ed of editors) {
+      describe(ed.name, () => {
+        it('submits filled value', async () => {
+          await open(ed.page)
+          await I.fillField(ed.selector, 'Hello rich text world')
+          expect(await submitAndGrab()).to.include('Hello rich text world')
+        })
+
+        it('rewrites pre-populated content', async () => {
+          await open(ed.page, 'PREVIOUSLY ENTERED DATA')
+          await I.fillField(ed.selector, 'fresh replacement text')
+          const submitted = await submitAndGrab()
+          expect(submitted).to.include('fresh replacement text')
+          expect(submitted).to.not.include('PREVIOUSLY ENTERED DATA')
+        })
+
+        it('preserves special characters', async () => {
+          await open(ed.page)
+          await I.fillField(ed.selector, 'Test: "quotes", & ampersand, 100% done!')
+          const submitted = await submitAndGrab()
+          expect(submitted).to.include('"quotes"')
+          expect(submitted).to.include('& ampersand')
+          expect(submitted).to.include('100%')
+        })
+
+        it('fills large multi-paragraph content', async () => {
+          await open(ed.page)
+          await I.fillField(ed.selector, longContent)
+          const submitted = await submitAndGrab()
+          expect(submitted).to.include('Opening paragraph')
+          expect(submitted).to.include('Middle paragraph')
+          expect(submitted).to.include('Closing paragraph')
+        })
+      })
+    }
+
+    describe('rich editor with sibling focused input — no keystroke leak', function () {
+      async function openSiblingPage(page, initial) {
+        const q = initial != null ? `?initial=${encodeURIComponent(initial)}` : ''
+        await I.amOnPage(`/form/richtext/${page}${q}`)
+        await I.waitForFunction(() => window.__editorReady === true, [], 30)
+      }
+
+      const siblingCases = [
+        { name: 'iframe editor (Monaco)',              page: 'monaco-with-sibling',      selector: 'iframe',       path: 'IFRAME' },
+        { name: 'hidden-textarea editor (CodeMirror)', page: 'codemirror5-with-sibling', selector: '#editor',      path: 'HIDDEN_TEXTAREA' },
+        { name: 'contenteditable editor (CKEditor 5)', page: 'ckeditor5-with-sibling',   selector: '#editor',      path: 'CONTENTEDITABLE' },
+      ]
+
+      async function outerTitleValue() {
+        return I.executeScript(() => document.getElementById('outer-title').value)
+      }
+
+      for (const tc of siblingCases) {
+        describe(tc.name, () => {
+          it(`fillField via ${tc.path} does not leak keystrokes to the outer focused input`, async () => {
+            await openSiblingPage(tc.page)
+            await I.fillField(tc.selector, 'Hello rich text world')
+            expect(await outerTitleValue()).to.equal('')
+            await I.click('#submit')
+            await I.waitForElement('#result', 15)
+            expect(await I.grabTextFrom('#result')).to.include('Hello rich text world')
+          })
+
+          it(`fillField via ${tc.path} clears pre-populated content without touching the outer input`, async () => {
+            await openSiblingPage(tc.page, 'PREVIOUSLY ENTERED DATA')
+            await I.fillField(tc.selector, 'fresh replacement text')
+            expect(await outerTitleValue()).to.equal('')
+            await I.click('#submit')
+            await I.waitForElement('#result', 15)
+            const submitted = await I.grabTextFrom('#result')
+            expect(submitted).to.include('fresh replacement text')
+            expect(submitted).to.not.include('PREVIOUSLY ENTERED DATA')
+          })
+        })
+      }
+
+      it('does not leak keystrokes to outer input when locator points at a hidden backing element', async () => {
+        await openSiblingPage('codemirror5-with-sibling')
+        try {
+          await I.fillField('#editor-inner', 'should-not-leak')
+        } catch (e) {
+          // Throwing is fine — the safety invariant is that the outer input never receives keystrokes.
+        }
+        expect(await outerTitleValue()).to.equal('')
+      })
     })
   })
 
@@ -614,8 +974,7 @@ module.exports.tests = function () {
   })
 
   describe('#type', () => {
-    it('should type into a field', async function () {
-      if (isHelper('TestCafe')) this.skip()
+    it('should type into a field', async () => {
       await I.amOnPage('/form/field')
       await I.click('Name')
 
@@ -628,8 +987,7 @@ module.exports.tests = function () {
       await I.seeInField('Name', 'Type2')
     })
 
-    it('should use delay to slow down typing', async function () {
-      if (isHelper('TestCafe')) this.skip()
+    it('should use delay to slow down typing', async () => {
       await I.amOnPage('/form/field')
       await I.fillField('Name', '')
       const time = Date.now()
@@ -697,8 +1055,6 @@ module.exports.tests = function () {
     })
 
     it('should grab multiple html from page', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/info')
       let vals = await I.grabHTMLFromAll('#grab-multiple a')
       assert.equal(vals[0], 'First')
@@ -761,16 +1117,12 @@ module.exports.tests = function () {
     })
 
     it('should return empty string when the text of tag is an empty string', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/info')
       let val = await I.grabTextFrom('#p-no-text')
       assert.equal(val, '')
     })
 
     it('should grab html from page', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/info')
       const val = await I.grabHTMLFrom('#grab-multiple')
       if (isHelper('WebDriver')) {
@@ -826,8 +1178,6 @@ module.exports.tests = function () {
 
   describe('page title : #seeTitle, #dontSeeTitle, #grabTitle', () => {
     it('should check page title', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/')
       await I.seeInTitle('TestEd Beta 2.0')
       await I.dontSeeInTitle('Welcome to test app')
@@ -836,8 +1186,6 @@ module.exports.tests = function () {
     })
 
     it('should grab page title', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/')
       const val = await I.grabTitle()
       assert.equal(val, 'TestEd Beta 2.0')
@@ -850,9 +1198,9 @@ module.exports.tests = function () {
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
       await I.see('Thank you')
-      formContents().files.should.have.key('avatar')
-      formContents().files.avatar.name.should.eql('avatar.jpg')
-      formContents().files.avatar.type.should.eql('image/jpeg')
+      expect(formContents().files).to.have.key('avatar')
+      expect(formContents().files.avatar.name).to.eql('avatar.jpg')
+      expect(formContents().files.avatar.type).to.eql('image/jpeg')
     })
 
     it('should upload file located by label', async () => {
@@ -860,9 +1208,22 @@ module.exports.tests = function () {
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
       await I.see('Thank you')
-      formContents().files.should.have.key('avatar')
-      formContents().files.avatar.name.should.eql('avatar.jpg')
-      formContents().files.avatar.type.should.eql('image/jpeg')
+      expect(formContents().files).to.have.key('avatar')
+      expect(formContents().files.avatar.name).to.eql('avatar.jpg')
+      expect(formContents().files.avatar.type).to.eql('image/jpeg')
+    })
+
+    it('should drop file to dropzone', async () => {
+      await I.amOnPage('/form/dropzone')
+      await I.attachFile('#droparea', 'app/avatar.jpg')
+      await I.see('Dropped 1 file(s)')
+      await I.see('avatar.jpg')
+    })
+
+    it('should see correct file type after drop', async () => {
+      await I.amOnPage('/form/dropzone')
+      await I.attachFile('#droparea', 'app/avatar.jpg')
+      await I.see('image/jpeg')
     })
   })
 
@@ -887,6 +1248,10 @@ module.exports.tests = function () {
   })
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie, #waitForCookie', () => {
+    beforeEach(function () {
+      // Skip in CI to avoid timeouts from external URLs
+      if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
+    })
     it('should do all cookie stuff', async () => {
       await I.amOnPage('/')
       await I.setCookie({
@@ -935,8 +1300,6 @@ module.exports.tests = function () {
     })
 
     it('should wait for cookie and throw error when cookie not found', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('https://google.com')
       try {
         await I.waitForCookie('auth', 2)
@@ -946,8 +1309,6 @@ module.exports.tests = function () {
     })
 
     it('should wait for cookie', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
@@ -974,8 +1335,6 @@ module.exports.tests = function () {
     })
 
     it('should fail if no context', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       let failed = false
       await I.amOnPage('/dynamic')
       await I.dontSee('Dynamic text')
@@ -988,8 +1347,6 @@ module.exports.tests = function () {
     })
 
     it("should fail if text doesn't contain", async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       let failed = false
       await I.amOnPage('/dynamic')
       try {
@@ -1001,8 +1358,6 @@ module.exports.tests = function () {
     })
 
     it('should fail if text is not in element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       let failed = false
       await I.amOnPage('/dynamic')
       try {
@@ -1149,8 +1504,6 @@ module.exports.tests = function () {
 
   describe('#waitForDetached', () => {
     it('should throw an error if the element still exists in DOM', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.see('Step One Button')
       await I.seeElement('#step_1')
@@ -1159,13 +1512,11 @@ module.exports.tests = function () {
         await I.waitForDetached('#step_1', 2)
         throw Error('Should not get this far')
       } catch (err) {
-        err.message.should.include('still on page after')
+        expect(err.message).to.include('still on page after')
       }
     })
 
     it('should throw an error if the element still exists in DOM by XPath', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.see('Step One Button')
       await I.seeElement('#step_1')
@@ -1174,13 +1525,11 @@ module.exports.tests = function () {
         await I.waitForDetached('#step_1', 2)
         throw Error('Should not get this far')
       } catch (err) {
-        err.message.should.include('still on page after')
+        expect(err.message).to.include('still on page after')
       }
     })
 
     it('should wait for element to be removed from DOM', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.see('Step Two Button')
       await I.seeElement('#step_2')
@@ -1189,8 +1538,6 @@ module.exports.tests = function () {
     })
 
     it('should wait for element to be removed from DOM by XPath', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/wait_detached')
       await I.seeElement('//div[@id="step_2"]')
       await I.waitForDetached('//div[@id="step_2"]')
@@ -1255,8 +1602,6 @@ module.exports.tests = function () {
     })
 
     it('within should respect context in see', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/example4')
       await I.see('Rejestracja', 'fieldset')
       I._withinBegin({ css: '.navbar-header' })
@@ -1265,8 +1610,6 @@ module.exports.tests = function () {
     })
 
     it('within should respect context in see when using nested frames', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe_nested')
       await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
@@ -1292,8 +1635,6 @@ module.exports.tests = function () {
     })
 
     it('within should respect context in see when using frame', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: '#number-frame-1234',
@@ -1307,8 +1648,6 @@ module.exports.tests = function () {
     })
 
     it('within should respect context in see when using frame with strict locator', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: { css: '#number-frame-1234' },
@@ -1320,12 +1659,17 @@ module.exports.tests = function () {
         if (!err) assert.fail('seen "Information"')
       }
     })
+
+    it('within on css locator should use locator scope in see without explicit context', async function () {
+      await I.amOnPage('/form/example4')
+      await I._withinBegin({ css: '#register' })
+      await I.see('E-Mail')
+      await I.dontSee('Toggle navigation')
+    })
   })
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     it('should scroll inside an iframe', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/iframe')
       await I.resizeWindow(500, 700)
       await I.switchTo('iframe')
@@ -1384,24 +1728,18 @@ module.exports.tests = function () {
 
   describe('#grabCssPropertyFrom', () => {
     it('should grab css property for given element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'height')
       assert.equal(css, '100px')
     })
 
     it('should grab camelcased css properies', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'user-select')
       assert.equal(css, 'text')
     })
 
     it('should grab multiple values if more than one matching element found', async () => {
-      if (isHelper('TestCafe')) return
-
       await I.amOnPage('/info')
       const css = await I.grabCssPropertyFromAll('.span', 'height')
       assert.equal(css[0], '12px')
@@ -1411,7 +1749,7 @@ module.exports.tests = function () {
 
   describe('#seeAttributesOnElements', () => {
     it('should check attributes values for given element', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('/info')
@@ -1423,12 +1761,12 @@ module.exports.tests = function () {
         })
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('all elements (//form) to have attributes {"method":"get"}')
+        expect(e.message).to.include('all elements (//form) to have attributes {"method":"get"}')
       }
     })
 
     it('should check href with slash', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/')
@@ -1439,13 +1777,11 @@ module.exports.tests = function () {
           },
         )
       } catch (e) {
-        e.message.should.include('all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href":"/codeceptjs/CodeceptJS"}')
+        expect(e.message).to.include('all elements (a[href="/codeceptjs/CodeceptJS"]) to have attributes {"href":"/codeceptjs/CodeceptJS"}')
       }
     })
 
     it('should check attributes values for several elements', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       try {
         await I.amOnPage('/')
         await I.seeAttributesOnElements('a', {
@@ -1461,12 +1797,12 @@ module.exports.tests = function () {
         })
         throw new Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}')
+        expect(e.message).to.include('all elements (a) to have attributes {"qa-id":"test","href":"/info"}')
       }
     })
 
     it('should return error when using non existing attribute', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('https://github.com/codeceptjs/CodeceptJS/')
@@ -1477,12 +1813,13 @@ module.exports.tests = function () {
           },
         )
       } catch (e) {
-        e.message.should.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true} "0" to equal "3"')
+        expect(e.message).to.include('expected all elements ({css: a[href="/codeceptjs/CodeceptJS"]}) to have attributes {"disable":true}')
+        expect(e.message).to.match(/"0" to equal "\d+"/)
       }
     })
 
     it('should verify the boolean attribute', async function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver')) this.skip()
+      if (isHelper('WebDriver')) this.skip()
 
       try {
         await I.amOnPage('/')
@@ -1490,15 +1827,13 @@ module.exports.tests = function () {
           disabled: true,
         })
       } catch (e) {
-        e.message.should.include('expected all elements (input) to have attributes {"disabled":true} "0" to equal "1"')
+        expect(e.message).to.include('expected all elements (input) to have attributes {"disabled":true} "0" to equal "1"')
       }
     })
   })
 
   describe('#seeCssPropertiesOnElements', () => {
     it('should check css property for given element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       try {
         await I.amOnPage('/info')
         await I.seeCssPropertiesOnElements('h4', {
@@ -1513,12 +1848,12 @@ module.exports.tests = function () {
         })
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}')
+        expect(e.message).to.include('expected all elements (h3) to have CSS property {"font-weight":"non-bold"}')
       }
     })
 
     it('should check css property for several elements', async function () {
-      if (isHelper('TestCafe') || process.env.BROWSER === 'firefox') this.skip()
+      if (process.env.BROWSER === 'firefox') this.skip()
 
       try {
         await I.amOnPage('/')
@@ -1539,13 +1874,11 @@ module.exports.tests = function () {
         })
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}')
+        expect(e.message).to.include('expected all elements (a) to have CSS property {"margin-top":"0em","cursor":"pointer"}')
       }
     })
 
     it('should normalize css color properties for given element', async function () {
-      if (isHelper('TestCafe')) this.skip()
-
       await I.amOnPage('/form/css_colors')
       await I.seeCssPropertiesOnElements('#namedColor', {
         'background-color': 'purple',
@@ -1662,7 +1995,9 @@ module.exports.tests = function () {
 
   describe('#startRecordingTraffic, #seeTraffic, #stopRecordingTraffic, #dontSeeTraffic, #grabRecordedNetworkTraffics', () => {
     beforeEach(function () {
-      if (isHelper('TestCafe') || process.env.isSelenium === 'true') this.skip()
+      if (process.env.isSelenium === 'true') this.skip()
+      // Skip in CI to avoid timeouts from external URLs
+      if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
     })
 
     it('should throw error when calling seeTraffic before recording traffics', async () => {
@@ -1698,6 +2033,16 @@ module.exports.tests = function () {
       await I.flushNetworkTraffics()
       const traffics = await I.grabRecordedNetworkTraffics()
       expect(traffics.length).to.equal(0)
+    })
+
+    it('should stop the network recording', async () => {
+      await I.startRecordingTraffic()
+      await I.amOnPage('https://codecept.io/')
+      await I.stopRecordingTraffic()
+      const traffics1 = await I.grabRecordedNetworkTraffics()
+      await I.amOnPage('https://codecept.io/')
+      const traffics2 = await I.grabRecordedNetworkTraffics()
+      expect(traffics2.length).to.equal(traffics1.length)
     })
 
     it('should see recording traffics', async () => {
@@ -1782,7 +2127,7 @@ module.exports.tests = function () {
   // the WS test website is not so stable. So we skip those tests for now.
   describe.skip('#startRecordingWebSocketMessages, #grabWebSocketMessages, #stopRecordingWebSocketMessages', () => {
     beforeEach(function () {
-      if (isHelper('TestCafe') || isHelper('WebDriver') || process.env.BROWSER === 'firefox') this.skip()
+      if (isHelper('WebDriver') || process.env.BROWSER === 'firefox') this.skip()
     })
 
     it('should throw error when calling grabWebSocketMessages before startRecordingWebSocketMessages', () => {
@@ -1822,6 +2167,442 @@ module.exports.tests = function () {
       I.waitForText('Work for You!')
       const afterWsMessages = I.grabWebSocketMessages()
       expect(wsMessages.length).to.equal(afterWsMessages.length)
+    })
+  })
+
+  describe('role locators', () => {
+    it('should locate elements by role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test basic role locators
+      await I.seeElement({ role: 'button' })
+      await I.seeElement({ role: 'combobox' })
+      await I.seeElement({ role: 'textbox' })
+      await I.seeElement({ role: 'searchbox' })
+      await I.seeElement({ role: 'checkbox' })
+
+      // Test count of elements with same role
+      await I.seeNumberOfVisibleElements({ role: 'button' }, 4)
+      await I.seeNumberOfVisibleElements({ role: 'combobox' }, 4)
+      await I.seeNumberOfVisibleElements({ role: 'checkbox' }, 2)
+    })
+
+    it('should locate elements by role with text filter', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test role with text (exact match)
+      await I.seeElement({ role: 'button', text: 'Submit' })
+      await I.seeElement({ role: 'button', text: 'Dont Submit' })
+      await I.seeElement({ role: 'button', text: 'Cancel' })
+      await I.seeElement({ role: 'button', text: 'Reset' })
+
+      // Test role with text (partial match)
+      await I.seeElement({ role: 'combobox', text: 'Title' })
+      await I.seeElement({ role: 'combobox', text: 'Name' })
+      await I.seeElement({ role: 'combobox', text: 'Category' })
+
+      // Test role with exact text match
+      await I.seeElement({ role: 'combobox', text: 'Title', exact: true })
+      await I.dontSeeElement({ role: 'combobox', text: 'title', exact: true }) // case sensitive
+
+      // Test non-existing elements
+      await I.dontSeeElement({ role: 'button', text: 'Non Existent Button' })
+      await I.dontSeeElement({ role: 'combobox', text: 'Non Existent Field' })
+    })
+
+    it('should interact with elements located by role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Fill combobox by role and text
+      await I.fillField({ role: 'combobox', text: 'Title' }, 'Test Title')
+      await I.seeInField({ role: 'combobox', text: 'Title' }, 'Test Title')
+
+      // Fill textbox by role
+      await I.fillField({ role: 'textbox', text: 'your@email.com' }, 'test@example.com')
+      await I.seeInField({ role: 'textbox', text: 'your@email.com' }, 'test@example.com')
+
+      // Fill another textbox
+      await I.fillField({ role: 'textbox', text: 'Enter your message' }, 'This is a test message')
+      await I.seeInField({ role: 'textbox', text: 'Enter your message' }, 'This is a test message')
+
+      // Click button by role and text
+      await I.click({ role: 'button', text: 'Submit' })
+      await I.see('Form Submitted!')
+      await I.see('Form data submitted')
+    })
+
+    it('should work with different role locator combinations', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test searchbox role
+      await I.fillField({ role: 'searchbox' }, 'search query')
+      await I.seeInField({ role: 'searchbox' }, 'search query')
+
+      // Test checkbox interaction
+      await I.dontSeeCheckboxIsChecked({ role: 'checkbox' })
+      await I.checkOption({ role: 'checkbox' })
+      await I.seeCheckboxIsChecked({ role: 'checkbox' })
+      await I.uncheckOption({ role: 'checkbox' })
+      await I.dontSeeCheckboxIsChecked({ role: 'checkbox' })
+
+      // Test specific checkbox by text
+      await I.checkOption({ role: 'checkbox', text: 'Subscribe to newsletter' })
+      await I.seeCheckboxIsChecked({ role: 'checkbox', text: 'Subscribe to newsletter' })
+      await I.dontSeeCheckboxIsChecked({ role: 'checkbox', text: 'I agree to the terms and conditions' })
+    })
+
+    it('should grab elements by role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test grabbing multiple elements
+      const buttons = await I.grabWebElements({ role: 'button' })
+      assert.equal(buttons.length, 4)
+
+      const comboboxes = await I.grabWebElements({ role: 'combobox' })
+      assert.equal(comboboxes.length, 4)
+
+      // Test grabbing specific element
+      if (!isHelper('WebDriver')) {
+        const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit' })
+        assert.ok(submitButton)
+      }
+
+      // Test grabbing text from role elements
+      const buttonText = await I.grabTextFrom({ role: 'button', text: 'Cancel' })
+      assert.equal(buttonText, 'Cancel')
+
+      // Test grabbing attributes from role elements
+      const titlePlaceholder = await I.grabAttributeFrom({ role: 'combobox', text: 'Title' }, 'placeholder')
+      assert.equal(titlePlaceholder, 'Title')
+    })
+
+    it('should work with multiple elements of same role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Test filling specific combobox by text when there are multiple
+      await I.fillField({ role: 'combobox', text: 'Name' }, 'John Doe')
+      await I.fillField({ role: 'combobox', text: 'Category' }, 'Technology')
+      await I.fillField({ role: 'combobox', text: 'Title' }, 'Software Engineer')
+
+      // Verify each field has the correct value
+      await I.seeInField({ role: 'combobox', text: 'Name' }, 'John Doe')
+      await I.seeInField({ role: 'combobox', text: 'Category' }, 'Technology')
+      await I.seeInField({ role: 'combobox', text: 'Title' }, 'Software Engineer')
+
+      // Submit and verify data is processed correctly
+      await I.click({ role: 'button', text: 'Submit' })
+      await I.see('Form Submitted!')
+      await I.see('John Doe')
+      await I.see('Technology')
+      await I.see('Software Engineer')
+    })
+  })
+
+  describe('aria selectors without role locators', () => {
+    it('should find clickable elements by aria-label', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.click('Reset')
+      await I.dontSeeInField('Title', 'Test')
+
+      await I.click('Submit')
+      await I.see('Form Submitted!')
+    })
+
+    it('should click elements by aria-label', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.fillField('Title', 'Test Title')
+      await I.fillField('Name', 'John Doe')
+
+      await I.click('Submit')
+      await I.see('Form Submitted!')
+      await I.see('Test Title')
+      await I.see('John Doe')
+    })
+
+    it('should fill fields by aria-label without specifying role', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.fillField('Title', 'Senior Developer')
+      await I.seeInField('Title', 'Senior Developer')
+
+      await I.fillField('Name', 'Jane Smith')
+      await I.seeInField('Name', 'Jane Smith')
+
+      await I.fillField('Category', 'Engineering')
+      await I.seeInField('Category', 'Engineering')
+
+      await I.fillField('your@email.com', 'test@example.com')
+      await I.seeInField('your@email.com', 'test@example.com')
+
+      await I.fillField('Enter your message', 'Hello World')
+      await I.seeInField('Enter your message', 'Hello World')
+    })
+
+    it('should check options by aria-label', async () => {
+      if (!isHelper('WebDriver')) return
+
+      await I.amOnPage('/form/role_elements')
+
+      await I.dontSeeCheckboxIsChecked('I agree to the terms and conditions')
+      await I.checkOption('I agree to the terms and conditions')
+      await I.seeCheckboxIsChecked('I agree to the terms and conditions')
+
+      await I.dontSeeCheckboxIsChecked('Subscribe to newsletter')
+      await I.checkOption('Subscribe to newsletter')
+      await I.seeCheckboxIsChecked('Subscribe to newsletter')
+    })
+
+    it('should interact with multiple elements using aria-label', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      await I.fillField('Title', 'Product Manager')
+      await I.fillField('Name', 'Bob Johnson')
+      await I.fillField('Category', 'Product')
+      await I.fillField('your@email.com', 'bob@company.com')
+      await I.fillField('Enter your message', 'Test message')
+
+      if (isHelper('WebDriver')) {
+        await I.checkOption('Subscribe to newsletter')
+      }
+
+      await I.click('Submit')
+      await I.see('Form Submitted!')
+      await I.see('Product Manager')
+      await I.see('Bob Johnson')
+      await I.see('Product')
+    })
+
+    it('should click the correct button when multiple buttons have similar text', async () => {
+      await I.amOnPage('/form/role_elements')
+
+      // Fill form with test data
+      await I.fillField('Title', 'Test Data')
+      await I.fillField('Name', 'Test User')
+
+      // Click 'Submit' button - should NOT click 'Dont Submit'
+      await I.click('Submit')
+
+      // Verify form was submitted (meaning the correct 'Submit' button was clicked)
+      await I.see('Form Submitted!')
+      await I.see('Test Data')
+      await I.see('Test User')
+
+      // Reset and test again to be sure
+      await I.click('Reset')
+      await I.dontSee('Form Submitted!')
+
+      // Fill form again
+      await I.fillField('Title', 'Another Test')
+      await I.fillField('Name', 'Another User')
+
+      // Click 'Submit' button again
+      await I.click('Submit')
+
+      // Verify form was submitted again
+      await I.see('Form Submitted!')
+      await I.see('Another Test')
+      await I.see('Another User')
+    })
+  })
+
+  describe('#strict mode', () => {
+    afterEach(() => {
+      I.options.strict = false
+    })
+
+    it('should throw error if multiple elements found for click', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+      expect(err.message).to.include('Multiple elements')
+    })
+
+    it('should throw error if multiple elements found for fillField', async () => {
+      await I.amOnPage('/form/example20')
+      I.options.strict = true
+      let err
+      try {
+        await I.fillField("input[name='txtName']", 'test')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should not throw error if only one element found', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      await I.click('#first-link')
+    })
+
+    it('should provide element details after fetchDetails', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      await err.fetchDetails()
+      expect(err.message).to.include('/html')
+      expect(err.message).to.include('Use a more specific locator')
+    })
+
+    it('should throw NonFocusedType error when typing without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      let err
+      try {
+        await I.type('test')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('NonFocusedType')
+      expect(err.message).to.include('No element is in focus')
+    })
+
+    it('should not throw NonFocusedType when element is focused', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.click('Name')
+      await I.type('test')
+      await I.seeInField('Name', 'test')
+    })
+
+    it('should throw NonFocusedType for Ctrl+A without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      let err
+      try {
+        await I.pressKey(['Control', 'A'])
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('NonFocusedType')
+      expect(err.message).to.include('No element is in focus')
+    })
+
+    it('should not throw for Escape without focus', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.pressKey('Escape')
+    })
+
+    it('should not throw for Ctrl+A when element is focused', async () => {
+      await I.amOnPage('/form/field')
+      I.options.strict = true
+      await I.click('Name')
+      await I.pressKey(['Control', 'A'])
+    })
+  })
+
+  describe('#elementIndex step option', () => {
+    afterEach(() => {
+      store.currentStep = null
+      I.options.strict = false
+    })
+
+    it('should click nth element with positive index', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 2 } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should click last element with -1', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: -1 } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should support "first" alias', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 'first' } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should support "last" alias', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 'last' } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should ignore elementIndex when only one element found', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 5 } }
+      await I.click('#first-link')
+    })
+
+    it('should skip strict mode when elementIndex is set', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      store.currentStep = { opts: { elementIndex: 1 } }
+      await I.click('#grab-multiple a')
+    })
+
+    it('should throw if elementIndex out of bounds with multiple elements', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { elementIndex: 100 } }
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.message).to.include('elementIndex')
+    })
+
+    it('should enable strict mode per-step with exact: true', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { exact: true } }
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should enable strict mode per-step with strictMode: true', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { strictMode: true } }
+      let err
+      try {
+        await I.click('#grab-multiple a')
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should not throw with exact: true when single element found', async () => {
+      await I.amOnPage('/info')
+      store.currentStep = { opts: { exact: true } }
+      await I.click('#first-link')
+    })
+
+    it('should cancel strict mode with exact: false', async () => {
+      await I.amOnPage('/info')
+      I.options.strict = true
+      store.currentStep = { opts: { exact: false } }
+      await I.click('#grab-multiple a')
     })
   })
 }

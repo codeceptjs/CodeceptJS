@@ -1,38 +1,77 @@
-const I = actor()
+import { actor } from '../../../../../lib/index.js'
+import { secret } from '../../../../../lib/secret.js'
+import { Given, When, Then, Before, After, Fail } from '../../../../../lib/mocha/bdd.js'
 
 Given(/I have product with \$(\d+) price/, price => {
+  const I = actor()
+  I.addItem(parseInt(price, 10))
+})
+
+Given('I have product with {int} price in my cart', price => {
+  const I = actor()
   I.addItem(parseInt(price, 10))
 })
 When('I go to checkout process', () => {
+  const I = actor()
   I.checkout()
   I.checkout()
 })
 
 Then('I should see that total number of products is {int}', num => {
+  const I = actor()
   I.seeNum(num)
 })
-Then('my order amount is ${int}', sum => {
-  I.seeSum(sum)
+Then(/my order amount is \$(\d+)/, sum => {
+  const I = actor()
+  I.seeSum(parseInt(sum, 10))
 })
 
 Given('I have product with price {int}$ in my cart', price => {
+  const I = actor()
   I.addItem(parseInt(price, 10))
 })
 
 Given('discount for orders greater than ${int} is {int} %', (maxPrice, discount) => {
+  const I = actor()
   I.haveDiscountForPrice(maxPrice, discount)
 })
 
 When('I go to checkout', () => {
+  const I = actor()
   I.checkout()
 })
 
 Then('I should see overall price is "{float}" $', price => {
+  const I = actor()
   I.seeSum(price)
 })
 
 Given('I login', () => {
+  const I = actor()
   I.login('user', secret('password'))
+})
+
+Given('I have user email {string}', email => {
+  I.debug(`User email is: ${email}`)
+  I.say(`Processing email: ${email}`)
+})
+
+Given('I have credit card {string}', card => {
+  I.debug(`Credit card is: ${card}`)
+  I.say(`Processing card: ${card}`)
+})
+
+Given('I have phone number {string}', phone => {
+  I.debug(`Phone number is: ${phone}`)
+  I.say(`Processing phone: ${phone}`)
+})
+
+When('I process user data', () => {
+  I.debug('Processing user data with sensitive information')
+})
+
+Then('I should see masked output', () => {
+  I.debug('All sensitive data should be masked in output')
 })
 
 Given(/^I have this product in my cart$/, table => {

@@ -3,9 +3,13 @@ If a fuzzy locator is given, the page will be searched for a button, link, or im
 For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
 For images, the "alt" attribute and inner text of any parent links are searched.
 
+If no locator is provided, defaults to clicking the body element (`'//body'`).
+
 The second parameter is a context (CSS or XPath locator) to narrow the search.
 
 ```js
+// click body element (default)
+I.click();
 // simple link
 I.click('Logout');
 // button of form
@@ -18,8 +22,12 @@ I.click('//form/*[@type=submit]');
 I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
+// using ARIA role locator
+I.click({role: 'button', name: 'Submit'});
 ```
 
-@param {CodeceptJS.LocatorOrString} locator clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators](/locators#aria-locators).
+
+@param {CodeceptJS.LocatorOrString} [locator='//body'] (optional, `'//body'` by default) clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 @param {?CodeceptJS.LocatorOrString | null} [context=null] (optional, `null` by default) element to search in CSS|XPath|Strict locator.
 @returns {void} automatically synchronized promise through #recorder

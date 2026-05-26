@@ -1,9 +1,9 @@
 const { I } = inject();
 
-module.exports = () => {
+export default function() {
   return actor({
     saySomethingElse() {
       I.say('Say called from custom step');
     },
   });
-};
+}

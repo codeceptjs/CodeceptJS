@@ -5,13 +5,13 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
-    target-branch: '3.x'
+    target-branch: '4.x'
   # npm
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'weekly'
-    target-branch: '3.x'
+    target-branch: '4.x'
     ignore:
       - dependency-name: 'escape-string-regexp'
         versions: ['>=5.0']

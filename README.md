@@ -1,7 +1,7 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
 
 [<img src="https://img.shields.io/badge/slack-@codeceptjs-purple.svg?logo=slack">](https://join.slack.com/t/codeceptjs/shared_invite/enQtMzA5OTM4NDM2MzA4LWE4MThhN2NmYTgxNTU5MTc4YzAyYWMwY2JkMmZlYWI5MWQ2MDM5MmRmYzZmYmNiNmY5NTAzM2EwMGIwOTNhOGQ) [<img src="https://img.shields.io/badge/discourse-codeceptjs-purple">](https://codecept.discourse.group) [![NPM version][npm-image]][npm-url] [<img src="https://img.shields.io/badge/dockerhub-images-blue.svg?logo=codeceptjs">](https://hub.docker.com/r/codeceptjs/codeceptjs)
-[![AI features](https://img.shields.io/badge/AI-features?logo=openai&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+[![AI features](https://img.shields.io/badge/AI-features?logo=openai&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/edit/3.x/docs/ai.md) [![MCP Server](https://img.shields.io/badge/MCP-server?logo=anthropic&logoColor=white)](https://github.com/codeceptjs/CodeceptJS/blob/main/docs/mcp.md) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
 ## Build Status
 
@@ -10,7 +10,6 @@
 | 🌐 Web    | Playwright | [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)               |
 | 🌐 Web    | Puppeteer  | [![Puppeteer Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml)                  |
 | 🌐 Web    | WebDriver  | [![WebDriver Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml)                  |
-| 🌐 Web    | TestCafe   | [![TestCafe Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/testcafe.yml)                     |
 | 📱 Mobile | Appium     | [![Appium Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium_Android.yml) |
 
 # CodeceptJS [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
@@ -43,7 +42,6 @@ CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently, 
 - [**Playwright**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Playwright.md) - is a Node library to automate the Chromium, WebKit and Firefox browsers with a single API.
 - [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
 - [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver or Devtools protocol.
-- [**TestCafe**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/TestCafe.md) - cheap and fast cross-browser test automation.
 - [**Appium**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 - [**Detox**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimed to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially well for React Native apps.
 
@@ -53,7 +51,7 @@ And more to come...
 
 CodeceptJS is a successor of [Codeception](http://codeception.com), a popular full-stack testing framework for PHP.
 With CodeceptJS your scenario-driven functional and acceptance tests will be as simple and clean as they can be.
-You don't need to worry about asynchronous nature of NodeJS or about various APIs of Playwright, Selenium, Puppeteer, TestCafe, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
+You don't need to worry about asynchronous nature of NodeJS or about various APIs of Playwright, Selenium, Puppeteer, etc. as CodeceptJS unifies them and makes them work as they are synchronous.
 
 ## Features
 
@@ -64,6 +62,8 @@ You don't need to worry about asynchronous nature of NodeJS or about various API
 - Also plays nice with TypeScript.
 - </> Smart locators: use names, labels, matching text, CSS or XPath to locate elements.
 - 🌐 Interactive debugging shell: pause test at any point and try different commands in a browser.
+- ⚡ **Parallel testing** with dynamic test pooling for optimal load balancing and performance.
+- 📊 **Built-in HTML Reporter** with interactive dashboard, step-by-step execution details, and comprehensive test analytics.
 - Easily create tests, pageobjects, stepobjects with CLI generators.
 
 ## Installation
@@ -231,6 +231,60 @@ Scenario('test some forms', () => {
 Scenario('test title', () => {
   I.seeInTitle('Example application')
 })
+```
+
+## HTML Reports
+
+Generate beautiful HTML reports using **[@testomatio/reporter](https://github.com/testomatio/reporter)** package.
+
+### Installation
+
+```sh
+npm install @testomatio/reporter --save-dev
+```
+
+### Configuration
+
+Add the `testomatio` plugin to your `codecept.conf.js`:
+
+```js
+plugins: {
+  testomatio: {
+    enabled: true,
+    require: '@testomatio/reporter/codecept',
+    html: true,
+    reportDir: 'output/report',
+  },
+}
+```
+
+### Usage
+
+Run tests normally:
+
+```sh
+npx codeceptjs run
+```
+
+The report will be saved to `output/report/testomatio-report.html` by default. You can also keep using `TESTOMATIO_HTML_REPORT_SAVE=1` and related environment variables if you prefer env-based setup.
+
+### Features
+
+- Modern, responsive interface with real-time statistics
+- Detailed test information with step-by-step breakdown
+- Screenshots, videos, and artifacts display
+- BDD/Gherkin support with proper scenario formatting
+- Customizable output location and filename
+- Optional integration with [Testomat.io](https://testomat.io) cloud
+
+### Customization
+
+```sh
+# Custom output folder in codecept.conf.js
+# reportDir: './reports'
+
+# Integrate with Testomat.io cloud
+TESTOMATIO=your_api_key npx codeceptjs run
 ```
 
 ## PageObjects

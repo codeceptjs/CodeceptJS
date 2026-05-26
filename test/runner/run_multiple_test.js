@@ -1,7 +1,12 @@
-const assert = require('assert')
-const { expect } = require('expect')
-const path = require('path')
-const exec = require('child_process').exec
+import * as chai from 'chai';
+chai.should();
+import assert from 'assert';
+import { expect } from 'expect';
+import path from 'path';
+import { exec } from 'child_process';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -175,10 +180,10 @@ describe('CodeceptJS Multiple Runner', function () {
 
   it('should exit with non-zero code for failures during init process', done => {
     process.chdir(codecept_dir)
-    exec(`${runner} run-multiple --config codecept.multiple.initFailure.js default --all`, (err, stdout) => {
+    exec(`${runner} run-multiple --config codecept.multiple.initFailure.js default --all`, (err, stdout, stderr) => {
       expect(err).not.toBeFalsy()
       expect(err.code).toBe(1)
-      expect(stdout).toContain('Failed on FailureHelper')
+      expect(stdout + stderr).toContain('Failed on FailureHelper')
       done()
     })
   })
@@ -190,6 +195,23 @@ describe('CodeceptJS Multiple Runner', function () {
       expect(stderr).not.toContain('UnhandledPromiseRejectionWarning')
       expect(stdout).toContain('badFn is not defined')
       expect(err).not.toBe(null)
+      done()
+    })
+  })
+
+  it('should load plugins with runInWorker:false in each child process and give each its own reportDir', done => {
+    exec(`${runner} run-multiple --config ${codecept_dir}/codecept.multiple.plugin.runInWorkerFalse.js default`, (err, stdout) => {
+      // Plugin must be initialised once per forked child (chrome + firefox = 2 times).
+      // Regression: in 4.x the plugin was silently skipped because options.child was
+      // truthy in run-multiple children, same as in worker threads.
+      ;(stdout.match(/plugin-runInWorkerFalse:loaded/g) || []).should.have.lengthOf(2)
+      // reportDir must be replaced per child so each child writes its own report.
+      // Regression: run-multiple.js dropped the replaceValueDeep('reportDir', ...) call
+      // that was present in 3.x, causing all children to overwrite the same file.
+      const dirs = (stdout.match(/plugin-runInWorkerFalse:reportDir=(.+)/g) || []).map(m => m.split('=')[1])
+      dirs.should.have.lengthOf(2)
+      dirs[0].should.not.equal(dirs[1])
+      assert(!err)
       done()
     })
   })

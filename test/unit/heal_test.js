@@ -1,15 +1,18 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const heal = require('../../lib/heal')
-const recorder = require('../../lib/recorder')
-const Step = require('../../lib/step')
+import { expect } from 'chai'
+import heal from '../../lib/heal.js'
+import recorder from '../../lib/recorder.js'
+import Step from '../../lib/step.js'
 
 describe('heal', () => {
   beforeEach(() => {
     heal.clear()
     recorder.reset()
+    recorder.start()
+    global.inject = () => ({}) // Mock inject function for heal tests
+    global.container = {
+      // Mock container for heal tests
+      support: name => ({}),
+    }
   })
 
   it('should collect recipes', () => {
@@ -23,7 +26,7 @@ describe('heal', () => {
       },
     })
 
-    expect(heal.hasCorrespondingRecipes({ name: 'click' })).to.be.true
+    expect(heal.hasCorrespondingRecipes({ title: 'click' })).to.be.true
   })
 
   it('should respect the priority of recipes', async () => {
@@ -55,7 +58,7 @@ describe('heal', () => {
   it('should have corresponding recipes', () => {
     heal.recipes = { test: { steps: ['step1', 'step2'], fn: () => {} } }
     heal.contextName = 'TestSuite'
-    const result = heal.hasCorrespondingRecipes({ name: 'step1' })
+    const result = heal.hasCorrespondingRecipes({ title: 'step1' })
     expect(result).to.be.true
   })
 
@@ -78,7 +81,7 @@ describe('heal', () => {
       },
     })
 
-    await heal.healStep(new Step(null, 'click'))
+    await heal.healStep(new Step('click'), new Error('test error'))
 
     expect(isHealed).to.be.true
   })
@@ -92,9 +95,9 @@ describe('heal', () => {
     })
 
     heal.contextName = 'TestSuite @slow'
-    expect(heal.hasCorrespondingRecipes({ name: 'step1' })).to.be.true
+    expect(heal.hasCorrespondingRecipes({ title: 'step1' })).to.be.true
     heal.contextName = 'TestSuite @fast'
-    expect(heal.hasCorrespondingRecipes({ name: 'step1' })).not.to.be.true
+    expect(heal.hasCorrespondingRecipes({ title: 'step1' })).not.to.be.true
   })
 
   it('should contain info', async () => {
@@ -111,7 +114,7 @@ describe('heal', () => {
       },
     })
 
-    await heal.healStep(new Step(null, 'click'), new Error('Ups'), { test: { title: 'test' } })
+    await heal.healStep(new Step('click'), new Error('Ups'), { test: { title: 'test' } })
 
     expect(isHealed).to.be.true
     expect(passedOpts).to.haveOwnProperty('test')

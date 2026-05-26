@@ -197,28 +197,28 @@ I.seeResponseEquals({ error: 'Not allowed' })
 
 ### seeResponseMatchesJsonSchema
 
-Validates JSON structure of response using [joi library][4].
-See [joi API][5] for complete reference on usage.
+Validates JSON structure of response using [Zod library][4].
+See [Zod API][5] for complete reference on usage.
 
-Use pre-initialized joi instance by passing function callback:
+Use pre-initialized Zod instance by passing function callback:
 
 ```js
 // response.data is { name: 'jon', id: 1 }
 
-I.seeResponseMatchesJsonSchema(joi => {
-  return joi.object({
-    name: joi.string(),
-    id: joi.number()
+I.seeResponseMatchesJsonSchema(z => {
+  return z.object({
+    name: z.string(),
+    id: z.number()
   })
 });
 
 // or pass a valid schema
-const joi = require('joi');
+import { z } from 'zod';
 
-I.seeResponseMatchesJsonSchema(joi.object({
-  name: joi.string(),
-  id: joi.number();
-});
+I.seeResponseMatchesJsonSchema(z.object({
+  name: z.string(),
+  id: z.number()
+}));
 ```
 
 #### Parameters
@@ -248,8 +248,8 @@ I.seeResponseValidByCallback(({ data, status }) => {
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[4]: https://joi.dev
+[4]: https://zod.dev
 
-[5]: https://joi.dev/api/
+[5]: https://zod.dev/
 
 [6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

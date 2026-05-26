@@ -22,7 +22,7 @@ export default [
         ...globals.node,
       },
 
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       sourceType: 'module',
     },
 

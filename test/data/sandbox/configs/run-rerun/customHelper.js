@@ -1,7 +1,9 @@
+import Helper from '../../../../../lib/helper.js'
+
 class CustomHelper extends Helper {
   printMessage(s) {
-    console.log(s);
+    console.log(s)
   }
 }
 
-module.exports = CustomHelper;
+export default CustomHelper

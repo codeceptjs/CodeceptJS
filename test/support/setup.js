@@ -1,3 +1,2 @@
-import('chai').then(chai => {
-  chai.should()
-})
+import * as chai from 'chai'
+chai.should()

@@ -1,19 +1,23 @@
-const sinon = require('sinon')
-
-const Step = require('../../lib/step')
-const { MetaStep } = require('../../lib/step')
-const event = require('../../lib/event')
-const { secret } = require('../../lib/secret')
-
-let expect
+import sinon from 'sinon'
+import Step, { MetaStep } from '../../lib/step.js'
+import event from '../../lib/event.js'
+import { secret } from '../../lib/secret.js'
+import { expect } from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 
 import('chai').then(chai => {
-  expect = chai.expect
-  chai.use(require('chai-as-promised'))
+  chai.use(chaiAsPromised)
 })
 
 let step
 let action
+let asyncAction
+let asyncMetaStep
+let metaStep
+let fn
+let asyncFn
+let boundedRun
+let boundedAsyncRun
 
 describe('Steps', () => {
   describe('Step', () => {
@@ -22,8 +26,8 @@ describe('Steps', () => {
       step = new Step({ doSomething: action }, 'doSomething')
     })
 
-    it('has name', () => {
-      expect(step.name).eql('doSomething')
+    it('has title', () => {
+      expect(step.title).eql('doSomething')
     })
 
     it('should convert method names for output', () => {
@@ -92,7 +96,7 @@ describe('Steps', () => {
     })
 
     describe('#isBDD', () => {
-      ;['Given', 'When', 'Then', 'And'].forEach(key => {
+      ;['Given', 'When', 'Then', 'And', 'But'].forEach(key => {
         it(`[${key}] #isBdd should return true if it BDD style`, () => {
           const metaStep = new MetaStep(key, 'I need to open Google')
           expect(metaStep.isBDD()).to.be.true
@@ -136,10 +140,6 @@ describe('Steps', () => {
     })
 
     describe('#run', () => {
-      let metaStep
-      let fn
-      let boundedRun
-      let boundedAsyncRun
       beforeEach(() => {
         metaStep = new MetaStep({ metaStepDoSomething: action }, 'metaStepDoSomething')
         asyncMetaStep = new MetaStep({ metaStepDoSomething: asyncAction }, 'metaStepDoSomething')

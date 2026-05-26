@@ -55,7 +55,7 @@ Features:
 
 * Toggle headless/window mode with one click
 * See HTML snapshot of each step
-* Works with WebDriver, Puppeteer, TestCafe
+* Works with WebDriver, Puppeteer, Playwright
 * Shows step-by-step execution
 * Integrated with your local IDE
 
@@ -86,7 +86,7 @@ Scenario('Checkout test', ({ I }) => {
 Can we use it for long scenarios? Sure!
 
 ```js
-const { faker } = require('@faker-js/faker');                               // Use 3rd-party JS code
+import { faker } from '@faker-js/faker'                                     // Use 3rd-party JS code
 
 Feature('Store');
 
@@ -100,7 +100,7 @@ Scenario('Create a new store', async ({ I, login, SettingsPage }) => {
   I.fillField('Email', faker.internet.email());
   I.fillField('Telephone', faker.phone.phoneNumberFormat());
   I.selectInDropdown('Status', 'Active');                     // Use custom methods
-  I.retry(2).click('Create');                                 // Retry flaky step
+  I.click('Create', step.retry(2));                           // Retry flaky step
   I.waitInUrl('/settings/setup/stores');                      // Explicit waiter
   I.see(storeName, '.settings');                              // Assert text present inside an element (located by CSS)
   const storeId = await I.grabTextFrom('#store-id');          // Use await to get information from browser

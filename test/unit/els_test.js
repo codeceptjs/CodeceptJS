@@ -1,10 +1,12 @@
-const assert = require('assert')
-const { expect } = require('chai')
-const els = require('../../lib/els')
-const recorder = require('../../lib/recorder')
-const Container = require('../../lib/container')
-const Helper = require('../../lib/helper')
-const StepConfig = require('../../lib/step/config')
+import assert from 'assert'
+import { expect } from 'chai'
+import els from '../../lib/els.js'
+import recorder from '../../lib/recorder.js'
+import Container from '../../lib/container.js'
+import StepConfig from '../../lib/step/config.js'
+
+// Import Helper from @codeceptjs/helper directly for tests
+import Helper from '@codeceptjs/helper'
 
 class TestHelper extends Helper {
   constructor() {
@@ -14,6 +16,10 @@ class TestHelper extends Helper {
 
   async _locate(locator) {
     return this.elements
+  }
+
+  _detectHelperType() {
+    return 'test'
   }
 }
 
@@ -34,28 +40,28 @@ describe('els', function () {
 
   describe('#element', () => {
     it('should execute function on first found element', async () => {
-      helper.elements = ['el1', 'el2', 'el3']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }, { id: 'el3' }]
       let elementUsed
 
       await els.element('my test', '.selector', async el => {
-        elementUsed = await el
+        elementUsed = el
       })
 
       if (elementUsed) {
-        assert.equal(elementUsed, 'el1')
+        assert.equal(elementUsed.getNativeElement().id, 'el1')
       }
     })
 
     it('should work without purpose parameter', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
       let elementUsed
 
       await els.element('.selector', async el => {
-        elementUsed = await el
+        elementUsed = el
       })
 
       if (elementUsed) {
-        assert.equal(elementUsed, 'el1')
+        assert.equal(elementUsed.getNativeElement().id, 'el1')
       }
     })
 
@@ -70,7 +76,7 @@ describe('els', function () {
     })
 
     it('should fail on timeout if timeout is set', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
       try {
         await els.element(
           '.selector',
@@ -87,40 +93,40 @@ describe('els', function () {
     })
 
     it('should retry until timeout when retries are set', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
       let attempts = 0
       await els.element(
         '.selector',
-        async els => {
+        async el => {
           attempts++
           if (attempts < 2) {
             throw new Error('keep retrying')
           }
-          return els.slice(0, attempts)
+          return el.getNativeElement().id
         },
         new StepConfig().retry(2),
       )
 
       await recorder.promise()
       expect(attempts).to.be.at.least(2)
-      expect(helper.elements).to.deep.equal(['el1', 'el2'])
+      expect(helper.elements[0].id).to.equal('el1')
     })
   })
 
   describe('#eachElement', () => {
     it('should execute function on each element', async () => {
-      helper.elements = ['el1', 'el2', 'el3']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }, { id: 'el3' }]
       const usedElements = []
 
       await els.eachElement('.selector', async el => {
-        usedElements.push(el)
+        usedElements.push(el.getNativeElement().id)
       })
 
       assert.deepEqual(usedElements, ['el1', 'el2', 'el3'])
     })
 
     it('should provide index as second parameter', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
       const indices = []
 
       await els.eachElement('.selector', async (el, i) => {
@@ -131,22 +137,22 @@ describe('els', function () {
     })
 
     it('should work without purpose parameter', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
       const usedElements = []
 
       await els.eachElement('.selector', async el => {
-        usedElements.push(el)
+        usedElements.push(el.getNativeElement().id)
       })
 
       assert.deepEqual(usedElements, ['el1', 'el2'])
     })
 
     it('should throw first error if operation fails', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
 
       try {
         await els.eachElement('.selector', async el => {
-          throw new Error(`failed on ${el}`)
+          throw new Error(`failed on ${el.getNativeElement().id}`)
         })
         throw new Error('should have thrown error')
       } catch (e) {
@@ -157,13 +163,13 @@ describe('els', function () {
 
   describe('#expectElement', () => {
     it('should pass when condition is true', async () => {
-      helper.elements = ['el1']
+      helper.elements = [{ id: 'el1' }]
 
       await els.expectElement('.selector', async () => true)
     })
 
     it('should fail when condition is false', async () => {
-      helper.elements = ['el1']
+      helper.elements = [{ id: 'el1' }]
 
       try {
         await els.expectElement('.selector', async () => false)
@@ -176,13 +182,13 @@ describe('els', function () {
 
   describe('#expectAnyElement', () => {
     it('should pass when any element matches condition', async () => {
-      helper.elements = ['el1', 'el2', 'el3']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }, { id: 'el3' }]
 
-      await els.expectAnyElement('.selector', async el => el === 'el2')
+      await els.expectAnyElement('.selector', async el => el.getNativeElement().id === 'el2')
     })
 
     it('should fail when no element matches condition', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
 
       try {
         await els.expectAnyElement('.selector', async () => false)
@@ -195,16 +201,16 @@ describe('els', function () {
 
   describe('#expectAllElements', () => {
     it('should pass when all elements match condition', async () => {
-      helper.elements = ['el1', 'el2']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }]
 
       await els.expectAllElements('.selector', async () => true)
     })
 
     it('should fail when any element does not match condition', async () => {
-      helper.elements = ['el1', 'el2', 'el3']
+      helper.elements = [{ id: 'el1' }, { id: 'el2' }, { id: 'el3' }]
 
       try {
-        await els.expectAllElements('.selector', async el => el !== 'el2')
+        await els.expectAllElements('.selector', async el => el.getNativeElement().id !== 'el2')
         throw new Error('should have thrown error')
       } catch (e) {
         expect(e.cliMessage()).to.include('element #2 of (.selector)')

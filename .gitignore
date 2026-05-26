@@ -17,6 +17,9 @@ examples/selenoid-example/output
 test/data/app/db
 test/data/sandbox/steps.d.ts
 test/data/sandbox/configs/custom-reporter-plugin/output/result.json
+test/data/sandbox/configs/html-reporter-plugin/output/
+output/
+test/runner/output/
 testpullfilecache*
 .DS_Store
 package-lock.json
@@ -24,3 +27,5 @@ yarn.lock
 /.vs
 typings/types.d.ts
 typings/promiseBasedTypes.d.ts
+reflection/
+skills/

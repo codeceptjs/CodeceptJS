@@ -6,21 +6,19 @@ title: Bootstrap
 # Bootstrap
 
 In case you need to execute arbitrary code before or after the tests,
-you can use the `bootstrap` and `teardown` config. Use it to start and stop a webserver, Selenium, etc.
+you can use the `bootstrap` and `teardown` config. Use it to start and stop a webserver, seed a database, etc.
 
 When using the [parallel execution](/parallel) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [bootstrapAll & teardownAll](#bootstrapall-teardownall) for more information.
 
-
-> ⚠ In CodeceptJS 2 bootstrap could be set as a function with `done` parameter. This way of handling async function was replaced with native async functions in CodeceptJS 3.
 
 ### Example: Bootstrap & Teardown
 
 If you are using JavaScript-style config `codecept.conf.js`, bootstrap and teardown functions can be placed inside of it:
 
 ```js
-var server = require('./app_server');
+import server from './app_server.js';
 
-exports.config = {
+export default {
   tests: "./*_test.js",
   helpers: {},
 
@@ -63,10 +61,10 @@ Using JavaScript-style config `codecept.conf.js`, bootstrapAll and teardownAll f
 
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 const tempFolder = process.cwd() + '/tmpFolder';
 
-exports.config = {
+export default {
   tests: "./*_test.js",
   helpers: {},
 
@@ -95,13 +93,12 @@ exports.config = {
 
 ## Combining Bootstrap & BootstrapAll
 
-It is quite common that you expect that bootstrapAll and bootstrap will do the same thing. If an application server is already started in `bootstrapAll` we should not run it again inside `bootstrap` for each worker. To avoid code duplication we can run bootstrap script only when we are not inside a worker. And we will use NodeJS `isMainThread` Workers API to detect that:
+It is quite common that you expect that bootstrapAll and bootstrap will do the same thing. If an application server is already started in `bootstrapAll` we should not run it again inside `bootstrap` for each worker. To avoid code duplication we can run bootstrap script only when we are not inside a worker. CodeceptJS provides `store.workerMode` to detect if code is running in a worker process:
 
 ```js
 // inside codecept.conf.js
 
-// detect if we are in a worker thread
-const { isMainThread } = require('worker_threads');
+import store from 'codeceptjs/lib/store.js';
 
 async function startServer() {
   // implement starting server logic here
@@ -111,7 +108,7 @@ async function stopServer() {
 }
 
 
-exports.config = {
+export default {
   // codeceptjs config goes here
 
   async bootstrapAll() {
@@ -119,12 +116,12 @@ exports.config = {
   },
   async bootstrap() {
     // start a server only if we are not in worker
-    if (isMainThread) return startServer();
+    if (!store.workerMode) return startServer();
   }
 
   async teardown() {
-    // start a server only if we are not in worker
-    if (isMainThread) return stopServer();
+    // stop a server only if we are not in worker
+    if (!store.workerMode) return stopServer();
   }
 
   async teardownAll() {

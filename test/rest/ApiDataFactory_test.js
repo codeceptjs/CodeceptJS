@@ -1,10 +1,15 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
 
-require('../support/setup')
-const TestHelper = require('../support/TestHelper')
-const ApiDataFactory = require('../../lib/helper/ApiDataFactory')
-global.codeceptjs = require('../../lib')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+import '../support/setup.js'
+import TestHelper from '../support/TestHelper.js'
+import ApiDataFactory from '../../lib/helper/ApiDataFactory.js'
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 const api_url = TestHelper.jsonServerUrl()
 
@@ -47,7 +52,11 @@ describe('ApiDataFactory', function () {
     setTimeout(done, 5000)
   })
 
-  afterEach(() => I._after())
+  afterEach(async () => {
+    await I._after()
+    // Add extra delay to ensure cleanup propagates in Docker environments
+    await new Promise(resolve => setTimeout(resolve, 200))
+  })
 
   describe('create and cleanup records', function () {
     this.retries(2)

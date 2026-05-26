@@ -47,6 +47,12 @@ Run single test with steps printed
 npx codeceptjs run github_test.js --steps
 ```
 
+Run test files in shuffled order
+
+```sh
+npx codeceptjs run --shuffle
+```
+
 Run single test in debug mode (see more in [debugging](#Debugging) section)
 
 ```sh
@@ -94,13 +100,74 @@ Display complete debug output including scheduled promises
 DEBUG=codeceptjs:* npx codeceptjs run
 ```
 
+## Plugin Arguments
+
+`run`, `run-workers`, `run-multiple`, `run-rerun` and `dry-run` accept a `-p` (`--plugins`) flag to enable plugins on the command line, with optional arguments per plugin. Tokens are colon-chained per plugin, comma-separated across plugins:
+
+```sh
+npx codeceptjs run -p <name>                       # enable plugin
+npx codeceptjs run -p <name>:<arg1>:<arg2>         # enable + pass args
+npx codeceptjs run -p <plugin1>,<plugin2>:<arg>    # multiple plugins
+```
+
+Plugins listed via `-p` are activated even when their config has `enabled: false` (or no `enabled` flag). This is the supported way to switch a plugin on for a single run without editing `codecept.conf`.
+
+A few examples:
+
+```sh
+npx codeceptjs run -p pause                              # pause on first failure (default on=fail)
+npx codeceptjs run -p pause:on=step                      # pause before every step
+npx codeceptjs run -p pause:on=url:pattern=/checkout/*   # pause on URL match
+npx codeceptjs run -p "screenshot:on=step;slides=true"   # produce a step-by-step HTML report
+```
+
+### Browser Control
+
+The built-in `browser` plugin overrides browser-helper config from the CLI — works for Playwright, Puppeteer, WebDriver and Appium without editing `codecept.conf`.
+
+```sh
+npx codeceptjs run -p browser:show                       # force visible browser
+npx codeceptjs run -p browser:hide                       # force headless
+npx codeceptjs run -p browser:browser=firefox            # switch engine
+npx codeceptjs run -p browser:windowSize=1024x768        # set viewport
+npx codeceptjs run -p browser:hide:browser=webkit:windowSize=800x600
+```
+
+Tokens after `browser:` are either flags (`show`, `hide`) or `key=value` pairs. Three keys get per-helper translation:
+
+- `browser=<name>` — Puppeteer receives `product`, Playwright/WebDriver receive `browser`. Validated per helper (`chromium`/`webkit`/`firefox` for Playwright, `chrome`/`firefox` for Puppeteer).
+- `show=true|false` (or the `show`/`hide` flag) — sets `show` on Playwright/Puppeteer; injects/strips `--headless` in WebDriver chrome/firefox capability args.
+- `windowSize=WxH` — sets `windowSize` on every helper; also adds `--window-size=W,H` to chromium/chrome args for Playwright/Puppeteer.
+
+Anything else (`-p browser:video=false:waitForTimeout=10000`) is shallow-merged onto every browser helper present in config. Values are coerced (`true`/`false` → boolean, digits → Number, otherwise string).
+
 ## Run Workers
 
-Run tests in parallel threads.
+Run tests in parallel threads. CodeceptJS supports different distribution strategies for optimal performance.
 
-```
+```bash
+# Run with 3 workers using default strategy (pre-assign tests)
 npx codeceptjs run-workers 3
+
+# Run with pool mode for dynamic test distribution (recommended)
+npx codeceptjs run-workers 3 --by pool
+
+# Run with suite distribution
+npx codeceptjs run-workers 3 --by suite
+
+# Pool mode with filtering
+npx codeceptjs run-workers 4 --by pool --grep "@smoke"
 ```
+
+**Test Distribution Strategies:**
+
+- `--by test` (default): Pre-assigns individual tests to workers
+- `--by suite`: Pre-assigns entire test suites to workers  
+- `--by pool`: Dynamic distribution for optimal load balancing (recommended for best performance)
+
+The pool mode provides the best load balancing by maintaining tests in a shared pool and distributing them dynamically as workers become available. This prevents workers from sitting idle and ensures optimal CPU utilization, especially when tests have varying execution times.
+
+See [Parallel Execution](/parallel) documentation for more details.
 
 ## Run Rerun <Badge text="Since 3.3.6" type="warning"/>
 
@@ -251,10 +318,29 @@ npx codeceptjs def -o ./tests/typings
 
 ## List Commands
 
-Prints all available methods of `I` to console
+Prints all available methods of `I` to console.
 
 ```sh
 npx codeceptjs list
+```
+
+Use `-c` to point at a specific config (same as `run`):
+
+```sh
+npx codeceptjs list -c ./test/acceptance/codecept.Playwright.js
+```
+
+Add `--docs` to print full documentation (description, examples, `@param` annotations) below each action — pulled from helper JSDoc and `docs/webapi/*` snippets:
+
+```sh
+npx codeceptjs list --docs
+```
+
+Use `--action` to show docs for a single action. The `I.` prefix is optional and `--docs` is implied:
+
+```sh
+npx codeceptjs list --action amOnPage
+npx codeceptjs list --action I.click -c ./test/acceptance/codecept.Playwright.js
 ```
 
 ## Local Environment Information
