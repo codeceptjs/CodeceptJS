@@ -1,9 +1,13 @@
-let I;
+import { actor } from 'codeceptjs'
 
-module.exports = {
+let I
+
+const signinMethods = {
   _init() {
-    I = actor();
+    I = actor()
   },
 
   // insert your locators and methods here
-};
+}
+
+export default signinMethods

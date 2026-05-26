@@ -872,16 +872,21 @@ Returns **[Promise][6]\<void>** Appium: support both Android and iOS
 Appends text to a input field or textarea.
 Field is located by name, label, CSS or XPath
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.appendField('#myTextField', 'appended');
 // typing secret
 I.appendField('password', secret('123456'));
+// within a context
+I.appendField('name', 'John', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` **([string][5] | [object][11])** located by label|name|CSS|XPath|strict locator
 *   `value` **[string][5]** text value to append.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -890,7 +895,7 @@ Returns **void** automatically synchronized promise through #recorder
 Selects a checkbox or radio button.
 Element is located by label or name or CSS or XPath.
 
-The second parameter is a context (CSS or XPath locator) to narrow the search.
+The second parameter is an optional context (CSS or XPath locator) to narrow the search.
 
 ```js
 I.checkOption('#agree');
@@ -912,9 +917,13 @@ If a fuzzy locator is given, the page will be searched for a button, link, or im
 For buttons, the "value" attribute, "name" attribute, and inner text are searched. For links, the link text is searched.
 For images, the "alt" attribute and inner text of any parent links are searched.
 
+If no locator is provided, defaults to clicking the body element (`'//body'`).
+
 The second parameter is a context (CSS or XPath locator) to narrow the search.
 
 ```js
+// click body element (default)
+I.click();
 // simple link
 I.click('Logout');
 // button of form
@@ -927,11 +936,15 @@ I.click('//form/*[@type=submit]');
 I.click('Logout', '#nav');
 // using strict locator
 I.click({css: 'nav a.login'});
+// using ARIA role locator
+I.click({role: 'button', name: 'Submit'});
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][17].
 
 #### Parameters
 
-*   `locator` **([string][5] | [object][11])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+*   `locator` **([string][5] | [object][11])** (optional, `'//body'` by default) clickable link or button located by text, or any element located by CSS|XPath|strict locator. (optional, default `'//body'`)
 *   `context` **([string][5]? | [object][11] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
@@ -956,13 +969,17 @@ Returns **void** automatically synchronized promise through #recorder
 
 Opposite to `seeElement`. Checks that element is not visible (or in DOM)
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeElement('.modal'); // modal is not shown
+I.dontSeeElement('.modal', '#container');
 ```
 
 #### Parameters
 
 *   `locator` **([string][5] | [object][11])** located by CSS|XPath|Strict locator.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -971,15 +988,20 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that value of input field or textarea doesn't equal to given value
 Opposite to `seeInField`.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.dontSeeInField('email', 'user@user.com'); // field by name
 I.dontSeeInField({ css: 'form input.email' }, 'user@user.com'); // field by CSS
+// within a context
+I.dontSeeInField('Name', 'old_value', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` **([string][5] | [object][11])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][5] | [object][11])** value to check.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1005,6 +1027,8 @@ Returns **void** automatically synchronized promise through #recorder
 Fills a text field or textarea, after clearing its value, with the given string.
 Field is located by name, label, CSS, or XPath.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 // by label
 I.fillField('Email', 'hello@world.com');
@@ -1014,12 +1038,19 @@ I.fillField('password', secret('123456'));
 I.fillField('form#login input[name=username]', 'John');
 // or by strict locator
 I.fillField({css: 'form#login input[name=username]'}, 'John');
+// by ARIA role locator
+I.fillField({role: 'textbox', name: 'Email'}, 'hello@world.com');
+// within a context
+I.fillField('Name', 'John', '#section2');
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match fields by their accessible name and survive markup refactors. See [Locators][17].
 
 #### Parameters
 
 *   `field` **([string][5] | [object][11])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][5] | [object][11])** text value to fill.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1165,7 +1196,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 *   `locator` **([string][5] | [object][11])** located by CSS|XPath|strict locator.
-*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][7])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][17].
+*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][7])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][18].
 
 Returns **void** automatically synchronized promise through #recorderSupported only for web testing
 
@@ -1190,13 +1221,21 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that a given Element is visible
 Element is located by CSS or XPath.
 
+The second parameter is a context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.seeElement('#modal');
+I.seeElement('#modal', '#container');
+// using ARIA role locator
+I.seeElement({role: 'dialog'});
 ```
+
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][17].
 
 #### Parameters
 
 *   `locator` **([string][5] | [object][11])** located by CSS|XPath|strict locator.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1205,17 +1244,22 @@ Returns **void** automatically synchronized promise through #recorder
 Checks that the given input field or textarea equals to given value.
 For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.seeInField('Username', 'davert');
 I.seeInField({css: 'form textarea'},'Type your comment here');
 I.seeInField('form input[type=hidden]','hidden_value');
 I.seeInField('#searchform input','Search');
+// within a context
+I.seeInField('Name', 'John', '.form-container');
 ```
 
 #### Parameters
 
 *   `field` **([string][5] | [object][11])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][5] | [object][11])** value to check.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1243,6 +1287,8 @@ Selects an option in a drop-down select.
 Field is searched by label | name | CSS | XPath.
 Option is selected by visible text or by value.
 
+The third parameter is an optional context (CSS or XPath locator) to narrow the search.
+
 ```js
 I.selectOption('Choose Plan', 'Monthly'); // select by label
 I.selectOption('subscription', 'Monthly'); // match option by text
@@ -1250,6 +1296,8 @@ I.selectOption('subscription', '0'); // or by value
 I.selectOption('//form/select[@name=account]','Premium');
 I.selectOption('form select[name=account]', 'Premium');
 I.selectOption({css: 'form select[name=account]'}, 'Premium');
+// within a context
+I.selectOption('age', '21-60', '#section2');
 ```
 
 Provide an array for the second argument to select multiple options.
@@ -1262,6 +1310,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 *   `select` **([string][5] | [object][11])** field located by label|name|CSS|XPath|strict locator.
 *   `option` **([string][5] | [Array][8]\<any>)** visible text or value of option.
+*   `context` **([string][5]? | [object][11])** (optional, `null` by default) element located by CSS | XPath | strict locator. (optional, default `null`)
 
 Returns **void** automatically synchronized promise through #recorderSupported only for web testing
 
@@ -1365,4 +1414,6 @@ Returns **void** automatically synchronized promise through #recorder
 
 [16]: http://webdriver.io/api/mobile/setImmediateValue.html
 
-[17]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[17]: /locators#aria-locators
+
+[18]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView

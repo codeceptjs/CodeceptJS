@@ -81,37 +81,6 @@ Data(function*() {
 
 *HINT: If you don't use DataTable. add `toString()` method to each object added to data set, so the data could be pretty printed in a test name*
 
-## Tags
-
-Append `@tag` to your test name, so
-
-```js
-Scenario('update user profile @slow')
-```
-
-Alternativly, use `tag` method of Scenario to set additional tags:
-
-```js
-Scenario('update user profile', ({  }) => {
-  // test goes here
-}).tag('@slow').tag('important');
-```
-
-All tests with `@tag` could be executed with `--grep '@tag'` option.
-
-```sh
-codeceptjs run --grep '@slow'
-```
-
-Use regex for more flexible filtering:
-
-* `--grep '(?=.*@smoke2)(?=.*@smoke3)'` - run tests with @smoke2 and @smoke3 in name
-* `--grep "\@smoke2|\@smoke3"` - run tests with @smoke2 or @smoke3 in name
-* `--grep '((?=.*@smoke2)(?=.*@smoke3))|@smoke4'` - run tests with (@smoke2 and @smoke3) or @smoke4 in name
-* `--grep '(?=.*@smoke2)^(?!.*@smoke3)'` - run tests with @smoke2 but without @smoke3 in name
-* `--grep '(?=.*)^(?!.*@smoke4)'` - run all tests except @smoke4
-
-
 
 ## Debug
 
@@ -165,7 +134,7 @@ Feature('My feature', {key: val});
 Scenario('My scenario', {key: val},({ I }) => {});
 ```
 
-You can use this options for build your own [plugins](https://codecept.io/hooks/#plugins) with [event listners](https://codecept.io/hooks/#api). Example: 
+You can use these options to build your own [plugins](https://codecept.io/hooks#plugins) with [event listeners](https://codecept.io/architecture#events). Example: 
 
 ```js
   // for test
@@ -186,166 +155,47 @@ You can use this options for build your own [plugins](https://codecept.io/hooks/
   });
 ```
 
-## Timeout
+## Direct Helper Access
 
-Tests can get stuck due to various reasons such as network connection issues, crashed browser, etc.
-This can make tests process hang. To prevent these situations timeouts can be used. Timeouts can be set explicitly for flaky parts of code, or implicitly in a config.
-
-> Previous timeout implementation was disabled as it had no effect when dealing with steps and promises. 
-
-### Steps Timeout
-
-It is possible to limit a step execution to specified time with `I.limitTime` command. 
-It will set timeout in seconds for the next executed step:
+Some scenarios need the underlying SDK directly — a raw `page.evaluate`, a `page.on('request')` listener, an experimental Playwright API, or a wdio command the `WebDriver` helper doesn't expose. The `expose` plugin injects helper internals as scenario arguments so you can call them inline.
 
 ```js
-// limit clicking to 5 seconds
-I.limitTime(5).click('Link')
-```
-
-It is possible to set a timeout for all steps implicitly (except waiters) using [stepTimeout plugin](/plugins/#steptimeout).
-
-### Tests Timeout
-
-Test timeout can be set in seconds via Scenario options:
-
-```js
-// limit test to 20 seconds
-Scenario('slow test that should be stopped', { timeout: 20 }, ({ I }) => {
-  // ...
+Scenario('intercept network', async ({ I, page }) => {
+  page.on('request', req => console.log(req.method(), req.url()))
+  I.amOnPage('/')
+  const title = await page.evaluate(() => document.title)
+  I.see(title)
 })
 ```
-
-This timeout can be set globally in `codecept.conf.js` in seconds:
+Enable `expose` plugin in config and use public properties from a corresponding helper.
+Map each injection name to `HelperName.propertyName`:
 
 ```js
-exports.config = {
-
-  // each test must not run longer than 5 mins
-  timeout: 300,
-
+plugins: {
+  expose: {
+    enabled: true,
+    inject: {
+      page: 'Playwright.page',
+      browser: 'Playwright.browser',
+      browserContext: 'Playwright.browserContext',
+      wdio: 'WebDriver.browser',
+    }
+  }
 }
 ```
 
-### Suites Timeout
-
-A timeout for a group of tests can be set on Feature level via options. 
+There is a shorthand mode:
 
 ```js
-// limit all tests in this suite to 30 seconds
-Feature('flaky tests', { timeout: 30 })
-```
-
-### Timeout Confguration 
-
-<Badge text="Updated in 3.4" type="warning"/>
-
-Timeout rules can be set globally via config.
-
-To set a timeout for all running tests provide a **number of seconds** to `timeout` config option:
-
-
-```js
-// inside codecept.conf.js or codecept.conf.ts
-timeout: 30, // limit all tests in all suites to 30 secs
-```
-
-It is possible to tune this configuration for a different groups of tests passing options as array and using `grep` option to filter tests:
-
-```js
-// inside codecept.conf.js or codecept.conf.ts
-
-timeout: [
-  10, // default timeout is 10secs  
-
-  // but increase timeout for slow tests
-  {
-    grep: '@slow',
-    Feature: 50
-  },
-]
-```
-
-> ℹ️ `grep` value can be string or regexp
-
-It is possible to set a timeout for Scenario or Feature:
-
-```js
-// inside codecept.conf.js or codecept.conf.ts
-timeout: [
-
-  // timeout for Feature with @slow in title
-  {
-    grep: '@slow',
-    Feature: 50
-  },
-  
-  // timeout for Scenario with 'flaky0' .. `flaky1` in title
-  {
-    // regexp can be passed to grep
-    grep: /flaky[0-9]/,
-    Scenario: 10
-  },
-
-  // timeout for all suites
-  {    
-    Feature: 20
+plugins: {
+  expose: {
+    enabled: true,
+    inject: { page: 'page' }   // resolves Playwright.page or Puppeteer.page
   }
-]
+}
 ```
+A value with no dot is shorthand for "the first configured browser helper that exposes this property". Allowed properties: `page`, `browser`, `browserContext`, `context`.
 
-Global timeouts will be overridden by explicit timeouts of a test or steps.
+The injected value is a live proxy. Every property access reads the current helper property at that moment, so tab switches (`I.openNewTab`, `I.switchToNextTab`) propagate automatically — the next call through `page` targets the new tab.
 
-### Disable Timeouts
-
-To execute tests ignoring all timeout settings use `--no-timeouts` option:
-
-```
-npx codeceptjs run --no-timeouts
-```
-
-## Dynamic Configuration
-
-Helpers can be reconfigured per scenario or per feature.
-This might be useful when some tests should be executed with different settings than others.
-In order to reconfigure tests use `.config()` method of `Scenario` or `Feature`.
-
-```js
-Scenario('should be executed in firefox', ({ I }) => {
-  // I.amOnPage(..)
-}).config({ browser: 'firefox' })
-```
-
-In this case `config` overrides current config of the first helper.
-To change config of specific helper pass two arguments: helper name and config values:
-
-```js
-Scenario('should create data via v2 version of API', ({ I }) => {
-  // I.amOnPage(..)
-}).config('REST', { endpoint: 'https://api.mysite.com/v2' })
-```
-
-Config can also be set by a function, in this case you can get a test object and specify config values based on it.
-This is very useful when running tests against cloud providers, like BrowserStack. This function can also be asynchronous.
-
-```js
-Scenario('should report to BrowserStack', ({ I }) => {
-  // I.amOnPage(..)
-}).config((test) => {
-  return { desiredCapabilities: {
-    project: test.suite.title,
-    name: test.title,
-  }}
-});
-```
-
-Config changes can be applied to all tests in suite:
-
-```js
-Feature('Admin Panel').config({ url: 'https://mysite.com/admin' });
-```
-
-Please note that some config changes can't be applied on the fly. For instance, if you set `restart: false` in your config and then changing value `browser` won't take an effect as browser is already started and won't be closed untill all tests finish.
-
-Configuration changes will be reverted after a test or a suite.
-
+Calls pass straight to the underlying SDK. They aren't wrapped as CodeceptJS steps and don't appear in step output, so `await page.evaluate(...)` behaves as native Playwright.

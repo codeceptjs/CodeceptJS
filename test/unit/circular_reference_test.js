@@ -1,8 +1,8 @@
-const { expect } = require('chai')
-const { safeStringify } = require('../../lib/utils')
-const { createTest } = require('../../lib/mocha/test')
-const { createSuite } = require('../../lib/mocha/suite')
-const MochaSuite = require('mocha/lib/suite')
+import { expect } from 'chai'
+import { safeStringify, truncateString } from '../../lib/utils.js'
+import { createTest } from '../../lib/mocha/test.js'
+import { createSuite } from '../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite.js'
 
 describe('Circular Reference Handling', function () {
   describe('safeStringify utility', function () {
@@ -157,6 +157,103 @@ describe('Circular Reference Handling', function () {
 
       const parsed = JSON.parse(result)
       expect(parsed.title).to.equal('Test Suite')
+    })
+  })
+
+  describe('safeStringify type coercions', function () {
+    it('coerces functions to "[Function: name]"', function () {
+      const obj = { fn: function namedFn() {}, anon: () => {} }
+      const parsed = JSON.parse(safeStringify(obj))
+      expect(parsed.fn).to.equal('[Function: namedFn]')
+      expect(parsed.anon).to.match(/^\[Function: .*\]$/)
+    })
+
+    it('coerces BigInt values (which JSON.stringify cannot natively handle)', function () {
+      const result = safeStringify({ big: 12345678901234567890n })
+      expect(result).to.contain('12345678901234567890n')
+      // Verify the legacy fallback path is NOT triggered
+      expect(result).to.not.contain('Failed to serialize')
+    })
+
+    it('coerces Symbol to its toString()', function () {
+      const obj = { s: Symbol('marker') }
+      const parsed = JSON.parse(safeStringify(obj))
+      expect(parsed.s).to.equal('Symbol(marker)')
+    })
+
+    it('coerces Error to {name, message, stack}', function () {
+      const obj = { err: new Error('boom') }
+      const parsed = JSON.parse(safeStringify(obj))
+      expect(parsed.err).to.have.property('name', 'Error')
+      expect(parsed.err).to.have.property('message', 'boom')
+      expect(parsed.err).to.have.property('stack')
+      expect(parsed.err.stack).to.be.a('string').and.include('boom')
+    })
+
+    it('coerces an Error at the top level', function () {
+      const result = safeStringify(new TypeError('bad arg'))
+      const parsed = JSON.parse(result)
+      expect(parsed.name).to.equal('TypeError')
+      expect(parsed.message).to.equal('bad arg')
+    })
+
+    it('handles nested mixed types together', function () {
+      const obj = {
+        regular: 1,
+        fn: function n() {},
+        big: 1n,
+        sym: Symbol('s'),
+        err: new RangeError('range'),
+        nested: { again: { fn: () => {} } },
+      }
+      const parsed = JSON.parse(safeStringify(obj))
+      expect(parsed.regular).to.equal(1)
+      expect(parsed.fn).to.equal('[Function: n]')
+      expect(parsed.big).to.equal('1n')
+      expect(parsed.sym).to.equal('Symbol(s)')
+      expect(parsed.err.name).to.equal('RangeError')
+      expect(parsed.nested.again.fn).to.match(/^\[Function:/)
+    })
+
+    it('preserves indentation when space arg is provided', function () {
+      const result = safeStringify({ a: 1 }, [], 2)
+      expect(result).to.contain('\n  "a": 1')
+    })
+  })
+
+  describe('truncateString', function () {
+    it('returns input as-is when under maxBytes', function () {
+      const result = truncateString('hello', 100)
+      expect(result.value).to.equal('hello')
+      expect(result.truncated).to.be.false
+      expect(result.fullLength).to.equal(5)
+    })
+
+    it('returns input as-is when exactly equal to maxBytes', function () {
+      const result = truncateString('xxxxx', 5)
+      expect(result.truncated).to.be.false
+      expect(result.value).to.equal('xxxxx')
+    })
+
+    it('truncates and appends marker when over maxBytes', function () {
+      const result = truncateString('x'.repeat(50), 10)
+      expect(result.truncated).to.be.true
+      expect(result.fullLength).to.equal(50)
+      expect(result.value.startsWith('xxxxxxxxxx')).to.be.true
+      expect(result.value).to.contain('truncated 40 more chars')
+    })
+
+    it('coerces non-string inputs via String()', function () {
+      const result = truncateString(12345, 100)
+      expect(result.value).to.equal('12345')
+      expect(result.truncated).to.be.false
+    })
+
+    it('handles empty string', function () {
+      const result = truncateString('', 10)
+      expect(result.value).to.equal('')
+      expect(result.truncated).to.be.false
+      expect(result.fullLength).to.equal(0)
     })
   })
 

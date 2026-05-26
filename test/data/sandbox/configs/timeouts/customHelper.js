@@ -1,3 +1,5 @@
+import Helper from '@codeceptjs/helper'
+
 function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -10,4 +12,4 @@ class CustomHelper extends Helper {
   }
 }
 
-module.exports = CustomHelper;
+export default CustomHelper

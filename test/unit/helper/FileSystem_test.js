@@ -1,13 +1,13 @@
-const path = require('path')
+import path from 'path'
+import { expect } from 'chai'
+import { fileURLToPath } from 'url'
+import FileSystem from '../../../lib/helper/FileSystem.js'
+import codeceptjs from '../../../lib/index.js'
 
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-const FileSystem = require('../../../lib/helper/FileSystem')
-
-global.codeceptjs = require('../../../lib')
+global.codeceptjs = codeceptjs
 
 let fs
 

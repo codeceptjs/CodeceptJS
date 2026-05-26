@@ -3,8 +3,12 @@ name: Appium Tests - Android
 on:
   push:
     branches:
-      - 3.x
-      - 5228-fix-appium-tests
+      - 4.x
+      - appium-esm-migration
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   CI: true
@@ -16,6 +20,7 @@ env:
 jobs:
   appium:
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
 
     strategy:
       matrix:
@@ -42,4 +47,5 @@ jobs:
           --form 'payload=@test/data/mobile/selendroid-test-app-0.17.0.apk' \
           --form 'name="selendroid-test-app-0.17.0.apk"'
 
-      - run: 'npm run test:appium-${{ matrix.test-suite }}'
+      - run: 'timeout 900 bash -c "npm run test:appium-${{ matrix.test-suite }}"'
+        timeout-minutes: 20

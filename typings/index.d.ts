@@ -4,7 +4,6 @@
 /// <reference path="./promiseBasedTypes.d.ts" />
 /// <reference types="webdriverio" />
 /// <reference path="./Mocha.d.ts" />
-/// <reference types="joi" />
 /// <reference types="playwright" />
 
 declare namespace CodeceptJS {
@@ -210,9 +209,6 @@ declare namespace CodeceptJS {
        * ```
        */
       JSONResponse?: any
-
-      /** Enable AI features for development purposes */
-      AI?: any
 
       [key: string]: any
     }
@@ -465,7 +461,6 @@ declare namespace CodeceptJS {
     | { ios: string }
     | { android: string; ios: string }
     | { react: string }
-    | { vue: string }
     | { shadow: string[] }
     | { custom: string }
     | { pw: string }
@@ -518,11 +513,13 @@ declare namespace CodeceptJS {
   interface HookConfig {
     retry(retries?: number): HookConfig
   }
+
+  function addStep(step: string | RegExp, fn: Function): Promise<void>
 }
 
-type TryTo = <T>(fn: () => Promise<T> | T) => Promise<T | false>
-type HopeThat = <T>(fn: () => Promise<T> | T) => Promise<T | false>
-type RetryTo = <T>(fn: () => Promise<T> | T, retries?: number) => Promise<T>
+type TryTo = (fn: () => void) => Promise<boolean>
+type HopeThat = (fn: () => void) => Promise<boolean>
+type RetryTo = (fn: (tries: number) => Promise<void> | void, maxTries: number, pollInterval?: number) => Promise<boolean>
 
 // Globals
 declare const codecept_dir: string
@@ -540,7 +537,7 @@ declare const within: typeof CodeceptJS.within
 declare const session: typeof CodeceptJS.session
 declare const DataTable: typeof CodeceptJS.DataTable
 declare const DataTableArgument: typeof CodeceptJS.DataTableArgument
-declare const codeceptjs: typeof CodeceptJS.index
+declare const codeceptjs: typeof CodeceptJS
 declare const locate: typeof CodeceptJS.Locator.build
 declare function inject(): CodeceptJS.SupportObject
 declare function inject<T extends keyof CodeceptJS.SupportObject>(name: T): CodeceptJS.SupportObject[T]
@@ -633,16 +630,132 @@ declare namespace Mocha {
   }
 }
 
+// Internal API types
 declare module 'codeceptjs' {
-  export = codeceptjs
+  export default codeceptjs
+
+  /**
+   * Dependency Injection Container
+   * Provides access to helpers, support objects, plugins, and translation
+   */
+  export const container: typeof CodeceptJS.Container
+
+  /**
+   * Test runner class
+   */
+  export const codecept: typeof CodeceptJS.Codecept
+
+  /**
+   * Output module for printing messages
+   */
+  export const output: typeof CodeceptJS.output
+
+  /**
+   * Event dispatcher for listening to CodeceptJS events
+   */
+  export const event: typeof CodeceptJS.event
+
+  /**
+   * Global promise chain recorder
+   */
+  export const recorder: CodeceptJS.recorder
+
+  /**
+   * Configuration module
+   */
+  export const config: typeof CodeceptJS.Config
+
+  /**
+   * Actor (I) constructor
+   */
+  export const actor: CodeceptJS.actor
+
+  /**
+   * Base Helper class
+   */
+  export const helper: typeof CodeceptJS.Helper
+
+  /**
+   * Pause execution until user input
+   */
+  export const pause: typeof CodeceptJS.pause
+
+  /**
+   * Execute steps within specific context
+   */
+  export const within: typeof CodeceptJS.within
+
+  /**
+   * Create data tables for data-driven tests
+   */
+  export const dataTable: typeof CodeceptJS.DataTable
+
+  /**
+   * Create data table arguments
+   */
+  export const dataTableArgument: typeof CodeceptJS.DataTableArgument
+
+  /**
+   * Shared store for test data
+   */
+  export const store: typeof CodeceptJS.store
+
+  /**
+   * Locator builder
+   */
+  export const locator: typeof CodeceptJS.Locator
+
+  /**
+   * Auto-healing module
+   */
+  export const heal: any
+
+  /**
+   * AI assistant module
+   */
+  export const ai: any
+
+  /**
+   * Workers for parallel execution
+   */
+  export const Workers: any
+
+  /**
+   * Secret value type for sensitive data
+   */
+  export const Secret: typeof CodeceptJS.Secret
+
+  /**
+   * Create a secret value
+   */
+  export const secret: typeof CodeceptJS.Secret.secret
 }
 
 declare module '@codeceptjs/helper' {
-  export = CodeceptJS.Helper
+  export default CodeceptJS.Helper
 }
 
 declare module 'codeceptjs/effects' {
   export const tryTo: TryTo
   export const retryTo: RetryTo
   export const hopeThat: HopeThat
+}
+
+declare module 'codeceptjs/steps' {
+  const step: {
+    opts(opts: CodeceptJS.StepOptions): CodeceptJS.StepConfig;
+    timeout(timeout: number): CodeceptJS.StepConfig;
+    retry(retry: number): CodeceptJS.StepConfig;
+    stepOpts(opts: CodeceptJS.StepOptions): CodeceptJS.StepConfig;
+    stepTimeout(timeout: number): CodeceptJS.StepConfig;
+    stepRetry(retry: number): CodeceptJS.StepConfig;
+    section(name: string): any;
+    endSection(): any;
+    Section(name: string): any;
+    EndSection(): any;
+    Given(): any;
+    When(): any;
+    Then(): any;
+  }
+  export default step
 }

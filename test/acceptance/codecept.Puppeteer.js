@@ -1,8 +1,9 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper.js'
+import installCodeceptjs from '../support/install-codeceptjs.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 10,
   output: './output',
   helpers: {
     Puppeteer: {
@@ -21,13 +22,8 @@ module.exports.config = {
     },
   },
   include: {},
-  bootstrap: false,
+  bootstrap: installCodeceptjs,
   mocha: {},
-  plugins: {
-    screenshotOnFail: {
-      enabled: true,
-    },
-  },
   name: 'acceptance',
   gherkin: {
     features: './gherkin/*.feature',

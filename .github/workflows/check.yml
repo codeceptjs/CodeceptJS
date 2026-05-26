@@ -1,27 +1,31 @@
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
   pull_request:
     branches:
       - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-22.04
     name: Check Tests
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: testomatio/check-tests@stable
-        if: github.repository == 'codeceptjs/CodeceptJS' && github.event.pull_request.title == '3.x'
-        with:
-          framework: mocha
-          tests: './test/**/*_test.js'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          has-tests-label: true
-          comment-on-empty: true
-          github-pat: ${{ secrets.GH_PAT }}
-          enable-documentation: true
-          documentation-branch: 'master'
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - uses: testomatio/check-tests@stable
+      if: github.repository == 'codeceptjs/CodeceptJS' && github.event.pull_request.title == '4.x'
+      with:
+        framework: mocha
+        tests: "./test/**/*_test.js"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        has-tests-label: true
+        comment-on-empty: true
+        github-pat: ${{ secrets.GH_PAT }}
+        enable-documentation: true
+        documentation-branch: "master"

@@ -1,3 +1,6 @@
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+
 Feature('Filesystem').tag('main')
 
 Scenario('see content in file', ({ I }) => {

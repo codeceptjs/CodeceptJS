@@ -10,22 +10,20 @@ Applicable helpers:
 - [ ] REST
 - [ ] FileHelper
 - [ ] Appium
-- [ ] TestCafe
 
 Applicable plugins:
 
-- [ ] allure
+- [ ] aiTrace
 - [ ] autoDelay
 - [ ] autoLogin
 - [ ] customLocator
-- [ ] pauseOnFail
+- [ ] pause
 - [ ] coverage
+- [ ] heal
 - [ ] retryFailedStep
-- [ ] screenshotOnFail
+- [ ] screenshot
 - [ ] selenoid
-- [ ] stepByStepReport
 - [ ] stepTimeout
-- [ ] wdio
 - [ ] subtitles
 
 ## Type of change

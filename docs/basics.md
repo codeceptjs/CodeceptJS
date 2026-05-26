@@ -16,39 +16,68 @@ Scenario('check Welcome page on site', ({ I }) => {
 })
 ```
 
-Tests are expected to be written in **ECMAScript 7**.
+Tests are written as **ES modules** using modern JavaScript syntax.
 
 Each test is described inside a `Scenario` function with the `I` object passed into it.
 The `I` object is an **actor**, an abstraction for a testing user. The `I` is a proxy object for currently enabled **Helpers**.
 
-## Architecture
+## How It Works
 
-CodeceptJS bypasses execution commands to helpers. Depending on the helper enabled, your tests will be executed differently.
+### Command Delegation to Helpers
 
-The following is a diagram of the CodeceptJS architecture:
+**CodeceptJS delegates all test commands to helper backends.** Tests written with the `I` object (the actor) don't directly execute actions. Instead, CodeceptJS routes them through configurable helpers:
 
-![architecture](/img/architecture.png)
+- **Playwright** - Chromium, Firefox, WebKit automation
+- **WebDriver** - Native browser automation via WebDriver Protocol
+- **Appium** - Mobile testing on iOS/Android
+- **Puppeteer** - Chromium automation via DevTools Protocol
 
-All helpers share the same API, so it's easy to migrate tests from one backend to another.
-However, because of the difference in backends and their limitations, they are not guaranteed to be compatible with each other. For instance, you can't set request headers in WebDriver but you can do so in Playwright or Puppeteer.
+All helpers share the same API, so it's easy to switch backends. However, due to backend differences and limitations, they aren't guaranteed to be compatible with each other. For example, you can set request headers in Playwright or Puppeteer, but not in WebDriver.
 
-**Pick one helper, as it defines how tests are executed.** If requirements change it's easy to migrate to another.
+> **Pick one helper to define how your tests execute.** If requirements change, it's straightforward to migrate to another.
 
----
 
-Refer to following guides to more information on:
+### Promise Chain & Async/Await
 
-- [▶ Playwright](/playwright)
-- [▶ WebDriver](/webdriver)
-- [▶ Puppeteer](/puppeteer)
-- [▶ TestCafe](/testcafe)
+Tests appear synchronous but **all actions are wrapped in promises and chained together** in a global promise chain. This means:
 
-> ℹ Depending on a helper selected a list of available actions may change.
+- **You usually don't need `await` for regular actions** - commands are automatically queued
+- Each `I.*` command is appended to the promise chain
+- Setup, teardown, and all test steps execute in sequence
 
-To list all available commands for the current configuration run `codeceptjs list`
-or enable [auto-completion by generating TypeScript definitions](#intellisense).
+```js
+// These execute in order WITHOUT await
+I.amOnPage('/')
+I.click('Login')
+I.see('Welcome')
+```
 
-> 🤔 It is possible to access API of a backend you use inside a test or a [custom helper](/helpers/). For instance, to use Puppeteer API inside a test use [`I.usePuppeteerTo`](/helpers/Puppeteer/#usepuppeteerto) inside a test. Similar methods exist for each helper.
+Behind the scenes, this is equivalent to:
+```js
+Promise.resolve()
+  .then(() => I.amOnPage('/'))
+  .then(() => I.click('Login'))
+  .then(() => I.see('Welcome'))
+```
+
+When You DO Need `await`:
+
+Use `await` only with **grab** actions (methods that retrieve data from the page):
+
+```js
+Scenario('use data from page', async ({ I }) => {
+  I.fillField('email', 'user@example.com')
+  I.click('Generate Password')
+  // grab actions return data - use await here
+  const password = await I.grabTextFrom('#password')
+  I.fillField('password', password)
+  I.click('Login')
+})
+```
+
+Also **use `await` with imported functions and page object methods**, as they may contain async operations that aren't part of the promise chain (e.g., `await loginPage.login()` if it contains `I.grab` operations inside).
+
+> **Rule:** If an action starts with `grab`, or if calling an imported function/page object method, you must `await` it. Regular actions (`I.click()`, `I.fillField()`, `I.see()`) don't need await.
 
 ## Writing Tests
 
@@ -60,6 +89,34 @@ I.click('Login')
 I.see('Please Login', 'h1')
 // ...
 ```
+
+A complete test file looks like this:
+
+```js
+// suite declaration, like describe() in other frameworks
+Feature('User Authentication')
+
+// before each hook
+Before(({ I }) => {
+  I.amOnPage('/')
+})
+
+// a test
+Scenario('user can login with valid credentials', ({ I }) => {
+  I.click('Login')
+  I.fillField('email', 'user@example.com')
+  I.fillField('password', 'password123')
+  I.click('Sign In')
+  I.see('Welcome, User')
+})
+
+// after each hook
+After(({ I }) => {
+  // ...
+})
+```
+
+> CodeceptJS doesn't allow nested suites or multiple suites in one file.
 
 ### Opening a Page
 
@@ -78,935 +135,290 @@ When an URL doesn't start with a protocol (http:// or https://) it is considered
 
 > It is recommended to use a relative URL and keep the base URL in the config file, so you can easily switch between development, stage, and production environments.
 
-### Locating Element
+### Locating Elements
 
-Element can be found by CSS or XPath locators.
-
-```js
-I.seeElement('.user') // element with CSS class user
-I.seeElement('//button[contains(., "press me")]') // button
-```
-
-By default CodeceptJS tries to guess the locator type.
-In order to specify the exact locator type you can pass an object called **strict locator**.
+CodeceptJS supports multiple locating strategies. Most actions accept locators as strings or objects:
 
 ```js
-I.seeElement({ css: 'div.user' })
-I.seeElement({ xpath: '//div[@class=user]' })
+// Basic CSS/XPath
+I.click('.login-btn')
+I.fillField('//input[@type="email"]', 'user@test.com')
+
+// Semantic - by text/labels (searches multiple strategies)
+I.click('Login')
+I.fillField('Email', 'user@test.com')
+
+// ARIA locators - by role and accessible name (most reliable)
+I.click({ role: 'button', name: 'Login' })
+I.fillField({ role: 'textbox', name: 'Email Address' }, 'user@test.com')
+I.seeElement({ role: 'button', name: 'Submit' })
+
+// Accessibility ID or aria-label
+I.click('~login-button')
+I.seeElement({ aria: 'Username' })
+
+// Complex locators with locate()
+I.click(locate('button').withText('Save').inside('.modal'))
+I.seeElement(locate({ role: 'button', name: 'Delete' }).inside('.toolbar'))
+
+// ARIA + Context - combine role with section to target specific area
+I.click({ role: 'button', name: 'Save' }, '#detail-panel')
+I.fillField({ role: 'textbox', name: 'Title' }, 'New Task', '.modal')
+I.seeElement({ role: 'button', name: 'Delete' }, { css: '.toolbar' })
+I.click({ role: 'button', name: 'Close' }, '.sidebar')
 ```
 
-Strict locators allow to specify additional locator types:
+**Best practices:**
 
-```js
-// locate form element by name
-I.seeElement({ name: 'password' })
-// locate element by React component and props
-I.seeElement({ react: 'user-profile', props: { name: 'davert' } })
-```
-
-In [mobile testing](https://codecept.io/mobile/#locating-elements) you can use `~` to specify the accessibility id to locate an element. In web application you can locate elements by their `aria-label` value.
-
-```js
-// locate element by [aria-label] attribute in web
-// or by accessibility id in mobile
-I.seeElement('~username')
-```
+- **Use ARIA locators** `{ role: 'button', name: '...' }` - resilient to CSS changes and support accessibility
+- **Combine with context** when multiple similar elements exist: `I.click({ role: 'button', name: 'Delete' }, '.toolbar')`
+- **Use semantic CSS classes and IDs** when available (e.g., `.btn-save`, `#login-form`); avoid style-based names like `.bg-green`
+- **Use `locate()` function** for complex queries: `locate(selector).withText(...).inside(...)`
 
 > [▶ Learn more about using locators in CodeceptJS](/locators).
 
-### Clicking
+### Clicking Elements
 
-CodeceptJS provides a flexible syntax to specify an element to click.
-
-By default CodeceptJS tries to find the button or link with the exact text on it
+Use the locator strategies from [Locating Elements](#locating-elements) section to click any element:
 
 ```js
-// search for link or button
-I.click('Login')
+I.click('Login')                              // by text
+I.click({ role: 'button', name: 'Save' })   // by ARIA role
+I.click('#signup')                            // by ID
+I.click('Delete', '.toolbar')                 // with context
 ```
 
-If none was found, CodeceptJS tries to find a link or button containing that text. In case an image is clickable its `alt` attribute will be checked for text inclusion. Form buttons will also be searched by name.
+| | | | |
+|---|---|---|---|
+| [click](/web-api#iclick) | [forceClick](/web-api#iforcecclick) | [doubleClick](/web-api#idoubleclick) | [rightClick](/web-api#irightclick) |
+| [forceRightClick](/web-api#iforcerightclick) | [moveCursorTo](/web-api#imovecursorto) | [dragAndDrop](/web-api#idraganddrop) | [dragSlider](/web-api#idragslider) |
 
-To narrow down the results you can specify a context in the second parameter.
+Use **forceClick** when standard click fails (e.g., hidden elements, animations). Use **rightClick** for context menus, **doubleClick** for multi-select.
+
+### Interacting with Forms
+
+Use form methods to interact with inputs, selects, checkboxes, and other form elements. Fields can be located by label, name, CSS, XPath, or aria-label:
 
 ```js
-I.click('Login', '.nav') // search only in .nav
-I.click('Login', { css: 'footer' }) // search only in footer
-```
+// Fill fields - by label, name, CSS, or aria-label
+I.fillField('Email', 'user@test.com')
+I.fillField('My Address', 'Home Sweet Home')   // matches aria-label or aria-labelledby
+I.fillField('LoginForm[username]', 'davert')   // by field name attribute
+I.fillField('Password', secret('123456'))       // use secret() for sensitive data
 
-> To skip guessing the locator type, pass in a strict locator - A locator starting with '#' or '.' is considered to be CSS. Locators starting with '//' or './/' are considered to be XPath.
+// Use context (3rd parameter) to narrow search to specific form
+I.fillField('Email', 'user@test.com', '#login-form')
+I.fillField('Email', 'admin@test.com', '#registration-form')
 
-You are not limited to buttons and links. Any element can be found by passing in valid CSS or XPath:
+// Append or clear
+I.appendField('Comments', ' — updated')
+I.appendField('Message', ' P.S. Thank you!', '.contact-form')  // with context
+I.clearField('#search-input')
 
-```js
-// click element by CSS
-I.click('#signup')
-// click element located by special test-id attribute
-I.click('//dev[@test-id="myid"]')
-```
+// Type into focused field - use when fillField doesn't trigger JS events
+I.click('Card Number')
+I.type('4111111111111111', 100)  // optional delay in ms between keystrokes
 
-> ℹ If click doesn't work in a test but works for user, it is possible that frontend application is not designed for automated testing. To overcome limitation of standard click in this edgecase use `forceClick` method. It will emulate click instead of sending native event. This command will click an element no matter if this element is visible or animating. It will send JavaScript "click" event to it.
-
-### Filling Fields
-
-Clicking the links is not what takes the most time during testing a web site. If your site consists only of links you can skip test automation. The most waste of time goes into the testing of forms. CodeceptJS provides several ways of doing that.
-
-Let's submit this sample form for a test:
-
-![](https://user-images.githubusercontent.com/220264/80355863-494a8280-8881-11ea-9b41-ba1f07abf094.png)
-
-```html
-<form method="post" action="/update" id="update_form">
-  <label for="user_name">Name</label>
-  <input type="text" name="user[name]" id="user_name" /><br />
-  <label for="user_email">Email</label>
-  <input type="text" name="user[email]" id="user_email" /><br />
-  <label for="user_role">Role</label>
-  <select id="user_role" name="user[role]">
-    <option value="0">Admin</option>
-    <option value="1">User</option></select
-  ><br />
-  <input type="checkbox" id="accept" /> <label for="accept">Accept changes</label>
-  <div>
-    <input type="submit" name="submitButton" class="btn btn-primary" value="Save" />
-  </div>
-</form>
-```
-
-We need to fill in all those fields and click the "Update" button. CodeceptJS matches form elements by their label, name, or by CSS or XPath locators.
-
-```js
-// we are using label to match user_name field
-I.fillField('Name', 'Miles')
-// we can use input name
-I.fillField('user[email]', 'miles@davis.com')
-// select element by label, choose option by text
+// Selects - pass array for multi-select
 I.selectOption('Role', 'Admin')
-// click 'Save' button, found by text
-I.checkOption('Accept')
-I.click('Save')
+I.selectOption('Role', 'User', '.user-form')                // with context
+I.selectOption('Tags', ['Important', 'Urgent'])
+
+// Checkboxes and radios - supports context
+I.checkOption('I Agree to Terms and Conditions')
+I.checkOption('Remember me', '#login-form')                 // with context
+I.uncheckOption('Subscribe')
 ```
 
-> ℹ `selectOption` works only with standard `<select>` <select></select> HTML elements. If your selectbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
+| | | | |
+|---|---|---|---|
+| [fillField](/web-api#ifillfield) | [clearField](/web-api#iclearfield) | [appendField](/web-api#iappendfield) | [type](/web-api#itype) |
+| [selectOption](/web-api#iselectoption) | [checkOption](/web-api#icheckoption) | [uncheckOption](/web-api#iuncheckoption) | [focus](/web-api#ifocus) |
+| [blur](/web-api#iblur) | | | |
 
-> ℹ `checkOption` also works only with standard `<input type="checkbox">` <input type="checkbox"> HTML elements. If your checkbox is created by React, Vue, or as a component of any other framework, this method potentially won't work with it. Use `click` to manipulate it.
+> Use `secret()` for sensitive data: `I.fillField('password', secret('123456'))` - [won't expose in logs](/secrets/).
+>
 
-Alternative scenario:
-
-```js
-// we are using CSS
-I.fillField('#user_name', 'Miles')
-I.fillField('#user_email', 'miles@davis.com')
-// select element by label, option by value
-I.selectOption('#user_role', '1')
-// click 'Update' button, found by name
-I.click('submitButton', '#update_form')
-```
-
-To fill in sensitive data use the `secret` function, it won't expose actual value in logs.
-
-```js
-I.fillField('password', secret('123456'))
-```
-
-> ℹ️ Learn more about [masking secret](/secrets/) output
+> [selectOption](/web-api#iselectoption) works with native `<select>` elements as well as custom components using `role="combobox"` or `role="listbox"`.
 
 ### Assertions
 
-In order to verify the expected behavior of a web application, its content should be checked.
-CodeceptJS provides built-in assertions for that. They start with a `see` (or `dontSee`) prefix.
+CodeceptJS provides **built-in browser assertions** instead of generic `expect()` calls. This keeps tests readable and produces clear failure messages without extra assertion libraries.
 
-The most general and common assertion is `see`, which checks visilibility of a text on a page:
-
-```js
-// Just a visible text on a page
-I.see('Hello')
-// text inside .msg element
-I.see('Hello', '.msg')
-// opposite
-I.dontSee('Bye')
-```
-
-You should provide a text as first argument and, optionally, a locator to search for a text in a context.
-
-You can check that specific element exists (or not) on a page, as it was described in [Locating Element](#locating-element) section.
+- **`I.see(text)`** - checks that text is visible on the page
+- **`I.seeElement(locator)`** - checks that element exists and is visible in DOM
+- All assertions have a `dontSee` / `dontSee*` counterpart
 
 ```js
-I.seeElement('.notice')
+// Text visibility
+I.see('Welcome, Miles')
+I.see('Error', '.alert')           // with context
+I.dontSee('Loading...')
+
+// Element presence
+I.seeElement({ role: 'button', name: 'Submit' })
+I.seeElement('.success-message', '#checkout')   // with context
 I.dontSeeElement('.error')
+I.seeElementInDOM('#hidden-input')              // in DOM but may be invisible
+
+// URL, title, fields
+I.seeInCurrentUrl('/dashboard')
+I.seeInTitle('My App')
+I.seeInField('Email', 'miles@davis.com')
+I.seeCheckboxIsChecked('Accept Terms')
+I.seeCookie('session')
+I.seeNumberOfElements('.item', 5)
 ```
 
-Additional assertions:
+| | | | |
+|---|---|---|---|
+| [see](/web-api#isee) | [seeElement](/web-api#iseeelement) | [seeElementInDOM](/web-api#iseeelementindom) | [seeInField](/web-api#iseeinfield) |
+| [dontSee](/web-api#idontsee) | [dontSeeElement](/web-api#idontseelement) | [dontSeeElementInDOM](/web-api#idontseelementindom) | [dontSeeInField](/web-api#idontseeinfield) |
+| [seeInCurrentUrl](/web-api#seeinCurrentUrl) | [seeInTitle](/web-api#seeinTitle) | [seeCheckboxIsChecked](/web-api#iseecheckboxischecked) | [seeCookie](/web-api#iseecookie) |
+| [seeNumberOfElements](/web-api#iseenumberofelements) | [seeNumberOfVisibleElements](/web-api#iseenumberofvisibleelements) | [seeTextEquals](/web-api#iseetextequals) | [seeAttributesOnElements](/web-api#iseeattributesonelements) |
+
+For custom assertions use `grab*` methods to retrieve data, then assert with any library
 
 ```js
-I.seeInCurrentUrl('/user/miles')
-I.seeInField('user[name]', 'Miles')
-I.seeInTitle('My Website')
+const title = await I.grabTitle(); 
+expect(title).toEqual('My App')`
 ```
 
-To see all possible assertions, check the helper's reference.
+### Fetching Content from Page
 
-> ℹ If you need custom assertions, you can install an assertion libarary like `chai`, use grabbers to obtain information from a browser and perform assertions. However, it is recommended to put custom assertions into a helper for further reuse.
+**Grabbers retrieve data from the page** for use in subsequent steps. They are the equivalent of Playwright's `textContent()`, Cypress's `cy.get().invoke()`, or WebDriver's `getText()` — but integrated into the CodeceptJS promise chain.
 
-### Grabbing
+**Grabbers always require `await`** since they return data out of the known promise chain.
 
-Sometimes you need to retrieve data from a page to use it in the following steps of a scenario.
-Imagine the application generates a password, and you want to ensure that user can login using this password.
+```js
+const title = await I.grabTitle()
+const text = await I.grabTextFrom('.user-name')
+const val = await I.grabValueFrom('#email-input')
+const href = await I.grabAttributeFrom('a.logo', 'href')
+const count = await I.grabNumberOfVisibleElements('.item')
+```
+
+In complex scenarios, grabbers are used to extract data from page and pass it to next steps.
 
 ```js
 Scenario('login with generated password', async ({ I }) => {
-  I.fillField('email', 'miles@davis.com')
   I.click('Generate Password')
-  const password = await I.grabTextFrom('#password')
-  I.click('Login')
-  I.fillField('email', 'miles@davis.com')
-  I.fillField('password', password)
-  I.click('Log in!')
-  I.see('Hello, Miles')
+  const password = await I.grabTextFrom('#generated-password')
+  I.fillField('Password', password)
+  I.click('Sign In')
+  I.see('Welcome')
 })
 ```
 
-The `grabTextFrom` action is used to retrieve the text from an element. All actions starting with the `grab` prefix are expected to return data. In order to synchronize this step with a scenario you should pause the test execution with the `await` keyword of ES6. To make it work, your test should be written inside a async function (notice `async` in its definition).
-
-```js
-Scenario('use page title', async ({ I }) => {
-  // ...
-  const password = await I.grabTextFrom('#password')
-  I.fillField('password', password)
-})
-```
+| | | | |
+|---|---|---|---|
+| [grabTextFrom](/web-api#igrabtextfrom) | [grabTextFromAll](/web-api#igrabtextfromall) | [grabValueFrom](/web-api#igrabvaluefrom) | [grabValueFromAll](/web-api#igrabvaluefromall) |
+| [grabHTMLFrom](/web-api#igrabhtmlfrom) | [grabAttributeFrom](/web-api#igrabattributefrom) | [grabAttributeFromAll](/web-api#igrabattributefromall) | [grabNumberOfVisibleElements](/web-api#igrabnumberofvisibleelements) |
+| [grabCurrentUrl](/web-api#igrabcurrenturl) | [grabTitle](/web-api#igrabtitle) | [grabCookie](/web-api#igrabcookie) | [grabSource](/web-api#igrabsource) |
+| [grabWebElement](/web-api#igrabwebelement) | [grabWebElements](/web-api#igrabwebelements) | [grabElementBoundingRect](/web-api#igrabelementboundingrect) | [grabCssPropertyFrom](/web-api#igrabcsspropertyfrom) |
 
 ### Waiting
 
-In modern web applications, rendering is done on the client-side.
-Sometimes that may cause delays. A test may fail while trying to click an element which has not appeared on a page yet.
-To handle these cases, the `wait*` methods has been introduced.
+**CodeceptJS automatically waits** for elements before clicking, filling, and most other interactions — so explicit waits are rarely needed. Failed steps are also [automatically retried](/basics#auto-retry).
+
+Use `wait*` methods when you need to explicitly wait for a UI change, such as a modal appearing, a spinner hiding, or a value updating:
 
 ```js
-I.waitForElement('#agree_button', 30) // secs
-// clicks a button only when it is visible
-I.click('#agree_button')
+I.waitForVisible('.modal')               // wait for modal to appear
+I.waitForInvisible('.spinner')           // wait for spinner to hide
+I.waitForText('Success', 5, '.alert')   // wait for text in element (5s timeout)
+I.waitForEnabled('#submit-btn')          // wait for button to become enabled
+I.waitForElement('.results li', 10)      // wait for results to load
+
+I.wait(2)                                // explicit pause in seconds (last resort)
 ```
 
-## How It Works
-
-Tests are written in a synchronous way. This improves the readability and maintainability of tests.
-While writing tests you should not think about promises, and instead should focus on the test scenario.
-
-However, behind the scenes **all actions are wrapped in promises**, inside of the `I` object.
-[Global promise](https://github.com/codeceptjs/CodeceptJS/blob/master/lib/recorder.js) chain is initialized before each test and all `I.*` calls will be appended to it, as well as setup and teardown.
-
-> 📺 [Learn how CodeceptJS](https://www.youtube.com/watch?v=MDLLpHAwy_s) works with promises by watching video on YouTube
-
-If you want to get information from a running test you can use `await` inside the **async function**, and utilize special methods of helpers started with the `grab` prefix.
+Example usage inside scenario:
 
 ```js
-Scenario('try grabbers', async ({ I }) => {
-  let title = await I.grabTitle()
+Scenario('submit and wait for confirmation', ({ I }) => {
+  I.click('Submit Order')
+  I.waitForVisible('.order-confirmation', 10)
+  I.see('Order placed successfully', '.order-confirmation')
 })
 ```
 
-then you can use those variables in assertions:
-
-```js
-var title = await I.grabTitle()
-var assert = require('assert')
-assert.equal(title, 'CodeceptJS')
-```
-
-It is important to understand the usage of **async** functions in CodeceptJS. While non-returning actions can be called without await, if an async function uses `grab*` action it must be called with `await`:
-
-```js
-// a helper function
-async function getAllUsers(I) {
-  const users = await I.grabTextFrom('.users')
-  return users.filter(u => u.includes('active'))
-}
-
-// a test
-Scenario('try helper functions', async ({ I }) => {
-  // we call function with await because it includes `grab`
-  const users = await getAllUsers(I)
-})
-```
-
-If you miss `await` you get commands unsynchrhonized. And this will result to an error like this:
-
-```
-(node:446390) UnhandledPromiseRejectionWarning: ...
-    at processTicksAndRejections (internal/process/task_queues.js:95:5)
-(node:446390) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (rejection id: 2)
-```
-
-If you face that error please make sure that all async functions are called with `await`.
+| | | | |
+|---|---|---|---|
+| [waitForVisible](/web-api#iwaitforvisible) | [waitForInvisible](/web-api#iwaitforinvisible) | [waitForElement](/web-api#iwaitforelement) | [waitForDetached](/web-api#iwaitfordetached) |
+| [waitForText](/web-api#iwaitfortext) | [waitForValue](/web-api#iwaitforvalue) | [waitForClickable](/web-api#iwaitforclickable) | [waitForEnabled](/web-api#iwaitforenabled) |
+| [waitForDisabled](/web-api#iwaitfordisabled) | [waitForFunction](/web-api#iwaitforfunction) | [waitToHide](/web-api#iwaittohide) | [waitInUrl](/web-api#iwaitinurl) |
+| [waitUrlEquals](/web-api#iwaitUrlEquals) | [waitNumberOfVisibleElements](/web-api#iwaitnumberofvisibleelements) | [wait](/web-api#iwait) | |
 
 ## Running Tests
 
-To launch tests use the `run` command, and to execute tests in [multiple threads](/advanced/parallel) using `run-workers` command.
 
-### Level of Detail
-
-To see the step-by-step output of running tests, add the `--steps` flag:
-
-```
-npx codeceptjs run --steps
+```bash
+npx codeceptjs run                      # run all tests
+npx codeceptjs run tests/login_test.js        # run a single file
+npx codeceptjs run --grep "checkout"    # run tests matching name pattern
+npx codeceptjs run --grep "@smoke"      # run tests by tag
 ```
 
-To see a more detailed output add the `--debug` flag:
+Run tests in parallel using [NodeJS workers](https://nodejs.org/api/worker_threads.html). Tests are split by scenarios, results aggregated in the main process:
 
-```
-npx codeceptjs run --debug
-```
-
-To see very detailed output informations use the `--verbose` flag:
-
-```
-npx codeceptjs run --verbose
+```bash
+npx codeceptjs run-workers 3    # run with 3 parallel workers
 ```
 
-### Filter
 
-A single test file can be executed if you provide a relative path to such a file:
+### Output Verbosity
 
-```
-npx codeceptjs run github_test.js
-
-# or
-
-npx codeceptjs run admin/login_test.js
+```bash
+npx codeceptjs run --steps     # print each step
+npx codeceptjs run --debug     # print steps + additional debug info
+npx codeceptjs run --verbose   # print everything including promises
 ```
 
-To filter a test by name use the `--grep` parameter, which will execute all tests with names matching the regex pattern.
+It is recommended to always launch tests in `--debug` mode when developing tests.
 
-To run all tests with the `slow` word in it:
+### Headless / Headed Mode
 
-```
-npx codeceptjs run --grep "slow"
-```
+By default tests run headless (no browser window). To open a browser during test execution set `show: true` in helper config, or use `@codeceptjs/configure`:
 
-It is recommended to [filter tests by tags](/advanced/#tags).
+```js
+import { setHeadlessWhen } from '@codeceptjs/configure'
 
-> For more options see [full reference of `run` command](/commands/#run).
-
-### Parallel Run
-
-Tests can be executed in parallel mode by using [NodeJS workers](https://nodejs.org/api/worker_threads.html). Use `run-workers` command with the number of workers (threads) to split tests into different workers.
-
-```
-npx codeceptjs run-workers 3
+setHeadlessWhen(process.env.CI)  // headless only on CI, show browser locally
 ```
 
-Tests are split by scenarios, not by files. Results are aggregated and shown up in the main process.
+For a single run without editing config, use the `browser` plugin:
+
+```sh
+npx codeceptjs run -p browser:show   # force visible browser
+npx codeceptjs run -p browser:hide   # force headless
+```
+
+See [Plugin Arguments](/commands#plugin-arguments).
+
 
 ## Configuration
 
-Configuration is set in the `codecept.conf.js` file which was created during the `init` process.
-Inside the config file you can enable and configure helpers and plugins, and set bootstrap and teardown scripts.
+Configuration is set in `codecept.conf.js`. The two most important settings are the **helper** (which browser engine to use) and the **base URL** of your application:
 
 ```js
-exports.config = {
+export const config = {
   helpers: {
-    // enabled helpers with their configs
+    Playwright: {
+      url: 'http://localhost:3000',  // base URL for I.amOnPage('/')
+      show: !process.env.CI,         // show browser locally, headless on CI
+      browser: 'chromium',
+    },
   },
-  plugins: {
-    // list of used plugins
-  },
-  include: {
-    // current actor and page objects
-  },
+  tests: './**/*_test.js',
+  output: './output',
 }
 ```
 
-> ▶ See complete [configuration reference](/configuration).
+Use `-c` to switch between config files:
 
-You can have multiple configuration files for a the same project, in this case you can specify a config file to be used with `-c` when running.
-
-```
+```bash
 npx codeceptjs run -c codecept.ci.conf.js
 ```
 
-Tuning configuration for helpers like WebDriver, Puppeteer can be hard, as it requires good understanding of how these technologies work. Use the [`@codeceptjs/configure`](https://github.com/codeceptjs/configure) package with common configuration recipes.
-
-For instance, you can set the window size or toggle headless mode, no matter of which helpers are actually used.
-
-```js
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure')
-
-// run headless when CI environment variable set
-setHeadlessWhen(process.env.CI)
-// set window size for any helper: Puppeteer, WebDriver, TestCafe
-setWindowSize(1600, 1200)
-
-exports.config = {
-  // ...
-}
-```
-
-> ▶ See more [configuration recipes](https://github.com/codeceptjs/configure)
-
-## Debug
-
-CodeceptJS allows to write and debug tests on the fly while keeping your browser opened.
-By using the interactive shell you can stop execution at any point and type in any CodeceptJS commands.
-
-This is especially useful while writing a new scratch. After opening a page call `pause()` to start interacting with a page:
-
-```js
-I.amOnPage('/')
-pause()
-```
-
-Try to perform your scenario step by step. Then copy succesful commands and insert them into a test.
-
-### Pause
-
-Test execution can be paused in any place of a test with `pause()` call.
-Variables can also be passed to `pause({data: 'hi', func: () => console.log('hello')})` which can be accessed in Interactive shell.
-
-This launches the interactive console where you can call any action from the `I` object.
-
-```
- Interactive shell started
- Press ENTER to resume test
- Use JavaScript syntax to try steps in action
- - Press ENTER to run the next step
- - Press TAB twice to see all available commands
- - Type exit + Enter to exit the interactive shell
- - Prefix => to run js commands
- I.
-```
-
-Type in different actions to try them, copy and paste successful ones into the test file.
-
-Press `ENTER` to resume test execution.
-
-To **debug test step-by-step** press Enter, the next step will be executed and interactive shell will be shown again.
-
-To see all available commands, press TAB two times to see list of all actions included in the `I` object.
-
-> The interactive shell can be started outside of test context by running `npx codeceptjs shell`
-
-PageObjects and other variables can also be passed to as object:
-
-```js
-pause({ loginPage, data: 'hi', func: () => console.log('hello') })
-```
-
-Inside a pause mode you can use `loginPage`, `data`, `func` variables.
-Arbitrary JavaScript code can be executed when used `=> ` prefix:
-
-```js
-I.=> loginPage.open()
-I.=> func()
-I.=> 2 + 5
-```
-
-### Pause on Fail
-
-To start interactive pause automatically for a failing test you can run tests with [pauseOnFail Plugin](/plugins/#pauseonfail).
-When a test fails, the pause mode will be activated, so you can inspect current browser session before it is closed.
-
-> **[pauseOnFail plugin](/plugins/#pauseOnFail) can be used** for new setups
-
-To run tests with pause on fail enabled use `-p pauseOnFail` option
-
-```
-npx codeceptjs run -p pauseOnFail
-```
-
-> To enable pause after a test without a plugin you can use `After(pause)` inside a test file.
-
-### Screenshot on Failure
-
-By default CodeceptJS saves a screenshot of a failed test.
-This can be configured in [screenshotOnFail Plugin](/plugins/#screenshotonfail)
-
-> **[screenshotOnFail plugin](/plugins/#screenshotonfail) is enabled by default** for new setups
-
-### Step By Step Report
-
-To see how the test was executed, use [stepByStepReport Plugin](/plugins/#stepbystepreport). It saves a screenshot of each passed step and shows them in a nice slideshow.
-
-## Before
-
-Common preparation steps like opening a web page or logging in a user, can be placed in the `Before` or `Background` hooks:
-
-```js
-Feature('CodeceptJS Demonstration')
-
-Before(({ I }) => {
-  // or Background
-  I.amOnPage('/documentation')
-})
-
-Scenario('test some forms', ({ I }) => {
-  I.click('Create User')
-  I.see('User is valid')
-  I.dontSeeInCurrentUrl('/documentation')
-})
-
-Scenario('test title', ({ I }) => {
-  I.seeInTitle('Example application')
-})
-```
-
-Same as `Before` you can use `After` to run teardown for each scenario.
-
-## BeforeSuite
-
-If you need to run complex a setup before all tests and have to teardown this afterwards, you can use the `BeforeSuite` and `AfterSuite` functions.
-`BeforeSuite` and `AfterSuite` have access to the `I` object, but `BeforeSuite/AfterSuite` don't have any access to the browser, because it's not running at this moment.
-You can use them to execute handlers that will setup your environment. `BeforeSuite/AfterSuite` will work only for the file it was declared in (so you can declare different setups for files)
-
-```js
-BeforeSuite(({ I }) => {
-  I.syncDown('testfolder')
-})
-
-AfterSuite(({ I }) => {
-  I.syncUp('testfolder')
-  I.clearDir('testfolder')
-})
-```
-
-## Retries
-
-### Auto Retry
-
-Each failed step is auto-retried by default via [retryFailedStep Plugin](/plugins/#retryfailedstep).
-If this is not expected, this plugin can be disabled in a config.
-
-> **[retryFailedStep plugin](/plugins/#retryfailedstep) is enabled by default** incide global configuration
-
-### Retry Step
-
-Unless you use retryFailedStep plugin you can manually control retries in your project.
-
-If you have a step which often fails, you can retry execution for this single step.
-Use the `retry()` function before an action to ask CodeceptJS to retry it on failure:
-
-```js
-I.retry().see('Welcome')
-```
-
-If you'd like to retry a step more than once, pass the amount as a parameter:
-
-```js
-I.retry(3).see('Welcome')
-```
-
-Additional options can be provided to `retry`, so you can set the additional options (defined in [promise-retry](https://www.npmjs.com/package/promise-retry) library).
-
-```js
-// retry action 3 times waiting for 0.1 second before next try
-I.retry({ retries: 3, minTimeout: 100 }).see('Hello')
-
-// retry action 3 times waiting no more than 3 seconds for last retry
-I.retry({ retries: 3, maxTimeout: 3000 }).see('Hello')
-
-// retry 2 times if error with message 'Node not visible' happens
-I.retry({
-  retries: 2,
-  when: err => err.message === 'Node not visible',
-}).seeElement('#user')
-```
-
-Pass a function to the `when` option to retry only when an error matches the expected one.
-
-### Retry Multiple Steps
-
-To retry a group of steps enable [retryTo plugin](/plugins/#retryto):
-
-```js
-// retry these steps 5 times before failing
-await retryTo(tryNum => {
-  I.switchTo('#editor frame')
-  I.click('Open')
-  I.see('Opened')
-}, 5)
-```
-
-### Retry Scenario
-
-When you need to rerun scenarios a few times, add the `retries` option to the `Scenario` declaration.
-
-CodeceptJS implements retries the same way [Mocha does](https://mochajs.org#retry-tests);
-You can set the number of a retries for a feature:
-
-```js
-Scenario('Really complex', ({ I }) => {
-  // test goes here
-}).retry(2)
-
-// alternative
-Scenario('Really complex', { retries: 2 }, ({ I }) => {})
-```
-
-This scenario will be restarted two times on a failure.
-Unlike retry step, there is no `when` condition supported for retries on a scenario level.
-
-### Retry Before
-
-To retry `Before`, `BeforeSuite`, `After`, `AfterSuite` hooks, call `retry()` after declaring the hook.
-
-- `Before().retry()`
-- `BeforeSuite().retry()`
-- `After().retry()`
-- `AfterSuite().retry()`
-
-For instance, to retry Before hook 3 times before failing:
-
-```js
-Before(({ I }) => {
-  I.amOnPage('/')
-}).retry(3)
-```
-
-Same applied for `BeforeSuite`:
-
-```js
-BeforeSuite(() => {
-  // do some prepreations
-}).retry(3)
-```
-
-Alternatively, retry options can be set on Feature level:
-
-```js
-Feature('my tests', {
-  retryBefore: 3,
-  retryBeforeSuite: 2,
-  retryAfter: 1,
-  retryAfterSuite: 3,
-})
-```
-
-### Retry Feature
-
-To set this option for all scenarios in a file, add `retry` to a feature:
-
-```js
-Feature('Complex JS Stuff').retry(3)
-// or
-Feature('Complex JS Stuff', { retries: 3 })
-```
-
-Every Scenario inside this feature will be rerun 3 times.
-You can make an exception for a specific scenario by passing the `retries` option to a Scenario.
-
-### Retry Configuration <Badge text="Since 3.4" type="warning"/>
-
-It is possible to set retry rules globally via `retry` config option. The configuration is flexible and allows multiple formats.
-The simplest config would be:
-
-```js
-// inside codecept.conf.js
-retry: 3
-```
-
-This will enable Feature Retry for all executed feature, retrying failing tests 3 times.
-
-An object can be used to tune retries of a Before/After hook, Scenario or Feature
-
-```js
-// inside codecept.conf.js
-retry: {
-  Feature: ...,
-  Scenario: ...,
-  Before: ...,
-  BeforeSuite: ...,
-  After: ...,
-  AfterSuite: ...,
-}
-```
-
-Multiple retry configs can be added via array. To use different retry configs for different subset of tests use `grep` option inside a retry config:
-
-```js
-// inside codecept.conf.js
-retry: [
-  {
-    // enable this config only for flaky tests
-    grep: '@flaky',
-    Before: 3
-    Scenario: 3
-  },
-  {
-    // retry less when running slow tests
-    grep: '@slow'
-    Scenario: 1
-    Before: 1
-  }, {
-    // retry all BeforeSuite
-    BeforeSuite: 3
-  }
-]
-```
-
-When using `grep` with `Before`, `After`, `BeforeSuite`, `AfterSuite`, a suite title will be checked for included value.
-
-> ℹ️ `grep` value can be string or regexp
-
-Rules are applied in the order of array element, so the last option will override a previous one. Global retries config can be overridden in a file as described previously.
-
-### Retry Run
-
-On the highest level of the "retry pyramid" there is an option to retry a complete run multiple times.
-Even this is the slowest option of all, it can be helpful to detect flaky tests.
-
-[`run-rerun`](https://codecept.io/commands/#run-rerun) command will restart the run multiple times to values you provide. You can set minimal and maximal number of restarts in configuration file.
-
-```
-npx codeceptjs run-rerun
-```
-
-[Here are some ideas](https://github.com/codeceptjs/CodeceptJS/pull/231#issuecomment-249554933) on where to use BeforeSuite hooks.
-
-## Within
-
-To specify the exact area on a page where actions can be performed you can use the `within` function.
-Everything executed in its context will be narrowed to context specified by locator:
-
-Usage: `within('section', ()=>{})`
-
-```js
-I.amOnPage('https://github.com')
-within('.js-signup-form', () => {
-  I.fillField('user[login]', 'User')
-  I.fillField('user[email]', 'user@user.com')
-  I.fillField('user[password]', 'user@user.com')
-  I.click('button')
-})
-I.see('There were problems creating your account.')
-```
-
-> ⚠ `within` can cause problems when used incorrectly. If you see a weird behavior of a test try to refactor it to not use `within`. It is recommended to keep within for simplest cases when possible.
-> Since `within` returns a Promise, it may be necessary to `await` the result even when you're not intending to use the return value.
-
-`within` can also work with IFrames. A special `frame` locator is required to locate the iframe and get into its context.
-
-See example:
-
-```js
-within({ frame: '#editor' }, () => {
-  I.see('Page')
-})
-```
-
-> ℹ IFrames can also be accessed via `I.switchTo` command of a corresponding helper.
-
-Nested IFrames can be set by passing an array _(WebDriver & Puppeteer only)_:
-
-```js
-within({ frame: ['.content', '#editor'] }, () => {
-  I.see('Page')
-})
-```
-
-When running steps inside, a within block will be shown with a shift:
-
-![within](/img/within.png)
-
-Within can return a value, which can be used in a scenario:
-
-```js
-// inside async function
-const val = await within('#sidebar', () => {
-  return I.grabTextFrom({ css: 'h1' })
-})
-I.fillField('Description', val)
-```
-
-## Conditional Actions
-
-There is a way to execute unsuccessful actions to without failing a test.
-This might be useful when you might need to click "Accept cookie" button but probably cookies were already accepted.
-To handle these cases `tryTo` function was introduced:
-
-```js
-tryTo(() => I.click('Accept', '.cookies'))
-```
-
-You may also use `tryTo` for cases when you deal with uncertainty on page:
-
-- A/B testing
-- soft assertions
-- cookies & gdpr
-
-`tryTo` function is enabled by default via [tryTo plugin](/plugins/#tryto)
-
-## Comments
-
-There is a simple way to add additional comments to your test scenario:
-Use the `say` command to print information to screen:
-
-```js
-I.say('I am going to publish post')
-I.say('I enter title and body')
-I.say('I expect post is visible on site')
-```
-
-Use the second parameter to pass in a color value (ASCII).
-
-```js
-I.say('This is red', 'red') //red is used
-I.say('This is blue', 'blue') //blue is used
-I.say('This is by default') //cyan is used
-```
-
-## IntelliSense
-
-![Edit](/img/edit.gif)
-
-To get autocompletion when working with CodeceptJS, use Visual Studio Code or another IDE that supports TypeScript Definitions.
-
-Generate step definitions with:
-
-```sh
-npx codeceptjs def
-```
-
-Create a file called `jsconfig.json` in your project root directory, unless you already have one.
-
-```jsconfig.json
-{
-  "compilerOptions": {
-    "allowJs": true,
-  }
-}
-```
-
-Alternatively, you can include `/// <reference path="./steps.d.ts" />` into your test files
-to get method autocompletion while writing tests.
-
-## Multiple Sessions
-
-CodeceptJS allows to run several browser sessions inside a test. This can be useful for testing communication between users inside a chat or other systems. To open another browser use the `session()` function as shown in the example:
-
-```js
-Scenario('test app', ({ I }) => {
-  I.amOnPage('/chat')
-  I.fillField('name', 'davert')
-  I.click('Sign In')
-  I.see('Hello, davert')
-  session('john', () => {
-    // another session started
-    I.amOnPage('/chat')
-    I.fillField('name', 'john')
-    I.click('Sign In')
-    I.see('Hello, john')
-  })
-  // switching back to default session
-  I.fillField('message', 'Hi, john')
-  // there is a message from current user
-  I.see('me: Hi, john', '.messages')
-  session('john', () => {
-    // let's check if john received it
-    I.see('davert: Hi, john', '.messages')
-  })
-})
-```
-
-The `session` function expects the first parameter to be the name of the session. You can switch back to this session by using the same name.
-
-You can override the configuration for the session by passing a second parameter:
-
-```js
-session('john', { browser: 'firefox' }, () => {
-  // run this steps in firefox
-  I.amOnPage('/')
-})
-```
-
-or just start the session without switching to it. Call `session` passing only its name:
-
-```js
-Scenario('test', ({ I }) => {
-  // opens 3 additional browsers
-  session('john');
-  session('mary');
-  session('jane');
-
-  I.amOnPage('/');
-
-  // switch to session by its name
-  session('mary', () => {
-    I.amOnPage('/login');
-  });
-}
-```
-
-`session` can return a value which can be used in a scenario:
-
-```js
-// inside async function
-const val = await session('john', () => {
-  I.amOnPage('/info')
-  return I.grabTextFrom({ css: 'h1' })
-})
-I.fillField('Description', val)
-```
-
-Functions passed into a session can use the `I` object, page objects, and any other objects declared for the scenario.
-This function can also be declared as async (but doesn't work as generator).
-
-Also, you can use `within` inside a session, but you can't call session from inside `within`.
-
-## Skipping
-
-Like in Mocha you can use `x` and `only` to skip tests or to run a single test.
-
-- `xScenario` - skips current test
-- `Scenario.skip` - skips current test
-- `Scenario.only` - executes only the current test
-- `xFeature` - skips current suite <Badge text="Since 2.6.6" type="warning"/>
-- `Feature.skip` - skips the current suite <Badge text="Since 2.6.6" type="warning"/>
-- `Feature.only` - executes only the current suite <Badge text="Since 3.7.5" type="warning"/>
-
-When using `Feature.only`, only scenarios within that feature will be executed:
-
-```js
-Feature.only('My Important Feature')
-
-Scenario('test something', ({ I }) => {
-  I.amOnPage('https://github.com')
-  I.see('GitHub')
-})
-
-Scenario('test something else', ({ I }) => {
-  I.amOnPage('https://github.com')
-  I.see('GitHub')
-})
-
-Feature('Another Feature') // This will be skipped
-
-Scenario('will not run', ({ I }) => {
-  // This scenario will be skipped
-})
-```
-
-## Todo Test
-
-You can use `Scenario.todo` when you are planning on writing tests.
-
-This test will be skipped like with regular `Scenario.skip` but with additional message "Test not implemented!":
-
-Use it with a test body as a test plan:
-
-```js
-Scenario.todo('Test', I => {
-  /**
-   * 1. Click to field
-   * 2. Fill field
-   *
-   * Result:
-   * 3. Field contains text
-   */
-})
-```
-
-Or even without a test body:
-
-```js
-Scenario.todo('Test')
-```
+> ▶ See complete [configuration reference](/configuration).

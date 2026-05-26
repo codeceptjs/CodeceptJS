@@ -1,16 +1,11 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const sinon = require('sinon')
-
-const screenshotOnFail = require('../../../lib/plugin/screenshotOnFail')
-const container = require('../../../lib/container')
-const event = require('../../../lib/event')
-const recorder = require('../../../lib/recorder')
-const { createTest } = require('../../../lib/mocha/test')
-const { deserializeSuite } = require('../../../lib/mocha/suite')
-const MochawesomeHelper = require('../../../lib/helper/Mochawesome')
+import { expect } from 'chai'
+import sinon from 'sinon'
+import screenshotOnFail from '../../../lib/plugin/screenshotOnFail.js'
+import container from '../../../lib/container.js'
+import event from '../../../lib/event.js'
+import recorder from '../../../lib/recorder.js'
+import { createTest } from '../../../lib/mocha/test.js'
+import { deserializeSuite } from '../../../lib/mocha/suite.js'
 
 let screenshotSaved
 
@@ -24,6 +19,10 @@ describe('screenshotOnFail', () => {
         saveScreenshot: screenshotSaved,
       },
     })
+  })
+
+  afterEach(() => {
+    event.dispatcher.removeAllListeners(event.test.failed)
   })
 
   it('should remove the . at the end of test title', async () => {
@@ -73,18 +72,7 @@ describe('screenshotOnFail', () => {
     expect(screenshotSaved.called).is.ok
     const fileName = screenshotSaved.getCall(0).args[0]
     const regexpFileName = /test1_[0-9]{13}.failed.png/
-    expect(fileName.match(regexpFileName).length).is.equal(1)
-  })
 
-  it('should create screenshot with unique name when uid is null', async () => {
-    screenshotOnFail({ uniqueScreenshotNames: true })
-
-    const test = createTest('test1')
-    event.dispatcher.emit(event.test.failed, test)
-    await recorder.promise()
-    expect(screenshotSaved.called).is.ok
-    const fileName = screenshotSaved.getCall(0).args[0]
-    const regexpFileName = /test1_[0-9]{13}.failed.png/
     expect(fileName.match(regexpFileName).length).is.equal(1)
   })
 
@@ -102,42 +90,6 @@ describe('screenshotOnFail', () => {
     event.dispatcher.emit(event.test.failed, test, null, 'AfterSuite')
     await recorder.promise()
     expect(!screenshotSaved.called).is.ok
-  })
-
-  it('should have the same unique file name as the mochawesome helper when the uuid is present', async () => {
-    screenshotOnFail({ uniqueScreenshotNames: true })
-    const test = createTest('test1')
-    test.uid = '1234'
-
-    const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
-    const spy = sinon.spy(helper, '_addContext')
-    helper._failed(test)
-
-    event.dispatcher.emit(event.test.failed, test)
-    await recorder.promise()
-
-    const screenshotFileName = screenshotSaved.getCall(0).args[0]
-    expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
-  })
-
-  it('should have the same unique file name as the mochawesome helper when the uuid is not present', async () => {
-    screenshotOnFail({ uniqueScreenshotNames: true })
-    const test = createTest('test1')
-
-    // Use sinon to stub Date.now to return consistent timestamp
-    const clock = sinon.useFakeTimers(1755596785000) // Fixed timestamp
-
-    const helper = new MochawesomeHelper({ uniqueScreenshotNames: true })
-    const spy = sinon.spy(helper, '_addContext')
-    helper._failed(test)
-
-    event.dispatcher.emit(event.test.failed, test)
-    await recorder.promise()
-
-    clock.restore()
-
-    const screenshotFileName = screenshotSaved.getCall(0).args[0]
-    expect(spy.getCall(0).args[1]).to.equal(screenshotFileName)
   })
 
   describe('Data() scenarios', () => {
@@ -158,6 +110,10 @@ describe('screenshotOnFail', () => {
           saveScreenshot: screenshotSaved,
         },
       })
+    })
+
+    afterEach(() => {
+      event.dispatcher.removeAllListeners(event.test.failed)
     })
 
     it('should generate unique screenshot names for Data() iterations with uniqueScreenshotNames: true', async () => {

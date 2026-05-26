@@ -3,45 +3,38 @@ permalink: /tutorial
 title: CodeceptJS Complete Tutorial
 ---
 
-# Tutorial: Writing Tests for Checkout Page
+# Tutorial: Testing a Checkout Page
 
-**[CodeceptJS](https://codecept.io) is a popular open-source testing framework** for JavaScript. It is designed to simplify writing and maintain end-to-end tests for web applications, using a readable and intuitive syntax. To run tests in browser it uses **[Playwright](https://playwright.dev)** by default but ca execute tests via WebDriver, Puppeteer or Appium.
+**[CodeceptJS](https://codecept.io) is a popular open-source end-to-end testing framework** for JavaScript. It is designed to make web tests readable and easy to maintain by writing them as a linear scenario of user actions. By default it drives the browser with **[Playwright](https://playwright.dev)**, but the same tests can run via WebDriver, Puppeteer, or Appium without changes.
 
-## Let's get CodeceptJS installed!
+In this tutorial we write a real, runnable test for the **[Bootstrap checkout example](https://getbootstrap.com/docs/4.0/examples/checkout/)** — a public page with a billing and payment form. By the end you will have a clean test and a reusable page object.
 
-To install CodeceptJS, you will need to have Node.js and npm (the Node.js package manager) installed on your system. You can check if you already have these tools installed by running the following commands in a terminal:
+## Install CodeceptJS
+
+You need Node.js (and npm) installed. Check with:
 
 ```bash
 node --version
 npm --version
 ```
 
-If either of these commands return an error, you will need to install Node.js and npm before you can install CodeceptJS. You can download and install the latest version of Node.js from the official website, which includes npm.
+Create a new folder, then install CodeceptJS together with Playwright:
 
-To install CodeceptJS create a new folder and run command form terminal:
-
+```bash
+npm init -y
+npm install codeceptjs playwright --save-dev
+npx playwright install --with-deps
 ```
-npx create-codeceptjs .
-```
 
-If you run the npx create-codeceptjs . command, it will install CodeceptJS with Playwright in the current directory. 
+`npx playwright install` downloads the Chromium, Firefox, and WebKit browsers; `--with-deps` also installs the system libraries they need.
 
-> The `npx` command is a tool that comes with npm (the Node.js package manager) and it allows you to run npm packages without having to install them globally on your system.
+Now scaffold the project:
 
-It may take some time as it downloads browsers: Chrome, Firefox and Safari and creates a demo project.
-
-But we are here to write a checkout test, right?
-
-Let's initialize a new project for that!
-
-Run 
-
-```
+```bash
 npx codeceptjs init
 ```
-Agree on defaults (press Enter for every question asked). When asked for base site URL, provide a URL of a ecommerce website you are testing. For instance, it could be: `https://myshop.com` if you test already published website or `http://localhost` if you run the website locally. 
 
-When asked for a test name and suite name write "Checkout". It will create the following dirctory structure:
+`init` runs a short wizard. Accept the defaults — when asked for the **base URL** enter `https://getbootstrap.com`, and name the first test **Checkout**. This creates:
 
 ```
 .
@@ -50,9 +43,31 @@ When asked for a test name and suite name write "Checkout". It will create the f
 └── Checkout_test.js
 ```
 
-The `codecept.conf.js` file in the root of the project directory contains the global configuration settings for CodeceptJS.
+`codecept.conf.js` holds the project configuration. Because CodeceptJS 4.x uses **ES modules**, the config and tests use `import`/`export` syntax — `init` sets `"type": "module"` in `package.json` for you.
 
-Now open a test:
+Open `codecept.conf.js`. The two settings that matter here are the helper and the base URL:
+
+```js
+import { setHeadlessWhen } from '@codeceptjs/configure'
+
+// show the browser locally, run headless on CI
+setHeadlessWhen(process.env.CI)
+
+export const config = {
+  tests: './*_test.js',
+  output: './output',
+  helpers: {
+    Playwright: {
+      url: 'https://getbootstrap.com',
+      browser: 'chromium',
+    },
+  },
+}
+```
+
+## Your First Test
+
+Open `Checkout_test.js`:
 
 ```js
 Feature('Checkout');
@@ -60,212 +75,249 @@ Feature('Checkout');
 Scenario('test something', ({ I }) => {
 });
 ```
-Inside the Scenario block you write a test. 
 
-Add `I.amOnPage('/')` into it. It will open the browser on a URL you specified as a base.
+A test lives inside a `Scenario` block. Let's open the checkout page:
 
 ```js
 Feature('Checkout');
 
 Scenario('test something', ({ I }) => {
-  I.amOnPage('/')
+  I.amOnPage('/docs/4.0/examples/checkout/');
 });
 ```
-But you may want to ask...
 
-## What is I?
+`I.amOnPage()` navigates the browser. Because the path is relative, it is appended to the base URL from the config — keep the base URL in config so you can switch between staging and production without touching tests.
 
-Glad you asked! 
+But you may be wondering...
 
-In CodeceptJS, the `I` object is used to represent the user performing actions in a test scenario. It provides a number of methods (also known as actions) that can be used to simulate user interactions with the application under test.
+### What is `I`?
 
-Some of the most popular actions of the I object are:
+In CodeceptJS the `I` object is the **actor** — it represents the user performing actions. It exposes methods (called *actions*) that simulate interactions with the app:
 
-* `I.amOnPage(url)`: This action navigates the user to the specified URL.
-* `I.click(locator)`: This action simulates a click on the element identified by the given locator.
-* `I.fillField(field, value)`: This action fills the specified field with the given value.
-* `I.see(text, context)`: This action checks that the given text is visible on the page (or in the specified context).
-* `I.selectOption(select, option)`: This action selects the specified option from the given select dropdown.
-* `I.waitForElement(locator, timeout)`: This action waits for the specified element to appear on the page, up to the given timeout.
-* `I.waitForText(text, timeout, context)`: This action waits for the given text to appear on the page (or in the specified context), up to the given timeout.
+- `I.amOnPage(url)` — navigate to a URL
+- `I.click(locator)` — click an element
+- `I.fillField(field, value)` — type into an input
+- `I.selectOption(select, option)` — choose an option in a dropdown
+- `I.checkOption(locator)` — tick a checkbox or radio
+- `I.see(text)` — assert that text is visible
+- `I.seeInField(field, value)` — assert an input holds a value
 
-We will need to use them to navigate into Checkout process. How do we navigate web? Sure by clicking on links!
+CodeceptJS **waits automatically** before clicking, filling, and most other actions, so you rarely need explicit waits. Steps also write themselves into a promise chain, so you usually **don't need `await`** for regular actions — only for `grab*` actions and page object methods that return data.
 
-Let's use `I.click()` for that.
+### Locating Elements
 
-But how we can access elements on a webpage? 
-
-CodeceptJS is smart enough to locate clickable elements by their visible text. For instance, if on your ecommerce website you have a product 'Coffee Cup' with that exact name you can use 
+Most actions accept a locator. CodeceptJS supports several strategies — prefer the readable ones:
 
 ```js
-I.click('Coffee Cup');
+// by visible text / label
+I.click('Continue to checkout');
+I.fillField('First name', 'John');
+
+// by ARIA role and accessible name (resilient to CSS changes)
+I.click({ role: 'button', name: 'Continue to checkout' });
+
+// by CSS or XPath, when nothing semantic is available
+I.fillField('#email', 'john@example.com');
 ```
 
-But sometimes elements are not as easy to locate, so you can use CSS or XPath locators to locate them.
+> **Best practice:** prefer labels and ARIA locators (`{ role, name }`). They survive styling changes and document intent. Fall back to CSS/XPath only when needed.
 
-For instance, locating Coffee Cup via CSS can take into accont HTML structure of a page and element attributes. For instance, it can be like this:
+## Writing the Checkout Test
 
-```js
-I.click('div.products a.product-name[title="Coffee Cup"]');
-```
-
-In this example, the `div.products` part of the selector specifies a div element with the `products` class, and the `a.product-name[title="Coffee Cup"]` part specifies an a element with `the product-name` class and the `title` attribute set to Coffee Cup. 
-
-You can read more about HTML and CSS locators, and basically that's all what you need to know to start writing a checkout test!
-
-## Get back to Checkout
-
-Let's see how a regular checkout script may look in CodeceptJS:
+The Bootstrap checkout form has billing fields, country/state selects, and a payment section. CodeceptJS finds inputs by their visible `<label>`, so the test reads like the form:
 
 ```js
-Scenario('test the checkout form', async ({ I }) => {
-  // we select one product and switched to checkout project
-  I.amOnPage('/');
-  I.click('Coffee Cup');
-  I.click('Purchase');
-  I.click('Checkout');
+Feature('Checkout');
 
-  // fill in the shipping address
-  I.fillField('First Name', 'John');
-  I.fillField('Last Name', 'Doe');
+Scenario('fill in the checkout form', ({ I }) => {
+  I.amOnPage('/docs/4.0/examples/checkout/');
+  I.see('Checkout form');
+
+  // billing address — fields located by their labels
+  I.fillField('First name', 'John');
+  I.fillField('Last name', 'Doe');
+  I.fillField('Username', 'johndoe');
+  I.fillField('#email', 'john@example.com'); // label has "(Optional)", use CSS
   I.fillField('Address', '123 Main St.');
-  I.fillField('City', 'New York');
-  I.selectOption('State', 'New York');
-  I.fillField('Zip Code', '10001');
+  I.selectOption('Country', 'United States');
+  I.selectOption('State', 'California');
+  I.fillField('Zip', '10001');
 
-  // select a payment method
-  I.click('#credit-card-option');
-  I.fillField('Card Number', '1234-5678-9012-3456');
-  I.fillField('Expiration Date', '12/22');
-  I.fillField('Security Code', '123');
+  // shipping / preferences
+  I.checkOption('Shipping address is the same as my billing address');
+  I.checkOption('Save this information for next time');
 
-  // click the checkout button
-  I.click('Checkout');
+  // payment — "Credit card" is selected by default
+  I.click('Credit card');
+  I.fillField('Name on card', 'John Doe');
+  I.fillField('Credit card number', secret('4111 1111 1111 1111'));
 
-  // verify that the checkout was successful
-  I.see('Your order has been placed successfully!');
+  // verify the form holds what we entered
+  I.seeInField('First name', 'John');
+  I.seeInField('Address', '123 Main St.');
+  I.click('Continue to checkout');
 });
-``` 
-Sure, in relaity your script might be more complicated. As you have noticed, we used CSS locator `'#credit-card-option'`  to get select a payment option. However, the test is simple and you can follow user steps through it.
-
-Please note, that you shouldn't use a real credit card number here. Good news, you don't need to. Payment providers like Strip provide dummy card numbers for testing purposes. 
-
-Run the test with next command:
-
-```
-npx codeceptjs run --debug -p pauseOnFail
 ```
 
-What are special options here?
+A few things worth noting:
 
-* `--debug` flag is used to output additional information to the console, such as the details of each step in the test, the values of variables, and the results of test assertions. This can help you to identify and fix any issues in your tests.
-* `-p pauseOnFail` option is also used to keep the browser opened even if a test fails. It will help us to identify to which point test was executed and what can be improved.
+- **`secret()`** wraps the card number so it is masked (`****`) in logs and reports. Use it for any sensitive value — see [Secrets](/secrets).
+- Never use a real card number. Payment providers like Stripe publish [test card numbers](https://docs.stripe.com/testing) for exactly this.
+- This is a static demo page with no backend, so we verify by reading field values back with `I.seeInField`. On a real shop you would assert a confirmation, e.g. `I.see('Your order has been placed')`.
 
-Add more test steps if needed, update locators, and notify business owners that all that purchases are made by you so your collegues won't call you in the night asking when you want to get a coffee cup 😀 Also the good idea is to run tests on staging website, to not interfere with business process.
+### A Negative Scenario
 
-What a test is complete you can run it with:
+Good test suites cover failures too. The form validates on submit — submitting it empty shows error messages. CodeceptJS doesn't allow multiple scenarios in one file's suite to nest, but you can add as many `Scenario` blocks as you like:
 
+```js
+Scenario('shows validation errors on empty submit', ({ I }) => {
+  I.amOnPage('/docs/4.0/examples/checkout/');
+  I.click('Continue to checkout');
+  I.see('Valid first name is required.');
+});
 ```
+
+### Running the Test
+
+```bash
+npx codeceptjs run --steps
+```
+
+`--steps` prints every step as it runs. Useful flags while developing:
+
+- `--steps` — print each step
+- `--debug` — steps plus extra debug output (recommended while writing tests)
+- `--verbose` — everything, including the promise chain
+
+Set a breakpoint to inspect the page interactively by adding `pause()` to the scenario:
+
+```js
+Scenario('fill in the checkout form', ({ I }) => {
+  I.amOnPage('/docs/4.0/examples/checkout/');
+  I.fillField('First name', 'John');
+  pause(); // test stops here; type steps live in the browser
+});
+```
+
+In the pause shell you can type `I.click('...')`, inspect the page, and find better locators. See [Debugging](/debugging).
+
+The browser is shown locally and runs headless on CI thanks to `setHeadlessWhen(process.env.CI)`. To force it either way for one run:
+
+```bash
+npx codeceptjs run --headless
+```
+
+Once the test is stable, run the whole suite:
+
+```bash
 npx codeceptjs run
 ```
 
-If you are annoyed to see a browser window you can use `HEADLESS` environment variable:
+## Refactoring with a Page Object
 
-```
-HEADLESS=true codeceptjs run
-```
-for Windows users HEADLESS should be set in a different manner:
+What if more tests need to fill this form? Copy-pasting steps doesn't scale. The **Page Object** pattern keeps locators and interactions in one reusable place.
 
-```
-set HEADLESS=true&& codeceptjs run
-```
-The tests will pass but no browser is shown, so you can watch YouTube videos while it goes!
+Generate one:
 
-## Refactoring
-
-What if you need to check more purchases? Should you copy paste your code for that?
-
-No! You can use Page Object pattern to put repeating interactions into the reusable functions.
-
-You can create a page object via next command:
-
-```
+```bash
 npx codeceptjs gpo
 ```
 
-Sure, we will call it `Checkout`. It will be created in `./pages/Checkout.js` file. You should enable it in `codecept.conf.js` inside `include` section:
+Call it `Checkout`. It is created in `./pages/Checkout.js` and registered in `codecept.conf.js` under `include`:
 
 ```js
-    include: {
-    ...
-      checkoutPage: './pages/Checkout.js',
-    },
-
-```
-Now open this file:
-
-```js
-const { I } = inject();
-
-module.exports = {
-
-  // insert your locators and methods here
+export const config = {
+  // ...
+  include: {
+    checkoutPage: './pages/Checkout.js',
+  },
 }
 ```
 
-Feels really empty. What should we do about it? Should we write more code? No, we already have it. Let's copy code blocks from a test we have it and place them under a corredponnding function names:
+Page objects are **classes**. Move the form interactions into named methods:
 
 ```js
 const { I } = inject();
 
-module.exports = {
+class CheckoutPage {
+  url = '/docs/4.0/examples/checkout/'
 
-  fillShippingAddress(name, address, city, state, zip) {
-    I.fillField('Name', name);
+  open() {
+    I.amOnPage(this.url);
+    I.see('Checkout form');
+  }
+
+  fillBillingAddress({ firstName, lastName, username, address, country, state, zip }) {
+    I.fillField('First name', firstName);
+    I.fillField('Last name', lastName);
+    I.fillField('Username', username);
     I.fillField('Address', address);
-    I.fillField('City', city);
-    I.fillField('State', state);
+    I.selectOption('Country', country);
+    I.selectOption('State', state);
     I.fillField('Zip', zip);
-  },
+  }
 
-  fillValidCreditCard() {
-    I.click('#credit-card-option');
-    I.fillField('Card Number', '1234-5678-9012-3456');
-    I.fillField('Expiration Date', '12/22');
-    I.fillField('Security Code', '123');
-  },
+  payWithCard(name, number) {
+    I.click('Credit card');
+    I.fillField('Name on card', name);
+    I.fillField('Credit card number', secret(number));
+  }
 
-  checkout() {
-    I.click('Checkout');
-  },
+  submit() {
+    I.click('Continue to checkout');
+  }
 }
+
+export default CheckoutPage
 ```
 
-After that we can update our test to use the created page object. Note, that we import Checkout PageObject by its name `checkoutPage` we previously defined in a config.
+> `inject()` returns a lazy proxy, so it's safe to destructure `I` before the class. Export the **class** — CodeceptJS auto-instantiates it. (Plain-object page objects still work but classes support lifecycle hooks and inheritance.)
+
+The test now reads at the business level. Inject `checkoutPage` by the name you set in the config:
 
 ```js
-Scenario('test the checkout form', async ({I, checkoutPage}) => {
-  I.amOnPage('/');
-  I.click('Coffee Cup');
-  I.click('Purchase');
-  I.click('Checkout');
+Feature('Checkout');
 
-  // fill in the shipping address using the page object
-  checkoutPage.fillShippingAddress('John', 'Doe', '123 Main St.', 'New York', 'New York', '10001');
-  checkoutPage.fillValidCreditCard();
-  checkoutPage.checkout();
+Scenario('complete a checkout', ({ I, checkoutPage }) => {
+  checkoutPage.open();
+  checkoutPage.fillBillingAddress({
+    firstName: 'John',
+    lastName: 'Doe',
+    username: 'johndoe',
+    address: '123 Main St.',
+    country: 'United States',
+    state: 'California',
+    zip: '10001',
+  });
+  checkoutPage.payWithCard('John Doe', '4111 1111 1111 1111');
+  checkoutPage.submit();
 
-  // verify that the checkout was successful
-  I.see('Your order has been placed successfully!');
+  I.seeInField('First name', 'John');
 });
 ```
 
-As you see the code of a test was reduced. And we can write the similar tests on the same manner.
+Shorter, intention-revealing, and every other checkout test can reuse the same methods. As coverage grows, add methods to the page object instead of duplicating steps.
 
-By applying more and more cases you can test a website to all behaviors.
+## Going Further
+
+When you have many tests, run them in parallel using Node workers:
+
+```bash
+npx codeceptjs run-workers 3
+```
+
+From here, explore:
+
+- [Locators](/locators) — every locating strategy in depth
+- [Page Objects](/pageobjects) — fragments, step objects, lifecycle hooks
+- [Data-driven tests](/data) — run one scenario over many inputs
+- [Debugging](/debugging) — `pause()`, the interactive shell, and AI-assisted debugging
+- [Continuous Integration](/continuous-integration) — running the suite on CI
 
 ## Summary
 
-If you think on just starting test automation, CodeceptJS is the best choice for you as it uses native language to pass commands to browser. 
+If you are just starting with test automation, CodeceptJS lets you describe tests in near-natural language and handles waiting and retries for you. If you already know JavaScript, page objects and dependency injection keep your suite focused on business behavior — which is what keeps tests stable and maintainable as the app grows.
 
-If you already skilled in JavaScript, with CodeceptJS you can focus on business level of your test, instead of writing code for browser. This way you can keep your tests stable and maintainable.
+> [▶ Next: CodeceptJS Basics](/basics/)
+</content>
+</invoke>

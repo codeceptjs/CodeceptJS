@@ -1,5 +1,5 @@
-const { expect } = require('chai')
-const WebElement = require('../../lib/element/WebElement')
+import { expect } from 'chai'
+import WebElement from '../../lib/element/WebElement.js'
 
 describe('WebElement', () => {
   describe('constructor and helper detection', () => {
@@ -307,6 +307,7 @@ describe('WebElement', () => {
     it('should work with Puppeteer helper', async () => {
       let typedText = ''
       const mockElement = {
+        evaluate: (fn) => Promise.resolve(fn({ value: '' })),
         type: (text, options) => {
           typedText = text
           return Promise.resolve()

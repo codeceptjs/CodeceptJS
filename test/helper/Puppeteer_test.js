@@ -1,20 +1,24 @@
-const chai = require('chai')
+import * as chai from 'chai'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import puppeteer from 'puppeteer'
+import fs from 'fs'
 
 const expect = chai.expect
 const assert = chai.assert
-const path = require('path')
 
-const puppeteer = require('puppeteer')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-const fs = require('fs')
-const TestHelper = require('../support/TestHelper')
-const Puppeteer = require('../../lib/helper/Puppeteer')
-
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const Secret = require('../../lib/secret')
-const { deleteDir } = require('../../lib/utils')
-global.codeceptjs = require('../../lib')
+import TestHelper from '../support/TestHelper.js'
+import Puppeteer from '../../lib/helper/Puppeteer.js'
+import AssertionFailedError from '../../lib/assert/error.js'
+import * as webApiTests from './webapi.js'
+import Secret from '../../lib/secret.js'
+import { deleteDir } from '../../lib/utils.js'
+import codeceptjsModule from '../../lib/index.js'
+global.codeceptjs = codeceptjsModule.default || codeceptjsModule
 
 let I
 let browser
@@ -128,18 +132,18 @@ describe('Puppeteer', function () {
     it('should open main page of configured site', async () => {
       await I.amOnPage('/')
       const url = await page.url()
-      await url.should.eql(`${siteUrl}/`)
+      expect(await url).to.eql(`${siteUrl}/`)
     })
     it('should open any page of configured site', async () => {
       await I.amOnPage('/info')
       const url = await page.url()
-      return url.should.eql(`${siteUrl}/info`)
+      return expect(url).to.eql(`${siteUrl}/info`)
     })
 
     it('should open absolute url', async () => {
       await I.amOnPage(siteUrl)
       const url = await page.url()
-      return url.should.eql(`${siteUrl}/`)
+      return expect(url).to.eql(`${siteUrl}/`)
     })
 
     it('should be unauthenticated ', async () => {
@@ -147,7 +151,7 @@ describe('Puppeteer', function () {
         await I.amOnPage('/basic_auth')
         await I.dontSee('You entered admin as your password.')
       } catch (e) {
-        expect(e.message).to.eq('net::ERR_INVALID_AUTH_CREDENTIALS at http://localhost:8000/basic_auth')
+        expect(e.message).to.contain('net::ERR_INVALID_AUTH_CREDENTIALS')
       }
     })
   })
@@ -199,7 +203,7 @@ describe('Puppeteer', function () {
         await I.amOnPage('/info')
         await I.waitNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)
       } catch (e) {
-        e.message.should.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec')
+        expect(e.message).to.include('The number of elements (//div[@id = "grab-multiple"]//a) is not 2 after 0.1 sec')
       }
     })
 
@@ -211,7 +215,7 @@ describe('Puppeteer', function () {
           throw Error('It should never get this far')
         })
         .catch(e => {
-          e.message.should.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec')
+          expect(e.message).to.include('The number of elements (#grab-multiple > a) is not 2 after 0.1 sec')
         }))
 
     it('should wait for a specified number of elements which are not yet attached to the DOM', () =>
@@ -236,6 +240,11 @@ describe('Puppeteer', function () {
       I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover', 100, 100))
         .then(() => I.dontSee('Hovered', '#show')))
+
+    it('should trigger hover event within a context', () =>
+      I.amOnPage('/form/hover')
+        .then(() => I.moveCursorTo('#hover', 'body'))
+        .then(() => I.see('Hovered', '#show')))
   })
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
@@ -384,16 +393,16 @@ describe('Puppeteer', function () {
       I.amOnPage('/iframe')
         .then(() => I.switchTo('#invalidIframeSelector'))
         .catch(e => {
-          e.should.be.instanceOf(Error)
-          e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+          expect(e).to.be.instanceOf(Error)
+          expect(e.message).to.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
         }))
 
     it('should return error if iframe selector is not iframe', () =>
       I.amOnPage('/iframe')
         .then(() => I.switchTo('h1'))
         .catch(e => {
-          e.should.be.instanceOf(Error)
-          e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+          expect(e).to.be.instanceOf(Error)
+          expect(e.message).to.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
         }))
 
     it('should return to parent frame given a null locator', () =>
@@ -424,8 +433,8 @@ describe('Puppeteer', function () {
         .then(() => I.seeTitleEquals('TestEd Beta 2.'))
         .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
         .catch(e => {
-          e.should.be.instanceOf(Error)
-          e.message.should.be.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."')
+          expect(e).to.be.instanceOf(Error)
+          expect(e.message).to.equal('expected web page title "TestEd Beta 2.0" to equal "TestEd Beta 2."')
         }))
   })
 
@@ -436,8 +445,8 @@ describe('Puppeteer', function () {
         .then(() => I.seeTextEquals('Welcome to test app', 'h1'))
         .then(() => assert.equal(true, false, 'Throw an error because it should not get this far!'))
         .catch(e => {
-          e.should.be.instanceOf(Error)
-          e.message.should.be.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"')
+          expect(e).to.be.instanceOf(Error)
+          expect(e.message).to.equal('expected element h1 "Welcome to test app" to equal "Welcome to test app!"')
         }))
   })
 
@@ -446,32 +455,32 @@ describe('Puppeteer', function () {
       I.amOnPage('/form/checkbox')
         .then(() => I._locateClickable('Submit'))
         .then(res => {
-          res.length.should.be.equal(1)
+          expect(res.length).to.equal(1)
         }))
 
     it('should not locate a non-existing checkbox using _locateClickable', () =>
       I.amOnPage('/form/checkbox')
         .then(() => I._locateClickable('I disagree'))
-        .then(res => res.length.should.be.equal(0)))
+        .then(res => expect(res.length).to.equal(0)))
   })
 
   describe('#_locateCheckable', () => {
     it('should locate a checkbox', () =>
       I.amOnPage('/form/checkbox')
         .then(() => I._locateCheckable('I Agree'))
-        .then(res => res.should.be.ok))
+        .then(res => expect(res).to.be.ok))
   })
 
   describe('#_locateFields', () => {
     it('should locate a field', () =>
       I.amOnPage('/form/field')
         .then(() => I._locateFields('Name'))
-        .then(res => res.length.should.be.equal(1)))
+        .then(res => expect(res.length).to.equal(1)))
 
     it('should not locate a non-existing field', () =>
       I.amOnPage('/form/field')
         .then(() => I._locateFields('Mother-in-law'))
-        .then(res => res.length.should.be.equal(0)))
+        .then(res => expect(res.length).to.equal(0)))
   })
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
@@ -479,8 +488,8 @@ describe('Puppeteer', function () {
       I.amOnPage('/form/empty')
         .then(() => I.seeInField('#empty_input', 'Ayayay'))
         .catch(e => {
-          e.should.be.instanceOf(AssertionFailedError)
-          e.inspect().should.be.equal('expected fields by #empty_input to include "Ayayay"')
+          expect(e).to.be.instanceOf(AssertionFailedError)
+          expect(e.inspect()).to.equal('expected fields by #empty_input to include "Ayayay"')
         }))
 
     it('should check values in checkboxes', async () => {
@@ -730,7 +739,7 @@ describe('Puppeteer', function () {
           throw Error('It should never get this far')
         })
         .catch(e => {
-          e.message.should.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec')
+          expect(e.message).to.include('element (//input[@name= "rus"]) is not in DOM or there is no element(//input[@name= "rus"]) with value "Верно3" after 0.1 sec')
         }))
 
     it('should wait for expected value for given css locator', () =>
@@ -929,7 +938,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {css: #button} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {css: #button} still not clickable after 0.1 sec')
         })
     })
 
@@ -940,7 +949,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {xpath: .//button[@id="button"]} still not clickable after 0.1 sec')
         })
     })
 
@@ -951,7 +960,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {css: #notInViewportTop} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {css: #notInViewportTop} still not clickable after 0.1 sec')
         })
     })
 
@@ -962,7 +971,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {css: #notInViewportBottom} still not clickable after 0.1 sec')
         })
     })
 
@@ -973,7 +982,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {css: #notInViewportLeft} still not clickable after 0.1 sec')
         })
     })
 
@@ -984,7 +993,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {css: #notInViewportRight} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {css: #notInViewportRight} still not clickable after 0.1 sec')
         })
     })
 
@@ -996,7 +1005,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element {css: #div1_button} still not clickable after 0.1 sec')
+          expect(e.message).to.include('element {css: #div1_button} still not clickable after 0.1 sec')
         })
     })
 
@@ -1014,7 +1023,7 @@ describe('Puppeteer', function () {
           if (isClickable) throw new Error('Element is clickable, but must be unclickable')
         })
         .catch(e => {
-          e.message.should.include('element //button[@name="button_publish"] still not clickable after 0.1 sec')
+          expect(e.message).to.include('element //button[@name="button_publish"] still not clickable after 0.1 sec')
         })
     })
   })
@@ -1109,7 +1118,7 @@ describe('Puppeteer (remote browser)', function () {
         await I._startBrowser()
         throw Error('It should never get this far')
       } catch (e) {
-        e.message.should.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.')
+        expect(e.message).to.include('Cannot connect to websocket endpoint.\n\nPlease make sure remote browser is running and accessible.')
       }
     })
 

@@ -1,21 +1,20 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-const Mocha = require('mocha/lib/mocha')
-const Suite = require('mocha/lib/suite')
-const { createTest } = require('../../../lib/mocha/test')
+import { expect } from 'chai'
+import Mocha from 'mocha/lib/mocha.js'
+import Suite from 'mocha/lib/suite.js'
+import { createTest } from '../../../lib/mocha/test.js'
+import codeceptjs from '../../../lib/index.js'
+import makeUI from '../../../lib/mocha/ui.js'
+import container from '../../../lib/container.js'
+import store from '../../../lib/store.js'
 
-global.codeceptjs = require('../../../lib')
-const makeUI = require('../../../lib/mocha/ui')
-const container = require('../../../lib/container')
+global.codeceptjs = codeceptjs
 
 describe('ui', () => {
   let suite
   let context
 
-  beforeEach(() => {
-    container.clear()
+  beforeEach(async () => {
+    await container.clear()
     context = {}
     suite = new Suite('empty')
     makeUI(suite)
@@ -57,15 +56,15 @@ describe('ui', () => {
       suiteConfig = context.Feature('basic suite @very @important')
       expect(suiteConfig.suite).is.ok
 
-      suiteConfig.suite.tags.should.include('@very')
-      suiteConfig.suite.tags.should.include('@important')
+      expect(suiteConfig.suite.tags).to.include('@very')
+      expect(suiteConfig.suite.tags).to.include('@important')
 
       suiteConfig.tag('@user')
-      suiteConfig.suite.tags.should.include('@user')
+      expect(suiteConfig.suite.tags).to.include('@user')
 
-      suiteConfig.suite.tags.should.not.include('@slow')
+      expect(suiteConfig.suite.tags).to.not.include('@slow')
       suiteConfig.tag('slow')
-      suiteConfig.suite.tags.should.include('@slow')
+      expect(suiteConfig.suite.tags).to.include('@slow')
     })
 
     it('retries can be set', () => {
@@ -147,7 +146,7 @@ describe('ui', () => {
       }
 
       // Reset environment variable
-      delete process.env.FEATURE_ONLY
+      store.featureOnly = false
 
       // Re-emit pre-require with our mocked mocha instance
       suite.emit('pre-require', context, {}, mocha)
@@ -159,7 +158,7 @@ describe('ui', () => {
       expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
       expect(grepPattern).to.be.instanceOf(RegExp)
       expect(grepPattern.source).eq('^exclusive feature:')
-      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+      expect(store.featureOnly).eq(true, 'store.featureOnly should be set')
 
       // Restore original grep
       mocha.grep = originalGrep
@@ -178,7 +177,7 @@ describe('ui', () => {
       }
 
       // Reset environment variable
-      delete process.env.FEATURE_ONLY
+      store.featureOnly = false
 
       // Re-emit pre-require with our mocked mocha instance
       suite.emit('pre-require', context, {}, mocha)
@@ -190,7 +189,7 @@ describe('ui', () => {
       expect(suiteConfig.suite.pending).eq(false, 'Feature.only must not be pending')
       expect(grepPattern).to.be.instanceOf(RegExp)
       expect(grepPattern.source).eq('^exclusive feature without options:')
-      expect(process.env.FEATURE_ONLY).eq('true', 'FEATURE_ONLY environment variable should be set')
+      expect(store.featureOnly).eq(true, 'store.featureOnly should be set')
 
       // Restore original grep
       mocha.grep = originalGrep
@@ -236,12 +235,12 @@ describe('ui', () => {
 
       scenarioConfig = context.Scenario('scenario @very @important')
 
-      scenarioConfig.test.tags.should.include('@cool')
-      scenarioConfig.test.tags.should.include('@very')
-      scenarioConfig.test.tags.should.include('@important')
+      expect(scenarioConfig.test.tags).to.include('@cool')
+      expect(scenarioConfig.test.tags).to.include('@very')
+      expect(scenarioConfig.test.tags).to.include('@important')
 
       scenarioConfig.tag('@user')
-      scenarioConfig.test.tags.should.include('@user')
+      expect(scenarioConfig.test.tags).to.include('@user')
     })
 
     it('should dynamically inject dependencies', () => {

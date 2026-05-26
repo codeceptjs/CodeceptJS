@@ -1,24 +1,25 @@
-const given = when = then = global.codeceptjs.container.plugins('commentStep');
-const { I } = inject();
+import step from 'codeceptjs/steps'
 
-Feature('Steps');
+const { I } = inject()
+
+Feature('Steps')
 
 Scenario('Default command timeout', ({ I }) => {
-  I.exceededByTimeout(1500);
-});
+  I.exceededByTimeout(1500)
+})
 
 Scenario('Wait command timeout', ({ I }) => {
-  I.waitForSleep(1500);
-});
+  I.waitForSleep(1500)
+})
 
 Scenario('Rerun sleep', ({ I }) => {
-  I.retry(2).statefulSleep(2250);
-});
+  I.statefulSleep(2250, step.retry(2))
+})
 
 Scenario('Wait with longer timeout', ({ I }) => {
-  I.waitTadLonger(750);
-});
+  I.waitTadLonger(750)
+})
 
 Scenario('Wait with shorter timeout', ({ I }) => {
-  I.waitTadShorter(750);
-});
+  I.waitTadShorter(750)
+})

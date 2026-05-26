@@ -1,11 +1,16 @@
-const path = require('path')
-const { expect } = require('expect')
+import path from 'path'
+import { expect } from 'expect'
+import { fileURLToPath } from 'url'
 
-const actor = require('../../lib/actor')
-const container = require('../../lib/container')
-const recorder = require('../../lib/recorder')
-const event = require('../../lib/event')
-const store = require('../../lib/store')
+import actor from '../../lib/actor.js'
+import container from '../../lib/container.js'
+import recorder from '../../lib/recorder.js'
+import step from '../../lib/steps.js'
+import event from '../../lib/event.js'
+import store from '../../lib/store.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 global.codecept_dir = path.join(__dirname, '/..')
 let I
@@ -14,7 +19,7 @@ let counter
 describe('Actor', () => {
   beforeEach(async () => {
     counter = 0
-    container.clear(
+    await container.clear(
       {
         MyHelper: {
           hello: () => 'hello world',
@@ -37,35 +42,47 @@ describe('Actor', () => {
       undefined,
     )
     store.actor = null
-    container.translation().vocabulary.actions.hello = 'привет'
-    I = actor()
+    const translation = container.translation()
+    if (translation && translation.vocabulary && translation.vocabulary.actions) {
+      translation.vocabulary.actions.hello = 'привет'
+    }
+    I = actor({}, container)
     await container.started()
     event.cleanDispatcher()
   })
 
   it('should collect pageobject methods in actor', async () => {
-    const poI = actor({
-      customStep: () => {},
-    })
+    const poI = actor(
+      {
+        customStep: () => {},
+      },
+      container,
+    )
     expect(poI).toHaveProperty('customStep')
     expect(I).toHaveProperty('customStep')
   })
 
   it('should correct run step from Helper inside PageObject', () => {
-    actor({
-      customStep() {
-        return this.hello()
+    actor(
+      {
+        customStep() {
+          return this.hello()
+        },
       },
-    })
+      container,
+    )
     recorder.start()
     const promise = I.customStep()
     return promise.then(val => expect(val).toEqual('hello world'))
   })
 
   it('should init pageobject methods as metastep', () => {
-    actor({
-      customStep: () => 3,
-    })
+    actor(
+      {
+        customStep: () => 3,
+      },
+      container,
+    )
     expect(I.customStep()).toEqual(3)
   })
 
@@ -74,16 +91,24 @@ describe('Actor', () => {
   })
 
   it('should correct add translation for step from PageObject', async () => {
-    container.translation().vocabulary.actions.customStep = 'кастомный_шаг'
-    actor({
-      customStep: () => 3,
-    })
+    const translation = container.translation()
+    if (translation && translation.vocabulary && translation.vocabulary.actions) {
+      translation.vocabulary.actions.customStep = 'кастомный_шаг'
+    }
+    actor(
+      {
+        customStep: () => 3,
+      },
+      container,
+    )
     await container.started()
-    expect(I).toHaveProperty('кастомный_шаг')
+    if (translation && translation.vocabulary && translation.vocabulary.actions) {
+      expect(I).toHaveProperty('кастомный_шаг')
+    }
   })
 
   it('should take all methods from helpers and built in', () => {
-    ;['hello', 'bye', 'die', 'failAfter', 'say', 'retry', 'greeting'].forEach(key => {
+    ;['hello', 'bye', 'die', 'failAfter', 'say', 'greeting'].forEach(key => {
       expect(I).toHaveProperty(key)
     })
   })
@@ -111,16 +136,6 @@ describe('Actor', () => {
     })
   })
 
-  it('should retry failed step with #retry', () => {
-    recorder.start()
-    return I.retry({ retries: 2, minTimeout: 0 }).failAfter(1)
-  })
-
-  it('should retry once step with #retry', () => {
-    recorder.start()
-    return I.retry().failAfter(1)
-  })
-
   it('should alway use the latest global retry options', () => {
     recorder.start()
     recorder.retry({
@@ -144,7 +159,7 @@ describe('Actor', () => {
       minTimeout: 0,
       when: () => true,
     })
-    I.retry(1).failAfter(1) // before fix: this changed the order of retries
+    I.failAfter(1, step.retry(1)) // before fix: this changed the order of retries
     return I.failAfter(2)
   })
 

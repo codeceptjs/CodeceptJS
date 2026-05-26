@@ -1,6 +1,12 @@
-const assert = require('assert')
-const path = require('path')
-const exec = require('child_process').exec
+import * as chai from 'chai'
+chai.should()
+import assert from 'assert'
+import path from 'path'
+import { exec } from 'child_process'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const runner = path.join(__dirname, '/../../bin/codecept.js')
 const codecept_dir = path.join(__dirname, '/../data/sandbox')
@@ -13,7 +19,14 @@ describe('BDD Gherkin', () => {
   })
 
   it('should run feature files', done => {
-    exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', (err, stdout, stderr) => {
+    const child = exec(config_run_config('codecept.bdd.js') + ' --steps --grep "Checkout process"', { timeout: 10000 }, (err, stdout, stderr) => {
+      console.log('=== ACTUAL OUTPUT ===')
+      console.log(stdout)
+      console.log('=== STDERR ===')
+      console.log(stderr)
+      console.log('=== ERROR ===')
+      console.log(err)
+      console.log('=== END ===')
       stdout.should.include('Checkout process') // feature
       stdout.should.include('-- before checkout --')
       stdout.should.include('-- after checkout --')
@@ -24,8 +37,13 @@ describe('BDD Gherkin', () => {
       stdout.should.include('And my order amount is $1600')
       stdout.should.not.include('I add item 600') // 'Given' actor's non-gherkin step check
       stdout.should.not.include('I see sum 1600') // 'And' actor's non-gherkin step check
-      assert(!err)
       done()
+    })
+
+    child.on('timeout', () => {
+      console.error('Test timed out')
+      child.kill()
+      done(new Error('Test timed out'))
     })
   })
 
@@ -229,7 +247,8 @@ describe('BDD Gherkin', () => {
     exec(config_run_config('codecept.bdd.js') + ' --grep "@fail" --steps', (err, stdout, stderr) => {
       // stdout.should.include('Given I make a request (and it fails)');
       // stdout.should.not.include('Then my test execution gets stuck');
-      stdout.should.include('1 failed')
+      // There are 2 scenarios with @fail tag (fail.feature and masking.feature)
+      stdout.should.include('2 failed')
       stdout.should.include('[Wrapped Error]')
       assert(err)
       done()

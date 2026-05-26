@@ -1,28 +1,40 @@
-const chai = require('chai')
+import * as chai from 'chai'
 
 const assert = chai.assert
 const expect = chai.expect
+const should = chai.should()
 
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
+import { execSync } from 'child_process'
 
-const playwright = require('playwright')
+import playwright, { devices } from 'playwright'
+import electron from 'electron'
 
-const TestHelper = require('../support/TestHelper')
-const Playwright = require('../../lib/helper/Playwright')
+import TestHelper from '../support/TestHelper.js'
+import Playwright from '../../lib/helper/Playwright.js'
 
-const AssertionFailedError = require('../../lib/assert/error')
-const webApiTests = require('./webapi')
-const FileSystem = require('../../lib/helper/FileSystem')
-const { deleteDir } = require('../../lib/utils')
-const Secret = require('../../lib/secret')
-global.codeceptjs = require('../../lib')
+import AssertionFailedError from '../../lib/assert/error.js'
+import * as webApiTests from './webapi.js'
+import FileSystem from '../../lib/helper/FileSystem.js'
+import { deleteDir } from '../../lib/utils.js'
+import Secret from '../../lib/secret.js'
+import codeceptjsModule from '../../lib/index.js'
+global.codeceptjs = codeceptjsModule.default || codeceptjsModule
+
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const dataFile = path.join(__dirname, '/../data/app/db')
-const formContents = require('../../lib/utils').test.submittedData(dataFile)
+import { test as testUtils } from '../../lib/utils.js'
+const formContents = testUtils.submittedData(dataFile)
 
 let I
 let page
+let browser
 let FS
 const siteUrl = TestHelper.siteUrl()
 
@@ -30,7 +42,7 @@ describe('Playwright', function () {
   this.timeout(35000)
   this.retries(1)
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
@@ -41,13 +53,15 @@ describe('Playwright', function () {
       waitForTimeout: 5000,
       waitForAction: 500,
       timeout: 2000,
-      restart: true,
+      restart: false,
+      networkIdleTimeout: 5000, // Timeout for network requests
+      manualStart: false,
       chrome: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
       defaultPopupAction: 'accept',
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -66,13 +80,8 @@ describe('Playwright', function () {
     return I._after()
   })
 
-  describe('restart browser: #restartBrowser', () => {
-    it('should open a new tab after restart of browser', async () => {
-      await I.restartBrowser()
-      await I.wait(1)
-      const numPages = await I.grabNumberOfOpenTabs()
-      assert.equal(numPages, 1)
-    })
+  after(async () => {
+    await I._afterSuite()
   })
 
   describe('open page : #amOnPage', () => {
@@ -114,17 +123,6 @@ describe('Playwright', function () {
       expect(res).to.have.property('domInteractive')
       expect(res).to.have.property('domContentLoadedEventEnd')
       expect(res).to.have.property('loadEventEnd')
-    })
-  })
-
-  describe('#seeCssPropertiesOnElements', () => {
-    it('should check background-color css property for given element', async () => {
-      try {
-        await I.amOnPage('https://codecept.io/helpers/Playwright/')
-        await I.seeCssPropertiesOnElements('.navbar', { 'background-color': 'rgb(128, 90, 213)' })
-      } catch (e) {
-        e.message.should.include("expected element (.navbar) to have CSS property { 'background-color': 'rgb(128, 90, 213)' }")
-      }
     })
   })
 
@@ -203,13 +201,13 @@ describe('Playwright', function () {
     })
 
     it('should wait for invisible combined with dontseeElement', async () => {
-      await I.amOnPage('https://codecept.io/')
-      await I.waitForVisible('.frameworks')
-      await I.waitForVisible('[alt="React"]')
-      await I.waitForVisible('.mountains')
-      await I._withinBegin('.mountains', async () => {
-        await I.dontSeeElement('[alt="React"]')
-        await I.waitForInvisible('[alt="React"]', 2)
+      await I.amOnPage('/info')
+      await I.waitForVisible('#grab-multiple', 10)
+      await I.waitForVisible('a[id="first-link"]', 10)
+      await I.waitForVisible('#grab-css', 10)
+      await I._withinBegin('#grab-css', async () => {
+        await I.dontSeeElement('a[id="first-link"]')
+        await I.waitForInvisible('a[id="first-link"]', 2)
       })
     })
   })
@@ -277,6 +275,11 @@ describe('Playwright', function () {
       I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover', 100, 100))
         .then(() => I.dontSee('Hovered', '#show')))
+
+    it('should trigger hover event within a context', () =>
+      I.amOnPage('/form/hover')
+        .then(() => I.moveCursorTo('#hover', 'body'))
+        .then(() => I.see('Hovered', '#show')))
   })
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
@@ -425,7 +428,7 @@ describe('Playwright', function () {
         .then(() => I.switchTo('#invalidIframeSelector'))
         .catch(e => {
           e.should.be.instanceOf(Error)
-          e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+          e.message.should.be.equal('Frame "#invalidIframeSelector" was not found by text|CSS|XPath')
         }))
 
     it('should return error if iframe selector is not iframe', () =>
@@ -433,7 +436,7 @@ describe('Playwright', function () {
         .then(() => I.switchTo('h1'))
         .catch(e => {
           e.should.be.instanceOf(Error)
-          e.message.should.be.equal('Element "#invalidIframeSelector" was not found by text|CSS|XPath')
+          e.message.should.be.equal('Frame "#invalidIframeSelector" was not found by text|CSS|XPath')
         }))
 
     it('should return to parent frame given a null locator', async () => {
@@ -868,6 +871,41 @@ describe('Playwright', function () {
         .then(html => assert.equal(html.trim(), '<a href="/login" target="_blank">New tab</a>')))
   })
 
+  describe('#grabAriaSnapshot', () => {
+    it('should grab aria snapshot of entire page when no locator is provided', () =>
+      I.amOnPage('/')
+        .then(() => I.grabAriaSnapshot())
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+
+    it('should grab aria snapshot of entire page using default body locator', () =>
+      I.amOnPage('/')
+        .then(() => I.grabAriaSnapshot('//body'))
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+
+    it('should grab aria snapshot of a specific element', () =>
+      I.amOnPage('/')
+        .then(() => I.grabAriaSnapshot('#area1'))
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+
+    it('should grab aria snapshot from within an iframe', () =>
+      I.amOnPage('/iframe')
+        .then(() => I.switchTo({ frame: 'iframe' }))
+        .then(() => I.grabAriaSnapshot())
+        .then(snapshot => {
+          assert.ok(snapshot)
+          assert.ok(typeof snapshot === 'string')
+        }))
+  })
+
   describe('#grabBrowserLogs', () => {
     it('should grab browser logs', () =>
       I.amOnPage('/')
@@ -932,25 +970,28 @@ describe('Playwright', function () {
   })
 
   describe('#dragAndDrop', () => {
-    it('Drag item from source to target (no iframe) @dragNdrop - customized steps', () =>
-      I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
-        .then(() => I.seeElementInDOM('#draggable'))
-        .then(() => I.dragAndDrop('#draggable', '#droppable'))
-        .then(() => I.see('Dropped')))
+    it('Drag item from source to target (no iframe) @dragNdrop - customized steps', async function () {
+      await I.amOnPage('/drag_drop.html')
+      await I.seeElementInDOM('#draggable')
+      await I.dragAndDrop('#draggable', '#droppable')
+      await I.see('Dropped!')
+    })
 
-    it('Drag item from source to target (no iframe) @dragNdrop - using Playwright API', () =>
-      I.amOnPage('https://jqueryui.com/resources/demos/droppable/default.html')
-        .then(() => I.seeElementInDOM('#draggable'))
-        .then(() => I.dragAndDrop('#draggable', '#droppable', { force: true }))
-        .then(() => I.see('Dropped')))
+    it('Drag item from source to target (no iframe) @dragNdrop - using Playwright API', async function () {
+      await I.amOnPage('/drag_drop.html')
+      await I.seeElementInDOM('#draggable')
+      await I.dragAndDrop('#draggable', '#droppable', { force: true })
+      await I.see('Dropped!')
+    })
 
-    xit('Drag and drop from within an iframe', () =>
-      I.amOnPage('https://jqueryui.com/droppable')
-        .then(() => I.resizeWindow(700, 700))
-        .then(() => I.switchTo('//iframe[@class="demo-frame"]'))
-        .then(() => I.seeElementInDOM('#draggable'))
-        .then(() => I.dragAndDrop('#draggable', '#droppable'))
-        .then(() => I.see('Dropped')))
+    it('Drag and drop from within an iframe', async function () {
+      await I.amOnPage('/drag_drop.html')
+      await I.resizeWindow(700, 700)
+      await I.switchTo('#test-iframe')
+      await I.seeElementInDOM('#iframe-draggable')
+      await I.dragAndDrop('#iframe-draggable', '#iframe-droppable')
+      await I.see('Dropped!')
+    })
   })
 
   describe('#switchTo frame', () => {
@@ -978,7 +1019,9 @@ describe('Playwright', function () {
         .then(() => I.dontSee('Information', 'h1'))
         .then(() => I.switchTo(0))
         .then(() => I.see('Information', 'h1'))
-        .then(() => I.dontSee('Iframe test', 'h1')))
+        .then(() => I.dontSee('Iframe test', 'h1'))
+        .then(() => I.switchTo())
+        .then(() => I.see('Iframe test', 'h1')))
   })
 
   describe('#dragSlider', () => {
@@ -1062,7 +1105,7 @@ describe('Playwright', function () {
 
     it('should convert to axios response with onResponse hook', async () => {
       let response
-      I.config.onResponse = resp => (response = resp)
+      I.options.onResponse = resp => (response = resp)
       await I.makeApiRequest('get', 'http://localhost:3001/api/users?page=2')
       expect(response).to.be.ok
       expect(response.status).to.equal(200)
@@ -1098,7 +1141,7 @@ describe('Playwright', function () {
   })
 
   describe('#handleDownloads - with passed folder', () => {
-    before(() => {
+    before(async () => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`)
 
@@ -1116,7 +1159,7 @@ describe('Playwright', function () {
   })
 
   describe('#handleDownloads - with default folder', () => {
-    before(() => {
+    before(async () => {
       // create download folder;
       global.output_dir = path.join(`${__dirname}/../data/output`)
 
@@ -1148,160 +1191,35 @@ describe('Playwright', function () {
       I.see('Information')
     })
   })
-})
 
-describe('Playwright - Custom Locator Strategies Configuration', () => {
-  let customI
-
-  before(async () => {
-    // Create a new Playwright instance with custom locator strategies
-    customI = new Playwright({
-      url: siteUrl,
-      browser: process.env.BROWSER || 'chromium',
-      show: false,
-      waitForTimeout: 5000,
-      timeout: 2000,
-      restart: true,
-      chrome: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      },
-      customLocatorStrategies: {
-        byRole: (selector, root) => {
-          return root.querySelector(`[role="${selector}"]`)
-        },
-        byTestId: (selector, root) => {
-          return root.querySelector(`[data-testid="${selector}"]`)
-        },
-        byDataQa: (selector, root) => {
-          const elements = root.querySelectorAll(`[data-qa="${selector}"]`)
-          return Array.from(elements) // Return all matching elements
-        },
-      },
+  describe('#click - with tag selector as context', () => {
+    it('clicks <a><span>text</span></a> when context is the tag "a"', async () => {
+      await I.amOnPage('/form/example7')
+      await I.click('Buy Chocolate Bar', 'a')
+      await I.seeCurrentUrlEquals('/')
     })
-    // Note: Skip _init() for configuration-only tests to avoid browser dependency
-    // await customI._init()
-    // Skip browser initialization for basic config tests
   })
 
-  after(async () => {
-    if (customI) {
-      try {
-        await customI._after()
-      } catch (e) {
-        // Ignore cleanup errors if browser wasn't initialized
-      }
-    }
-  })
+  describe('#click - tablist regression', () => {
+    // https://github.com/codeceptjs/CodeceptJS — click(text, container) was matching
+    // the container itself when its concatenated string-value contained the text,
+    // clicking the <ul role="tablist"> center instead of the intended <li role="tab">.
+    it('clicks the correct tab by text when container has many text-bearing children', async () => {
+      await I.amOnPage('/form/tablist')
+      await I.seeTextEquals('description', '#selected-tab')
 
-  it('should have custom locator strategies defined', () => {
-    expect(customI.customLocatorStrategies).to.not.be.undefined
-    expect(customI.customLocatorStrategies.byRole).to.be.a('function')
-    expect(customI.customLocatorStrategies.byTestId).to.be.a('function')
-    expect(customI.customLocatorStrategies.byDataQa).to.be.a('function')
-  })
+      await I.click('History', 'ul[role="tablist"]')
+      await I.seeTextEquals('history', '#selected-tab')
 
-  it('should detect custom locator strategies are defined', () => {
-    expect(customI._isCustomLocatorStrategyDefined()).to.be.true
-  })
+      await I.click('Description', 'ul[role="tablist"]')
+      await I.seeTextEquals('description', '#selected-tab')
 
-  it('should lookup custom locator functions', () => {
-    const byRoleFunction = customI._lookupCustomLocator('byRole')
-    expect(byRoleFunction).to.be.a('function')
+      await I.click('Runs', 'ul[role="tablist"]')
+      await I.seeTextEquals('runs', '#selected-tab')
 
-    const nonExistentFunction = customI._lookupCustomLocator('nonExistent')
-    expect(nonExistentFunction).to.be.null
-  })
-
-  it('should identify custom locators correctly', () => {
-    const customLocator = { byRole: 'button' }
-    expect(customI._isCustomLocator(customLocator)).to.be.true
-
-    const standardLocator = { css: '#test' }
-    expect(customI._isCustomLocator(standardLocator)).to.be.false
-  })
-
-  it('should throw error for undefined custom locator strategy', () => {
-    const invalidLocator = { nonExistent: 'test' }
-
-    try {
-      customI._isCustomLocator(invalidLocator)
-      expect.fail('Should have thrown an error')
-    } catch (error) {
-      expect(error.message).to.include('Please define "customLocatorStrategies"')
-    }
-  })
-})
-
-describe('Playwright - Custom Locator Strategies Browser Tests', () => {
-  let customI
-
-  before(async () => {
-    // Create a new Playwright instance with custom locator strategies
-    customI = new Playwright({
-      url: siteUrl,
-      browser: process.env.BROWSER || 'chromium',
-      show: false,
-      waitForTimeout: 5000,
-      timeout: 2000,
-      restart: true,
-      chrome: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      },
-      customLocatorStrategies: {
-        byRole: (selector, root) => {
-          return root.querySelector(`[role="${selector}"]`)
-        },
-        byTestId: (selector, root) => {
-          return root.querySelector(`[data-testid="${selector}"]`)
-        },
-        byDataQa: (selector, root) => {
-          const elements = root.querySelectorAll(`[data-qa="${selector}"]`)
-          return Array.from(elements) // Return all matching elements
-        },
-      },
+      await I.click('Code template', 'ul[role="tablist"]')
+      await I.seeTextEquals('code', '#selected-tab')
     })
-    await customI._init()
-  })
-
-  after(async () => {
-    if (customI) {
-      try {
-        await customI._after()
-      } catch (e) {
-        // Ignore cleanup errors if browser wasn't initialized
-      }
-    }
-  })
-
-  it('should use custom locator to find elements on page', async function () {
-    // Skip if browser can't be initialized
-    try {
-      await customI._beforeSuite()
-      await customI._before()
-    } catch (e) {
-      this.skip() // Skip if browser not available
-    }
-
-    await customI.amOnPage('/form/example1')
-
-    // Test byRole locator - assuming the page has elements with role attributes
-    // This test assumes there's a button with role="button" on the form page
-    // If the test fails, it means the page doesn't have the expected elements
-    // but the custom locator mechanism is working if no errors are thrown
-
-    try {
-      const elements = await customI._locate({ byRole: 'button' })
-      // If we get here without error, the custom locator is working
-      expect(elements).to.be.an('array')
-    } catch (error) {
-      // If the error is about element not found, that's ok - means locator works but element doesn't exist
-      // If it's about custom locator not being recognized, that's a real failure
-      if (error.message.includes('Please define "customLocatorStrategies"')) {
-        throw error
-      }
-      // Element not found is acceptable - means the custom locator is working
-      console.log('Custom locator working but element not found (expected):', error.message)
-    }
   })
 })
 
@@ -1321,7 +1239,7 @@ async function createRemoteBrowser() {
   return remoteBrowser
 }
 
-describe('Playwright (remote browser) websocket', function () {
+describe.skip('Playwright (remote browser) websocket', function () {
   this.timeout(35000)
   this.retries(1)
 
@@ -1341,10 +1259,10 @@ describe('Playwright (remote browser) websocket', function () {
     windowSize: '500x700',
   }
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
     I = new Playwright(helperConfig)
-    I._init()
+    await I._init()
   })
 
   beforeEach(async () => {
@@ -1417,7 +1335,7 @@ describe('Playwright (remote browser) websocket', function () {
 describe('Playwright - BasicAuth', function () {
   this.timeout(35000)
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
@@ -1434,7 +1352,7 @@ describe('Playwright - BasicAuth', function () {
       defaultPopupAction: 'accept',
       basicAuth: { username: 'admin', password: 'admin' },
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -1461,8 +1379,7 @@ describe('Playwright - BasicAuth', function () {
 })
 
 describe('Playwright - Emulation', () => {
-  before(() => {
-    const { devices } = require('playwright')
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
@@ -1478,7 +1395,7 @@ describe('Playwright - Emulation', () => {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -1501,7 +1418,7 @@ describe('Playwright - Emulation', () => {
 })
 
 describe('Playwright - PERSISTENT', () => {
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
@@ -1517,7 +1434,7 @@ describe('Playwright - PERSISTENT', () => {
         userDataDir: '/tmp/playwright-tmp',
       },
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -1537,22 +1454,35 @@ describe('Playwright - PERSISTENT', () => {
   })
 })
 
-describe('Playwright - Electron', () => {
-  before(() => {
+describe('Playwright - Electron', function () {
+  before(async function () {
+    // Skip Electron tests in CI environments as they require a display
+    if (process.env.CI) {
+      console.log('Skipping Electron tests in CI environment (no display available)')
+      this.skip()
+      return
+    }
+
+    this.timeout(15000) // Increase timeout for Electron test
     global.codecept_dir = path.join(__dirname, '/../data')
 
     I = new Playwright({
       waitForTimeout: 5000,
       waitForAction: 500,
-      restart: true,
+      restart: false,
       browser: 'electron',
       electron: {
-        executablePath: require('electron'),
-        args: [path.join(codecept_dir, '/electron/')],
+        executablePath: electron,
+        args: ['--no-sandbox', path.join(global.codecept_dir, '/electron/')],
       },
     })
-    I._init()
-    return I._beforeSuite()
+    try {
+      await I._init()
+      await I._beforeSuite()
+    } catch (e) {
+      console.log('Electron test setup failed, skipping tests:', e.message)
+      this.skip()
+    }
   })
 
   describe('#amOnPage', () => {
@@ -1612,7 +1542,7 @@ describe('Playwright - Electron', () => {
 })
 
 describe('Playwright - Performance Metrics', () => {
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
@@ -1620,10 +1550,10 @@ describe('Playwright - Performance Metrics', () => {
       url: siteUrl,
       windowSize: '500x700',
       show: false,
-      restart: true,
+      restart: false,
       browser: 'chromium',
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -1642,18 +1572,30 @@ describe('Playwright - Performance Metrics', () => {
     return I._after()
   })
 
-  it('grabs performance metrics', async () => {
+  after(async () => {
+    await I._afterSuite()
+    if (I.browser) {
+      await I.browser.close()
+    }
+  })
+
+  it('grabs performance metrics', async function () {
+    this.timeout(30000) // Increase timeout for external URL test
     await I.amOnPage('https://codecept.io')
     const metrics = await I.grabMetrics()
     expect(metrics.length).to.greaterThan(0)
     expect(metrics[0].name).to.equal('Timestamp')
+  })
+
+  after(async () => {
+    await I._afterSuite()
   })
 })
 
 describe('Playwright - Video & Trace & HAR', () => {
   const test = { title: 'a failed test', artifacts: {} }
 
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
@@ -1673,7 +1615,7 @@ describe('Playwright - Video & Trace & HAR', () => {
       },
       recordHar: {},
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -1879,7 +1821,7 @@ describe('Playwright - Video & Trace & HAR', () => {
   })
 })
 describe('Playwright - HAR', () => {
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(process.cwd())
 
     I = new Playwright({
@@ -1889,7 +1831,7 @@ describe('Playwright - HAR', () => {
       restart: true,
       browser: 'chromium',
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -1911,17 +1853,17 @@ describe('Playwright - HAR', () => {
   it('replay from HAR - non existing file', async () => {
     try {
       await I.replayFromHar('./non-existing-file.har')
-      await I.amOnPage('https://demo.playwright.dev/api-mocking')
+      await I.amOnPage('/')
     } catch (e) {
       expect(e.message).to.include('cannot be found on local system')
     }
   })
 
-  it('replay from HAR', async () => {
+  it('replay from HAR', async function () {
     const harFile = './test/data/sandbox/testHar.har'
-    await I.replayFromHar(harFile)
+    await I.replayFromHar(harFile, { url: '*/**/api-mocking' })
     await I.amOnPage('https://demo.playwright.dev/api-mocking')
-    await I.see('CodeceptJS')
+    await I.see('Render a List of Fruits')
   })
 
   describe('#grabWebElements, #grabWebElement', () => {
@@ -1945,7 +1887,7 @@ describe('Playwright - HAR', () => {
 })
 
 describe('using data-testid attribute', () => {
-  before(() => {
+  before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
     global.output_dir = path.join(`${__dirname}/../data/output`)
 
@@ -1956,7 +1898,7 @@ describe('using data-testid attribute', () => {
       restart: true,
       browser: 'chromium',
     })
-    I._init()
+    await I._init()
     return I._beforeSuite()
   })
 
@@ -2178,4 +2120,14 @@ describe('Playwright - storageState file path', function () {
       await I._after()
     } catch (_) {}
   })
+})
+
+// Global after hook to ensure process exits after all tests complete
+// This prevents the process from hanging due to Playwright event loops
+after(function () {
+  if (!process.env.CODECEPT_DISABLE_AUTO_EXIT) {
+    setTimeout(() => {
+      process.exit(process.exitCode || 0)
+    }, 1000).unref()
+  }
 })

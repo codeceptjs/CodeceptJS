@@ -1,8 +1,9 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper.js'
+import installCodeceptjs from '../support/install-codeceptjs.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
-  timeout: 10000,
+  timeout: 10,
   output: './output',
   grep: '@Playwright',
   helpers: {
@@ -12,6 +13,11 @@ module.exports.config = {
       restart: process.env.BROWSER_RESTART || false,
       browser: process.env.BROWSER || 'chromium',
       ignoreHTTPSErrors: true,
+      waitForTimeout: 5000,
+      waitForAction: 500,
+      chromium: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+      },
       webkit: {
         ignoreHTTPSErrors: true,
       },
@@ -43,13 +49,10 @@ module.exports.config = {
     '@codeceptjs/expect-helper': {},
   },
   include: {},
-  bootstrap: false,
+  bootstrap: installCodeceptjs,
   mocha: {},
   plugins: {
-    screenshotOnFail: {
-      enabled: true,
-    },
-    retryTo: {
+    retryFailedStep: {
       enabled: true,
     },
   },

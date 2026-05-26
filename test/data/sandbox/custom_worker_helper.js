@@ -1,10 +1,11 @@
-const assert = require('assert');
-const Helper = require('../../../lib/helper');
+import assert from 'assert';
+import HelperModule from '../../../lib/helper.js';
+const Helper = HelperModule.default || HelperModule;
 
 class CustomWorkers extends Helper {
   sayCustomMessage() {
-    assert(true, 'this is a custom message');
+    assert(true, 'this is a custom message')
   }
 }
 
-module.exports = CustomWorkers;
+export default CustomWorkers;

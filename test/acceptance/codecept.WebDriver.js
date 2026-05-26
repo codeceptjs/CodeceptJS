@@ -1,6 +1,7 @@
-const TestHelper = require('../support/TestHelper')
+import TestHelper from '../support/TestHelper.js'
+import installCodeceptjs from '../support/install-codeceptjs.js'
 
-module.exports.config = {
+export const config = {
   tests: './*_test.js',
   timeout: 20,
   output: './output',
@@ -13,7 +14,7 @@ module.exports.config = {
       // disableScreenshots: true,
       desiredCapabilities: {
         chromeOptions: {
-          args: ['--headless', '--disable-gpu', '--window-size=500,700'],
+          args: ['--headless', '--disable-gui', '--window-size=500,700'],
         },
       },
     },
@@ -26,17 +27,12 @@ module.exports.config = {
     },
   },
   include: {},
-  bootstrap: async () =>
-    new Promise(done => {
-      setTimeout(done, 5000)
-    }), // let's wait for selenium
+  bootstrap: async () => {
+    installCodeceptjs()
+    await new Promise(done => setTimeout(done, 5000)) // let's wait for selenium
+  },
   mocha: {},
   name: 'acceptance',
-  plugins: {
-    screenshotOnFail: {
-      enabled: true,
-    },
-  },
   gherkin: {
     features: './gherkin/*.feature',
     steps: ['./gherkin/steps.js'],

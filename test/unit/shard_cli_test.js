@@ -1,8 +1,11 @@
-const expect = require('chai').expect
-const exec = require('child_process').exec
-const path = require('path')
-const fs = require('fs')
+import { expect } from 'chai'
+import { exec } from 'child_process'
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const codecept_run = `node ${path.resolve(__dirname, '../../bin/codecept.js')}`
 
 describe('CLI Sharding Integration', () => {

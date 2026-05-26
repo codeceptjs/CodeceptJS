@@ -30,9 +30,9 @@ Depending on a type of a change you should do the following.
 
 ## Helpers
 
-Please keep in mind that CodeceptJS have **unified API** for WebDriverIO, Appium, Protractor, Nightmare, Puppeteer, TestCafe. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriverIO has method XXX and Nightmare doesn't, you can implement XXX inside Nightmare using the same method signature.
+Please keep in mind that CodeceptJS have **unified API** for WebDriver, Appium, Playwright, and Puppeteer. Tests written using those helpers should be compatible at syntax level. However, some of helpers may contain unique methods. That happens. If, for instance, WebDriver has method XXX and Playwright doesn't, you can implement XXX inside Playwright using the same method signature.
 
-### Updating a WebDriverIO | Nightmare
+### Updating a WebDriver | Playwright | Puppeteer
 
 *Whenever a new method or new behavior is added it should be documented in a docblock. Valid JS-example is required! Do **not edit** `docs/helpers/`, those files are generated from docblocks in corresponding helpers! *
 

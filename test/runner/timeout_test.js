@@ -1,6 +1,12 @@
-const { expect } = require('expect')
-const exec = require('child_process').exec
-const { codecept_dir, codecept_run } = require('./consts')
+import * as chai from 'chai';
+chai.should();
+import { expect } from 'expect';
+import { exec } from 'child_process';
+import path from 'path';
+import { codecept_dir, codecept_run } from './consts.js';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const debug_this_test = false
 
@@ -13,7 +19,7 @@ describe('CodeceptJS Timeouts', function () {
   this.retries(2)
 
   it('should stop test when timeout exceeded', done => {
-    exec(config_run_config('codecept.conf.js', 'timed out'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'timed out'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 2s exceeded (with Before hook)')
       // The second scenario can show either format depending on which timeout triggers first
@@ -24,7 +30,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should take --no-timeouts option', done => {
-    exec(`${config_run_config('codecept.conf.js', 'timed out')} --no-timeouts`, (err, stdout) => {
+    exec(`${config_run_config('codecept.conf.cjs', 'timed out')} --no-timeouts`, (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeouts were disabled')
       expect(stdout).not.toContain('Timeout 2s exceeded (with Before hook)')
@@ -35,7 +41,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should ignore timeouts if no timeout', done => {
-    exec(config_run_config('codecept.conf.js', 'no timeout test'), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).not.toContain('TimeoutError')
       expect(stdout).not.toContain('was interrupted on')
@@ -46,7 +52,7 @@ describe('CodeceptJS Timeouts', function () {
 
   it('should use global timeouts if timeout is set', done => {
     this.retries(3)
-    exec(config_run_config('codecept.timeout.conf.js', 'no timeout test'), (err, stdout) => {
+    exec(config_run_config('codecept.timeout.conf.cjs', 'no timeout test'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 0.1')
       expect(err).toBeTruthy()
@@ -55,7 +61,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should prefer step timeout', done => {
-    exec(config_run_config('codecept.conf.js', 'timeout step', true), (err, stdout) => {
+    exec(config_run_config('codecept.conf.cjs', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('was interrupted on timeout 200ms')
       expect(err).toBeTruthy()
@@ -64,7 +70,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should keep timeout with steps', done => {
-    exec(config_run_config('codecept.timeout.conf.js', 'timeout step', true), (err, stdout) => {
+    exec(config_run_config('codecept.timeout.conf.cjs', 'timeout step', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('was interrupted on timeout 100ms')
       expect(err).toBeTruthy()
@@ -73,7 +79,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should override timeout config from global object', done => {
-    exec(config_run_config('codecept.timeout.obj.conf.js', '#first', false), (err, stdout) => {
+    exec(config_run_config('codecept.timeout.obj.conf.cjs', '#first', false), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 0.3s exceeded (with Before hook)')
       expect(err).toBeTruthy()
@@ -82,7 +88,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should override timeout config from global object but respect local value', done => {
-    exec(config_run_config('codecept.timeout.obj.conf.js', '#second'), (err, stdout) => {
+    exec(config_run_config('codecept.timeout.obj.conf.cjs', '#second'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).not.toContain('Timeout 0.3s exceeded (with Before hook)')
       expect(stdout).toContain('Timeout 0.5s exceeded (with Before hook)')
@@ -92,7 +98,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should respect grep when overriding config from global config', done => {
-    exec(config_run_config('codecept.timeout.obj.conf.js', '#fourth'), (err, stdout) => {
+    exec(config_run_config('codecept.timeout.obj.conf.cjs', '#fourth'), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).not.toContain('Timeout 0.3s exceeded (with Before hook)')
       expect(stdout).toContain('Timeout 1s exceeded (with Before hook)')
@@ -102,7 +108,7 @@ describe('CodeceptJS Timeouts', function () {
   })
 
   it('should enforce global timeout even with BeforeSuite', done => {
-    exec(config_run_config('codecept.beforeSuiteTimeout.conf.js', 'enforce global timeout with BeforeSuite', true), (err, stdout) => {
+    exec(config_run_config('codecept.beforeSuiteTimeout.conf.cjs', 'enforce global timeout with BeforeSuite', true), (err, stdout) => {
       debug_this_test && console.log(stdout)
       expect(stdout).toContain('Timeout 2s exceeded')
       expect(stdout).toContain('TestTimeoutError')

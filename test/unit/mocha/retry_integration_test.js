@@ -1,9 +1,9 @@
-const { expect } = require('chai')
-const { createTest } = require('../../../lib/mocha/test')
-const { createSuite } = require('../../../lib/mocha/suite')
-const MochaSuite = require('mocha/lib/suite')
-const retryEnhancer = require('../../../lib/listener/retryEnhancer')
-const event = require('../../../lib/event')
+import { expect } from 'chai'
+import { createTest } from '../../../lib/mocha/test.js'
+import { createSuite } from '../../../lib/mocha/suite.js'
+import MochaSuite from 'mocha/lib/suite.js'
+import retryEnhancer from '../../../lib/listener/retryEnhancer.js'
+import event from '../../../lib/event.js'
 
 describe('Integration test: Retries with CodeceptJS properties', function () {
   beforeEach(function () {

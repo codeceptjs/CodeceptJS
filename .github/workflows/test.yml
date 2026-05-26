@@ -3,19 +3,24 @@ name: Run Unit tests
 on:
   push:
     branches:
-      - 3.x
+      - 4.x
   pull_request:
     branches:
       - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x]
 
     steps:
       - uses: actions/checkout@v6
@@ -35,17 +40,27 @@ jobs:
             curl -sSf http://localhost:3001/api/users && break
             sleep 1
           done
+      - name: Start test server
+        run: nohup npm run test-server:writable &
+      - name: Wait for test server
+        run: |
+          for i in {1..20}; do
+            curl -sSf http://localhost:8010/posts && break
+            sleep 1
+          done
       - run: npm run test:unit
+      - run: npm run test:rest
       - name: Stop mock server
         run: npm run mock-server:stop
 
   runner-tests:
     name: Runner tests
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x]
 
     steps:
       - uses: actions/checkout@v6

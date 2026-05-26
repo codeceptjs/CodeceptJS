@@ -3,10 +3,14 @@ name: Minimal Sharding Test
 on:
   push:
     branches:
-      - '3.x'
+      - '4.x'
   pull_request:
     branches:
       - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   CI: true

@@ -10,7 +10,6 @@ website
 .idea
 docs/build
 test/data/output
-test/data/custom
 test/acceptance/output
 test/bdd/output
 examples/output
@@ -28,3 +27,5 @@ yarn.lock
 /.vs
 typings/types.d.ts
 typings/promiseBasedTypes.d.ts
+reflection/
+skills/

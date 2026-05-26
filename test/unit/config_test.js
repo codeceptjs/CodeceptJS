@@ -1,9 +1,5 @@
-let expect
-import('chai').then(chai => {
-  expect = chai.expect
-})
-
-const config = require('../../lib/config')
+import { expect } from 'chai'
+import config from '../../lib/config.js'
 
 describe('Config', () => {
   beforeEach(() => config.reset())
@@ -63,5 +59,76 @@ describe('Config', () => {
     })
     expect(cfg).to.contain.key('additionalValue')
     expect(cfg.additionalValue).to.eql(true)
+  })
+
+  it('should load TypeScript config that imports other TypeScript files', async () => {
+    const configPath = './test/data/typescript-config-imports/tests/api/codecept.conf.ts'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://api.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(5000)
+    expect(cfg.name).to.equal('typescript-config-test')
+  })
+
+  it('should load TypeScript config that uses require()', async () => {
+    const configPath = './test/data/typescript-config-require/codecept.conf.ts'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.plugins).to.have.property('allure')
+    expect(cfg.plugins.allure.require).to.equal('@codeceptjs/allure-legacy')
+    expect(cfg.name).to.equal('typescript-config-with-require')
+  })
+
+  it('should load TypeScript config with dynamic require() paths', async () => {
+    const configPath = './test/data/typescript-dynamic-require/tests/codecept.conf.ts'
+    process.env.E2E_ENV = 'TEST'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://api.test.example.com')
+    expect(cfg.name).to.equal('typescript-dynamic-require-test')
+    delete process.env.E2E_ENV
+  })
+
+  it('should load TypeScript config with directory-style imports (no .ts extension)', async () => {
+    const configPath = './test/data/typescript-directory-import/test/api/codecept.conf.ts'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://api.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(5000)
+    expect(cfg.name).to.equal('typescript-directory-import-test')
+  })
+
+  it('should load TypeScript config with require() for paths without extensions', async () => {
+    const configPath = './test/data/typescript-require-relative/codecept.conf.ts'
+    process.env.E2E_ENV = 'TEST'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://test.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(10000)
+    expect(cfg.name).to.equal('typescript-require-relative-test')
+    delete process.env.E2E_ENV
+  })
+
+  it('should load TypeScript config with top-level await and dynamic imports', async () => {
+    const configPath = './test/data/typescript-top-level-await/codecept.conf.ts'
+    process.env.E2E_ENV = 'TEST'
+    const cfg = await config.load(configPath)
+    
+    expect(cfg).to.be.ok
+    expect(cfg.helpers).to.have.property('REST')
+    expect(cfg.helpers.REST.endpoint).to.equal('https://test.example.com')
+    expect(cfg.helpers.REST.timeout).to.equal(10000)
+    expect(cfg.name).to.equal('typescript-top-level-await-test')
+    delete process.env.E2E_ENV
   })
 })

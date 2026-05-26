@@ -1,37 +1,53 @@
-const I = actor()
+import { actor } from '../../../../../lib/index.js'
+import { secret } from '../../../../../lib/secret.js'
+import { Given, When, Then, Before, After, Fail } from '../../../../../lib/mocha/bdd.js'
 
 Given(/I have product with \$(\d+) price/, price => {
+  const I = actor()
+  I.addItem(parseInt(price, 10))
+})
+
+Given('I have product with {int} price in my cart', price => {
+  const I = actor()
   I.addItem(parseInt(price, 10))
 })
 When('I go to checkout process', () => {
+  const I = actor()
   I.checkout()
   I.checkout()
 })
 
 Then('I should see that total number of products is {int}', num => {
+  const I = actor()
   I.seeNum(num)
 })
-Then('my order amount is ${int}', sum => {
-  I.seeSum(sum)
+Then(/my order amount is \$(\d+)/, sum => {
+  const I = actor()
+  I.seeSum(parseInt(sum, 10))
 })
 
 Given('I have product with price {int}$ in my cart', price => {
+  const I = actor()
   I.addItem(parseInt(price, 10))
 })
 
 Given('discount for orders greater than ${int} is {int} %', (maxPrice, discount) => {
+  const I = actor()
   I.haveDiscountForPrice(maxPrice, discount)
 })
 
 When('I go to checkout', () => {
+  const I = actor()
   I.checkout()
 })
 
 Then('I should see overall price is "{float}" $', price => {
+  const I = actor()
   I.seeSum(price)
 })
 
 Given('I login', () => {
+  const I = actor()
   I.login('user', secret('password'))
 })
 

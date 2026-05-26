@@ -1,5 +1,6 @@
-const Appium = require('../../lib/helper/Appium')
-global.codeceptjs = require('../../lib')
+import Appium from '../../lib/helper/Appium.js'
+import * as codeceptjs from '../../lib/index.js'
+global.codeceptjs = codeceptjs.default || codeceptjs
 
 let I
 const site_url = 'http://davertmik.github.io'
