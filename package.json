@@ -162,7 +162,7 @@
     "chai-as-promised": "^8.0.2",
     "chai-subset": "1.6.0",
     "documentation": "14.0.3",
-    "electron": "40.1.0",
+    "electron": "40.2.1",
     "eslint": "^9.36.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-mocha": "11.2.0",
