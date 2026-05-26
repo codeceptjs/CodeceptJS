@@ -47,7 +47,7 @@ jobs:
 
       - name: Build and push Docker image
         if: steps.tag_check.outputs.status_code != '200'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
