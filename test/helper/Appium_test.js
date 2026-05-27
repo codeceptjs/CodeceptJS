@@ -21,7 +21,7 @@ const apk_path = 'storage:filename=selendroid-test-app-0.17.0.apk'
 const smallWait = 3
 
 describe('Appium', function () {
-  // this.retries(1);
+  this.retries(1)
   this.timeout(0)
 
   before(async () => {
