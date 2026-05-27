@@ -12,7 +12,7 @@ const builder = new Gherkin.AstBuilder(uuidFn)
 const matcher = new Gherkin.GherkinClassicTokenMatcher()
 
 import Config from '../../lib/config.js'
-import { Given, When, And, Then, matchStep, clearSteps, defineParameterType } from '../../lib/mocha/bdd.js'
+import { Given, When, And, Then, Before, After, matchStep, clearSteps, defineParameterType } from '../../lib/mocha/bdd.js'
 import run from '../../lib/mocha/gherkin.js'
 import recorder from '../../lib/recorder.js'
 import container from '../../lib/container.js'
@@ -440,5 +440,160 @@ describe('BDD', () => {
     const color = await fn.params[0]
     expect('blue').is.equal(color.name)
     await Promise.resolve()
+  })
+
+  describe('Gherkin hook events', () => {
+    const featureText = `
+      @feature_tag
+      Feature: checkout flow
+
+        @scenario_tag
+        Scenario: buy a product
+          Given I have product with 600 price
+          When I go to checkout process
+    `
+
+    const registerBasicSteps = () => {
+      Given(/I have product with (\d+) price/, () => {})
+      When('I go to checkout process', () => {})
+    }
+
+    const removeListeners = events => {
+      for (const name of events) event.dispatcher.removeAllListeners(name)
+    }
+
+    const driveHook = (hook, currentTest) =>
+      new Promise((resolve, reject) => {
+        hook.fn.call({ currentTest }, err => (err ? reject(err) : resolve()))
+      })
+
+    it('event.test.before carries the real scenario title and tags', async () => {
+      registerBasicSteps()
+      const suite = await run(featureText)
+      const captured = []
+      event.dispatcher.on(event.test.before, t => captured.push({ title: t.title, tags: t.tags }))
+
+      try {
+        const beforeHook = suite._beforeEach.find(h => h.title.includes('codeceptjs.before'))
+        await driveHook(beforeHook, suite.tests[0])
+
+        expect(captured).to.have.lengthOf(1)
+        expect(captured[0].title).to.equal('buy a product @scenario_tag')
+        expect(captured[0].tags).to.include.members(['@feature_tag', '@scenario_tag'])
+        expect(captured[0].title).to.not.equal('...')
+      } finally {
+        removeListeners([event.test.before])
+      }
+    })
+
+    it('event.test.after carries the real scenario title and tags', async () => {
+      registerBasicSteps()
+      const suite = await run(featureText)
+      const captured = []
+      event.dispatcher.on(event.test.after, t => captured.push({ title: t.title, tags: t.tags }))
+
+      try {
+        const afterHook = suite._afterEach.find(h => h.title.includes('codeceptjs.after'))
+        await driveHook(afterHook, suite.tests[0])
+
+        expect(captured).to.have.lengthOf(1)
+        expect(captured[0].title).to.equal('buy a product @scenario_tag')
+        expect(captured[0].tags).to.include.members(['@feature_tag', '@scenario_tag'])
+        expect(captured[0].title).to.not.equal('...')
+      } finally {
+        removeListeners([event.test.after])
+      }
+    })
+
+    it('forwards the done callback from setup() and emits before invoking it', async () => {
+      registerBasicSteps()
+      const suite = await run(featureText)
+      const beforeHook = suite._beforeEach.find(h => h.title.includes('codeceptjs.before'))
+      const order = []
+      event.dispatcher.on(event.test.before, () => order.push('emitted'))
+
+      try {
+        let doneCalls = 0
+        await new Promise((resolve, reject) => {
+          beforeHook.fn.call({ currentTest: suite.tests[0] }, err => {
+            doneCalls++
+            order.push('done')
+            err ? reject(err) : resolve()
+          })
+        })
+        expect(doneCalls).to.equal(1)
+        expect(order).to.deep.equal(['emitted', 'done'])
+      } finally {
+        removeListeners([event.test.before])
+      }
+    })
+
+    it('Before(test => ...) step-definition hook receives the real scenario', async () => {
+      const seen = []
+      Before(test => seen.push({ title: test.title, tags: test.tags }))
+      registerBasicSteps()
+      const suite = await run(featureText)
+
+      try {
+        await new Promise((resolve, reject) => {
+          suite.tests[0].fn(err => (err ? reject(err) : resolve()))
+        })
+
+        expect(seen).to.have.lengthOf.at.least(1)
+        const recorded = seen[seen.length - 1]
+        expect(recorded.title).to.equal('buy a product @scenario_tag')
+        expect(recorded.tags).to.include.members(['@feature_tag', '@scenario_tag'])
+      } finally {
+        removeListeners([event.test.started])
+      }
+    })
+
+    it('emits test.before, test.started, test.after in the expected order', async () => {
+      registerBasicSteps()
+      const suite = await run(featureText)
+      const order = []
+      const record = name => () => order.push(name)
+      event.dispatcher.on(event.test.before, record('test.before'))
+      event.dispatcher.on(event.test.started, record('test.started'))
+      event.dispatcher.on(event.test.passed, record('test.passed'))
+      event.dispatcher.on(event.test.after, record('test.after'))
+
+      try {
+        const beforeHook = suite._beforeEach.find(h => h.title.includes('codeceptjs.before'))
+        const afterHook = suite._afterEach.find(h => h.title.includes('codeceptjs.after'))
+
+        await driveHook(beforeHook, suite.tests[0])
+        await new Promise((resolve, reject) => {
+          suite.tests[0].fn(err => (err ? reject(err) : resolve()))
+        })
+        await driveHook(afterHook, suite.tests[0])
+
+        expect(order.indexOf('test.before')).to.be.lessThan(order.indexOf('test.started'))
+        expect(order.indexOf('test.started')).to.be.lessThan(order.indexOf('test.passed'))
+        expect(order.indexOf('test.passed')).to.be.lessThan(order.indexOf('test.after'))
+      } finally {
+        removeListeners([event.test.before, event.test.started, event.test.passed, event.test.after])
+      }
+    })
+
+    it('After(test => ...) step-definition hook receives the real scenario', async () => {
+      const seen = []
+      After(test => seen.push({ title: test.title, tags: test.tags }))
+      registerBasicSteps()
+      const suite = await run(featureText)
+
+      try {
+        await new Promise((resolve, reject) => {
+          suite.tests[0].fn(err => (err ? reject(err) : resolve()))
+        })
+
+        expect(seen).to.have.lengthOf.at.least(1)
+        const recorded = seen[seen.length - 1]
+        expect(recorded.title).to.equal('buy a product @scenario_tag')
+        expect(recorded.tags).to.include.members(['@feature_tag', '@scenario_tag'])
+      } finally {
+        removeListeners([event.test.finished])
+      }
+    })
   })
 })
