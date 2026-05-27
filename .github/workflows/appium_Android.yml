@@ -5,6 +5,9 @@ on:
     branches:
       - 4.x
       - appium-esm-migration
+  pull_request:
+    branches:
+      - 4.x
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
