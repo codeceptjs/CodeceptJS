@@ -85,7 +85,7 @@
   "dependencies": {
     "@codeceptjs/configure": "1.0.6",
     "@codeceptjs/helper": "2.0.4",
-    "@cucumber/cucumber-expressions": "^19.0.0",
+    "@cucumber/cucumber-expressions": "^19.0.1",
     "@cucumber/gherkin": "39.0.0",
     "@cucumber/messages": "32.3.1",
     "@xmldom/xmldom": "0.9.10",
@@ -140,7 +140,7 @@
     "@pollyjs/core": "6.0.6",
     "@types/chai": "5.2.3",
     "@types/inquirer": "9.0.9",
-    "@types/node": "^25.8.0",
+    "@types/node": "^25.9.1",
     "@wdio/sauce-service": "9.12.5",
     "@wdio/selenium-standalone-service": "8.15.0",
     "@wdio/utils": "9.19.2",
@@ -202,7 +202,7 @@
     "axios": "1.16.1",
     "diff": "~8.0.3",
     "js-yaml": "~4.1.1",
-    "tmp": "0.2.5",
+    "tmp": "0.2.6",
     "serialize-javascript": "~7.0.3",
     "underscore": "~1.13.8"
   }
