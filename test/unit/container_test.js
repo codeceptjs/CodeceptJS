@@ -184,7 +184,13 @@ describe('Container', () => {
           dummyPage: './data/dummy_page.js',
         },
       })
-      const dummyPage = isWindows() ? await import(pathToFileURL('../data/dummy_page.js').href) : await import('../data/dummy_page.js')
+
+      const resolvedImportPath =
+        isWindows() && typeof '../data/dummy_page.js' === 'string' && path.isAbsolute('../data/dummy_page.js')
+          ? pathToFileURL('../data/dummy_page.js').href
+          : '../data/dummy_page.js'
+
+      const dummyPage = await import(resolvedImportPath)
       expect(container.support('dummyPage').toString()).is.eql((dummyPage.default || dummyPage).toString())
     })
 
