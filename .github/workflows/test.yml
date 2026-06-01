@@ -72,7 +72,7 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-      - run: npm run test:unit
+      - run: npm run test:unit:windows
 
   runner-tests:
     name: Runner tests

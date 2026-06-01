@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -9,6 +9,7 @@ import FileSystem from '../../lib/helper/FileSystem.js'
 import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import Translation from '../../lib/translation.js'
+import { isWindows } from '../../lib/utils.js'
 
 describe('Container', () => {
   before(() => {
@@ -183,7 +184,7 @@ describe('Container', () => {
           dummyPage: './data/dummy_page.js',
         },
       })
-      const dummyPage = await import('../data/dummy_page.js')
+      const dummyPage = isWindows() ? await import(pathToFileURL('../data/dummy_page.js').href) : await import('../data/dummy_page.js')
       expect(container.support('dummyPage').toString()).is.eql((dummyPage.default || dummyPage).toString())
     })
 
