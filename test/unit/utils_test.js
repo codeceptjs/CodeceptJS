@@ -6,6 +6,7 @@ import sinon from 'sinon'
 import * as utils from '../../lib/utils.js'
 import store from '../../lib/store.js'
 import playwright from 'playwright'
+import { isWindows } from '../../lib/utils.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -326,7 +327,7 @@ describe('utils', () => {
 
     it('returns the given filename for absolute one', () => {
       const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep))
-      if (os.platform() === 'win32') {
+      if (isWindows()) {
         expect(_path).eql(path.resolve(store.codeceptDir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
       } else {
         expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')

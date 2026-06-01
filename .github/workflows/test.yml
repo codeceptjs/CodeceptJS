@@ -53,6 +53,27 @@ jobs:
       - name: Stop mock server
         run: npm run mock-server:stop
 
+  unit-tests-windows:
+    name: Unit tests
+    runs-on: windows-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [ 20.x ]
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - run: npm run test:unit
+
   runner-tests:
     name: Runner tests
     runs-on: ubuntu-22.04
