@@ -1,3 +1,4 @@
+import os from 'os'
 import { expect } from 'chai'
 import { exec } from 'child_process'
 import path from 'path'
@@ -6,21 +7,18 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const codecept_run = `node ${path.resolve(__dirname, '../../bin/codecept.js')}`
+const codeceptRun = `"${path.resolve(__dirname, '../../bin/codecept.js')}"`
 
 describe('CLI Sharding Integration', () => {
   let tempDir
   let configFile
 
   beforeEach(() => {
-    // Create temporary test setup
-    tempDir = `/tmp/shard_test_${Date.now()}`
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'shard_test_'))
     configFile = path.join(tempDir, 'codecept.conf.js')
 
-    // Create temp directory and test files
     fs.mkdirSync(tempDir, { recursive: true })
 
-    // Create 4 test files
     for (let i = 1; i <= 4; i++) {
       fs.writeFileSync(
         path.join(tempDir, `shard_test${i}.js`),
@@ -30,17 +28,16 @@ Feature('Shard Test ${i}')
 Scenario('test ${i}', ({ I }) => {
   I.say('This is test ${i}')
 })
-      `,
+        `,
       )
     }
 
-    // Create config file
     fs.writeFileSync(
       configFile,
       `
 exports.config = {
-  tests: '${tempDir}/shard_test*.js',
-  output: '${tempDir}/output',
+  tests: ${JSON.stringify(path.join(tempDir, 'shard_test*.js'))},
+  output: ${JSON.stringify(path.join(tempDir, 'output'))},
   helpers: {
     FileSystem: {}
   },
@@ -49,23 +46,18 @@ exports.config = {
   mocha: {},
   name: 'shard-test'
 }
-    `,
+      `,
     )
   })
 
   afterEach(() => {
-    // Cleanup temp files
-    try {
-      fs.rmSync(tempDir, { recursive: true, force: true })
-    } catch (err) {
-      // Ignore cleanup errors
-    }
+    fs.rmSync(tempDir, { recursive: true, force: true })
   })
 
   it('should run tests with shard option', function (done) {
     this.timeout(10000)
 
-    exec(`${codecept_run} run --config ${configFile} --shard 1/4`, (err, stdout, stderr) => {
+    exec(`node ${codeceptRun} run --config "${configFile}" --shard 1/4`, (err, stdout) => {
       expect(stdout).to.contain('CodeceptJS')
       expect(stdout).to.contain('OK')
       expect(stdout).to.match(/1 passed/)
@@ -77,7 +69,7 @@ exports.config = {
   it('should handle invalid shard format', function (done) {
     this.timeout(10000)
 
-    exec(`${codecept_run} run --config ${configFile} --shard invalid`, (err, stdout, stderr) => {
+    exec(`node ${codeceptRun} run --config "${configFile}" --shard invalid`, (err, stdout) => {
       expect(stdout).to.contain('Invalid shard format')
       expect(err.code).to.equal(1)
       done()
@@ -87,7 +79,7 @@ exports.config = {
   it('should handle shard index out of range', function (done) {
     this.timeout(10000)
 
-    exec(`${codecept_run} run --config ${configFile} --shard 0/4`, (err, stdout, stderr) => {
+    exec(`node ${codeceptRun} run --config "${configFile}" --shard 0/4`, (err, stdout) => {
       expect(stdout).to.contain('Shard index 0 must be between 1 and 4')
       expect(err.code).to.equal(1)
       done()
@@ -99,19 +91,28 @@ exports.config = {
 
     const shardResults = []
     let completedShards = 0
+    let finished = false
 
     for (let i = 1; i <= 4; i++) {
-      exec(`${codecept_run} run --config ${configFile} --shard ${i}/4`, (err, stdout, stderr) => {
-        expect(err).to.be.null
-        expect(stdout).to.contain('OK')
-        expect(stdout).to.match(/1 passed/)
+      exec(`node ${codeceptRun} run --config "${configFile}" --shard ${i}/4`, (err, stdout) => {
+        if (finished) return
 
-        shardResults.push(i)
-        completedShards++
+        try {
+          expect(err).to.be.null
+          expect(stdout).to.contain('OK')
+          expect(stdout).to.match(/1 passed/)
 
-        if (completedShards === 4) {
-          expect(shardResults).to.have.lengthOf(4)
-          done()
+          shardResults.push(i)
+          completedShards++
+
+          if (completedShards === 4) {
+            finished = true
+            expect(shardResults).to.have.lengthOf(4)
+            done()
+          }
+        } catch (e) {
+          finished = true
+          done(e)
         }
       })
     }
