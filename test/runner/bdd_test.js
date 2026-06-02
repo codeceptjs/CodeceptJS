@@ -1,6 +1,8 @@
 import * as chai from 'chai'
 chai.should()
 import assert from 'assert'
+import fs from 'fs'
+import os from 'os'
 import path from 'path'
 import { exec } from 'child_process'
 import { fileURLToPath } from 'url'
@@ -344,6 +346,35 @@ When(/^I define a step with a \\( paren and a "(.*?)" string$/, () => {
       assert.equal(stdout.match(/I open a browser on a site/g).length, 1)
       assert(!err)
       done()
+    })
+  })
+
+  it('emits event.test.before/after with the real scenario title and tags', done => {
+    const captureFile = path.join(os.tmpdir(), `codeceptjs-capture-${process.pid}-${Date.now()}.json`)
+    const cmd = `${config_run_config('codecept.bdd.events.js')} --grep "@important"`
+    exec(cmd, { env: { ...process.env, CAPTURE_OUTPUT: captureFile } }, (err, stdout, stderr) => {
+      try {
+        assert(!err, `runner failed: ${stderr || stdout}`)
+        const captured = JSON.parse(fs.readFileSync(captureFile, 'utf8'))
+
+        const beforeEvents = captured.filter(e => e.phase === 'test.before')
+        const afterEvents = captured.filter(e => e.phase === 'test.after')
+
+        beforeEvents.length.should.be.greaterThan(0)
+        afterEvents.length.should.be.greaterThan(0)
+
+        for (const entry of [...beforeEvents, ...afterEvents]) {
+          entry.title.should.not.equal('...')
+          entry.title.should.include('checkout')
+          entry.tags.should.include('@important')
+          entry.tags.should.include('@very')
+        }
+        done()
+      } catch (assertErr) {
+        done(assertErr)
+      } finally {
+        try { fs.unlinkSync(captureFile) } catch {}
+      }
     })
   })
 

@@ -36,6 +36,22 @@ describe('WebElement', () => {
 
       expect(webElement.helperType).to.equal('unknown')
     })
+
+    it('should detect Appium as webdriver via prototype chain', () => {
+      class WebDriver {}
+      class Appium extends WebDriver {}
+      const webElement = new WebElement({}, new Appium())
+
+      expect(webElement.helperType).to.equal('webdriver')
+    })
+
+    it('should detect subclasses of Playwright as playwright', () => {
+      class Playwright {}
+      class CustomPlaywright extends Playwright {}
+      const webElement = new WebElement({}, new CustomPlaywright())
+
+      expect(webElement.helperType).to.equal('playwright')
+    })
   })
 
   describe('getText()', () => {
