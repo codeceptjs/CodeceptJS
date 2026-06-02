@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 4.x
-      - appium-esm-migration
+      - clone-fix-appium-touchPerform
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
