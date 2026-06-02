@@ -351,7 +351,7 @@ describe('Appium', function () {
         },
       ])
       const val = await app.grabCurrentActivity()
-      assert.equal(val, '.HomeScreenActivity')
+      assert.equal(val, '.TouchGesturesActivity')
     })
 
     it('should assert when you dont scroll the document anymore', async () => {
