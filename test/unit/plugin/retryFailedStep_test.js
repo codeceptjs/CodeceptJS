@@ -197,7 +197,7 @@ describe('retryFailedStep', () => {
     event.dispatcher.emit(event.step.started, { title: 'seeElement' })
     expect(retryConfig.when(new Error()), "'seeElement' must not be ignored when only 'see' is configured").to.equal(true)
 
-    event.dispatcher.emit(event.step.passed, {})
+    event.dispatcher.emit(event.step.finished, {})
 
     event.dispatcher.emit(event.step.started, { title: 'see' })
     expect(retryConfig.when(new Error()), "exact match 'see' must still be ignored").to.not.equal(true)
