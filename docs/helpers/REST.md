@@ -12,7 +12,7 @@ title: REST
 **Extends Helper**
 
 REST helper allows to send additional requests to the REST API during acceptance tests.
-[Axios][1] library is used to perform requests.
+native fetch API is used to perform requests.
 
 
 
@@ -104,7 +104,7 @@ this.helpers['REST']._executeRequest({
 
 ### _executeRequest
 
-Executes axios request
+Executes fetch request
 
 #### Parameters
 
@@ -274,7 +274,7 @@ I.setRequestTimeout(10000); // In milliseconds
 
 *   `newTimeout` **[number][5]** timeout in milliseconds
 
-[1]: https://github.com/axios/axios
+
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 

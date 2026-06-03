@@ -12,7 +12,7 @@ title: GraphQL
 **Extends Helper**
 
 GraphQL helper allows to send additional requests to a GraphQl endpoint during acceptance tests.
-[Axios][1] library is used to perform requests.
+native fetch API is used to perform requests.
 
 ## Configuration
 
@@ -51,7 +51,7 @@ this.helpers['GraphQL']._executeQuery({
 
 ### _executeQuery
 
-Executes query via axios call
+Executes query via fetch call
 
 #### Parameters
 
@@ -59,7 +59,7 @@ Executes query via axios call
 
 ### _prepareGraphQLRequest
 
-Prepares request for axios call
+Prepares request for fetch call
 
 #### Parameters
 
@@ -145,7 +145,7 @@ const user = response.data.data;
 
 Returns **any** Promise<any>
 
-[1]: https://github.com/axios/axios
+
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 

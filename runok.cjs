@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const path = require('path')
-const axios = require('axios')
 
 const {
   stopOnFail,
@@ -165,11 +164,12 @@ title: ${name}
   async docsExternalPlugins() {
     // generate documentation for helpers outside of main repo
     console.log('Building Vue plugin docs')
-    const resp = await axios.get('https://raw.githubusercontent.com/codecept-js/vue-cli-plugin-codeceptjs-puppeteer/master/README.md')
+    const resp = await fetch('https://raw.githubusercontent.com/codecept-js/vue-cli-plugin-codeceptjs-puppeteer/master/README.md')
+    const body = await resp.text()
 
     writeToFile('docs/vue.md', cfg => {
       cfg.line('---\npermalink: /vue\nlayout: Section\nsidebar: false\ntitle: Testing Vue Apps\n---\n\n')
-      cfg.line(resp.data)
+      cfg.line(body)
     })
 
     this.docsCi()
@@ -532,14 +532,20 @@ ${changelog}`
     const token = process.env.GH_TOKEN
 
     try {
-      const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
+      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
         headers: { Authorization: `token ${token}` },
       })
+
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.statusText}`)
+      }
+
+      const data = await response.json()
 
       // Filter out bot accounts
       const excludeUsers = ['dependabot[bot]', 'actions-user']
 
-      const filteredContributors = response.data.filter(contributor => !excludeUsers.includes(contributor.login))
+      const filteredContributors = data.filter(contributor => !excludeUsers.includes(contributor.login))
 
       const contributors = filteredContributors.map(contributor => {
         return `

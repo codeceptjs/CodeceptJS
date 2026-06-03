@@ -85,7 +85,7 @@ You'll also need the Android SDK and an emulator or device, or Xcode and a simul
 
 ## API testing
 
-REST and GraphQL tests need no browser — the helpers are built in (they use `axios`, already a dependency):
+REST and GraphQL tests need no browser — the helpers are built in (they use native `fetch`):
 
 ```sh
 npm i codeceptjs --save-dev
