@@ -51,11 +51,11 @@ this.helpers['GraphQL']._executeQuery({
 
 ### _executeQuery
 
-Executes query via fetch call
+Executes query
 
 #### Parameters
 
-*   `request` **[object][2]**&#x20;
+*   `request` **[object][1]**&#x20;
 
 ### _prepareGraphQLRequest
 
@@ -63,10 +63,10 @@ Prepares request for fetch call
 
 #### Parameters
 
-*   `operation` **[object][2]**&#x20;
-*   `headers` **[object][2]**&#x20;
+*   `operation` **[object][1]**&#x20;
+*   `headers` **[object][1]**&#x20;
 
-Returns **[object][2]** graphQLRequest
+Returns **[object][1]** graphQLRequest
 
 ### amBearerAuthenticated
 
@@ -79,7 +79,7 @@ I.amBearerAuthenticated(secret('heregoestoken'))
 
 #### Parameters
 
-*   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+*   `accessToken` **([string][2] | CodeceptJS.Secret)** Bearer access token
 
 ### haveRequestHeaders
 
@@ -87,7 +87,7 @@ Sets request headers for all requests of this test
 
 #### Parameters
 
-*   `headers` **[object][2]** headers list
+*   `headers` **[object][1]** headers list
 
 ### sendMutation
 
@@ -113,10 +113,10 @@ I.sendMutation(`
 
 #### Parameters
 
-*   `mutation` **[String][3]**&#x20;
-*   `variables` **[object][2]?** that may go along with the mutation
-*   `options` **[object][2]?** are additional query options 
-*   `headers` **[object][2]?**  
+*   `mutation` **[String][2]**&#x20;
+*   `variables` **[object][1]?** that may go along with the mutation
+*   `options` **[object][1]?** are additional query options 
+*   `headers` **[object][1]?**  
 
 Returns **any** Promise<any>
 
@@ -138,15 +138,13 @@ const user = response.data.data;
 
 #### Parameters
 
-*   `query` **[String][3]**&#x20;
-*   `variables` **[object][2]?** that may go along with the query
-*   `options` **[object][2]?** are additional query options 
-*   `headers` **[object][2]?**  
+*   `query` **[String][2]**&#x20;
+*   `variables` **[object][1]?** that may go along with the query
+*   `options` **[object][1]?** are additional query options 
+*   `headers` **[object][1]?**  
 
 Returns **any** Promise<any>
 
+[1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
