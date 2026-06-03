@@ -129,10 +129,14 @@ describe('REST', () => {
       response.data.name.should.eql('Vasya')
     })
 
-    it('should set timeout for the request', async () => {
-      await I.setRequestTimeout(2000)
-      const response = await I.sendGetRequest('/posts')
-      response.config.timeout.should.eql(2000)
+    it('should throw error when request times out', async () => {
+      await I.setRequestTimeout(100)
+      try {
+        await I.sendGetRequest('/timeout?ms=500')
+        throw new Error('Should have timed out')
+      } catch (e) {
+        e.message.should.contain('Request timed out after 100ms')
+      }
     })
   })
 
