@@ -92,7 +92,7 @@
   "dependencies": {
     "@codeceptjs/configure": "^4.0.0-beta.4",
     "@codeceptjs/helper": "2.0.4",
-    "@cucumber/cucumber-expressions": "18",
+    "@cucumber/cucumber-expressions": "19",
     "@cucumber/gherkin": "38.0.0",
     "@cucumber/messages": "32.0.1",
     "@modelcontextprotocol/sdk": "^1.26.0",
