@@ -14,6 +14,7 @@ import { resolveImportModulePath } from '../../lib/utils.js'
 const realDummyPagePath = path.resolve(__dirname, '../data/dummy_page.js');
 const realIPath = path.resolve(__dirname, '../data/I.js');
 const realHelperPath = path.resolve(__dirname, '../data/helper.js');
+const realVocabulariesPath = path.resolve(__dirname, '../data/custom_vocabulary.json');
 
 describe('Container', () => {
   before(() => {
@@ -82,7 +83,7 @@ describe('Container', () => {
     })
 
     it('should load custom translation with vocabularies', async () => {
-      await container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] })
+      await container.create({ translation: 'my', vocabularies: [realVocabulariesPath] })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       const translation = container.translation()
