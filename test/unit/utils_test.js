@@ -6,7 +6,7 @@ import sinon from 'sinon'
 import * as utils from '../../lib/utils.js'
 import store from '../../lib/store.js'
 import playwright from 'playwright'
-import { isWindows } from '../../lib/utils.js'
+import { isWindows, resolveImportModulePath } from '../../lib/utils.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -353,7 +353,8 @@ describe('utils', () => {
     })
 
     it('should import a module', async () => {
-      const module = await utils.importModule(path.join(__dirname, '../../lib/output.js'))
+      const resolvedPath = utils.resolveImportModulePath(path.join(__dirname, '../../lib/output.js'))
+      const module = await import(resolvedPath)
       expect(module.default).to.be.ok
     })
 
@@ -364,15 +365,8 @@ describe('utils', () => {
       // Use an absolute path that exists
       const absolutePath = path.resolve(__dirname, '../../lib/output.js')
 
-      const module = await utils.importModule(absolutePath)
-      expect(module.default).to.be.ok
-    })
-
-    it('should import a relative module', async () => {
-      // Relative to lib/utils.js where importModule is defined
-      // lib/utils.js is in lib/
-      // we want to import lib/output.js
-      const module = await utils.importModule('./output.js')
+      const resolvedPath = utils.resolveImportModulePath(absolutePath)
+      const module = await import(resolvedPath)
       expect(module.default).to.be.ok
     })
   })

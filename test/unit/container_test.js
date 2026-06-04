@@ -9,7 +9,7 @@ import FileSystem from '../../lib/helper/FileSystem.js'
 import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import Translation from '../../lib/translation.js'
-import { isWindows } from '../../lib/utils.js'
+import { resolveImportModulePath } from '../../lib/utils.js'
 
 describe('Container', () => {
   before(() => {
@@ -185,12 +185,8 @@ describe('Container', () => {
         },
       })
 
-      const resolvedImportPath =
-        isWindows() && typeof '../data/dummy_page.js' === 'string' && path.isAbsolute('../data/dummy_page.js')
-          ? pathToFileURL('../data/dummy_page.js').href
-          : '../data/dummy_page.js'
-
-      const dummyPage = await import(resolvedImportPath)
+      const resolvedPath = resolveImportModulePath('../data/dummy_page.js')
+      const dummyPage = await import(resolvedPath)
       expect(container.support('dummyPage').toString()).is.eql((dummyPage.default || dummyPage).toString())
     })
 
