@@ -154,6 +154,16 @@ describe('Container', () => {
 
   describe('#create', () => {
     it('should create container with helpers', async () => {
+      // --- ADD THIS DEBUGGING BLOCK ---
+      const sandboxDir = path.resolve(__dirname, 'data/sandbox/data');
+      console.log('--- CI DEBUGGING ---');
+      console.log('Does directory exist?', fs.existsSync(sandboxDir));
+      if (fs.existsSync(sandboxDir)) {
+        console.log('Files inside directory:', fs.readdirSync(sandboxDir));
+      }
+      console.log('--------------------');
+      // --------------------------------
+
       const config = {
         helpers: {
           MyHelper: {
