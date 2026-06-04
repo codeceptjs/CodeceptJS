@@ -10,7 +10,10 @@ import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import Translation from '../../lib/translation.js'
 import { resolveImportModulePath } from '../../lib/utils.js'
-import fs from 'fs'
+
+const realDummyPagePath = path.resolve(__dirname, '../data/dummy_page.js');
+const realIPath = path.resolve(__dirname, '../data/I.js');
+const realHelperPath = path.resolve(__dirname, '../data/helper.js');
 
 describe('Container', () => {
   before(() => {
@@ -155,20 +158,10 @@ describe('Container', () => {
 
   describe('#create', () => {
     it('should create container with helpers', async () => {
-      // --- ADD THIS DEBUGGING BLOCK ---
-      const sandboxDir = path.resolve(__dirname, 'data/sandbox/data');
-      console.log('--- CI DEBUGGING ---');
-      console.log('Does directory exist?', fs.existsSync(sandboxDir));
-      if (fs.existsSync(sandboxDir)) {
-        console.log('Files inside directory:', fs.readdirSync(sandboxDir));
-      }
-      console.log('--------------------');
-      // --------------------------------
-
       const config = {
         helpers: {
           MyHelper: {
-            require: './data/helper.js',
+            require: realHelperPath,
           },
           FileSystem: {},
         },
@@ -192,7 +185,7 @@ describe('Container', () => {
     it('should load DI and return a reference to the module', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page.js',
+          dummyPage: realDummyPagePath,
         },
       })
 
@@ -204,7 +197,7 @@ describe('Container', () => {
     it('should load I from path and execute', async () => {
       await container.create({
         include: {
-          I: './data/I.js',
+          I: realIPath,
         },
       })
       expect(container.support('I')).is.ok
@@ -216,7 +209,7 @@ describe('Container', () => {
     it('should load DI includes provided as require paths', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page',
+          dummyPage: realDummyPagePath,
         },
       })
       expect(container.support('dummyPage')).is.ok
@@ -224,10 +217,12 @@ describe('Container', () => {
     })
 
     it('should load DI and inject I into PO', async () => {
+
+
       await container.create({
         include: {
-          dummyPage: './data/dummy_page.js',
-          I: './data/I.js',
+          dummyPage: realDummyPagePath,
+          I: realIPath,
         },
       })
       expect(container.support('dummyPage')).is.ok
@@ -239,8 +234,8 @@ describe('Container', () => {
     it('should load DI and inject custom I into PO', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page.js',
-          I: './data/I.js',
+          dummyPage: realDummyPagePath,
+          I: realIPath,
         },
       })
       expect(container.support('dummyPage')).is.ok
