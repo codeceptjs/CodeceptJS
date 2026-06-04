@@ -13,7 +13,7 @@ let fs
 
 describe('FileSystem', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '/../..')
+    global.codecept_dir = path.join(__dirname, '../..')
   })
 
   beforeEach(() => {
