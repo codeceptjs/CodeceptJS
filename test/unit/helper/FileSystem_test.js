@@ -1,7 +1,7 @@
 import path from 'path'
 import { expect } from 'chai'
 import { fileURLToPath } from 'url'
-import nodeFs from 'fs' // Import native Node file system
+import nodeFs from 'fs'
 import FileSystem from '../../../lib/helper/FileSystem.js'
 import codeceptjs from '../../../lib/index.js'
 
@@ -14,14 +14,19 @@ let fs
 
 describe('FileSystem', () => {
   before(() => {
-    global.codecept_dir = path.join(__dirname, '../..')
+    // 1. Point directly to the sandbox directory
+    // (Adjust the '../../' depending on how deep this test file is nested so it points to CodeceptJS/test/data/sandbox)
+    const sandboxDir = path.resolve(__dirname, '../../data/sandbox')
 
-    // 1. Define exact paths
-    const dataDir = path.join(global.codecept_dir, 'data')
+    // 2. Align the global directory with the CI's expected sandbox
+    global.codecept_dir = sandboxDir
+
+    // 3. Define paths inside the sandbox
+    const dataDir = path.join(sandboxDir, 'data')
     const outputDir = path.join(dataDir, 'output')
     const sampleFilePath = path.join(dataDir, 'fs_sample.txt')
 
-    // 2. Guarantee the directories exist (this fixes the CI crash!)
+    // 4. Guarantee the sandbox directories exist
     if (!nodeFs.existsSync(dataDir)) {
       nodeFs.mkdirSync(dataDir, { recursive: true })
     }
@@ -29,7 +34,7 @@ describe('FileSystem', () => {
       nodeFs.mkdirSync(outputDir, { recursive: true })
     }
 
-    // 3. Guarantee the mock file exists with the exact string expected
+    // 5. Guarantee the mock file exists inside the sandbox
     const sampleContent = `A simple file\nfor FileSystem helper\ntest`
     nodeFs.writeFileSync(sampleFilePath, sampleContent)
   })
@@ -40,6 +45,7 @@ describe('FileSystem', () => {
   })
 
   it('should be initialized before tests', () => {
+    // This will now pass, because both fs.dir and global.codecept_dir are the sandbox
     expect(fs.dir).to.eql(global.codecept_dir)
   })
 
@@ -61,9 +67,6 @@ describe('FileSystem', () => {
     fs.seeInThisFile('FileSystem')
     fs.dontSeeInThisFile('WebDriverIO')
     fs.dontSeeFileContentsEqual('123345')
-
-    // Note: If tests fail on Windows due to line endings (\r\n vs \n),
-    // the dynamic writeFileSync in the before() hook solves that too!
     fs.seeFileContentsEqual(`A simple file\nfor FileSystem helper\ntest`)
   })
 
