@@ -10,6 +10,7 @@ import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import Translation from '../../lib/translation.js'
 import { resolveImportModulePath } from '../../lib/utils.js'
+import fs from 'fs'
 
 describe('Container', () => {
   before(() => {
