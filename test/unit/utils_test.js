@@ -344,4 +344,36 @@ describe('utils', () => {
       expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2')).to.throw(Error, 'Cannot find modules unexisting-package,unexisting-package2')
     })
   })
+
+  describe('#importModule', () => {
+    let osStub
+
+    afterEach(() => {
+      if (osStub) osStub.restore()
+    })
+
+    it('should import a module', async () => {
+      const module = await utils.importModule(path.join(__dirname, '../../lib/output.js'))
+      expect(module.default).to.be.ok
+    })
+
+    it('should import a module on Windows simulation', async () => {
+      // Mock Windows
+      osStub = sinon.stub(os, 'platform').callsFake(() => 'win32')
+
+      // Use an absolute path that exists
+      const absolutePath = path.resolve(__dirname, '../../lib/output.js')
+
+      const module = await utils.importModule(absolutePath)
+      expect(module.default).to.be.ok
+    })
+
+    it('should import a relative module', async () => {
+      // Relative to lib/utils.js where importModule is defined
+      // lib/utils.js is in lib/
+      // we want to import lib/output.js
+      const module = await utils.importModule('./output.js')
+      expect(module.default).to.be.ok
+    })
+  })
 })

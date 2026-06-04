@@ -5,8 +5,7 @@ import Codecept from '../lib/codecept.js'
 import output from '../lib/output.js'
 const { print, error } = output
 import { printError } from '../lib/command/utils.js'
-import { isWindows } from '../lib/utils.js'
-import { pathToFileURL } from 'url'
+import { importModule } from '../lib/utils.js'
 
 const commandFlags = {
   ai: {
@@ -47,7 +46,7 @@ const errorHandler =
   }
 
 const dynamicImport = async modulePath => {
-  const module = isWindows() ? await import(pathToFileURL(modulePath).href) : await import(modulePath)
+  const module = await importModule(modulePath)
   return module.default || module
 }
 
