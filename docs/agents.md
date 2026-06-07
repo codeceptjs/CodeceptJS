@@ -23,6 +23,38 @@ Agents get full control over test and browser execution:
 
 CodeceptJS is token-efficient: it stores HTML, ARIA, logs, and HTTP request data as files instead of streaming them through MCP. Agents read these files with their native shell tools—no extra API calls, no redundant context.
 
+## Essential Setup
+
+Two things make agent testing work: the **skills** that teach the agent CodeceptJS, and the **MCP server** that lets it drive the browser. Set both up once, from your project directory.
+
+Install the skills:
+
+```bash
+npx skills add codeceptjs/skills
+```
+
+Connect the MCP server (`npx codeceptjs-mcp`).
+
+**Claude Code:**
+
+```bash
+claude mcp add codeceptjs -- npx codeceptjs-mcp
+```
+
+**Codex:**
+
+```bash
+codex mcp add codeceptjs -- npx codeceptjs-mcp
+```
+
+**Cursor** — add to `.cursor/mcp.json`:
+
+```json
+{ "mcpServers": { "codeceptjs": { "command": "npx", "args": ["codeceptjs-mcp"] } } }
+```
+
+See [/mcp](/mcp) for full client setup. Now the agent is ready to run the loop.
+
 ## The loop
 
 Whether the agent is writing a new test or fixing an old one, it follows the same cycle.
@@ -95,31 +127,6 @@ Only `url` is inline. The rest are paths the agent opens with the right tool:
 | `trace.md` | Whole — markdown index linking every step to its artifacts |
 
 Saved HTML is formatted, with non-semantic elements stripped out: `<style>`, `<script>`, Tailwind-style trash classes, and inline `style=""` attributes. `grep` can then effectively find the correct tree branch in raw page source. ARIA snapshots are smaller and more structured than HTML, which is why the agent prefers them when picking locators.
-
-## Setup
-
-When CodeceptJS is installed, the MCP server can be launched with this command:
-
-```bash
-npx codeceptjs-mcp
-```
-
-> See [/mcp](/mcp) for detailed client setup.
-
-We recommend pairing CodeceptJS MCP with the skills bundle.
-
-Install for any agent:
-
-```bash
-npx skills add codeceptjs/skills
-```
-
-Or, in Claude Code:
-
-```text
-/plugin marketplace add codeceptjs/skills
-/plugin install codeceptjs@codeceptjs-skills
-```
 
 ## Usage Examples
 
