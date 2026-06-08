@@ -7,9 +7,31 @@ title: Migrating from 3.x to 4.x
 
 CodeceptJS 4.x is a major release. It moves the codebase from CommonJS to native ESM, drops several long-deprecated helpers and plugins, replaces legacy plugins with first-class APIs, and bumps most third-party dependencies.
 
-> Migrate automatically! Install CodeceptJS skills `npx skills add codeceptjs/skills` and run `/codeceptjs-3-to-4-migration` in your coding agent
+## Migrate Automatically with an Agent
 
-This guide tells you exactly what to change in your project to upgrade.
+The fastest way to upgrade is to let an AI agent do it. This release is mechanical enough that an agent handles most of it end-to-end.
+
+Install CodeceptJS 4:
+
+```bash
+npm install codeceptjs@4
+```
+
+Then install the skills bundle. It works the same in Claude Code or any other agent:
+
+```bash
+npx skills add codeceptjs/skills
+```
+
+The bundle ships a `migrate-codeceptjs-4` skill. Point an agent at the project and run it:
+
+```bash
+claude "/migrate-codeceptjs-4"
+```
+
+It reads your config and tests, applies the mechanical changes, runs the suite, and fixes what breaks.
+
+The rest of this guide documents every change the skill makes — read it if you prefer to migrate by hand, or to review what the agent did.
 
 ## 1. Update Node and Package
 
