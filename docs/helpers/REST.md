@@ -31,6 +31,7 @@ Type: [object][3]
 *   `onRequest` **[function][6]?** an async function which can update request object.
 *   `onResponse` **[function][6]?** an async function which can update response object.
 *   `maxUploadFileSize` **[number][4]?** set the max content file size in MB when performing api calls.
+*   `rejectOnErrorCode` **[boolean][5]?** reject promise when status code is 4xx or 5xx.
 
 
 

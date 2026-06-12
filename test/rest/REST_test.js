@@ -138,6 +138,16 @@ describe('REST', () => {
         e.message.should.contain('Request timed out after 100ms')
       }
     })
+
+    it('should throw error when status code is 4xx or 5xx and rejectOnErrorCode is true', async () => {
+      I.options.rejectOnErrorCode = true
+      try {
+        await I.sendGetRequest('/not-existing-endpoint')
+        throw new Error('Should have thrown error')
+      } catch (e) {
+        e.message.should.contain('Response error. Status code: 404')
+      }
+    })
   })
 
   describe('JSONResponse integration', () => {
@@ -342,7 +352,7 @@ describe('REST - Form upload', () => {
       }
     })
 
-    it('should not show error when file size doesnt exceedes the permit', async () => {
+    it('should not show error when file size doesnt exceeds the permit', async () => {
       const form = new FormData()
       form.append('file', fs.createReadStream(testFile))
 
