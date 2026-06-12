@@ -68,6 +68,14 @@ describe('Init Command', function () {
 
     fs.existsSync(path.join(codecept_dir, 'codecept.conf.js')).should.be.true
     fs.existsSync(path.join(codecept_dir, 'steps_file.js')).should.be.true
+
+    fs.readFile(path.join(codecept_dir, 'codecept.conf.js'), 'utf8', (err, data) => {
+      if (err) {
+        throw Error(err);
+        return;
+      }
+      data.should.contain('./steps_file.js');
+    });
   })
 
   it('should initialize a TS project', async () => {
@@ -87,5 +95,13 @@ describe('Init Command', function () {
 
     fs.existsSync(path.join(codecept_dir, 'codecept.conf.ts')).should.be.true
     fs.existsSync(path.join(codecept_dir, 'steps_file.ts')).should.be.true
+
+    fs.readFile(path.join(codecept_dir, 'codecept.conf.ts'), 'utf8', (err, data) => {
+      if (err) {
+        throw Error(err);
+        return;
+      }
+      data.should.contain('./steps_file.ts');
+    });
   })
 })
