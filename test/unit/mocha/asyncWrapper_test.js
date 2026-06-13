@@ -230,4 +230,43 @@ describe('AsyncWrapper', () => {
       expect(suiteTests[0].err, 'the suite test got the hook error attached').to.be.instanceof(Error)
     })
   })
+
+  describe('setup/teardown import hardening (regression)', () => {
+    beforeEach(() => recorder.start())
+
+    it('setup(): a throwing then-body calls done with the error instead of hanging', async () => {
+      const suite = {
+        ctx: {
+          get currentTest() {
+            throw new Error('setup-boom')
+          },
+        },
+      }
+      const { count, arg } = await runHook(setup(suite), 1000)
+      expect(count).to.equal(1)
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('setup-boom')
+    })
+
+    it('teardown(): a throwing then-body calls done with the error instead of hanging', async () => {
+      const suite = {
+        ctx: {
+          get currentTest() {
+            throw new Error('teardown-boom')
+          },
+        },
+      }
+      const { count, arg } = await runHook(teardown(suite), 1000)
+      expect(count).to.equal(1)
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('teardown-boom')
+    })
+
+    it('setup(): happy path calls done with no error', async () => {
+      const suite = { ctx: { currentTest: { title: 'a sample test' } } }
+      const { count, arg } = await runHook(setup(suite), 1000)
+      expect(count).to.equal(1)
+      expect(arg, 'done called with no error').to.be.undefined
+    })
+  })
 })
