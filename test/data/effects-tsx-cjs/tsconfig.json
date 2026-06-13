@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["es2022", "DOM"],
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strictNullChecks": false,
+    "types": ["codeceptjs", "node"],
+    "declaration": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules"]
+}
