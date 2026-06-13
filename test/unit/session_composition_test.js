@@ -94,31 +94,28 @@ describe('promise-core composition (characterization)', () => {
       expect(recorder.getCurrentSessionId()).to.equal(null)
     })
 
-    it('FINDING: async callback error leaks the session id and never calls recorder.session.restore', async () => {
+    it('async callback error surfaces the error and restores the session id', async () => {
       session('asyncerr', async () => {
         throw new Error('boom')
       })
-      let rejected
-      await settles(recorder.promise()).catch(e => (rejected = e))
-      // characterized behavior, see plans/001-findings.md
-      expect(rejected, 'outer chain rejects').to.be.instanceof(Error)
-      expect(rejected.message).to.equal('boom')
-      expect(recorder.getCurrentSessionId(), 'session id leaks').to.equal('session:asyncerr')
+      const err = await drain()
+      expect(err, 'outer chain rejects').to.be.instanceof(Error)
+      expect(err.message).to.equal('boom')
+      expect(helper.calls.restoreVars, 'restoreVars called on error').to.be.greaterThan(0)
+      expect(recorder.getCurrentSessionId(), 'session id restored on error').to.equal(null)
     })
 
-    it('FINDING: sync callback whose queued task throws restores vars but leaks the session id', async () => {
+    it('sync callback whose queued task throws surfaces the error and restores the session id', async () => {
       session('syncerr', () => {
         recorder.add(() => {
           throw new Error('boomsync')
         })
       })
       const err = await drain()
-      // The finally recorder.catch re-throws before finalize() runs
-      // recorder.session.restore, so the session id leaks. See plans/001-findings.md
       expect(err, 'error surfaces after draining').to.be.instanceof(Error)
       expect(err.message).to.equal('boomsync')
-      expect(helper.calls.restoreVars, 'restoreVars called by the finally handler').to.equal(1)
-      expect(recorder.getCurrentSessionId(), 'session id leaks').to.equal('session:syncerr')
+      expect(helper.calls.restoreVars, 'restoreVars called by the finally handler').to.be.greaterThan(0)
+      expect(recorder.getCurrentSessionId(), 'session id restored on error').to.equal(null)
     })
   })
 
@@ -134,22 +131,40 @@ describe('promise-core composition (characterization)', () => {
       expect(inside).to.equal(true)
     })
 
-    it('FINDING: async callback error skips _withinEnd and detaches the error onto a trailing task', async () => {
+    it('async callback error runs _withinEnd and propagates the error', async () => {
       within('ctx', async () => {
         throw new Error('boomwithin')
       })
       const err = await drain()
-      // The error is only visible after draining trailing tasks because within()'s
-      // async catch omits `return recorder.promise()`. See plans/001-findings.md
-      expect(err, 'error surfaces after draining').to.be.instanceof(Error)
+      expect(err, 'error surfaces').to.be.instanceof(Error)
       expect(err.message).to.equal('boomwithin')
       expect(helper.calls.withinBegin, '_withinBegin ran').to.be.greaterThan(0)
-      expect(helper.calls.withinEnd, '_withinEnd skipped on error').to.equal(0)
+      expect(helper.calls.withinEnd, '_withinEnd runs on error').to.be.greaterThan(0)
     })
   })
 
   describe('retryTo()', () => {
-    it('FINDING: a synchronously-throwing callback rejects but keeps retrying past the rejection', async () => {
+    it('retries a throwing callback and resolves when a later attempt succeeds', async () => {
+      let firstTries
+      let calls = 0
+      let rejected = null
+      await settles(
+        retryTo(
+          tries => {
+            if (firstTries === undefined) firstTries = tries
+            calls++
+            if (tries < 3) throw new Error('not yet')
+          },
+          5,
+          20,
+        ),
+      ).catch(e => (rejected = e))
+      expect(rejected, 'resolves once an attempt succeeds (no premature reject)').to.equal(null)
+      expect(firstTries, 'first attempt receives tries === 1').to.equal(1)
+      expect(calls, 'ran until the succeeding attempt').to.equal(3)
+    })
+
+    it('a callback that always throws rejects only after exhausting maxTries', async () => {
       let firstTries
       let calls = 0
       let rejected
@@ -165,15 +180,11 @@ describe('promise-core composition (characterization)', () => {
         ),
         3000,
       ).catch(e => (rejected = e))
-      await new Promise(r => setTimeout(r, 300))
-      const finalCalls = calls
-      await new Promise(r => setTimeout(r, 300))
-      // characterized behavior, see plans/001-findings.md
-      expect(rejected, 'retryTo rejects with the real error').to.be.instanceof(Error)
+      await new Promise(r => setTimeout(r, 200))
+      expect(rejected, 'rejects with the real error').to.be.instanceof(Error)
       expect(rejected.message).to.equal('always')
-      expect(firstTries, 'first attempt receives tries === 2 (tries starts at 1, incremented before callback)').to.equal(2)
-      expect(calls, 'retrying continues past the first rejection').to.be.greaterThan(1)
-      expect(calls, 'retries stop once drained (no perpetual loop)').to.equal(finalCalls)
+      expect(firstTries, 'first attempt receives tries === 1').to.equal(1)
+      expect(calls, 'retried exactly maxTries times').to.equal(3)
     })
 
     it('retries via recorder failures then resolves', async () => {
