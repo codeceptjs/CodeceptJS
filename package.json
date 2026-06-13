@@ -137,11 +137,9 @@
     "xpath": "0.0.34",
     "zod": "^4.1.11"
   },
-  "optionalDependencies": {
-    "@codeceptjs/detox-helper": "1.1.14"
-  },
   "devDependencies": {
     "@apollo/server": "^5",
+    "@codeceptjs/detox-helper": "1.1.14",
     "@codeceptjs/expect-helper": "^4.0.0-beta.5",
     "@codeceptjs/mock-request": "0.3.1",
     "@eslint/eslintrc": "3.3.3",
