@@ -35,7 +35,7 @@ The rest of this guide documents every change the skill makes — read it if you
 
 ## 1. Update Node and Package
 
-CodeceptJS 4.x supports Node 16+, but Node 20 or newer is recommended.
+CodeceptJS 4.x requires Node 20.19 or newer.
 
 ```bash
 npm install codeceptjs@4
@@ -764,4 +764,4 @@ You don't need these to upgrade, but they unlock new workflows:
 4. TypeScript users: run with `tsx` installed and confirm error stack traces point at `.ts` files.
 5. If you removed `autoLogin`: confirm sessions restore under the `auth` plugin.
 6. If you used `tryTo` / `retryTo` / `eachElement` plugins: grep your tests for the old globals and switch to subpath imports.
-7. CI: bump the Node version to 20+ if you were on 18 or below.
+7. CI: bump the Node version to 20.19+ if you were on a lower version.
