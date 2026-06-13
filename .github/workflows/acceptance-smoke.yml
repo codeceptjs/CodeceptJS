@@ -1,0 +1,52 @@
+name: Acceptance smoke
+
+on:
+  push:
+    branches:
+      - 4.x
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  acceptance-smoke:
+    name: Acceptance smoke (Playwright)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start test app server
+        run: nohup npm run test-app:start &
+      - name: Wait for test app server
+        run: |
+          for i in {1..20}; do
+            curl -sf http://127.0.0.1:8000/ && break
+            sleep 1
+          done
+      - name: Run acceptance smoke suite (hang-proof)
+        run: timeout 600 ./bin/codecept.js run --config test/acceptance/codecept.Playwright.smoke.js
+      - name: Upload acceptance output on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-smoke-output
+          path: test/acceptance/output/
+          if-no-files-found: ignore
