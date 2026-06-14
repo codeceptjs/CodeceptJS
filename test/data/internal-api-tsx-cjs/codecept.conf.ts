@@ -3,10 +3,10 @@ export const config: CodeceptJS.MainConfig = {
   output: "./output",
   helpers: {
     ConfigHelper: {
-      require: "./config_helper.js",
+      require: "./internal_api_helper.js",
       marker: "config-marker-123"
     }
   },
-  name: "config-tsx-cjs-test",
+  name: "internal-api-tsx-cjs-test",
   require: ["tsx/cjs"]
 };

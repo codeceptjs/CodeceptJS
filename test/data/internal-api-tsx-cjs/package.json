@@ -1,5 +1,5 @@
 {
-  "name": "config-tsx-cjs",
+  "name": "internal-api-tsx-cjs",
   "version": "1.0.0",
   "type": "module",
   "devDependencies": {
