@@ -54,6 +54,16 @@ describe('CodeceptJS Runner', () => {
     })
   })
 
+  it('should expose the live config to a test that imports { config } from codeceptjs', done => {
+    process.chdir(codecept_dir)
+    exec(`${codecept_run} --config ${codecept_dir}/import-config-proof/codecept.conf.js`, (err, stdout) => {
+      stdout.should.include('import config') // feature
+      stdout.should.include('1 passed') // Scenario asserts config.get('name') resolves to the running config
+      assert(!err) // a second module copy would make config.get('name') undefined and fail the run
+      done()
+    })
+  })
+
   it('should show failures and exit with 1 on fail', done => {
     exec(codecept_run_config('codecept.failed.js'), (err, stdout) => {
       stdout.should.include('Not-A-Filesystem')
