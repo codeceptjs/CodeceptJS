@@ -8,6 +8,7 @@ import xml2js from 'xml2js'
 import junitReporter from '../../lib/plugin/junitReporter.js'
 import event from '../../lib/event.js'
 import store from '../../lib/store.js'
+import container from '../../lib/container.js'
 import Step from '../../lib/step/base.js'
 import MetaStep from '../../lib/step/meta.js'
 
@@ -83,6 +84,22 @@ function parseReport(dir) {
   return new xml2js.Parser().parseStringPromise(fs.readFileSync(path.join(dir, 'report.xml'), 'utf8'))
 }
 
+function stubMochaRunner() {
+  const listeners = {}
+
+  container.append({
+    mocha: {
+      runner: {
+        on(name, fn) {
+          listeners[name] = fn
+        },
+      },
+    },
+  })
+
+  return listeners
+}
+
 describe('JUnit Reporter Plugin', () => {
   let tmpDir
   let prevOutputDir
@@ -91,13 +108,20 @@ describe('JUnit Reporter Plugin', () => {
     prevOutputDir = store._outputDir
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cjs-junit-'))
     store.outputDir = tmpDir
+    event.dispatcher.removeAllListeners(event.all.before)
     event.dispatcher.removeAllListeners(event.all.result)
+    event.dispatcher.removeAllListeners(event.suite.before)
+    event.dispatcher.removeAllListeners(event.test.before)
     event.dispatcher.removeAllListeners(event.workers.result)
   })
 
   afterEach(() => {
+    event.dispatcher.removeAllListeners(event.all.before)
     event.dispatcher.removeAllListeners(event.all.result)
+    event.dispatcher.removeAllListeners(event.suite.before)
+    event.dispatcher.removeAllListeners(event.test.before)
     event.dispatcher.removeAllListeners(event.workers.result)
+    container.append({ mocha: {} })
     store._outputDir = prevOutputDir
     fs.rmSync(tmpDir, { recursive: true, force: true })
   })
@@ -197,5 +221,58 @@ describe('JUnit Reporter Plugin', () => {
     event.dispatcher.emit(event.workers.result, makeResult())
     const secondMtime = fs.statSync(path.join(tmpDir, 'report.xml')).mtimeMs
     expect(secondMtime).to.equal(firstMtime)
+  })
+
+  it('adds suite-level hook failures as failed testcases', async () => {
+    const listeners = stubMochaRunner()
+    junitReporter({})
+    event.dispatcher.emit(event.suite.before)
+
+    const suite = { title: 'Suite hooks @smoke', file: '/tests/hooks_test.js', startedAt: Date.now() }
+    listeners.fail(
+      {
+        type: 'hook',
+        title: '"before all" hook: BeforeSuite for "records suite hook failures"',
+        parent: suite,
+        file: suite.file,
+        duration: 42,
+      },
+      new Error('BeforeSuite failed'),
+    )
+    listeners.fail(
+      {
+        type: 'hook',
+        title: '"before each" hook: Before for "already reported by test"',
+        parent: suite,
+        file: suite.file,
+        duration: 7,
+      },
+      new Error('Before failed'),
+    )
+    listeners.fail(
+      {
+        type: 'hook',
+        title: '"before all" hook: BeforeSuite for "records suite hook failures"',
+        parent: suite,
+        file: suite.file,
+        duration: 42,
+      },
+      new Error('duplicate suite failure'),
+    )
+
+    event.dispatcher.emit(event.all.result, {
+      tests: [],
+      stats: { start: new Date(), passes: 0, failures: 0, pending: 0, tests: 0 },
+    })
+
+    const parsed = await parseReport(tmpDir)
+    expect(parsed.testsuites.$.tests).to.equal('1')
+    expect(parsed.testsuites.$.failures).to.equal('1')
+
+    const suiteEl = parsed.testsuites.testsuite[0]
+    expect(suiteEl.$.name).to.equal('Suite hooks @smoke')
+    expect(suiteEl.$.tests).to.equal('1')
+    expect(suiteEl.testcase[0].$.name).to.contain('"before all" hook')
+    expect(suiteEl.testcase[0].failure[0].$.message).to.contain('BeforeSuite failed')
   })
 })
