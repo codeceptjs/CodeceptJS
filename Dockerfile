@@ -1,5 +1,5 @@
 # Download Playwright and its dependencies
-FROM mcr.microsoft.com/playwright:v1.55.0-noble
+FROM mcr.microsoft.com/playwright:v1.61.0-noble
 
 # Set non-interactive mode for apt operations
 ENV DEBIAN_FRONTEND=noninteractive
