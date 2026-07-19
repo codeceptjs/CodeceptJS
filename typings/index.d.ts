@@ -464,6 +464,7 @@ declare namespace CodeceptJS {
     | { shadow: string[] }
     | { custom: string }
     | { pw: string }
+    | { role: string; name?: string; text?: string; exact?: boolean }
   interface CustomLocators {}
   interface OtherLocators {
     props?: object
