@@ -8,6 +8,7 @@ import xml2js from 'xml2js'
 import junitReporter from '../../lib/plugin/junitReporter.js'
 import event from '../../lib/event.js'
 import store from '../../lib/store.js'
+import { BeforeSuiteHook, BeforeHook } from '../../lib/mocha/hooks.js'
 import Step from '../../lib/step/base.js'
 import MetaStep from '../../lib/step/meta.js'
 
@@ -93,11 +94,13 @@ describe('JUnit Reporter Plugin', () => {
     store.outputDir = tmpDir
     event.dispatcher.removeAllListeners(event.all.result)
     event.dispatcher.removeAllListeners(event.workers.result)
+    event.dispatcher.removeAllListeners(event.hook.failed)
   })
 
   afterEach(() => {
     event.dispatcher.removeAllListeners(event.all.result)
     event.dispatcher.removeAllListeners(event.workers.result)
+    event.dispatcher.removeAllListeners(event.hook.failed)
     store._outputDir = prevOutputDir
     fs.rmSync(tmpDir, { recursive: true, force: true })
   })
@@ -197,5 +200,57 @@ describe('JUnit Reporter Plugin', () => {
     event.dispatcher.emit(event.workers.result, makeResult())
     const secondMtime = fs.statSync(path.join(tmpDir, 'report.xml')).mtimeMs
     expect(secondMtime).to.equal(firstMtime)
+  })
+
+  it('adds suite hook failures as failed testcases', async () => {
+    junitReporter({})
+
+    const suite = { title: 'Suite hooks @smoke', file: '/tests/hooks_test.js', tags: ['@smoke'], startedAt: Date.now() }
+    const beforeSuiteRunnable = { title: '"before all" hook: BeforeSuite for "test something"', parent: suite, file: suite.file, duration: 42 }
+    event.dispatcher.emit(event.hook.failed, new BeforeSuiteHook({ ctx: { test: beforeSuiteRunnable } }, new Error('BeforeSuite failed')))
+
+    const beforeRunnable = { title: '"before each" hook: Before for "test something"', parent: suite, file: suite.file, duration: 7 }
+    event.dispatcher.emit(event.hook.failed, new BeforeHook({ ctx: { test: beforeRunnable } }, new Error('Before failed')))
+
+    event.dispatcher.emit(event.all.result, {
+      tests: [],
+      stats: { start: new Date(), passes: 0, failures: 0, pending: 0, tests: 0 },
+    })
+
+    const parsed = await parseReport(tmpDir)
+    expect(parsed.testsuites.$.tests).to.equal('1')
+    expect(parsed.testsuites.$.failures).to.equal('1')
+
+    const suiteEl = parsed.testsuites.testsuite[0]
+    expect(suiteEl.$.name).to.equal('Suite hooks @smoke')
+    expect(suiteEl.testcase).to.have.length(1)
+    expect(suiteEl.testcase[0].$.name).to.contain('"before all" hook: BeforeSuite')
+    expect(suiteEl.testcase[0].failure[0].$.message).to.contain('BeforeSuite failed')
+
+    const tagsProp = suiteEl.testcase[0].properties[0].property.find(p => p.$.name === 'tags')
+    expect(tagsProp.$.value).to.equal('@smoke')
+  })
+
+  it('adds suite hook failures forwarded from workers as failed testcases', async () => {
+    junitReporter({})
+
+    event.dispatcher.emit(event.hook.failed, {
+      hookName: 'AfterSuite',
+      title: '"after all" hook: AfterSuite for "test something"',
+      error: { message: 'AfterSuite failed', stack: 'Error: AfterSuite failed\n  at suite' },
+    })
+
+    event.dispatcher.emit(event.workers.result, {
+      tests: [],
+      stats: { start: new Date(), passes: 0, failures: 0, pending: 0, tests: 0 },
+    })
+
+    const parsed = await parseReport(tmpDir)
+    expect(parsed.testsuites.$.tests).to.equal('1')
+    expect(parsed.testsuites.$.failures).to.equal('1')
+
+    const suiteEl = parsed.testsuites.testsuite[0]
+    expect(suiteEl.testcase[0].$.name).to.contain('"after all" hook: AfterSuite')
+    expect(suiteEl.testcase[0].failure[0].$.message).to.contain('AfterSuite failed')
   })
 })

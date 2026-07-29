@@ -97,5 +97,29 @@ describe('ui', () => {
       const dataScenarioConfig = context.Data(dataTable).Scenario('scenario', () => {})
       expect('scenario | {"username":"Username","password":"*****"}').to.equal(dataScenarioConfig.scenarios[2].test.title)
     })
+
+    it('accepts a DataTable coming from a duplicate module instance', () => {
+      class ForeignDataTable {
+        constructor(array) {
+          this.array = array
+          this.rows = []
+        }
+
+        add(array) {
+          const data = {}
+          this.array.forEach((key, i) => (data[key] = array[i]))
+          this.rows.push({ skip: false, data })
+        }
+      }
+
+      const foreign = new ForeignDataTable(['username', 'password'])
+      foreign.add(['jon', 'snow'])
+      foreign.add(['tyrion', 'lannister'])
+
+      expect(foreign).to.not.be.instanceOf(DataTable)
+      const dataScenarioConfig = context.Data(foreign).Scenario('scenario', () => {})
+      expect(dataScenarioConfig.scenarios).to.have.lengthOf(2)
+      expect(dataScenarioConfig.scenarios[0].test.title).to.equal('scenario | {"username":"jon","password":"snow"}')
+    })
   })
 })
