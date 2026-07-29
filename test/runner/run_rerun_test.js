@@ -50,7 +50,7 @@ describe('run-rerun command', function () {
     expect(stdout).toContain('Process run 1 of max 3, success runs 1/3');
     expect(stdout).toContain('Process run 2 of max 3, success runs 2/3');
     expect(stdout).toContain('Process run 3 of max 3, success runs 3/3');
-    expect(stdout).toContain('1 passed');
+    expect(stdout.match(/OK\s+\|\s+1 passed/g)).toHaveLength(3);
     expect(err).toBeNull();
   });
 
@@ -77,7 +77,9 @@ describe('run-rerun command', function () {
     const { err, stdout } = await safeExec(`${codecept_run_config('codecept.conf.fail_test.js', '@RunRerun - Fail all attempt')} --debug`);
 
     expect(stdout).toContain('Fail run 1 of max 3, success runs 0/2');
-    expect(stdout).toContain('Process run 3 of max 3, success runs 2/2');
+    expect(stdout).toContain('Fail run 2 of max 3, success runs 0/2');
+    expect(stdout).toContain('Fail run 3 of max 3, success runs 0/2');
+    expect(stdout).toContain('Flaky tests detected!');
     expect(err.code).toBe(1);
   });
 
@@ -88,7 +90,8 @@ describe('run-rerun command', function () {
     );
 
     expect(stdout).toContain('Process run 1 of max 3, success runs 1/2');
-    expect(stdout).toContain('Process run 2 of max 3, success runs 2/2');
+    expect(stdout).toContain('Fail run 2 of max 3, success runs 1/2');
+    expect(stdout).toContain('Process run 3 of max 3, success runs 2/2');
     expect(err).toBeNull();
   });
 
@@ -99,6 +102,9 @@ describe('run-rerun command', function () {
     );
 
     expect(stdout).toContain('Process run 1 of max 3, success runs 1/3');
-    expect(stdout).toContain('Process run 3 of max 3, success runs 3/3');
+    expect(stdout).toContain('Fail run 2 of max 3, success runs 1/3');
+    expect(stdout).toContain('Process run 3 of max 3, success runs 2/3');
+    expect(stdout).toContain('Flaky tests detected!');
+    expect(err.code).toBe(1);
   });
 });
