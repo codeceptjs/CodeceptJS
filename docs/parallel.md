@@ -116,7 +116,7 @@ import { Workers, event } from 'codeceptjs'
 const workers = new Workers(null, { testConfig: './codecept.conf.js' })
 
 // split the suite into 2 groups, run each group on two browsers
-const groups = workers.createGroupsOfSuites(2)
+const groups = await workers.createGroupsOfSuites(2)
 for (const browser of ['chromium', 'firefox']) {
   for (const group of groups) {
     const worker = workers.spawn()
@@ -139,7 +139,7 @@ try {
 Building blocks:
 
 - `new Workers(N, { testConfig, options })` — `N` workers; pass `null` to spawn them yourself with `spawn()`.
-- `createGroupsOfTests(n)` / `createGroupsOfSuites(n)` — split the suite into `n` groups.
+- `await createGroupsOfTests(n)` / `await createGroupsOfSuites(n)` — split the suite into `n` groups (async: test files are loaded as ES Modules).
 - `worker.addTests(group)` / `worker.addConfig(partialConfig)` — assign tests and config overrides to a spawned worker.
 - `bootstrapAll()` → `run()` → `teardownAll()` — lifecycle (wrap `run()` in `try/finally` so teardown always runs).
 - Events on the `workers` object: `event.test.passed`, `event.test.failed`, `event.all.result`, plus `'message'` for anything a child worker sends. `printResults()` prints the standard summary; `result.hasFailed()` and `result.stats` give the totals.

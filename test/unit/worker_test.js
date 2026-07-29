@@ -133,26 +133,27 @@ describe('Workers', function () {
     const workers = new Workers(-1, workerConfig)
 
     const workerOne = workers.spawn()
-    workerOne.addTestFiles([path.join(codecept_dir, '/custom-worker/base_test.worker.js')])
-
     const workerTwo = workers.spawn()
-    workerTwo.addTestFiles([path.join(codecept_dir, '/custom-worker/custom_test.worker.js')])
 
-    for (const worker of workers.getWorkers()) {
-      worker.addConfig({
-        helpers: {
-          FileSystem: {},
-          Workers: {
-            require: './workers_helper',
-          },
-          CustomWorkers: {
-            require: './custom_worker_helper',
-          },
-        },
+    Promise.all([workerOne.addTestFiles([path.join(codecept_dir, '/custom-worker/base_test.worker.js')]), workerTwo.addTestFiles([path.join(codecept_dir, '/custom-worker/custom_test.worker.js')])])
+      .then(() => {
+        for (const worker of workers.getWorkers()) {
+          worker.addConfig({
+            helpers: {
+              FileSystem: {},
+              Workers: {
+                require: './workers_helper',
+              },
+              CustomWorkers: {
+                require: './custom_worker_helper',
+              },
+            },
+          })
+        }
+
+        workers.run()
       })
-    }
-
-    workers.run()
+      .catch(done)
 
     workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
@@ -168,29 +169,32 @@ describe('Workers', function () {
     }
 
     const workers = new Workers(-1, workerConfig)
-    const testGroups = workers.createGroupsOfSuites(2)
+    workers
+      .createGroupsOfSuites(2)
+      .then(testGroups => {
+        const workerOne = workers.spawn()
+        workerOne.addTests(testGroups[0])
 
-    const workerOne = workers.spawn()
-    workerOne.addTests(testGroups[0])
+        const workerTwo = workers.spawn()
+        workerTwo.addTests(testGroups[1])
 
-    const workerTwo = workers.spawn()
-    workerTwo.addTests(testGroups[1])
+        for (const worker of workers.getWorkers()) {
+          worker.addConfig({
+            helpers: {
+              FileSystem: {},
+              Workers: {
+                require: './workers_helper',
+              },
+              CustomWorkers: {
+                require: './custom_worker_helper',
+              },
+            },
+          })
+        }
 
-    for (const worker of workers.getWorkers()) {
-      worker.addConfig({
-        helpers: {
-          FileSystem: {},
-          Workers: {
-            require: './workers_helper',
-          },
-          CustomWorkers: {
-            require: './custom_worker_helper',
-          },
-        },
+        workers.run()
       })
-    }
-
-    workers.run()
+      .catch(done)
 
     workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
