@@ -168,7 +168,7 @@
     "expect": "30.2.0",
     "express": "^5.1.0",
     "globals": "17.3.0",
-    "graphql": "16.12.0",
+    "graphql": "16.14.2",
     "graphql-tag": "^2.12.6",
     "husky": "9.1.7",
     "jsdoc": "^3.6.11",
