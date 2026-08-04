@@ -44,6 +44,7 @@ export const config = {
 
 - `timeout` — default per-test timeout in seconds; a test is killed if it stops responding.
 - `mocha` — [Mocha options](https://mochajs.org/#configuring-mocha-nodejs), including extra reporters. See [Reporters](/reports).
+- `workerInitializationDelay` — delay in milliseconds between spinning up parallel workers to prevent CPU spikes and stagger browser startup. Defaults to `200`. Set to `0` to disable.
 
 **BDD**
 
