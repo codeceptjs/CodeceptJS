@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 import Appium from '../../../lib/helper/Appium.js'
 
-function createApp() {
+function createApp(deviceInfo = { carrierName: 'T-Mobile' }) {
   const app = new Appium({
     platform: 'Android',
     desiredCapabilities: {
@@ -10,6 +10,7 @@ function createApp() {
     },
   })
   app.browser = { execute: sinon.stub() }
+  app.browser.execute.withArgs('mobile: deviceInfo').resolves(deviceInfo)
   return app
 }
 
@@ -42,6 +43,29 @@ describe('Appium #setNetworkConnection, #grabNetworkConnection', () => {
     const app = createApp()
     await app.setNetworkConnection(0)
     expect(app.browser.execute.calledWith('mobile: setConnectivity', { airplaneMode: false, wifi: false, data: false })).to.be.true
+  })
+
+  it('should omit data on devices without telephony', async () => {
+    const app = createApp({ carrierName: '' })
+    await app.setNetworkConnection(1)
+    expect(app.browser.execute.calledWith('mobile: setConnectivity', { airplaneMode: true, wifi: false })).to.be.true
+  })
+
+  it('should probe telephony again while no carrier was seen yet', async () => {
+    const app = createApp({ carrierName: '' })
+    await app.setNetworkConnection(1)
+    app.browser.execute.withArgs('mobile: deviceInfo').resolves({ carrierName: 'T-Mobile' })
+    await app.setNetworkConnection(2)
+    expect(app.browser.execute.withArgs('mobile: deviceInfo').callCount).to.equal(2)
+    expect(app.browser.execute.calledWith('mobile: setConnectivity', { airplaneMode: false, wifi: true, data: false })).to.be.true
+  })
+
+  it('should probe telephony only once after a carrier was seen', async () => {
+    const app = createApp()
+    await app.setNetworkConnection(1)
+    await app.setNetworkConnection(6)
+    expect(app.browser.execute.withArgs('mobile: deviceInfo').callCount).to.equal(1)
+    expect(app.browser.execute.calledWith('mobile: setConnectivity', { airplaneMode: false, wifi: true, data: true })).to.be.true
   })
 
   it('should grab network connection using mobile: getConnectivity and map to legacy bitmask shape', async () => {
