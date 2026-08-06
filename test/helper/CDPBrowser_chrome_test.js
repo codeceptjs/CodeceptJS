@@ -5,6 +5,7 @@ import { spawn } from 'child_process'
 import puppeteer from 'puppeteer'
 import CDPBrowser from '../../lib/helper/CDPBrowser.js'
 import TestHelper from '../support/TestHelper.js'
+import * as cdpApiTests from './cdpwebapi.js'
 
 const siteUrl = TestHelper.siteUrl()
 let chrome
@@ -18,6 +19,7 @@ describe('CDPBrowser (against Chrome)', function () {
     await new Promise(r => setTimeout(r, 2000))
     I = new CDPBrowser({ url: siteUrl, endpoint: 'http://127.0.0.1:9333' })
     await I._init()
+    cdpApiTests.init({ I, siteUrl })
   })
 
   after(async () => {
@@ -172,4 +174,6 @@ describe('CDPBrowser (against Chrome)', function () {
       expect(err.message).to.match(/zero size/)
     }
   })
+
+  cdpApiTests.tests()
 })

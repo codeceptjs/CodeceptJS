@@ -1,15 +1,19 @@
 import { expect } from 'chai'
 import Kitesurf from '../../lib/helper/Kitesurf.js'
+import * as cdpApiTests from './cdpwebapi.js'
 
 let I
+const isTunnel = Boolean(process.env.SITE_URL && !process.env.SITE_URL.includes('127.0.0.1'))
+const siteUrl = isTunnel ? process.env.SITE_URL : 'https://example.com'
 
 describe('Kitesurf helper (Cloudflare Browser Run beta)', function () {
   this.timeout(120000)
 
   before(async function () {
     if (!process.env.CF_ACCOUNT_ID || !process.env.CF_API_TOKEN) this.skip()
-    I = new Kitesurf({ url: 'https://example.com' })
+    I = new Kitesurf({ url: siteUrl })
     await I._init()
+    cdpApiTests.init({ I, siteUrl })
   })
 
   after(async () => I && I._finishTest())
@@ -46,4 +50,7 @@ describe('Kitesurf helper (Cloudflare Browser Run beta)', function () {
     await I.amOnPage('/')
     await I.saveScreenshot('kitesurf_helper.png')
   })
+
+  cdpApiTests.publicTests()
+  if (isTunnel) cdpApiTests.tests()
 })

@@ -3,6 +3,7 @@ import path from 'path'
 import { expect } from 'chai'
 import Obscura from '../../lib/helper/Obscura.js'
 import TestHelper from '../support/TestHelper.js'
+import * as cdpApiTests from './cdpwebapi.js'
 
 const siteUrl = TestHelper.siteUrl()
 let I
@@ -19,6 +20,7 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
     }
     I = new Obscura({ url: siteUrl })
     await I._init()
+    cdpApiTests.init({ I, siteUrl })
   })
 
   after(async () => I && I._finishTest())
@@ -57,6 +59,8 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
       expect(err.message).to.include('no rendering engine')
     }
   })
+
+  cdpApiTests.tests()
 })
 
 describe('Obscura helper spawn lifecycle (does not touch :9222)', function () {
