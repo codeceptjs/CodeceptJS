@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import { expect } from 'chai'
 import { spawn } from 'child_process'
 import puppeteer from 'puppeteer'
@@ -148,8 +150,26 @@ describe('CDPBrowser (against Chrome)', function () {
   })
 
   it('takes a screenshot on capable browsers', async () => {
-    global.output_dir = 'test/obscura/output'
+    global.output_dir = 'test/data/output'
     await I.amOnPage('/')
-    await I.saveScreenshot('cdp_chrome.png')
+    const fileName = 'cdp_chrome.png'
+    await I.saveScreenshot(fileName)
+    const filePath = path.join(global.output_dir, fileName)
+    try {
+      expect(fs.existsSync(filePath)).to.equal(true)
+      expect(fs.statSync(filePath).size).to.be.above(0)
+    } finally {
+      fs.rmSync(filePath, { force: true })
+    }
+  })
+
+  it('rejects a cdp click on a zero-size element', async () => {
+    await I.amOnPage('/form/field')
+    try {
+      await I.click({ css: '#email' })
+      throw new Error('should have thrown')
+    } catch (err) {
+      expect(err.message).to.match(/zero size/)
+    }
   })
 })
