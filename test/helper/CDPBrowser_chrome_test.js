@@ -92,4 +92,64 @@ describe('CDPBrowser (against Chrome)', function () {
     await I.amOnPage('/')
     await I.seeInTitle('TestEd')
   })
+
+  it('clicks by CSS and by link text', async () => {
+    await I.amOnPage('/')
+    await I.click('#link')
+    await I.seeInCurrentUrl('/info')
+    await I.amOnPage('/')
+    await I.click('More info')
+    await I.seeInCurrentUrl('/info')
+  })
+
+  it('forceClick works via synthetic click', async () => {
+    await I.amOnPage('/')
+    await I.forceClick('More info')
+    await I.seeInCurrentUrl('/info')
+  })
+
+  it('fills a field by label and submits a form', async () => {
+    await I.amOnPage('/form/field')
+    await I.fillField('Name', 'cdp tester')
+    await I.click('Submit')
+    await I.waitInUrl('/form/complex', 5)
+    await I.see('Thank you!')
+    await I.see('cdp tester')
+  })
+
+  it('checks and unchecks options', async () => {
+    await I.amOnPage('/form/checkbox')
+    await I.checkOption('I Agree')
+    await I.seeCheckboxIsChecked('#checkin')
+    await I.uncheckOption('#checkin')
+    await I.dontSeeCheckboxIsChecked('#checkin')
+  })
+
+  it('selects an option by label', async () => {
+    await I.amOnPage('/form/select')
+    await I.selectOption('Select your age', '21-60')
+    expect(await I.grabValueFrom('#age')).to.equal('adult')
+  })
+
+  it('waits for elements and text', async () => {
+    await I.amOnPage('/')
+    await I.waitForElement('#area1', 2)
+    await I.waitForText('Welcome', 2)
+    await I.waitForFunction(() => document.readyState === 'complete', [], 2)
+  })
+
+  it('manages cookies', async () => {
+    await I.amOnPage('/')
+    await I.setCookie({ name: 'ctest', value: 'v1' })
+    const cookie = await I.grabCookie('ctest')
+    expect(cookie.value).to.equal('v1')
+    await I.clearCookie('ctest')
+    expect(await I.grabCookie('ctest')).to.equal(undefined)
+  })
+
+  it('takes a screenshot on capable browsers', async () => {
+    global.output_dir = 'test/obscura/output'
+    await I.amOnPage('/')
+    await I.saveScreenshot('cdp_chrome.png')
+  })
 })
