@@ -51,4 +51,45 @@ describe('CDPBrowser (against Chrome)', function () {
     await I.amOnPage(`${siteUrl}/login`)
     expect(await I.grabCurrentUrl()).to.include('/login')
   })
+
+  it('see / dontSee against page text', async () => {
+    await I.amOnPage('/')
+    await I.see('Welcome to test app!')
+    await I.dontSee('text that is not on the page')
+    try {
+      await I.see('text that is not on the page')
+      throw new Error('should have thrown')
+    } catch (err) {
+      expect(err.expected).to.equal('text that is not on the page')
+    }
+  })
+
+  it('seeElementInDOM and grabNumberOfElements', async () => {
+    await I.amOnPage('/')
+    await I.seeElementInDOM('#area1')
+    await I.dontSeeElementInDOM('#no-such-element')
+    expect(await I.grabNumberOfElements('#area1 a')).to.equal(1)
+  })
+
+  it('seeElement respects visibility on real-layout browsers', async () => {
+    await I.amOnPage('/form/field')
+    await I.seeElement('#name')
+    await I.dontSeeElement('#email')
+  })
+
+  it('grabs text, value, attribute', async () => {
+    await I.amOnPage('/form/field')
+    expect(await I.grabTextFrom({ css: 'label' })).to.equal('Name')
+    expect(await I.grabValueFrom('#name')).to.equal('OLD_VALUE')
+    expect(await I.grabAttributeFrom('#name', 'type')).to.equal('text')
+    expect(await I.grabTextFromAll('label')).to.be.an('array')
+  })
+
+  it('url and title assertions', async () => {
+    await I.amOnPage('/info')
+    await I.seeInCurrentUrl('/info')
+    await I.dontSeeInCurrentUrl('/form')
+    await I.amOnPage('/')
+    await I.seeInTitle('TestEd')
+  })
 })
