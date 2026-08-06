@@ -78,4 +78,32 @@ describe('CDPConnection', () => {
     await cdp.close()
     expect(cdp.isConnected).to.equal(false)
   })
+
+  it('throwing listener does not prevent other listeners from firing', async () => {
+    const cdp = await new CDPConnection(`ws://127.0.0.1:${port}`).connect()
+    const secondListenerFired = new Promise(resolve => {
+      cdp.on('Custom.fired', () => {
+        throw new Error('listener error')
+      })
+      cdp.on('Custom.fired', (params) => {
+        resolve(params)
+      })
+    })
+    await cdp.send('Test.event')
+    const params = await secondListenerFired
+    expect(params.ok).to.equal(true)
+    const res = await cdp.send('Test.echo', { value: 99 })
+    expect(res.echo).to.equal(99)
+    await cdp.close()
+  })
+
+  it('send on never-connected instance rejects immediately', async () => {
+    const cdp = new CDPConnection(`ws://127.0.0.1:${port}`)
+    try {
+      await cdp.send('Test.echo', { value: 42 })
+      throw new Error('should have rejected')
+    } catch (err) {
+      expect(err.message).to.match(/not open/)
+    }
+  })
 })
