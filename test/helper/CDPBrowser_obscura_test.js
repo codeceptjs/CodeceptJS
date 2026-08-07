@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { execSync } from 'child_process'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import { expect } from 'chai'
@@ -13,18 +14,51 @@ const __dirname = dirname(__filename)
 const siteUrl = TestHelper.siteUrl()
 let I
 
+const isUp = url =>
+  fetch(url).then(
+    () => true,
+    () => false,
+  )
+
+const findObscuraBinary = () => {
+  if (process.env.OBSCURA_PATH) return process.env.OBSCURA_PATH
+  try {
+    return execSync('which obscura', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() || null
+  } catch (e) {
+    return null
+  }
+}
+
 describe('Obscura helper (against obscura serve on :9222)', function () {
   this.timeout(35000)
 
   before(async function () {
     global.codecept_dir = path.join(__dirname, '/../data')
-    try {
-      await fetch('http://127.0.0.1:9222/json/version')
-    } catch (e) {
-      if (!process.env.CI) this.skip()
-      throw new Error('obscura serve is not running on :9222')
+
+    let binaryPath = null
+    if (!(await isUp('http://127.0.0.1:9222/json/version'))) {
+      binaryPath = findObscuraBinary()
+      if (!binaryPath) {
+        const msg = [
+          'Obscura is not running on 127.0.0.1:9222 and no obscura binary was found — ALL Obscura tests will be skipped.',
+          'Start it:    obscura serve --port 9222 --allow-private-network',
+          'Or install:  https://github.com/h4ckf0r0day/obscura/releases (put on PATH or set OBSCURA_PATH=/path/to/obscura)',
+        ].join('\n  ')
+        console.log(`\n  ⚠ ${msg}\n`)
+        if (!process.env.CI) this.skip()
+        throw new Error(msg)
+      }
+      console.log(`\n  ℹ Obscura not running on :9222 — auto-spawning from ${binaryPath}\n`)
     }
-    I = new Obscura({ url: siteUrl })
+
+    if (!(await isUp(`${siteUrl}/info`))) {
+      const msg = `Test app is not running on ${siteUrl} — ALL Obscura tests will be skipped.\n  Start it:    php -S 127.0.0.1:8000 -t test/data/app`
+      console.log(`\n  ⚠ ${msg}\n`)
+      if (!process.env.CI) this.skip()
+      throw new Error(msg)
+    }
+
+    I = new Obscura({ url: siteUrl, ...(binaryPath ? { binaryPath } : {}) })
     await I._init()
     webApiTests.init({ I, siteUrl })
   })

@@ -19,8 +19,18 @@ let I
 describe('CDPBrowser (against Chrome)', function () {
   this.timeout(35000)
 
-  before(async () => {
+  before(async function () {
     global.codecept_dir = path.join(__dirname, '/../data')
+    const phpUp = await fetch(`${siteUrl}/info`).then(
+      () => true,
+      () => false,
+    )
+    if (!phpUp) {
+      const msg = `Test app is not running on ${siteUrl} — ALL CDPBrowser tests will be skipped.\n  Start it:    php -S 127.0.0.1:8000 -t test/data/app`
+      console.log(`\n  ⚠ ${msg}\n`)
+      if (!process.env.CI) this.skip()
+      throw new Error(msg)
+    }
     chrome = spawn(puppeteer.executablePath(), ['--headless=new', '--remote-debugging-port=9333', '--no-sandbox', '--disable-gpu', 'about:blank'], { stdio: 'ignore' })
     await new Promise(r => setTimeout(r, 2000))
     I = new CDPBrowser({ url: siteUrl, endpoint: 'http://127.0.0.1:9333', waitForAction: 300 })
