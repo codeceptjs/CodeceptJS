@@ -33,5 +33,8 @@ function modifyContent(content) {
     .replace(/    type PuppeteerConfig = {/, '    // @ts-ignore\n' + '    type PuppeteerConfig = {')
     .replace(/    type RESTConfig = {/, '    // @ts-ignore\n' + '    type RESTConfig = {')
     .replace(/    type WebDriverConfig = {/, '    // @ts-ignore\n' + '    type WebDriverConfig = {')
+    .replace(/    type CDPBrowserConfig = {/, '    // @ts-ignore\n' + '    type CDPBrowserConfig = {')
+    .replace(/    type ObscuraConfig = {/, '    // @ts-ignore\n' + '    type ObscuraConfig = {')
+    .replace(/    type KitesurfConfig = {/, '    // @ts-ignore\n' + '    type KitesurfConfig = {')
   return modifiedContent
 }
