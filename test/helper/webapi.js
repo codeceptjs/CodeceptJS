@@ -1623,15 +1623,10 @@ export function tests() {
   })
 
   describe('within tests', () => {
-    beforeEach(function () {
-      if (isHelper('CDPBrowser')) this.skip() // _withinBegin/_withinEnd are not implemented in CDPBrowser
-    })
-    afterEach(() => {
-      if (isHelper('CDPBrowser')) return
-      return I._withinEnd()
-    })
+    afterEach(() => I._withinEnd())
 
-    it('should execute within block', async () => {
+    it('should execute within block', async function () {
+      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/example4')
       await I.seeElement('#navbar-collapse-menu')
       I._withinBegin('#register')
@@ -1640,7 +1635,8 @@ export function tests() {
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
     })
 
-    it('should respect form fields inside within block ', async () => {
+    it('should respect form fields inside within block ', async function () {
+      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
       let rethrow
 
       await I.amOnPage('/form/example4')
@@ -1692,6 +1688,7 @@ export function tests() {
     })
 
     it('within should respect context in see when using nested frames', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // frame switching not implemented
       await I.amOnPage('/iframe_nested')
       await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
@@ -1717,6 +1714,7 @@ export function tests() {
     })
 
     it('within should respect context in see when using frame', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // frame switching not implemented
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: '#number-frame-1234',
@@ -1730,6 +1728,7 @@ export function tests() {
     })
 
     it('within should respect context in see when using frame with strict locator', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // frame switching not implemented
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: { css: '#number-frame-1234' },
