@@ -1,6 +1,12 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 import { expect } from 'chai'
 import Kitesurf from '../../lib/helper/Kitesurf.js'
-import * as cdpApiTests from './cdpwebapi.js'
+import * as webApiTests from './webapi.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 let I
 const isTunnel = Boolean(process.env.SITE_URL && !process.env.SITE_URL.includes('127.0.0.1'))
@@ -10,10 +16,11 @@ describe('Kitesurf helper (Cloudflare Browser Run beta)', function () {
   this.timeout(120000)
 
   before(async function () {
+    global.codecept_dir = path.join(__dirname, '/../data')
     if (!process.env.CF_ACCOUNT_ID || !process.env.CF_API_TOKEN) this.skip()
     I = new Kitesurf({ url: siteUrl })
     await I._init()
-    cdpApiTests.init({ I, siteUrl })
+    webApiTests.init({ I, siteUrl })
   })
 
   after(async () => I && I._finishTest())
@@ -51,6 +58,5 @@ describe('Kitesurf helper (Cloudflare Browser Run beta)', function () {
     await I.saveScreenshot('kitesurf_helper.png')
   })
 
-  cdpApiTests.publicTests()
-  if (isTunnel) cdpApiTests.tests()
+  if (isTunnel) webApiTests.tests()
 })

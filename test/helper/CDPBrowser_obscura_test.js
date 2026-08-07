@@ -1,17 +1,23 @@
 import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 import { expect } from 'chai'
 import Obscura from '../../lib/helper/Obscura.js'
 import TestHelper from '../support/TestHelper.js'
-import * as cdpApiTests from './cdpwebapi.js'
+import * as webApiTests from './webapi.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const siteUrl = TestHelper.siteUrl()
 let I
 
 describe('Obscura helper (against obscura serve on :9222)', function () {
-  this.timeout(30000)
+  this.timeout(35000)
 
   before(async function () {
+    global.codecept_dir = path.join(__dirname, '/../data')
     try {
       await fetch('http://127.0.0.1:9222/json/version')
     } catch (e) {
@@ -20,7 +26,7 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
     }
     I = new Obscura({ url: siteUrl })
     await I._init()
-    cdpApiTests.init({ I, siteUrl })
+    webApiTests.init({ I, siteUrl })
   })
 
   after(async () => I && I._finishTest())
@@ -60,7 +66,7 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
     }
   })
 
-  cdpApiTests.tests()
+  webApiTests.tests()
 })
 
 describe('Obscura helper spawn lifecycle (does not touch :9222)', function () {

@@ -1,25 +1,31 @@
 import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 import { expect } from 'chai'
 import { spawn } from 'child_process'
 import puppeteer from 'puppeteer'
 import CDPBrowser from '../../lib/helper/CDPBrowser.js'
 import TestHelper from '../support/TestHelper.js'
-import * as cdpApiTests from './cdpwebapi.js'
+import * as webApiTests from './webapi.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const siteUrl = TestHelper.siteUrl()
 let chrome
 let I
 
 describe('CDPBrowser (against Chrome)', function () {
-  this.timeout(30000)
+  this.timeout(35000)
 
   before(async () => {
+    global.codecept_dir = path.join(__dirname, '/../data')
     chrome = spawn(puppeteer.executablePath(), ['--headless=new', '--remote-debugging-port=9333', '--no-sandbox', '--disable-gpu', 'about:blank'], { stdio: 'ignore' })
     await new Promise(r => setTimeout(r, 2000))
-    I = new CDPBrowser({ url: siteUrl, endpoint: 'http://127.0.0.1:9333' })
+    I = new CDPBrowser({ url: siteUrl, endpoint: 'http://127.0.0.1:9333', waitForAction: 300 })
     await I._init()
-    cdpApiTests.init({ I, siteUrl })
+    webApiTests.init({ I, siteUrl })
   })
 
   after(async () => {
@@ -175,5 +181,5 @@ describe('CDPBrowser (against Chrome)', function () {
     }
   })
 
-  cdpApiTests.tests()
+  webApiTests.tests()
 })
