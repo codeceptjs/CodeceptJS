@@ -2613,9 +2613,6 @@ export function tests() {
   })
 
   describe('#elementIndex step option', () => {
-    beforeEach(function () {
-      if (isHelper('CDPBrowser')) this.skip() // store.currentStep.opts.elementIndex is not implemented in CDPBrowser
-    })
     afterEach(() => {
       store.currentStep = null
       I.options.strict = false
