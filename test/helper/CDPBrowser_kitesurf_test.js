@@ -24,14 +24,14 @@ describe('Kitesurf helper (Cloudflare Browser Run beta)', function () {
   afterEach(async () => I && I._after())
 
   it('opens a public page, asserts text and title', async () => {
-    await I.amOnPage('/')
+    await I.amOnPage('https://example.com')
     await I.see('Example Domain')
     await I.seeInTitle('Example Domain')
     expect(I.capabilities.layout).to.equal('real')
   })
 
   it('clicks a link by text using CDP input', async () => {
-    await I.amOnPage('/')
+    await I.amOnPage('https://example.com')
     await I.click('More information...')
     await I.waitInUrl('iana', 15)
   })
@@ -47,7 +47,7 @@ describe('Kitesurf helper (Cloudflare Browser Run beta)', function () {
   })
 
   it('takes a real screenshot', async () => {
-    await I.amOnPage('/')
+    await I.amOnPage('https://example.com')
     await I.saveScreenshot('kitesurf_helper.png')
   })
 
