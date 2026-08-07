@@ -1,0 +1,63 @@
+name: Obscura Helper Tests
+
+on:
+  push:
+    branches:
+      - 4.x
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+  OBSCURA_VERSION: v0.1.11
+  OBSCURA_SHA256: c9343428c9692c49e837487f1d0a8f308b280dd854981c5a06f2aece0048230e
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: npm install
+        run: npm i --force
+      - name: Cache Obscura binary
+        uses: actions/cache@v4
+        with:
+          path: ~/obscura-bin
+          key: obscura-${{ env.OBSCURA_VERSION }}-x86_64-linux
+      - name: Download Obscura
+        run: |
+          if [ ! -f ~/obscura-bin/obscura ]; then
+            mkdir -p ~/obscura-bin
+            curl -sL -o /tmp/obscura.tar.gz https://github.com/h4ckf0r0day/obscura/releases/download/${OBSCURA_VERSION}/obscura-x86_64-linux.tar.gz
+            echo "${OBSCURA_SHA256}  /tmp/obscura.tar.gz" | sha256sum -c -
+            tar xzf /tmp/obscura.tar.gz -C ~/obscura-bin
+          fi
+          ~/obscura-bin/obscura --version
+      - name: start test server and obscura
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          ~/obscura-bin/obscura serve --port 9222 --allow-private-network &
+          sleep 2
+          curl -sf http://127.0.0.1:9222/json/version
+          curl -sf http://127.0.0.1:8000/info > /dev/null
+      - name: run obscura helper tests
+        run: npm run test:unit:webbapi:obscura
