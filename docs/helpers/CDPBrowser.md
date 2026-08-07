@@ -267,7 +267,7 @@ I.checkOption('agree', '//form');
 #### Parameters
 
 *   `field` **([string][1] | [object][3])** checkbox located by label | name | CSS | XPath | strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator (currently ignored by this helper). 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -332,7 +332,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator (currently ignored by this helper). 
 
 <!---->
 
@@ -481,7 +481,7 @@ I.forceClick({css: 'nav a.login'});
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator (currently ignored by this helper). 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -847,7 +847,7 @@ I.uncheckOption('agree', '//form');
 #### Parameters
 
 *   `field` **([string][1] | [object][3])** checkbox located by label | name | CSS | XPath | strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator (currently ignored by this helper). 
 
 Returns **[Promise][4]<void>**&#x20;
 

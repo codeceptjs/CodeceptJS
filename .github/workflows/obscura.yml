@@ -12,6 +12,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 env:
   CI: true
   FORCE_COLOR: 1
@@ -29,6 +32,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
@@ -38,19 +43,19 @@ jobs:
           php-version: 8.0
       - name: npm install
         run: npm i --force
-      - name: Cache Obscura binary
+      - name: Cache Obscura tarball
         uses: actions/cache@v4
         with:
-          path: ~/obscura-bin
+          path: ~/obscura-bin/obscura.tar.gz
           key: obscura-${{ env.OBSCURA_VERSION }}-x86_64-linux
       - name: Download Obscura
         run: |
-          if [ ! -f ~/obscura-bin/obscura ]; then
-            mkdir -p ~/obscura-bin
-            curl -sL -o /tmp/obscura.tar.gz https://github.com/h4ckf0r0day/obscura/releases/download/${OBSCURA_VERSION}/obscura-x86_64-linux.tar.gz
-            echo "${OBSCURA_SHA256}  /tmp/obscura.tar.gz" | sha256sum -c -
-            tar xzf /tmp/obscura.tar.gz -C ~/obscura-bin
+          mkdir -p ~/obscura-bin
+          if [ ! -f ~/obscura-bin/obscura.tar.gz ]; then
+            curl -sfL -o ~/obscura-bin/obscura.tar.gz https://github.com/h4ckf0r0day/obscura/releases/download/${OBSCURA_VERSION}/obscura-x86_64-linux.tar.gz
           fi
+          echo "${OBSCURA_SHA256}  $HOME/obscura-bin/obscura.tar.gz" | sha256sum -c -
+          tar xzf ~/obscura-bin/obscura.tar.gz -C ~/obscura-bin
           ~/obscura-bin/obscura --version
       - name: start test server and obscura
         run: |

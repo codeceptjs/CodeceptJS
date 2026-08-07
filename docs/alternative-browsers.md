@@ -61,7 +61,7 @@ headless Chromium.
 
 ## When to stay with Playwright
 
-- Anything visual: screenshots, visual regression, PDF (Obscura cannot; Kitesurf can).
+- Anything visual: screenshots, visual regression, PDF (neither helper exposes PDF output).
 - Visibility semantics: on Obscura every element reports as visible — `seeElement`/`dontSeeElement`
   throw and point you to `seeElementInDOM`.
 - Complex input: drag-and-drop, hover chains, file uploads, iframes, multi-tab, service workers.

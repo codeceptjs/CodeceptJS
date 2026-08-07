@@ -99,6 +99,8 @@ Type: [object][2]
 }
 ```
 
+## Methods
+
 ### Parameters
 
 *   `config` **ObscuraConfig**&#x20;
