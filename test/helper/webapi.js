@@ -539,40 +539,35 @@ export function tests() {
   })
 
   describe('#selectOption', () => {
-    it('should select option by css', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+    it('should select option by css', async () => {
       await I.amOnPage('/form/select')
       await I.selectOption('form select[name=age]', 'adult')
       await I.click('Submit')
       assert.equal(formContents('age'), 'adult')
     })
 
-    it('should select option by name', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+    it('should select option by name', async () => {
       await I.amOnPage('/form/select')
       await I.selectOption('age', 'adult')
       await I.click('Submit')
       assert.equal(formContents('age'), 'adult')
     })
 
-    it('should select option by label', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+    it('should select option by label', async () => {
       await I.amOnPage('/form/select')
       await I.selectOption('Select your age', 'dead')
       await I.click('Submit')
       assert.equal(formContents('age'), 'dead')
     })
 
-    it('should select option by label and option text', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+    it('should select option by label and option text', async () => {
       await I.amOnPage('/form/select')
       await I.selectOption('Select your age', '21-60')
       await I.click('Submit')
       assert.equal(formContents('age'), 'adult')
     })
 
-    it('should select option by label and option text - with an onchange callback', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+    it('should select option by label and option text - with an onchange callback', async () => {
       await I.amOnPage('/form/select_onchange')
       await I.selectOption('Select a value', 'Option 2')
       await I.click('Submit')
@@ -580,15 +575,14 @@ export function tests() {
     })
 
     it('should select multiple options', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+      if (isHelper('Obscura')) this.skip() // Obscura's form serializer collapses a <select multiple> submission to only its first selected option, regardless of the live .selected property or the selected attribute (verified: a single non-first selection round-trips fine, but two selections drop to one)
       await I.amOnPage('/form/select_multiple')
       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex'])
       await I.click('Submit')
       assert.deepEqual(formContents('like'), ['play', 'adult'])
     })
 
-    it('should select option by label and option text with additional spaces', async function () {
-      if (isHelper('Obscura')) this.skip() // form submission does not pick up the live <select> state set by selectOption in Obscura
+    it('should select option by label and option text with additional spaces', async () => {
       await I.amOnPage('/form/select_additional_spaces')
       await I.selectOption('Select your age', '21-60')
       await I.click('Submit')
