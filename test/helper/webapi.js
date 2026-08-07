@@ -151,13 +151,24 @@ export function tests() {
 
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
+      await I.amOnPage('/info')
+      await I.waitInUrl('/info')
+      await I.waitInUrl(`${siteUrl}/info`)
+
+      let err
       try {
-        await I.amOnPage('/info')
-        await I.waitInUrl('/info')
         await I.waitInUrl('/info2', 0.1)
       } catch (e) {
-        assert.include(e.message, `expected url to include ${siteUrl}/info2, but found ${siteUrl}/info`)
+        err = e
       }
+      assert.isDefined(err, 'expected waitInUrl to time out')
+      assert.include(err.message, `expected url to include /info2, but found ${siteUrl}/info`)
+    })
+
+    it('should match a URL part that is not anchored at the base url', async () => {
+      await I.amOnPage('/info?user=test')
+      await I.waitInUrl('user=test')
+      await I.waitInUrl('/info?user=test')
     })
 
     it('should wait for the entire URL to match the expected', async () => {
