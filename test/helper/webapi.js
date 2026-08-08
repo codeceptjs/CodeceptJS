@@ -870,25 +870,43 @@ export function tests() {
   describe('#fillField - rich text editors', function () {
     this.timeout(60000)
 
-    beforeEach(function () {
-      if (isHelper('CDPBrowser')) this.skip() // rich text editors need real editing machinery, out of scope for CDP helpers
-    })
-
     const longContent = fs.readFileSync(path.join(__dirname, '../data/richtext-long.txt'), 'utf8').trim()
 
+    // Per-editor skip data instead of a blanket CDPBrowser guard — each reason is evidence-based,
+    // probed directly against the live fixtures on both engines (see skip-sweep-report.md):
+    // - CKEditor 5: boots and its `beforeinput` handler correctly recognizes and preventDefault()s
+    //   a synthetic InputEvent (so it *is* listening), but never inserts anything, because it needs
+    //   `event.getTargetRanges()` to know where to insert — a native, read-only browser API that
+    //   only a real user-agent input pipeline populates; a JS-constructed InputEvent's
+    //   getTargetRanges() is always empty. Applies equally to Chrome and Obscura — this is not an
+    //   engine gap, it's what synthetic (non-CDP-native) input dispatch fundamentally cannot forge.
+    // - CodeMirror 5: `CodeMirror.fromTextArea()` adopts and hides the original `<textarea>`, then
+    //   keeps its live content in an internal JS model, syncing to the form only via its own
+    //   `getValue()` API at submit time — no DOM mutation or event on the backing textarea reaches
+    //   that model once initialized. Applies equally to both engines.
+    // - TinyMCE legacy / CKEditor 4: both render their editing surface inside an `<iframe>` (classic
+    //   architecture, unlike TinyMCE's/CKEditor's newer inline/contenteditable modes) — CDPBrowser
+    //   has no frame-session support at all (documented elsewhere in this suite), so their content is
+    //   unreachable regardless of input-event fidelity. Applies equally to both engines.
+    // - Obscura-only boots: CKEditor 5, TinyMCE inline, Trix, Monaco, TinyMCE legacy, CKEditor 4
+    //   never set `window.__editorReady` even after a 20s wait, with their CDN script fetched (200)
+    //   successfully and zero console/page errors — the bundle's init logic silently never
+    //   completes on Obscura's engine, root cause not further diagnosed (out of scope for an
+    //   input-fidelity mandate). Where the editor is already blocked on both engines for another
+    //   reason above, this isn't listed separately.
     const editors = [
-      { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor' },
+      { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor', skip: { Obscura: "the DOM does show the new text and it isn't reverted (confirmed directly), but ProseMirror's own MutationObserver-based DOMObserver reconciliation never updates its internal model (view.state.doc, which the submit handler reads from) from a synthetic mutation on Obscura — tried both a blunt textContent replace and a surgical Range-based delete+insert, neither reaches the model; the same code path updates the model correctly on Chrome" } },
       { name: 'Quill',          page: 'quill',          selector: '#editor' },
-      { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor' },
-      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor' },
+      { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate; its beforeinput handler correctly recognizes and preventDefault()s the event but then inserts nothing' } },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
       { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
-      { name: 'Trix',           page: 'trix',           selector: 'trix-editor' },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
       { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
-      { name: 'Monaco',         page: 'monaco',         selector: '#editor' },
-      { name: 'ACE',            page: 'ace',            selector: '#editor' },
-      { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor' },
-      { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor' },
-      { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor' },
+      { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
+      { name: 'ACE',            page: 'ace',            selector: '#editor', skipTests: { 'rewrites pre-populated content': { Obscura: "ACE keeps cursor/selection state in its own internal model like Monaco, but reaches it via the browser's real execCommand-driven selection-replace on Chrome; execCommand is a no-op on Obscura, so the fallback's DOM-level select-all doesn't carry the same 'replace selection' semantics into ACE's model and the new text is inserted rather than replacing the old" } } },
+      { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor', skip: { CDPBrowser: 'CodeMirror.fromTextArea() adopts and hides the backing <textarea>; its live content lives only in an internal JS model synced to the form via its own getValue() API at submit time, unreachable via DOM mutation or events on the backing element' } },
+      { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic TinyMCE architecture) — CDPBrowser has no frame-session support' } },
+      { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic CKEditor 4 architecture) — CDPBrowser has no frame-session support' } },
     ]
 
     async function open(page, initial) {
@@ -905,6 +923,16 @@ export function tests() {
 
     for (const ed of editors) {
       describe(ed.name, () => {
+        beforeEach(function () {
+          const reasons = { ...(ed.skip || {}), ...((ed.skipTests && ed.skipTests[this.currentTest.title]) || {}) }
+          for (const helperName of Object.keys(reasons)) {
+            if (isHelper(helperName)) {
+              this.skip()
+              return
+            }
+          }
+        })
+
         it('submits filled value', async () => {
           await open(ed.page)
           await I.fillField(ed.selector, 'Hello rich text world')
@@ -946,10 +974,13 @@ export function tests() {
         await I.waitForFunction(() => window.__editorReady === true, [], 30)
       }
 
+      // Same classification as the equivalent non-sibling editor above — the content-insertion
+      // mechanism is identical, so these hit the same wall (getTargetRanges / no frame support /
+      // detached backing textarea) regardless of the sibling-input wrapper around them.
       const siblingCases = [
-        { name: 'iframe editor (Monaco)',              page: 'monaco-with-sibling',      selector: 'iframe',       path: 'IFRAME' },
-        { name: 'hidden-textarea editor (CodeMirror)', page: 'codemirror5-with-sibling', selector: '#editor',      path: 'HIDDEN_TEXTAREA' },
-        { name: 'contenteditable editor (CKEditor 5)', page: 'ckeditor5-with-sibling',   selector: '#editor',      path: 'CONTENTEDITABLE' },
+        { name: 'iframe editor (Monaco)',              page: 'monaco-with-sibling',      selector: 'iframe',       path: 'IFRAME', skip: { CDPBrowser: 'lives inside an <iframe> — CDPBrowser has no frame-session support' } },
+        { name: 'hidden-textarea editor (CodeMirror)', page: 'codemirror5-with-sibling', selector: '#editor',      path: 'HIDDEN_TEXTAREA', skip: { CDPBrowser: 'CodeMirror.fromTextArea() keeps content in an internal JS model, unreachable via the backing textarea once initialized' } },
+        { name: 'contenteditable editor (CKEditor 5)', page: 'ckeditor5-with-sibling',   selector: '#editor',      path: 'CONTENTEDITABLE', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate' } },
       ]
 
       async function outerTitleValue() {
@@ -958,6 +989,16 @@ export function tests() {
 
       for (const tc of siblingCases) {
         describe(tc.name, () => {
+          beforeEach(function () {
+            if (!tc.skip) return
+            for (const helperName of Object.keys(tc.skip)) {
+              if (isHelper(helperName)) {
+                this.skip()
+                return
+              }
+            }
+          })
+
           it(`fillField via ${tc.path} does not leak keystrokes to the outer focused input`, async () => {
             await openSiblingPage(tc.page)
             await I.fillField(tc.selector, 'Hello rich text world')
