@@ -1019,7 +1019,6 @@ export function tests() {
   describe('#type', () => {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // clicking does not move real focus without a layout engine, so there is no activeElement to type into
-      if (isHelper('Obscura')) this.skip() // clicking a <label> to focus its associated field is non-deterministic on Obscura (verified: document.activeElement sometimes moves to the field, sometimes stays <body>, across otherwise-identical repeated runs), so typing has no reliable target
     })
 
     it('should type into a field', async () => {
@@ -2582,11 +2581,6 @@ export function tests() {
     })
 
     it('should not throw NonFocusedType when element is focused', async function () {
-      // I.click('Name') clicks the <label for="name"> to forward focus to its associated input —
-      // already-documented as non-deterministic on Obscura (document.activeElement sometimes
-      // moves to the field, sometimes stays <body>, across otherwise-identical repeated runs),
-      // same root cause as the #type describe's Obscura guard.
-      if (isHelper('Obscura')) this.skip()
       await I.amOnPage('/form/field')
       I.options.strict = true
       await I.click('Name')
@@ -2615,7 +2609,6 @@ export function tests() {
     })
 
     it('should not throw for Ctrl+A when element is focused', async function () {
-      if (isHelper('Obscura')) this.skip() // same label-click focus non-determinism as "should not throw NonFocusedType when element is focused" above
       await I.amOnPage('/form/field')
       I.options.strict = true
       await I.click('Name')

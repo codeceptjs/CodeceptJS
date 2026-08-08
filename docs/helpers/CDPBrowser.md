@@ -1604,7 +1604,11 @@ Returns **void**&#x20;
 
 ### type
 
-Types characters into the currently focused element (as set by `click`, `focus`, etc).
+Types characters into the currently focused element (as set by `click`, `focus`, etc), one at a
+time. Each character dispatches a real `keydown` → `keypress` → (value mutated) → `input` →
+`keyup` sequence, and mutates a `contenteditable` host's `textContent` instead of `.value`, so
+this works on rich-text/contenteditable targets as well as `input`/`textarea`. Mirrors
+Puppeteer's `type(text, options)` semantics.
 
 ```js
 I.click('Name');
