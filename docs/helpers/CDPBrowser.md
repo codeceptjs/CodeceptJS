@@ -1132,7 +1132,7 @@ const button = await I.grabWebElement({ role: 'button', text: 'Submit' });
 
 *   Throws **ElementNotFound** if no element matches `locator`.
 
-Returns **[Promise][4]<WebElement>** a WebElement instance.
+Returns **[Promise][4]<[object][3]>** a WebElement instance.
 
 ### grabWebElements
 
@@ -1149,7 +1149,7 @@ const buttons = await I.grabWebElements({ role: 'button' });
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[Array][8]<WebElement>>** array of WebElement instances.
+Returns **[Promise][4]<[Array][8]<[object][3]>>** array of WebElement instances.
 
 ### pressKey
 
