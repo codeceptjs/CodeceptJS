@@ -51,8 +51,9 @@ Type: [object][3]
 *   `xpathPolyfill` **([string][1] | [boolean][5])?** whether to inject the bundled XPath polyfill before installing the in-page client. `auto` probes the page and only injects when `document.evaluate` is unavailable or broken; `true`/`false` force the behavior.
 *   `capabilities` **[object][3]?** pre-seed detected browser capabilities (`layout`, `xpath`, `screenshot`, `innerText`) to skip runtime probing. Values set here are never overwritten by `_probeCapabilities`/`_ensureClient`.
 *   `waitForTimeout` **[number][7]?** default wait* timeout in seconds, used by helpers built on top of this class.
-*   `waitForAction` **[number][7]?** poll interval in milliseconds used while waiting for a condition (e.g. page ready state).
-*   `getPageTimeout` **[number][7]?** maximum time in seconds to wait for a page to reach `readyState === 'complete'` after navigation or reload; also used as the CDP command timeout (in ms, x1000).
+*   `waitForAction` **[number][7]?** how long to wait in milliseconds after click, type, or other interactions, mirroring the pacing pause other browser helpers apply between actions.
+*   `pollInterval` **[number][7]?** interval in milliseconds between retries while polling for a condition (e.g. page ready state, `waitFor*`). Distinct from `waitForAction`.
+*   `getPageTimeout` **[number][7]?** maximum time in seconds to wait for a page to finish loading after navigation or reload; also used as the CDP command timeout (in ms, x1000).
 
 
 
@@ -126,6 +127,14 @@ Resolves the CDP endpoint and opens the underlying `CDPConnection`, storing it o
 Ensures the in-page client (`window.__codecept`, installed from `cdpBrowserClient.js`) is
 present on the current page, installing it (and the XPath polyfill, if needed) exactly once.
 Safe to call repeatedly; it is a no-op once the client is detected.
+
+### _ensureLifecycleListener
+
+Lazily installs a single, persistent `Page.lifecycleEvent` listener on the underlying
+`CDPConnection` and drains it into whichever `_waitForLoadEvent` calls are currently pending,
+matched by `loaderId`. Installed once per helper instance (the connection outlives individual
+tests), never removed — `CDPConnection` has no listener-removal API, so a single persistent
+dispatcher (rather than one listener per navigation) is what keeps this leak-free.
 
 ### _evaluate
 
@@ -228,18 +237,19 @@ by `_onTrafficRequest` with a Puppeteer-`HTTPResponse`-like object.
 
 ### _poll
 
-Repeatedly calls `fn` until it returns a truthy value or `timeoutSec` elapses, waiting
-`options.waitForAction` milliseconds between attempts.
+Repeatedly calls `fn` until it returns a truthy value or `timeoutSec` elapses, checking
+immediately and waiting `options.pollInterval` milliseconds between subsequent attempts.
 
 #### Parameters
 
 *   `fn` **[function][6]** the condition to poll; should resolve to a truthy value once satisfied.
 *   `timeoutSec` **[number][7]** maximum time to poll, in seconds.
 *   `message` **[string][1]** error message used when the timeout is reached.
+*   `cancelToken` **{cancelled: [boolean][5]}??** when `cancelled` becomes `true` (set by the caller from outside), polling stops early with an error instead of continuing to `timeoutSec`. Used by `_waitForPageLoad` to tear down the losing side of a race instead of leaving it running.
 
 <!---->
 
-*   Throws **[Error][2]** with `message` if `timeoutSec` elapses without `fn` returning a truthy value.
+*   Throws **[Error][2]** with `message` if `timeoutSec` elapses without `fn` returning a truthy value, or a cancellation error if `cancelToken.cancelled` is set first.
 
 Returns **[Promise][4]<any>** the truthy value returned by `fn`.
 
@@ -266,9 +276,9 @@ Returns **[Promise][4]<[string][1]>** a `ws(s)://` debugger URL ready to be pass
 
 ### _run
 
-Ensures the in-page client is installed, then delegates a find-and-act call to
-`window.__codecept.run(candidates, action, payload)`. This is the primary extension point
-used by helpers built on top of this class for element queries and interactions.
+Delegates a find-and-act call to `window.__codecept.run(candidates, action, payload)`. This is
+the primary extension point used by helpers built on top of this class for element queries and
+interactions.
 
 A per-call `context` locator, when given, is resolved and layered on top of any active
 `within` block (searched inside it, not instead of it), so `context` narrows the search
@@ -288,6 +298,11 @@ Returns **[Promise][4]<{found: [number][7], result: any}>** number of matched el
 Same as `_run`, but takes an explicit selection descriptor instead of reading one from
 `store.currentStep`/`options.strict`. Used internally by `CDPElementHandle` to address one
 specific element out of a candidate set by its 1-based index.
+
+The in-page client's presence is checked in the same round-trip as the action itself: the
+evaluated expression resolves to a sentinel string when `window.__codecept` is missing (e.g.
+right after a navigation the registered script didn't reach), in which case `_ensureClient` is
+called to install it and the call is retried exactly once.
 
 #### Parameters
 
@@ -368,6 +383,48 @@ other browser helpers apply between actions.
 
 Returns **[Promise][4]<void>**&#x20;
 
+### _waitForLoadEvent
+
+Starts waiting for a `Page.lifecycleEvent` named `load` for the given `loaderId` on the current
+session. `loaderId` (from the `Page.navigate` response) discriminates the awaited navigation
+from any other in-flight or stale lifecycle events (e.g. the `about:blank` target created in
+`_before`), which is essential since Chrome emits the target's initial `about:blank` lifecycle
+sequence asynchronously, sometimes after this listener is already installed.
+
+Returns a `{promise, cancel}` pair rather than a bare promise: `_waitForPageLoad` races this
+against a readyState poll, and whichever side loses must be actively torn down (not just have
+its rejection swallowed) — an abandoned-but-still-pending wait would sit in `_pageLoadWaiters`
+for the full timeout on every single navigation, for no purpose.
+
+#### Parameters
+
+*   `loaderId` **[string][1]** the loader id of the navigation to wait for, from `Page.navigate`'s response.
+*   `timeoutSec` **[number][7]** maximum time to wait, in seconds.
+
+Returns **{promise: [Promise][4]<void>, cancel: [function][6]}**&#x20;
+
+### _waitForPageLoad
+
+Waits for a page to finish loading after `Page.navigate`/`Page.reload`. Races the push-based
+`Page.lifecycleEvent` `load` signal (matched by `loaderId`) against polling
+`document.readyState === 'complete'` (via `_poll`), so whichever settles a navigation first
+wins — the lifecycle event on engines that support it (both bounded by the same
+`options.getPageTimeout`, so an engine that never emits it costs no more than the poll alone
+would have). No `loaderId` (e.g. from `Page.reload`, which returns none) skips straight to the
+poll.
+
+Whichever side loses the race is actively cancelled, not merely abandoned — an abandoned poll
+or lifecycle wait would otherwise keep running (issuing readyState `_evaluate` calls every
+`pollInterval`, or holding a `_pageLoadWaiters` entry) for up to the full timeout on every
+navigation, competing for the same CDP connection with real work.
+
+#### Parameters
+
+*   `loaderId` **[string][1]?** loader id from the triggering `Page.navigate` response, if any.
+*   `timeoutMessage` **[string][1]** error message used if the readyState poll times out.
+
+Returns **[Promise][4]<void>**&#x20;
+
 ### _withinBegin
 
 Starts a `within` block, scoping every subsequent `_run` call (and therefore every element
@@ -400,9 +457,10 @@ I.amOnPage('https://github.com'); // opens github
 I.amOnPage('/login'); // opens a login page
 ```
 
-Navigates via `Page.navigate`, then waits (up to `options.getPageTimeout` seconds) for
-`document.readyState` to reach `'complete'`. Once loaded, capabilities are (re-)probed and
-the in-page client is (re-)installed, since navigation discards any previously injected script.
+Navigates via `Page.navigate`, then waits (up to `options.getPageTimeout` seconds) for the page
+to finish loading, preferring the push-based `Page.lifecycleEvent` `load` signal over polling
+`document.readyState`. Once loaded, capabilities are (re-)probed and the in-page client is
+(re-)installed, since navigation discards any previously injected script.
 
 #### Parameters
 
@@ -1659,11 +1717,15 @@ Returns **[Promise][4]<[object][3]>** a Buffer with the assembled APNG, or null 
 
 ### type
 
-Types characters into the currently focused element (as set by `click`, `focus`, etc), one at a
-time. Each character dispatches a real `keydown` → `keypress` → (value mutated) → `input` →
-`keyup` sequence, and mutates a `contenteditable` host's `textContent` instead of `.value`, so
-this works on rich-text/contenteditable targets as well as `input`/`textarea`. Mirrors
-Puppeteer's `type(text, options)` semantics.
+Types characters into the currently focused element (as set by `click`, `focus`, etc). Each
+character dispatches a real `keydown` → `keypress` → (value mutated) → `input` → `keyup`
+sequence, and mutates a `contenteditable` host's `textContent` instead of `.value`, so this
+works on rich-text/contenteditable targets as well as `input`/`textarea`. Mirrors Puppeteer's
+`type(text, options)` semantics.
+
+Without a `delay`, every character is dispatched in a single round-trip to the page. With a
+`delay`, characters are dispatched one round-trip at a time so the requested pause actually
+elapses between key presses.
 
 ```js
 I.click('Name');
