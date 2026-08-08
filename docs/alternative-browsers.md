@@ -143,6 +143,7 @@ process — there is nothing to start by hand in the common case:
 | Layout / getBoundingClientRect | yes | yes (v0.2.0+ default builds); synthetic on `-no-render`/v0.1.x | yes |
 | Screenshots | yes | yes (v0.2.0+ default builds); no on `-no-render`/v0.1.x | yes |
 | Visibility assertions | yes | yes (v0.2.0+ default builds); no, DOM-presence only, on `-no-render`/v0.1.x | yes |
+| Screencast / video (`screencast` plugin) | yes — WebM via `page.screencast`, with caption burn-in | yes — APNG via CDP `Page.startScreencast`, assembled in-process (v0.2.0+ default builds; verified PNG frames on the live server); no caption burn-in | untested |
 | Startup cost | seconds + ~300 MB install | instant, 70 MB binary | ~1 s, zero local |
 | Parallel scale | machine-bound | machine-bound (light) | near-unlimited (cloud) |
 | Where it runs | local/grid | local | Cloudflare only |

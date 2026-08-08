@@ -183,6 +183,18 @@ silently returning every candidate node instead of none or one. The result is ca
 
 Returns **[Promise][4]<[boolean][5]>** `true` if the polyfill should be injected.
 
+### _onScreencastFrame
+
+`Page.screencastFrame` handler: ignores frames from a session other than the currently active
+one (stale frames from a previous test, since the listener is never removed), acknowledges the
+frame so the browser keeps sending more, and buffers `{data, timestamp}` for `stopScreencast`
+to assemble.
+
+#### Parameters
+
+*   `params` &#x20;
+*   `sessionId` &#x20;
+
 ### _onTrafficLoadingFailed
 
 `Network.loadingFailed` handler, resolving a still-pending `response` promise to `null`
@@ -1591,6 +1603,26 @@ I.startRecordingTraffic();
 
 Returns **[Promise][4]<void>**&#x20;
 
+### startScreencast
+
+Starts recording a CDP `Page.startScreencast` session for the current test's target: frames
+arrive as `Page.screencastFrame` events, are acknowledged immediately (`Page.screencastFrameAck`,
+required or the browser stops sending more), and buffered in `this._screencastFrames`. The
+underlying `Page.screencastFrame` listener is installed once (lazily) and left in place, like
+`startRecordingTraffic`'s listeners, since `CDPConnection` has no listener-removal API; it
+filters by `this.sessionId` so only the currently active test's frames are buffered. Call
+`stopScreencast` to end the capture and assemble the buffered frames into an APNG.
+
+```js
+I.startScreencast();
+```
+
+#### Parameters
+
+*   `options` **[object][3]?** {maxWidth: number, maxHeight: number, quality: number, everyNthFrame: number} — CDP `Page.startScreencast` pass-throughs. `format` is always `'png'`. 
+
+Returns **[Promise][4]<void>**&#x20;
+
 ### stopRecordingTraffic
 
 Stops recording network traffic started by `startRecordingTraffic`. Already-recorded requests
@@ -1601,6 +1633,29 @@ I.stopRecordingTraffic();
 ```
 
 Returns **void**&#x20;
+
+### stopScreencast
+
+Stops the screencast started by `startScreencast` and assembles the buffered frames into a
+single APNG (Animated PNG) file, returned as a Buffer. Frame delays are derived from the CDP
+frame metadata's `timestamp` deltas (frame arrival is activity-driven — Obscura and Chrome both
+only emit a frame on damage — so this reproduces the actual pacing of what happened, not a
+fixed frame rate); the last frame is held for `options.lastFrameDelayMs` (default 1000ms) since
+it has no "next" frame to derive a delay from. Every frame is checked for the PNG signature
+before assembly — CDP's `format: 'png'` is honored by both Chrome and Obscura (verified
+directly), but if some other engine ever sends a different format regardless, this reports it
+via `debugSection` and returns `null` instead of muxing a broken file. Returns `null` if no
+frames were captured (screencast never started, or stopped immediately after starting).
+
+```js
+const apngBuffer = await I.stopScreencast();
+```
+
+#### Parameters
+
+*   `options` **[object][3]?** {lastFrameDelayMs: number} — hold time in milliseconds for the final frame (default 1000). 
+
+Returns **[Promise][4]<[object][3]>** a Buffer with the assembled APNG, or null if there was nothing to assemble.
 
 ### type
 

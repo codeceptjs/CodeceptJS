@@ -2275,6 +2275,42 @@ export function tests() {
     })
   })
 
+  describe('#startScreencast, #stopScreencast', () => {
+    beforeEach(function () {
+      if (typeof I.startScreencast !== 'function') this.skip() // CDP-family only (CDPBrowser/Obscura/Kitesurf) — Playwright/WebDriver/Puppeteer use their own video APIs
+    })
+
+    it('records navigation and a click into a valid APNG', async () => {
+      await I.amOnPage('/')
+      await I.startScreencast()
+      await I.click('More info')
+      const buf = await I.stopScreencast()
+
+      expect(buf).to.not.equal(null)
+      expect(buf.length).to.be.greaterThan(100)
+      expect(buf.subarray(0, 8).toString('hex')).to.equal('89504e470d0a1a0a')
+
+      const chunkTypes = []
+      let offset = 8
+      while (offset + 8 <= buf.length) {
+        const length = buf.readUInt32BE(offset)
+        const type = buf.toString('ascii', offset + 4, offset + 8)
+        chunkTypes.push(type)
+        offset += 12 + length
+        if (type === 'IEND') break
+      }
+      expect(chunkTypes).to.include('acTL')
+      expect(chunkTypes).to.include('IHDR')
+      expect(chunkTypes[chunkTypes.length - 1]).to.equal('IEND')
+    })
+
+    it('returns null when stopScreencast is called without a prior startScreencast', async () => {
+      await I.amOnPage('/')
+      const buf = await I.stopScreencast()
+      expect(buf).to.equal(null)
+    })
+  })
+
   describe('role locators', () => {
     it('should locate elements by role', async () => {
       await I.amOnPage('/form/role_elements')

@@ -71,7 +71,7 @@ Retries each failed step in a test.
 
 ## [screencast](/plugins/screencast)
 
-Records WebM video of tests using Playwright's screencast API.
+Records a video of tests. Uses Playwright's `page.screencast` API (WebM) when the active helper is Playwright, or raw CDP `Page.startScreencast` (APNG, assembled in-process) when the active helper is `CDPBrowser` or a subclass (`Obscura`, `Kitesurf`, ...). Which path is used is detected automatically per test run; nothing in the config changes between them.
 
 ## [screenshot](/plugins/screenshot)
 
