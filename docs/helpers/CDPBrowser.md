@@ -97,6 +97,10 @@ mirroring the click/field/checkbox matching used by other browser helpers (match
 visible text, label, name, placeholder, ARIA attributes, etc.), falling back to treating the
 raw text as a CSS selector.
 
+A role locator (`{role, text, exact}`) resolves to a single `role`-type candidate, resolved
+in-page by the client's implicit ARIA role mapping (native elements) plus explicit `role`
+attributes, filtered by accessible name/text when `text` is given.
+
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator, or plain fuzzy text.
@@ -179,6 +183,37 @@ silently returning every candidate node instead of none or one. The result is ca
 
 Returns **[Promise][4]<[boolean][5]>** `true` if the polyfill should be injected.
 
+### _onTrafficLoadingFailed
+
+`Network.loadingFailed` handler, resolving a still-pending `response` promise to `null`
+(matching Puppeteer's `request.response()` for a failed request) so `grabRecordedNetworkTraffics`
+never awaits a promise that would otherwise never settle.
+
+#### Parameters
+
+*   `params` &#x20;
+*   `sessionId` &#x20;
+
+### _onTrafficRequest
+
+`Network.requestWillBeSent` handler, pushed into `this.requests` when it belongs to the
+currently active session and recording is on.
+
+#### Parameters
+
+*   `params` &#x20;
+*   `sessionId` &#x20;
+
+### _onTrafficResponse
+
+`Network.responseReceived` handler, resolving the matching pending `response` promise pushed
+by `_onTrafficRequest` with a Puppeteer-`HTTPResponse`-like object.
+
+#### Parameters
+
+*   `params` &#x20;
+*   `sessionId` &#x20;
+
 ### _poll
 
 Repeatedly calls `fn` until it returns a truthy value or `timeoutSec` elapses, waiting
@@ -223,13 +258,34 @@ Ensures the in-page client is installed, then delegates a find-and-act call to
 `window.__codecept.run(candidates, action, payload)`. This is the primary extension point
 used by helpers built on top of this class for element queries and interactions.
 
+A per-call `context` locator, when given, is resolved and layered on top of any active
+`within` block (searched inside it, not instead of it), so `context` narrows the search
+without breaking out of a surrounding `within`.
+
 #### Parameters
 
 *   `candidates` &#x20;
 *   `action` **[string][1]** name of the action to run against the matched elements (e.g. `count`, `click`, `fill`).
 *   `payload` **[object][3]?** extra data the action needs (e.g. `{ value }` for `fill`).
+*   `context` **([string][1]? | [object][3])** element to search in, narrowing the candidates below it. 
 
 Returns **[Promise][4]<{found: [number][7], result: any}>** number of matched elements and the action's result.
+
+### _runSelected
+
+Same as `_run`, but takes an explicit selection descriptor instead of reading one from
+`store.currentStep`/`options.strict`. Used internally by `CDPElementHandle` to address one
+specific element out of a candidate set by its 1-based index.
+
+#### Parameters
+
+*   `candidates` &#x20;
+*   `action` **[string][1]**&#x20;
+*   `payload` **[object][3]?**&#x20;
+*   `selection` **[object][3]?** `{index}` or `{strict: true}`, mirroring `_selectionDescriptor`.
+*   `context` **([string][1]? | [object][3])**  
+
+Returns **[Promise][4]<{found: [number][7], result: any}>**&#x20;
 
 ### _seeInField
 
@@ -240,6 +296,7 @@ Shared implementation for `seeInField`/`dontSeeInField`.
 *   `assertType` **(`"assert"` | `"negate"`)**&#x20;
 *   `field` **([string][1] | [object][3])**&#x20;
 *   `value` **([string][1] | [object][3])**&#x20;
+*   `context` **([string][1]? | [object][3])**  
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -253,6 +310,18 @@ disables strict mode for that step; otherwise `exact`/`strictMode` per-step opti
 override `options.strict` to enable or cancel strict mode.
 
 Returns **([object][3] | null)** descriptor with optional `index` and `strict` keys, or `null` when neither applies.
+
+### _texts
+
+Resolves whether the `texts` action should read via the client's `visibleText()` walker
+(probed once via `_needsVisibleTextFallback` and cached on `capabilities.innerText`) instead
+of each element's native `innerText`, then runs it.
+
+#### Parameters
+
+*   `candidates` **[Array][8]<{type: [string][1], value: ([string][1] | [object][3])}>**&#x20;
+
+Returns **[Promise][4]<{found: [number][7], result: any}>**&#x20;
 
 ### _textSource
 
@@ -344,6 +413,34 @@ I.appendField('password', secret('123456'));
 
 *   `field` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator
 *   `value` **[string][1]** text value to append.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+
+Returns **[Promise][4]<void>**&#x20;
+
+### attachFile
+
+Attaches a file to a file input field, or drops it onto a drag-and-drop dropzone element,
+resolved by label|name|CSS|XPath|strict locator. `pathToFile` is resolved relative to
+`codecept_dir` (matching Puppeteer/WebDriver). Since `CDPBrowser` never brings element handles
+back to Node, the resolved element is marked with a throwaway `data-codecept-upload` attribute
+in-page (respecting `context`/`within`/elementIndex exactly like every other action). A real
+`<input type="file">` is then addressed by that attribute through the CDP `DOM` domain, which
+`CDPBrowser` otherwise never uses, to call `DOM.setFileInputFiles`; any other element (a
+drag-and-drop dropzone) instead gets a synthetic `dragenter`/`dragover`/`drop` sequence with a
+`DataTransfer` built from the file's contents, entirely in-page. The marker is removed again in
+a `finally`.
+
+```js
+I.attachFile('Avatar', 'data/avatar.jpg');
+I.attachFile('#file', 'data/avatar.jpg');
+I.attachFile('#dropzone', 'data/avatar.jpg');
+```
+
+#### Parameters
+
+*   `field` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator.
+*   `pathToFile` **[string][1]** path to file, relative to `codecept_dir`.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -375,7 +472,7 @@ I.checkOption('agree', '//form');
 #### Parameters
 
 *   `field` **([string][1] | [object][3])** checkbox located by label | name | CSS | XPath | strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator (currently ignored by this helper). 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -408,6 +505,7 @@ I.clearField('#email');
 #### Parameters
 
 *   `field` **([string][1] | [object][3])** editable field located by label|name|CSS|XPath|strict locator.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -440,7 +538,7 @@ I.click({css: 'nav a.login'});
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator (currently ignored by this helper). 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 <!---->
 
@@ -540,6 +638,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -575,6 +674,7 @@ Opposite to `seeInField`.
 
 *   `field` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][1] | [object][3])** value to check.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -597,6 +697,26 @@ Checks that title does not contain text.
 *   `text` **[string][1]** value to check.
 
 Returns **[Promise][4]<void>**&#x20;
+
+### dontSeeTraffic
+
+Verifies that a certain request is not part of network traffic.
+
+Examples:
+
+```js
+I.dontSeeTraffic({ name: 'Unexpected API Call', url: 'https://api.example.com' });
+I.dontSeeTraffic({ name: 'Unexpected API Call of "user" endpoint', url: /api.example.com.*user/ });
+```
+
+#### Parameters
+
+*   `opts` **[Object][3]** options when checking the traffic network.
+
+    *   `opts.name` **[string][1]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    *   `opts.url` **([string][1] | [RegExp][9])** Expected URL of request in network traffic. Can be a string or a regular expression.
+
+Returns **void** automatically synchronized promise through #recorder
 
 ### doubleClick
 
@@ -673,8 +793,17 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 
 *   `field` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][1] | [object][3])** text value to fill.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
+
+### flushNetworkTraffics
+
+Resets all recorded network requests.
+
+```js
+I.flushNetworkTraffics();
+```
 
 ### focus
 
@@ -716,7 +845,7 @@ I.forceClick({css: 'nav a.login'});
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator (currently ignored by this helper). 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -891,6 +1020,19 @@ let { x, y } = await I.grabPageScrollPosition();
 
 Returns **[Promise][4]<{x: [number][7], y: [number][7]}>** scroll position.
 
+### grabRecordedNetworkTraffics
+
+Grab the recording network traffics
+
+```js
+const traffics = await I.grabRecordedNetworkTraffics();
+expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].response.status).to.equal(200);
+expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
+```
+
+Returns **[Array][8]** recorded network traffics
+
 ### grabSource
 
 Retrieves the source code of the current page.
@@ -973,6 +1115,58 @@ let inputs = await I.grabValueFromAll('//form/input');
 *   `locator` **([string][1] | [object][3])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **[Promise][4]<[Array][8]<[string][1]>>** array of attribute values
+
+### grabWebElement
+
+Retrieves the first `WebElement` matching a locator.
+
+```js
+const button = await I.grabWebElement({ role: 'button', text: 'Submit' });
+```
+
+#### Parameters
+
+*   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
+
+<!---->
+
+*   Throws **ElementNotFound** if no element matches `locator`.
+
+Returns **[Promise][4]<WebElement>** a WebElement instance.
+
+### grabWebElements
+
+Retrieves an array of `WebElement`s matching a locator (`lib/element/WebElement.js`,
+wrapping a `CDPElementHandle`). Element handles are re-resolved on demand by re-running
+`candidates` and picking the matching index, since `CDPBrowser` never keeps a persistent
+handle to a DOM node on the Node side.
+
+```js
+const buttons = await I.grabWebElements({ role: 'button' });
+```
+
+#### Parameters
+
+*   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][4]<[Array][8]<WebElement>>** array of WebElement instances.
+
+### pressKey
+
+Presses a key or key combination on the currently focused element.
+Under `options.strict`, a modifier+editing-key combination (e.g. `Ctrl+A`) dispatched with no
+element focused throws `NonFocusedType`, mirroring `focusCheck.js`'s behavior on other helpers.
+
+```js
+I.pressKey('Enter');
+I.pressKey(['Control', 'a']);
+```
+
+#### Parameters
+
+*   `key` **([string][1] | [Array][8]<[string][1]>)** a key or an array of keys to combine (modifiers first).
+
+Returns **[Promise][4]<void>**&#x20;
 
 ### refreshPage
 
@@ -1200,6 +1394,7 @@ I.seeElement('#modal');
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -1245,6 +1440,7 @@ I.seeInField('Username', 'davert');
 
 *   `field` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator.
 *   `value` **([string][1] | [object][3])** value to check.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -1291,6 +1487,49 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 Returns **[Promise][4]<void>**&#x20;
 
+### seeTraffic
+
+Verifies that a certain request is part of network traffic.
+
+```js
+// checking the request url contains certain query strings
+I.amOnPage('https://openai.com/blog/chatgpt');
+I.startRecordingTraffic();
+await I.seeTraffic({
+    name: 'sentry event',
+    url: 'https://images.openai.com/blob/cf717bdb-0c8c-428a-b82b-3c3add87a600',
+    parameters: {
+    width: '1919',
+    height: '1138',
+    },
+  });
+```
+
+```js
+// checking the request url contains certain post data
+I.amOnPage('https://openai.com/blog/chatgpt');
+I.startRecordingTraffic();
+await I.seeTraffic({
+    name: 'event',
+    url: 'https://cloudflareinsights.com/cdn-cgi/rum',
+    requestPostData: {
+    st: 2,
+    },
+  });
+```
+
+#### Parameters
+
+*   `opts` **[Object][3]** options when checking the traffic network.
+
+    *   `opts.name` **[string][1]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    *   `opts.url` **[string][1]** Expected URL of request in network traffic
+    *   `opts.parameters` **[Object][3]?** Expected parameters of that request in network traffic
+    *   `opts.requestPostData` **[Object][3]?** Expected that request contains post data in network traffic
+    *   `opts.timeout` **[number][7]?** Timeout to wait for request in seconds. Default is 10 seconds.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### selectOption
 
 Selects an option in a drop-down select.
@@ -1310,6 +1549,7 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 
 *   `select` **([string][1] | [object][3])** field located by label|name|CSS|XPath|strict locator.
 *   `option` **([string][1] | [Array][8]<[string][1]>)** visible text or value of option, or an array of them for a multi-select.
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -1334,6 +1574,33 @@ I.setCookie([
 *   `cookie` **(CodeceptJS.Cookie | [Array][8]<CodeceptJS.Cookie>)** a cookie object or array of cookie objects.
 
 Returns **[Promise][4]<void>**&#x20;
+
+### startRecordingTraffic
+
+Starts recording network traffic via CDP's `Network.requestWillBeSent`/`responseReceived`
+events, in the same shape (`{url, method, requestHeaders, requestPostData, response}` per
+request, `response` a promise of `{url(), status(), statusText(), body()}`) the shared
+`lib/helper/network` actions expect from Puppeteer/Playwright. The CDP listeners are
+installed once (lazily) and left in place afterwards, since `CDPConnection` has no listener
+removal and `this.cdp` is reused across tests; they filter by `this.sessionId`, so only the
+currently active test/page's requests are recorded.
+
+```js
+I.startRecordingTraffic();
+```
+
+Returns **[Promise][4]<void>**&#x20;
+
+### stopRecordingTraffic
+
+Stops recording network traffic started by `startRecordingTraffic`. Already-recorded requests
+in `this.requests` are kept; only new requests stop being appended.
+
+```js
+I.stopRecordingTraffic();
+```
+
+Returns **void**&#x20;
 
 ### type
 
@@ -1366,7 +1633,7 @@ I.uncheckOption('agree', '//form');
 #### Parameters
 
 *   `field` **([string][1] | [object][3])** checkbox located by label | name | CSS | XPath | strict locator.
-*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator (currently ignored by this helper). 
+*   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **[Promise][4]<void>**&#x20;
 
@@ -1570,3 +1837,5 @@ Returns **[Promise][4]<void>**&#x20;
 [7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
 [8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
