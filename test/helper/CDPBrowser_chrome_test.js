@@ -65,6 +65,15 @@ describe('CDPBrowser (against Chrome)', function () {
     expect(I.capabilities.xpath).to.equal('native')
   })
 
+  it('amOnPage does not pile extra latency on top of a JS-heavy page (regression guard)', async () => {
+    const start = Date.now()
+    await I.amOnPage('/view/js_heavy.php')
+    const candidates = I._candidates('a')
+    await I._run(candidates, 'count')
+    const elapsed = Date.now() - start
+    expect(elapsed).to.be.below(4000, `amOnPage + first action took ${elapsed}ms against a page with ~1.5s of post-load isolate activity`)
+  })
+
   it('resolves relative and absolute urls', async () => {
     await I.amOnPage('/info')
     expect(await I.grabCurrentUrl()).to.include('/info')

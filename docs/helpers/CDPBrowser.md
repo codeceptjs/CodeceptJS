@@ -54,6 +54,7 @@ Type: [object][3]
 *   `waitForAction` **[number][7]?** how long to wait in milliseconds after click, type, or other interactions, mirroring the pacing pause other browser helpers apply between actions.
 *   `pollInterval` **[number][7]?** interval in milliseconds between retries while polling for a condition (e.g. page ready state, `waitFor*`). Distinct from `waitForAction`.
 *   `getPageTimeout` **[number][7]?** maximum time in seconds to wait for a page to finish loading after navigation or reload; also used as the CDP command timeout (in ms, x1000).
+*   `waitForNavigation` **[string][1]?** when to consider a navigation finished: `load`, `domcontentloaded`, or `networkidle`. Mirrors the Puppeteer helper's option name. `networkidle` waits for the CDP `networkIdle` lifecycle event, which on a busy page can lag `load` by a second or more — only opt in if the extra wait is actually needed.
 
 
 
@@ -87,7 +88,9 @@ used to guard visibility-dependent assertions that cannot be evaluated without o
 Hook executed before each test. Ensures a live `CDPConnection` exists (connecting lazily on
 first use, and reconnecting if a previous connection was closed), then creates a fresh
 `about:blank` target and attaches to it with `Target.attachToTarget`, storing `this.targetId`
-and `this.sessionId`. `Page` and `Runtime` domains are enabled on the new session.
+and `this.sessionId`. `Page` and `Runtime` domains are enabled on the new session, and engine
+capabilities are probed here (against `about:blank`, uncontended) rather than only lazily on
+the first real page — see `_probeCapabilities`.
 
 ### _candidates
 
@@ -255,12 +258,23 @@ Returns **[Promise][4]<any>** the truthy value returned by `fn`.
 
 ### _probeCapabilities
 
-Probes and caches capabilities that depend on the actual browser environment (currently
-`capabilities.layout`, detected via `getComputedStyle(document.documentElement).display`, and
-`capabilities.screenshot`, inferred from `capabilities.layout` when not already known).
-Already-known capabilities (pre-seeded through `options.capabilities`, or probed on a prior
-page) are never re-probed. When `options.input` is `'auto'`, resolves it to `'cdp'` for a real
-layout engine or `'synthetic'` otherwise.
+Probes and caches capabilities that depend on the actual browser *engine* rather than any
+particular page's content: `capabilities.layout` (via `getComputedStyle`), `capabilities.screenshot`
+(inferred from `layout`), `capabilities.xpath` (via `_needsXPathPolyfill`), and
+`capabilities.innerText` (via `_needsVisibleTextFallback`). Already-known capabilities
+(pre-seeded through `options.capabilities`, or probed earlier) are never re-probed — so, across
+a whole run, this issues a handful of `_evaluate` calls exactly once and is a no-op afterward.
+
+Called from `_before`, against the fresh `about:blank` target created there, specifically so
+these probes run before any real navigation — measured directly (a full stall ledger against
+`github.com`) that running them on the first *real* page instead can cost seconds each, since
+every one is an `_evaluate` competing with that page's own JavaScript for the V8 isolate.
+`about:blank` has no such competition. Also called (cheaply, already cached by then) from
+`amOnPage`, so a helper that skips `_before` for some reason still probes correctly.
+
+The `xpath`/`innerText` probes determine *whether* their respective fallback is needed; they
+do not install anything — injection stays deferred to `_ensureClient`'s reactive install and
+`_textSource`'s own read, matching `amOnPage` no longer eagerly installing the client.
 
 ### _resolveEndpoint
 
@@ -385,11 +399,11 @@ Returns **[Promise][4]<void>**&#x20;
 
 ### _waitForLoadEvent
 
-Starts waiting for a `Page.lifecycleEvent` named `load` for the given `loaderId` on the current
-session. `loaderId` (from the `Page.navigate` response) discriminates the awaited navigation
-from any other in-flight or stale lifecycle events (e.g. the `about:blank` target created in
-`_before`), which is essential since Chrome emits the target's initial `about:blank` lifecycle
-sequence asynchronously, sometimes after this listener is already installed.
+Starts waiting for a `Page.lifecycleEvent` named `eventName` for the given `loaderId` on the
+current session. `loaderId` (from the `Page.navigate` response) discriminates the awaited
+navigation from any other in-flight or stale lifecycle events (e.g. the `about:blank` target
+created in `_before`), which is essential since Chrome emits the target's initial `about:blank`
+lifecycle sequence asynchronously, sometimes after this listener is already installed.
 
 Returns a `{promise, cancel}` pair rather than a bare promise: `_waitForPageLoad` races this
 against a readyState poll, and whichever side loses must be actively torn down (not just have
@@ -399,21 +413,27 @@ for the full timeout on every single navigation, for no purpose.
 #### Parameters
 
 *   `loaderId` **[string][1]** the loader id of the navigation to wait for, from `Page.navigate`'s response.
+*   `eventName` **[string][1]** the `Page.lifecycleEvent` name to wait for (e.g. `load`, `DOMContentLoaded`, `networkIdle`).
 *   `timeoutSec` **[number][7]** maximum time to wait, in seconds.
 
 Returns **{promise: [Promise][4]<void>, cancel: [function][6]}**&#x20;
 
 ### _waitForPageLoad
 
-Waits for a page to finish loading after `Page.navigate`/`Page.reload`. Races the push-based
-`Page.lifecycleEvent` `load` signal (matched by `loaderId`) against polling
-`document.readyState === 'complete'` (via `_poll`), so whichever settles a navigation first
-wins — the lifecycle event on engines that support it (both bounded by the same
-`options.getPageTimeout`, so an engine that never emits it costs no more than the poll alone
-would have). No `loaderId` (e.g. from `Page.reload`, which returns none) skips straight to the
-poll.
+Waits for a page to finish loading after `Page.navigate`/`Page.reload`, per `options.waitForNavigation`.
 
-Whichever side loses the race is actively cancelled, not merely abandoned — an abandoned poll
+Purely event-driven for the first `PAGE_LOAD_GRACE_MS`: only the push-based
+`Page.lifecycleEvent` signal (matched by `loaderId`) is awaited, issuing zero `_evaluate` calls
+— this matters because an `_evaluate` sent while the page's own JavaScript is still busy (e.g.
+a real-world page doing post-load hydration/analytics work) can queue behind it for hundreds of
+ms to multiple seconds, measured directly against a JS-heavy page. Only if the grace window
+elapses without the event (an engine that doesn't emit it, or a genuinely slow navigation) does
+the `document.readyState` poll (via `_poll`) start, racing the still-pending lifecycle wait —
+both bounded by the same `options.getPageTimeout`, so a lifecycle-less engine costs at most
+`PAGE_LOAD_GRACE_MS` more than the poll alone would have, never double the timeout. No
+`loaderId` (e.g. from `Page.reload`, which returns none) skips straight to the poll.
+
+Whichever side ultimately loses is actively cancelled, not merely abandoned — an abandoned poll
 or lifecycle wait would otherwise keep running (issuing readyState `_evaluate` calls every
 `pollInterval`, or holding a `_pageLoadWaiters` entry) for up to the full timeout on every
 navigation, competing for the same CDP connection with real work.
@@ -458,9 +478,17 @@ I.amOnPage('/login'); // opens a login page
 ```
 
 Navigates via `Page.navigate`, then waits (up to `options.getPageTimeout` seconds) for the page
-to finish loading, preferring the push-based `Page.lifecycleEvent` `load` signal over polling
-`document.readyState`. Once loaded, capabilities are (re-)probed and the in-page client is
-(re-)installed, since navigation discards any previously injected script.
+to finish loading, preferring the push-based `Page.lifecycleEvent` signal (per
+`options.waitForNavigation`) over polling `document.readyState`. Capabilities are (re-)probed
+(a no-op after the first page, since they're cached for the helper's lifetime).
+
+The in-page client is deliberately *not* eagerly (re-)installed here — navigation discards any
+previously injected script, but installing it is deferred to the first actual action after
+this call, via `_runSelected`'s sentinel-and-retry. This keeps `amOnPage` itself down to the
+navigate command plus the push-based wait: no `_evaluate` call is issued on this hot path,
+which matters most right when the page's own JavaScript may still be busy (measured directly:
+an `_evaluate` sent in that window can queue behind it for hundreds of ms to multiple seconds
+on a JS-heavy real-world page, regardless of how small the evaluated expression is).
 
 #### Parameters
 
