@@ -190,7 +190,10 @@ loud, actionable error. Sets `this.options.endpoint` as a side effect.
 ### _waitForServer
 
 Polls `http://127.0.0.1:<port>/json/version` until `obscura serve` responds, `this.serverError`
-is set by the spawned process' `error` event, or `options.serverStartTimeout` elapses.
+is set by the spawned process' `error` event, or `options.serverStartTimeout` elapses. The
+process typically comes up within tens of milliseconds — a 20ms retry interval (down from a
+previous 200ms) keeps the wasted tail after the server is actually ready small, since this cost
+is paid once per run and counts directly toward real-world startup latency.
 
 [1]: https://github.com/h4ckf0r0day/obscura
 

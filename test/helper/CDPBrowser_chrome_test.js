@@ -33,7 +33,7 @@ describe('CDPBrowser (against Chrome)', function () {
     }
     chrome = spawn(puppeteer.executablePath(), ['--headless=new', '--remote-debugging-port=9333', '--no-sandbox', '--disable-gpu', 'about:blank'], { stdio: 'ignore' })
     await new Promise(r => setTimeout(r, 2000))
-    I = new CDPBrowser({ url: siteUrl, endpoint: 'http://127.0.0.1:9333', waitForAction: 300 })
+    I = new CDPBrowser({ url: siteUrl, endpoint: 'http://127.0.0.1:9333' })
     await I._init()
     webApiTests.init({ I, siteUrl })
   })
