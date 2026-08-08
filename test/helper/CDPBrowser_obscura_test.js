@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { execSync } from 'child_process'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import { expect } from 'chai'
@@ -20,36 +19,11 @@ const isUp = url =>
     () => false,
   )
 
-const findObscuraBinary = () => {
-  if (process.env.OBSCURA_PATH) return process.env.OBSCURA_PATH
-  try {
-    return execSync('which obscura', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() || null
-  } catch (e) {
-    return null
-  }
-}
-
-describe('Obscura helper (against obscura serve on :9222)', function () {
+describe('Obscura helper (self-managed obscura serve)', function () {
   this.timeout(35000)
 
   before(async function () {
     global.codecept_dir = path.join(__dirname, '/../data')
-
-    let binaryPath = null
-    if (!(await isUp('http://127.0.0.1:9222/json/version'))) {
-      binaryPath = findObscuraBinary()
-      if (!binaryPath) {
-        const msg = [
-          'Obscura is not running on 127.0.0.1:9222 and no obscura binary was found — ALL Obscura tests will be skipped.',
-          'Start it:    obscura serve --port 9222 --allow-private-network',
-          'Or install:  https://github.com/h4ckf0r0day/obscura/releases (put on PATH or set OBSCURA_PATH=/path/to/obscura)',
-        ].join('\n  ')
-        console.log(`\n  ⚠ ${msg}\n`)
-        if (!process.env.CI) this.skip()
-        throw new Error(msg)
-      }
-      console.log(`\n  ℹ Obscura not running on :9222 — auto-spawning from ${binaryPath}\n`)
-    }
 
     if (!(await isUp(`${siteUrl}/info`))) {
       const msg = `Test app is not running on ${siteUrl} — ALL Obscura tests will be skipped.\n  Start it:    php -S 127.0.0.1:8000 -t test/data/app`
@@ -58,8 +32,14 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
       throw new Error(msg)
     }
 
-    I = new Obscura({ url: siteUrl, ...(binaryPath ? { binaryPath } : {}) })
-    await I._init()
+    I = new Obscura({ url: siteUrl })
+    try {
+      await I._connect()
+    } catch (err) {
+      console.log(`\n  ⚠ ${err.message}\n`)
+      if (!process.env.CI) this.skip()
+      throw err
+    }
     webApiTests.init({ I, siteUrl })
   })
 

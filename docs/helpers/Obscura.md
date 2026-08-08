@@ -19,36 +19,45 @@ given binary is in — `CDPBrowser._probeCapabilities` detects `layout`/`screens
 runtime, so the same helper works against either.
 
 This helper is a thin `CDPBrowser` subclass: it changes nothing about how locating or acting on
-elements works, it only pins the config presets Obscura requires and, optionally, spawns/tears
-down the `obscura serve` process around the test run.
+elements works, it only pins the config presets Obscura requires and manages the `obscura serve`
+process lifecycle, the same way Playwright manages its own browser process.
+
+## Modes
+
+*   **ATTACH** — `endpoint` is set explicitly in the config. The helper only connects to it; it
+    never spawns or kills anything, no matter what `binaryPath`/`port` are set to.
+*   **SELF-LAUNCH** — `endpoint` is unset and a binary can be resolved, in order: `binaryPath` in
+    the config, then the `OBSCURA_PATH` environment variable, then `obscura` on `PATH`. The helper
+    spawns `obscura serve --port <port> --allow-private-network` (`port` from the config, or a
+    free port picked automatically), waits for it to answer, connects, and kills it in
+    `_finishTest`.
+*   **COURTESY-ATTACH** — `endpoint` is unset and no binary can be resolved, but something already
+    answers `http://127.0.0.1:9222/json/version` (e.g. `obscura serve` started by hand, or by CI
+    before this process ever ran). The helper attaches to it and never kills it — it isn't the
+    helper's process to kill. If neither a binary nor a running server on :9222 can be found, the
+    helper throws a loud, actionable error.
 
 ## Install
 
-Download a release binary and put it on your `PATH` (or point `binaryPath` at it directly):
+Download a release binary and put it on your `PATH` (or point `binaryPath`/`OBSCURA_PATH` at
+it directly) and the helper launches and tears it down for you automatically:
 
 ```sh
 curl -sL https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.0/obscura-x86_64-linux.tar.gz | tar xz
 ```
 
-Then either let this helper manage the process (set `binaryPath`), or start it yourself before
-the test run:
-
-```sh
-obscura serve --port 9222 --allow-private-network
-```
-
-`--allow-private-network` is required to reach apps running on `localhost`/private IPs (e.g. a
-dev server on `127.0.0.1:8000`) — Obscura blocks private-network requests by default.
+`--allow-private-network` is always passed by this helper (it's required to reach apps running
+on `localhost`/private IPs, e.g. a dev server on `127.0.0.1:8000` — Obscura blocks
+private-network requests by default).
 
 ## Config presets
 
 These are set automatically and only need overriding for unusual setups:
 
-| option          | value                                    | why                                                                                                                                                                                                                                          |
-| --------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `endpoint`      | `ws://127.0.0.1:<port>/devtools/browser` | Obscura's fixed CDP endpoint                                                                                                                                                                                                                 |
-| `input`         | `synthetic`                              | coordinate-click navigation is unreliable over CDP on Obscura even on rendering builds (no `frameNavigated` event, stale `page.url()`); `click` always takes the `forceClick` path — on Obscura, `click` and `forceClick` are the same thing |
-| `xpathPolyfill` | `auto`                                   | probed per binary/page: Obscura's native `document.evaluate` still doesn't support attribute selection or `not()`, so the polyfill is used until that lands                                                                                  |
+| option          | value       | why                                                                                                                                                                                                                                          |
+| --------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `input`         | `synthetic` | coordinate-click navigation is unreliable over CDP on Obscura even on rendering builds (no `frameNavigated` event, stale `page.url()`); `click` always takes the `forceClick` path — on Obscura, `click` and `forceClick` are the same thing |
+| `xpathPolyfill` | `auto`      | probed per binary/page: Obscura's native `document.evaluate` still doesn't support attribute selection or `not()`, so the polyfill is used until that lands                                                                                  |
 
 `capabilities.layout`/`capabilities.screenshot`/`capabilities.xpath` are intentionally left
 unset here — `CDPBrowser._probeCapabilities` detects them at runtime from the actual binary
@@ -74,17 +83,19 @@ Set them explicitly in your own config to skip probing or to force a mode.
 This helper should be configured in codecept.conf.js. It accepts everything `CDPBrowser`
 accepts (see its config table), plus:
 
-Type: [object][2]
+Type: [object][6]
 
 ### Properties
 
-*   `binaryPath` **[string][3]?** path to the `obscura` executable. When set, `_connect` spawns
-    `obscura serve --port <port> --allow-private-network` before connecting and kills that process
-    in `_finishTest`. When unset, Obscura is assumed to already be running (e.g. started by hand, or
-    by CI) and this helper only connects to it.
-*   `port` **[number][4]?** port `obscura serve` listens on, and the port used to build the
-    default `endpoint`.
-*   `serverStartTimeout` **[number][4]?** milliseconds to wait for a spawned `obscura serve`
+*   `endpoint` **[string][4]?** explicit CDP endpoint. Setting this switches the helper to ATTACH
+    mode: it only connects, and never spawns or kills a process, no matter what else is configured.
+    Leave it unset for SELF-MANAGED mode (see below).
+*   `binaryPath` **[string][4]?** path to the `obscura` executable, used in SELF-MANAGED mode
+    (`endpoint` unset). Checked before `OBSCURA_PATH` and `PATH`.
+*   `port` **[number][3]?** port `obscura serve` listens on, in SELF-MANAGED mode. When unset, a
+    free port is picked automatically, which is what makes `run-workers` collision-free — every
+    worker gets its own instance on its own port with zero config.
+*   `serverStartTimeout` **[number][3]?** milliseconds to wait for a spawned `obscura serve`
     to answer `/json/version` before `_connect` gives up.
 
 
@@ -92,12 +103,25 @@ Type: [object][2]
 ## Example
 
 ```js
-// inside codecept.conf.js
+// inside codecept.conf.js — SELF-LAUNCH mode (recommended): the helper finds/starts/stops
+// obscura serve on its own, on a free port. Ideal for run-workers: every worker gets its own
+// instance with no config.
 {
   helpers: {
     Obscura: {
       url: 'http://localhost',
-      binaryPath: '/usr/local/bin/obscura',
+    }
+  }
+}
+```
+
+```js
+// ATTACH mode — connect to an Obscura instance you manage yourself (remote host, container, etc.)
+{
+  helpers: {
+    Obscura: {
+      url: 'http://localhost',
+      endpoint: 'http://127.0.0.1:9222',
     }
   }
 }
@@ -111,22 +135,57 @@ Type: [object][2]
 
 ### _connect
 
-Spawns `obscura serve` when `options.binaryPath` is set and no server was spawned yet, waits
-for it to accept connections, then connects as `CDPBrowser._connect` normally would.
+In ATTACH mode, connects exactly as `CDPBrowser._connect` would. In SELF-MANAGED mode,
+resolves and spawns `obscura serve` (or courtesy-attaches to an already-running one on
+:9222) exactly once via `_resolveSelfManaged`, then connects.
 
-A spawn failure (e.g. a bad `binaryPath`) is delivered asynchronously by Node as an `error`
+A spawn failure (e.g. a bad binary) is delivered asynchronously by Node as an `error`
 event; it is recorded on `this.serverError` and surfaced as a rejection from `_waitForServer`
 instead of crashing the process as an uncaught exception.
+
+### _findFreePort
+
+Picks a free TCP port on 127.0.0.1 by briefly listening on port 0 and reading back the OS-assigned
+port. Used as the SELF-LAUNCH default when `options.port` isn't explicitly set, so multiple
+`run-workers` workers never collide on the same port.
+
+Returns **[Promise][2]<[number][3]>** a free port.
 
 ### _finishTest
 
 Closes the CDP connection (via `CDPBrowser._finishTest`), then kills the `obscura serve`
-process spawned by `_connect`, if any. Runs in a `finally` so the process is always reaped
-even if closing the CDP connection throws. Sends `SIGTERM` first and waits for the process to
-exit; a process that ignores `SIGTERM` is escalated to `SIGKILL` after 5s. The promise only
-resolves once the child has actually exited (confirmed via the `exit` event, not merely once
-`SIGKILL` was sent — the kernel needs a moment to reap it), with a final safety-net timeout so
-a stuck child can never keep the event loop alive even if that confirmation is somehow lost.
+process spawned by `_connect`, if any (never runs in ATTACH or COURTESY-ATTACH mode, since
+`this.serverProcess` is only ever set in SELF-LAUNCH mode). Runs in a `finally` so the process
+is always reaped even if closing the CDP connection throws. Sends `SIGTERM` first and waits for
+the process to exit; a process that ignores `SIGTERM` is escalated to `SIGKILL` after 5s. The
+promise only resolves once the child has actually exited (confirmed via the `exit` event, not
+merely once `SIGKILL` was sent — the kernel needs a moment to reap it), with a final safety-net
+timeout so a stuck child can never keep the event loop alive even if that confirmation is
+somehow lost.
+
+### _probeUp
+
+Probes a `/json/version`-style URL with a short timeout, used for the COURTESY-ATTACH check.
+
+#### Parameters
+
+*   `url` **[string][4]**&#x20;
+
+Returns **[Promise][2]<[boolean][5]>** true if the URL answered.
+
+### _resolveBinary
+
+Resolves the `obscura` binary to spawn, in priority order: `options.binaryPath`, then the
+`OBSCURA_PATH` environment variable, then `obscura` on `PATH` (via `which`).
+
+Returns **([string][4] | null)** an absolute or relative path to the binary, or null if none resolved.
+
+### _resolveSelfManaged
+
+Resolves how to reach Obscura when no explicit `endpoint` was configured, trying, in order:
+spawn a binary (`binaryPath` config, then `OBSCURA_PATH` env, then `obscura` on `PATH`),
+courtesy-attach to `http://127.0.0.1:9222` if something already answers there, or throw a
+loud, actionable error. Sets `this.options.endpoint` as a side effect.
 
 ### _waitForServer
 
@@ -135,8 +194,12 @@ is set by the spawned process' `error` event, or `options.serverStartTimeout` el
 
 [1]: https://github.com/h4ckf0r0day/obscura
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object

@@ -57,12 +57,12 @@ jobs:
           echo "${OBSCURA_SHA256}  $HOME/obscura-bin/obscura.tar.gz" | sha256sum -c -
           tar xzf ~/obscura-bin/obscura.tar.gz -C ~/obscura-bin
           ~/obscura-bin/obscura --version
-      - name: start test server and obscura
+      - name: start test server
         run: |
           php -S 127.0.0.1:8000 -t test/data/app &
-          ~/obscura-bin/obscura serve --port 9222 --allow-private-network &
-          sleep 2
-          curl -sf http://127.0.0.1:9222/json/version
+          sleep 1
           curl -sf http://127.0.0.1:8000/info > /dev/null
       - name: run obscura helper tests
-        run: npm run test:unit:webbapi:obscura
+        run: |
+          export OBSCURA_PATH="$HOME/obscura-bin/obscura"
+          npm run test:unit:webbapi:obscura

@@ -80,7 +80,6 @@ headless Chromium.
     helpers: {
       Obscura: {
         url: 'http://localhost:3000',
-        binaryPath: '/usr/local/bin/obscura',
       },
     }
 
@@ -100,6 +99,41 @@ Any other CDP endpoint works through the base helper:
         endpoint: 'http://127.0.0.1:9222',
       },
     }
+
+### Obscura's three connection modes
+
+Obscura manages its own `obscura serve` process, the same way Playwright manages its own browser
+process — there is nothing to start by hand in the common case:
+
+- **Self-launch (default)** — leave `endpoint` unset. The helper resolves a binary
+  (`binaryPath` in the config, then `OBSCURA_PATH`, then `obscura` on `PATH`), spawns
+  `obscura serve` on a free port, and kills it when the run ends. Not setting `port` is
+  intentional: a free port is picked automatically, which is what makes `run-workers`
+  collision-free — every worker gets its own instance without any config.
+
+      helpers: {
+        Obscura: {
+          url: 'http://localhost:3000',
+          binaryPath: '/usr/local/bin/obscura', // optional override, like Playwright's executablePath
+        },
+      }
+
+- **Attach** — set `endpoint` explicitly to connect to an Obscura instance you manage yourself
+  (already running locally, in a container, or on a remote host). The helper only connects; it
+  never spawns or kills anything.
+
+      helpers: {
+        Obscura: {
+          url: 'http://localhost:3000',
+          endpoint: 'http://127.0.0.1:9222',
+        },
+      }
+
+- **Courtesy-attach** — only relevant when `endpoint` is unset and no binary can be resolved
+  either. If something is already answering on the conventional `http://127.0.0.1:9222`, the
+  helper attaches to it (and, again, never kills it) instead of failing outright. This exists so
+  that "start Obscura by hand and just run the tests" keeps working without any config, while
+  self-launch is still the default for everyone else.
 
 ## Capability matrix
 
