@@ -1620,7 +1620,7 @@ export function tests() {
       if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/example4')
       await I.seeElement('#navbar-collapse-menu')
-      I._withinBegin('#register')
+      await I._withinBegin('#register')
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Toggle navigation'))
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
@@ -1638,7 +1638,7 @@ export function tests() {
       await I.seeInField('Hasło', '12345')
       await I.checkOption('terms')
       await I.seeCheckboxIsChecked('terms')
-      I._withinBegin({ css: '.form-group' })
+      await I._withinBegin({ css: '.form-group' })
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Hasło'))
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
@@ -1661,7 +1661,7 @@ export function tests() {
     it('should execute within block 2', async () => {
       await I.amOnPage('/form/example4')
       await I.fillField('Hasło', '12345')
-      I._withinBegin({ xpath: '//div[@class="form-group"][2]' })
+      await I._withinBegin({ xpath: '//div[@class="form-group"][2]' })
         .then(() => I.dontSee('E-Mail'))
         .then(() => I.see('Hasło'))
         .then(() => I.grabTextFrom('label'))
