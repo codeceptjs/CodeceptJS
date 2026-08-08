@@ -1305,10 +1305,6 @@ export function tests() {
   })
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie, #waitForCookie', () => {
-    beforeEach(function () {
-      // Skip in CI to avoid timeouts from external URLs
-      if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
-    })
     it('should do all cookie stuff', async function () {
       await I.amOnPage('/')
       await I.setCookie({
