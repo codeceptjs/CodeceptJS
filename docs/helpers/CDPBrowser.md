@@ -49,7 +49,7 @@ Type: [object][3]
 *   `headers` **[object][3]?** headers sent with the endpoint resolution request and the WebSocket handshake. Useful for authenticated remote browser providers.
 *   `input` **[string][1]?** how synthetic user actions (click, fill, etc.) are dispatched by helpers built on top of this class. `auto` picks `cdp` when a real layout engine is detected and `synthetic` otherwise; can be pinned to `cdp` or `synthetic`.
 *   `xpathPolyfill` **([string][1] | [boolean][5])?** whether to inject the bundled XPath polyfill before installing the in-page client. `auto` probes the page and only injects when `document.evaluate` is unavailable or broken; `true`/`false` force the behavior.
-*   `capabilities` **[object][3]?** pre-seed detected browser capabilities (`layout`, `xpath`, `screenshot`) to skip runtime probing. Values set here are never overwritten by `_probeCapabilities`/`_ensureClient`.
+*   `capabilities` **[object][3]?** pre-seed detected browser capabilities (`layout`, `xpath`, `screenshot`, `innerText`) to skip runtime probing. Values set here are never overwritten by `_probeCapabilities`/`_ensureClient`.
 *   `waitForTimeout` **[number][7]?** default wait* timeout in seconds, used by helpers built on top of this class.
 *   `waitForAction` **[number][7]?** poll interval in milliseconds used while waiting for a condition (e.g. page ready state).
 *   `getPageTimeout` **[number][7]?** maximum time in seconds to wait for a page to reach `readyState === 'complete'` after navigation or reload; also used as the CDP command timeout (in ms, x1000).
@@ -102,6 +102,17 @@ raw text as a CSS selector.
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator, or plain fuzzy text.
 *   `kind` **(`"element"` | `"clickable"` | `"field"` | `"checkable"`)** matching strategy to use when `locator` is fuzzy. 
 
+### _candidatesLabel
+
+A short, human-readable label built from `candidates`, used in `_run`'s elementIndex/strict
+error messages when no locator string is otherwise available.
+
+#### Parameters
+
+*   `candidates` &#x20;
+
+Returns **[string][1]**&#x20;
+
 ### _connect
 
 Resolves the CDP endpoint and opens the underlying `CDPConnection`, storing it on `this.cdp`.
@@ -142,13 +153,29 @@ Returns **[Promise][4]<[string][1]>** the pathname of the current page.
 No-op hook kept for interface parity with other browser helpers. Connecting to the CDP
 endpoint is deferred to `_before`, since a fresh target/session is opened per test.
 
+### _needsVisibleTextFallback
+
+Determines whether `see`/`dontSee`/`waitForText` should read whole-page text through the
+client's own visibility-aware `visibleText()` walker instead of the native
+`document.body.innerText`. Probes once per page by appending a `display:none` element and a
+`<script>` element, each with distinguishing text, and checking that native `innerText`
+excludes both — some engines return an `innerText` that does not honor computed visibility or
+exclude script/style content, even when `getComputedStyle`/layout are otherwise reliable. The
+result is cached on `capabilities.innerText` (`'native'` or `'computed'`).
+
+Returns **[Promise][4]<[boolean][5]>** `true` if the `visibleText()` fallback should be used.
+
 ### _needsXPathPolyfill
 
 Determines whether the bundled XPath polyfill must be injected before the in-page client is
 installed. Honors an explicit `options.xpathPolyfill` boolean; otherwise reuses a previously
-probed `capabilities.xpath`, or probes the page's native `document.evaluate` by resolving a
-throwaway XPath expression and caches the result on `capabilities.xpath` (`'native'` or
-`'polyfill'`).
+probed `capabilities.xpath`, or probes the page's native `document.evaluate`. The probe appends
+two throwaway elements distinguished only by text content and asserts that a text-value XPath
+predicate (`normalize-space(string(.))=...`, the basis of every fuzzy/clickable locator) resolves
+to exactly the matching one — merely checking that `document.evaluate` runs without throwing is
+not enough, since some engines execute a text-value predicate without actually filtering by it,
+silently returning every candidate node instead of none or one. The result is cached on
+`capabilities.xpath` (`'native'` or `'polyfill'`).
 
 Returns **[Promise][4]<[boolean][5]>** `true` if the polyfill should be injected.
 
@@ -172,7 +199,8 @@ Returns **[Promise][4]<any>** the truthy value returned by `fn`.
 ### _probeCapabilities
 
 Probes and caches capabilities that depend on the actual browser environment (currently
-`capabilities.layout`, detected via `getComputedStyle(document.documentElement).display`).
+`capabilities.layout`, detected via `getComputedStyle(document.documentElement).display`, and
+`capabilities.screenshot`, inferred from `capabilities.layout` when not already known).
 Already-known capabilities (pre-seeded through `options.capabilities`, or probed on a prior
 page) are never re-probed. When `options.input` is `'auto'`, resolves it to `'cdp'` for a real
 layout engine or `'synthetic'` otherwise.
@@ -215,6 +243,30 @@ Shared implementation for `seeInField`/`dontSeeInField`.
 
 Returns **[Promise][4]<void>**&#x20;
 
+### _selectionDescriptor
+
+Builds the `{index, strict}` element-selection descriptor from the current step's options
+(`store.currentStep.opts`) and `options.strict`, mirroring the semantics of
+`lib/helper/extras/elementSelection.js` (used by Puppeteer/WebDriver): a per-step
+`elementIndex` (numeric, or the `'first'`/`'last'` aliases) always takes precedence and
+disables strict mode for that step; otherwise `exact`/`strictMode` per-step options
+override `options.strict` to enable or cancel strict mode.
+
+### _textSource
+
+Resolves the text to search `see`/`dontSee`/`waitForText` against, when no explicit `context`
+locator is given. An explicit `context` is always resolved through `_run`, so it is implicitly
+scoped to the active `within` block, if any. Without a `context`, this reads the `within` root's
+text when a `within` block is active, or the whole page's text otherwise — via native
+`document.body.innerText`, or the client's `visibleText()` walker when
+`_needsVisibleTextFallback` determines native `innerText` is not trustworthy.
+
+#### Parameters
+
+*   `context` **([string][1]? | [object][3])**&#x20;
+
+Returns **[Promise][4]<[string][1]>**&#x20;
+
 ### _url
 
 Resolves a path against `options.url`. Absolute URLs (matching `scheme://`) are returned
@@ -230,6 +282,28 @@ Returns **[string][1]** the resolved, absolute URL.
 
 Waits `options.waitForAction` milliseconds after an interaction, mirroring the pacing pause
 other browser helpers apply between actions.
+
+Returns **[Promise][4]<void>**&#x20;
+
+### _withinBegin
+
+Starts a `within` block, scoping every subsequent `_run` call (and therefore every element
+lookup performed by this helper) to the descendants of the element matched by `locator`.
+Verifies the element exists (against the full document, i.e. unscoped) before narrowing.
+
+#### Parameters
+
+*   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
+
+<!---->
+
+*   Throws **ElementNotFound** if no element matches `locator`.
+
+Returns **[Promise][4]<void>**&#x20;
+
+### _withinEnd
+
+Ends the current `within` block, restoring unscoped element lookups.
 
 Returns **[Promise][4]<void>**&#x20;
 

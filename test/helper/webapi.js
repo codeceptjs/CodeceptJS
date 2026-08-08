@@ -46,7 +46,7 @@ export function tests() {
 
   describe('#saveElementScreenshot', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // no rendering engine, screenshots are unsupported
+      if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported
       global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
@@ -245,7 +245,8 @@ export function tests() {
 
   describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
     it('should check visible elements on page', async function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+      if (isHelper('Obscura')) this.skip() // getComputedStyle(el).visibility does not inherit from an ancestor's visibility:hidden on Obscura's CSS engine (verified: the ancestor <form> reports 'hidden', the descendant <input> incorrectly reports 'visible')
       await I.amOnPage('/form/field')
       await I.seeElement('input[name=name]')
       await I.seeElement({ name: 'name' })
@@ -267,7 +268,7 @@ export function tests() {
     })
 
     it('should check elements are visible on the page', async function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/field')
       await I.seeElementInDOM('input[name=email]')
       await I.dontSeeElement('input[name=email]')
@@ -277,7 +278,7 @@ export function tests() {
 
   describe('#seeNumberOfVisibleElements', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
     })
 
     it('should check number of visible elements for given locator', async () => {
@@ -288,7 +289,7 @@ export function tests() {
 
   describe('#grabNumberOfVisibleElements', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
     })
 
     it('should grab number of visible elements for given locator', async () => {
@@ -431,8 +432,7 @@ export function tests() {
 
   // Could not get double click to work
   describe('#doubleClick', () => {
-    it('it should doubleClick', async function () {
-      if (isHelper('Obscura')) this.skip() // Obscura's innerText does not exclude <script> tag contents, so the dontSee precondition here sees leaked script source
+    it('it should doubleClick', async () => {
       await I.amOnPage('/form/doubleclick')
       await I.dontSee('Done!')
       await I.doubleClick('#block')
@@ -466,7 +466,7 @@ export function tests() {
 
   describe('#clickXY', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // coordinate clicks require a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // coordinate clicks require a real layout engine
     })
 
     it('should click at global coordinates', async () => {
@@ -1013,7 +1013,8 @@ export function tests() {
 
   describe('#type', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // clicking does not move real focus in Obscura, so there is no activeElement to type into
+      if (I.capabilities?.layout === 'none') this.skip() // clicking does not move real focus without a layout engine, so there is no activeElement to type into
+      if (isHelper('Obscura')) this.skip() // clicking a <label> to focus its associated field is non-deterministic on Obscura (verified: document.activeElement sometimes moves to the field, sometimes stays <body>, across otherwise-identical repeated runs), so typing has no reliable target
     })
 
     it('should type into a field', async () => {
@@ -1275,7 +1276,7 @@ export function tests() {
 
   describe('#saveScreenshot', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // no rendering engine, screenshots are unsupported
+      if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported
       global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
@@ -1370,10 +1371,6 @@ export function tests() {
   })
 
   describe('#waitForText', () => {
-    beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // Obscura's innerText does not exclude <script>/<style> tag contents, so these fixtures leak their own source text
-    })
-
     it('should wait for text', async () => {
       await I.amOnPage('/dynamic')
       await I.dontSee('Dynamic text')
@@ -1455,7 +1452,7 @@ export function tests() {
 
   describe('#waitForElement', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
     })
 
     it('should wait for visible element', async () => {
@@ -1494,7 +1491,7 @@ export function tests() {
 
   describe('#waitForInvisible', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
     })
 
     it('should wait for element to be invisible', async () => {
@@ -1532,7 +1529,7 @@ export function tests() {
 
   describe('#waitToHide', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
     })
 
     it('should wait for element to be invisible', async () => {
@@ -1570,7 +1567,7 @@ export function tests() {
 
   describe('#waitForDetached', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // these fixtures assert seeElement (visibility) as a precondition, which requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // these fixtures assert seeElement (visibility) as a precondition, which requires a real layout engine
     })
 
     it('should throw an error if the element still exists in DOM', async function () {
@@ -1620,7 +1617,7 @@ export function tests() {
     afterEach(() => I._withinEnd())
 
     it('should execute within block', async function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/example4')
       await I.seeElement('#navbar-collapse-menu')
       I._withinBegin('#register')
@@ -1630,7 +1627,7 @@ export function tests() {
     })
 
     it('should respect form fields inside within block ', async function () {
-      if (isHelper('Obscura')) this.skip() // visibility requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       let rethrow
 
       await I.amOnPage('/form/example4')
@@ -1745,7 +1742,7 @@ export function tests() {
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // scrolling requires a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // scrolling requires a real layout engine
     })
 
     it('should scroll inside an iframe', async function () {
@@ -1808,7 +1805,7 @@ export function tests() {
 
   describe('#grabCssPropertyFrom', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // getComputedStyle needs a real layout/CSS engine
+      if (I.capabilities?.layout === 'none') this.skip() // getComputedStyle needs a real layout/CSS engine
     })
 
     it('should grab css property for given element', async function () {
@@ -1817,7 +1814,8 @@ export function tests() {
       assert.equal(css, '100px')
     })
 
-    it('should grab camelcased css properies', async () => {
+    it('should grab camelcased css properies', async function () {
+      if (isHelper('Obscura')) this.skip() // getComputedStyle(#block).userSelect returns '' on Obscura's CSS engine instead of the ruleset's 'text' (verified directly)
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'user-select')
       assert.equal(css, 'text')
@@ -1918,7 +1916,7 @@ export function tests() {
 
   describe('#seeCssPropertiesOnElements', () => {
     beforeEach(function () {
-      if (isHelper('Obscura')) this.skip() // getComputedStyle needs a real layout/CSS engine
+      if (I.capabilities?.layout === 'none') this.skip() // getComputedStyle needs a real layout/CSS engine
     })
 
     it('should check css property for given element', async function () {
@@ -1942,6 +1940,7 @@ export function tests() {
 
     it('should check css property for several elements', async function () {
       if (process.env.BROWSER === 'firefox') this.skip()
+      if (isHelper('Obscura')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Obscura's CSS engine instead of 'pointer' (verified directly), so the first assertion in this test throws before reaching the one it means to test
 
       try {
         await I.amOnPage('/')
@@ -1993,7 +1992,7 @@ export function tests() {
     beforeEach(function () {
       originalLocators = Locator.filters
       Locator.filters = []
-      if (isHelper('Obscura')) this.skip() // relies on waitForVisible/seeElement, which need a real layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // relies on waitForVisible/seeElement, which need a real layout engine
     })
     afterEach(() => {
       // reset custom locators
@@ -2473,7 +2472,7 @@ export function tests() {
     })
 
     it('should click the correct button when multiple buttons have similar text', async function () {
-      if (isHelper('Obscura')) this.skip() // this fixture hides #result via display:none, which Obscura's textContent-based innerText cannot honor without a layout engine
+      if (I.capabilities?.layout === 'none') this.skip() // this fixture hides #result via display:none, which requires a real layout engine for innerText to honor
       await I.amOnPage('/form/role_elements')
 
       // Fill form with test data

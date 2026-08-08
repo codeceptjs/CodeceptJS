@@ -67,10 +67,10 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
   beforeEach(async () => I._before())
   afterEach(async () => I._after())
 
-  it('presets synthetic input and polyfilled xpath', async () => {
+  it('presets synthetic input, detects layout capability per binary', async () => {
     await I.amOnPage('/')
     expect(I.options.input).to.equal('synthetic')
-    expect(I.capabilities.layout).to.equal('none')
+    expect(['real', 'none']).to.include(I.capabilities.layout)
   })
 
   it('clicks by link text (synthetic) and asserts after navigation', async () => {
@@ -80,8 +80,9 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
     await I.see('Information')
   })
 
-  it('rejects visibility assertions with a clear message', async () => {
+  it('rejects visibility assertions with a clear message when there is no layout engine', async function () {
     await I.amOnPage('/')
+    if (I.capabilities.layout !== 'none') this.skip() // this binary has a real layout engine; seeElement works instead of throwing
     try {
       await I.seeElement('#area1')
       throw new Error('should have thrown')
@@ -90,8 +91,9 @@ describe('Obscura helper (against obscura serve on :9222)', function () {
     }
   })
 
-  it('rejects screenshots with a clear message', async () => {
+  it('rejects screenshots with a clear message when there is no rendering engine', async function () {
     await I.amOnPage('/')
+    if (I.capabilities.screenshot !== false) this.skip() // this binary can render; saveScreenshot works instead of throwing
     try {
       await I.saveScreenshot('nope.png')
       throw new Error('should have thrown')

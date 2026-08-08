@@ -10,8 +10,10 @@ But a new class of lightweight, agent-era browsers has appeared, and CodeceptJS 
 through the `CDPBrowser` helper family:
 
 - **[Obscura](https://github.com/h4ckf0r0day/obscura)** — an open-source Rust browser with a real
-  V8 engine but no rendering. A single 70 MB binary, ~30 MB RAM per instance, page loads in
-  tens of milliseconds.
+  V8 engine. From v0.2.0, the default release build also renders — real layout, computed styles,
+  and screenshots — with `-no-render` builds still available for pure-speed, nothing-painted
+  scraping mode. A single 70 MB binary, ~30 MB RAM per instance, page loads in tens of
+  milliseconds.
 - **[Kitesurf](https://blog.cloudflare.com/kitesurf/)** — Cloudflare's browser that runs in V8
   isolates on Cloudflare Workers, with a real layout and rendering pipeline. Cloud-only,
   free in beta, planned to be open-sourced.
@@ -61,9 +63,13 @@ headless Chromium.
 
 ## When to stay with Playwright
 
-- Anything visual: screenshots, visual regression, PDF (neither helper exposes PDF output).
-- Visibility semantics: on Obscura every element reports as visible — `seeElement`/`dontSeeElement`
-  throw and point you to `seeElementInDOM`.
+- Anything visual: visual regression, PDF (neither helper exposes PDF output). Obscura's v0.2.0+
+  rendering/CSS engine is new and independently implemented — expect edge cases and gaps versus a
+  real browser, especially around inherited properties and less common computed-style values.
+- Visibility semantics on `-no-render` Obscura builds (and v0.1.x): every element reports as
+  visible — `seeElement`/`dontSeeElement` throw and point you to `seeElementInDOM`. On v0.2.0+
+  default builds, `CDPBrowser` detects the real layout engine per binary and visibility works
+  normally.
 - Complex input: drag-and-drop, hover chains, file uploads, iframes, multi-tab, service workers.
 - Cross-browser coverage (Firefox, WebKit).
 - Testing local apps with Kitesurf: the cloud browser must reach your app; use a tunnel
@@ -100,9 +106,9 @@ Any other CDP endpoint works through the base helper:
 | | Playwright | Obscura | Kitesurf |
 |---|---|---|---|
 | Real JS execution (V8) | yes | yes | yes |
-| Layout / getBoundingClientRect | yes | synthetic | yes |
-| Screenshots | yes | no | yes |
-| Visibility assertions | yes | no (DOM-presence only) | yes |
+| Layout / getBoundingClientRect | yes | yes (v0.2.0+ default builds); synthetic on `-no-render`/v0.1.x | yes |
+| Screenshots | yes | yes (v0.2.0+ default builds); no on `-no-render`/v0.1.x | yes |
+| Visibility assertions | yes | yes (v0.2.0+ default builds); no, DOM-presence only, on `-no-render`/v0.1.x | yes |
 | Startup cost | seconds + ~300 MB install | instant, 70 MB binary | ~1 s, zero local |
 | Parallel scale | machine-bound | machine-bound (light) | near-unlimited (cloud) |
 | Where it runs | local/grid | local | Cloudflare only |
