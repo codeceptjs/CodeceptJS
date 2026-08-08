@@ -50,10 +50,10 @@ Type: [object][3]
 *   `input` **[string][1]?** how synthetic user actions (click, fill, etc.) are dispatched by helpers built on top of this class. `auto` picks `cdp` when a real layout engine is detected and `synthetic` otherwise; can be pinned to `cdp` or `synthetic`.
 *   `xpathPolyfill` **([string][1] | [boolean][5])?** whether to inject the bundled XPath polyfill before installing the in-page client. `auto` probes the page and only injects when `document.evaluate` is unavailable or broken; `true`/`false` force the behavior.
 *   `capabilities` **[object][3]?** pre-seed detected browser capabilities (`layout`, `xpath`, `screenshot`, `innerText`) to skip runtime probing. Values set here are never overwritten by `_probeCapabilities`/`_ensureClient`.
-*   `waitForTimeout` **[number][7]?** default wait* timeout in seconds, used by helpers built on top of this class.
-*   `waitForAction` **[number][7]?** how long to wait in milliseconds after click, type, or other interactions, mirroring the pacing pause other browser helpers apply between actions.
-*   `pollInterval` **[number][7]?** interval in milliseconds between retries while polling for a condition (e.g. page ready state, `waitFor*`). Distinct from `waitForAction`.
-*   `getPageTimeout` **[number][7]?** maximum time in seconds to wait for a page to finish loading after navigation or reload; also used as the CDP command timeout (in ms, x1000).
+*   `waitForTimeout` **[number][8]?** default wait* timeout in seconds, used by helpers built on top of this class.
+*   `waitForAction` **[number][8]?** how long to wait in milliseconds after click, type, or other interactions, mirroring the pacing pause other browser helpers apply between actions.
+*   `pollInterval` **[number][8]?** interval in milliseconds between retries while polling for a condition (e.g. page ready state, `waitFor*`). Distinct from `waitForAction`.
+*   `getPageTimeout` **[number][8]?** maximum time in seconds to wait for a page to finish loading after navigation or reload; also used as the CDP command timeout (in ms, x1000).
 *   `waitForNavigation` **[string][1]?** when to consider a navigation finished: `load`, `domcontentloaded`, or `networkidle`. Mirrors the Puppeteer helper's option name. `networkidle` waits for the CDP `networkIdle` lifecycle event, which on a busy page can lag `load` by a second or more — only opt in if the extra wait is actually needed.
 
 
@@ -121,6 +121,35 @@ error messages when no locator string is otherwise available.
 
 Returns **[string][1]**&#x20;
 
+### _candidatesNeedXPath
+
+Whether any candidate strategy — in `candidates` itself, or in any of the `within` scoping
+`layers` searched before it — is an `xpath` locator. Used to decide, before the client is even
+installed, whether the XPath polyfill needs to be bundled into that install or can be deferred.
+
+#### Parameters
+
+*   `candidates` **[Array][4]<{type: [string][1], value: [string][1]}>?**&#x20;
+*   `layers` **[Array][4]<[Array][4]<{type: [string][1], value: [string][1]}>>**&#x20;
+
+Returns **[boolean][5]**&#x20;
+
+### _checkText
+
+Shared implementation for `see`/`dontSee`. Without a `context` locator and outside any `within`
+block, checks presence via `_runTextCheck`'s fast, boolean-only round trip; the full haystack is
+only fetched (one extra, rare evaluate) when the assertion is about to fail, to build the same
+`stringIncludes` error as before this optimization. With a `context` or inside `within`, this is
+unchanged from before — already a small, per-element read, not the identified cost.
+
+#### Parameters
+
+*   `text` **[string][1]**&#x20;
+*   `context` **([string][1]? | [object][3])**&#x20;
+*   `negate` **[boolean][5]**&#x20;
+
+Returns **[Promise][6]<void>**&#x20;
+
 ### _connect
 
 Resolves the CDP endpoint and opens the underlying `CDPConnection`, storing it on `this.cdp`.
@@ -150,7 +179,7 @@ Evaluates a JavaScript expression in the page attached to the current session vi
 
 *   `expression` **[string][1]** a JavaScript expression (or IIFE) to run in the page context.
 
-Returns **[Promise][4]<any>** the evaluated value, or `undefined` if the expression has no result.
+Returns **[Promise][6]<any>** the evaluated value, or `undefined` if the expression has no result.
 
 ### _finishTest
 
@@ -162,12 +191,34 @@ process can exit on its own.
 
 Resolves the current page URL to a `pathname`, ignoring the origin, query string, and hash.
 
-Returns **[Promise][4]<[string][1]>** the pathname of the current page.
+Returns **[Promise][6]<[string][1]>** the pathname of the current page.
 
 ### _init
 
 No-op hook kept for interface parity with other browser helpers. Connecting to the CDP
 endpoint is deferred to `_before`, since a fresh target/session is opened per test.
+
+### _installClient
+
+Installs the in-page client unconditionally — no `typeof window.__codecept` presence check.
+Used by callers that already know, from a sentinel value returned alongside a failed action,
+that the client is missing on the current page, so re-checking would just be a redundant
+contended round trip.
+
+The 171KB XPath polyfill is only injected alongside the client when `needsXPath` is true (the
+default, for callers without candidate information) *and* the engine actually needs it
+(`capabilities.xpath === 'polyfill'`, cached from `_before`'s probe). Callers that know their
+candidates never resolve to an `xpath` strategy (e.g. `_runSelected`, once it has inspected
+`candidates`/`within`) can pass `false` to skip that inject — the client is still told, via the
+`xpathNeedsPolyfill` flag baked in at install time, that the *engine* will eventually need it,
+so a later call that does hit an xpath candidate gets a clean `'__NO_XPATH__'` miss signal
+(from `window.__codecept.run`) instead of silently falling through to a broken native
+`document.evaluate` — `_runSelected` reacts to that sentinel by injecting the polyfill and
+retrying once, mirroring the `'__NO_CLIENT__'` handling right next to it.
+
+#### Parameters
+
+*   `needsXPath` **[boolean][5]**  
 
 ### _needsVisibleTextFallback
 
@@ -179,7 +230,7 @@ excludes both — some engines return an `innerText` that does not honor compute
 exclude script/style content, even when `getComputedStyle`/layout are otherwise reliable. The
 result is cached on `capabilities.innerText` (`'native'` or `'computed'`).
 
-Returns **[Promise][4]<[boolean][5]>** `true` if the `visibleText()` fallback should be used.
+Returns **[Promise][6]<[boolean][5]>** `true` if the `visibleText()` fallback should be used.
 
 ### _needsXPathPolyfill
 
@@ -193,7 +244,7 @@ not enough, since some engines execute a text-value predicate without actually f
 silently returning every candidate node instead of none or one. The result is cached on
 `capabilities.xpath` (`'native'` or `'polyfill'`).
 
-Returns **[Promise][4]<[boolean][5]>** `true` if the polyfill should be injected.
+Returns **[Promise][6]<[boolean][5]>** `true` if the polyfill should be injected.
 
 ### _onScreencastFrame
 
@@ -245,8 +296,8 @@ immediately and waiting `options.pollInterval` milliseconds between subsequent a
 
 #### Parameters
 
-*   `fn` **[function][6]** the condition to poll; should resolve to a truthy value once satisfied.
-*   `timeoutSec` **[number][7]** maximum time to poll, in seconds.
+*   `fn` **[function][7]** the condition to poll; should resolve to a truthy value once satisfied.
+*   `timeoutSec` **[number][8]** maximum time to poll, in seconds.
 *   `message` **[string][1]** error message used when the timeout is reached.
 *   `cancelToken` **{cancelled: [boolean][5]}??** when `cancelled` becomes `true` (set by the caller from outside), polling stops early with an error instead of continuing to `timeoutSec`. Used by `_waitForPageLoad` to tear down the losing side of a race instead of leaving it running.
 
@@ -254,7 +305,7 @@ immediately and waiting `options.pollInterval` milliseconds between subsequent a
 
 *   Throws **[Error][2]** with `message` if `timeoutSec` elapses without `fn` returning a truthy value, or a cancellation error if `cancelToken.cancelled` is set first.
 
-Returns **[Promise][4]<any>** the truthy value returned by `fn`.
+Returns **[Promise][6]<any>** the truthy value returned by `fn`.
 
 ### _probeCapabilities
 
@@ -286,7 +337,7 @@ A `ws(s)://` endpoint is returned unchanged.
 This is the subclass override point for helpers that connect through a different discovery
 mechanism (e.g. a cloud browser provider with its own session-creation API).
 
-Returns **[Promise][4]<[string][1]>** a `ws(s)://` debugger URL ready to be passed to `CDPConnection`.
+Returns **[Promise][6]<[string][1]>** a `ws(s)://` debugger URL ready to be passed to `CDPConnection`.
 
 ### _run
 
@@ -305,7 +356,7 @@ without breaking out of a surrounding `within`.
 *   `payload` **[object][3]?** extra data the action needs (e.g. `{ value }` for `fill`).
 *   `context` **([string][1]? | [object][3])** element to search in, narrowing the candidates below it. 
 
-Returns **[Promise][4]<{found: [number][7], result: any}>** number of matched elements and the action's result.
+Returns **[Promise][6]<{found: [number][8], result: any}>** number of matched elements and the action's result.
 
 ### _runSelected
 
@@ -315,18 +366,50 @@ specific element out of a candidate set by its 1-based index.
 
 The in-page client's presence is checked in the same round-trip as the action itself: the
 evaluated expression resolves to a sentinel string when `window.__codecept` is missing (e.g.
-right after a navigation the registered script didn't reach), in which case `_ensureClient` is
-called to install it and the call is retried exactly once.
+right after a navigation the registered script didn't reach), in which case the client is
+installed and the call is retried exactly once. Separately, if the client is already present
+but reports (via its own `'__NO_XPATH__'` sentinel) that this call needs the XPath polyfill and
+it was not bundled into that earlier install, the polyfill is injected and the call is retried
+once more — see `_installClient`.
 
 #### Parameters
 
 *   `candidates` &#x20;
 *   `action` **[string][1]**&#x20;
-*   `payload` **[object][3]?**&#x20;
-*   `selection` **[object][3]?** `{index}` or `{strict: true}`, mirroring `_selectionDescriptor`.
+*   `payload` **([object][3] | null)**&#x20;
+*   `selection` **([object][3] | null)** `{index}` or `{strict: true}`, mirroring `_selectionDescriptor`.
 *   `context` **([string][1]? | [object][3])**  
 
-Returns **[Promise][4]<{found: [number][7], result: any}>**&#x20;
+Returns **[Promise][6]<{found: [number][8], result: any}>**&#x20;
+
+### _runTextCheck
+
+Runs the in-page `containsText` check against the whole page (no `context`/`within` scoping —
+those stay on `_textSource`'s per-element path, already small). Returns only `{found, snippet}`
+instead of the full haystack: on a page with a large body, serializing that whole string across
+the CDP wire (and, on engines where `capabilities.innerText` requires the `visibleText()`
+walker, holding it in memory) is avoidable work `see`/`dontSee`/`waitForText` don't actually
+need on their common, non-throwing path.
+
+Also folds the client's install into the very same round trip when it is still missing, instead
+of a separate presence-check evaluate followed by an install evaluate before the check itself
+can even run — mirroring `_runSelected`'s sentinel-retry design, but collapsed into one evaluate
+since the install source itself is known and cacheable up front. That install is client-only,
+never the 171KB XPath polyfill: `containsText` never calls `document.evaluate`, so bundling it
+here would be pure waste for a scenario that never resolves an xpath locator. The client is
+still told, via `installCodeceptClient`'s `xpathNeedsPolyfill` flag, whether the *engine*
+(`capabilities.xpath`, cached by `_before`'s `about:blank` probe) will eventually need it, so a
+later xpath-resolving action on the same page gets a clean `'__NO_XPATH__'` miss signal from
+`window.__codecept.run` instead of silently hitting a broken native `document.evaluate` —
+`_runSelected` reacts to that sentinel already. The bootstrap source is built once and reused
+for the life of the instance, since whether the engine needs the polyfill never changes.
+
+#### Parameters
+
+*   `text` **[string][1]**&#x20;
+*   `opts` **{ignoreCase: [boolean][5], useWalker: [boolean][5]}**&#x20;
+
+Returns **[Promise][6]<{found: [boolean][5], snippet: ([string][1] | null)}>**&#x20;
 
 ### _seeInField
 
@@ -339,7 +422,7 @@ Shared implementation for `seeInField`/`dontSeeInField`.
 *   `value` **([string][1] | [object][3])**&#x20;
 *   `context` **([string][1]? | [object][3])**  
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### _selectionDescriptor
 
@@ -360,9 +443,9 @@ of each element's native `innerText`, then runs it.
 
 #### Parameters
 
-*   `candidates` **[Array][8]<{type: [string][1], value: ([string][1] | [object][3])}>**&#x20;
+*   `candidates` **[Array][4]<{type: [string][1], value: ([string][1] | [object][3])}>**&#x20;
 
-Returns **[Promise][4]<{found: [number][7], result: any}>**&#x20;
+Returns **[Promise][6]<{found: [number][8], result: any}>**&#x20;
 
 ### _textSource
 
@@ -377,7 +460,7 @@ text when a `within` block is active, or the whole page's text otherwise — via
 
 *   `context` **([string][1]? | [object][3])**&#x20;
 
-Returns **[Promise][4]<[string][1]>**&#x20;
+Returns **[Promise][6]<[string][1]>**&#x20;
 
 ### _url
 
@@ -395,7 +478,7 @@ Returns **[string][1]** the resolved, absolute URL.
 Waits `options.waitForAction` milliseconds after an interaction, mirroring the pacing pause
 other browser helpers apply between actions.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### _waitForLoadEvent
 
@@ -414,9 +497,9 @@ for the full timeout on every single navigation, for no purpose.
 
 *   `loaderId` **[string][1]** the loader id of the navigation to wait for, from `Page.navigate`'s response.
 *   `eventName` **[string][1]** the `Page.lifecycleEvent` name to wait for (e.g. `load`, `DOMContentLoaded`, `networkIdle`).
-*   `timeoutSec` **[number][7]** maximum time to wait, in seconds.
+*   `timeoutSec` **[number][8]** maximum time to wait, in seconds.
 
-Returns **{promise: [Promise][4]<void>, cancel: [function][6]}**&#x20;
+Returns **{promise: [Promise][6]<void>, cancel: [function][7]}**&#x20;
 
 ### _waitForPageLoad
 
@@ -440,10 +523,10 @@ navigation, competing for the same CDP connection with real work.
 
 #### Parameters
 
-*   `loaderId` **[string][1]?** loader id from the triggering `Page.navigate` response, if any.
+*   `loaderId` **([string][1] | null)** loader id from the triggering `Page.navigate` response, if any.
 *   `timeoutMessage` **[string][1]** error message used if the readyState poll times out.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### _withinBegin
 
@@ -459,13 +542,13 @@ Verifies the element exists (against the full document, i.e. unscoped) before na
 
 *   Throws **ElementNotFound** if no element matches `locator`.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### _withinEnd
 
 Ends the current `within` block, restoring unscoped element lookups.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### amOnPage
 
@@ -494,7 +577,7 @@ on a JS-heavy real-world page, regardless of how small the evaluated expression 
 
 *   `url` **[string][1]** url path or global url.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### appendField
 
@@ -513,7 +596,7 @@ I.appendField('password', secret('123456'));
 *   `value` **[string][1]** text value to append.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### attachFile
 
@@ -540,7 +623,7 @@ I.attachFile('#dropzone', 'data/avatar.jpg');
 *   `pathToFile` **[string][1]** path to file, relative to `codecept_dir`.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### blur
 
@@ -554,7 +637,7 @@ I.blur('#name');
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### checkOption
 
@@ -572,7 +655,7 @@ I.checkOption('agree', '//form');
 *   `field` **([string][1] | [object][3])** checkbox located by label | name | CSS | XPath | strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### clearCookie
 
@@ -586,9 +669,9 @@ I.clearCookie('test');
 
 #### Parameters
 
-*   `name` **[string][1]?** (optional, `null` by default) cookie name 
+*   `name` **([string][1] | null)** (optional, `null` by default) cookie name 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### clearField
 
@@ -605,7 +688,7 @@ I.clearField('#email');
 *   `field` **([string][1] | [object][3])** editable field located by label|name|CSS|XPath|strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### click
 
@@ -642,7 +725,7 @@ I.click({css: 'nav a.login'});
 
 *   Throws **[Error][2]** if the matched element has a zero-size bounding box.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### clickXY
 
@@ -656,11 +739,11 @@ I.clickXY('#area', 50, 30); // relative to #area
 
 #### Parameters
 
-*   `locator` **([string][1] | [object][3] | [number][7])** element to click relative to, or a global X coordinate.
-*   `x` **[number][7]?** X coordinate relative to element, or global Y coordinate if `locator` is a number.
-*   `y` **[number][7]?** Y coordinate relative to element.
+*   `locator` **([string][1] | [object][3] | [number][8])** element to click relative to, or a global X coordinate.
+*   `x` **[number][8]?** X coordinate relative to element, or global Y coordinate if `locator` is a number.
+*   `y` **[number][8]?** Y coordinate relative to element.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSee
 
@@ -677,7 +760,7 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 *   `text` **[string][1]** which is not present.
 *   `context` **([string][1]? | [object][3])** (optional) element located by CSS|XPath|strict locator in which to perform search. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeCheckboxIsChecked
 
@@ -692,7 +775,7 @@ I.dontSeeCheckboxIsChecked('I agree to terms'); // located by label
 
 *   `locator` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeCookie
 
@@ -702,7 +785,7 @@ Checks that a cookie with the given name is not set.
 
 *   `name` **[string][1]** cookie name.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeCurrentPathEquals
 
@@ -712,7 +795,7 @@ Opposite to `seeCurrentPathEquals`.
 
 *   `path` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeCurrentUrlEquals
 
@@ -723,7 +806,7 @@ Unlike `dontSeeInCurrentUrl` performs a strict comparison.
 
 *   `url` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeElement
 
@@ -738,7 +821,7 @@ I.dontSeeElement('.modal'); // modal is not shown
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeElementInDOM
 
@@ -752,7 +835,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeInCurrentUrl
 
@@ -762,7 +845,7 @@ Checks that current url does not contain a provided fragment.
 
 *   `url` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeInField
 
@@ -774,7 +857,7 @@ Opposite to `seeInField`.
 *   `value` **([string][1] | [object][3])** value to check.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeInSource
 
@@ -784,7 +867,7 @@ Checks that the current page does not contain the given string in its raw source
 
 *   `text` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeInTitle
 
@@ -794,7 +877,7 @@ Checks that title does not contain text.
 
 *   `text` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### dontSeeTraffic
 
@@ -829,7 +912,7 @@ I.doubleClick('Edit');
 *   `locator` **([string][1] | [object][3])** clickable element located by text, or any element located by CSS|XPath|strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default, currently ignored by this helper). 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### executeAsyncScript
 
@@ -844,10 +927,10 @@ const val = await I.executeAsyncScript(function(val, done) {
 
 #### Parameters
 
-*   `fn` **[function][6]** an asynchronous function to be executed in the browser context; its last argument is a `done` callback.
+*   `fn` **[function][7]** an asynchronous function to be executed in the browser context; its last argument is a `done` callback.
 *   `args` **...any** arguments to pass into the function (before `done`).
 
-Returns **[Promise][4]<any>** the value passed to `done`.
+Returns **[Promise][6]<any>** the value passed to `done`.
 
 ### executeScript
 
@@ -866,10 +949,10 @@ If the function returns a promise, `executeScript` waits for it to resolve.
 
 #### Parameters
 
-*   `fn` **([string][1] | [function][6])** a JavaScript function to be executed in the browser context, or a string expression.
+*   `fn` **([string][1] | [function][7])** a JavaScript function to be executed in the browser context, or a string expression.
 *   `args` **...any** arguments to pass into the function.
 
-Returns **[Promise][4]<any>** the value returned (or resolved) by the function.
+Returns **[Promise][6]<any>** the value returned (or resolved) by the function.
 
 ### fillField
 
@@ -893,7 +976,7 @@ I.fillField({css: 'form#login input[name=username]'}, 'John');
 *   `value` **([string][1] | [object][3])** text value to fill.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### flushNetworkTraffics
 
@@ -915,7 +998,7 @@ I.focus('#name');
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### forceClick
 
@@ -945,7 +1028,7 @@ I.forceClick({css: 'nav a.login'});
 *   `locator` **([string][1] | [object][3])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### grabAttributeFrom
 
@@ -962,7 +1045,7 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `attr` **[string][1]** attribute name.
 
-Returns **[Promise][4]<[string][1]>** attribute value
+Returns **[Promise][6]<[string][1]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -978,7 +1061,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `attr` **[string][1]** attribute name.
 
-Returns **[Promise][4]<[Array][8]<[string][1]>>** array of attribute values
+Returns **[Promise][6]<[Array][4]<[string][1]>>** array of attribute values
 
 ### grabCookie
 
@@ -993,9 +1076,9 @@ assert(cookie.value, '123456');
 
 #### Parameters
 
-*   `name` **[string][1]?** cookie name. 
+*   `name` **([string][1] | null)** cookie name. 
 
-Returns **[Promise][4]<(CodeceptJS.Cookie | [Array][8]<CodeceptJS.Cookie>)>** a cookie object, or an array of all cookies when `name` is not provided.
+Returns **[Promise][6]<(CodeceptJS.Cookie | [Array][4]<CodeceptJS.Cookie>)>** a cookie object, or an array of all cookies when `name` is not provided.
 
 ### grabCookies
 
@@ -1006,7 +1089,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let cookies = await I.grabCookies();
 ```
 
-Returns **[Promise][4]<[Array][8]<CodeceptJS.Cookie>>** array of cookie objects.
+Returns **[Promise][6]<[Array][4]<CodeceptJS.Cookie>>** array of cookie objects.
 
 ### grabCssPropertyFrom
 
@@ -1022,7 +1105,7 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `cssProperty` **[string][1]** CSS property name.
 
-Returns **[Promise][4]<[string][1]>** CSS value
+Returns **[Promise][6]<[string][1]>** CSS value
 
 ### grabCssPropertyFromAll
 
@@ -1037,7 +1120,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `cssProperty` **[string][1]** CSS property name.
 
-Returns **[Promise][4]<[Array][8]<[string][1]>>** array of CSS values
+Returns **[Promise][6]<[Array][4]<[string][1]>>** array of CSS values
 
 ### grabCurrentUrl
 
@@ -1048,7 +1131,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][4]<[string][1]>** current URL.
+Returns **[Promise][6]<[string][1]>** current URL.
 
 ### grabHTMLFrom
 
@@ -1063,7 +1146,7 @@ let postHTML = await I.grabHTMLFrom('#post');
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[string][1]>** HTML code for an element
+Returns **[Promise][6]<[string][1]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -1077,7 +1160,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[Array][8]<[string][1]>>** HTML code for matched elements
+Returns **[Promise][6]<[Array][4]<[string][1]>>** HTML code for matched elements
 
 ### grabNumberOfElements
 
@@ -1092,7 +1175,7 @@ let numOfElements = await I.grabNumberOfElements('p');
 
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[number][7]>** number of matched elements.
+Returns **[Promise][6]<[number][8]>** number of matched elements.
 
 ### grabNumberOfVisibleElements
 
@@ -1106,7 +1189,7 @@ let numOfVisibleElements = await I.grabNumberOfVisibleElements('p');
 
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[number][7]>** number of visible matched elements.
+Returns **[Promise][6]<[number][8]>** number of visible matched elements.
 
 ### grabPageScrollPosition
 
@@ -1116,7 +1199,7 @@ Retrieves the current page scroll position.
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][4]<{x: [number][7], y: [number][7]}>** scroll position.
+Returns **[Promise][6]<{x: [number][8], y: [number][8]}>** scroll position.
 
 ### grabRecordedNetworkTraffics
 
@@ -1129,7 +1212,7 @@ expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][8]** recorded network traffics
+Returns **[Array][4]** recorded network traffics
 
 ### grabSource
 
@@ -1139,7 +1222,7 @@ Retrieves the source code of the current page.
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][4]<[string][1]>** source code of the current page (the outer HTML of `<html>`).
+Returns **[Promise][6]<[string][1]>** source code of the current page (the outer HTML of `<html>`).
 
 ### grabTextFrom
 
@@ -1156,7 +1239,7 @@ If multiple elements found returns first element.
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[string][1]>** text value
+Returns **[Promise][6]<[string][1]>** text value
 
 ### grabTextFromAll
 
@@ -1171,7 +1254,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[Array][8]<[string][1]>>** array of text values
+Returns **[Promise][6]<[Array][4]<[string][1]>>** array of text values
 
 ### grabTitle
 
@@ -1181,7 +1264,7 @@ Retrieves a page title.
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][4]<[string][1]>** title of the page.
+Returns **[Promise][6]<[string][1]>** title of the page.
 
 ### grabValueFrom
 
@@ -1197,7 +1280,7 @@ let email = await I.grabValueFrom('input[name=email]');
 
 *   `locator` **([string][1] | [object][3])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[string][1]>** attribute value
+Returns **[Promise][6]<[string][1]>** attribute value
 
 ### grabValueFromAll
 
@@ -1212,7 +1295,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 *   `locator` **([string][1] | [object][3])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[Array][8]<[string][1]>>** array of attribute values
+Returns **[Promise][6]<[Array][4]<[string][1]>>** array of attribute values
 
 ### grabWebElement
 
@@ -1230,7 +1313,7 @@ const button = await I.grabWebElement({ role: 'button', text: 'Submit' });
 
 *   Throws **ElementNotFound** if no element matches `locator`.
 
-Returns **[Promise][4]<[object][3]>** a WebElement instance.
+Returns **[Promise][6]<[object][3]>** a WebElement instance.
 
 ### grabWebElements
 
@@ -1247,7 +1330,7 @@ const buttons = await I.grabWebElements({ role: 'button' });
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<[Array][8]<[object][3]>>** array of WebElement instances.
+Returns **[Promise][6]<[Array][4]<[object][3]>>** array of WebElement instances.
 
 ### pressKey
 
@@ -1262,9 +1345,9 @@ I.pressKey(['Control', 'a']);
 
 #### Parameters
 
-*   `key` **([string][1] | [Array][8]<[string][1]>)** a key or an array of keys to combine (modifiers first).
+*   `key` **([string][1] | [Array][4]<[string][1]>)** a key or an array of keys to combine (modifiers first).
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### refreshPage
 
@@ -1277,7 +1360,7 @@ I.refreshPage();
 Triggers `Page.reload` and waits (up to `options.getPageTimeout` seconds) for
 `document.readyState` to reach `'complete'`.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### resizeWindow
 
@@ -1289,10 +1372,10 @@ I.resizeWindow(1024, 768);
 
 #### Parameters
 
-*   `width` **([number][7] | `"maximize"`)** window width, or `'maximize'`.
-*   `height` **[number][7]?** window height.
+*   `width` **([number][8] | `"maximize"`)** window width, or `'maximize'`.
+*   `height` **[number][8]?** window height.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### rightClick
 
@@ -1307,7 +1390,7 @@ I.rightClick('Menu');
 *   `locator` **([string][1] | [object][3])** clickable element located by text, or any element located by CSS|XPath|strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default, currently ignored by this helper). 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### saveElementScreenshot
 
@@ -1322,7 +1405,7 @@ I.saveElementScreenshot('#logo', 'logo.png');
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `fileName` **[string][1]** file name to save.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### saveScreenshot
 
@@ -1337,7 +1420,7 @@ I.saveScreenshot('debug.png');
 
 *   `fileName` **[string][1]** file name to save.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### scrollPageToBottom
 
@@ -1347,7 +1430,7 @@ Scrolls to the bottom of the page.
 I.scrollPageToBottom();
 ```
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### scrollPageToTop
 
@@ -1357,7 +1440,7 @@ Scrolls to the top of the page.
 I.scrollPageToTop();
 ```
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### scrollTo
 
@@ -1370,11 +1453,11 @@ I.scrollTo(100, 200);
 
 #### Parameters
 
-*   `locator` **([string][1] | [object][3] | [number][7])** element to scroll to, or an X coordinate if no element.
-*   `offsetX` **[number][7]** X offset, or Y coordinate if `locator` is a number. 
-*   `offsetY` **[number][7]** Y offset applied when scrolling to an element. 
+*   `locator` **([string][1] | [object][3] | [number][8])** element to scroll to, or an X coordinate if no element.
+*   `offsetX` **[number][8]** X offset, or Y coordinate if `locator` is a number. 
+*   `offsetY` **[number][8]** Y offset applied when scrolling to an element. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### see
 
@@ -1392,7 +1475,7 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 *   `text` **[string][1]** expected on page.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeAttributesOnElements
 
@@ -1408,7 +1491,7 @@ I.seeAttributesOnElements('//form', { method: 'post' });
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `attributes` **[object][3]** object with attribute names and expected values.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeCheckboxIsChecked
 
@@ -1424,7 +1507,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 *   `locator` **([string][1] | [object][3])** located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeCookie
 
@@ -1434,7 +1517,7 @@ Checks that a cookie with the given name is set.
 
 *   `name` **[string][1]** cookie name.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeCssPropertiesOnElements
 
@@ -1449,7 +1532,7 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': 'bold', display: 'block' });
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 *   `cssProperties` **[object][3]** object with CSS properties and their values to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeCurrentPathEquals
 
@@ -1463,7 +1546,7 @@ I.seeCurrentPathEquals('/info');
 
 *   `path` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeCurrentUrlEquals
 
@@ -1478,7 +1561,7 @@ I.seeCurrentUrlEquals('/register');
 
 *   `url` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeElement
 
@@ -1494,7 +1577,7 @@ I.seeElement('#modal');
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeElementInDOM
 
@@ -1509,7 +1592,7 @@ I.seeElementInDOM('#modal');
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeInCurrentUrl
 
@@ -1523,7 +1606,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 *   `url` **[string][1]** a fragment to check
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeInField
 
@@ -1540,7 +1623,7 @@ I.seeInField('Username', 'davert');
 *   `value` **([string][1] | [object][3])** value to check.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeInSource
 
@@ -1554,7 +1637,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 *   `text` **[string][1]** value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeInTitle
 
@@ -1568,7 +1651,7 @@ I.seeInTitle('Home Page');
 
 *   `text` **[string][1]** text value to check.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeNumberOfVisibleElements
 
@@ -1581,9 +1664,9 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** located by CSS|XPath|strict locator.
-*   `num` **[number][7]** expected number of elements.
+*   `num` **[number][8]** expected number of elements.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### seeTraffic
 
@@ -1624,7 +1707,7 @@ await I.seeTraffic({
     *   `opts.url` **[string][1]** Expected URL of request in network traffic
     *   `opts.parameters` **[Object][3]?** Expected parameters of that request in network traffic
     *   `opts.requestPostData` **[Object][3]?** Expected that request contains post data in network traffic
-    *   `opts.timeout` **[number][7]?** Timeout to wait for request in seconds. Default is 10 seconds.
+    *   `opts.timeout` **[number][8]?** Timeout to wait for request in seconds. Default is 10 seconds.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1646,10 +1729,10 @@ I.selectOption({css: 'form select[name=account]'}, 'Premium');
 #### Parameters
 
 *   `select` **([string][1] | [object][3])** field located by label|name|CSS|XPath|strict locator.
-*   `option` **([string][1] | [Array][8]<[string][1]>)** visible text or value of option, or an array of them for a multi-select.
+*   `option` **([string][1] | [Array][4]<[string][1]>)** visible text or value of option, or an array of them for a multi-select.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### setCookie
 
@@ -1669,9 +1752,9 @@ I.setCookie([
 
 #### Parameters
 
-*   `cookie` **(CodeceptJS.Cookie | [Array][8]<CodeceptJS.Cookie>)** a cookie object or array of cookie objects.
+*   `cookie` **(CodeceptJS.Cookie | [Array][4]<CodeceptJS.Cookie>)** a cookie object or array of cookie objects.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### startRecordingTraffic
 
@@ -1687,7 +1770,7 @@ currently active test/page's requests are recorded.
 I.startRecordingTraffic();
 ```
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### startScreencast
 
@@ -1707,7 +1790,7 @@ I.startScreencast();
 
 *   `options` **[object][3]?** {maxWidth: number, maxHeight: number, quality: number, everyNthFrame: number} — CDP `Page.startScreencast` pass-throughs. `format` is always `'png'`. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### stopRecordingTraffic
 
@@ -1741,7 +1824,7 @@ const apngBuffer = await I.stopScreencast();
 
 *   `options` **[object][3]?** {lastFrameDelayMs: number} — hold time in milliseconds for the final frame (default 1000). 
 
-Returns **[Promise][4]<[object][3]>** a Buffer with the assembled APNG, or null if there was nothing to assemble.
+Returns **[Promise][6]<[object][3]>** a Buffer with the assembled APNG, or null if there was nothing to assemble.
 
 ### type
 
@@ -1763,10 +1846,10 @@ I.type(['C', 'o', 'd', 'e']);
 
 #### Parameters
 
-*   `keys` **([string][1] | [Array][8]<[string][1]>)** characters to type, either as a string or an array of characters.
-*   `delay` **[number][7]?** (optional) delay in milliseconds between key presses. 
+*   `keys` **([string][1] | [Array][4]<[string][1]>)** characters to type, either as a string or an array of characters.
+*   `delay` **[number][8]?** (optional) delay in milliseconds between key presses. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### uncheckOption
 
@@ -1784,7 +1867,7 @@ I.uncheckOption('agree', '//form');
 *   `field` **([string][1] | [object][3])** checkbox located by label | name | CSS | XPath | strict locator.
 *   `context` **([string][1]? | [object][3])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### wait
 
@@ -1796,9 +1879,9 @@ I.wait(2); // waits 2 secs
 
 #### Parameters
 
-*   `sec` **[number][7]** number of seconds to wait.
+*   `sec` **[number][8]** number of seconds to wait.
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitCurrentPathEquals
 
@@ -1811,9 +1894,9 @@ I.waitCurrentPathEquals('/info', 2);
 #### Parameters
 
 *   `path` **[string][1]** value to check.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForCookie
 
@@ -1826,9 +1909,9 @@ I.waitForCookie('auth', 5);
 #### Parameters
 
 *   `name` **[string][1]** cookie name.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForDetached
 
@@ -1841,9 +1924,9 @@ I.waitForDetached('#popup', 5);
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForElement
 
@@ -1858,9 +1941,9 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForFunction
 
@@ -1875,11 +1958,11 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
-*   `fn` **([string][1] | [function][6])** to be executed in browser context.
-*   `argsOrSec` **([Array][8]<any> | [number][7])?** (optional) arguments for function or, if a number, seconds to wait. 
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `fn` **([string][1] | [function][7])** to be executed in browser context.
+*   `argsOrSec` **([Array][4]<any> | [number][8])?** (optional) arguments for function or, if a number, seconds to wait. 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForInvisible
 
@@ -1892,9 +1975,9 @@ I.waitForInvisible('#popup', 5);
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForText
 
@@ -1910,10 +1993,10 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 #### Parameters
 
 *   `text` **[string][1]** to wait for.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 *   `context` **([string][1]? | [object][3])** (optional) element located by CSS|XPath|strict locator. 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitForVisible
 
@@ -1926,9 +2009,9 @@ I.waitForVisible('#popup', 5);
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitInUrl
 
@@ -1941,9 +2024,9 @@ I.waitInUrl('/info', 2);
 #### Parameters
 
 *   `urlPart` **[string][1]** value to check.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitToHide
 
@@ -1952,9 +2035,9 @@ Waits for an element to be hidden. Alias of `waitForInvisible`.
 #### Parameters
 
 *   `locator` **([string][1] | [object][3])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 ### waitUrlEquals
 
@@ -1967,9 +2050,9 @@ I.waitUrlEquals('/info', 2);
 #### Parameters
 
 *   `urlPart` **[string][1]** value to check.
-*   `sec` **[number][7]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
+*   `sec` **[number][8]?** (optional, `options.waitForTimeout` by default) time in seconds to wait 
 
-Returns **[Promise][4]<void>**&#x20;
+Returns **[Promise][6]<void>**&#x20;
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
@@ -1977,14 +2060,14 @@ Returns **[Promise][4]<void>**&#x20;
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
 [9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
