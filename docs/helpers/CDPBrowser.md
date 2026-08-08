@@ -252,6 +252,8 @@ Builds the `{index, strict}` element-selection descriptor from the current step'
 disables strict mode for that step; otherwise `exact`/`strictMode` per-step options
 override `options.strict` to enable or cancel strict mode.
 
+Returns **([object][3] | null)** descriptor with optional `index` and `strict` keys, or `null` when neither applies.
+
 ### _textSource
 
 Resolves the text to search `see`/`dontSee`/`waitForText` against, when no explicit `context`
