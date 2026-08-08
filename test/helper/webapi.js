@@ -1301,12 +1301,11 @@ export function tests() {
       if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
     })
     it('should do all cookie stuff', async function () {
-      if (isHelper('CDPBrowser')) this.skip() // cookie is set for domain "localhost" but the app runs on 127.0.0.1 here; Puppeteer fails the same way in this environment
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.seeCookie('auth')
       await I.dontSeeCookie('auuth')
@@ -1319,17 +1318,16 @@ export function tests() {
     })
 
     it('should grab all cookies', async function () {
-      if (isHelper('CDPBrowser')) this.skip() // cookie is set for domain "localhost" but the app runs on 127.0.0.1 here; Puppeteer fails the same way in this environment
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.setCookie({
         name: 'user',
         value: 'davert',
-        url: 'http://localhost',
+        url: siteUrl,
       })
 
       const cookies = await I.grabCookie()
@@ -1343,7 +1341,7 @@ export function tests() {
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.clearCookie()
       await I.dontSeeCookie('auth')
@@ -1359,12 +1357,11 @@ export function tests() {
     })
 
     it('should wait for cookie', async function () {
-      if (isHelper('CDPBrowser')) this.skip() // cookie is set for domain "localhost" but the app runs on 127.0.0.1 here; Puppeteer fails the same way in this environment
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.waitForCookie('auth')
     })
