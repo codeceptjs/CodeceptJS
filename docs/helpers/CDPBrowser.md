@@ -81,7 +81,7 @@ No timeout here: `_waitForAction` applies the grace window itself, starting from
 runs (after the action's own dispatch already resolved), racing this already-armed listener
 against a fresh timer instead of one that started ticking before the action even began.
 
-Returns **{promise: [Promise][1]<([string][2] | null)>, cancel: [function][3]}?**&#x20;
+Returns **({promise: [Promise][1]<([string][2] | null)>, cancel: [function][3]} | null)**&#x20;
 
 ### _assertLayoutSupported
 
@@ -538,7 +538,7 @@ actually takes: strictly more correct for a slow navigation, not just faster for
 
 #### Parameters
 
-*   `armed` **{promise: [Promise][1]<([string][2] | null)>, cancel: [function][3]}??** from `_armActionSettle`, called before the action.
+*   `armed` **({promise: [Promise][1]<([string][2] | null)>, cancel: [function][3]} | null)?** from `_armActionSettle`, called before the action.
 
 Returns **[Promise][1]<void>**&#x20;
 
