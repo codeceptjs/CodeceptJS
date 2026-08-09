@@ -66,3 +66,7 @@ jobs:
         run: |
           export OBSCURA_PATH="$HOME/obscura-bin/obscura"
           npm run test:unit:webbapi:obscura
+      - name: run obscura acceptance tests
+        run: |
+          export OBSCURA_PATH="$HOME/obscura-bin/obscura"
+          ./bin/codecept.js run -c test/acceptance/codecept.Obscura.js --grep @Obscura --debug
