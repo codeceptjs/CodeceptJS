@@ -21,8 +21,8 @@ env:
 
 jobs:
   appium:
-    # Skip this job if the repository is a fork
-    if: github.repository == 'codeceptjs/CodeceptJS'
+    # Run ONLY on the main repo AND (if it's a push OR a PR from the same repo)
+    if: github.repository == 'codeceptjs/CodeceptJS' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-22.04
     timeout-minutes: 30
 
