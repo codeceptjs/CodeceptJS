@@ -614,7 +614,7 @@ Test files written for 3.x keep working until you flip the flag.
 
 ### `wait*` Methods Resolve Relative URLs
 
-`waitInUrl`, `waitUrlEquals`, and `waitCurrentPathEquals` now resolve a relative path against the helper's configured `url` before comparing. In 3.x a literal substring match against `window.location.href` would fail for relative paths.
+`waitUrlEquals` and `waitCurrentPathEquals` now resolve a relative path against the helper's configured `url` before comparing. In 3.x a literal comparison against `window.location.href` would fail for relative paths.
 
 ```js
 // helpers: { Playwright: { url: 'https://app.example.com' } }
@@ -622,6 +622,8 @@ Test files written for 3.x keep working until you flip the flag.
 I.waitUrlEquals('/dashboard')   // matches https://app.example.com/dashboard
 I.waitInUrl('/users')           // matches any URL containing /users
 ```
+
+`waitInUrl` is unchanged from 3.x — it stays a plain substring match against the current URL and never resolves its argument.
 
 `waitUrlEquals` error messages now include the actual URL the page was on when the wait timed out — easier to diagnose `/dashboard` vs `/dashboard?session=expired`.
 
