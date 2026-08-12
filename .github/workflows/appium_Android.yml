@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 4.x
-      - appium-esm-migration
   pull_request:
     branches:
       - 4.x
@@ -22,6 +21,8 @@ env:
 
 jobs:
   appium:
+    # Skip this job if the repository is a fork
+    if: github.repository == 'codeceptjs/CodeceptJS'
     runs-on: ubuntu-22.04
     timeout-minutes: 30
 
