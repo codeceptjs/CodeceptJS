@@ -337,19 +337,21 @@ describe('Appium', function () {
       assert.ok(vy.match(/vx: -\d\d000\.0 pps/), 'to be like 21000.0 pps')
     })
 
-    it('should react on touchPerform action', async () => {
+    it('should react on touchPerform action @quick', async () => {
       await app.touchPerform([
         {
-          action: 'press',
-          options: {
-            x: 100,
-            y: 200,
-          },
+          type: 'pointer',
+          id: 'finger1',
+          parameters: { pointerType: 'touch' },
+          actions: [
+            { type: 'pointerMove', duration: 0, x: 100, y: 200 },
+            { type: 'pointerDown', button: 0 },
+            { type: 'pointerUp', button: 0 },
+          ],
         },
-        { action: 'release' },
       ])
       const val = await app.grabCurrentActivity()
-      assert.equal(val, '.HomeScreenActivity')
+      assert.equal(val, '.TouchGesturesActivity')
     })
 
     it('should assert when you dont scroll the document anymore', async () => {
