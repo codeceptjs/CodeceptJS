@@ -58,16 +58,12 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 15
 
-    strategy:
-      matrix:
-        node-version: [ 20.x ]
-
     steps:
       - uses: actions/checkout@v6
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: .nvmrc
       - run: npm i
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
@@ -79,16 +75,12 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v6
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: .nvmrc
       - run: npm i
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true

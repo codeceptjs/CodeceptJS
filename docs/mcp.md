@@ -441,7 +441,7 @@ Storage capture is **enabled** for `run_code`, `snapshot`, `run_step_by_step` fa
 
 ### Server doesn't start
 
-- Node 18+ recommended.
+- Node 20.19+ required.
 - Verify the path / `npx` resolution in your client config.
 
 ### Config not found

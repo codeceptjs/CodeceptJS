@@ -102,7 +102,7 @@ Later you can even automagically update Type Definitions to include your own cus
 
 Note:
 
-- CodeceptJS requires Node.js version `12+` or later.
+- CodeceptJS requires Node.js version `20.19+` or later.
 
 ## Usage
 
