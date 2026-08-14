@@ -22,6 +22,8 @@ npx codeceptjs run-workers 4
 
 Steps are not streamed to the console in this mode — output from separate threads can't be interleaved cleanly. While workers run, CodeceptJS sets `process.env.RUNS_WITH_WORKERS=true`, so plugins and helpers can branch on it. All `run` options work here too: `--grep "@smoke"`, `-c codecept.conf.js`, `--debug`, and the rest.
 
+By default, workers are created with a staggered delay of 200ms to prevent CPU spikes and stagger browser initializations. You can adjust this via `workerInitializationDelay` in your configuration.
+
 ### Distribution strategies
 
 `--by` controls how tests spread across workers:
