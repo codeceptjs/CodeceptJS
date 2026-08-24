@@ -133,26 +133,27 @@ describe('Workers', function () {
     const workers = new Workers(-1, workerConfig)
 
     const workerOne = workers.spawn()
-    workerOne.addTestFiles([path.join(codecept_dir, '/custom-worker/base_test.worker.js')])
-
     const workerTwo = workers.spawn()
-    workerTwo.addTestFiles([path.join(codecept_dir, '/custom-worker/custom_test.worker.js')])
 
-    for (const worker of workers.getWorkers()) {
-      worker.addConfig({
-        helpers: {
-          FileSystem: {},
-          Workers: {
-            require: './workers_helper',
-          },
-          CustomWorkers: {
-            require: './custom_worker_helper',
-          },
-        },
+    Promise.all([workerOne.addTestFiles([path.join(codecept_dir, '/custom-worker/base_test.worker.js')]), workerTwo.addTestFiles([path.join(codecept_dir, '/custom-worker/custom_test.worker.js')])])
+      .then(() => {
+        for (const worker of workers.getWorkers()) {
+          worker.addConfig({
+            helpers: {
+              FileSystem: {},
+              Workers: {
+                require: './workers_helper',
+              },
+              CustomWorkers: {
+                require: './custom_worker_helper',
+              },
+            },
+          })
+        }
+
+        workers.run()
       })
-    }
-
-    workers.run()
+      .catch(done)
 
     workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
@@ -168,29 +169,32 @@ describe('Workers', function () {
     }
 
     const workers = new Workers(-1, workerConfig)
-    const testGroups = workers.createGroupsOfSuites(2)
+    workers
+      .createGroupsOfSuites(2)
+      .then(testGroups => {
+        const workerOne = workers.spawn()
+        workerOne.addTests(testGroups[0])
 
-    const workerOne = workers.spawn()
-    workerOne.addTests(testGroups[0])
+        const workerTwo = workers.spawn()
+        workerTwo.addTests(testGroups[1])
 
-    const workerTwo = workers.spawn()
-    workerTwo.addTests(testGroups[1])
+        for (const worker of workers.getWorkers()) {
+          worker.addConfig({
+            helpers: {
+              FileSystem: {},
+              Workers: {
+                require: './workers_helper',
+              },
+              CustomWorkers: {
+                require: './custom_worker_helper',
+              },
+            },
+          })
+        }
 
-    for (const worker of workers.getWorkers()) {
-      worker.addConfig({
-        helpers: {
-          FileSystem: {},
-          Workers: {
-            require: './workers_helper',
-          },
-          CustomWorkers: {
-            require: './custom_worker_helper',
-          },
-        },
+        workers.run()
       })
-    }
-
-    workers.run()
+      .catch(done)
 
     workers.on(event.all.result, result => {
       expect(workers.getWorkers().length).equal(2)
@@ -381,5 +385,36 @@ describe('Workers', function () {
     })
 
     workers.run()
+  })
+
+  it('should preserve original file order in loadTests for worker distribution (issue #5412)', async () => {
+    // This test verifies the fix for issue #5412:
+    // Test files should NOT be sorted in loadTests() because that affects worker distribution.
+    // Sorting should only happen in run() for execution order.
+    //
+    // The bug was: sorting in loadTests() changed the order of suites during distribution,
+    // causing all workers to receive the same tests instead of different suites.
+
+    const workerConfig = {
+      by: 'suite',
+      testConfig: './test/data/sandbox/codecept.customworker.js',
+    }
+
+    const workers = new Workers(3, workerConfig)
+    await workers._ensureInitialized()
+
+    // Verify that test files were loaded
+    const testFiles = workers.codecept.testFiles
+    expect(testFiles.length).to.be.greaterThan(1, 'Multiple test files should be loaded')
+
+    // loadTests() must preserve the original glob order (not sort files).
+    // Verify by comparing with a fresh glob call — the order should match.
+    const { globSync } = await import('glob')
+    const expectedFiles = globSync('./custom-worker/*.js', { cwd: path.join(__dirname, '/../data/sandbox') })
+      .filter(f => !f.includes('node_modules'))
+      .map(f => path.resolve(path.join(__dirname, '/../data/sandbox'), f))
+
+    const actualFiles = testFiles.map(f => path.resolve(f))
+    expect(actualFiles).to.deep.equal(expectedFiles, 'loadTests() should preserve original glob order without sorting')
   })
 })

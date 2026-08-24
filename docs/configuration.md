@@ -44,6 +44,8 @@ export const config = {
 
 - `timeout` — default per-test timeout in seconds; a test is killed if it stops responding.
 - `mocha` — [Mocha options](https://mochajs.org/#configuring-mocha-nodejs), including extra reporters. See [Reporters](/reports).
+- `workerInitializationDelay` — delay in milliseconds between spinning up parallel workers to prevent CPU spikes and stagger browser startup. Defaults to `200`. Set to `0` to disable.
+- `workerInitializationMaxDelay` — maximum total delay (in milliseconds) for worker initialization staggering. Defaults to `10000` (10 s). Set to `0` to disable capping.
 
 **BDD**
 
@@ -71,16 +73,18 @@ For TypeScript test files in CodeceptJS 4.x, use the [`tsx`](https://tsx.is) loa
 // codecept.conf.ts
 export const config = {
   tests: './**/*_test.ts',
-  require: ['tsx/cjs'],
+  require: ['tsx/esm'],
   helpers: {},
   include: {},
 }
 ```
 
+This requires `"type": "module"` in `package.json` so `.ts` test files are compiled as ES Modules.
+
 Combine several modules:
 
 ```ts
-require: ['tsx/cjs', 'should', './lib/testSetup']
+require: ['tsx/esm', 'should', './lib/testSetup']
 ```
 
 The config file itself (`codecept.conf.ts`) and helpers are transpiled automatically — only test files need the loader. See [TypeScript](/typescript) for the full setup.

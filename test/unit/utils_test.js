@@ -6,6 +6,7 @@ import sinon from 'sinon'
 import * as utils from '../../lib/utils.js'
 import store from '../../lib/store.js'
 import playwright from 'playwright'
+import { isWindows, resolveImportModulePath } from '../../lib/utils.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -326,7 +327,7 @@ describe('utils', () => {
 
     it('returns the given filename for absolute one', () => {
       const _path = utils.screenshotOutputFolder('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'.replace(/\//g, path.sep))
-      if (os.platform() === 'win32') {
+      if (isWindows()) {
         expect(_path).eql(path.resolve(store.codeceptDir, '/Users/someuser/workbase/project1/test_output/screenshot1.failed.png'))
       } else {
         expect(_path).eql('/Users/someuser/workbase/project1/test_output/screenshot1.failed.png')
@@ -341,6 +342,32 @@ describe('utils', () => {
 
     it('returns provide default require not found message', () => {
       expect(() => utils.requireWithFallback('unexisting-package', 'unexisting-package2')).to.throw(Error, 'Cannot find modules unexisting-package,unexisting-package2')
+    })
+  })
+
+  describe('#importModule', () => {
+    let osStub
+
+    afterEach(() => {
+      if (osStub) osStub.restore()
+    })
+
+    it('should import a module', async () => {
+      const resolvedPath = utils.resolveImportModulePath(path.join(__dirname, '../../lib/output.js'))
+      const module = await import(resolvedPath)
+      expect(module.default).to.be.ok
+    })
+
+    it('should import a module on Windows simulation', async () => {
+      // Mock Windows
+      osStub = sinon.stub(os, 'platform').callsFake(() => 'win32')
+
+      // Use an absolute path that exists
+      const absolutePath = path.resolve(__dirname, '../../lib/output.js')
+
+      const resolvedPath = utils.resolveImportModulePath(absolutePath)
+      const module = await import(resolvedPath)
+      expect(module.default).to.be.ok
     })
   })
 })

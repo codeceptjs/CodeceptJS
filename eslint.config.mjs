@@ -14,7 +14,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['test/data/output', 'lib/css2xpath/*'],
+    ignores: ['test/data/output', 'test/data/app/js/*', 'lib/css2xpath/*'],
   },
   {
     languageOptions: {

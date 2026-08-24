@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -9,6 +9,12 @@ import FileSystem from '../../lib/helper/FileSystem.js'
 import actor from '../../lib/actor.js'
 import container from '../../lib/container.js'
 import Translation from '../../lib/translation.js'
+import { resolveImportModulePath } from '../../lib/utils.js'
+
+const realDummyPagePath = path.resolve(__dirname, '../data/dummy_page.js');
+const realIPath = path.resolve(__dirname, '../data/I.js');
+const realHelperPath = path.resolve(__dirname, '../data/helper.js');
+const realVocabulariesPath = path.resolve(__dirname, '../data/custom_vocabulary.json');
 
 describe('Container', () => {
   before(() => {
@@ -77,7 +83,7 @@ describe('Container', () => {
     })
 
     it('should load custom translation with vocabularies', async () => {
-      await container.create({ translation: 'my', vocabularies: ['data/custom_vocabulary.json'] })
+      await container.create({ translation: 'my', vocabularies: [realVocabulariesPath] })
       expect(container.translation()).to.be.instanceOf(Translation)
       expect(container.translation().loaded).to.be.true
       const translation = container.translation()
@@ -156,7 +162,7 @@ describe('Container', () => {
       const config = {
         helpers: {
           MyHelper: {
-            require: './data/helper.js',
+            require: realHelperPath,
           },
           FileSystem: {},
         },
@@ -180,17 +186,19 @@ describe('Container', () => {
     it('should load DI and return a reference to the module', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page.js',
+          dummyPage: realDummyPagePath,
         },
       })
-      const dummyPage = await import('../data/dummy_page.js')
+
+      const resolvedPath = resolveImportModulePath('../data/dummy_page.js')
+      const dummyPage = await import(resolvedPath)
       expect(container.support('dummyPage').toString()).is.eql((dummyPage.default || dummyPage).toString())
     })
 
     it('should load I from path and execute', async () => {
       await container.create({
         include: {
-          I: './data/I.js',
+          I: realIPath,
         },
       })
       expect(container.support('I')).is.ok
@@ -202,7 +210,7 @@ describe('Container', () => {
     it('should load DI includes provided as require paths', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page',
+          dummyPage: realDummyPagePath,
         },
       })
       expect(container.support('dummyPage')).is.ok
@@ -210,10 +218,12 @@ describe('Container', () => {
     })
 
     it('should load DI and inject I into PO', async () => {
+
+
       await container.create({
         include: {
-          dummyPage: './data/dummy_page.js',
-          I: './data/I.js',
+          dummyPage: realDummyPagePath,
+          I: realIPath,
         },
       })
       expect(container.support('dummyPage')).is.ok
@@ -225,8 +235,8 @@ describe('Container', () => {
     it('should load DI and inject custom I into PO', async () => {
       await container.create({
         include: {
-          dummyPage: './data/dummy_page.js',
-          I: './data/I.js',
+          dummyPage: realDummyPagePath,
+          I: realIPath,
         },
       })
       expect(container.support('dummyPage')).is.ok

@@ -63,6 +63,25 @@ Make sure `Playwright` helper is enabled in `codecept.conf.js` config:
 > Turn off the `show` option if you want to run test in headless mode.
 > If you don't specify the browser here, `chromium` will be used. Possible browsers are: `chromium`, `firefox` and `webkit`
 
+To point `firefox` at a custom build instead of the bundled one, pass `executablePath` under the
+`firefox` key:
+
+```js
+  helpers: {
+    Playwright: {
+      url: "http://localhost",
+      browser: 'firefox',
+      firefox: {
+        executablePath: '/path/to/firefox'
+      }
+    }
+  }
+```
+
+Useful with a build like [invisible_playwright](https://github.com/feder-cr/invisible_playwright),
+patched at the source level for a realistic fingerprint, for sites that detect the default Chromium
+path.
+
 Playwright uses different strategies to detect if a page is loaded. In configuration use `waitForNavigation` option for that:
 
 When to consider navigation succeeded, defaults to `load`. Given an array of event strings, navigation is considered to be successful after all events have been fired. Events can be either:

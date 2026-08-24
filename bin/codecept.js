@@ -5,6 +5,7 @@ import Codecept from '../lib/codecept.js'
 import output from '../lib/output.js'
 const { print, error } = output
 import { printError } from '../lib/command/utils.js'
+import { resolveImportModulePath } from '../lib/utils.js'
 
 const commandFlags = {
   ai: {
@@ -45,7 +46,8 @@ const errorHandler =
   }
 
 const dynamicImport = async modulePath => {
-  const module = await import(modulePath)
+  const resolvedPath = resolveImportModulePath(modulePath)
+  const module = await import(resolvedPath)
   return module.default || module
 }
 

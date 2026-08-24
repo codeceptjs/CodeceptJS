@@ -111,7 +111,7 @@ npm i tsx --save-dev
 // codecept.conf.ts
 export const config = {
   tests: './**/*_test.ts',
-  require: ['tsx/cjs'],   // loads the *_test.ts files
+  require: ['tsx/esm'],   // loads the *_test.ts files as ES Modules (needs "type": "module")
   helpers: {
     Playwright: { url: 'http://localhost', browser: 'chromium' },
   },

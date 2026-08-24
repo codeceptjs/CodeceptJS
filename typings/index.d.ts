@@ -464,6 +464,7 @@ declare namespace CodeceptJS {
     | { shadow: string[] }
     | { custom: string }
     | { pw: string }
+    | { role: string; name?: string; text?: string; exact?: boolean }
   interface CustomLocators {}
   interface OtherLocators {
     props?: object
@@ -524,24 +525,11 @@ type RetryTo = (fn: (tries: number) => Promise<void> | void, maxTries: number, p
 // Globals
 declare const codecept_dir: string
 declare const output_dir: string
-declare const tryTo: TryTo
-declare const retryTo: RetryTo
-declare const hopeThat: HopeThat
 
-declare const actor: CodeceptJS.actor
-declare const codecept_actor: CodeceptJS.actor
-declare const Helper: typeof CodeceptJS.Helper
-declare const codecept_helper: typeof CodeceptJS.Helper
 declare const pause: typeof CodeceptJS.pause
-declare const within: typeof CodeceptJS.within
-declare const session: typeof CodeceptJS.session
-declare const DataTable: typeof CodeceptJS.DataTable
-declare const DataTableArgument: typeof CodeceptJS.DataTableArgument
 declare const codeceptjs: typeof CodeceptJS
-declare const locate: typeof CodeceptJS.Locator.build
 declare function inject(): CodeceptJS.SupportObject
 declare function inject<T extends keyof CodeceptJS.SupportObject>(name: T): CodeceptJS.SupportObject[T]
-declare const secret: typeof CodeceptJS.Secret.secret
 
 // BDD
 declare const Given: typeof CodeceptJS.addStep
@@ -579,21 +567,8 @@ declare namespace NodeJS {
     codecept_dir: typeof codecept_dir
     output_dir: typeof output_dir
 
-    actor: typeof actor
-    codecept_actor: typeof codecept_actor
-    Helper: typeof Helper
-    codecept_helper: typeof codecept_helper
     pause: typeof pause
-    within: typeof within
-    session: typeof session
-    DataTable: typeof DataTable
-    DataTableArgument: typeof DataTableArgument
-    locate: typeof locate
     inject: typeof inject
-    secret: typeof secret
-    // plugins
-    tryTo: typeof tryTo
-    retryTo: typeof retryTo
 
     // BDD
     Given: typeof Given
@@ -729,6 +704,12 @@ declare module 'codeceptjs' {
    * Create a secret value
    */
   export const secret: typeof CodeceptJS.Secret.secret
+
+  export const session: typeof CodeceptJS.session
+
+  export const inject: typeof globalThis.inject
+
+  export const locate: typeof CodeceptJS.Locator.build
 }
 
 declare module '@codeceptjs/helper' {

@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import recorder from '../../lib/recorder.js'
+import { TimeoutError } from '../../lib/timeout.js'
 
 describe('Recorder', () => {
   beforeEach(() => recorder.start())
@@ -166,6 +167,109 @@ describe('Recorder', () => {
         true,
       )
       return recorder.promise()
+    })
+  })
+
+  describe('#error paths (characterization)', () => {
+    it('routes a task error to errFn and stops when catch() has no args', async () => {
+      let caught
+      recorder.errHandler(err => (caught = err))
+      recorder.add(() => {
+        throw new Error('boom')
+      })
+      recorder.catch()
+      await recorder.promise()
+      expect(caught).to.be.instanceof(Error)
+      expect(caught.message).to.equal('boom')
+      expect(recorder.isRunning()).to.equal(false)
+    })
+
+    it('catchWithoutStop runs fn for a normal error and the chain continues', async () => {
+      let handled
+      let after = false
+      recorder.add(() => {
+        throw new Error('soft')
+      })
+      recorder.catchWithoutStop(err => (handled = err.message))
+      recorder.add(() => (after = true))
+      await recorder.promise()
+      expect(handled).to.equal('soft')
+      expect(after).to.equal(true)
+    })
+
+    it('catchWithoutStop re-throws a terminal error past fn', async () => {
+      let fnCalled = false
+      const err = new Error('terminal')
+      err.isTerminal = true
+      recorder.add(() => {
+        throw err
+      })
+      recorder.catchWithoutStop(() => (fnCalled = true))
+      let rejected
+      await recorder.promise().catch(e => (rejected = e))
+      expect(fnCalled).to.equal(false)
+      expect(rejected).to.equal(err)
+    })
+
+    it('throw() after ignoreErr() does not reject the chain', async () => {
+      const err = new Error('ignored')
+      recorder.ignoreErr(err)
+      recorder.throw(err)
+      recorder.add(() => 'ok')
+      let rejected = false
+      await recorder.promise().catch(() => (rejected = true))
+      expect(rejected).to.equal(false)
+    })
+
+    it('two levels of nested sessions restore the session id to parent then null', () => {
+      const ids = []
+      recorder.add(() => {
+        recorder.session.start('outer')
+        ids.push(recorder.getCurrentSessionId())
+        recorder.session.start('inner')
+        ids.push(recorder.getCurrentSessionId())
+        recorder.session.restore('inner')
+        ids.push(recorder.getCurrentSessionId())
+        recorder.session.restore('outer')
+        ids.push(recorder.getCurrentSessionId())
+      })
+      return recorder.promise().then(() => {
+        expect(ids).to.deep.equal(['outer', 'inner', 'outer', null])
+      })
+    })
+
+    it('characterizes an unbalanced session start (no matching restore)', async () => {
+      recorder.add(() => {
+        recorder.session.start('orphan')
+      })
+      recorder.add(() => 'x')
+      await recorder.promise()
+      expect(recorder.getCurrentSessionId()).to.equal('orphan')
+      recorder.reset()
+      expect(recorder.getCurrentSessionId()).to.equal(null)
+    })
+
+    it('rejects with TimeoutError when a task exceeds its timeout', async () => {
+      recorder.retries = []
+      recorder.add('slow', () => new Promise(r => setTimeout(r, 200)), false, false, 50)
+      let err
+      await recorder.promise().catch(e => (err = e))
+      expect(err).to.be.instanceof(TimeoutError)
+    })
+
+    it('does not reject later when a fast task finishes within its timeout', async () => {
+      recorder.retries = []
+      const unhandled = []
+      const onUnhandled = e => unhandled.push(e)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        recorder.add('fast', () => new Promise(r => setTimeout(r, 10)), false, false, 50)
+        await recorder.promise()
+        await new Promise(r => setTimeout(r, 120))
+        expect(unhandled).to.have.length(0)
+      } finally {
+        process.removeListener('unhandledRejection', onUnhandled)
+      }
     })
   })
 })

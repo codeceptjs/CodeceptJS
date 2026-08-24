@@ -15,7 +15,7 @@ CodeceptJS ships [type declarations](https://github.com/codeceptjs/CodeceptJS/tr
 ? Do you plan to write tests in TypeScript? Yes
 ```
 
-It writes `codecept.conf.ts` and `*_test.ts` files. The **config file** and helpers are transpiled automatically. **Test files** need a loader — CodeceptJS 4.x is ESM, and Mocha loads test files through CommonJS hooks, so use [`tsx`](https://tsx.is) (fast, esbuild-based, no `tsconfig.json` required):
+It writes `codecept.conf.ts` and `*_test.ts` files. The **config file** and helpers are transpiled automatically. **Test files** need a loader — CodeceptJS 4.x is ESM and loads test files as ES Modules, so use [`tsx`](https://tsx.is) (fast, esbuild-based, no `tsconfig.json` required):
 
 ```sh
 npm i tsx --save-dev
@@ -25,16 +25,16 @@ npm i tsx --save-dev
 // codecept.conf.ts
 export const config = {
   tests: './**/*_test.ts',
-  require: ['tsx/cjs'],   // loads the *_test.ts files
+  require: ['tsx/esm'],   // loads the *_test.ts files as ES Modules
   helpers: {
     Playwright: { url: 'http://localhost', browser: 'chromium' },
   },
 }
 ```
 
-Run the tests with `npx codeceptjs run`.
+Set `"type": "module"` in `package.json` so `tsx` compiles your `.ts` test files as ES Modules. Then run the tests with `npx codeceptjs run`.
 
-> Adding TypeScript to an existing project: set `"type": "module"` in `package.json`, rename the config to `codecept.conf.ts` with `export const config = {}`, install `tsx`, and add `require: ['tsx/cjs']`.
+> Adding TypeScript to an existing project: set `"type": "module"` in `package.json`, rename the config to `codecept.conf.ts` with `export const config = {}`, install `tsx`, and add `require: ['tsx/esm']`.
 
 ## Writing tests
 
@@ -59,7 +59,9 @@ Scenario('admin signs in', ({ I }) => {
 })
 ```
 
-> **Cannot find module** or **Unexpected token** while running tests means the loader isn't wired up — check that `tsx` is installed and `require: ['tsx/cjs']` is in the config.
+> **Cannot find module** or **Unexpected token** while running tests means the loader isn't wired up — check that `tsx` is installed and `require: ['tsx/esm']` is in the config.
+>
+> **`ERR_REQUIRE_CYCLE_MODULE`** means `tsx` is compiling your `.ts` tests as CommonJS — add `"type": "module"` to the nearest `package.json`.
 
 ## Promise-based typings
 

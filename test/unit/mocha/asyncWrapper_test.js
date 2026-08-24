@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { test as testWrapper, setup, teardown, suiteSetup, suiteTeardown } from '../../../lib/mocha/asyncWrapper.js'
+import { test as testWrapper, injected, setup, teardown, suiteSetup, suiteTeardown } from '../../../lib/mocha/asyncWrapper.js'
 import recorder from '../../../lib/recorder.js'
 import event from '../../../lib/event.js'
 import Container from '../../../lib/container.js'
@@ -13,6 +13,27 @@ let beforeSuite
 let afterSuite
 let failed
 let started
+
+// Runs a wrapped test/hook fn and resolves with how many times its done
+// callback fired and the argument it received. A done that never fires becomes
+// a fast, named rejection instead of a mocha timeout.
+function runHook(hookFn, ms = 2000) {
+  return new Promise((resolve, reject) => {
+    let count = 0
+    let arg
+    const timer = setTimeout(() => reject(new Error('done callback was never called')), ms)
+    timer.unref?.()
+    hookFn(err => {
+      count++
+      arg = err
+      const settle = setTimeout(() => {
+        clearTimeout(timer)
+        resolve({ count, arg })
+      }, 50)
+      settle.unref?.()
+    })
+  })
+}
 
 describe('AsyncWrapper', () => {
   beforeEach(async () => {
@@ -138,6 +159,114 @@ describe('AsyncWrapper', () => {
         .promise()
         .then(() => expect(failed.called).is.ok)
         .catch(() => null)
+    })
+  })
+
+  describe('test() lifecycle (characterization)', () => {
+    beforeEach(() => recorder.start())
+
+    it('calls done once with the error and fires test.failed when a queued step throws', async () => {
+      const onFailed = sinon.spy()
+      event.dispatcher.on(event.test.failed, onFailed)
+      test.fn = () => {
+        recorder.add(() => {
+          throw new Error('stepfail')
+        })
+      }
+      const { count, arg } = await runHook(testWrapper(test).fn)
+      expect(count).to.equal(1)
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('stepfail')
+      expect(onFailed.called, 'test.failed fired').to.be.true
+    })
+
+    it('calls done once with the error when the body throws synchronously', async () => {
+      const onFailed = sinon.spy()
+      event.dispatcher.on(event.test.failed, onFailed)
+      test.fn = () => {
+        throw new Error('syncthrow')
+      }
+      const { count, arg } = await runHook(testWrapper(test).fn)
+      expect(count).to.equal(1)
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('syncthrow')
+      expect(onFailed.called, 'test.failed fired').to.be.true
+    })
+
+    it('passes (done with no error) and fires test.passed when test.throws matches', async () => {
+      const onPassed = sinon.spy()
+      event.dispatcher.on(event.test.passed, onPassed)
+      test.throws = /boom/
+      test.fn = () => {
+        throw new Error('boom happened')
+      }
+      const { count, arg } = await runHook(testWrapper(test).fn)
+      expect(count).to.equal(1)
+      expect(arg, 'done called with no error').to.be.undefined
+      expect(onPassed.called, 'test.passed fired').to.be.true
+    })
+  })
+
+  describe('injected() hooks (characterization)', () => {
+    beforeEach(() => recorder.start())
+
+    it('a rejecting before-hook calls done with the error and fails the suite tests', async () => {
+      const onFailed = sinon.spy()
+      event.dispatcher.on(event.test.failed, onFailed)
+      const suiteTests = [{ title: 'sample test' }]
+      const suite = {
+        opts: {},
+        ctx: { test: { title: '"before each" hook' }, currentTest: suiteTests[0] },
+        eachTest: cb => suiteTests.forEach(cb),
+      }
+      const fn = async () => {
+        throw new Error('hookfail')
+      }
+      const hook = injected(fn, suite, 'before')
+      const { arg } = await runHook(hook.bind({ test: {} }))
+      expect(arg, 'done received the error').to.be.instanceof(Error)
+      expect(arg.message).to.equal('hookfail')
+      expect(onFailed.called, 'test.failed emitted for suite tests').to.be.true
+      expect(suiteTests[0].err, 'the suite test got the hook error attached').to.be.instanceof(Error)
+    })
+  })
+
+  describe('setup/teardown import hardening (regression)', () => {
+    beforeEach(() => recorder.start())
+
+    it('setup(): a throwing then-body calls done with the error instead of hanging', async () => {
+      const suite = {
+        ctx: {
+          get currentTest() {
+            throw new Error('setup-boom')
+          },
+        },
+      }
+      const { count, arg } = await runHook(setup(suite), 1000)
+      expect(count).to.equal(1)
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('setup-boom')
+    })
+
+    it('teardown(): a throwing then-body calls done with the error instead of hanging', async () => {
+      const suite = {
+        ctx: {
+          get currentTest() {
+            throw new Error('teardown-boom')
+          },
+        },
+      }
+      const { count, arg } = await runHook(teardown(suite), 1000)
+      expect(count).to.equal(1)
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('teardown-boom')
+    })
+
+    it('setup(): happy path calls done with no error', async () => {
+      const suite = { ctx: { currentTest: { title: 'a sample test' } } }
+      const { count, arg } = await runHook(setup(suite), 1000)
+      expect(count).to.equal(1)
+      expect(arg, 'done called with no error').to.be.undefined
     })
   })
 })

@@ -1,6 +1,7 @@
 export const config = {
   tests: './*_test.js',
   output: './output',
+  noGlobals: true,
   helpers: {
     CustomHelper: {
       require: './customHelper.js',

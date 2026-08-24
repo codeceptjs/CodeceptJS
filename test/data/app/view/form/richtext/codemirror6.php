@@ -14,7 +14,7 @@
         <button type="submit" id="submit">Submit</button>
     </form>
     <script type="module">
-        import { EditorView, minimalSetup } from 'https://esm.sh/codemirror@6.0.1'
+        import { EditorView, minimalSetup } from '/js/codemirror6.js'
         const initial = <?php echo json_encode($initial, JSON_UNESCAPED_UNICODE); ?>;
         const view = new EditorView({
             doc: initial,

@@ -107,17 +107,3 @@ expectType<CodeceptJS.HookConfig>(
     expectType<CodeceptJS.I>(args.I)
   }),
 )
-
-// @ts-ignore
-expectType<Promise<boolean>>(
-  tryTo(() => {
-    return true
-  }),
-)
-
-// @ts-ignore
-expectType<Promise<boolean>>(
-  tryTo(async () => {
-    return false
-  }),
-)
