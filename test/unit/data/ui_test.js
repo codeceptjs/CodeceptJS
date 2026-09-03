@@ -122,4 +122,11 @@ describe('ui', () => {
       expect(dataScenarioConfig.scenarios[0].test.title).to.equal('scenario | {"username":"jon","password":"snow"}')
     })
   })
+
+  describe('secret data rows', () => {
+    it("should not leak a secret data row's value into the title", () => {
+      const dataScenarioConfig = context.Data([new Secret('theSecretPassword')]).Scenario('scenario', () => {})
+      expect(dataScenarioConfig.scenarios[0].test.title).to.equal('scenario | *****')
+    })
+  })
 })
