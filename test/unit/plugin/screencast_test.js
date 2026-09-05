@@ -32,6 +32,14 @@ function fakeHelper(screencastApi) {
   }
 }
 
+function fakeCdpHelper(apngBuffer) {
+  return {
+    options: {},
+    startScreencast: sinon.stub().resolves(),
+    stopScreencast: sinon.stub().resolves(apngBuffer === undefined ? Buffer.from('fake-apng-bytes') : apngBuffer),
+  }
+}
+
 function detachAll() {
   for (const evt of [
     event.test.before, event.test.started, event.test.after, event.test.failed,
@@ -221,5 +229,128 @@ describe('screencast', () => {
   it('rejects invalid mode (on=step) without throwing', () => {
     container.clear({ Playwright: { options: {}, page: { screencast: makeFakeScreencast() } } })
     expect(() => screencast({ on: 'step' })).to.not.throw()
+  })
+
+  describe('CDP-family helpers (CDPBrowser/Obscura/Kitesurf)', () => {
+    it('on=test keeps the file on pass and sets test.artifacts.screencast to .apng', async () => {
+      const helper = fakeCdpHelper()
+      container.clear({ Obscura: helper })
+
+      screencast({ on: 'test' })
+      const test = createTest('cdp-keep-on-pass')
+
+      event.dispatcher.emit(event.test.before, test)
+      event.dispatcher.emit(event.test.started, test)
+      event.dispatcher.emit(event.step.started, aStep())
+      await recorder.promise()
+
+      event.dispatcher.emit(event.test.after, test)
+      await recorder.promise()
+
+      expect(helper.startScreencast.calledOnce).to.equal(true)
+      expect(helper.stopScreencast.calledOnce).to.equal(true)
+      expect(writeFileStub.calledOnce).to.equal(true)
+      expect(writeFileStub.firstCall.args[0]).to.match(/cdp-keep-on-pass.*\.apng$/)
+      expect(test.artifacts.screencast).to.match(/cdp-keep-on-pass.*\.apng$/)
+    })
+
+    it('on=fail does not write the apng on pass and leaves no artifact', async () => {
+      const helper = fakeCdpHelper()
+      container.clear({ Obscura: helper })
+
+      screencast({ on: 'fail' })
+      const test = createTest('cdp-delete-on-pass')
+
+      event.dispatcher.emit(event.test.before, test)
+      event.dispatcher.emit(event.test.started, test)
+      event.dispatcher.emit(event.step.started, aStep())
+      await recorder.promise()
+
+      event.dispatcher.emit(event.test.after, test)
+      await recorder.promise()
+
+      expect(helper.startScreencast.calledOnce).to.equal(true)
+      expect(helper.stopScreencast.calledOnce).to.equal(true)
+      expect(writeFileStub.called).to.equal(false)
+      expect(test.artifacts.screencast).to.equal(undefined)
+    })
+
+    it('on=fail keeps the apng when test.failed fires', async () => {
+      const helper = fakeCdpHelper()
+      container.clear({ Obscura: helper })
+
+      screencast({ on: 'fail' })
+      const test = createTest('cdp-keep-on-fail')
+
+      event.dispatcher.emit(event.test.before, test)
+      event.dispatcher.emit(event.test.started, test)
+      event.dispatcher.emit(event.step.started, aStep())
+      await recorder.promise()
+
+      event.dispatcher.emit(event.test.failed, test, new Error('boom'))
+      event.dispatcher.emit(event.test.after, test)
+      await recorder.promise()
+
+      expect(writeFileStub.calledOnce).to.equal(true)
+      expect(test.artifacts.screencast).to.match(/cdp-keep-on-fail.*\.apng$/)
+    })
+
+    it('does not write an apng when stopScreencast returns null (no frames captured)', async () => {
+      const helper = fakeCdpHelper(null)
+      container.clear({ Obscura: helper })
+
+      screencast({ on: 'test' })
+      const test = createTest('cdp-no-frames')
+
+      event.dispatcher.emit(event.test.before, test)
+      event.dispatcher.emit(event.test.started, test)
+      event.dispatcher.emit(event.step.started, aStep())
+      await recorder.promise()
+
+      event.dispatcher.emit(event.test.after, test)
+      await recorder.promise()
+
+      expect(writeFileStub.called).to.equal(false)
+      expect(test.artifacts.screencast).to.equal(undefined)
+    })
+
+    it('does not touch page.screencast on the CDP path (captions/showActions are Playwright-only)', async () => {
+      const helper = fakeCdpHelper()
+      container.clear({ Obscura: helper })
+
+      screencast({ on: 'test', captions: true })
+      const test = createTest('cdp-no-captions-api')
+
+      event.dispatcher.emit(event.test.before, test)
+      event.dispatcher.emit(event.test.started, test)
+      await recorder.promise()
+      event.dispatcher.emit(event.test.after, test)
+      await recorder.promise()
+
+      expect(helper.page).to.equal(undefined)
+      expect(helper.startScreencast.calledOnce).to.equal(true)
+    })
+
+    it('subtitles=true writes an SRT alongside the apng', async () => {
+      const helper = fakeCdpHelper()
+      container.clear({ Obscura: helper })
+
+      screencast({ on: 'test', subtitles: true })
+      const test = createTest('cdp-with-srt')
+
+      event.dispatcher.emit(event.test.before, test)
+      event.dispatcher.emit(event.test.started, test)
+      await recorder.promise()
+
+      const step = { title: 'click', actor: 'I', args: ['Continue'] }
+      event.dispatcher.emit(event.step.started, step)
+      event.dispatcher.emit(event.step.finished, step)
+      event.dispatcher.emit(event.test.after, test)
+      await recorder.promise()
+
+      const srtCall = writeFileStub.getCalls().find(c => /\.srt$/.test(c.args[0]))
+      expect(srtCall, 'expected a .srt write').to.exist
+      expect(test.artifacts.subtitle).to.match(/cdp-with-srt.*\.srt$/)
+    })
   })
 })

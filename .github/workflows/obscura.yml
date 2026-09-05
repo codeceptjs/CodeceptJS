@@ -1,0 +1,72 @@
+name: Obscura Helper Tests
+
+on:
+  push:
+    branches:
+      - 4.x
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+  OBSCURA_VERSION: v0.2.0
+  OBSCURA_SHA256: d601f4f542319c3b9fa8dca9f5ccfc134a2ca001648da528db5f03c9e6c2599b
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: npm install
+        run: npm i --force
+      - name: Cache Obscura tarball
+        uses: actions/cache@v4
+        with:
+          path: ~/obscura-bin/obscura.tar.gz
+          key: obscura-${{ env.OBSCURA_VERSION }}-x86_64-linux
+      - name: Download Obscura
+        run: |
+          mkdir -p ~/obscura-bin
+          if [ ! -f ~/obscura-bin/obscura.tar.gz ]; then
+            curl -sfL -o ~/obscura-bin/obscura.tar.gz https://github.com/h4ckf0r0day/obscura/releases/download/${OBSCURA_VERSION}/obscura-x86_64-linux.tar.gz
+          fi
+          echo "${OBSCURA_SHA256}  $HOME/obscura-bin/obscura.tar.gz" | sha256sum -c -
+          tar xzf ~/obscura-bin/obscura.tar.gz -C ~/obscura-bin
+          ~/obscura-bin/obscura --version
+      - name: start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 1
+          curl -sf http://127.0.0.1:8000/info > /dev/null
+      - name: run obscura helper tests
+        run: |
+          export OBSCURA_PATH="$HOME/obscura-bin/obscura"
+          npm run test:unit:webbapi:obscura
+      - name: run obscura acceptance tests
+        run: |
+          export OBSCURA_PATH="$HOME/obscura-bin/obscura"
+          ./bin/codecept.js run -c test/acceptance/codecept.Obscura.js --grep @Obscura --debug

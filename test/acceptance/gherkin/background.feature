@@ -1,4 +1,4 @@
-@Puppeteer @WebDriverIO @bdd
+@Puppeteer @WebDriverIO @bdd @Obscura
 Feature: Site test
   In order to achieve my goals
   As a persona
