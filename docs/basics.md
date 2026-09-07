@@ -241,6 +241,13 @@ I.uncheckOption('Subscribe')
 
 > [selectOption](/web-api#iselectoption) works with native `<select>` elements as well as custom components using `role="combobox"` or `role="listbox"`.
 
+> [fillField](/web-api#ifillfield) works with searchable comboboxes built on `role="combobox"` — including triggers rendered as a `<button>`. The combobox is expanded, its search input is located, and the value is typed into it, leaving the list filtered so an option can be picked:
+>
+> ```js
+> I.fillField('Country', 'Ukr')
+> I.click('Ukraine')
+> ```
+
 ### Assertions
 
 CodeceptJS provides **built-in browser assertions** instead of generic `expect()` calls. This keeps tests readable and produces clear failure messages without extra assertion libraries.

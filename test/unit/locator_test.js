@@ -808,4 +808,41 @@ describe('Locator', () => {
       expect(items[0].getAttribute('id')).to.eql('rename')
     })
   })
+  describe('Locator.field', () => {
+    const comboboxXml = `<root>
+      <label for="value-input" id="country-label">Country</label>
+      <button type="button" role="combobox" id="trigger" aria-expanded="false" aria-labelledby="country-label"></button>
+      <input id="value-input" name="country" tabindex="-1" aria-hidden="true" value=""/>
+    </root>`
+
+    it('skips the aria-hidden proxy input a label points at', () => {
+      const comboboxDoc = new DOMParser().parseFromString(comboboxXml, 'text/xml')
+      const root = xpath.select1('//root', comboboxDoc)
+
+      expect(xpath.select(Locator.field.labelEquals("'Country'"), root)).to.have.length(0)
+      expect(xpath.select(Locator.field.byName("'country'"), root)).to.have.length(0)
+    })
+
+    it('resolves the labelled combobox once the proxy is skipped', () => {
+      const comboboxDoc = new DOMParser().parseFromString(comboboxXml, 'text/xml')
+      const root = xpath.select1('//root', comboboxDoc)
+
+      const nodes = xpath.select(Locator.field.labelContains("'Country'"), root)
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].getAttribute('id')).to.eql('trigger')
+    })
+
+    it('still matches a regular labelled input', () => {
+      const formXml = `<root>
+        <label for="name">Name</label>
+        <input id="name" name="name" value=""/>
+      </root>`
+      const formDoc = new DOMParser().parseFromString(formXml, 'text/xml')
+      const root = xpath.select1('//root', formDoc)
+
+      const nodes = xpath.select(Locator.field.labelEquals("'Name'"), root)
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].getAttribute('id')).to.eql('name')
+    })
+  })
 })

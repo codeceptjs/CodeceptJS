@@ -949,6 +949,80 @@ export function tests() {
     })
   })
 
+  describe('#fillField - comboboxes', function () {
+    this.timeout(60000)
+
+    async function open(page, initial) {
+      const q = initial != null ? `?initial=${encodeURIComponent(initial)}` : ''
+      await I.amOnPage(`/form/combobox/${page}${q}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function outerTitleValue() {
+      return I.executeScript(() => document.getElementById('outer-title').value)
+    }
+
+    async function comboInputValue() {
+      return I.executeScript(() => {
+        const inputs = [...document.querySelectorAll('input[role="combobox"]')]
+        return inputs.length ? inputs[inputs.length - 1].value : null
+      })
+    }
+
+    async function visibleOptions() {
+      return I.executeScript(() =>
+        [...document.querySelectorAll('[role="option"]')]
+          .filter(o => o.getClientRects().length)
+          .map(o => o.textContent.trim()),
+      )
+    }
+
+    for (const page of ['baseui', 'baseui-inline']) {
+      describe(page, () => {
+        it('types into the combobox and filters its options', async () => {
+          await open(page)
+          await I.fillField('Country', 'United')
+          expect(await comboInputValue()).to.equal('United')
+          expect(await visibleOptions()).to.deep.equal(['United Kingdom', 'United States'])
+        })
+
+        it('submits the option picked after filtering', async () => {
+          await open(page)
+          await I.fillField('Country', 'Ukr')
+          await I.click('Ukraine')
+          await I.click('#submit')
+          await I.waitForElement('#result', 15)
+          expect(await I.grabTextFrom('#result')).to.include('Ukraine')
+        })
+
+        it('rewrites a pre-populated value', async () => {
+          await open(page, 'Portugal')
+          await I.fillField('Country', 'France')
+          expect(await comboInputValue()).to.equal('France')
+        })
+
+        it('does not leak keystrokes to the outer focused input', async () => {
+          await open(page)
+          await I.click('#outer-title')
+          await I.fillField('Country', 'United')
+          expect(await outerTitleValue()).to.equal('')
+        })
+      })
+    }
+
+    it('fails with a helpful message when the combobox has no text input', async () => {
+      await I.amOnPage('/form/custom_select')
+      let message = ''
+      try {
+        await I.fillField('Country', 'London')
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('no text input')
+      expect(message).to.include('selectOption')
+    })
+  })
+
   describe('#clearField', () => {
     it('should clear a given element', async () => {
       await I.amOnPage('/form/field')
