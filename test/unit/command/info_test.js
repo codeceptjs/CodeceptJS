@@ -1,7 +1,47 @@
 import { expect } from 'chai'
-import { parsePlaywrightBrowsers } from '../../../lib/command/info.js'
+import { parsePlaywrightBrowsers, getRuntimeInfo } from '../../../lib/command/info.js'
 
 describe('info command', () => {
+  describe('getRuntimeInfo', () => {
+    let originalBunVersion
+
+    beforeEach(() => {
+      originalBunVersion = process.versions.bun
+    })
+
+    afterEach(() => {
+      if (originalBunVersion === undefined) {
+        delete process.versions.bun
+      } else {
+        process.versions.bun = originalBunVersion
+      }
+    })
+
+    it('should report bunInfo when running under Bun', async () => {
+      process.versions.bun = '1.4.2'
+      const info = await getRuntimeInfo()
+      expect(info).to.have.property('bunInfo')
+      expect(info).to.not.have.property('nodeInfo')
+      expect(info.bunInfo[0]).to.equal('bun')
+    })
+
+    it('should report nodeInfo when not running under Bun', async () => {
+      delete process.versions.bun
+      const info = await getRuntimeInfo()
+      expect(info).to.have.property('nodeInfo')
+      expect(info).to.not.have.property('bunInfo')
+      expect(info.nodeInfo[0]).to.equal('Node')
+    })
+
+    it('should return an array so the printer shows the version at index 1', async () => {
+      delete process.versions.bun
+      const { nodeInfo } = await getRuntimeInfo()
+      expect(nodeInfo).to.be.an('array')
+      expect(nodeInfo.length).to.be.at.least(2)
+      expect(nodeInfo[1]).to.be.a('string')
+    })
+  })
+
   describe('parsePlaywrightBrowsers', () => {
     describe('old format (Playwright < 1.58)', () => {
       const oldFormatOutput = `browser: chromium version 140.0.7339.186
