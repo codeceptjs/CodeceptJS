@@ -548,6 +548,85 @@ export function tests() {
     })
   })
 
+  describe('#checkOption - ARIA roles', function () {
+    this.timeout(60000)
+
+    async function open(page) {
+      await I.amOnPage(`/form/checkable/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function ariaChecked(css) {
+      return I.grabAttributeFrom(css, 'aria-checked')
+    }
+
+    for (const page of ['radix', 'baseui']) {
+      describe(page, () => {
+        beforeEach(function () {
+          // webdriverio resolves `<label for>` to input/textarea only, and a Radix
+          // `<button role=checkbox>` carries no accessible name of its own
+          if (page === 'radix' && isHelper('WebDriver')) this.skip()
+        })
+
+        it('checks and unchecks a checkbox by its label', async () => {
+          await open(page)
+          await I.dontSeeCheckboxIsChecked('Accept terms')
+
+          await I.checkOption('Accept terms')
+          expect(await ariaChecked('.ctl-terms')).to.equal('true')
+          await I.seeCheckboxIsChecked('Accept terms')
+
+          await I.uncheckOption('Accept terms')
+          expect(await ariaChecked('.ctl-terms')).to.equal('false')
+          await I.dontSeeCheckboxIsChecked('Accept terms')
+        })
+
+        it('checks a switch by its label', async () => {
+          await open(page)
+          await I.checkOption('Airplane mode')
+          expect(await ariaChecked('.ctl-airplane')).to.equal('true')
+          await I.seeCheckboxIsChecked('Airplane mode')
+        })
+
+        it('checks a radio by its label', async () => {
+          await open(page)
+          await I.dontSeeCheckboxIsChecked('Comfortable')
+
+          await I.checkOption('Comfortable')
+          expect(await ariaChecked('.ctl-comfortable')).to.equal('true')
+          expect(await ariaChecked('.ctl-default')).to.equal('false')
+          await I.seeCheckboxIsChecked('Comfortable')
+        })
+      })
+    }
+
+    it('resolves the visible control and not the hidden input the label points at', async () => {
+      await open('baseui')
+      // the author id sits on a 1x1 aria-hidden mirror input at x:-1,y:-1 which <label for> targets;
+      // [role=checkbox] can only be the visible span
+      expect(await I.grabAttributeFrom('#terms', 'aria-hidden')).to.equal('true')
+
+      await I.checkOption('Accept terms')
+      expect(await ariaChecked('[role=checkbox]')).to.equal('true')
+    })
+
+    it('still checks a plain input by its label', async () => {
+      await I.amOnPage('/form/checkbox')
+      await I.checkOption('I Agree')
+      await I.seeCheckboxIsChecked('I Agree')
+      await I.click('Submit')
+      assert.equal(formContents('terms'), 'agree')
+    })
+
+    it('ignores a non-control sharing the accessible name', async () => {
+      await I.amOnPage('/form/checkable/collision')
+      await I.dontSeeCheckboxIsChecked('#terms-box')
+
+      await I.checkOption('Accept terms')
+      await I.seeCheckboxIsChecked('#terms-box')
+    })
+  })
+
   describe('#selectOption', () => {
     it('should select option by css', async () => {
       await I.amOnPage('/form/select')
@@ -2620,8 +2699,6 @@ export function tests() {
     })
 
     it('should check options by aria-label', async () => {
-      if (!isHelper('WebDriver')) return
-
       await I.amOnPage('/form/role_elements')
 
       await I.dontSeeCheckboxIsChecked('I agree to the terms and conditions')
@@ -2642,9 +2719,7 @@ export function tests() {
       await I.fillField('your@email.com', 'bob@company.com')
       await I.fillField('Enter your message', 'Test message')
 
-      if (isHelper('WebDriver')) {
-        await I.checkOption('Subscribe to newsletter')
-      }
+      await I.checkOption('Subscribe to newsletter')
 
       await I.click('Submit')
       await I.see('Form Submitted!')
