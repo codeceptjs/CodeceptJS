@@ -808,4 +808,79 @@ describe('Locator', () => {
       expect(items[0].getAttribute('id')).to.eql('rename')
     })
   })
+
+  describe('Locator.field.labelContains', () => {
+    const parse = markup => new DOMParser().parseFromString(markup, 'text/xml')
+
+    it('skips a labelled wrapper and resolves the input it wraps', () => {
+      const sliderDoc = parse(`<root>
+        <label id="volume-label">Volume</label>
+        <div role="group" aria-labelledby="volume-label">
+          <input type="range" name="vol" value="30" aria-labelledby="volume-label"/>
+        </div>
+      </root>`)
+      const root = xpath.select1('//root', sliderDoc)
+      const xp = Locator.field.labelContains("'Volume'")
+      const nodes = xpath.select(xp, root)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].tagName).to.eql('input')
+      expect(nodes[0].getAttribute('name')).to.eql('vol')
+    })
+
+    it('does not match a tablist container labelled by aria-label', () => {
+      const tabsDoc = parse(`<root>
+        <ul role="tablist" aria-label="Settings tabs">
+          <li role="tab">Profile</li>
+          <li role="tab">Password</li>
+        </ul>
+      </root>`)
+      const root = xpath.select1('//root', tabsDoc)
+      const xp = Locator.field.labelContains("'Settings tabs'")
+
+      expect(xpath.select(xp, root)).to.have.length(0, xp)
+    })
+
+    it('does not match a group container labelled by title', () => {
+      const groupDoc = parse('<root><div role="group" title="Volume"><span>0</span></div></root>')
+      const root = xpath.select1('//root', groupDoc)
+      const xp = Locator.field.labelContains("'Volume'")
+
+      expect(xpath.select(xp, root)).to.have.length(0, xp)
+    })
+
+    it('still matches a custom widget with an editable role', () => {
+      const widgetDoc = parse('<root><div role="textbox" contenteditable="true" aria-label="Nickname" id="nick"/></root>')
+      const root = xpath.select1('//root', widgetDoc)
+      const xp = Locator.field.labelContains("'Nickname'")
+      const nodes = xpath.select(xp, root)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].getAttribute('id')).to.eql('nick')
+    })
+
+    it('still matches a native input by aria-label', () => {
+      const inputDoc = parse('<root><input type="text" aria-label="My Address" name="my-form-address"/></root>')
+      const root = xpath.select1('//root', inputDoc)
+      const xp = Locator.field.labelContains("'My Address'")
+      const nodes = xpath.select(xp, root)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].getAttribute('name')).to.eql('my-form-address')
+    })
+
+    it('keeps both a combobox and a listbox sharing one aria-labelledby', () => {
+      const selectDoc = parse(`<root>
+        <label id="color-label">Favorite Color</label>
+        <div role="combobox" aria-labelledby="color-label" id="color-trigger"/>
+        <div role="listbox" aria-labelledby="color-label" id="color-listbox"/>
+      </root>`)
+      const root = xpath.select1('//root', selectDoc)
+      const xp = Locator.field.labelContains("'Favorite Color'")
+      const nodes = xpath.select(xp, root)
+
+      expect(nodes).to.have.length(2, xp)
+      expect(nodes.map(n => n.getAttribute('id'))).to.eql(['color-trigger', 'color-listbox'])
+    })
+  })
 })

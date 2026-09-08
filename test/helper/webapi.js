@@ -609,6 +609,23 @@ export function tests() {
         await I.see('tags: review,later', '#result')
       })
     })
+
+    it('should not resolve a labelled tablist container as a field', async function () {
+      if (isHelper('Puppeteer')) this.skip()
+
+      await I.amOnPage('/form/field_containers')
+
+      let err
+      try {
+        await I.selectOption('Settings tabs', 'Password')
+      } catch (e) {
+        err = e
+      }
+
+      if (!err) assert.fail('selected an option on a tablist')
+      assert.include(err.message, 'was not found')
+      assert.notInclude(err.message, '<select>')
+    })
   })
 
   describe('context parameter', () => {
@@ -1038,6 +1055,18 @@ export function tests() {
       await I.amOnPage('/form/example20')
       await I.seeInField("//input[@name='txtName'][2]", 'emma')
       await I.seeInField("input[name='txtName']:nth-child(2)", 'emma')
+    })
+
+    it('should skip a labelled wrapper and read the field it wraps', async () => {
+      await I.amOnPage('/form/field_containers')
+      await I.seeInField('Volume', '30')
+      const value = await I.grabValueFrom('Volume')
+      assert.equal(value, '30')
+    })
+
+    it('should still reach a custom widget labelled by aria-labelledby', async () => {
+      await I.amOnPage('/form/field_containers')
+      await I.seeInField('Nickname', 'Bob')
     })
   })
 
