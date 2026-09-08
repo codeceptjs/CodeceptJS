@@ -2407,6 +2407,85 @@ export function tests() {
     })
   })
 
+  describe('#dragSlider - semantic locators', function () {
+    this.timeout(60000)
+
+    async function openComponentPage(page) {
+      await I.amOnPage(`/form/slider/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    it('drags a native range input located by its label', async () => {
+      await I.amOnPage('/form/slider/native')
+      const before = await I.executeScript(() => window.__value('legacy-volume'))
+      await I.dragSlider('Legacy volume', 40)
+      const after = await I.executeScript(() => window.__value('legacy-volume'))
+      expect(Number(after)).to.be.greaterThan(Number(before))
+    })
+
+    it('drags a native range input located by aria-label', async () => {
+      await I.amOnPage('/form/slider/native')
+      const before = await I.executeScript(() => window.__value('gain'))
+      await I.dragSlider('Input gain', 30)
+      const after = await I.executeScript(() => window.__value('gain'))
+      expect(Number(after)).to.be.greaterThan(Number(before))
+    })
+
+    it('drags a Radix slider located by the thumb aria-label', async () => {
+      await openComponentPage('radix')
+      const before = await I.executeScript(() => window.__sliderValue('Brightness'))
+      await I.dragSlider('Brightness', 40)
+      const after = await I.executeScript(() => window.__sliderValue('Brightness'))
+      expect(Number(after)).to.be.greaterThan(Number(before))
+    })
+
+    it('drags a Base UI slider located by its field label', async () => {
+      await openComponentPage('baseui')
+      const before = await I.executeScript(() => window.__sliderValue('Volume'))
+      await I.dragSlider('Volume', 40)
+      const after = await I.executeScript(() => window.__sliderValue('Volume'))
+      expect(Number(after)).to.be.greaterThan(Number(before))
+    })
+
+    it('reports a missing slider by its human readable name', async () => {
+      await I.amOnPage('/form/slider/native')
+      let message = ''
+      try {
+        await I.dragSlider('No such slider', 10)
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('No such slider')
+    })
+  })
+
+  describe('#moveCursorTo - semantic locators', function () {
+    this.timeout(60000)
+
+    it('moves the cursor to a button located by its text', async () => {
+      await I.amOnPage('/form/hover')
+      await I.moveCursorTo('Show details')
+      await I.see('Button hovered!', '#show-button')
+    })
+
+    it('moves the cursor to an element located by aria-label', async () => {
+      await I.amOnPage('/form/hover')
+      await I.moveCursorTo('Hover card trigger')
+      await I.see('Card hovered!', '#show-card')
+    })
+
+    it('opens a Radix tooltip and hover card', async () => {
+      await I.amOnPage('/form/hover/radix')
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+
+      await I.moveCursorTo('Hover me')
+      await I.waitForText('Tooltip is open', 10)
+
+      await I.moveCursorTo('Hover card trigger')
+      await I.waitForText('Hover card is open', 10)
+    })
+  })
+
   describe('#strict mode', () => {
     afterEach(() => {
       I.options.strict = false

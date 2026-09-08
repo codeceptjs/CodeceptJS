@@ -7,5 +7,15 @@
 
 <div id="show"></div>
 
+<p>
+  <button id="hover-button" onmouseover="document.getElementById('show-button').innerText = 'Button hovered!'">Show details</button>
+</p>
+<div id="show-button"></div>
+
+<p>
+  <span id="hover-card" aria-label="Hover card trigger" onmouseover="document.getElementById('show-card').innerText = 'Card hovered!'">?</span>
+</p>
+<div id="show-card"></div>
+
 </body>
 </html>

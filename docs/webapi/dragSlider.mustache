@@ -1,9 +1,10 @@
-Drag the scrubber of a slider to a given position
-For fuzzy locators, fields are matched by label text, the "name" attribute, CSS, and XPath.
+Drag the scrubber of a slider to a given position.
+For fuzzy locators, sliders are matched by label text, `aria-label`, the "name" attribute, CSS, and XPath.
 
 ```js
 I.dragSlider('#slider', 30);
 I.dragSlider('#slider', -70);
+I.dragSlider('Volume', 30);
 ```
 
 @param {CodeceptJS.LocatorOrString} locator located by label|name|CSS|XPath|strict locator.
