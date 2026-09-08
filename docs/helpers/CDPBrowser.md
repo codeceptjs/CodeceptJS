@@ -515,7 +515,10 @@ Returns **[string][2]** the resolved, absolute URL.
 
 Settles after an interaction (click, key press, etc.) before the next step runs, using the
 listener `_armActionSettle` started *before* the interaction was dispatched (`armed`; a fresh
-one is armed here too, as a safety net, if a call site forgot to).
+one is armed here too, as a safety net, if a call site forgot to — but arming this late can
+only miss a navigation that already started during the action's own dispatch, exactly the race
+this design exists to avoid, so every call site should pass its own pre-armed `armed`, not rely
+on this fallback).
 
 If `options.waitForAction` was set explicitly in the config, honors it literally as a fixed
 pacing sleep, exactly as before this round — an explicit value is a deliberate choice

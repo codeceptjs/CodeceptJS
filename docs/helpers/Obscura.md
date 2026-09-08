@@ -176,7 +176,9 @@ Returns **[Promise][2]<[boolean][5]>** true if the URL answered.
 ### _resolveBinary
 
 Resolves the `obscura` binary to spawn, in priority order: `options.binaryPath`, then the
-`OBSCURA_PATH` environment variable, then `obscura` on `PATH` (via `which`).
+`OBSCURA_PATH` environment variable, then `obscura` on `PATH`. The `PATH` lookup walks the
+directories itself instead of shelling out to `which`, which does not exist on Windows: on
+Windows every `PATHEXT` suffix is tried, so an `obscura.exe` on `PATH` is found too.
 
 Returns **([string][4] | null)** an absolute or relative path to the binary, or null if none resolved.
 

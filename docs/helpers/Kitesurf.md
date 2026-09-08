@@ -93,7 +93,9 @@ Type: [object][5]
 
 Closes the target as `CDPBrowser._finishTest` does, then releases the cloud session acquired
 in `_resolveEndpoint` via the Cloudflare API so it does not linger for the full `keepAlive`
-window.
+window. The release runs in a `finally` so a rejection while closing the CDP connection still
+frees the cloud session instead of leaving the browser alive until `keepAlive` expires; the
+session id is cleared before the request, so a repeated call never releases it twice.
 
 ### _resolveEndpoint
 
