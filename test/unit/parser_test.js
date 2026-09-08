@@ -40,5 +40,19 @@ describe('parser', () => {
     it('should get params for class method with destructured args', () => {
       expect(getParams(obj.method5)).to.eql(['locator', 'sec'])
     })
+
+    // prettier-ignore
+    const fixturesOneLineArrows = [
+      ['destructured args and a condition', ({ locator, sec }) => { if (true) { return locator } }, ['locator', 'sec']],
+      ['a single arg and a condition', locator => { if (true) { return locator } }, ['locator']],
+      ['multiple args and a loop', (locator, sec) => { for (;;) { return locator || sec } }, ['locator', 'sec']],
+      ['a nested arrow function', ({ locator, sec }) => { [locator].forEach((l) => { if (l) { return sec } }) }, ['locator', 'sec']],
+    ]
+
+    fixturesOneLineArrows.forEach(([title, fn, params]) => {
+      it(`should get params for one-line arrow function with ${title}`, () => {
+        expect(getParams(fn)).to.eql(params)
+      })
+    })
   })
 })
