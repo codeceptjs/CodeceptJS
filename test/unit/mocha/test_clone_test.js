@@ -137,4 +137,34 @@ describe('Test cloning for retries', function () {
     expect(retriedTest.applyOptions).to.be.a('function')
     expect(retriedTest.simplify).to.be.a('function')
   })
+
+  it('should copy object-shaped artifacts on retry without throwing', function () {
+    retryEnhancer()
+
+    const originalTest = createTest('Test with object artifacts', () => {})
+
+    originalTest.artifacts = { screenshot: 'failed.png', screencast: 'failed.webm' }
+
+    const retriedTest = Test.prototype.clone.call(originalTest)
+    event.emit(event.test.before, retriedTest)
+
+    expect(retriedTest.artifacts).to.deep.equal({ screenshot: 'failed.png', screencast: 'failed.webm' })
+    expect(retriedTest.simplify).to.be.a('function')
+  })
+
+  it('should keep named keys written onto array-shaped artifacts', function () {
+    retryEnhancer()
+
+    const originalTest = createTest('Test with mixed artifacts', () => {})
+
+    const artifacts = ['trace.zip']
+    artifacts.screenshot = 'failed.png'
+    originalTest.artifacts = artifacts
+
+    const retriedTest = Test.prototype.clone.call(originalTest)
+    event.emit(event.test.before, retriedTest)
+
+    expect([...retriedTest.artifacts]).to.deep.equal(['trace.zip'])
+    expect(retriedTest.artifacts.screenshot).to.equal('failed.png')
+  })
 })

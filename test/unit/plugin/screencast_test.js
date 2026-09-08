@@ -128,6 +128,27 @@ describe('screencast', () => {
     expect(test.artifacts.screencast).to.match(/keep-on-fail.*\.webm$/)
   })
 
+  it('on=fail keeps a screenshot already written onto array-shaped artifacts', async () => {
+    const sc = makeFakeScreencast()
+    container.clear({ Playwright: { options: {}, page: { screencast: sc } } })
+
+    screencast({ on: 'fail' })
+    const test = createTest('keep-screenshot')
+    test.artifacts.screenshot = 'failed.png'
+
+    event.dispatcher.emit(event.test.before, test)
+    event.dispatcher.emit(event.test.started, test)
+    event.dispatcher.emit(event.step.started, aStep())
+    await recorder.promise()
+
+    event.dispatcher.emit(event.test.failed, test, new Error('boom'))
+    event.dispatcher.emit(event.test.after, test)
+    await recorder.promise()
+
+    expect(test.artifacts.screenshot).to.equal('failed.png')
+    expect(test.artifacts.screencast).to.match(/keep-screenshot.*\.webm$/)
+  })
+
   it('captions=true triggers showActions; captions=false does not', async () => {
     const sc = makeFakeScreencast()
     container.clear({ Playwright: { options: {}, page: { screencast: sc } } })
