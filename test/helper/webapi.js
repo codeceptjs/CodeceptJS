@@ -593,6 +593,123 @@ export function tests() {
     })
   })
 
+  describe('#checkOption - menu items', function () {
+    this.timeout(60000)
+
+    async function openMenu() {
+      if (await I.grabNumberOfVisibleElements('[role=menu]')) return
+      await I.click('Open menu')
+      await I.waitForElement('[role=menu]', 5)
+    }
+
+    async function open(page) {
+      await I.amOnPage(`/form/menu/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+      await openMenu()
+    }
+
+    async function ariaChecked(css) {
+      await openMenu()
+      return I.grabAttributeFrom(css, 'aria-checked')
+    }
+
+    for (const page of ['radix', 'baseui']) {
+      describe(page, () => {
+        it('checks a menu checkbox item by its label', async () => {
+          await open(page)
+          await I.dontSeeCheckboxIsChecked('Show status bar')
+
+          await I.checkOption('Show status bar')
+          expect(await ariaChecked('.ctl-status-bar')).to.equal('true')
+          expect(await ariaChecked('.ctl-activity-bar')).to.equal('false')
+          await I.seeCheckboxIsChecked('Show status bar')
+        })
+
+        it('leaves an already checked menu item checked', async () => {
+          await open(page)
+          await I.checkOption('Show status bar')
+
+          await openMenu()
+          await I.checkOption('Show status bar')
+          expect(await ariaChecked('.ctl-status-bar')).to.equal('true')
+          await I.seeCheckboxIsChecked('Show status bar')
+        })
+
+        it('unchecks a menu checkbox item by its label', async () => {
+          await open(page)
+          await I.checkOption('Show status bar')
+
+          await openMenu()
+          await I.uncheckOption('Show status bar')
+          expect(await ariaChecked('.ctl-status-bar')).to.equal('false')
+          await I.dontSeeCheckboxIsChecked('Show status bar')
+        })
+
+        it('checks a menu radio item and unchecks its siblings', async () => {
+          await open(page)
+          await I.seeCheckboxIsChecked('Pedro Duarte')
+
+          await I.checkOption('Colm Tuite')
+          expect(await ariaChecked('.ctl-colm')).to.equal('true')
+          expect(await ariaChecked('.ctl-pedro')).to.equal('false')
+          await I.seeCheckboxIsChecked('Colm Tuite')
+          await I.dontSeeCheckboxIsChecked('Pedro Duarte')
+        })
+      })
+    }
+  })
+
+  describe('#toggleButton', function () {
+    this.timeout(60000)
+
+    async function open(page) {
+      await I.amOnPage(`/form/toggle/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function ariaPressed(css) {
+      return I.grabAttributeFrom(css, 'aria-pressed')
+    }
+
+    for (const page of ['radix', 'baseui']) {
+      describe(page, () => {
+        it('presses and unpresses a toggle button', async () => {
+          await open(page)
+          await I.dontSeeButtonIsPressed('Bold')
+
+          await I.toggleButton('Bold')
+          expect(await ariaPressed('.ctl-bold')).to.equal('true')
+          await I.seeButtonIsPressed('Bold')
+
+          await I.toggleButton('Bold')
+          expect(await ariaPressed('.ctl-bold')).to.equal('false')
+          await I.dontSeeButtonIsPressed('Bold')
+        })
+
+        it('presses a single item of a toggle group', async () => {
+          await open(page)
+          await I.toggleButton('Italic')
+
+          expect(await ariaPressed('.ctl-italic')).to.equal('true')
+          expect(await ariaPressed('.ctl-underline')).to.equal('false')
+          await I.seeButtonIsPressed('Italic')
+          await I.dontSeeButtonIsPressed('Underline')
+        })
+      })
+    }
+
+    it('refuses an element that is not a toggle button', async () => {
+      await I.amOnPage('/form/checkbox')
+
+      try {
+        await I.toggleButton('Submit')
+        throw Error('Should not get this far')
+      } catch (err) {
+        expect(err.message).to.include('not a toggle button')
+      }
+    })
+  })
+
   describe('#selectOption', () => {
     it('should select option by css', async () => {
       await I.amOnPage('/form/select')

@@ -1,0 +1,9 @@
+Verifies that a toggle button is not pressed, by reading its `aria-pressed` attribute.
+
+```js
+I.dontSeeButtonIsPressed('Bold');
+I.dontSeeButtonIsPressed('#bold');
+```
+
+@param {CodeceptJS.LocatorOrString} locator button located by text|CSS|XPath|strict locator.
+@returns {void} automatically synchronized promise through #recorder

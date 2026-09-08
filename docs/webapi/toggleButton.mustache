@@ -1,0 +1,13 @@
+Toggles a button that reports its state with `aria-pressed`, like a Toggle or a Toggle Group item.
+
+Such a button is not a checkbox, so `checkOption` does not apply to it: this action flips it and
+waits until `aria-pressed` has changed.
+
+```js
+I.toggleButton('Bold');
+I.toggleButton('#bold');
+I.toggleButton({ css: '[aria-label=Bold]' });
+```
+
+@param {CodeceptJS.LocatorOrString} locator button located by text|CSS|XPath|strict locator.
+@returns {void} automatically synchronized promise through #recorder

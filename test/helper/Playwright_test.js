@@ -134,7 +134,9 @@ describe('Playwright', function () {
       await I.click('Hello World')
     })
   })
-  describe('#grabCheckedElementStatus', () => {
+  describe('#grabCheckedElementStatus', function () {
+    this.timeout(60000)
+
     it('check grabCheckedElementStatus', async () => {
       await I.amOnPage('/invisible_elements')
       let result = await I.grabCheckedElementStatus({ id: 'html' })
@@ -148,8 +150,36 @@ describe('Playwright', function () {
       try {
         await I.grabCheckedElementStatus({ id: 'basic' })
       } catch (e) {
-        assert.equal(e.message, 'Element is not a checkbox or radio input')
+        assert.equal(e.message, 'Element is not a checkbox or radio input and has no aria-checked or aria-pressed state (role: none)')
       }
+    })
+
+    it('reads aria-checked of a role=checkbox', async () => {
+      await I.amOnPage('/form/checkable/radix')
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+
+      assert.equal(await I.grabCheckedElementStatus('.ctl-terms'), false)
+      await I.checkOption('Accept terms')
+      assert.equal(await I.grabCheckedElementStatus('.ctl-terms'), true)
+    })
+
+    it('reads aria-checked of a menu item', async () => {
+      await I.amOnPage('/form/menu/radix')
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+      await I.click('Open menu')
+      await I.waitForElement('[role=menu]', 5)
+
+      assert.equal(await I.grabCheckedElementStatus('.ctl-status-bar'), false)
+      assert.equal(await I.grabCheckedElementStatus('.ctl-pedro'), true)
+    })
+
+    it('reads aria-pressed of a toggle button', async () => {
+      await I.amOnPage('/form/toggle/radix')
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+
+      assert.equal(await I.grabCheckedElementStatus('.ctl-bold'), false)
+      await I.toggleButton('Bold')
+      assert.equal(await I.grabCheckedElementStatus('.ctl-bold'), true)
     })
   })
   describe('#grabDisabledElementStatus', () => {
