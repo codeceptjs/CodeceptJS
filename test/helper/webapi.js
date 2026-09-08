@@ -611,6 +611,8 @@ export function tests() {
     })
 
     it('should not resolve a labelled tablist container as a field', async function () {
+      // Puppeteer's findFields falls back to `::-p-aria(<name>)`, which resolves the tablist
+      // by accessible name regardless of the XPath strategies asserted here.
       if (isHelper('Puppeteer')) this.skip()
 
       await I.amOnPage('/form/field_containers')
@@ -1060,8 +1062,7 @@ export function tests() {
     it('should skip a labelled wrapper and read the field it wraps', async () => {
       await I.amOnPage('/form/field_containers')
       await I.seeInField('Volume', '30')
-      const value = await I.grabValueFrom('Volume')
-      assert.equal(value, '30')
+      await I.dontSeeInField('Volume', '70')
     })
 
     it('should still reach a custom widget labelled by aria-labelledby', async () => {

@@ -859,6 +859,16 @@ describe('Locator', () => {
       expect(nodes[0].getAttribute('id')).to.eql('nick')
     })
 
+    it('still matches a custom checkbox widget by aria-label', () => {
+      const boxDoc = parse('<root><span role="checkbox" aria-checked="false" aria-label="I agree" id="agree"/></root>')
+      const root = xpath.select1('//root', boxDoc)
+      const xp = Locator.field.labelContains("'I agree'")
+      const nodes = xpath.select(xp, root)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].getAttribute('id')).to.eql('agree')
+    })
+
     it('still matches a native input by aria-label', () => {
       const inputDoc = parse('<root><input type="text" aria-label="My Address" name="my-form-address"/></root>')
       const root = xpath.select1('//root', inputDoc)
