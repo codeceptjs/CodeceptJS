@@ -583,6 +583,14 @@ export function tests() {
       await I.click('Submit')
       assert.equal(formContents('terms'), 'agree')
     })
+
+    it('ignores a non-control sharing the accessible name', async () => {
+      await I.amOnPage('/form/checkable/collision')
+      await I.dontSeeCheckboxIsChecked('#terms-box')
+
+      await I.checkOption('Accept terms')
+      await I.seeCheckboxIsChecked('#terms-box')
+    })
   })
 
   describe('#selectOption', () => {
