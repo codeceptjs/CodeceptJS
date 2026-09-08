@@ -646,6 +646,92 @@ export function tests() {
     })
   })
 
+  describe('#selectOption - radiogroups', function () {
+    this.timeout(60000)
+
+    const pages = {
+      plain: { title: 'selects in a group named by aria-labelledby', group: 'Theme', option: 'Dark', checked: ['Light=false', 'Dark=true', 'System=false'] },
+      radix: {
+        title: 'selects an item of a Toggle Group in single mode, named by aria-labelledby',
+        group: 'Text alignment',
+        option: 'Center',
+        checked: ['Left=false', 'Center=true', 'Right=false'],
+      },
+      baseui: { title: 'selects in a group named by aria-labelledby', group: 'Theme', option: 'Dark', checked: ['Light=false', 'Dark=true', 'System=false'] },
+    }
+
+    async function open(page) {
+      await I.amOnPage(`/form/radiogroup/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function checkedStates(index) {
+      return I.executeScript(i => {
+        const group = document.querySelectorAll('[role="radiogroup"]')[i]
+        return [...group.querySelectorAll('[role="radio"]')].map(radio => `${radio.textContent.trim()}=${radio.getAttribute('aria-checked')}`)
+      }, index)
+    }
+
+    for (const page of Object.keys(pages)) {
+      describe(page, () => {
+        it('checks the radio matching the option and unchecks its siblings', async () => {
+          await open(page)
+          await I.selectOption('Density', 'Compact')
+          expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=true', 'Comfortable=false'])
+        })
+
+        it('unchecks the previous selection when switching', async () => {
+          await open(page)
+          await I.selectOption('Density', 'Compact')
+          await I.selectOption('Density', 'Comfortable')
+          expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=false', 'Comfortable=true'])
+        })
+
+        it(pages[page].title, async () => {
+          await open(page)
+          await I.selectOption(pages[page].group, pages[page].option)
+          expect(await checkedStates(1)).to.deep.equal(pages[page].checked)
+        })
+      })
+    }
+
+    it('selects by a strict locator pointing at the group', async () => {
+      await open('plain')
+      await I.selectOption({ css: '#density' }, 'Compact mode')
+      expect(await checkedStates(0)).to.deep.equal(['Compact mode=true', 'Compact=false', 'Comfortable=false'])
+    })
+
+    it('reports an unknown option instead of doing nothing', async () => {
+      await open('plain')
+      let message = ''
+      try {
+        await I.selectOption('Density', 'Spacious')
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('Spacious')
+      expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=false', 'Comfortable=true'])
+    })
+
+    it('refuses to select more than one option in a radio group', async () => {
+      await open('plain')
+      let message = ''
+      try {
+        await I.selectOption('Density', ['Compact', 'Comfortable'])
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('radio group holds one value')
+      expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=false', 'Comfortable=true'])
+    })
+
+    it('leaves a native select on the same page unaffected', async () => {
+      await open('plain')
+      await I.selectOption('Framework', 'Remix')
+      await I.see('framework: remix', '#result')
+    })
+  })
+
   describe('context parameter', () => {
     it('should see element within context', async function () {
       // getBoundingClientRect() returns {width:0, height:0} for this plain inline <span> on
