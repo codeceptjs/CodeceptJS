@@ -1,5 +1,6 @@
 Drag the scrubber of a slider to a given position.
 For fuzzy locators, sliders are matched by label text, `aria-label`, the "name" attribute, CSS, and XPath.
+When the slider has no size to drag along, `offsetX` is applied as that many keyboard steps instead.
 
 ```js
 I.dragSlider('#slider', 30);

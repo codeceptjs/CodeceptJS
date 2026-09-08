@@ -2457,6 +2457,115 @@ export function tests() {
       }
       expect(message).to.include('No such slider')
     })
+
+    it('moves a slider that has no size to drag along', async () => {
+      await openComponentPage('baseui')
+      await I.dragSlider('Collapsed gain', 30)
+      expect(Number(await I.executeScript(() => window.__sliderValue('Collapsed gain')))).to.equal(30)
+    })
+  })
+
+  describe('#setSliderValue', function () {
+    this.timeout(60000)
+
+    async function openComponentPage(page) {
+      await I.amOnPage(`/form/slider/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function nativeValue(id) {
+      return Number(await I.executeScript(id => window.__value(id), id))
+    }
+
+    async function componentValue(name) {
+      return Number(await I.executeScript(name => window.__sliderValue(name), name))
+    }
+
+    it('sets a native range input located by its label', async () => {
+      await I.amOnPage('/form/slider/native')
+      await I.setSliderValue('Legacy volume', 40)
+      expect(await nativeValue('legacy-volume')).to.equal(40)
+    })
+
+    it('sets a native range input to its minimum and maximum', async () => {
+      await I.amOnPage('/form/slider/native')
+      await I.setSliderValue('Legacy volume', 0)
+      expect(await nativeValue('legacy-volume')).to.equal(0)
+      await I.setSliderValue('Legacy volume', 100)
+      expect(await nativeValue('legacy-volume')).to.equal(100)
+    })
+
+    it('sets a stepped native slider', async () => {
+      await I.amOnPage('/form/slider/native')
+      await I.setSliderValue('Quality', 35)
+      expect(await nativeValue('quality')).to.equal(35)
+    })
+
+    it('sets a native range input located by its name attribute', async () => {
+      await I.amOnPage('/form/slider/native')
+      await I.setSliderValue('unlabeled-gain', 3)
+      expect(await nativeValue('unlabeled')).to.equal(3)
+    })
+
+    it('sets a slider located by a strict locator', async () => {
+      await I.amOnPage('/form/slider/native')
+      await I.setSliderValue('#legacy-volume', 12)
+      expect(await nativeValue('legacy-volume')).to.equal(12)
+    })
+
+    it('sets a Radix slider rendered as span[role=slider]', async () => {
+      await openComponentPage('radix')
+      await I.setSliderValue('Brightness', 40)
+      expect(await componentValue('Brightness')).to.equal(40)
+    })
+
+    it('sets a vertical Radix slider', async () => {
+      await openComponentPage('radix')
+      await I.setSliderValue('Contrast', 75)
+      expect(await componentValue('Contrast')).to.equal(75)
+    })
+
+    it('sets a stepped Radix slider', async () => {
+      await openComponentPage('radix')
+      await I.setSliderValue('Radix quality', 30)
+      expect(await componentValue('Radix quality')).to.equal(30)
+    })
+
+    it('sets a Base UI slider located by its field label', async () => {
+      await openComponentPage('baseui')
+      await I.setSliderValue('Volume', 20)
+      expect(await componentValue('Volume')).to.equal(20)
+    })
+
+    it('sets a Base UI slider that has no size, which can not be dragged or filled', async () => {
+      await openComponentPage('baseui')
+      await I.setSliderValue('Collapsed gain', 40)
+      expect(await componentValue('Collapsed gain')).to.equal(40)
+    })
+
+    it('reports a value that is out of range', async () => {
+      await I.amOnPage('/form/slider/native')
+      let message = ''
+      try {
+        await I.setSliderValue('Legacy volume', 200)
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('0..100')
+    })
+
+    it('reports a value that no step can reach', async () => {
+      await I.amOnPage('/form/slider/native')
+      let message = ''
+      try {
+        await I.setSliderValue('Quality', 33)
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('step 5')
+      expect(message).to.include('30 and 35')
+      expect(await nativeValue('quality')).to.equal(0)
+    })
   })
 
   describe('#moveCursorTo - semantic locators', function () {

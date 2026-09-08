@@ -1,0 +1,18 @@
+Sets a slider to an absolute value.
+
+The value is reached with the keyboard (`Home`/`End` plus arrow keys), so it also works for
+sliders that have no size to drag along and for widgets that are not form fields, like
+`<span role="slider">`. The range and the increment are read from `aria-valuemin`,
+`aria-valuemax` and `step`, falling back to the `min` / `max` attributes of a native
+`<input type="range">`. For fuzzy locators, sliders are matched by label text, `aria-label`,
+the "name" attribute, CSS, and XPath.
+
+```js
+I.setSliderValue('Volume', 60);
+I.setSliderValue('#slider', 0);
+I.setSliderValue({ role: 'slider', name: 'Brightness' }, 40);
+```
+
+@param {CodeceptJS.LocatorOrString} locator located by label|name|CSS|XPath|strict locator.
+@param {number} value value to set the slider to.
+@returns {void} automatically synchronized promise through #recorder

@@ -192,6 +192,7 @@ I.click('Delete', '.toolbar')                 // with context
 |---|---|---|---|
 | [click](/web-api#iclick) | [forceClick](/web-api#iforcecclick) | [doubleClick](/web-api#idoubleclick) | [rightClick](/web-api#irightclick) |
 | [forceRightClick](/web-api#iforcerightclick) | [moveCursorTo](/web-api#imovecursorto) | [dragAndDrop](/web-api#idraganddrop) | [dragSlider](/web-api#idragslider) |
+| [setSliderValue](/web-api#isetslidervalue) | | | |
 
 Use **forceClick** when standard click fails (e.g., hidden elements, animations). Use **rightClick** for context menus, **doubleClick** for multi-select.
 
@@ -240,6 +241,22 @@ I.uncheckOption('Subscribe')
 >
 
 > [selectOption](/web-api#iselectoption) works with native `<select>` elements as well as custom components using `role="combobox"` or `role="listbox"`.
+
+#### Sliders
+
+```js
+I.setSliderValue('Volume', 60)      // absolute value
+I.dragSlider('Volume', 40)          // relative, by pixels
+```
+
+[setSliderValue](/web-api#isetslidervalue) sets a slider to an absolute value with the keyboard, so it works with `<input type="range">` and with custom widgets built on `role="slider"` alike — including thumbs that are too small to drag. [dragSlider](/web-api#idragslider) moves the scrubber by pixels and falls back to the keyboard when the element has no size.
+
+Both accept a human-readable name. A component library must expose one: React libraries that render the thumb as a `<span role="slider">` give it no accessible name unless the application adds `aria-label` to the thumb, since a `<label for>` on the slider root points at a `<span>`, which is not labelable.
+
+```js
+// <Slider.Thumb aria-label="Brightness" />
+I.setSliderValue('Brightness', 40)
+```
 
 ### Assertions
 
