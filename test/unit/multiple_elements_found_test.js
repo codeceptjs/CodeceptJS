@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import MultipleElementsFound, {
   computeDepths,
+  computeParents,
   formatTree,
   isAncestorXPath,
   splitXPath,
@@ -48,21 +49,26 @@ describe('MultipleElementsFound tree formatting', () => {
       { index: 2, xpath: '//html/body/div[1]/div[1]', html: '<div class="item">' },
       { index: 3, xpath: '//html/body/div[1]/div[2]', html: '<div class="item">' },
     ]
+    expect(computeParents(entries)).to.deep.equal([-1, 0, 0])
     expect(computeDepths(entries)).to.deep.equal([0, 1, 1])
-    const items = formatTree(entries, [0, 1, 1])
+    const items = formatTree(entries, [0, 1, 1], [-1, 0, 0])
     expect(items[0]).to.equal('  1. > //html/body/div[1]\n     <div class="item">')
-    expect(items[1]).to.equal('    2. > //html/body/div[1]/div[1]\n       <div class="item">')
-    expect(items[2]).to.equal('    3. > //html/body/div[1]/div[2]\n       <div class="item">')
+    expect(items[1]).to.equal('    2. (inside 1.) > //html/body/div[1]/div[1]\n       <div class="item">')
+    expect(items[2]).to.equal('    3. (inside 1.) > //html/body/div[1]/div[2]\n       <div class="item">')
   })
 
-  it('supports deeper nesting and returns to root level', () => {
+  it('marks the immediate parent for deeper nesting', () => {
     const entries = [
       { index: 1, xpath: '//html/body/div[1]', html: '<div>' },
       { index: 2, xpath: '//html/body/div[1]/ul', html: '<ul>' },
       { index: 3, xpath: '//html/body/div[1]/ul/li', html: '<li>' },
       { index: 4, xpath: '//html/body/div[2]', html: '<div>' },
     ]
+    expect(computeParents(entries)).to.deep.equal([-1, 0, 1, -1])
     expect(computeDepths(entries)).to.deep.equal([0, 1, 2, 0])
+    const items = formatTree(entries, [0, 1, 2, 0], [-1, 0, 1, -1])
+    expect(items[2]).to.include('3. (inside 2.) >')
+    expect(items[3]).to.equal('  4. > //html/body/div[2]\n     <div>')
   })
 
   it('renders failed lookups as roots and keeps global numbering', async () => {
@@ -74,7 +80,7 @@ describe('MultipleElementsFound tree formatting', () => {
     await err.fetchDetails()
     expect(err.message).to.include('  1. > //html/body/div[1]')
     expect(err.message).to.include('  2. [Unable to get element info: detached]')
-    expect(err.message).to.include('  3. > //html/body/div[1]/div[1]')
+    expect(err.message).to.include('  3. (inside 1.) > //html/body/div[1]/div[1]')
   })
 
   it('renders nested fetchDetails output with indentation', async () => {
@@ -86,8 +92,8 @@ describe('MultipleElementsFound tree formatting', () => {
     await err.fetchDetails()
     const lines = err.message.split('\n')
     expect(lines[1]).to.equal('  1. > //html/body/div[1]')
-    expect(lines[3]).to.equal('    2. > //html/body/div[1]/div[1]')
-    expect(lines[5]).to.equal('    3. > //html/body/div[1]/div[2]')
+    expect(lines[3]).to.equal('    2. (inside 1.) > //html/body/div[1]/div[1]')
+    expect(lines[5]).to.equal('    3. (inside 1.) > //html/body/div[1]/div[2]')
     expect(err.message).to.include('Use a more specific locator')
   })
 })
