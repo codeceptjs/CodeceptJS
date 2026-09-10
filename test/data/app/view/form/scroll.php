@@ -42,6 +42,8 @@
         <button type="submit" name="button4" value="fourth">A Submit Button</button>
     </form>
 </div>
+<div id="reveal_on_scroll" style="visibility: hidden">Revealed on scroll</div>
+<a id="scroll_anchor"></a>
 <script>
 
 </script>

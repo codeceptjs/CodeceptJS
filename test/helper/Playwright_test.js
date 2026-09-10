@@ -219,6 +219,36 @@ describe('Playwright', function () {
       await I.dontSeeElementInDOM({ css: 'button[data-missing]' })
     })
 
+    it('should scroll to elements revealed by scrolling', async () => {
+      await I.amOnPage('/form/scroll')
+      await I.resizeWindow(500, 700)
+      I.options.visibleLocator = true
+      step('scrollTo')
+
+      await I.scrollTo('#reveal_on_scroll')
+      const { y } = await I.grabPageScrollPosition()
+      assert.notEqual(y, 0)
+
+      await I.scrollPageToTop()
+      await I.scrollTo('#scroll_anchor')
+      const { y: anchorY } = await I.grabPageScrollPosition()
+      assert.notEqual(anchorY, 0)
+    })
+
+    it('should grab from hidden elements', async () => {
+      I.options.visibleLocator = true
+
+      await I.amOnPage('/form/hidden')
+      step('grabValueFrom')
+      expect(await I.grabValueFrom('#action')).to.equal('kill_people')
+      step('grabAttributeFrom')
+      expect(await I.grabAttributeFrom('#action', 'name')).to.equal('action')
+
+      await I.amOnPage('/invisible_elements')
+      step('grabHTMLFrom')
+      expect(await I.grabHTMLFrom('button[style]')).to.equal('Hello World')
+    })
+
     it('should apply to playwright locators', async () => {
       await I.amOnPage('/invisible_elements')
       I.options.visibleLocator = true
