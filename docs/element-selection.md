@@ -115,11 +115,33 @@ And when you know there are multiple matches and want a specific one, `elementIn
 I.click('a', step.opts({ elementIndex: 2 }))
 ```
 
+## Text Passed Instead of a Selector
+
+`waitForElement`, `seeElement`, `waitForVisible` and the rest of the wait/assert family expect a CSS or XPath locator. Unlike `click` or `fillField`, they don't fall back to searching by text. A sentence passed to them is treated as CSS, matches nothing, and the step fails with a timeout that says nothing about the real cause:
+
+```js
+I.waitForElement('Description Persistence Suite') // waits 10s, then "still not present on page"
+```
+
+CodeceptJS detects this and warns when the run is in debug mode:
+
+```
+I wait for element "Description Persistence Suite"
+  › [Warning] "Description Persistence Suite" doesn't look like a CSS or XPath selector.
+    I.waitForElement() expects an element locator, so this text is matched as CSS
+    and finds nothing. Use I.waitForText() to wait for a text on page.
+```
+
+With `strict: true` the same check throws `InvalidSelector` instead of warning, so the test fails immediately with a readable message rather than after the full timeout.
+
+The check only fires on strings that can't be a selector: they contain a space, carry no CSS or XPath punctuation, and aren't a chain of tag names. `div span`, `my-app my-button`, `text=Save Changes` and `~accessibility id` are all left alone.
+
 ## Summary
 
 | Situation | Approach |
 |-----------|----------|
 | You want to catch ambiguous locators early | Enable `strict: true` in helper config |
+| You passed a text where a selector is expected | Run with `--debug` for the warning, or `strict: true` to fail fast |
 | You need a specific element from a known list | Use `step.opts({ elementIndex: N })` |
 | You want to iterate over all matching elements | Use [`eachElement`](/els) from the `els` module |
 | You need full control over element inspection | Use [`grabWebElements`](/WebElement) to get all matches |
