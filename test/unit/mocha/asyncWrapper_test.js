@@ -269,4 +269,48 @@ describe('AsyncWrapper', () => {
       expect(arg, 'done called with no error').to.be.undefined
     })
   })
+  describe('helper lifecycle hook failures (#5660)', () => {
+    beforeEach(() => recorder.start())
+
+    // A helper's _beforeSuite()/_afterSuite() is queued on the recorder from an
+    // event.suite.before/after listener (lib/listener/helpers.js), not through
+    // the injected() wrapper, so it lands in suiteSetup/suiteTeardown's
+    // errHandler rather than in the path that fires hook.failed.
+    function queueFailingHelperHook(evt, message) {
+      event.dispatcher.on(evt, () => {
+        recorder.add(`hook MyHelper.${message}()`, () => {
+          throw new Error(message)
+        })
+        recorder.catch()
+      })
+    }
+
+    it('suiteSetup(): a failing helper _beforeSuite emits hook.failed', async () => {
+      const failed = sinon.spy()
+      event.dispatcher.on(event.hook.failed, failed)
+      queueFailingHelperHook(event.suite.before, '_beforeSuite')
+
+      const suite = { title: 'Login', ctx: { test: { title: 'codeceptjs.beforeSuite' } } }
+      const { arg } = await runHook(suiteSetup(suite), 2000)
+
+      expect(arg).to.be.instanceof(Error)
+      expect(arg.message).to.equal('_beforeSuite')
+      expect(failed.called, 'hook.failed was emitted').to.be.true
+      expect(failed.firstCall.args[0].hookName).to.equal('BeforeSuite')
+      expect(failed.firstCall.args[0].err).to.equal(arg)
+    })
+
+    it('suiteTeardown(): a failing helper _afterSuite emits hook.failed', async () => {
+      const failed = sinon.spy()
+      event.dispatcher.on(event.hook.failed, failed)
+      queueFailingHelperHook(event.suite.after, '_afterSuite')
+
+      const suite = { title: 'Login', ctx: { test: { title: 'codeceptjs.afterSuite' } } }
+      const { arg } = await runHook(suiteTeardown(suite), 2000)
+
+      expect(arg).to.be.instanceof(Error)
+      expect(failed.called, 'hook.failed was emitted').to.be.true
+      expect(failed.firstCall.args[0].hookName).to.equal('AfterSuite')
+    })
+  })
 })
