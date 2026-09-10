@@ -892,6 +892,27 @@ describe('Locator', () => {
       expect(nodes).to.have.length(2, xp)
       expect(nodes.map(n => n.getAttribute('id'))).to.eql(['color-trigger', 'color-listbox'])
     })
+
+    it('still matches a radiogroup labelled by aria-labelledby without its heading', () => {
+      const groupDoc = parse(`<root>
+        <h3 id="theme-label">Theme</h3>
+        <div role="radiogroup" aria-labelledby="theme-label" id="theme"/>
+      </root>`)
+      const root = xpath.select1('//root', groupDoc)
+      const xp = Locator.field.labelContains("'Theme'")
+      const nodes = xpath.select(xp, root)
+
+      expect(nodes).to.have.length(1, xp)
+      expect(nodes[0].getAttribute('id')).to.eql('theme')
+    })
+
+    it('does not match a role=group container through the radiogroup role', () => {
+      const wrapperDoc = parse('<root><div role="group" aria-labelledby="theme-label" id="wrapper"/><h3 id="theme-label">Theme</h3></root>')
+      const root = xpath.select1('//root', wrapperDoc)
+      const xp = Locator.field.labelContains("'Theme'")
+
+      expect(xpath.select(xp, root)).to.have.length(0, xp)
+    })
   })
 
   describe('Locator.checkable.byText', () => {
