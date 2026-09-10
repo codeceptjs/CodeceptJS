@@ -6,6 +6,7 @@ import fs from 'fs'
 import semver from 'semver'
 import { exec } from 'child_process'
 import { fileURLToPath } from 'url'
+import xml2js from 'xml2js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -509,6 +510,34 @@ describe('CodeceptJS Workers Runner', function () {
         expect(err?.code || 0).toEqual(err2?.code || 0)
         done()
       })
+    })
+  })
+
+  it('should preserve suite identity for BeforeSuite/AfterSuite hook failures in the JUnit report', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const reportFile = path.join(codecept_dir, 'output', 'report.xml')
+    if (fs.existsSync(reportFile)) fs.rmSync(reportFile)
+
+    exec(`${codecept_run_glob('codecept.workers-junit.conf.js')} 1`, (err, stdout) => {
+      ;(async () => {
+        expect(stdout).toContain('BeforeSuite worker failure')
+        expect(stdout).toContain('AfterSuite worker failure')
+        expect(err.code).toEqual(1)
+
+        expect(fs.existsSync(reportFile)).toEqual(true)
+        const parsed = await new xml2js.Parser().parseStringPromise(fs.readFileSync(reportFile, 'utf8'))
+
+        // Both hook failures must land under the real suite name, grouped into a
+        // single <testsuite>, not split across two <testsuite name="Tests"> elements.
+        expect(parsed.testsuites.testsuite).toHaveLength(1)
+        const suiteEl = parsed.testsuites.testsuite[0]
+        expect(suiteEl.$.name).toEqual('JunitWorkerSuiteHooks')
+        expect(suiteEl.testcase).toHaveLength(2)
+
+        const names = suiteEl.testcase.map(tc => tc.$.name)
+        expect(names.some(n => n.includes('BeforeSuite'))).toEqual(true)
+        expect(names.some(n => n.includes('AfterSuite'))).toEqual(true)
+      })().then(done, done)
     })
   })
 

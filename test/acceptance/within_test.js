@@ -106,7 +106,7 @@ Scenario('within on nested iframe depth 2 and mixed class and xpath selector @We
   I.dontSee('Email Address')
 })
 
-Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @Playwright', async ({ I }) => {
+Scenario('should throw exception if element not found @WebDriverIO @Puppeteer @Playwright @Obscura', async ({ I }) => {
   I.amOnPage('/form/textarea')
   await within('#grab-multiple', async () => {
     return await I.grabTextFrom('#first-link')

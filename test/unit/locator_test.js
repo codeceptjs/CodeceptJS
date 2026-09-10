@@ -893,4 +893,47 @@ describe('Locator', () => {
       expect(nodes.map(n => n.getAttribute('id'))).to.eql(['color-trigger', 'color-listbox'])
     })
   })
+
+  describe('Locator.checkable.byText', () => {
+    const select = (xml, literal) => {
+      const doc = new DOMParser().parseFromString(xml, 'text/xml')
+      return xpath.select(Locator.checkable.byText(literal), xpath.select1('//root', doc))
+    }
+
+    it('matches a native input labelled by label[for]', () => {
+      const nodes = select('<root><input type="checkbox" id="a"/><label for="a">I Agree</label></root>', "'I Agree'")
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].getAttribute('id')).to.eql('a')
+    })
+
+    it('matches a role=checkbox labelled by label[for]', () => {
+      const nodes = select('<root><button role="checkbox" id="a"></button><label for="a">Accept terms</label></root>', "'Accept terms'")
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].tagName).to.eql('button')
+    })
+
+    it('matches a role=switch labelled by aria-labelledby', () => {
+      const nodes = select('<root><span role="switch" aria-labelledby="l"></span><label id="l">Airplane mode</label></root>', "'Airplane mode'")
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].getAttribute('role')).to.eql('switch')
+    })
+
+    it('matches a role=radio named by aria-label', () => {
+      const nodes = select('<root><span role="radio" aria-label="Compact"></span></root>', "'Compact'")
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].getAttribute('role')).to.eql('radio')
+    })
+
+    it('resolves the visible control, not the aria-hidden input the label points at', () => {
+      const xml =
+        '<root>' +
+        '<span role="checkbox" aria-labelledby="l" id="visible"></span>' +
+        '<input type="checkbox" id="mirror" aria-hidden="true"/>' +
+        '<label for="mirror" id="l">Accept terms</label>' +
+        '</root>'
+      const nodes = select(xml, "'Accept terms'")
+      expect(nodes).to.have.length(1)
+      expect(nodes[0].getAttribute('id')).to.eql('visible')
+    })
+  })
 })

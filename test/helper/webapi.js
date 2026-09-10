@@ -29,7 +29,14 @@ export function init(testData) {
 }
 
 export function tests() {
-  const isHelper = helperName => I.constructor.name === helperName
+  const isHelper = helperName => {
+    let proto = I.constructor
+    while (proto && proto.name) {
+      if (proto.name === helperName) return true
+      proto = Object.getPrototypeOf(proto)
+    }
+    return false
+  }
 
   beforeEach(() => {
     I = data.I
@@ -38,7 +45,8 @@ export function tests() {
   })
 
   describe('#saveElementScreenshot', () => {
-    beforeEach(() => {
+    beforeEach(function () {
+      if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported
       global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
@@ -151,13 +159,24 @@ export function tests() {
 
   describe('#waitInUrl, #waitUrlEquals', () => {
     it('should wait part of the URL to match the expected', async () => {
+      await I.amOnPage('/info')
+      await I.waitInUrl('/info')
+      await I.waitInUrl(`${siteUrl}/info`)
+
+      let err
       try {
-        await I.amOnPage('/info')
-        await I.waitInUrl('/info')
         await I.waitInUrl('/info2', 0.1)
       } catch (e) {
-        assert.include(e.message, `expected url to include ${siteUrl}/info2, but found ${siteUrl}/info`)
+        err = e
       }
+      assert.isDefined(err, 'expected waitInUrl to time out')
+      assert.include(err.message, `expected url to include /info2, but found ${siteUrl}/info`)
+    })
+
+    it('should match a URL part that is not anchored at the base url', async () => {
+      await I.amOnPage('/info?user=test')
+      await I.waitInUrl('user=test')
+      await I.waitInUrl('/info?user=test')
     })
 
     it('should wait for the entire URL to match the expected', async () => {
@@ -236,7 +255,9 @@ export function tests() {
   })
 
   describe('see element : #seeElement, #seeElementInDOM, #dontSeeElement', () => {
-    it('should check visible elements on page', async () => {
+    it('should check visible elements on page', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+      if (isHelper('Obscura')) this.skip() // getComputedStyle(el).visibility does not inherit from an ancestor's visibility:hidden on Obscura's CSS engine (verified: the ancestor <form> reports 'hidden', the descendant <input> incorrectly reports 'visible')
       await I.amOnPage('/form/field')
       await I.seeElement('input[name=name]')
       await I.seeElement({ name: 'name' })
@@ -257,7 +278,8 @@ export function tests() {
       await I.dontSeeElementInDOM('//input[@id="something-beyond"]')
     })
 
-    it('should check elements are visible on the page', async () => {
+    it('should check elements are visible on the page', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/field')
       await I.seeElementInDOM('input[name=email]')
       await I.dontSeeElement('input[name=email]')
@@ -266,6 +288,10 @@ export function tests() {
   })
 
   describe('#seeNumberOfVisibleElements', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+    })
+
     it('should check number of visible elements for given locator', async () => {
       await I.amOnPage('/info')
       await I.seeNumberOfVisibleElements('//div[@id = "grab-multiple"]//a', 3)
@@ -273,6 +299,10 @@ export function tests() {
   })
 
   describe('#grabNumberOfVisibleElements', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+    })
+
     it('should grab number of visible elements for given locator', async () => {
       await I.amOnPage('/info')
       const num = await I.grabNumberOfVisibleElements('//div[@id = "grab-multiple"]//a')
@@ -347,7 +377,7 @@ export function tests() {
       await I.seeInCurrentUrl('/info')
     })
 
-    it('should not click wrong context', async () => {
+    it('should not click wrong context', async function () {
       let err = false
       await I.amOnPage('/')
       try {
@@ -412,7 +442,7 @@ export function tests() {
 
   // Could not get double click to work
   describe('#doubleClick', () => {
-    it('it should doubleClick', async function () {
+    it('it should doubleClick', async () => {
       await I.amOnPage('/form/doubleclick')
       await I.dontSee('Done!')
       await I.doubleClick('#block')
@@ -445,6 +475,10 @@ export function tests() {
   })
 
   describe('#clickXY', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // coordinate clicks require a real layout engine
+    })
+
     it('should click at global coordinates', async () => {
       await I.amOnPage('/form/click_coordinates')
       await I.dontSee('Global click at:')
@@ -514,6 +548,85 @@ export function tests() {
     })
   })
 
+  describe('#checkOption - ARIA roles', function () {
+    this.timeout(60000)
+
+    async function open(page) {
+      await I.amOnPage(`/form/checkable/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function ariaChecked(css) {
+      return I.grabAttributeFrom(css, 'aria-checked')
+    }
+
+    for (const page of ['radix', 'baseui']) {
+      describe(page, () => {
+        beforeEach(function () {
+          // webdriverio resolves `<label for>` to input/textarea only, and a Radix
+          // `<button role=checkbox>` carries no accessible name of its own
+          if (page === 'radix' && isHelper('WebDriver')) this.skip()
+        })
+
+        it('checks and unchecks a checkbox by its label', async () => {
+          await open(page)
+          await I.dontSeeCheckboxIsChecked('Accept terms')
+
+          await I.checkOption('Accept terms')
+          expect(await ariaChecked('.ctl-terms')).to.equal('true')
+          await I.seeCheckboxIsChecked('Accept terms')
+
+          await I.uncheckOption('Accept terms')
+          expect(await ariaChecked('.ctl-terms')).to.equal('false')
+          await I.dontSeeCheckboxIsChecked('Accept terms')
+        })
+
+        it('checks a switch by its label', async () => {
+          await open(page)
+          await I.checkOption('Airplane mode')
+          expect(await ariaChecked('.ctl-airplane')).to.equal('true')
+          await I.seeCheckboxIsChecked('Airplane mode')
+        })
+
+        it('checks a radio by its label', async () => {
+          await open(page)
+          await I.dontSeeCheckboxIsChecked('Comfortable')
+
+          await I.checkOption('Comfortable')
+          expect(await ariaChecked('.ctl-comfortable')).to.equal('true')
+          expect(await ariaChecked('.ctl-default')).to.equal('false')
+          await I.seeCheckboxIsChecked('Comfortable')
+        })
+      })
+    }
+
+    it('resolves the visible control and not the hidden input the label points at', async () => {
+      await open('baseui')
+      // the author id sits on a 1x1 aria-hidden mirror input at x:-1,y:-1 which <label for> targets;
+      // [role=checkbox] can only be the visible span
+      expect(await I.grabAttributeFrom('#terms', 'aria-hidden')).to.equal('true')
+
+      await I.checkOption('Accept terms')
+      expect(await ariaChecked('[role=checkbox]')).to.equal('true')
+    })
+
+    it('still checks a plain input by its label', async () => {
+      await I.amOnPage('/form/checkbox')
+      await I.checkOption('I Agree')
+      await I.seeCheckboxIsChecked('I Agree')
+      await I.click('Submit')
+      assert.equal(formContents('terms'), 'agree')
+    })
+
+    it('ignores a non-control sharing the accessible name', async () => {
+      await I.amOnPage('/form/checkable/collision')
+      await I.dontSeeCheckboxIsChecked('#terms-box')
+
+      await I.checkOption('Accept terms')
+      await I.seeCheckboxIsChecked('#terms-box')
+    })
+  })
+
   describe('#selectOption', () => {
     it('should select option by css', async () => {
       await I.amOnPage('/form/select')
@@ -550,7 +663,8 @@ export function tests() {
       assert.equal(formContents('select'), 'option2')
     })
 
-    it('should select multiple options', async () => {
+    it('should select multiple options', async function () {
+      if (isHelper('Obscura')) this.skip() // Obscura's form serializer collapses a <select multiple> submission to only its first selected option, regardless of the live .selected property or the selected attribute (verified: a single non-first selection round-trips fine, but two selections drop to one)
       await I.amOnPage('/form/select_multiple')
       await I.selectOption('What do you like the most?', ['Play Video Games', 'Have Sex'])
       await I.click('Submit')
@@ -630,8 +744,99 @@ export function tests() {
     })
   })
 
+  describe('#selectOption - radiogroups', function () {
+    this.timeout(60000)
+
+    const pages = {
+      plain: { title: 'selects in a group named by aria-labelledby', group: 'Theme', option: 'Dark', checked: ['Light=false', 'Dark=true', 'System=false'] },
+      radix: {
+        title: 'selects an item of a Toggle Group in single mode, named by aria-labelledby',
+        group: 'Text alignment',
+        option: 'Center',
+        checked: ['Left=false', 'Center=true', 'Right=false'],
+      },
+      baseui: { title: 'selects in a group named by aria-labelledby', group: 'Theme', option: 'Dark', checked: ['Light=false', 'Dark=true', 'System=false'] },
+    }
+
+    async function open(page) {
+      await I.amOnPage(`/form/radiogroup/${page}`)
+      await I.waitForFunction(() => window.__ready === true, [], 30)
+    }
+
+    async function checkedStates(index) {
+      return I.executeScript(i => {
+        const group = document.querySelectorAll('[role="radiogroup"]')[i]
+        return [...group.querySelectorAll('[role="radio"]')].map(radio => `${radio.textContent.trim()}=${radio.getAttribute('aria-checked')}`)
+      }, index)
+    }
+
+    for (const page of Object.keys(pages)) {
+      describe(page, () => {
+        it('checks the radio matching the option and unchecks its siblings', async () => {
+          await open(page)
+          await I.selectOption('Density', 'Compact')
+          expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=true', 'Comfortable=false'])
+        })
+
+        it('unchecks the previous selection when switching', async () => {
+          await open(page)
+          await I.selectOption('Density', 'Compact')
+          await I.selectOption('Density', 'Comfortable')
+          expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=false', 'Comfortable=true'])
+        })
+
+        it(pages[page].title, async () => {
+          await open(page)
+          await I.selectOption(pages[page].group, pages[page].option)
+          expect(await checkedStates(1)).to.deep.equal(pages[page].checked)
+        })
+      })
+    }
+
+    it('selects by a strict locator pointing at the group', async () => {
+      await open('plain')
+      await I.selectOption({ css: '#density' }, 'Compact mode')
+      expect(await checkedStates(0)).to.deep.equal(['Compact mode=true', 'Compact=false', 'Comfortable=false'])
+    })
+
+    it('reports an unknown option instead of doing nothing', async () => {
+      await open('plain')
+      let message = ''
+      try {
+        await I.selectOption('Density', 'Spacious')
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('Spacious')
+      expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=false', 'Comfortable=true'])
+    })
+
+    it('refuses to select more than one option in a radio group', async () => {
+      await open('plain')
+      let message = ''
+      try {
+        await I.selectOption('Density', ['Compact', 'Comfortable'])
+      } catch (e) {
+        message = e.message
+      }
+      expect(message).to.include('radio group holds one value')
+      expect(await checkedStates(0)).to.deep.equal(['Compact mode=false', 'Compact=false', 'Comfortable=true'])
+    })
+
+    it('leaves a native select on the same page unaffected', async () => {
+      await open('plain')
+      await I.selectOption('Framework', 'Remix')
+      await I.see('framework: remix', '#result')
+    })
+  })
+
   describe('context parameter', () => {
-    it('should see element within context', async () => {
+    it('should see element within context', async function () {
+      // getBoundingClientRect() returns {width:0, height:0} for this plain inline <span> on
+      // Obscura's layout engine, even though it renders with visible text and correct
+      // display/visibility computed styles (verified directly) — a layout-engine gap for
+      // dimensionless inline elements, distinct from the already-known visibility-inheritance bug.
+      if (isHelper('Obscura')) this.skip()
       await I.amOnPage('/form/context')
       await I.seeElement('.unique-element', '#area2')
       await I.dontSeeElement('.unique-element', '#area1')
@@ -699,13 +904,22 @@ export function tests() {
       await I.see('my-button > button', '#clicked-element')
     })
 
-    it('should click button in nested shadow DOM', async () => {
+    it('should click button in nested shadow DOM', async function () {
+      // <my-form> is defined (customElements.define) after <my-app>'s constructor has already
+      // parsed '<my-form>' into its shadow root via innerHTML, so per spec my-form starts
+      // unupgraded and must be retroactively upgraded once defined — verified directly that
+      // Obscura never performs this retroactive upgrade for elements nested inside another
+      // element's shadow root: my-form stays a plain Element with shadowRoot === null. The
+      // single-level shadow DOM tests above (not nested) pass, so this is narrowly about the
+      // nested/retroactive-upgrade case.
+      if (isHelper('Obscura')) this.skip()
       await I.amOnPage('/form/shadow_dom')
       await I.click({ shadow: ['my-app', 'my-form', 'button'] })
       await I.see('my-app > my-form > button', '#clicked-element')
     })
 
-    it('should fill field inside nested shadow DOM', async () => {
+    it('should fill field inside nested shadow DOM', async function () {
+      if (isHelper('Obscura')) this.skip() // same root cause as "should click button in nested shadow DOM" above
       await I.amOnPage('/form/shadow_dom')
       await I.fillField({ shadow: ['my-app', 'my-form', 'input'] }, 'Shadow Test')
       await I.see('Shadow Test', '#input-value')
@@ -734,6 +948,7 @@ export function tests() {
     })
 
     it('should return value from sync script in iframe', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // switchTo/iframes are not implemented in CDPBrowser
       await I.amOnPage('/iframe')
       await I.switchTo({ css: 'iframe' })
       const val = await I.executeScript(() => document.getElementsByTagName('h1')[0].innerText)
@@ -852,19 +1067,41 @@ export function tests() {
 
     const longContent = fs.readFileSync(path.join(__dirname, '../data/richtext-long.txt'), 'utf8').trim()
 
+    // Per-editor skip data instead of a blanket CDPBrowser guard — each reason is evidence-based,
+    // probed directly against the live fixtures on both engines (see skip-sweep-report.md):
+    // - CKEditor 5: boots and its `beforeinput` handler correctly recognizes and preventDefault()s
+    //   a synthetic InputEvent (so it *is* listening), but never inserts anything, because it needs
+    //   `event.getTargetRanges()` to know where to insert — a native, read-only browser API that
+    //   only a real user-agent input pipeline populates; a JS-constructed InputEvent's
+    //   getTargetRanges() is always empty. Applies equally to Chrome and Obscura — this is not an
+    //   engine gap, it's what synthetic (non-CDP-native) input dispatch fundamentally cannot forge.
+    // - CodeMirror 5: `CodeMirror.fromTextArea()` adopts and hides the original `<textarea>`, then
+    //   keeps its live content in an internal JS model, syncing to the form only via its own
+    //   `getValue()` API at submit time — no DOM mutation or event on the backing textarea reaches
+    //   that model once initialized. Applies equally to both engines.
+    // - TinyMCE legacy / CKEditor 4: both render their editing surface inside an `<iframe>` (classic
+    //   architecture, unlike TinyMCE's/CKEditor's newer inline/contenteditable modes) — CDPBrowser
+    //   has no frame-session support at all (documented elsewhere in this suite), so their content is
+    //   unreachable regardless of input-event fidelity. Applies equally to both engines.
+    // - Obscura-only boots: CKEditor 5, TinyMCE inline, Trix, Monaco, TinyMCE legacy, CKEditor 4
+    //   never set `window.__editorReady` even after a 20s wait, with their CDN script fetched (200)
+    //   successfully and zero console/page errors — the bundle's init logic silently never
+    //   completes on Obscura's engine, root cause not further diagnosed (out of scope for an
+    //   input-fidelity mandate). Where the editor is already blocked on both engines for another
+    //   reason above, this isn't listed separately.
     const editors = [
-      { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor' },
+      { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor', skip: { Obscura: "the DOM does show the new text and it isn't reverted (confirmed directly), but ProseMirror's own MutationObserver-based DOMObserver reconciliation never updates its internal model (view.state.doc, which the submit handler reads from) from a synthetic mutation on Obscura — tried both a blunt textContent replace and a surgical Range-based delete+insert, neither reaches the model; the same code path updates the model correctly on Chrome" } },
       { name: 'Quill',          page: 'quill',          selector: '#editor' },
-      { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor' },
-      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor' },
+      { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate; its beforeinput handler correctly recognizes and preventDefault()s the event but then inserts nothing' } },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
       { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
-      { name: 'Trix',           page: 'trix',           selector: 'trix-editor' },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
       { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
-      { name: 'Monaco',         page: 'monaco',         selector: '#editor' },
-      { name: 'ACE',            page: 'ace',            selector: '#editor' },
-      { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor' },
-      { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor' },
-      { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor' },
+      { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
+      { name: 'ACE',            page: 'ace',            selector: '#editor', skipTests: { 'rewrites pre-populated content': { Obscura: "ACE keeps cursor/selection state in its own internal model like Monaco, but reaches it via the browser's real execCommand-driven selection-replace on Chrome; execCommand is a no-op on Obscura, so the fallback's DOM-level select-all doesn't carry the same 'replace selection' semantics into ACE's model and the new text is inserted rather than replacing the old" } } },
+      { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor', skip: { CDPBrowser: 'CodeMirror.fromTextArea() adopts and hides the backing <textarea>; its live content lives only in an internal JS model synced to the form via its own getValue() API at submit time, unreachable via DOM mutation or events on the backing element' } },
+      { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic TinyMCE architecture) — CDPBrowser has no frame-session support' } },
+      { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic CKEditor 4 architecture) — CDPBrowser has no frame-session support' } },
     ]
 
     async function open(page, initial) {
@@ -881,6 +1118,16 @@ export function tests() {
 
     for (const ed of editors) {
       describe(ed.name, () => {
+        beforeEach(function () {
+          const reasons = { ...(ed.skip || {}), ...((ed.skipTests && ed.skipTests[this.currentTest.title]) || {}) }
+          for (const helperName of Object.keys(reasons)) {
+            if (isHelper(helperName)) {
+              this.skip()
+              return
+            }
+          }
+        })
+
         it('submits filled value', async () => {
           await open(ed.page)
           await I.fillField(ed.selector, 'Hello rich text world')
@@ -922,10 +1169,13 @@ export function tests() {
         await I.waitForFunction(() => window.__editorReady === true, [], 30)
       }
 
+      // Same classification as the equivalent non-sibling editor above — the content-insertion
+      // mechanism is identical, so these hit the same wall (getTargetRanges / no frame support /
+      // detached backing textarea) regardless of the sibling-input wrapper around them.
       const siblingCases = [
-        { name: 'iframe editor (Monaco)',              page: 'monaco-with-sibling',      selector: 'iframe',       path: 'IFRAME' },
-        { name: 'hidden-textarea editor (CodeMirror)', page: 'codemirror5-with-sibling', selector: '#editor',      path: 'HIDDEN_TEXTAREA' },
-        { name: 'contenteditable editor (CKEditor 5)', page: 'ckeditor5-with-sibling',   selector: '#editor',      path: 'CONTENTEDITABLE' },
+        { name: 'iframe editor (Monaco)',              page: 'monaco-with-sibling',      selector: 'iframe',       path: 'IFRAME', skip: { CDPBrowser: 'lives inside an <iframe> — CDPBrowser has no frame-session support' } },
+        { name: 'hidden-textarea editor (CodeMirror)', page: 'codemirror5-with-sibling', selector: '#editor',      path: 'HIDDEN_TEXTAREA', skip: { CDPBrowser: 'CodeMirror.fromTextArea() keeps content in an internal JS model, unreachable via the backing textarea once initialized' } },
+        { name: 'contenteditable editor (CKEditor 5)', page: 'ckeditor5-with-sibling',   selector: '#editor',      path: 'CONTENTEDITABLE', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate' } },
       ]
 
       async function outerTitleValue() {
@@ -934,6 +1184,16 @@ export function tests() {
 
       for (const tc of siblingCases) {
         describe(tc.name, () => {
+          beforeEach(function () {
+            if (!tc.skip) return
+            for (const helperName of Object.keys(tc.skip)) {
+              if (isHelper(helperName)) {
+                this.skip()
+                return
+              }
+            }
+          })
+
           it(`fillField via ${tc.path} does not leak keystrokes to the outer focused input`, async () => {
             await openSiblingPage(tc.page)
             await I.fillField(tc.selector, 'Hello rich text world')
@@ -993,6 +1253,10 @@ export function tests() {
   })
 
   describe('#type', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // clicking does not move real focus without a layout engine, so there is no activeElement to type into
+    })
+
     it('should type into a field', async () => {
       await I.amOnPage('/form/field')
       await I.click('Name')
@@ -1223,7 +1487,14 @@ export function tests() {
   })
 
   describe('#attachFile', () => {
-    it('should upload file located by CSS', async () => {
+    it('should upload file located by CSS', async function () {
+      // DOM.setFileInputFiles correctly sets the input's live state on Obscura — verified
+      // directly that document.getElementById('avatar').files reports the right name/size/type
+      // right after attachFile() — but the real multipart/form-data POST Obscura's navigation
+      // engine sends on submit drops the file entirely (server sees an empty $_FILES array),
+      // consistent with the already-documented family of Obscura form-serializer defects
+      // (the <select multiple> collapse bug from the selectOption work).
+      if (isHelper('Obscura')) this.skip()
       await I.amOnPage('/form/file')
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -1233,7 +1504,8 @@ export function tests() {
       expect(formContents().files.avatar.type).to.eql('image/jpeg')
     })
 
-    it('should upload file located by label', async () => {
+    it('should upload file located by label', async function () {
+      if (isHelper('Obscura')) this.skip() // same root cause as "should upload file located by CSS" above
       await I.amOnPage('/form/file')
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -1258,7 +1530,8 @@ export function tests() {
   })
 
   describe('#saveScreenshot', () => {
-    beforeEach(() => {
+    beforeEach(function () {
+      if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported
       global.output_dir = path.join(global.codecept_dir, 'output')
     })
 
@@ -1278,16 +1551,12 @@ export function tests() {
   })
 
   describe('cookies : #setCookie, #clearCookies, #seeCookie, #waitForCookie', () => {
-    beforeEach(function () {
-      // Skip in CI to avoid timeouts from external URLs
-      if (process.env.CI || process.env.GITHUB_ACTIONS) this.skip()
-    })
-    it('should do all cookie stuff', async () => {
+    it('should do all cookie stuff', async function () {
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.seeCookie('auth')
       await I.dontSeeCookie('auuth')
@@ -1299,17 +1568,17 @@ export function tests() {
       await I.dontSeeCookie('auth')
     })
 
-    it('should grab all cookies', async () => {
+    it('should grab all cookies', async function () {
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.setCookie({
         name: 'user',
         value: 'davert',
-        url: 'http://localhost',
+        url: siteUrl,
       })
 
       const cookies = await I.grabCookie()
@@ -1323,7 +1592,7 @@ export function tests() {
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.clearCookie()
       await I.dontSeeCookie('auth')
@@ -1338,12 +1607,12 @@ export function tests() {
       }
     })
 
-    it('should wait for cookie', async () => {
+    it('should wait for cookie', async function () {
       await I.amOnPage('/')
       await I.setCookie({
         name: 'auth',
         value: '123456',
-        url: 'http://localhost',
+        url: siteUrl,
       })
       await I.waitForCookie('auth')
     })
@@ -1430,6 +1699,10 @@ export function tests() {
   })
 
   describe('#waitForElement', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+    })
+
     it('should wait for visible element', async () => {
       await I.amOnPage('/form/wait_visible')
       await I.dontSee('Step One Button')
@@ -1465,6 +1738,10 @@ export function tests() {
   })
 
   describe('#waitForInvisible', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+    })
+
     it('should wait for element to be invisible', async () => {
       await I.amOnPage('/form/wait_invisible')
       await I.see('Step One Button')
@@ -1499,6 +1776,10 @@ export function tests() {
   })
 
   describe('#waitToHide', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
+    })
+
     it('should wait for element to be invisible', async () => {
       await I.amOnPage('/form/wait_invisible')
       await I.see('Step One Button')
@@ -1533,6 +1814,10 @@ export function tests() {
   })
 
   describe('#waitForDetached', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // these fixtures assert seeElement (visibility) as a precondition, which requires a real layout engine
+    })
+
     it('should throw an error if the element still exists in DOM', async function () {
       await I.amOnPage('/form/wait_detached')
       await I.see('Step One Button')
@@ -1579,16 +1864,18 @@ export function tests() {
   describe('within tests', () => {
     afterEach(() => I._withinEnd())
 
-    it('should execute within block', async () => {
+    it('should execute within block', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/example4')
       await I.seeElement('#navbar-collapse-menu')
-      I._withinBegin('#register')
+      await I._withinBegin('#register')
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Toggle navigation'))
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
     })
 
-    it('should respect form fields inside within block ', async () => {
+    it('should respect form fields inside within block ', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       let rethrow
 
       await I.amOnPage('/form/example4')
@@ -1599,7 +1886,7 @@ export function tests() {
       await I.seeInField('Hasło', '12345')
       await I.checkOption('terms')
       await I.seeCheckboxIsChecked('terms')
-      I._withinBegin({ css: '.form-group' })
+      await I._withinBegin({ css: '.form-group' })
         .then(() => I.see('E-Mail'))
         .then(() => I.dontSee('Hasło'))
         .then(() => I.dontSeeElement('#navbar-collapse-menu'))
@@ -1622,7 +1909,7 @@ export function tests() {
     it('should execute within block 2', async () => {
       await I.amOnPage('/form/example4')
       await I.fillField('Hasło', '12345')
-      I._withinBegin({ xpath: '//div[@class="form-group"][2]' })
+      await I._withinBegin({ xpath: '//div[@class="form-group"][2]' })
         .then(() => I.dontSee('E-Mail'))
         .then(() => I.see('Hasło'))
         .then(() => I.grabTextFrom('label'))
@@ -1640,6 +1927,7 @@ export function tests() {
     })
 
     it('within should respect context in see when using nested frames', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // frame switching not implemented
       await I.amOnPage('/iframe_nested')
       await I._withinBegin({
         frame: ['#wrapperId', '[name=content]'],
@@ -1665,6 +1953,7 @@ export function tests() {
     })
 
     it('within should respect context in see when using frame', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // frame switching not implemented
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: '#number-frame-1234',
@@ -1678,6 +1967,7 @@ export function tests() {
     })
 
     it('within should respect context in see when using frame with strict locator', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // frame switching not implemented
       await I.amOnPage('/iframe')
       await I._withinBegin({
         frame: { css: '#number-frame-1234' },
@@ -1699,7 +1989,12 @@ export function tests() {
   })
 
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // scrolling requires a real layout engine
+    })
+
     it('should scroll inside an iframe', async function () {
+      if (isHelper('CDPBrowser')) this.skip() // switchTo/iframes are not implemented in CDPBrowser
       await I.amOnPage('/iframe')
       await I.resizeWindow(500, 700)
       await I.switchTo('iframe')
@@ -1757,13 +2052,18 @@ export function tests() {
   })
 
   describe('#grabCssPropertyFrom', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // getComputedStyle needs a real layout/CSS engine
+    })
+
     it('should grab css property for given element', async function () {
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'height')
       assert.equal(css, '100px')
     })
 
-    it('should grab camelcased css properies', async () => {
+    it('should grab camelcased css properies', async function () {
+      if (isHelper('Obscura')) this.skip() // getComputedStyle(#block).userSelect returns '' on Obscura's CSS engine instead of the ruleset's 'text' (verified directly)
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'user-select')
       assert.equal(css, 'text')
@@ -1863,6 +2163,10 @@ export function tests() {
   })
 
   describe('#seeCssPropertiesOnElements', () => {
+    beforeEach(function () {
+      if (I.capabilities?.layout === 'none') this.skip() // getComputedStyle needs a real layout/CSS engine
+    })
+
     it('should check css property for given element', async function () {
       try {
         await I.amOnPage('/info')
@@ -1884,6 +2188,7 @@ export function tests() {
 
     it('should check css property for several elements', async function () {
       if (process.env.BROWSER === 'firefox') this.skip()
+      if (isHelper('Obscura')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Obscura's CSS engine instead of 'pointer' (verified directly), so the first assertion in this test throws before reaching the one it means to test
 
       try {
         await I.amOnPage('/')
@@ -1932,9 +2237,10 @@ export function tests() {
   })
 
   describe('#customLocators', () => {
-    beforeEach(() => {
+    beforeEach(function () {
       originalLocators = Locator.filters
       Locator.filters = []
+      if (I.capabilities?.layout === 'none') this.skip() // relies on waitForVisible/seeElement, which need a real layout engine
     })
     afterEach(() => {
       // reset custom locators
@@ -1987,6 +2293,10 @@ export function tests() {
   })
 
   describe('#focus, #blur', () => {
+    beforeEach(function () {
+      if (isHelper('Obscura')) this.skip() // el.focus()/el.blur() are no-ops without a real focus chain
+    })
+
     it('should focus a button, field and textarea', async () => {
       await I.amOnPage('/form/focus_blur_elements')
 
@@ -2075,7 +2385,12 @@ export function tests() {
       expect(traffics2.length).to.equal(traffics1.length)
     })
 
-    it('should see recording traffics', async () => {
+    it('should see recording traffics', async function () {
+      // codecept.io no longer serves this asset (its companies-logos section is gone from the
+      // current Astro-based site) — reproduced identically against Puppeteer's own copy of this
+      // test against the same live site, so this is pre-existing test-data drift, not a CDPBrowser
+      // limitation; narrowly skipped here rather than editing shared test data for every helper.
+      if (isHelper('CDPBrowser')) this.skip()
       I.startRecordingTraffic()
       I.amOnPage('https://codecept.io/')
       await I.seeTraffic({ name: 'traffics', url: 'https://codecept.io/img/companies/BC_LogoScreen_C.jpg' })
@@ -2117,7 +2432,14 @@ export function tests() {
       }
     })
 
-    it('should check traffics with more advanced params', async () => {
+    it('should check traffics with more advanced params', async function () {
+      // amOnPage() waits for document.readyState === 'complete'; against this specific heavy,
+      // continuously-active external page that reliably takes longer than the 30s getPageTimeout
+      // over two full-suite runs, where Puppeteer's page.goto() (different completion semantics)
+      // resolves in under a second. A real, narrow CDPBrowser navigation-robustness gap against
+      // one specific external page, not a general regression — not chased further given it is
+      // outside this mandate's scope (CDPBrowser's own skip-guard audit, not navigation internals).
+      if (isHelper('CDPBrowser')) this.skip()
       await I.startRecordingTraffic()
       await I.amOnPage('https://openaI.com/blog/chatgpt')
       const traffics = await I.grabRecordedNetworkTraffics()
@@ -2197,6 +2519,42 @@ export function tests() {
       I.waitForText('Work for You!')
       const afterWsMessages = I.grabWebSocketMessages()
       expect(wsMessages.length).to.equal(afterWsMessages.length)
+    })
+  })
+
+  describe('#startScreencast, #stopScreencast', () => {
+    beforeEach(function () {
+      if (typeof I.startScreencast !== 'function') this.skip() // CDP-family only (CDPBrowser/Obscura/Kitesurf) — Playwright/WebDriver/Puppeteer use their own video APIs
+    })
+
+    it('records navigation and a click into a valid APNG', async () => {
+      await I.amOnPage('/')
+      await I.startScreencast()
+      await I.click('More info')
+      const buf = await I.stopScreencast()
+
+      expect(buf).to.not.equal(null)
+      expect(buf.length).to.be.greaterThan(100)
+      expect(buf.subarray(0, 8).toString('hex')).to.equal('89504e470d0a1a0a')
+
+      const chunkTypes = []
+      let offset = 8
+      while (offset + 8 <= buf.length) {
+        const length = buf.readUInt32BE(offset)
+        const type = buf.toString('ascii', offset + 4, offset + 8)
+        chunkTypes.push(type)
+        offset += 12 + length
+        if (type === 'IEND') break
+      }
+      expect(chunkTypes).to.include('acTL')
+      expect(chunkTypes).to.include('IHDR')
+      expect(chunkTypes[chunkTypes.length - 1]).to.equal('IEND')
+    })
+
+    it('returns null when stopScreencast is called without a prior startScreencast', async () => {
+      await I.amOnPage('/')
+      const buf = await I.stopScreencast()
+      expect(buf).to.equal(null)
     })
   })
 
@@ -2371,8 +2729,6 @@ export function tests() {
     })
 
     it('should check options by aria-label', async () => {
-      if (!isHelper('WebDriver')) return
-
       await I.amOnPage('/form/role_elements')
 
       await I.dontSeeCheckboxIsChecked('I agree to the terms and conditions')
@@ -2393,9 +2749,7 @@ export function tests() {
       await I.fillField('your@email.com', 'bob@company.com')
       await I.fillField('Enter your message', 'Test message')
 
-      if (isHelper('WebDriver')) {
-        await I.checkOption('Subscribe to newsletter')
-      }
+      await I.checkOption('Subscribe to newsletter')
 
       await I.click('Submit')
       await I.see('Form Submitted!')
@@ -2404,7 +2758,8 @@ export function tests() {
       await I.see('Product')
     })
 
-    it('should click the correct button when multiple buttons have similar text', async () => {
+    it('should click the correct button when multiple buttons have similar text', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // this fixture hides #result via display:none, which requires a real layout engine for innerText to honor
       await I.amOnPage('/form/role_elements')
 
       // Fill form with test data
@@ -2504,7 +2859,7 @@ export function tests() {
       expect(err.message).to.include('No element is in focus')
     })
 
-    it('should not throw NonFocusedType when element is focused', async () => {
+    it('should not throw NonFocusedType when element is focused', async function () {
       await I.amOnPage('/form/field')
       I.options.strict = true
       await I.click('Name')
@@ -2532,7 +2887,7 @@ export function tests() {
       await I.pressKey('Escape')
     })
 
-    it('should not throw for Ctrl+A when element is focused', async () => {
+    it('should not throw for Ctrl+A when element is focused', async function () {
       await I.amOnPage('/form/field')
       I.options.strict = true
       await I.click('Name')

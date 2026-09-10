@@ -239,7 +239,15 @@ I.uncheckOption('Subscribe')
 > Use `secret()` for sensitive data: `I.fillField('password', secret('123456'))` - [won't expose in logs](/secrets/).
 >
 
-> [selectOption](/web-api#iselectoption) works with native `<select>` elements as well as custom components using `role="combobox"` or `role="listbox"`.
+> [selectOption](/web-api#iselectoption) works with native `<select>` elements as well as custom components using `role="combobox"`, `role="listbox"`, or `role="radiogroup"`.
+>
+> For a radio group the option is matched against the accessible name of a `role="radio"` item, so a group of buttons reads the same way as a `<select>`:
+>
+> ```js
+> I.selectOption('Density', 'Comfortable')
+> ```
+>
+> A radio group holds a single value, so passing an array of options raises an error.
 
 ### Assertions
 
