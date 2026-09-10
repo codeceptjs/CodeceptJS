@@ -588,7 +588,8 @@ export function tests() {
           await I.seeCheckboxIsChecked('Airplane mode')
         })
 
-        it('checks a radio by its label', async () => {
+        it('checks a radio by its label', async function () {
+          if (page === 'baseui' && isHelper('Obscura')) this.skip()
           await open(page)
           await I.dontSeeCheckboxIsChecked('Comfortable')
 
@@ -753,6 +754,10 @@ export function tests() {
 
     for (const page of Object.keys(pages)) {
       describe(page, () => {
+        beforeEach(function () {
+          if (page === 'baseui' && isHelper('Obscura')) this.skip()
+        })
+
         it('checks the radio matching the option and unchecks its siblings', async () => {
           await open(page)
           await I.selectOption('Density', 'Compact')

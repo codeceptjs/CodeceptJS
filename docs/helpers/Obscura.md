@@ -28,9 +28,9 @@ process lifecycle, the same way Playwright manages its own browser process.
     never spawns or kills anything, no matter what `binaryPath`/`port` are set to.
 *   **SELF-LAUNCH** — `endpoint` is unset and a binary can be resolved, in order: `binaryPath` in
     the config, then the `OBSCURA_PATH` environment variable, then `obscura` on `PATH`. The helper
-    spawns `obscura serve --port <port> --allow-private-network` (`port` from the config, or a
-    free port picked automatically), waits for it to answer, connects, and kills it in
-    `_finishTest`.
+    spawns `obscura serve --port <port> --allow-private-network --allow-file-access` (`port` from
+    the config, or a free port picked automatically), waits for it to answer, connects, and kills
+    it in `_finishTest`.
 *   **COURTESY-ATTACH** — `endpoint` is unset and no binary can be resolved, but something already
     answers `http://127.0.0.1:9222/json/version` (e.g. `obscura serve` started by hand, or by CI
     before this process ever ran). The helper attaches to it and never kills it — it isn't the
@@ -43,12 +43,13 @@ Download a release binary and put it on your `PATH` (or point `binaryPath`/`OBSC
 it directly) and the helper launches and tears it down for you automatically:
 
 ```sh
-curl -sL https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.0/obscura-x86_64-linux.tar.gz | tar xz
+curl -sL https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.2/obscura-x86_64-linux.tar.gz | tar xz
 ```
 
-`--allow-private-network` is always passed by this helper (it's required to reach apps running
-on `localhost`/private IPs, e.g. a dev server on `127.0.0.1:8000` — Obscura blocks
-private-network requests by default).
+`--allow-private-network` and `--allow-file-access` are always passed by this helper: the first
+is required to reach apps running on `localhost`/private IPs, e.g. a dev server on
+`127.0.0.1:8000`, the second to let `attachFile` upload local files. Obscura blocks both by
+default.
 
 ## Config presets
 
@@ -67,7 +68,7 @@ Set them explicitly in your own config to skip probing or to force a mode.
 ## Limitations
 
 *   `input` is always `synthetic`, even on rendering builds — see `input` above.
-*   No frames, popups, or file uploads.
+*   No frames or popups.
 *   On `-no-render` builds and v0.1.x: no screenshots, no visibility assertions
     (`seeElement`/`dontSeeElement` always throw) — only DOM presence
     (`seeElementInDOM`/`dontSeeElementInDOM`) is meaningful without a layout engine.
