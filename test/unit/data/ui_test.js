@@ -81,10 +81,10 @@ describe('ui', () => {
       dataScenarioConfig.scenarios.forEach(scenario => expect(helper).to.equal(scenario.test.config[helperName]))
     })
 
-    it("should shows object's toString() method in each scenario's name if the toString() method is overridden", () => {
-      const data = [{ toString: () => 'test case title' }]
+    it("should use JSON in each scenario's name if the object overrides toString()", () => {
+      const data = [{ name: 'John Do', toString: () => 'test case title' }]
       const dataScenarioConfig = context.Data(data).Scenario('scenario', () => {})
-      expect('scenario | test case title').to.equal(dataScenarioConfig.scenarios[0].test.title)
+      expect('scenario | {"name":"John Do"}').to.equal(dataScenarioConfig.scenarios[0].test.title)
     })
 
     it("should shows JSON.stringify() in each scenario's name if the toString() method isn't overridden", () => {
@@ -127,6 +127,12 @@ describe('ui', () => {
     it("should not leak a secret data row's value into the title", () => {
       const dataScenarioConfig = context.Data([new Secret('theSecretPassword')]).Scenario('scenario', () => {})
       expect(dataScenarioConfig.scenarios[0].test.title).to.equal('scenario | *****')
+    })
+
+    it("should not leak a skipped secret object's value into the title", () => {
+      const data = Secret.secret({ username: 'jon', password: 'theSecretPassword' }, 'password')
+      context.xData([data]).Scenario('scenario')
+      expect(suite.tests.at(-1).title).to.equal('scenario | {"username":"jon","password":"*****"}')
     })
   })
 })
