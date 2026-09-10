@@ -19,6 +19,8 @@ import * as webApiTests from './webapi.js'
 import FileSystem from '../../lib/helper/FileSystem.js'
 import { deleteDir } from '../../lib/utils.js'
 import Secret from '../../lib/secret.js'
+import storeModule from '../../lib/store.js'
+const store = storeModule.default || storeModule
 import codeceptjsModule from '../../lib/index.js'
 global.codeceptjs = codeceptjsModule.default || codeceptjsModule
 
@@ -132,6 +134,119 @@ describe('Playwright', function () {
     it('should not try to click on invisible elements', async () => {
       await I.amOnPage('/invisible_elements')
       await I.click('Hello World')
+    })
+  })
+
+  describe('#visibleLocator', () => {
+    const step = (helperMethod, opts = {}) => I._beforeStep({ helperMethod, opts })
+
+    afterEach(() => {
+      store.visibleLocator = false
+      I.options.visibleLocator = false
+      I.options.strict = false
+    })
+
+    it('should match hidden elements when disabled', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.strict = true
+      step('click')
+      let err
+      try {
+        await I.click({ css: 'button' })
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should match only visible elements when enabled in config', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      I.options.strict = true
+      step('click')
+      await I.click({ css: 'button' })
+    })
+
+    it('should be enabled for a single step', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.strict = true
+      step('click', { visibleLocator: true })
+      await I.click({ css: 'button' })
+    })
+
+    it('should be disabled for a single step', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      I.options.strict = true
+      step('click', { visibleLocator: false })
+      let err
+      try {
+        await I.click({ css: 'button' })
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should not find elements which are all hidden', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      step('click')
+      let err
+      try {
+        await I.click({ css: 'button[style]' })
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.message).to.include('Clickable element')
+      expect(err.message).to.include('was not found')
+    })
+
+    it('should keep DOM assertions unaffected', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+
+      step('seeElementInDOM')
+      await I.seeElementInDOM({ css: 'button[style]' })
+
+      step('seeNumberOfElements')
+      await I.seeNumberOfElements('button', 3)
+
+      step('dontSeeElementInDOM')
+      await I.dontSeeElementInDOM({ css: 'button[data-missing]' })
+    })
+
+    it('should apply to playwright locators', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      I.options.strict = true
+      step('click')
+      await I.click({ pw: 'button' })
+    })
+
+    it('should select from a custom combobox', async () => {
+      await I.amOnPage('/form/custom_select')
+      I.options.visibleLocator = true
+      step('selectOption')
+      await I.selectOption('Country', 'Porto')
+      step('see')
+      await I.see('country: pt', '#result')
+    })
+
+    it('should interact with fields and checkboxes', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      step('checkOption')
+      await I.checkOption('#ts')
+      step('seeCheckboxIsChecked')
+      await I.seeCheckboxIsChecked('#ts')
+      step('fillField')
+      await I.fillField('#basic', 'Pascal')
+      step('seeInField')
+      await I.seeInField('#basic', 'Pascal')
     })
   })
   describe('#grabCheckedElementStatus', () => {
