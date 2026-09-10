@@ -43,7 +43,7 @@ Download a release binary and put it on your `PATH` (or point `binaryPath`/`OBSC
 it directly) and the helper launches and tears it down for you automatically:
 
 ```sh
-curl -sL https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.0/obscura-x86_64-linux.tar.gz | tar xz
+curl -sL https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.2/obscura-x86_64-linux.tar.gz | tar xz
 ```
 
 `--allow-private-network` is always passed by this helper (it's required to reach apps running
