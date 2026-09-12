@@ -44,7 +44,7 @@ jobs:
       - name: npm install
         run: npm i --force
       - name: Cache Obscura tarball
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/obscura-bin/obscura.tar.gz
           key: obscura-${{ env.OBSCURA_VERSION }}-x86_64-linux
