@@ -12,10 +12,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   CI: true
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
+  GH_PAT: ${{ github.token }}
+  TESTOMATIO: ${{ secrets.TESTOMATIO }}
 
 jobs:
   build:
@@ -69,6 +75,6 @@ jobs:
       - name: run webkit tests
         run: 'BROWSER=webkit node ./bin/codecept.js run -c test/acceptance/codecept.Playwright.js --grep @Playwright --debug'
       - name: run chromium unit tests
-        run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 15000
+        run: ./node_modules/.bin/mocha test/helper/Playwright_test.js --timeout 15000 --reporter @testomatio/reporter/mocha
       - name: Stop mock server
         run: npm run mock-server:stop
