@@ -1963,6 +1963,38 @@ export function tests() {
     })
   })
 
+  describe('#switchTo', () => {
+    beforeEach(function () {
+      if (isHelper('CDPBrowser')) this.skip() // switchTo/iframes are not implemented in CDPBrowser
+    })
+
+    it('should switch to nested iframes one by one', async () => {
+      await I.amOnPage('/iframe_nested')
+      await I.switchTo('[name=wrapper]')
+      await I.see('Iframe test')
+      await I.switchTo('[name=content]')
+      await I.see('Information')
+      await I.see('Lots of valuable data here')
+    })
+
+    it('should return to the top level context from a nested iframe', async () => {
+      await I.amOnPage('/iframe_nested')
+      await I.switchTo('[name=wrapper]')
+      await I.switchTo('[name=content]')
+      await I.see('Information')
+      await I.switchTo(null)
+      await I.see('Nested Iframe test')
+    })
+
+    it('should not find a nested iframe from the top level context', async () => {
+      await I.amOnPage('/iframe_nested')
+      await I.switchTo('[name=content]').then(
+        () => assert.fail('switched to an iframe which is not in the current context'),
+        err => assert.include(err.message, 'was not found'),
+      )
+    })
+  })
+
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // scrolling requires a real layout engine
