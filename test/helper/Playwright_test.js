@@ -395,6 +395,18 @@ describe('Playwright', function () {
       I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover', 'body'))
         .then(() => I.see('Hovered', '#show')))
+
+    it('should scroll element into view before hovering', async () => {
+      await I.amOnPage('/form/hover')
+      await I.moveCursorTo('#offscreen_hover')
+      await I.see('Hovered offscreen', '#offscreen_show')
+    })
+
+    it('should scroll element into view before hovering within a context', async () => {
+      await I.amOnPage('/form/hover')
+      await I.moveCursorTo('#offscreen_hover', 'body')
+      await I.see('Hovered offscreen', '#offscreen_show')
+    })
   })
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
