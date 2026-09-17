@@ -9,7 +9,7 @@ CodeceptJS runs in any CI that can install Node.js. This page covers the setup, 
 
 ## Setup
 
-- **Node.js** — install it on the runner (`actions/setup-node`, the `node:20` image, `NodeTool@0` on Azure). Examples below use Node 20.
+- **Node.js 22.12 or newer** — install it on the runner (`actions/setup-node`, the `node:22` image, `NodeTool@0` on Azure). Examples below use Node 22.
 - **Headless** — `codecept.conf.js` must contain `setHeadlessWhen(process.env.HEADLESS || process.env.CI)`. `codeceptjs init` adds it; since CI sets `CI=true`, the suite runs headless automatically.
 
   ```js
@@ -61,7 +61,7 @@ Use [`@testomatio/reporter`](https://github.com/testomatio/reporter). It ships p
 
 ## CI examples
 
-Each example uses Playwright by default; a WebDriver variant follows where it differs. WebdriverIO 9 downloads its own browser and driver, so the WebDriver variants run on a plain `node:20` image with no Selenium service and no browser-install step. For Playwright, a `node:20` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
+Each example uses Playwright by default; a WebDriver variant follows where it differs. WebdriverIO 9 downloads its own browser and driver, so the WebDriver variants run on a plain `node:22` image with no Selenium service and no browser-install step. For Playwright, a `node:22` base image plus `npx playwright install --with-deps` keeps these configs free of version pins.
 
 ### GitHub Actions — Playwright
 
@@ -85,7 +85,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
@@ -115,7 +115,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - run: npm ci
       - run: npx codeceptjs check
       - run: npx codeceptjs run-workers 2 --by pool
@@ -142,7 +142,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npx codeceptjs check
@@ -173,7 +173,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - run: npm ci
       - run: npx playwright install --with-deps
       - run: npx codeceptjs check
@@ -194,7 +194,7 @@ stages: [test]
 
 playwright:
   stage: test
-  image: node:20
+  image: node:22
   variables:
     FORCE_COLOR: "1"
   parallel: 4
@@ -211,7 +211,7 @@ playwright:
 
 webdriver:
   stage: test
-  image: node:20  # WebdriverIO 9 downloads its own browser and driver
+  image: node:22  # WebdriverIO 9 downloads its own browser and driver
   script:
     - npm ci
     - npx codeceptjs check
@@ -228,7 +228,7 @@ webdriver:
 `bitbucket-pipelines.yml`:
 
 ```yaml
-image: node:20
+image: node:22
 
 definitions:
   caches:
@@ -260,7 +260,7 @@ pipelines:
 For WebDriver, no Selenium service or browser image is needed — WebdriverIO 9 downloads its own browser and driver:
 
 ```yaml
-image: node:20
+image: node:22
 
 pipelines:
   default:
@@ -280,7 +280,7 @@ pipelines:
 pipeline {
   agent {
     docker {
-      image 'node:20'
+      image 'node:22'
       args '-u root'
     }
   }
@@ -311,7 +311,7 @@ pipeline {
 }
 ```
 
-For WebDriver, keep the same `node:20` agent — WebdriverIO 9 downloads its own browser and driver, so no Selenium container is needed:
+For WebDriver, keep the same `node:22` agent — WebdriverIO 9 downloads its own browser and driver, so no Selenium container is needed:
 
 ```groovy
 stage('Test') {
@@ -332,7 +332,7 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: cimg/node:20.18-browsers
+      - image: cimg/node:22.14-browsers
     parallelism: 4
     steps:
       - checkout
@@ -350,7 +350,7 @@ jobs:
   webdriver:
     docker:
       # WebdriverIO 9 downloads its own browser and driver
-      - image: cimg/node:20.18
+      - image: cimg/node:22.14
     steps:
       - checkout
       - run: npm ci

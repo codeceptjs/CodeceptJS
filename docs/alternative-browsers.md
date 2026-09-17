@@ -5,6 +5,10 @@ title: Alternative Browser Engines
 
 # Alternative Browser Engines
 
+::: warning Experimental
+The `CDPBrowser`, `Obscura`, and `Kitesurf` helpers are experimental in CodeceptJS 4.2. Pin browser versions in CI and retain Playwright or WebDriver coverage for compatibility-critical tests.
+:::
+
 Playwright and Puppeteer drive full Chromium — the most accurate way to test what users see.
 But a new class of lightweight, agent-era browsers has appeared, and CodeceptJS can drive them
 through the `CDPBrowser` helper family:
@@ -12,8 +16,7 @@ through the `CDPBrowser` helper family:
 - **[Obscura](https://github.com/h4ckf0r0day/obscura)** — an open-source Rust browser with a real
   V8 engine. From v0.2.0, the default release build also renders — real layout, computed styles,
   and screenshots — with `-no-render` builds still available for pure-speed, nothing-painted
-  scraping mode. A single 70 MB binary, ~30 MB RAM per instance, page loads in tens of
-  milliseconds.
+  scraping mode. Release archives are available for Linux, macOS, and Windows.
 - **[Kitesurf](https://blog.cloudflare.com/kitesurf/)** — Cloudflare's browser that runs in V8
   isolates on Cloudflare Workers, with a real layout and rendering pipeline. Cloud-only,
   free in beta, planned to be open-sourced.
@@ -24,10 +27,9 @@ on navigation races.
 
 ## When are they better than Playwright?
 
-**Smoke suites where seconds matter.** An Obscura scenario (navigate, fill a form, submit,
-assert) completes in 150–500 ms. There is no browser binary to download in CI — a 70 MB
-static binary starts instantly. If your PR gate runs 50 smoke scenarios, Obscura turns
-minutes into seconds.
+**Smoke suites where startup and execution time matter.** Obscura is distributed as a standalone
+binary and is designed for lightweight browser automation. Benchmark it against your own pages and
+CI environment before choosing it for a PR gate.
 
 **Massive parallel scale.** Kitesurf sessions are Cloudflare Workers — they spawn in about a
 second, cost nothing while idle, and there is no practical ceiling on how many you run at once.
@@ -57,9 +59,8 @@ app's real JavaScript in real V8; it only skips painting. For API-adjacent flows
 **Constrained environments.** ARM CI runners, thin containers, air-gapped machines:
 a static binary with no system dependencies goes where Chromium will not.
 
-**Scraping-grade network realism.** Obscura's stealth mode presents a consistent Chrome TLS
-fingerprint — useful when your tests must pass through bot-protection layers that block
-headless Chromium.
+**Optional stealth builds.** Obscura publishes separate `-stealth` archives. Treat their behaviour
+as an Obscura capability rather than a browser-compatibility guarantee from CodeceptJS.
 
 ## When to stay with Playwright
 
@@ -76,6 +77,10 @@ headless Chromium.
   (`cloudflared tunnel --url http://localhost:3000`) or a deployed environment.
 
 ## Configuration
+
+CodeceptJS 4.2 is tested in CI with Obscura 0.2.2. Obscura 0.2.x is recommended; 0.1.x and
+`-no-render` builds operate without layout, visibility assertions, or screenshots. See
+[Installation](/installation#obscura-experimental) for platform-specific archive names.
 
     helpers: {
       Obscura: {
@@ -144,7 +149,7 @@ process — there is nothing to start by hand in the common case:
 | Screenshots | yes | yes (v0.2.0+ default builds); no on `-no-render`/v0.1.x | yes |
 | Visibility assertions | yes | yes (v0.2.0+ default builds); no, DOM-presence only, on `-no-render`/v0.1.x | yes |
 | Screencast / video (`screencast` plugin) | yes — WebM via `page.screencast`, with caption burn-in | yes — APNG via CDP `Page.startScreencast`, assembled in-process (v0.2.0+ default builds; verified PNG frames on the live server); no caption burn-in | untested |
-| Startup cost | seconds + ~300 MB install | instant, 70 MB binary | ~1 s, zero local |
+| Startup model | local browser process | standalone local binary | remote cloud session |
 | Parallel scale | machine-bound | machine-bound (light) | near-unlimited (cloud) |
 | Where it runs | local/grid | local | Cloudflare only |
 | License / cost | open source | Apache-2.0 | proprietary, free beta |
