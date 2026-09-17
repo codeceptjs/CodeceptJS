@@ -724,6 +724,25 @@ export function tests() {
         await I.see('tags: review,later', '#result')
       })
     })
+
+    it('should not resolve a labelled tablist container as a field', async function () {
+      // Puppeteer's findFields falls back to `::-p-aria(<name>)`, which resolves the tablist
+      // by accessible name regardless of the XPath strategies asserted here.
+      if (isHelper('Puppeteer')) this.skip()
+
+      await I.amOnPage('/form/field_containers')
+
+      let err
+      try {
+        await I.selectOption('Settings tabs', 'Password')
+      } catch (e) {
+        err = e
+      }
+
+      if (!err) assert.fail('selected an option on a tablist')
+      assert.include(err.message, 'was not found')
+      assert.notInclude(err.message, '<select>')
+    })
   })
 
   describe('#selectOption - radiogroups', function () {
@@ -1307,6 +1326,17 @@ export function tests() {
       await I.amOnPage('/form/example20')
       await I.seeInField("//input[@name='txtName'][2]", 'emma')
       await I.seeInField("input[name='txtName']:nth-child(2)", 'emma')
+    })
+
+    it('should skip a labelled wrapper and read the field it wraps', async () => {
+      await I.amOnPage('/form/field_containers')
+      await I.seeInField('Volume', '30')
+      await I.dontSeeInField('Volume', '70')
+    })
+
+    it('should still reach a custom widget labelled by aria-labelledby', async () => {
+      await I.amOnPage('/form/field_containers')
+      await I.seeInField('Nickname', 'Bob')
     })
   })
 
