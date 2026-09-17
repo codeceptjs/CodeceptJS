@@ -956,6 +956,42 @@ export function tests() {
     })
   })
 
+  describe('#seeInClipboard, #seeClipboardEquals, #clearClipboard', () => {
+    beforeEach(async function () {
+      if (isHelper('Obscura')) this.skip() // Obscura's navigator.clipboard is a stub: writeText() resolves but stores nothing, so readText() always returns '' (verified: a write/read round trip inside one evaluate reads back an empty string)
+      await I.amOnPage('/form/clipboard')
+      await I.clearClipboard()
+    })
+
+    it('should see text copied to the clipboard', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      await I.seeInClipboard('Copy')
+      await I.seeClipboardEquals('Copy me')
+    })
+
+    it('should not see text which was not copied', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      let err
+      try {
+        await I.seeInClipboard('Paste me')
+      } catch (e) {
+        err = e
+      }
+      assert.ok(err, 'seeInClipboard should have failed')
+      assert.include(err.inspect ? err.inspect() : err.message, 'expected clipboard to include "Paste me"')
+    })
+
+    it('should clear the clipboard', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      await I.seeClipboardEquals('Copy me')
+      await I.clearClipboard()
+      await I.seeClipboardEquals('')
+    })
+  })
+
   describe('#fillField, #appendField', () => {
     it('should fill input fields', async () => {
       await I.amOnPage('/form/field')
