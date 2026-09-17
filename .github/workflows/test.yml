@@ -12,6 +12,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  GH_PAT: ${{ github.token }}
+  TESTOMATIO: ${{ secrets.TESTOMATIO }}
+
 jobs:
   unit-tests:
     name: Unit tests
