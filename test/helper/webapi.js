@@ -956,7 +956,7 @@ export function tests() {
     })
   })
 
-  describe('#seeInClipboard, #seeClipboardEquals, #clearClipboard', () => {
+  describe('#seeInClipboard, #seeClipboardEquals, #grabFromClipboard, #clearClipboard', () => {
     beforeEach(async function () {
       if (isHelper('Obscura')) this.skip() // Obscura's navigator.clipboard is a stub: writeText() resolves but stores nothing, so readText() always returns '' (verified: a write/read round trip inside one evaluate reads back an empty string)
       await I.amOnPage('/form/clipboard')
@@ -968,6 +968,13 @@ export function tests() {
       await I.see('copied')
       await I.seeInClipboard('Copy')
       await I.seeClipboardEquals('Copy me')
+    })
+
+    it('should grab text from the clipboard', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      const clipboard = await I.grabFromClipboard()
+      assert.equal(clipboard, 'Copy me')
     })
 
     it('should not see text which was not copied', async () => {
@@ -989,6 +996,7 @@ export function tests() {
       await I.seeClipboardEquals('Copy me')
       await I.clearClipboard()
       await I.seeClipboardEquals('')
+      assert.equal(await I.grabFromClipboard(), '')
     })
   })
 
