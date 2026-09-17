@@ -135,7 +135,7 @@ This behavior can be configured with following options:
 *   `create`: override create options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/create" }`
 *   `delete`: override delete options. Expected format: `{ method: uri }`. Example: `{ "post": "/users/delete/{id}" }`
 
-Requests can also be overridden with a function which returns [axois request config][4].
+Requests can also be overridden with a function which returns request config.
 
 ```js
 create: (data) => ({ method: 'post', url: '/posts', data }),
@@ -232,7 +232,7 @@ I.have('user', { }, { age: 33, height: 55 })
 *   `params` **any?** predefined parameters
 *   `options` **any?** options for programmatically generate the attributes
 
-Returns **[Promise][5]<any>**&#x20;
+Returns **[Promise][4]<any>**&#x20;
 
 ### haveMultiple
 
@@ -262,6 +262,4 @@ I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 
 [3]: http://codecept.io/helpers/REST/
 
-[4]: https://github.com/axios/axios#request-config
-
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
