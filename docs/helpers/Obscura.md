@@ -27,11 +27,11 @@ process lifecycle, the same way Playwright manages its own browser process.
 
 ## Compatibility
 
-| CodeceptJS | Recommended Obscura | Notes |
-| --- | --- | --- |
-| 4.2.x | 0.2.2 | Version used by the CodeceptJS Obscura CI workflow |
-| 4.2.x | 0.2.x | Supported; capabilities are detected at runtime |
-| 4.2.x | 0.1.x / `-no-render` | DOM-only mode; no layout, visibility assertions, or screenshots |
+| CodeceptJS | Recommended Obscura  | Notes                                                           |
+| ---------- | -------------------- | --------------------------------------------------------------- |
+| 4.2.x      | 0.2.2                | Version used by the CodeceptJS Obscura CI workflow              |
+| 4.2.x      | 0.2.x                | Supported; capabilities are detected at runtime                 |
+| 4.2.x      | 0.1.x / `-no-render` | DOM-only mode; no layout, visibility assertions, or screenshots |
 
 ## Modes
 
@@ -50,16 +50,16 @@ process lifecycle, the same way Playwright manages its own browser process.
 
 ## Install
 
-Download a release archive from [Obscura releases](https://github.com/h4ckf0r0day/obscura/releases).
+Download a release archive from [Obscura releases][2].
 CodeceptJS 4.2 is tested with Obscura 0.2.2. Rendering archives are available for:
 
-| platform | archive |
-| --- | --- |
-| Linux x64 | `obscura-x86_64-linux.tar.gz` |
-| Linux ARM64 | `obscura-aarch64-linux.tar.gz` |
-| macOS Intel | `obscura-x86_64-macos.tar.gz` |
+| platform            | archive                        |
+| ------------------- | ------------------------------ |
+| Linux x64           | `obscura-x86_64-linux.tar.gz`  |
+| Linux ARM64         | `obscura-aarch64-linux.tar.gz` |
+| macOS Intel         | `obscura-x86_64-macos.tar.gz`  |
 | macOS Apple Silicon | `obscura-aarch64-macos.tar.gz` |
-| Windows x64 | `obscura-x86_64-windows.zip` |
+| Windows x64         | `obscura-x86_64-windows.zip`   |
 
 Extract the archive and put `obscura` (`obscura.exe` on Windows) on your `PATH`, or point
 `binaryPath`/`OBSCURA_PATH` at it. The helper then launches and tears it down automatically.
@@ -107,19 +107,19 @@ Set them explicitly in your own config to skip probing or to force a mode.
 This helper should be configured in codecept.conf.js. It accepts everything `CDPBrowser`
 accepts (see its config table), plus:
 
-Type: [object][6]
+Type: [object][7]
 
 ### Properties
 
-*   `endpoint` **[string][4]?** explicit CDP endpoint. Setting this switches the helper to ATTACH
+*   `endpoint` **[string][5]?** explicit CDP endpoint. Setting this switches the helper to ATTACH
     mode: it only connects, and never spawns or kills a process, no matter what else is configured.
     Leave it unset for SELF-MANAGED mode (see below).
-*   `binaryPath` **[string][4]?** path to the `obscura` executable, used in SELF-MANAGED mode
+*   `binaryPath` **[string][5]?** path to the `obscura` executable, used in SELF-MANAGED mode
     (`endpoint` unset). Checked before `OBSCURA_PATH` and `PATH`.
-*   `port` **[number][3]?** port `obscura serve` listens on, in SELF-MANAGED mode. When unset, a
+*   `port` **[number][4]?** port `obscura serve` listens on, in SELF-MANAGED mode. When unset, a
     free port is picked automatically, which is what makes `run-workers` collision-free — every
     worker gets its own instance on its own port with zero config.
-*   `serverStartTimeout` **[number][3]?** milliseconds to wait for a spawned `obscura serve`
+*   `serverStartTimeout` **[number][4]?** milliseconds to wait for a spawned `obscura serve`
     to answer `/json/version` before `_connect` gives up.
 
 
@@ -173,7 +173,7 @@ Picks a free TCP port on 127.0.0.1 by briefly listening on port 0 and reading ba
 port. Used as the SELF-LAUNCH default when `options.port` isn't explicitly set, so multiple
 `run-workers` workers never collide on the same port.
 
-Returns **[Promise][2]<[number][3]>** a free port.
+Returns **[Promise][3]<[number][4]>** a free port.
 
 ### _finishTest
 
@@ -193,9 +193,9 @@ Probes a `/json/version`-style URL with a short timeout, used for the COURTESY-A
 
 #### Parameters
 
-*   `url` **[string][4]**&#x20;
+*   `url` **[string][5]**&#x20;
 
-Returns **[Promise][2]<[boolean][5]>** true if the URL answered.
+Returns **[Promise][3]<[boolean][6]>** true if the URL answered.
 
 ### _resolveBinary
 
@@ -204,7 +204,7 @@ Resolves the `obscura` binary to spawn, in priority order: `options.binaryPath`,
 directories itself instead of shelling out to `which`, which does not exist on Windows: on
 Windows every `PATHEXT` suffix is tried, so an `obscura.exe` on `PATH` is found too.
 
-Returns **([string][4] | null)** an absolute or relative path to the binary, or null if none resolved.
+Returns **([string][5] | null)** an absolute or relative path to the binary, or null if none resolved.
 
 ### _resolveSelfManaged
 
@@ -223,12 +223,14 @@ is paid once per run and counts directly toward real-world startup latency.
 
 [1]: https://github.com/h4ckf0r0day/obscura
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[2]: https://github.com/h4ckf0r0day/obscura/releases
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
