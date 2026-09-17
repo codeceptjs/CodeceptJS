@@ -10,6 +10,7 @@
 | 🌐 Web    | Playwright | [![Playwright Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/playwright.yml)               |
 | 🌐 Web    | Puppeteer  | [![Puppeteer Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/puppeteer.yml)                  |
 | 🌐 Web    | WebDriver  | [![WebDriver Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/webdriver.yml)                  |
+| 🌐 Web    | Obscura    | [![Obscura Helper Tests](https://github.com/codeceptjs/CodeceptJS/actions/workflows/obscura.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/obscura.yml)               |
 | 📱 Mobile | Appium     | [![Appium Tests - Android](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium_Android.yml/badge.svg)](https://github.com/codeceptjs/CodeceptJS/actions/workflows/appium_Android.yml) |
 
 # CodeceptJS [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
@@ -42,6 +43,7 @@ CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently, 
 - [**Playwright**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Playwright.md) - is a Node library to automate the Chromium, WebKit and Firefox browsers with a single API.
 - [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
 - [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver or Devtools protocol.
+- [**Obscura**](https://codecept.io/helpers/Obscura) - drives the lightweight Obscura browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
 - [**Appium**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 - [**Detox**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimed to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially well for React Native apps.
 
@@ -102,7 +104,7 @@ Later you can even automagically update Type Definitions to include your own cus
 
 Note:
 
-- CodeceptJS requires Node.js version `12+` or later.
+- CodeceptJS 4.2 requires Node.js `22.12.0` or later.
 
 ## Usage
 

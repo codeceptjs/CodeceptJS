@@ -22,6 +22,17 @@ This helper is a thin `CDPBrowser` subclass: it changes nothing about how locati
 elements works, it only pins the config presets Obscura requires and manages the `obscura serve`
 process lifecycle, the same way Playwright manages its own browser process.
 
+> Obscura support is experimental in CodeceptJS 4.2. Pin the browser version in CI and keep a
+> Playwright/WebDriver job for browser-compatibility coverage.
+
+## Compatibility
+
+| CodeceptJS | Recommended Obscura | Notes |
+| --- | --- | --- |
+| 4.2.x | 0.2.2 | Version used by the CodeceptJS Obscura CI workflow |
+| 4.2.x | 0.2.x | Supported; capabilities are detected at runtime |
+| 4.2.x | 0.1.x / `-no-render` | DOM-only mode; no layout, visibility assertions, or screenshots |
+
 ## Modes
 
 *   **ATTACH** — `endpoint` is set explicitly in the config. The helper only connects to it; it
@@ -39,8 +50,20 @@ process lifecycle, the same way Playwright manages its own browser process.
 
 ## Install
 
-Download a release binary and put it on your `PATH` (or point `binaryPath`/`OBSCURA_PATH` at
-it directly) and the helper launches and tears it down for you automatically:
+Download a release archive from [Obscura releases](https://github.com/h4ckf0r0day/obscura/releases).
+CodeceptJS 4.2 is tested with Obscura 0.2.2. Rendering archives are available for:
+
+| platform | archive |
+| --- | --- |
+| Linux x64 | `obscura-x86_64-linux.tar.gz` |
+| Linux ARM64 | `obscura-aarch64-linux.tar.gz` |
+| macOS Intel | `obscura-x86_64-macos.tar.gz` |
+| macOS Apple Silicon | `obscura-aarch64-macos.tar.gz` |
+| Windows x64 | `obscura-x86_64-windows.zip` |
+
+Extract the archive and put `obscura` (`obscura.exe` on Windows) on your `PATH`, or point
+`binaryPath`/`OBSCURA_PATH` at it. The helper then launches and tears it down automatically.
+For example, on Linux x64:
 
 ```sh
 curl -sL https://github.com/h4ckf0r0day/obscura/releases/download/v0.2.2/obscura-x86_64-linux.tar.gz | tar xz

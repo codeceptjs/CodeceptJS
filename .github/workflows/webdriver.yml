@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 25
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
 
     steps:
       - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.27

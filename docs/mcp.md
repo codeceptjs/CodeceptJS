@@ -441,7 +441,7 @@ Storage capture is **enabled** for `run_code`, `snapshot`, `run_step_by_step` fa
 
 ### Server doesn't start
 
-- Node 18+ recommended.
+- Node 22.12+ is required by CodeceptJS 4.2.
 - Verify the path / `npx` resolution in your client config.
 
 ### Config not found
