@@ -867,6 +867,32 @@ I.closeApp();
 
 Returns **[Promise][6]\<void>** Appium: support both Android and iOS
 
+### clearClipboard
+
+Clears the system clipboard.
+
+```js
+I.clearClipboard();
+I.seeClipboardEquals('');
+```
+
+Returns **void** automatically synchronized promise through #recorderAppium: support both Android and iOS
+
+### grabFromClipboard
+
+Grabs the text content of the system clipboard and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+I.click('Copy to clipboard');
+let url = await I.grabFromClipboard();
+```
+
+Reading the clipboard requires a secure context (`https` or `localhost`) and is supported
+in Chromium-based browsers, where read access is granted automatically.
+
+Returns **[Promise][6]<[string][5]>** the system clipboard contents.Appium: support both Android and iOS
+
 ### appendField
 
 Appends text to a input field or textarea.

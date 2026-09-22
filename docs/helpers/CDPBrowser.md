@@ -231,6 +231,12 @@ Resolves the current page URL to a `pathname`, ignoring the origin, query string
 
 Returns **[Promise][1]<[string][2]>** the pathname of the current page.
 
+### _grantClipboardAccess
+
+Brings the current target to front and grants it clipboard read/write access, so
+`navigator.clipboard` does not reject with a permission or focus error. Failures are ignored:
+a browser without `Browser.grantPermissions` surfaces its own error from the read instead.
+
 ### _init
 
 No-op hook kept for interface parity with other browser helpers. Connecting to the CDP
@@ -722,6 +728,17 @@ I.checkOption('agree', '//form');
 
 Returns **[Promise][1]<void>**&#x20;
 
+### clearClipboard
+
+Clears the system clipboard.
+
+```js
+I.clearClipboard();
+I.seeClipboardEquals('');
+```
+
+Returns **[Promise][1]<void>**&#x20;
+
 ### clearCookie
 
 Clears a cookie by name,
@@ -1198,6 +1215,18 @@ console.log(`Current URL is [${url}]`);
 
 Returns **[Promise][1]<[string][2]>** current URL.
 
+### grabFromClipboard
+
+Grabs the text content of the system clipboard.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+I.click('Copy to clipboard');
+const url = await I.grabFromClipboard();
+```
+
+Returns **[Promise][1]<[string][2]>** the system clipboard contents.
+
 ### grabHTMLFrom
 
 Retrieves the inner HTML from an element located by CSS or XPath.
@@ -1574,6 +1603,23 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 Returns **[Promise][1]<void>**&#x20;
 
+### seeClipboardEquals
+
+Checks that the system clipboard is equal to the given text.
+
+```js
+I.click('Copy to clipboard');
+I.seeClipboardEquals('https://codecept.io');
+```
+
+Reading the clipboard requires a secure context (`https` or `localhost`).
+
+#### Parameters
+
+*   `text` **[string][2]** value to check.
+
+Returns **[Promise][1]<void>**&#x20;
+
 ### seeCookie
 
 Checks that a cookie with the given name is set.
@@ -1656,6 +1702,23 @@ I.seeElementInDOM('#modal');
 #### Parameters
 
 *   `locator` **([string][2] | [object][5])** element located by CSS|XPath|strict locator.
+
+Returns **[Promise][1]<void>**&#x20;
+
+### seeInClipboard
+
+Checks that the system clipboard contains the given text.
+
+```js
+I.click('Copy to clipboard');
+I.seeInClipboard('https://codecept.io');
+```
+
+Reading the clipboard requires a secure context (`https` or `localhost`).
+
+#### Parameters
+
+*   `text` **[string][2]** value to check.
 
 Returns **[Promise][1]<void>**&#x20;
 

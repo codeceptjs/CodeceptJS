@@ -444,6 +444,17 @@ I.checkOption('agree', '//form');
 
 Returns **void** automatically synchronized promise through #recorder
 
+### clearClipboard
+
+Clears the system clipboard.
+
+```js
+I.clearClipboard();
+I.seeClipboardEquals('');
+```
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### clearCookie
 
 Clears a cookie by name,
@@ -1149,6 +1160,21 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 Returns **([Promise][12]<DOMRect> | [Promise][12]<[number][11]>)** Element bounding rectangle
 
+### grabFromClipboard
+
+Grabs the text content of the system clipboard and returns it to test.
+Resumes test execution, so **should be used inside async function with `await`** operator.
+
+```js
+I.click('Copy to clipboard');
+let url = await I.grabFromClipboard();
+```
+
+Reading the clipboard requires a secure context (`https` or `localhost`) and is supported
+in Chromium-based browsers, where read access is granted automatically.
+
+Returns **[Promise][12]<[string][6]>** the system clipboard contents.
+
 ### grabHTMLFrom
 
 Retrieves the innerHTML from an element located by CSS or XPath and returns it to test.
@@ -1700,6 +1726,24 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 Returns **void** automatically synchronized promise through #recorder
 
+### seeClipboardEquals
+
+Checks that the system clipboard is equal to the given text.
+
+```js
+I.click('Copy to clipboard');
+I.seeClipboardEquals('https://codecept.io');
+```
+
+Reading the clipboard requires a secure context (`https` or `localhost`) and is supported
+in Chromium-based browsers, where read access is granted automatically.
+
+#### Parameters
+
+*   `text` **[string][6]** value to check.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### seeCookie
 
 Checks that cookie with given name exists.
@@ -1797,6 +1841,24 @@ I.seeElementInDOM('#modal');
 #### Parameters
 
 *   `locator` **([string][6] | [object][4])** element located by CSS|XPath|strict locator.
+
+Returns **void** automatically synchronized promise through #recorder
+
+### seeInClipboard
+
+Checks that the system clipboard contains the given text.
+
+```js
+I.click('Copy to clipboard');
+I.seeInClipboard('https://codecept.io');
+```
+
+Reading the clipboard requires a secure context (`https` or `localhost`) and is supported
+in Chromium-based browsers, where read access is granted automatically.
+
+#### Parameters
+
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
