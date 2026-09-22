@@ -4,6 +4,7 @@ export const config = {
   helpers: {
     Playwright: {
       url: 'http://localhost:8000',
+      manualStart: true,
       show: false,
       restart: false,
     },
