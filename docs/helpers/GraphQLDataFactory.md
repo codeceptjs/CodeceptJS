@@ -160,26 +160,6 @@ Data of created records are collected and used in the end of a test for the clea
 
 *   `config` &#x20;
 
-### _requestCreate
-
-Executes request to create a record to the GraphQL endpoint.
-Can be replaced from a custom helper.
-
-#### Parameters
-
-*   `operation` **[string][4]**&#x20;
-*   `variables` **any** to be sent along with the query
-
-### _requestDelete
-
-Executes request to delete a record to the GraphQL endpoint.
-Can be replaced from a custom helper.
-
-#### Parameters
-
-*   `operation` **[string][4]**&#x20;
-*   `data` **any** of the record to be deleted.
-
 ### mutateData
 
 Generates a new record using factory, sends a GraphQL mutation to store it.
@@ -214,6 +194,26 @@ I.mutateMultiple('createUser', 3, { age: 25 });
 *   `operation` **[string][4]**&#x20;
 *   `times` **[number][5]**&#x20;
 *   `params` **any**&#x20;
+
+### _requestCreate
+
+Executes request to create a record to the GraphQL endpoint.
+Can be replaced from a custom helper.
+
+#### Parameters
+
+*   `operation` **[string][4]**&#x20;
+*   `variables` **any** to be sent along with the query
+
+### _requestDelete
+
+Executes request to delete a record to the GraphQL endpoint.
+Can be replaced from a custom helper.
+
+#### Parameters
+
+*   `operation` **[string][4]**&#x20;
+*   `data` **any** of the record to be deleted.
 
 [1]: https://github.com/rosiejs/rosie
 

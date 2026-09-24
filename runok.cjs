@@ -12,10 +12,6 @@ const {
 const { execSync } = require('node:child_process')
 const semver = require('semver')
 
-let documentation
-
-import('documentation').then(mod => (documentation = mod))
-
 const helperMarkDownFile = function (name) {
   return `docs/helpers/${name}.md`
 }
@@ -34,6 +30,23 @@ const inheritedHelperDocs = {
 }
 
 const abstractHelpers = ['CDPBrowser']
+
+const helperHooks = [
+  '_init',
+  '_before',
+  '_after',
+  '_beforeStep',
+  '_afterStep',
+  '_beforeSuite',
+  '_afterSuite',
+  '_passed',
+  '_failed',
+  '_finishTest',
+  '_setConfig',
+  '_validateConfig',
+  '_test',
+  '_useTo',
+]
 
 stopOnFail()
 
@@ -313,11 +326,7 @@ title: ${name}
       if (abstractHelpers.includes(name)) continue
       console.log(`Writing documentation for ${name}`)
 
-      if (inheritedHelperDocs[name]) {
-        await this.docsInheritedHelper(name, inheritedHelperDocs[name])
-      } else {
-        await npx(`documentation build docs/build/${file} -o docs/helpers/${name}.md ${documentjsCliArgs}`)
-      }
+      await this.docsHelperMarkdown(name, inheritedHelperDocs[name])
       replaceInFile(helperMarkDownFile(name), cfg => {
         cfg.replace(/\(optional, default.*?\)/gm, '')
         cfg.replace(/\\*/gm, '')
@@ -417,28 +426,34 @@ title: ${name}
     })
   },
 
-  async docsInheritedHelper(name, { parent, exclude = [], excludeConfig = [] }) {
+  async docsHelperMarkdown(name, { parent, exclude = [], excludeConfig = [] } = {}) {
+    const documentation = await import('documentation')
     const buildOptions = { shallow: true, sortOrder: ['alpha'] }
-    const parentDoc = await documentation.build([`docs/build/${parent}.js`], buildOptions)
     const doc = await documentation.build([`docs/build/${name}.js`], buildOptions)
-    const members = doc[0].members.instance
+    let members = doc[0].members.instance
 
-    for (const method of parentDoc[0].members.instance) {
-      if (exclude.some(f => method.name.match(f))) continue
-      if (members.some(m => m.name === method.name)) continue
-      members.push(method)
-    }
-    members.sort((a, b) => a.name.localeCompare(b.name))
+    if (parent) {
+      const parentDoc = await documentation.build([`docs/build/${parent}.js`], buildOptions)
+      for (const method of parentDoc[0].members.instance) {
+        if (exclude.some(f => method.name.match(f))) continue
+        if (members.some(m => m.name === method.name)) continue
+        members.push(method)
+      }
 
-    const config = doc.find(c => c.name === 'config')
-    const parentConfig = parentDoc.find(c => c.name === 'config')
-    if (config && parentConfig) {
-      for (const prop of parentConfig.properties) {
-        if (excludeConfig.includes(prop.name)) continue
-        if (config.properties.some(p => p.name === prop.name)) continue
-        config.properties.push(prop)
+      const config = doc.find(c => c.name === 'config')
+      const parentConfig = parentDoc.find(c => c.name === 'config')
+      if (config && parentConfig) {
+        for (const prop of parentConfig.properties) {
+          if (excludeConfig.includes(prop.name)) continue
+          if (config.properties.some(p => p.name === prop.name)) continue
+          config.properties.push(prop)
+        }
       }
     }
+
+    members = members.filter(m => !helperHooks.includes(m.name))
+    members.sort((a, b) => a.name.startsWith('_') - b.name.startsWith('_') || a.name.localeCompare(b.name))
+    doc[0].members.instance = members
 
     const output = await documentation.formats.md(doc, { markdownToc: false })
     fs.writeFileSync(helperMarkDownFile(name), output)
