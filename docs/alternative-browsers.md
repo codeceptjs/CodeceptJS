@@ -6,12 +6,12 @@ title: Alternative Browser Engines
 # Alternative Browser Engines
 
 ::: warning Experimental
-The `CDPBrowser`, `Obscura`, and `Kitesurf` helpers are experimental in CodeceptJS 4.2. Pin browser versions in CI and retain Playwright or WebDriver coverage for compatibility-critical tests.
+The `Obscura` and `Kitesurf` helpers are experimental in CodeceptJS 4.2. Pin browser versions in CI and retain Playwright or WebDriver coverage for compatibility-critical tests.
 :::
 
 Playwright and Puppeteer drive full Chromium — the most accurate way to test what users see.
 But a new class of lightweight, agent-era browsers has appeared, and CodeceptJS can drive them
-through the `CDPBrowser` helper family:
+through dedicated helpers:
 
 - **[Obscura](https://github.com/h4ckf0r0day/obscura)** — an open-source Rust browser with a real
   V8 engine. From v0.2.0, the default release build also renders — real layout, computed styles,
@@ -96,15 +96,6 @@ CodeceptJS 4.2 is tested in CI with Obscura 0.2.2. Obscura 0.2.x is recommended;
       },
     }
 
-Any other CDP endpoint works through the base helper:
-
-    helpers: {
-      CDPBrowser: {
-        url: 'http://localhost:3000',
-        endpoint: 'http://127.0.0.1:9222',
-      },
-    }
-
 ### Obscura's three connection modes
 
 Obscura manages its own `obscura serve` process, the same way Playwright manages its own browser
@@ -154,5 +145,4 @@ process — there is nothing to start by hand in the common case:
 | Where it runs | local/grid | local | Cloudflare only |
 | License / cost | open source | Apache-2.0 | proprietary, free beta |
 
-See helper reference pages: [CDPBrowser](/helpers/CDPBrowser), [Obscura](/helpers/Obscura),
-[Kitesurf](/helpers/Kitesurf).
+See helper reference pages: [Obscura](/helpers/Obscura), [Kitesurf](/helpers/Kitesurf).

@@ -249,10 +249,9 @@ export async function docsHelpers() {
   const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`)
   const sharedTemplates = sharedPartials.map(file => fs.readFileSync(`docs/shared/${file}`).toString()).map(template => `\n\n\n${template}`)
 
-  for (const file of files) {
-    const name = path.basename(file, '.js')
-    if (ignoreList.indexOf(name) >= 0) continue
-    say(`Writing documentation for ${name}`)
+  const helperFiles = files.filter(file => ignoreList.indexOf(path.basename(file, '.js')) < 0)
+
+  for (const file of helperFiles) {
     copyFile(`lib/helper/${file}`, `docs/build/${file}`)
     replaceInFile(`docs/build/${file}`, cfg => {
       for (const i in placeholders) {
@@ -286,8 +285,14 @@ export async function docsHelpers() {
       cfg.replace(/^export\s*\{\s*([^}]+)\s*\}/gm, 'module.exports = { $1 }')
       cfg.replace(/^export\s+(class|function|const|let|var)\s+([^\s=]+)/gm, '$1 $2')
     })
+  }
 
-    await shell`npx documentation build docs/build/${file} -o docs/helpers/${name}.md ${documentjsCliArgs}`
+  for (const file of helperFiles) {
+    const name = path.basename(file, '.js')
+    if (abstractHelpers.includes(name)) continue
+    say(`Writing documentation for ${name}`)
+
+    await docsHelperMarkdown(name, inheritedHelperDocs[name])
     replaceInFile(helperMarkDownFile(name), cfg => {
       cfg.replace(/\(optional, default.*?\)/gm, '')
       cfg.replace(/\\*/gm, '')
@@ -308,10 +313,6 @@ export async function docsHelpers() {
       cfg.replace('<!-- configuration -->', text[1])
       cfg.replace(regex, '[1]')
     })
-
-    if (name === 'Appium') {
-      await docsAppium()
-    }
 
     await writeToFile(helperMarkDownFile(name), line => {
       line`---
@@ -392,28 +393,65 @@ export async function wiki() {
   })
 }
 
-/**
- * Generate docs for Appium by merging in public WebDriver methods.
- */
-export async function docsAppium() {
-  const documentation = await import('documentation')
-  const onlyWeb = [/Title/, /Popup/, /Cookie/, /Url/, /^press/, /^refreshPage/, /^resizeWindow/, /Script$/, /cursor/, /Css/, /Tab$/, /^wait/]
-  const webdriverDoc = await documentation.build(['docs/build/WebDriver.js'], {
-    shallow: true,
-    order: 'asc',
-  })
-  const doc = await documentation.build(['docs/build/Appium.js'], {
-    shallow: true,
-    order: 'asc',
-  })
+const inheritedHelperDocs = {
+  Appium: {
+    parent: 'WebDriver',
+    exclude: [/Title/, /Popup/, /Cookie/, /Url/, /^press/, /^refreshPage/, /^resizeWindow/, /Script$/, /cursor/, /Css/, /Tab$/, /^wait/],
+  },
+  Obscura: { parent: 'CDPBrowser' },
+  Kitesurf: { parent: 'CDPBrowser', excludeConfig: ['endpoint', 'headers'] },
+}
 
-  for (const method of webdriverDoc[0].members.instance) {
-    if (onlyWeb.filter(f => method.name.match(f)).length) continue
-    if (doc[0].members.instance.filter(m => m.name === method.name).length) continue
-    doc[0].members.instance.push(method)
+const abstractHelpers = ['CDPBrowser']
+
+const helperHooks = [
+  '_init',
+  '_before',
+  '_after',
+  '_beforeStep',
+  '_afterStep',
+  '_beforeSuite',
+  '_afterSuite',
+  '_passed',
+  '_failed',
+  '_finishTest',
+  '_setConfig',
+  '_validateConfig',
+  '_test',
+  '_useTo',
+]
+
+async function docsHelperMarkdown(name, { parent, exclude = [], excludeConfig = [] } = {}) {
+  const documentation = await import('documentation')
+  const buildOptions = { shallow: true, sortOrder: ['alpha'] }
+  const doc = await documentation.build([`docs/build/${name}.js`], buildOptions)
+  let members = doc[0].members.instance
+
+  if (parent) {
+    const parentDoc = await documentation.build([`docs/build/${parent}.js`], buildOptions)
+    for (const method of parentDoc[0].members.instance) {
+      if (exclude.some(f => method.name.match(f))) continue
+      if (members.some(m => m.name === method.name)) continue
+      members.push(method)
+    }
+
+    const config = doc.find(c => c.name === 'config')
+    const parentConfig = parentDoc.find(c => c.name === 'config')
+    if (config && parentConfig) {
+      for (const prop of parentConfig.properties) {
+        if (excludeConfig.includes(prop.name)) continue
+        if (config.properties.some(p => p.name === prop.name)) continue
+        config.properties.push(prop)
+      }
+    }
   }
-  const output = await documentation.formats.md(doc)
-  fs.writeFileSync('docs/helpers/Appium.md', output)
+
+  members = members.filter(m => !helperHooks.includes(m.name))
+  members.sort((a, b) => a.name.startsWith('_') - b.name.startsWith('_') || a.name.localeCompare(b.name))
+  doc[0].members.instance = members
+
+  const output = await documentation.formats.md(doc, { markdownToc: false })
+  fs.writeFileSync(helperMarkDownFile(name), output)
 }
 
 /**

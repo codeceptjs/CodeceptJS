@@ -49,25 +49,6 @@ this.helpers['GraphQL']._executeQuery({
 
 *   `config` &#x20;
 
-### _executeQuery
-
-Executes query via axios call
-
-#### Parameters
-
-*   `request` **[object][2]**&#x20;
-
-### _prepareGraphQLRequest
-
-Prepares request for axios call
-
-#### Parameters
-
-*   `operation` **[object][2]**&#x20;
-*   `headers` **[object][2]**&#x20;
-
-Returns **[object][2]** graphQLRequest
-
 ### amBearerAuthenticated
 
 Adds a header for Bearer authentication
@@ -79,7 +60,7 @@ I.amBearerAuthenticated(secret('heregoestoken'))
 
 #### Parameters
 
-*   `accessToken` **([string][3] | CodeceptJS.Secret)** Bearer access token
+*   `accessToken` **([string][2] | CodeceptJS.Secret)** Bearer access token
 
 ### haveRequestHeaders
 
@@ -87,7 +68,7 @@ Sets request headers for all requests of this test
 
 #### Parameters
 
-*   `headers` **[object][2]** headers list
+*   `headers` **[object][3]** headers list
 
 ### sendMutation
 
@@ -113,10 +94,10 @@ I.sendMutation(`
 
 #### Parameters
 
-*   `mutation` **[String][3]**&#x20;
-*   `variables` **[object][2]?** that may go along with the mutation
-*   `options` **[object][2]?** are additional query options 
-*   `headers` **[object][2]?**  
+*   `mutation` **[String][2]**&#x20;
+*   `variables` **[object][3]?** that may go along with the mutation
+*   `options` **[object][3]?** are additional query options 
+*   `headers` **[object][3]?**  
 
 Returns **any** Promise<any>
 
@@ -138,15 +119,34 @@ const user = response.data.data;
 
 #### Parameters
 
-*   `query` **[String][3]**&#x20;
-*   `variables` **[object][2]?** that may go along with the query
-*   `options` **[object][2]?** are additional query options 
-*   `headers` **[object][2]?**  
+*   `query` **[String][2]**&#x20;
+*   `variables` **[object][3]?** that may go along with the query
+*   `options` **[object][3]?** are additional query options 
+*   `headers` **[object][3]?**  
 
 Returns **any** Promise<any>
 
+### _executeQuery
+
+Executes query via axios call
+
+#### Parameters
+
+*   `request` **[object][3]**&#x20;
+
+### _prepareGraphQLRequest
+
+Prepares request for axios call
+
+#### Parameters
+
+*   `operation` **[object][3]**&#x20;
+*   `headers` **[object][3]**&#x20;
+
+Returns **[object][3]** graphQLRequest
+
 [1]: https://github.com/axios/axios
 
-[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object

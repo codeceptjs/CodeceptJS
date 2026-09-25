@@ -192,26 +192,6 @@ By default `id` property of response is taken. This behavior can be changed by s
 
 *   `config` &#x20;
 
-### _requestCreate
-
-Executes request to create a record in API.
-Can be replaced from a in custom helper.
-
-#### Parameters
-
-*   `factory` **any**&#x20;
-*   `data` **any**&#x20;
-
-### _requestDelete
-
-Executes request to delete a record in API
-Can be replaced from a custom helper.
-
-#### Parameters
-
-*   `factory` **any**&#x20;
-*   `id` **any**&#x20;
-
 ### have
 
 Generates a new record using factory and saves API request to store it.
@@ -255,6 +235,26 @@ I.haveMultiple('post', 3, { author: 'davert' }, { publish_date: '01.01.1997' });
 *   `times` **any**&#x20;
 *   `params` **any?**&#x20;
 *   `options` **any?**&#x20;
+
+### _requestCreate
+
+Executes request to create a record in API.
+Can be replaced from a in custom helper.
+
+#### Parameters
+
+*   `factory` **any**&#x20;
+*   `data` **any**&#x20;
+
+### _requestDelete
+
+Executes request to delete a record in API
+Can be replaced from a custom helper.
+
+#### Parameters
+
+*   `factory` **any**&#x20;
+*   `id` **any**&#x20;
 
 [1]: https://github.com/rosiejs/rosie
 
