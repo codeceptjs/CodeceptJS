@@ -417,4 +417,56 @@ describe('Workers', function () {
     const actualFiles = testFiles.map(f => path.resolve(f))
     expect(actualFiles).to.deep.equal(expectedFiles, 'loadTests() should preserve original glob order without sorting')
   })
+
+  it('should run each assigned gherkin worker test once after pre-load', done => {
+    const workerConfig = {
+      by: 'test',
+      testConfig: './test/data/sandbox/codecept.workers-gherkin.conf.js',
+      options: {
+        grep: '@worker_gherkin_once',
+      },
+    }
+
+    let passedCount = 0
+    const workers = new Workers(1, workerConfig)
+
+    workers.on(event.test.passed, () => {
+      passedCount += 1
+    })
+
+    workers.run()
+
+    workers.on(event.all.result, result => {
+      expect(passedCount).to.equal(1)
+      expect(result.stats.tests).to.equal(1)
+      expect(result.stats.passes).to.equal(1)
+      done()
+    })
+  })
+
+  it('should run each assigned worker test once after pre-load (no duplicate loadTests in run)', done => {
+    const workerConfig = {
+      by: 'test',
+      testConfig: './test/data/sandbox/codecept.workers.conf.js',
+      options: {
+        grep: 'From worker @1_grep print message 1',
+      },
+    }
+
+    let passedCount = 0
+    const workers = new Workers(1, workerConfig)
+
+    workers.on(event.test.passed, () => {
+      passedCount += 1
+    })
+
+    workers.run()
+
+    workers.on(event.all.result, result => {
+      expect(passedCount).to.equal(1)
+      expect(result.stats.tests).to.equal(1)
+      expect(result.stats.passes).to.equal(1)
+      done()
+    })
+  })
 })
