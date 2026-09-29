@@ -43,5 +43,5 @@ Scenario('change config 6 @WebDriverIO @Puppeteer @Playwright @Obscura', ({ I })
 
 Scenario('simple page test @WebDriverIO @Puppeteer @Playwright @Obscura', ({ I }) => {
   I.amOnPage('https://example.com')
-  I.see('Example Domain')
+  I.seeInTitle('Example Domain')
 })
