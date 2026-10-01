@@ -20,7 +20,7 @@ For anything more specific — your own grouping, a config per group, several br
 npx codeceptjs run-workers 4
 ```
 
-Steps are not streamed to the console in this mode — output from separate threads can't be interleaved cleanly. While workers run, CodeceptJS sets `process.env.RUNS_WITH_WORKERS=true`, so plugins and helpers can branch on it. All `run` options work here too: `--grep "@smoke"`, `-c codecept.conf.js`, `--debug`, and the rest.
+Steps are not streamed to the console in this mode — output from separate threads can't be interleaved cleanly. While workers run, CodeceptJS sets `process.env.RUNS_WITH_WORKERS=true`, so plugins and helpers can branch on it. All `run` options work here too: `--grep "@smoke"`, `-c codecept.conf.js`, `--debug`, and the rest. With `--grep`, only matching tests are spread across workers, so a narrow pattern may start fewer workers than requested.
 
 By default, workers are created with a staggered delay of 200ms to prevent CPU spikes and stagger browser initializations. You can adjust this via `workerInitializationDelay` in your configuration.
 

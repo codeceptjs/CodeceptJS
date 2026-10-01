@@ -95,6 +95,38 @@ describe('CodeceptJS Workers Runner', function () {
     })
   })
 
+  it('should distribute only tests matching grep', function (done) {
+    exec(`${codecept_run} 3 --grep "grep"`, (err, stdout) => {
+      expect(stdout).toContain('Worker 1: 1 test')
+      expect(stdout).toContain('Worker 2: 1 test')
+      expect(stdout).not.toContain('Worker 3:')
+      expect(stdout).not.toContain('No tests found by pattern')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should distribute only tests not matching inverted grep', function (done) {
+    exec(`${codecept_run} 2 --grep "Workers" --invert`, (err, stdout) => {
+      expect(stdout).toContain('Worker 1: 1 test')
+      expect(stdout).toContain('Worker 2: 1 test')
+      expect(stdout).toContain('From worker @1_grep print message 1')
+      expect(stdout).toContain('From worker @2_grep print message 2')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should suggest tests when grep matches nothing', function (done) {
+    exec(`${codecept_run} 2 --grep "nonexistent"`, (err, stdout) => {
+      expect(stdout).toContain('No tests found by pattern: /nonexistent/')
+      expect(stdout).toContain('OK  | 0 passed')
+      done()
+    })
+  })
+
   it('should use suites', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
     exec(`${codecept_run} 2 --suites`, (err, stdout) => {
