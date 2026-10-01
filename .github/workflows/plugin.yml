@@ -12,10 +12,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   CI: true
   # Force terminal colors. @see https://www.npmjs.com/package/colors
   FORCE_COLOR: 1
+  GH_PAT: ${{ github.token }}
+  TESTOMATIO: ${{ secrets.TESTOMATIO }}
 
 jobs:
   build:
