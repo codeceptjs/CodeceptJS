@@ -133,6 +133,15 @@ declare namespace CodeceptJS {
      */
     grep?: string
     /**
+     * Pattern for tests that must not run in parallel.
+     * In `run-workers` matching tests run one by one after all parallel workers finish.
+     *
+     * ```js
+     * serial: '@serial'
+     * ```
+     */
+    serial?: string | RegExp
+    /**
      * Enable and configure helpers:
      *
      * ```js
