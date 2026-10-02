@@ -48,8 +48,25 @@ without changing them: `I.amOnPage`, `I.click`, `I.fillField`, `I.see`, `I.seeEl
     sudo mv lightpanda /usr/local/bin/
 
 Other builds (`lightpanda-aarch64-linux`, `lightpanda-x86_64-macos`) are on the
-[releases page](https://github.com/lightpanda-io/browser/releases). If you would rather not put it
-on `PATH`, leave it anywhere and set `LIGHTPANDA_PATH=/path/to/lightpanda`.
+[releases page](https://github.com/lightpanda-io/browser/releases).
+
+You don't have to put it on `PATH`. Keep the binary anywhere and tell the helper where it is,
+the way Playwright's `executablePath` points at a custom browser — either in the config:
+
+    helpers: {
+      Lightpanda: {
+        url: 'http://localhost:3000',
+        binaryPath: './bin/lightpanda',
+      },
+    }
+
+or with an environment variable, handy when the location differs between machines:
+
+    LIGHTPANDA_PATH=/opt/lightpanda/lightpanda npx codeceptjs run
+
+The helper looks in this order: `binaryPath`, then `LIGHTPANDA_PATH`, then `lightpanda` on `PATH`.
+A relative path is resolved from the directory you run `npx codeceptjs` in. A wrong path fails
+the first test with `Failed to start lightpanda at <path>`.
 
 **2. Add the helper next to Playwright.** Keep one config and choose the engine with an
 environment variable, so Playwright stays the default:
