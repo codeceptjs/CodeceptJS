@@ -24,12 +24,6 @@ elements works, it only pins the config presets Lightpanda requires and manages 
 > Lightpanda support is experimental. Pin the browser version in CI and keep a
 > Playwright/WebDriver job for browser-compatibility coverage.
 
-## Compatibility
-
-| CodeceptJS | Recommended Lightpanda | Notes                                                 |
-| ---------- | ---------------------- | ----------------------------------------------------- |
-| 4.2.x      | 1.0.0                  | Version used by the CodeceptJS Lightpanda CI workflow |
-
 ## Modes
 
 *   **ATTACH** — `endpoint` is set explicitly in the config. The helper only connects to it; it
@@ -47,7 +41,7 @@ elements works, it only pins the config presets Lightpanda requires and manages 
 ## Install
 
 Download a binary from [Lightpanda releases][2].
-CodeceptJS is tested with Lightpanda 1.0.0. Binaries are available for:
+CodeceptJS is tested against the latest Lightpanda release. Binaries are available for:
 
 | platform            | binary                     |
 | ------------------- | -------------------------- |
@@ -62,7 +56,7 @@ Put `lightpanda` on your `PATH`, or point `binaryPath`/`LIGHTPANDA_PATH` at it. 
 launches and tears it down automatically. For example, on Linux x64:
 
 ```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/download/1.0.0/lightpanda-x86_64-linux
+curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
 chmod +x lightpanda
 ```
 
