@@ -29,6 +29,100 @@ All of them speak Chrome DevTools Protocol. CodeceptJS drives them with raw CDP 
 action, no stale element handles — which is why suites on these browsers run fast and never hang
 on navigation races.
 
+## Try Lightpanda with your Playwright suite
+
+If your suite already runs on the Playwright helper, you can point the same tests at Lightpanda
+without changing them: `I.amOnPage`, `I.click`, `I.fillField`, `I.see`, `I.seeElement`,
+`I.waitForVisible` and the rest of the `I.*` web API behave the same. There is no
+`npx playwright install` step and no Chromium download — Lightpanda is a single binary.
+
+**1. Get the binary.** Lightpanda ships for Linux and macOS; on Windows use WSL2.
+
+    # Linux x64
+    curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/download/1.0.0/lightpanda-x86_64-linux
+
+    # macOS Apple Silicon
+    curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/download/1.0.0/lightpanda-aarch64-macos
+
+    chmod +x lightpanda
+    sudo mv lightpanda /usr/local/bin/
+
+Other builds (`lightpanda-aarch64-linux`, `lightpanda-x86_64-macos`) are on the
+[releases page](https://github.com/lightpanda-io/browser/releases). If you would rather not put it
+on `PATH`, leave it anywhere and set `LIGHTPANDA_PATH=/path/to/lightpanda`.
+
+**2. Add the helper next to Playwright.** Keep one config and choose the engine with an
+environment variable, so Playwright stays the default:
+
+    // codecept.conf.js
+    const url = 'http://localhost:3000'
+
+    export const config = {
+      tests: './tests/*_test.js',
+      output: './output',
+      helpers:
+        process.env.ENGINE === 'lightpanda'
+          ? { Lightpanda: { url } }
+          : { Playwright: { url, browser: 'chromium' } },
+    }
+
+That is the whole setup. There is no browser to start: the helper launches `lightpanda serve` on a
+free port before the first test and stops it after the last one, the way the Playwright helper
+manages Chromium.
+
+**3. Run.**
+
+    ENGINE=lightpanda npx codeceptjs run
+
+    # each worker starts its own Lightpanda on its own port
+    ENGINE=lightpanda npx codeceptjs run-workers 8
+
+    # list every I.* action available on the active helper
+    ENGINE=lightpanda npx codeceptjs list
+
+**4. Leave out what Lightpanda cannot do.** Most functional tests pass unchanged. The ones that
+will not are those relying on something only a full browser has:
+
+| In your Playwright tests | On Lightpanda |
+|---|---|
+| `I.saveScreenshot`, visual regression, failure screenshots | not available — nothing is painted |
+| `I.switchTo` (iframes), `I.openNewTab`, popups and dialogs | not available |
+| `I.usePlaywrightTo`, `I.mockRoute`, downloads | Playwright-only |
+| `I.dragAndDrop`, `I.moveCursorTo`, `I.clickXY` | not available — no coordinate input |
+| `I.scrollTo`, `I.scrollPageToBottom` | no effect — there is no viewport to scroll |
+| `I.grabCssPropertyFrom`, `I.seeCssPropertiesOnElements` | reliable only for `display`, `visibility`, `opacity` |
+| clipboard actions | not available |
+| TinyMCE, Trix, Monaco editors | do not finish loading |
+
+Tag those scenarios once and exclude them from the Lightpanda run:
+
+    Scenario('checkout page matches the design @visual', ({ I }) => { /* ... */ })
+
+    ENGINE=lightpanda npx codeceptjs run --grep @visual --invert
+
+**5. Run it in CI.** Download a pinned version and let the helper find it through `LIGHTPANDA_PATH`:
+
+    # .github/workflows/e2e-lightpanda.yml
+    - name: Download Lightpanda
+      run: |
+        curl -sfL -o lightpanda https://github.com/lightpanda-io/browser/releases/download/1.0.0/lightpanda-x86_64-linux
+        chmod +x lightpanda
+    - name: Run tests
+      run: npx codeceptjs run --grep @visual --invert
+      env:
+        ENGINE: lightpanda
+        LIGHTPANDA_PATH: ${{ github.workspace }}/lightpanda
+
+Keep the Playwright job for the scenarios you excluded and for cross-browser coverage; use the
+Lightpanda job as the fast first gate.
+
+**Good to know**
+
+- The helper starts Lightpanda with its usage telemetry turned off (`LIGHTPANDA_DISABLE_TELEMETRY=true`).
+- Lightpanda is AGPL-3.0. It runs as a separate process, so it does not affect the license of your tests.
+- Linux binaries need glibc, so Alpine-based images will not run them.
+- Every option is listed in the [Lightpanda helper reference](/helpers/Lightpanda).
+
 ## When are they better than Playwright?
 
 **Smoke suites where startup and execution time matter.** Obscura is distributed as a standalone
@@ -74,9 +168,9 @@ as an Obscura capability rather than a browser-compatibility guarantee from Code
 
 - Anything visual: visual regression, PDF (none of these helpers exposes PDF output). Lightpanda
   has no screenshots at all, no scrolling, and only computes the CSS properties visibility checks
-  need. Obscura's v0.2.0+
-  rendering/CSS engine is new and independently implemented — expect edge cases and gaps versus a
-  real browser, especially around inherited properties and less common computed-style values.
+  need. Obscura's v0.2.0+ rendering/CSS engine is new and independently implemented — expect edge
+  cases and gaps versus a real browser, especially around inherited properties and less common
+  computed-style values.
 - Visibility semantics on `-no-render` Obscura builds (and v0.1.x): every element reports as
   visible — `seeElement`/`dontSeeElement` throw and point you to `seeElementInDOM`. On v0.2.0+
   default builds, `CDPBrowser` detects the real layout engine per binary and visibility works
@@ -149,14 +243,28 @@ process — there is nothing to start by hand in the common case:
 
 ### Lightpanda's connection modes
 
-Lightpanda works the same way, with `lightpanda` in place of `obscura`: the binary is resolved
-from `binaryPath`, then `LIGHTPANDA_PATH`, then `lightpanda` on `PATH`, and `lightpanda serve` is
-started on a free port and stopped when the run ends. Setting `endpoint` attaches to an instance
-you manage yourself, for example the `lightpanda/browser` Docker image. CodeceptJS is tested in CI
-with Lightpanda 1.0.0; see [Installation](/installation#lightpanda-experimental).
+Lightpanda has the same three modes, with `lightpanda` in place of `obscura`:
 
-The helper always starts Lightpanda with `LIGHTPANDA_DISABLE_TELEMETRY=true`. When you start the
-server yourself, set that variable yourself.
+- **Self-launch (default)** — the binary is resolved from `binaryPath`, then `LIGHTPANDA_PATH`,
+  then `lightpanda` on `PATH`; `lightpanda serve` is started on a free port and stopped when the
+  run ends.
+- **Attach** — set `endpoint` to use an instance you started yourself, locally or in a container:
+
+      LIGHTPANDA_DISABLE_TELEMETRY=true lightpanda serve --host 127.0.0.1 --port 9222
+
+      helpers: {
+        Lightpanda: {
+          url: 'http://localhost:3000',
+          endpoint: 'http://127.0.0.1:9222',
+        },
+      }
+
+  The helper only disables telemetry for processes it launches; set the variable yourself here. A
+  browser running in a container must be able to reach the `url` under test.
+- **Courtesy-attach** — with no `endpoint` and no binary, the helper attaches to whatever answers
+  on `http://127.0.0.1:9222` and never kills it.
+
+CodeceptJS is tested in CI with Lightpanda 1.0.0.
 
 ## Capability matrix
 
