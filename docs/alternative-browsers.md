@@ -6,7 +6,7 @@ title: Alternative Browser Engines
 # Alternative Browser Engines
 
 ::: warning Experimental
-The `Obscura` and `Kitesurf` helpers are experimental in CodeceptJS 4.2. Pin browser versions in CI and retain Playwright or WebDriver coverage for compatibility-critical tests.
+The `Obscura`, `Lightpanda` and `Kitesurf` helpers are experimental in CodeceptJS 4.2. Pin browser versions in CI and retain Playwright or WebDriver coverage for compatibility-critical tests.
 :::
 
 Playwright and Puppeteer drive full Chromium — the most accurate way to test what users see.
@@ -17,11 +17,15 @@ through dedicated helpers:
   V8 engine. From v0.2.0, the default release build also renders — real layout, computed styles,
   and screenshots — with `-no-render` builds still available for pure-speed, nothing-painted
   scraping mode. Release archives are available for Linux, macOS, and Windows.
+- **[Lightpanda](https://lightpanda.io)** — an open-source browser written from scratch in Zig for
+  automation, with a real V8 engine and broad Web API coverage. It never paints: no screenshots,
+  but it does compute enough style and layout for visibility checks. Binaries are available for
+  Linux and macOS.
 - **[Kitesurf](https://blog.cloudflare.com/kitesurf/)** — Cloudflare's browser that runs in V8
   isolates on Cloudflare Workers, with a real layout and rendering pipeline. Cloud-only,
   free in beta, planned to be open-sourced.
 
-Both speak Chrome DevTools Protocol. CodeceptJS drives them with raw CDP — one round-trip per
+All of them speak Chrome DevTools Protocol. CodeceptJS drives them with raw CDP — one round-trip per
 action, no stale element handles — which is why suites on these browsers run fast and never hang
 on navigation races.
 
@@ -56,6 +60,10 @@ redirect happens, cookie is set — do not need a GPU raster pipeline. Obscura e
 app's real JavaScript in real V8; it only skips painting. For API-adjacent flows
 (login → dashboard data appears), that is exactly the right amount of browser.
 
+Lightpanda takes the same trade further: it has no rendering pipeline at all, which is what makes
+it start in milliseconds and use a fraction of Chromium's memory. Pick it when the suite never
+needs a screenshot; pick Obscura when it does.
+
 **Constrained environments.** ARM CI runners, thin containers, air-gapped machines:
 a static binary with no system dependencies goes where Chromium will not.
 
@@ -64,7 +72,9 @@ as an Obscura capability rather than a browser-compatibility guarantee from Code
 
 ## When to stay with Playwright
 
-- Anything visual: visual regression, PDF (neither helper exposes PDF output). Obscura's v0.2.0+
+- Anything visual: visual regression, PDF (none of these helpers exposes PDF output). Lightpanda
+  has no screenshots at all, no scrolling, and only computes the CSS properties visibility checks
+  need. Obscura's v0.2.0+
   rendering/CSS engine is new and independently implemented — expect edge cases and gaps versus a
   real browser, especially around inherited properties and less common computed-style values.
 - Visibility semantics on `-no-render` Obscura builds (and v0.1.x): every element reports as
@@ -84,6 +94,12 @@ CodeceptJS 4.2 is tested in CI with Obscura 0.2.2. Obscura 0.2.x is recommended;
 
     helpers: {
       Obscura: {
+        url: 'http://localhost:3000',
+      },
+    }
+
+    helpers: {
+      Lightpanda: {
         url: 'http://localhost:3000',
       },
     }
@@ -131,18 +147,29 @@ process — there is nothing to start by hand in the common case:
   that "start Obscura by hand and just run the tests" keeps working without any config, while
   self-launch is still the default for everyone else.
 
+### Lightpanda's connection modes
+
+Lightpanda works the same way, with `lightpanda` in place of `obscura`: the binary is resolved
+from `binaryPath`, then `LIGHTPANDA_PATH`, then `lightpanda` on `PATH`, and `lightpanda serve` is
+started on a free port and stopped when the run ends. Setting `endpoint` attaches to an instance
+you manage yourself, for example the `lightpanda/browser` Docker image. CodeceptJS is tested in CI
+with Lightpanda 1.0.0; see [Installation](/installation#lightpanda-experimental).
+
+The helper always starts Lightpanda with `LIGHTPANDA_DISABLE_TELEMETRY=true`. When you start the
+server yourself, set that variable yourself.
+
 ## Capability matrix
 
-| | Playwright | Obscura | Kitesurf |
-|---|---|---|---|
-| Real JS execution (V8) | yes | yes | yes |
-| Layout / getBoundingClientRect | yes | yes (v0.2.0+ default builds); synthetic on `-no-render`/v0.1.x | yes |
-| Screenshots | yes | yes (v0.2.0+ default builds); no on `-no-render`/v0.1.x | yes |
-| Visibility assertions | yes | yes (v0.2.0+ default builds); no, DOM-presence only, on `-no-render`/v0.1.x | yes |
-| Screencast / video (`screencast` plugin) | yes — WebM via `page.screencast`, with caption burn-in | yes — APNG via CDP `Page.startScreencast`, assembled in-process (v0.2.0+ default builds; verified PNG frames on the live server); no caption burn-in | untested |
-| Startup model | local browser process | standalone local binary | remote cloud session |
-| Parallel scale | machine-bound | machine-bound (light) | near-unlimited (cloud) |
-| Where it runs | local/grid | local | Cloudflare only |
-| License / cost | open source | Apache-2.0 | proprietary, free beta |
+| | Playwright | Obscura | Lightpanda | Kitesurf |
+|---|---|---|---|---|
+| Real JS execution (V8) | yes | yes | yes | yes |
+| Layout / getBoundingClientRect | yes | yes (v0.2.0+ default builds); synthetic on `-no-render`/v0.1.x | computed boxes, nothing painted | yes |
+| Screenshots | yes | yes (v0.2.0+ default builds); no on `-no-render`/v0.1.x | no | yes |
+| Visibility assertions | yes | yes (v0.2.0+ default builds); no, DOM-presence only, on `-no-render`/v0.1.x | yes | yes |
+| Screencast / video (`screencast` plugin) | yes — WebM via `page.screencast`, with caption burn-in | yes — APNG via CDP `Page.startScreencast`, assembled in-process (v0.2.0+ default builds; verified PNG frames on the live server); no caption burn-in | no | untested |
+| Startup model | local browser process | standalone local binary | standalone local binary | remote cloud session |
+| Parallel scale | machine-bound | machine-bound (light) | machine-bound (light) | near-unlimited (cloud) |
+| Where it runs | local/grid | local | local (Linux, macOS) | Cloudflare only |
+| License / cost | open source | Apache-2.0 | AGPL-3.0 | proprietary, free beta |
 
-See helper reference pages: [Obscura](/helpers/Obscura), [Kitesurf](/helpers/Kitesurf).
+See helper reference pages: [Obscura](/helpers/Obscura), [Lightpanda](/helpers/Lightpanda), [Kitesurf](/helpers/Kitesurf).

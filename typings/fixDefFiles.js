@@ -35,6 +35,7 @@ function modifyContent(content) {
     .replace(/    type WebDriverConfig = {/, '    // @ts-ignore\n' + '    type WebDriverConfig = {')
     .replace(/    type CDPBrowserConfig = {/, '    // @ts-ignore\n' + '    type CDPBrowserConfig = {')
     .replace(/    type ObscuraConfig = {/, '    // @ts-ignore\n' + '    type ObscuraConfig = {')
+    .replace(/    type LightpandaConfig = {/, '    // @ts-ignore\n' + '    type LightpandaConfig = {')
     .replace(/    type KitesurfConfig = {/, '    // @ts-ignore\n' + '    type KitesurfConfig = {')
   return modifiedContent
 }

@@ -99,6 +99,38 @@ export const config = {
 
 See [Alternative Browser Engines](/alternative-browsers) for connection modes and limitations, and the [Obscura helper reference](/helpers/Obscura) for every option.
 
+## Lightpanda (experimental)
+
+Lightpanda is a headless browser built for automation, driven through Chrome DevTools Protocol. It runs your app's JavaScript but paints nothing, so there are no screenshots. CodeceptJS is tested with Lightpanda 1.0.0.
+
+Download the binary for your platform from the [Lightpanda releases](https://github.com/lightpanda-io/browser/releases):
+
+| Platform | Binary |
+| --- | --- |
+| Linux x64 | `lightpanda-x86_64-linux` |
+| Linux ARM64 | `lightpanda-aarch64-linux` |
+| macOS Intel | `lightpanda-x86_64-macos` |
+| macOS Apple Silicon | `lightpanda-aarch64-macos` |
+
+There is no native Windows binary; use WSL2. Linux binaries require glibc.
+
+Make it executable and either put it on `PATH` as `lightpanda`, set `LIGHTPANDA_PATH`, or configure `binaryPath`. The helper then starts and stops `lightpanda serve` automatically, with Lightpanda's usage telemetry disabled:
+
+```js
+export const config = {
+  helpers: {
+    Lightpanda: {
+      url: 'http://localhost:3000',
+      // binaryPath: '/absolute/path/to/lightpanda', // optional
+    },
+  },
+}
+```
+
+Lightpanda is licensed under AGPL-3.0. It runs as a separate process, so it does not affect the license of your tests.
+
+See [Alternative Browser Engines](/alternative-browsers) for connection modes and limitations, and the [Lightpanda helper reference](/helpers/Lightpanda) for every option.
+
 ## Appium (mobile)
 
 Native iOS and Android testing. Appium speaks the WebDriver protocol, so CodeceptJS drives it through `webdriverio`:
