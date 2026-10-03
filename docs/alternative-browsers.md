@@ -13,7 +13,7 @@ Playwright drives full Chromium, Firefox and WebKit: the most accurate way to te
 
 Your tests do not change. `I.amOnPage`, `I.click`, `I.fillField`, `I.see`, `I.seeElement` and the rest of the `I.*` web API work the same; you only swap the helper in the config. All engines below speak Chrome DevTools Protocol, so there is no `npx playwright install` step.
 
-Compared to Playwright, none of them supports iframes (`switchTo`), multiple tabs, popups, `dragAndDrop`, `moveCursorTo`, clipboard actions, or Playwright-only APIs such as `usePlaywrightTo` and `mockRoute`. Tag scenarios that need those and skip them on the alternative engine:
+Compared to Playwright, none of them supports iframes (`switchTo`), multiple tabs, popups, `dragAndDrop`, `moveCursorTo`, or Playwright-only APIs such as `usePlaywrightTo` and `mockRoute`. Tag scenarios that need those and skip them on the alternative engine:
 
 ```sh
 npx codeceptjs run --grep @playwright-only --invert
@@ -31,9 +31,14 @@ npx codeceptjs list
 
 Limitations:
 
-- Its CSS engine is new: some computed styles differ from Chromium, so `grabCssPropertyFrom` and `seeCssPropertiesOnElements` can disagree with Playwright.
-- `click` is always dispatched as a DOM event, not a mouse event at coordinates.
-- `-no-render` builds have no layout: no visibility checks and no screenshots.
+- `attachFile` does not upload files.
+- Clicks inside nested shadow DOM do not work.
+- `focus` and `blur` have no effect.
+- Clipboard actions do not work.
+- A `<select multiple>` submits only its first selected option.
+- An element inside a `visibility: hidden` parent is reported as visible.
+- Some computed styles (`cursor`, `user-select`) differ from Chromium.
+- Rich text editors TinyMCE, Trix, Monaco and ProseMirror do not work.
 
 ### Setup
 
@@ -87,9 +92,10 @@ Limitations:
 
 - No screenshots: `saveScreenshot`, failure screenshots and the `screencast` plugin do not work.
 - No scrolling: `scrollTo` and `scrollPageToBottom` have no effect.
-- No coordinate input: `clickXY` does not work.
+- `clickXY` does not work.
+- Clipboard actions do not work.
 - Computed styles cover `display`, `visibility` and `opacity`; other CSS properties are unreliable.
-- Some rich text editors (TinyMCE, Trix, Monaco) never finish loading.
+- Rich text editors TinyMCE, Trix and Monaco do not work.
 - Linux and macOS only; on Windows use WSL2.
 - Licensed under AGPL-3.0. It runs as a separate process, so it does not affect the license of your tests.
 
@@ -145,7 +151,6 @@ Limitations:
 
 - Cloud only, currently a free beta.
 - The browser cannot reach `localhost`: test a deployed environment or expose your app with a tunnel such as `cloudflared tunnel --url http://localhost:3000`.
-- The `screencast` plugin is untested.
 
 ### Setup
 
