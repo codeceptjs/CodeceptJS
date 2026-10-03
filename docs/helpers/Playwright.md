@@ -39,49 +39,50 @@ Using playwright-core package, will prevent the download of browser binaries and
 
 This helper should be configured in codecept.conf.(js|ts)
 
-Type: [object][8]
+Type: [object][7]
 
 ### Properties
 
-*   `url` **[string][7]?** base url of website to be tested
+*   `url` **[string][6]?** base url of website to be tested
 *   `browser` **(`"chromium"` | `"firefox"` | `"webkit"` | `"electron"`)?** a browser to test on, either: `chromium`, `firefox`, `webkit`, `electron`. Default: chromium.
-*   `show` **[boolean][26]?** show browser window.
-*   `restart` **([string][7] | [boolean][26])?** restart strategy between tests. Possible values:*   'context' or **false** - restarts [browser context][44] but keeps running browser. Recommended by Playwright team to keep tests isolated.
+*   `show` **[boolean][25]?** show browser window.
+*   `restart` **([string][6] | [boolean][25])?** restart strategy between tests. Possible values:*   'context' or **false** - restarts [browser context][43] but keeps running browser. Recommended by Playwright team to keep tests isolated.
     *   'session' or 'keep' - keeps browser context and session, but cleans up cookies and localStorage between tests. The fastest option when running tests in windowed mode. Works with `keepCookies` and `keepBrowserState` options. This behavior was default before CodeceptJS 3.1
-*   `timeout` **[number][17]?** *   [timeout][45] in ms of all Playwright actions .
-*   `disableScreenshots` **[boolean][26]?** don't save screenshot on failure.
+*   `timeout` **[number][16]?** *   [timeout][44] in ms of all Playwright actions .
+*   `disableScreenshots` **[boolean][25]?** don't save screenshot on failure.
 *   `emulate` **any?** browser in device emulation mode.
-*   `video` **[boolean][26]?** enables video recording for failed tests; videos are saved into `output/videos` folder
-*   `keepVideoForPassedTests` **[boolean][26]?** save videos for passed tests; videos are saved into `output/videos` folder
-*   `trace` **[boolean][26]?** record [tracing information][46] with screenshots and snapshots.
-*   `keepTraceForPassedTests` **[boolean][26]?** save trace for passed tests.
-*   `fullPageScreenshots` **[boolean][26]?** make full page screenshots on failure.
-*   `uniqueScreenshotNames` **[boolean][26]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
-*   `keepBrowserState` **[boolean][26]?** keep browser state between tests when `restart` is set to 'session'.
-*   `keepCookies` **[boolean][26]?** keep cookies between tests when `restart` is set to 'session'.
-*   `waitForAction` **[number][17]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
-*   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"commit"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `commit`. Choose one of those options is possible. See [Playwright API][42].
-*   `pressKeyDelay` **[number][17]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
-*   `getPageTimeout` **[number][17]?** config option to set maximum navigation time in milliseconds.
-*   `waitForTimeout` **[number][17]?** default wait* timeout in ms. Default: 1000.
-*   `basicAuth` **[object][8]?** the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
-*   `windowSize` **[string][7]?** default window size. Set a dimension like `640x480`.
+*   `video` **[boolean][25]?** enables video recording for failed tests; videos are saved into `output/videos` folder
+*   `keepVideoForPassedTests` **[boolean][25]?** save videos for passed tests; videos are saved into `output/videos` folder
+*   `trace` **[boolean][25]?** record [tracing information][45] with screenshots and snapshots.
+*   `keepTraceForPassedTests` **[boolean][25]?** save trace for passed tests.
+*   `fullPageScreenshots` **[boolean][25]?** make full page screenshots on failure.
+*   `uniqueScreenshotNames` **[boolean][25]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+*   `keepBrowserState` **[boolean][25]?** keep browser state between tests when `restart` is set to 'session'.
+*   `keepCookies` **[boolean][25]?** keep cookies between tests when `restart` is set to 'session'.
+*   `waitForAction` **[number][16]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
+*   `waitForNavigation` **(`"load"` | `"domcontentloaded"` | `"commit"`)?** When to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `commit`. Choose one of those options is possible. See [Playwright API][41].
+*   `pressKeyDelay` **[number][16]?** Delay between key presses in ms. Used when calling Playwrights page.type(...) in fillField/appendField
+*   `getPageTimeout` **[number][16]?** config option to set maximum navigation time in milliseconds.
+*   `waitForTimeout` **[number][16]?** default wait* timeout in ms. Default: 1000.
+*   `basicAuth` **[object][7]?** the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
+*   `windowSize` **[string][6]?** default window size. Set a dimension like `640x480`.
 *   `colorScheme` **(`"dark"` | `"light"` | `"no-preference"`)?** default color scheme. Possible values: `dark` | `light` | `no-preference`.
-*   `userAgent` **[string][7]?** user-agent string.
-*   `locale` **[string][7]?** locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
-*   `manualStart` **[boolean][26]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
-*   `chromium` **[object][8]?** pass additional chromium options
-*   `firefox` **[object][8]?** pass additional firefox options
-*   `electron` **[object][8]?** (pass additional electron options
-*   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][47].
-*   `ignoreLog` **[Array][9]<[string][7]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][48].
-*   `ignoreHTTPSErrors` **[boolean][26]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
-*   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
-*   `highlightElement` **[boolean][26]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
-*   `visibleLocator` **[boolean][26]?** append [`visible()`][49] to locators, so only visible elements are matched. Requires Playwright 1.63 or newer. Switch it off for a single step with `stepOpts({ visibleLocator: false })`. Not applied to `dragAndDrop`, which passes selectors to Playwright directly, nor to steps that must reach hidden elements: `grab*` methods, `scrollTo`, `seeElementInDOM`, `dontSeeElementInDOM` and `seeNumberOfElements`. When enabled, a locator matching only hidden elements fails as "element not found" instead of timing out on actionability, `strict` mode ignores hidden duplicates, and elements hidden by CSS (like a custom checkbox built on a visually hidden `input`) are no longer found.
-*   `recordHar` **[object][8]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
-*   `testIdAttribute` **[string][7]?** locate elements based on the testIdAttribute. See more of [locate by test id][50].
-*   `storageState` **([string][7] | [object][8])?** Playwright storage state (path to JSON file or object)
+*   `userAgent` **[string][6]?** user-agent string.
+*   `locale` **[string][6]?** locale string. Example: 'en-GB', 'de-DE', 'fr-FR', ...
+*   `manualStart` **[boolean][25]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
+*   `chromium` **[object][7]?** pass additional chromium options
+*   `firefox` **[object][7]?** pass additional firefox options
+*   `extensions` **([string][6] | [Array][8]<[string][6]>)?** path (or paths) to unpacked Chromium extensions to load. Chromium only. Launches a persistent context; a temporary `userDataDir` is used unless `chromium.userDataDir` is set. In headless mode the `chromium` channel is used, since the headless shell can't run extensions.
+*   `electron` **[object][7]?** (pass additional electron options
+*   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][46].
+*   `ignoreLog` **[Array][8]<[string][6]>?** An array with console message types that are not logged to debug log. Default value is `['warning', 'log']`. E.g. you can set `[]` to log all messages. See all possible [values][47].
+*   `ignoreHTTPSErrors` **[boolean][25]?** Allows access to untrustworthy pages, e.g. to a page with an expired certificate. Default value is `false`
+*   `bypassCSP` **[boolean][25]?** bypass Content Security Policy or CSP
+*   `highlightElement` **[boolean][25]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+*   `visibleLocator` **[boolean][25]?** append [`visible()`][48] to locators, so only visible elements are matched. Requires Playwright 1.63 or newer. Switch it off for a single step with `stepOpts({ visibleLocator: false })`. Not applied to `dragAndDrop`, which passes selectors to Playwright directly, nor to steps that must reach hidden elements: `grab*` methods, `scrollTo`, `seeElementInDOM`, `dontSeeElementInDOM` and `seeNumberOfElements`. When enabled, a locator matching only hidden elements fails as "element not found" instead of timing out on actionability, `strict` mode ignores hidden duplicates, and elements hidden by CSS (like a custom checkbox built on a visually hidden `input`) are no longer found.
+*   `recordHar` **[object][7]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
+*   `testIdAttribute` **[string][6]?** locate elements based on the testIdAttribute. See more of [locate by test id][49].
+*   `storageState` **([string][6] | [object][7])?** Playwright storage state (path to JSON file or object)
     passed directly to `browser.newContext`.
     If a Scenario is declared with a `cookies` option (e.g. `Scenario('name', { cookies: [...] }, fn)`),
     those cookies are used instead and the configured `storageState` is ignored (no merge).
@@ -192,22 +193,16 @@ HAR will be saved to `output/har`. More info could be found here [https://playwr
 
 #### Example #5: Testing with Chromium extensions
 
-[official docs][5]
+Pass a path (or a list of paths) to unpacked extensions. The browser is launched in a persistent context,
+as Chromium loads extensions only there. Works in headless mode as well.
 
 ```js
 {
  helpers: {
    Playwright: {
      url: "http://localhost",
-     show: true // headless mode not supported for extensions
-     chromium: {
-       // Note: due to this would launch persistent context, so to avoid the error when running tests with run-workers a timestamp would be appended to the defined folder name. For instance: playwright-tmp_1692715649511
-       userDataDir: '/tmp/playwright-tmp', // necessary to launch the browser in normal mode instead of incognito,
-       args: [
-          `--disable-extensions-except=${pathToExtension}`,
-          `--load-extension=${pathToExtension}`
-       ]
-     }
+     browser: 'chromium',
+     extensions: ['./extensions/my-extension'],
    }
  }
 }
@@ -296,7 +291,7 @@ await browserContext.cookies(); // get current browser context
 
 Accepts the active JavaScript native popup window, as created by window.alert|window.confirm|window.prompt.
 Don't confuse popups with modal windows, as created by [various
-libraries][6].
+libraries][5].
 
 ### amAcceptingPopups
 
@@ -333,7 +328,7 @@ I.amOnPage('/login'); // opens a login page
 
 #### Parameters
 
-*   `url` **[string][7]** url path or global url.
+*   `url` **[string][6]** url path or global url.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -354,9 +349,9 @@ I.appendField('name', 'John', '.form-container');
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator
-*   `value` **[string][7]** text value to append.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `field` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator
+*   `value` **[string][6]** text value to append.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -384,9 +379,9 @@ I.attachFile('#dropzone', 'data/avatar.jpg');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
-*   `pathToFile` **[string][7]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `locator` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
+*   `pathToFile` **[string][6]** local file path relative to codecept.conf.ts or codecept.conf.js config file.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -409,12 +404,12 @@ I.blockTraffic(['http://example.com/css/style.css', 'http://example.com/css/*.cs
 
 #### Parameters
 
-*   `urls` **([string][7] | [Array][9] | [RegExp][10])** URL or a list of URLs to block . URL can contain * for wildcards. Example: [https://www.example.com][11]** to block all traffic for that domain. Regexp are also supported.
+*   `urls` **([string][6] | [Array][8] | [RegExp][9])** URL or a list of URLs to block . URL can contain * for wildcards. Example: [https://www.example.com][10]** to block all traffic for that domain. Regexp are also supported.
 
 ### blur
 
 Remove focus from a text input, button, etc.
-Calls [blur][12] on the element.
+Calls [blur][11] on the element.
 
 Examples:
 
@@ -431,8 +426,8 @@ I.dontSee('#add-to-cart-btn');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
-*   `options` **any?** Playwright only: [Additional options][13] for available options object as 2nd argument. 
+*   `locator` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
+*   `options` **any?** Playwright only: [Additional options][12] for available options object as 2nd argument. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -442,7 +437,7 @@ Dismisses the active JavaScript popup, as created by window.alert|window.confirm
 
 ### checkOption
 
-[Additional options][14] for check available as 3rd argument.
+[Additional options][13] for check available as 3rd argument.
 
 Examples:
 
@@ -466,8 +461,8 @@ I.checkOption('agree', '//form');
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** checkbox located by label | name | CSS | XPath | strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `field` **([string][6] | [object][7])** checkbox located by label | name | CSS | XPath | strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 *   `options`   
 
 Returns **void** automatically synchronized promise through #recorder
@@ -496,7 +491,7 @@ I.clearCookie('test');
 #### Parameters
 
 *   `cookieName` &#x20;
-*   `cookie` **[string][7]?** (optional, `null` by default) cookie name 
+*   `cookie` **[string][6]?** (optional, `null` by default) cookie name 
 
 ### clearField
 
@@ -515,8 +510,8 @@ I.clearField('Email', '.form-container');
 #### Parameters
 
 *   `locator` &#x20;
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
-*   `editable` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `editable` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
 
 Returns **void** automatically synchronized promise through #recorder.
 
@@ -550,13 +545,13 @@ I.click({css: 'nav a.login'});
 I.click({role: 'button', name: 'Submit'});
 ```
 
-> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][15].
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][14].
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** (optional, `'//body'` by default) clickable link or button located by text, or any element located by CSS|XPath|strict locator. 
-*   `context` **([string][7]? | [object][8] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
-*   `options` **any?** [Additional options][16] for click available as 3rd argument. 
+*   `locator` **([string][6] | [object][7])** (optional, `'//body'` by default) clickable link or button located by text, or any element located by CSS|XPath|strict locator. 
+*   `context` **([string][6]? | [object][7] | null)** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+*   `options` **any?** [Additional options][15] for click available as 3rd argument. 
 
 #### Examples
 
@@ -588,11 +583,11 @@ I.clickXY('#someElement', 50, 30);
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8] | [number][17])** Element to click on or X coordinate if no element.
-*   `x` **[number][17]?** X coordinate relative to element, or Y coordinate if locator is a number.
-*   `y` **[number][17]?** Y coordinate relative to element.
+*   `locator` **([string][6] | [object][7] | [number][16])** Element to click on or X coordinate if no element.
+*   `x` **[number][16]?** X coordinate relative to element, or Y coordinate if locator is a number.
+*   `y` **[number][16]?** Y coordinate relative to element.
 
-Returns **[Promise][18]<void>**&#x20;
+Returns **[Promise][17]<void>**&#x20;
 
 ### closeCurrentTab
 
@@ -622,8 +617,8 @@ I.dontSee('Login', '.nav'); // no login inside .nav element
 
 #### Parameters
 
-*   `text` **[string][7]** which is not present.
-*   `context` **([string][7] | [object][8])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
+*   `text` **[string][6]** which is not present.
+*   `context` **([string][6] | [object][7])?** (optional) element located by CSS|XPath|strict locator in which to perfrom search. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -639,7 +634,7 @@ I.dontSeeCheckboxIsChecked('agree'); // located by name
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator.
+*   `field` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -653,7 +648,7 @@ I.dontSeeCookie('auth'); // no auth cookie
 
 #### Parameters
 
-*   `name` **[string][7]** cookie name.
+*   `name` **[string][6]** cookie name.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -669,7 +664,7 @@ I.dontSeeCurrentPathEquals('/'); // fails for '/', '/?user=ok', '/#top'
 
 #### Parameters
 
-*   `path` **[string][7]** value to check.
+*   `path` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -685,7 +680,7 @@ I.dontSeeCurrentUrlEquals('http://mysite.com/login'); // absolute urls are also 
 
 #### Parameters
 
-*   `url` **[string][7]** value to check.
+*   `url` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -702,8 +697,8 @@ I.dontSeeElement('.modal', '#container');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|Strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|Strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -717,7 +712,7 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|Strict locator.
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|Strict locator.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -727,7 +722,7 @@ Checks that current url does not contain a provided fragment.
 
 #### Parameters
 
-*   `url` **[string][7]** value to check.
+*   `url` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -747,9 +742,9 @@ I.dontSeeInField('Name', 'old_value', '.form-container');
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator.
-*   `value` **([string][7] | [object][8])** value to check.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `field` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator.
+*   `value` **([string][6] | [object][7])** value to check.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -764,7 +759,7 @@ I.dontSeeInSource('<!--'); // no comments in source
 #### Parameters
 
 *   `text` &#x20;
-*   `value` **[string][7]** to check.
+*   `value` **[string][6]** to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -778,7 +773,7 @@ I.dontSeeInTitle('Error');
 
 #### Parameters
 
-*   `text` **[string][7]** value to check.
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -795,10 +790,10 @@ I.dontSeeTraffic({ name: 'Unexpected API Call of "user" endpoint', url: /api.exa
 
 #### Parameters
 
-*   `opts` **[Object][8]** options when checking the traffic network.
+*   `opts` **[Object][7]** options when checking the traffic network.
 
-    *   `opts.name` **[string][7]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
-    *   `opts.url` **([string][7] | [RegExp][10])** Expected URL of request in network traffic. Can be a string or a regular expression.
+    *   `opts.name` **[string][6]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    *   `opts.url` **([string][6] | [RegExp][9])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -816,8 +811,8 @@ I.doubleClick('.btn.edit');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+*   `locator` **([string][6] | [object][7])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -838,9 +833,9 @@ I.dragAndDrop('#dragHandle', '#container');
 
 #### Parameters
 
-*   `srcElement` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `destElement` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `options` **any?** [Additional options][19] can be passed as 3rd argument.
+*   `srcElement` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `destElement` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `options` **any?** [Additional options][18] can be passed as 3rd argument.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -856,8 +851,8 @@ I.dragSlider('#slider', -70);
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator.
-*   `offsetX` **[number][17]** position to drag. 
+*   `locator` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator.
+*   `offsetX` **[number][16]** position to drag. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -886,10 +881,10 @@ If a function returns a Promise it will wait for its resolution.
 
 #### Parameters
 
-*   `fn` **([string][7] | [function][20])** function to be executed in browser context.
+*   `fn` **([string][6] | [function][19])** function to be executed in browser context.
 *   `arg` **any?** optional argument to pass to the function
 
-Returns **[Promise][18]<any>**&#x20;
+Returns **[Promise][17]<any>**&#x20;
 
 ### fillField
 
@@ -913,13 +908,13 @@ I.fillField({role: 'textbox', name: 'Email'}, 'hello@world.com');
 I.fillField('Name', 'John', '#section2');
 ```
 
-> ℹ️ ARIA role locators (`{role, name}`) match fields by their accessible name and survive markup refactors. See [Locators][15].
+> ℹ️ ARIA role locators (`{role, name}`) match fields by their accessible name and survive markup refactors. See [Locators][14].
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator.
-*   `value` **([string][7] | [object][8])** text value to fill.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `field` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator.
+*   `value` **([string][6] | [object][7])** text value to fill.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -937,7 +932,7 @@ Resets all recorded WS messages.
 
 ### focus
 
-Calls [focus][12] on the matching element.
+Calls [focus][11] on the matching element.
 
 Examples:
 
@@ -949,8 +944,8 @@ I.see('#add-to-cart-bnt');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
-*   `options` **any?** Playwright only: [Additional options][21] for available options object as 2nd argument. 
+*   `locator` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
+*   `options` **any?** Playwright only: [Additional options][20] for available options object as 2nd argument. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -983,14 +978,14 @@ I.forceClick({css: 'nav a.login'});
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
+*   `locator` **([string][6] | [object][7])** clickable link or button located by text, or any element located by CSS|XPath|strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element to search in CSS|XPath|Strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
 ### grabAriaSnapshot
 
-Retrieves the ARIA snapshot for an element using Playwright's [`locator.ariaSnapshot`][22].
+Retrieves the ARIA snapshot for an element using Playwright's [`locator.ariaSnapshot`][21].
 This method returns a YAML representation of the accessibility tree that can be used for assertions.
 If no locator is provided, it captures the snapshot of the entire page body.
 
@@ -1002,13 +997,13 @@ const formSnapshot = await I.grabAriaSnapshot('#login-form');
 expect(formSnapshot).toContain('textbox "Email"');
 ```
 
-[Learn more about ARIA snapshots][23]
+[Learn more about ARIA snapshots][22]
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator. Defaults to body element. 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator. Defaults to body element. 
 
-Returns **[Promise][18]<[string][7]>** YAML representation of the accessibility tree
+Returns **[Promise][17]<[string][6]>** YAML representation of the accessibility tree
 
 ### grabAttributeFrom
 
@@ -1022,10 +1017,10 @@ let hint = await I.grabAttributeFrom('#tooltip', 'title');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `attr` **[string][7]** attribute name.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `attr` **[string][6]** attribute name.
 
-Returns **[Promise][18]<[string][7]>** attribute value
+Returns **[Promise][17]<[string][6]>** attribute value
 
 ### grabAttributeFromAll
 
@@ -1038,10 +1033,10 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `attr` **[string][7]** attribute name.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `attr` **[string][6]** attribute name.
 
-Returns **[Promise][18]<[Array][9]<[string][7]>>** attribute value
+Returns **[Promise][17]<[Array][8]<[string][6]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -1053,9 +1048,9 @@ const errors = logs.map(l => ({ type: l.type(), text: l.text() })).filter(l => l
 console.log(JSON.stringify(errors));
 ```
 
-[Learn more about console messages][24]
+[Learn more about console messages][23]
 
-Returns **[Promise][18]<[Array][9]<any>>**&#x20;
+Returns **[Promise][17]<[Array][8]<any>>**&#x20;
 
 ### grabCheckedElementStatus
 
@@ -1063,10 +1058,10 @@ Return the checked status of given element.
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `options` **[object][8]?** See [https://playwright.dev/docs/api/class-locator#locator-is-checked][25] 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `options` **[object][7]?** See [https://playwright.dev/docs/api/class-locator#locator-is-checked][24] 
 
-Returns **[Promise][18]<[boolean][26]>**&#x20;
+Returns **[Promise][17]<[boolean][25]>**&#x20;
 
 ### grabCookie
 
@@ -1083,7 +1078,7 @@ assert(cookie.value, '123456');
 
 #### Parameters
 
-*   `name` **[string][7]?** cookie name. 
+*   `name` **[string][6]?** cookie name. 
 
 Returns **any** attribute value
 
@@ -1099,10 +1094,10 @@ const value = await I.grabCssPropertyFrom('h3', 'font-weight');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `cssProperty` **[string][7]** CSS property name.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `cssProperty` **[string][6]** CSS property name.
 
-Returns **[Promise][18]<[string][7]>** CSS value
+Returns **[Promise][17]<[string][6]>** CSS value
 
 ### grabCssPropertyFromAll
 
@@ -1115,10 +1110,10 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `cssProperty` **[string][7]** CSS property name.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `cssProperty` **[string][6]** CSS property name.
 
-Returns **[Promise][18]<[Array][9]<[string][7]>>** CSS value
+Returns **[Promise][17]<[Array][8]<[string][6]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1130,7 +1125,7 @@ let url = await I.grabCurrentUrl();
 console.log(`Current URL is [${url}]`);
 ```
 
-Returns **[Promise][18]<[string][7]>** current URL
+Returns **[Promise][17]<[string][6]>** current URL
 
 ### grabDataFromPerformanceTiming
 
@@ -1163,10 +1158,10 @@ Return the disabled status of given element.
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `options` **[object][8]?** See [https://playwright.dev/docs/api/class-locator#locator-is-disabled][27] 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `options` **[object][7]?** See [https://playwright.dev/docs/api/class-locator#locator-is-disabled][26] 
 
-Returns **[Promise][18]<[boolean][26]>**&#x20;
+Returns **[Promise][17]<[boolean][25]>**&#x20;
 
 ### grabElementBoundingRect
 
@@ -1190,11 +1185,11 @@ const width = await I.grabElementBoundingRect('h3', 'width');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 *   `prop` &#x20;
-*   `elementSize` **[string][7]?** x, y, width or height of the given element.
+*   `elementSize` **[string][6]?** x, y, width or height of the given element.
 
-Returns **([Promise][18]<DOMRect> | [Promise][18]<[number][17]>)** Element bounding rectangle
+Returns **([Promise][17]<DOMRect> | [Promise][17]<[number][16]>)** Element bounding rectangle
 
 ### grabFromClipboard
 
@@ -1209,7 +1204,7 @@ let url = await I.grabFromClipboard();
 Reading the clipboard requires a secure context (`https` or `localhost`) and is supported
 in Chromium-based browsers, where read access is granted automatically.
 
-Returns **[Promise][18]<[string][7]>** the system clipboard contents.
+Returns **[Promise][17]<[string][6]>** the system clipboard contents.
 
 ### grabHTMLFrom
 
@@ -1224,9 +1219,9 @@ let postHTML = await I.grabHTMLFrom('#post');
 #### Parameters
 
 *   `locator` &#x20;
-*   `element` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
+*   `element` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[string][7]>** HTML code for an element
+Returns **[Promise][17]<[string][6]>** HTML code for an element
 
 ### grabHTMLFromAll
 
@@ -1240,9 +1235,9 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 #### Parameters
 
 *   `locator` &#x20;
-*   `element` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
+*   `element` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[Array][9]<[string][7]>>** HTML code for an element
+Returns **[Promise][17]<[Array][8]<[string][6]>>** HTML code for an element
 
 ### grabMetrics
 
@@ -1297,7 +1292,7 @@ const metrics = await I.grabMetrics();
 
 ```
 
-Returns **[Promise][18]<[Array][9]<[Object][8]>>**&#x20;
+Returns **[Promise][17]<[Array][8]<[Object][7]>>**&#x20;
 
 ### grabNumberOfOpenTabs
 
@@ -1308,7 +1303,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let tabs = await I.grabNumberOfOpenTabs();
 ```
 
-Returns **[Promise][18]<[number][17]>** number of open tabs
+Returns **[Promise][17]<[number][16]>** number of open tabs
 
 ### grabNumberOfVisibleElements
 
@@ -1321,9 +1316,9 @@ let numOfElements = await I.grabNumberOfVisibleElements('p');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[number][17]>** number of visible elements
+Returns **[Promise][17]<[number][16]>** number of visible elements
 
 ### grabPageScrollPosition
 
@@ -1334,7 +1329,7 @@ Resumes test execution, so **should be used inside an async function with `await
 let { x, y } = await I.grabPageScrollPosition();
 ```
 
-Returns **[Promise][18]<PageScrollPosition>** scroll position
+Returns **[Promise][17]<PageScrollPosition>** scroll position
 
 ### grabPopupText
 
@@ -1344,7 +1339,7 @@ Grab the text within the popup. If no popup is visible then it will return null
 await I.grabPopupText();
 ```
 
-Returns **[Promise][18]<([string][7] | null)>**&#x20;
+Returns **[Promise][17]<([string][6] | null)>**&#x20;
 
 ### grabRecordedNetworkTraffics
 
@@ -1357,7 +1352,7 @@ expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][9]** recorded network traffics
+Returns **[Array][8]** recorded network traffics
 
 ### grabSource
 
@@ -1368,7 +1363,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let pageSource = await I.grabSource();
 ```
 
-Returns **[Promise][18]<[string][7]>** source code
+Returns **[Promise][17]<[string][6]>** source code
 
 ### grabStorageState
 
@@ -1381,9 +1376,9 @@ Avoid committing it to source control and prefer storing it in a protected secre
 
 #### Parameters
 
-*   `options` **[object][8]?**  
+*   `options` **[object][7]?**  
 
-    *   `options.indexedDB` **[boolean][26]?** set to true to include IndexedDB in snapshot (Playwright >=1.51)```js
+    *   `options.indexedDB` **[boolean][25]?** set to true to include IndexedDB in snapshot (Playwright >=1.51)```js
         // basic usage
         const state = await I.grabStorageState();
         require('fs').writeFileSync('authState.json', JSON.stringify(state));
@@ -1405,9 +1400,9 @@ If multiple elements found returns first element.
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[string][7]>** attribute value
+Returns **[Promise][17]<[string][6]>** attribute value
 
 ### grabTextFromAll
 
@@ -1420,9 +1415,9 @@ let pins = await I.grabTextFromAll('#pin li');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[Array][9]<[string][7]>>** attribute value
+Returns **[Promise][17]<[Array][8]<[string][6]>>** attribute value
 
 ### grabTitle
 
@@ -1433,7 +1428,7 @@ Resumes test execution, so **should be used inside async with `await`** operator
 let title = await I.grabTitle();
 ```
 
-Returns **[Promise][18]<[string][7]>** title
+Returns **[Promise][17]<[string][6]>** title
 
 ### grabTrafficUrl
 
@@ -1448,9 +1443,9 @@ I.grabTrafficUrl(/session.*start/);
 
 #### Parameters
 
-*   `urlMatch` **([string][7] | [RegExp][10])** Expected URL of request in network traffic. Can be a string or a regular expression.
+*   `urlMatch` **([string][6] | [RegExp][9])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
-Returns **[Promise][18]<any>**&#x20;
+Returns **[Promise][17]<any>**&#x20;
 
 ### grabValueFrom
 
@@ -1464,9 +1459,9 @@ let email = await I.grabValueFrom('input[name=email]');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[string][7]>** attribute value
+Returns **[Promise][17]<[string][6]>** attribute value
 
 ### grabValueFromAll
 
@@ -1479,9 +1474,9 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][18]<[Array][9]<[string][7]>>** attribute value
+Returns **[Promise][17]<[Array][8]<[string][6]>>** attribute value
 
 ### grabWebElement
 
@@ -1494,9 +1489,9 @@ const webElement = await I.grabWebElement('#button');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<any>** WebElement of being used Web helper
+Returns **[Promise][17]<any>** WebElement of being used Web helper
 
 ### grabWebElements
 
@@ -1509,22 +1504,22 @@ const webElements = await I.grabWebElements('#button');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][18]<any>** WebElement of being used Web helper
+Returns **[Promise][17]<any>** WebElement of being used Web helper
 
 ### grabWebSocketMessages
 
 Grab the recording WS messages
 
-Returns **[Array][9]<any>**&#x20;
+Returns **[Array][8]<any>**&#x20;
 
 ### handleDownloads
 
 Handles a file download. A file name is required to save the file on disk.
 Files are saved to "output" directory.
 
-Should be used with [FileSystem helper][28] to check that file were downloaded correctly.
+Should be used with [FileSystem helper][27] to check that file were downloaded correctly.
 
 ```js
 I.handleDownloads('downloads/avatar.jpg');
@@ -1536,13 +1531,13 @@ I.waitForFile('avatar.jpg', 5);
 
 #### Parameters
 
-*   `fileName` **[string][7]** set filename for downloaded file
+*   `fileName` **[string][6]** set filename for downloaded file
 
-Returns **[Promise][18]<void>**&#x20;
+Returns **[Promise][17]<void>**&#x20;
 
 ### makeApiRequest
 
-Performs [api request][29] using
+Performs [api request][28] using
 the cookies from the current browser session.
 
 ```js
@@ -1555,26 +1550,26 @@ I.makeApiRequest('PATCH', )
 
 #### Parameters
 
-*   `method` **[string][7]** HTTP method
-*   `url` **[string][7]** endpoint
-*   `options` **[object][8]** request options depending on method used
+*   `method` **[string][6]** HTTP method
+*   `url` **[string][6]** endpoint
+*   `options` **[object][7]** request options depending on method used
 
-Returns **[Promise][18]<[object][8]>** response
+Returns **[Promise][17]<[object][7]>** response
 
 ### mockRoute
 
-Mocks network request using [`browserContext.route`][30] of Playwright
+Mocks network request using [`browserContext.route`][29] of Playwright
 
 ```js
 I.mockRoute(/(.png$)|(.jpg$)/, route => route.abort());
 ```
 
-This method allows intercepting and mocking requests & responses. [Learn more about it][31]
+This method allows intercepting and mocking requests & responses. [Learn more about it][30]
 
 #### Parameters
 
-*   `url` **([string][7] | [RegExp][10])?** URL, regex or pattern for to match URL
-*   `handler` **[function][20]?** a function to process request
+*   `url` **([string][6] | [RegExp][9])?** URL, regex or pattern for to match URL
+*   `handler` **[function][19]?** a function to process request
 
 ### mockTraffic
 
@@ -1611,9 +1606,9 @@ I.moveCursorTo('#submit', '.container');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `offsetX` **([number][17] | [string][7] | [object][8])** (optional, `0` by default) X-axis offset or context locator. 
-*   `offsetY` **[number][17]** (optional, `0` by default) Y-axis offset. 
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `offsetX` **([number][16] | [string][6] | [object][7])** (optional, `0` by default) X-axis offset or context locator. 
+*   `offsetY` **[number][16]** (optional, `0` by default) Y-axis offset. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1625,7 +1620,7 @@ Open new tab and automatically switched to new tab
 I.openNewTab();
 ```
 
-You can pass in [page options][32] to emulate device on this page
+You can pass in [page options][31] to emulate device on this page
 
 ```js
 // enable mobile
@@ -1638,11 +1633,11 @@ I.openNewTab({ isMobile: true });
 
 ### pressKey
 
-*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([puppeteer/puppeteer#1313][33]).
+*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([puppeteer/puppeteer#1313][32]).
 
 Presses a key in the browser (on a focused element).
 
-*Hint:* For populating text field or textarea, it is recommended to use [`fillField`][34].
+*Hint:* For populating text field or textarea, it is recommended to use [`fillField`][33].
 
 ```js
 I.pressKey('Backspace');
@@ -1701,7 +1696,7 @@ Some of the supported key names are:
 
 #### Parameters
 
-*   `key` **([string][7] | [Array][9]<[string][7]>)** key or array of keys to press.
+*   `key` **([string][6] | [Array][8]<[string][6]>)** key or array of keys to press.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1709,7 +1704,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][35]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][34]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1719,7 +1714,7 @@ I.pressKeyUp('Control');
 
 #### Parameters
 
-*   `key` **[string][7]** name of key to press down.
+*   `key` **[string][6]** name of key to press down.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1727,7 +1722,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][35]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][34]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1737,7 +1732,7 @@ I.pressKeyUp('Control');
 
 #### Parameters
 
-*   `key` **[string][7]** name of key to release.
+*   `key` **[string][6]** name of key to release.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1766,8 +1761,8 @@ Replaying from HAR
 
 #### Parameters
 
-*   `harFilePath` **[string][7]** Path to recorded HAR file
-*   `opts` **[object][8]?** [Options for replaying from HAR][36]
+*   `harFilePath` **[string][6]** Path to recorded HAR file
+*   `opts` **[object][7]?** [Options for replaying from HAR][35]
 
 Returns **any** Promise<void>
 
@@ -1790,8 +1785,8 @@ First parameter can be set to `maximize`.
 
 #### Parameters
 
-*   `width` **[number][17]** width in pixels or `maximize`.
-*   `height` **[number][17]** height in pixels.
+*   `width` **[number][16]** width in pixels or `maximize`.
+*   `height` **[number][16]** height in pixels.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1810,8 +1805,8 @@ I.rightClick('Click me', '.context');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** clickable element located by CSS|XPath|strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+*   `locator` **([string][6] | [object][7])** clickable element located by CSS|XPath|strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1826,8 +1821,8 @@ I.saveElementScreenshot(`#submit`,'debug.png');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `fileName` **[string][7]** file name to save.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `fileName` **[string][6]** file name to save.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1844,8 +1839,8 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 
 #### Parameters
 
-*   `fileName` **[string][7]** file name to save.
-*   `fullPage` **[boolean][26]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+*   `fileName` **[string][6]** file name to save.
+*   `fullPage` **[boolean][25]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1881,9 +1876,9 @@ I.scrollTo('#submit', 5, 5);
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `offsetX` **[number][17]** (optional, `0` by default) X-axis offset. 
-*   `offsetY` **[number][17]** (optional, `0` by default) Y-axis offset. 
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `offsetX` **[number][16]** (optional, `0` by default) X-axis offset. 
+*   `offsetY` **[number][16]** (optional, `0` by default) Y-axis offset. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1900,8 +1895,8 @@ I.see('Register', {css: 'form.register'}); // use strict locator
 
 #### Parameters
 
-*   `text` **[string][7]** expected on page.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
+*   `text` **[string][6]** expected on page.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS|Xpath|strict locator in which to search for text. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1915,8 +1910,8 @@ I.seeAttributesOnElements('//form', { method: "post"});
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `attributes` **[object][8]** attributes and their values to check.
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `attributes` **[object][7]** attributes and their values to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1932,7 +1927,7 @@ I.seeCheckboxIsChecked({css: '#signup_form input[type=checkbox]'});
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator.
+*   `field` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1950,7 +1945,7 @@ in Chromium-based browsers, where read access is granted automatically.
 
 #### Parameters
 
-*   `text` **[string][7]** value to check.
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1964,7 +1959,7 @@ I.seeCookie('Auth');
 
 #### Parameters
 
-*   `name` **[string][7]** cookie name.
+*   `name` **[string][6]** cookie name.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1978,8 +1973,8 @@ I.seeCssPropertiesOnElements('h3', { 'font-weight': "bold"});
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `cssProperties` **[object][8]** object with CSS properties and their values to check.
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `cssProperties` **[object][7]** object with CSS properties and their values to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1995,7 +1990,7 @@ I.seeCurrentPathEquals('/'); // passes for '/', '/?user=ok', '/#top'
 
 #### Parameters
 
-*   `path` **[string][7]** value to check.
+*   `path` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2012,7 +2007,7 @@ I.seeCurrentUrlEquals('http://my.site.com/register');
 
 #### Parameters
 
-*   `url` **[string][7]** value to check.
+*   `url` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2030,12 +2025,12 @@ I.seeElement('#modal', '#container');
 I.seeElement({role: 'dialog'});
 ```
 
-> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][15].
+> ℹ️ ARIA role locators (`{role, name}`) match elements the way assistive technology does and survive markup refactors. See [Locators][14].
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** located by CSS|XPath|strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `locator` **([string][6] | [object][7])** located by CSS|XPath|strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2050,7 +2045,7 @@ I.seeElementInDOM('#modal');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2068,7 +2063,7 @@ in Chromium-based browsers, where read access is granted automatically.
 
 #### Parameters
 
-*   `text` **[string][7]** value to check.
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2082,7 +2077,7 @@ I.seeInCurrentUrl('/register'); // we are on registration page
 
 #### Parameters
 
-*   `url` **[string][7]** a fragment to check
+*   `url` **[string][6]** a fragment to check
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2104,9 +2099,9 @@ I.seeInField('Name', 'John', '.form-container');
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** located by label|name|CSS|XPath|strict locator.
-*   `value` **([string][7] | [object][8])** value to check.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `field` **([string][6] | [object][7])** located by label|name|CSS|XPath|strict locator.
+*   `value` **([string][6] | [object][7])** value to check.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2121,7 +2116,7 @@ I.seeInPopup('Popup text');
 
 #### Parameters
 
-*   `text` **[string][7]** value to check.
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2135,7 +2130,7 @@ I.seeInSource('<h1>Green eggs &amp; ham</h1>');
 
 #### Parameters
 
-*   `text` **[string][7]** value to check.
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2149,7 +2144,7 @@ I.seeInTitle('Home Page');
 
 #### Parameters
 
-*   `text` **[string][7]** text value to check.
+*   `text` **[string][6]** text value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2164,8 +2159,8 @@ I.seeNumberOfElements('#submitBtn', 1);
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `num` **[number][17]** number of elements.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `num` **[number][16]** number of elements.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2180,8 +2175,8 @@ I.seeNumberOfVisibleElements('.buttons', 3);
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `num` **[number][17]** number of elements.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `num` **[number][16]** number of elements.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2195,8 +2190,8 @@ I.seeTextEquals('text', 'h1');
 
 #### Parameters
 
-*   `text` **[string][7]** element value to check.
-*   `context` **([string][7] | [object][8])?** element located by CSS|XPath|strict locator. 
+*   `text` **[string][6]** element value to check.
+*   `context` **([string][6] | [object][7])?** element located by CSS|XPath|strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2210,7 +2205,7 @@ I.seeTitleEquals('Test title.');
 
 #### Parameters
 
-*   `text` **[string][7]** value to check.
+*   `text` **[string][6]** value to check.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2247,13 +2242,13 @@ await I.seeTraffic({
 
 #### Parameters
 
-*   `opts` **[Object][8]** options when checking the traffic network.
+*   `opts` **[Object][7]** options when checking the traffic network.
 
-    *   `opts.name` **[string][7]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
-    *   `opts.url` **[string][7]** Expected URL of request in network traffic
-    *   `opts.parameters` **[Object][8]?** Expected parameters of that request in network traffic
-    *   `opts.requestPostData` **[Object][8]?** Expected that request contains post data in network traffic
-    *   `opts.timeout` **[number][17]?** Timeout to wait for request in seconds. Default is 10 seconds. 
+    *   `opts.name` **[string][6]** A name of that request. Can be any value. Only relevant to have a more meaningful error message in case of fail.
+    *   `opts.url` **[string][6]** Expected URL of request in network traffic
+    *   `opts.parameters` **[Object][7]?** Expected parameters of that request in network traffic
+    *   `opts.requestPostData` **[Object][7]?** Expected that request contains post data in network traffic
+    *   `opts.timeout` **[number][16]?** Timeout to wait for request in seconds. Default is 10 seconds. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2284,9 +2279,9 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 
 #### Parameters
 
-*   `select` **([string][7] | [object][8])** field located by label|name|CSS|XPath|strict locator.
-*   `option` **([string][7] | [Array][9]<any>)** visible text or value of option.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `select` **([string][6] | [object][7])** field located by label|name|CSS|XPath|strict locator.
+*   `option` **([string][6] | [Array][8]<any>)** visible text or value of option.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2308,7 +2303,7 @@ I.setCookie([
 
 #### Parameters
 
-*   `cookie` **(Cookie | [Array][9]<Cookie>)** a cookie object or array of cookie objects.
+*   `cookie` **(Cookie | [Array][8]<Cookie>)** a cookie object or array of cookie objects.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2324,7 +2319,7 @@ I.setPlaywrightRequestHeaders({
 
 #### Parameters
 
-*   `customHeaders` **[object][8]** headers to set
+*   `customHeaders` **[object][7]** headers to set
 
 ### startRecordingTraffic
 
@@ -2361,8 +2356,8 @@ If no handler is passed, all mock requests for the rote are disabled.
 
 #### Parameters
 
-*   `url` **([string][7] | [RegExp][10])?** URL, regex or pattern for to match URL
-*   `handler` **[function][20]?** a function to process request
+*   `url` **([string][6] | [RegExp][9])?** URL, regex or pattern for to match URL
+*   `handler` **[function][19]?** a function to process request
 
 ### stopRecordingTraffic
 
@@ -2393,7 +2388,7 @@ I.switchTo(); // switch back to main page
 
 #### Parameters
 
-*   `locator` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
+*   `locator` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS|XPath|strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2408,7 +2403,7 @@ I.switchToNextTab(2);
 
 #### Parameters
 
-*   `num` **[number][17]**  
+*   `num` **[number][16]**  
 
 ### switchToPreviousTab
 
@@ -2421,13 +2416,13 @@ I.switchToPreviousTab(2);
 
 #### Parameters
 
-*   `num` **[number][17]**  
+*   `num` **[number][16]**  
 
 ### type
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-*Note:* Should be used when [`fillField`][34] is not an option.
+*Note:* Should be used when [`fillField`][33] is not an option.
 
 ```js
 // passing in a string
@@ -2446,14 +2441,14 @@ I.type(secret('123456'));
 #### Parameters
 
 *   `keys` &#x20;
-*   `delay` **[number][17]?** (optional) delay in ms between key presses 
-*   `key` **([string][7] | [Array][9]<[string][7]>)** or array of keys to type.
+*   `delay` **[number][16]?** (optional) delay in ms between key presses 
+*   `key` **([string][6] | [Array][8]<[string][6]>)** or array of keys to type.
 
 Returns **void** automatically synchronized promise through #recorder
 
 ### uncheckOption
 
-[Additional options][37] for uncheck available as 3rd argument.
+[Additional options][36] for uncheck available as 3rd argument.
 
 Examples:
 
@@ -2477,8 +2472,8 @@ I.uncheckOption('agree', '//form');
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** checkbox located by label | name | CSS | XPath | strict locator.
-*   `context` **([string][7]? | [object][8])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
+*   `field` **([string][6] | [object][7])** checkbox located by label | name | CSS | XPath | strict locator.
+*   `context` **([string][6]? | [object][7])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 *   `options`   
 
 Returns **void** automatically synchronized promise through #recorder
@@ -2490,7 +2485,7 @@ Use Playwright API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][38], [`browserContext`][39] [`browser`][40] } objects from Playwright API are available.
+{ [`page`][37], [`browserContext`][38] [`browser`][39] } objects from Playwright API are available.
 
 ```js
 I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
@@ -2500,8 +2495,8 @@ I.usePlaywrightTo('emulate offline mode', async ({ browserContext }) => {
 
 #### Parameters
 
-*   `description` **[string][7]** used to show in logs.
-*   `fn` **[function][20]** async function that executed with Playwright helper as arguments
+*   `description` **[string][6]** used to show in logs.
+*   `fn` **[function][19]** async function that executed with Playwright helper as arguments
 
 ### wait
 
@@ -2513,7 +2508,7 @@ I.wait(2); // wait 2 secs
 
 #### Parameters
 
-*   `sec` **[number][17]** number of second to wait.
+*   `sec` **[number][16]** number of second to wait.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2538,9 +2533,9 @@ I.waitForClickable('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
 *   `waitTimeout` &#x20;
-*   `sec` **[number][17]?** (optional, `1` by default) time in seconds to wait
+*   `sec` **[number][16]?** (optional, `1` by default) time in seconds to wait
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2554,8 +2549,8 @@ I.waitForCookie("token");
 
 #### Parameters
 
-*   `name` **[string][7]** expected cookie name.
-*   `sec` **[number][17]** (optional, `3` by default) time in seconds to wait 
+*   `name` **[string][6]** expected cookie name.
+*   `sec` **[number][16]** (optional, `3` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2570,8 +2565,8 @@ I.waitForDetached('#popup');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2582,8 +2577,8 @@ Element can be located by CSS or XPath.
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]** (optional) time in seconds to wait, 1 by default. 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]** (optional) time in seconds to wait, 1 by default. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2599,8 +2594,8 @@ I.waitForElement('.btn.continue', 5); // wait for 5 secs
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]?** (optional, `1` by default) time in seconds to wait
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]?** (optional, `1` by default) time in seconds to wait
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2611,8 +2606,8 @@ Element can be located by CSS or XPath.
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]** (optional) time in seconds to wait, 1 by default. 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]** (optional) time in seconds to wait, 1 by default. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2633,9 +2628,9 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
-*   `fn` **([string][7] | [function][20])** to be executed in browser context.
-*   `argsOrSec` **([Array][9]<any> | [number][17])?** (optional, `1` by default) arguments for function or seconds. 
-*   `sec` **[number][17]?** (optional, `1` by default) time in seconds to wait 
+*   `fn` **([string][6] | [function][19])** to be executed in browser context.
+*   `argsOrSec` **([Array][8]<any> | [number][16])?** (optional, `1` by default) arguments for function or seconds. 
+*   `sec` **[number][16]?** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2650,8 +2645,8 @@ I.waitForInvisible('#popup');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2659,7 +2654,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for navigation to finish. By default, it takes configured `waitForNavigation` option.
 
-See [Playwright's reference][41]
+See [Playwright's reference][40]
 
 #### Parameters
 
@@ -2675,8 +2670,8 @@ I.waitForNumberOfTabs(2);
 
 #### Parameters
 
-*   `expectedTabs` **[number][17]** expecting the number of tabs.
-*   `sec` **[number][17]** number of secs to wait.
+*   `expectedTabs` **[number][16]** expecting the number of tabs.
+*   `sec` **[number][16]** number of secs to wait.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2691,8 +2686,8 @@ I.waitForRequest(request => request.url() === 'http://example.com' && request.me
 
 #### Parameters
 
-*   `urlOrPredicate` **([string][7] | [function][20])**&#x20;
-*   `sec` **[number][17]?** seconds to wait 
+*   `urlOrPredicate` **([string][6] | [function][19])**&#x20;
+*   `sec` **[number][16]?** seconds to wait 
 
 ### waitForResponse
 
@@ -2705,8 +2700,8 @@ I.waitForResponse(response => response.url() === 'https://example.com' && respon
 
 #### Parameters
 
-*   `urlOrPredicate` **([string][7] | [function][20])**&#x20;
-*   `sec` **[number][17]?** number of seconds to wait 
+*   `urlOrPredicate` **([string][6] | [function][19])**&#x20;
+*   `sec` **[number][16]?** number of seconds to wait 
 
 ### waitForText
 
@@ -2721,9 +2716,9 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 #### Parameters
 
-*   `text` **[string][7]** to wait for.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
-*   `context` **([string][7] | [object][8])?** (optional) element located by CSS|XPath|strict locator. 
+*   `text` **[string][6]** to wait for.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
+*   `context` **([string][6] | [object][7])?** (optional) element located by CSS|XPath|strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2731,11 +2726,11 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for page navigates to a new URL or reloads. By default, it takes configured `waitForNavigation` option.
 
-See [Playwright's reference][42]
+See [Playwright's reference][41]
 
 #### Parameters
 
-*   `url` **([string][7] | [RegExp][10])** A glob pattern, regex pattern or predicate receiving URL to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+*   `url` **([string][6] | [RegExp][9])** A glob pattern, regex pattern or predicate receiving URL to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
 *   `options` **any**  
 
 ### waitForValue
@@ -2748,9 +2743,9 @@ I.waitForValue('//input', "GoodValue");
 
 #### Parameters
 
-*   `field` **([string][7] | [object][8])** input field.
-*   `value` **[string][7]** expected value.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `field` **([string][6] | [object][7])** input field.
+*   `value` **[string][6]** expected value.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2765,8 +2760,8 @@ I.waitForVisible('#popup');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2780,8 +2775,8 @@ I.waitInUrl('/info', 2);
 
 #### Parameters
 
-*   `urlPart` **[string][7]** value to check.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `urlPart` **[string][6]** value to check.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2795,9 +2790,9 @@ I.waitNumberOfVisibleElements('a', 3);
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `num` **[number][17]** number of elements.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `num` **[number][16]** number of elements.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2812,8 +2807,8 @@ I.waitToHide('#popup');
 
 #### Parameters
 
-*   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `locator` **([string][6] | [object][7])** element located by CSS|XPath|strict locator.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2828,8 +2823,8 @@ I.waitUrlEquals('http://127.0.0.1:8000/info');
 
 #### Parameters
 
-*   `urlPart` **[string][7]** value to check.
-*   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
+*   `urlPart` **[string][6]** value to check.
+*   `sec` **[number][16]** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2856,7 +2851,7 @@ Usually it should be run from a custom helper after call of `_startBrowser()`
 
 #### Parameters
 
-*   `contextOptions` **[object][8]?** See [https://playwright.dev/docs/api/class-browser#browser-new-context][43]
+*   `contextOptions` **[object][7]?** See [https://playwright.dev/docs/api/class-browser#browser-new-context][42]
 
 ### _getPageUrl
 
@@ -2932,7 +2927,7 @@ Set current page
 
 #### Parameters
 
-*   `page` **[object][8]** page to set
+*   `page` **[object][7]** page to set
 
 [1]: https://github.com/microsoft/playwright
 
@@ -2942,94 +2937,92 @@ Set current page
 
 [4]: https://playwright.dev/docs/api/class-browsertype#browsertypeconnectparams
 
-[5]: https://github.com/microsoft/playwright/blob/v0.11.0/docs/api.md#working-with-chrome-extensions
+[5]: http://jster.net/category/windows-modals-popups
 
-[6]: http://jster.net/category/windows-modals-popups
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+[10]: https://www.example.com
 
-[11]: https://www.example.com
+[11]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
 
-[12]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
+[12]: https://playwright.dev/docs/api/class-locator#locator-blur
 
-[13]: https://playwright.dev/docs/api/class-locator#locator-blur
+[13]: https://playwright.dev/docs/api/class-elementhandle#element-handle-check
 
-[14]: https://playwright.dev/docs/api/class-elementhandle#element-handle-check
+[14]: /locators#aria-locators
 
-[15]: /locators#aria-locators
+[15]: https://playwright.dev/docs/api/class-page#page-click
 
-[16]: https://playwright.dev/docs/api/class-page#page-click
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[18]: https://playwright.dev/docs/api/class-page#page-drag-and-drop
 
-[19]: https://playwright.dev/docs/api/class-page#page-drag-and-drop
+[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[20]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[21]: https://playwright.dev/docs/api/class-locator#locator-focus
+[21]: https://playwright.dev/docs/api/class-locator#locator-aria-snapshot
 
-[22]: https://playwright.dev/docs/api/class-locator#locator-aria-snapshot
+[22]: https://playwright.dev/docs/aria-snapshots
 
-[23]: https://playwright.dev/docs/aria-snapshots
+[23]: https://playwright.dev/docs/api/class-consolemessage
 
-[24]: https://playwright.dev/docs/api/class-consolemessage
+[24]: https://playwright.dev/docs/api/class-locator#locator-is-checked
 
-[25]: https://playwright.dev/docs/api/class-locator#locator-is-checked
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[26]: https://playwright.dev/docs/api/class-locator#locator-is-disabled
 
-[27]: https://playwright.dev/docs/api/class-locator#locator-is-disabled
+[27]: https://codecept.io/helpers/FileSystem
 
-[28]: https://codecept.io/helpers/FileSystem
+[28]: https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get
 
-[29]: https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get
+[29]: https://playwright.dev/docs/api/class-browsercontext#browser-context-route
 
-[30]: https://playwright.dev/docs/api/class-browsercontext#browser-context-route
+[30]: https://playwright.dev/docs/network#handle-requests
 
-[31]: https://playwright.dev/docs/network#handle-requests
+[31]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
 
-[32]: https://github.com/microsoft/playwright/blob/main/docs/api.md#browsernewpageoptions
+[32]: https://github.com/puppeteer/puppeteer/issues/1313
 
-[33]: https://github.com/puppeteer/puppeteer/issues/1313
+[33]: #fillfield
 
-[34]: #fillfield
+[34]: #click
 
-[35]: #click
+[35]: https://playwright.dev/docs/api/class-page#page-route-from-har
 
-[36]: https://playwright.dev/docs/api/class-page#page-route-from-har
+[36]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
 
-[37]: https://playwright.dev/docs/api/class-elementhandle#element-handle-uncheck
+[37]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
 
-[38]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-page.md
+[38]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
 
-[39]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browsercontext.md
+[39]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
 
-[40]: https://github.com/microsoft/playwright/blob/main/docs/src/api/class-browser.md
+[40]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
 
-[41]: https://playwright.dev/docs/api/class-page#page-wait-for-navigation
+[41]: https://playwright.dev/docs/api/class-page#page-wait-for-url
 
-[42]: https://playwright.dev/docs/api/class-page#page-wait-for-url
+[42]: https://playwright.dev/docs/api/class-browser#browser-new-context
 
-[43]: https://playwright.dev/docs/api/class-browser#browser-new-context
+[43]: https://playwright.dev/docs/api/class-browsercontext
 
-[44]: https://playwright.dev/docs/api/class-browsercontext
+[44]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
 
-[45]: https://playwright.dev/docs/api/class-page#page-set-default-timeout
+[45]: https://playwright.dev/docs/trace-viewer
 
-[46]: https://playwright.dev/docs/trace-viewer
+[46]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
 
-[47]: https://playwright.dev/docs/browsers/#google-chrome--microsoft-edge
+[47]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
 
-[48]: https://playwright.dev/docs/api/class-consolemessage#console-message-type
+[48]: https://playwright.dev/docs/api/class-locator#locator-visible
 
-[49]: https://playwright.dev/docs/api/class-locator#locator-visible
-
-[50]: https://playwright.dev/docs/locators#locate-by-test-id
+[49]: https://playwright.dev/docs/locators#locate-by-test-id

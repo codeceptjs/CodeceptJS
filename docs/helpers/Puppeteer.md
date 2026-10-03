@@ -58,6 +58,7 @@ Type: [object][6]
 *   `manualStart` **[boolean][24]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 *   `browser` **[string][5]?** can be changed to `firefox` when using [puppeteer-firefox][2].
 *   `chrome` **[object][6]?** pass additional [Puppeteer run options][30].
+*   `extensions` **([string][5] | [Array][17]<[string][5]>)?** path (or paths) to unpacked Chrome extensions to load. Chrome only, not available for a remote browser.
 *   `highlightElement` **[boolean][24]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 ## findElement

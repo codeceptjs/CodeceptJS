@@ -47,6 +47,7 @@ Type: [object][19]
 *   `windowSize` **[string][18]?** default window size. Set to `maximize` or a dimension in the format `640x480`.
 *   `waitForTimeout` **[number][23]?** sets default wait time in *ms* for all `wait*` functions.
 *   `desiredCapabilities` **[object][19]?** Selenium's [desired capabilities][7].
+*   `extensions` **([string][18] | [Array][30]<[string][18]>)?** path (or paths) to unpacked extensions to load. Chrome, Chromium and Edge only; the path must be reachable by the browser, so use it with a local driver.
 *   `manualStart` **[boolean][34]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
 *   `timeouts` **[object][19]?** [WebDriver timeouts][40] defined as hash.
 *   `highlightElement` **[boolean][34]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
