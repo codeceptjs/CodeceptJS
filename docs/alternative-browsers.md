@@ -6,149 +6,175 @@ title: Alternative Browser Engines
 # Alternative Browser Engines
 
 ::: warning Experimental
-The `Lightpanda`, `Obscura` and `Kitesurf` helpers are experimental. Keep a Playwright or WebDriver job for compatibility-critical tests.
+The `Obscura`, `Lightpanda` and `Kitesurf` helpers are experimental. Keep a Playwright or WebDriver job for compatibility-critical tests.
 :::
 
-Your tests stay the same. `I.amOnPage`, `I.click`, `I.fillField`, `I.see`, `I.seeElement` and the rest of the `I.*` web API work on every engine below; only the helper in the config changes.
+Playwright drives full Chromium, Firefox and WebKit: the most accurate way to test what users see, at the cost of a heavy browser per worker. Alternative engines trade part of that accuracy for speed, a small footprint, or cloud scale. They are a good fit for functional tests (text appears, form submits, redirect happens, cookie is set) and a poor one for anything visual.
 
-| Engine | What it is | Screenshots | Runs on |
-|---|---|---|---|
-| [Lightpanda](https://lightpanda.io) | headless browser built for automation, nothing painted | no | Linux, macOS |
-| [Obscura](https://github.com/h4ckf0r0day/obscura) | lightweight browser with its own rendering engine | yes | Linux, macOS, Windows |
-| [Kitesurf](https://blog.cloudflare.com/kitesurf/) | Cloudflare's browser in the cloud | yes | Cloudflare |
+Your tests do not change. `I.amOnPage`, `I.click`, `I.fillField`, `I.see`, `I.seeElement` and the rest of the `I.*` web API work the same; you only swap the helper in the config. All engines below speak Chrome DevTools Protocol, so there is no `npx playwright install` step.
 
-All three speak Chrome DevTools Protocol. There is no `npx playwright install` step: Lightpanda and Obscura are single binaries, Kitesurf is a cloud service.
+Compared to Playwright, none of them supports iframes (`switchTo`), multiple tabs, popups, `dragAndDrop`, `moveCursorTo`, clipboard actions, or Playwright-only APIs such as `usePlaywrightTo` and `mockRoute`. Tag scenarios that need those and skip them on the alternative engine:
 
-## When to use which
+```sh
+npx codeceptjs run --grep @playwright-only --invert
+```
 
-- **Lightpanda**: fastest start and smallest memory footprint. Functional tests that never need a screenshot.
-- **Obscura**: lightweight like Lightpanda, but renders, so screenshots and failure screenshots work.
-- **Kitesurf**: as many parallel browsers as you have workers, with nothing running on your machine.
-- **Stay on Playwright** for visual checks, iframes, multiple tabs, drag-and-drop, network mocking, and Firefox or WebKit.
+To see which `I.*` actions the configured engine supports:
 
-## Install
+```sh
+npx codeceptjs list
+```
 
-Follow the official instructions, then put the binary on `PATH`:
+## Obscura
 
-- **Lightpanda**: [lightpanda.io/docs/open-source/installation](https://lightpanda.io/docs/open-source/installation)
-- **Obscura**: [github.com/h4ckf0r0day/obscura](https://github.com/h4ckf0r0day/obscura#installation)
-- **Kitesurf**: [Cloudflare Browser Run](https://developers.cloudflare.com/browser-run/), then export `CF_ACCOUNT_ID` and `CF_API_TOKEN`
+[Obscura](https://github.com/h4ckf0r0day/obscura) is a lightweight open-source browser with a real V8 engine and its own rendering engine, distributed as a single binary for Linux, macOS and Windows. Unlike Lightpanda it renders: layout, visibility checks, screenshots and the `screencast` plugin work.
 
-## Configure
+Limitations:
 
-Pick the engine with an environment variable, so one config serves every engine and Playwright stays the default:
+- Its CSS engine is new: some computed styles differ from Chromium, so `grabCssPropertyFrom` and `seeCssPropertiesOnElements` can disagree with Playwright.
+- `click` is always dispatched as a DOM event, not a mouse event at coordinates.
+- `-no-render` builds have no layout: no visibility checks and no screenshots.
+
+### Setup
+
+Install Obscura following the [official instructions](https://github.com/h4ckf0r0day/obscura#installation) and put `obscura` on `PATH`. Then enable the helper:
 
 ```js
 // codecept.conf.js
-const url = 'http://localhost:3000'
-
-const engines = {
-  playwright: { Playwright: { url, browser: 'chromium' } },
-  lightpanda: { Lightpanda: { url } },
-  obscura: { Obscura: { url } },
-  kitesurf: { Kitesurf: { url: 'https://staging.myapp.com' } },
-}
-
 export const config = {
-  tests: './tests/*_test.js',
-  output: './output',
-  helpers: engines[process.env.ENGINE || 'playwright'],
+  helpers: {
+    Obscura: {
+      url: 'http://localhost:3000',
+    },
+  },
 }
 ```
 
-There is nothing to start by hand. Lightpanda and Obscura are launched on a free port before the first test and stopped after the last one, the way Playwright manages Chromium.
+If the binary is not on `PATH`, set `binaryPath` in the config or the `OBSCURA_PATH` environment variable.
 
-If the binary is not on `PATH`, point the helper at it, like Playwright's `executablePath`:
-
-```js
-Lightpanda: { url, binaryPath: './bin/lightpanda' }
-```
-
-Or set it per machine with an environment variable:
+### Usage
 
 ```sh
-LIGHTPANDA_PATH=/opt/lightpanda/lightpanda npx codeceptjs run
+npx codeceptjs run
 ```
 
-The helper checks `binaryPath`, then `LIGHTPANDA_PATH` (`OBSCURA_PATH` for Obscura), then `PATH`. Relative paths resolve from the directory you run `npx codeceptjs` in.
-
-## Run
+The helper starts `obscura serve` on a free port before the first test and stops it after the last one, like Playwright manages Chromium. Each worker gets its own instance:
 
 ```sh
-ENGINE=lightpanda npx codeceptjs run
+npx codeceptjs run-workers 8
 ```
 
-Each worker starts its own browser on its own port:
-
-```sh
-ENGINE=lightpanda npx codeceptjs run-workers 8
-```
-
-See which `I.*` actions the engine supports:
-
-```sh
-ENGINE=lightpanda npx codeceptjs list
-```
-
-## Exclude what an engine cannot do
-
-Most functional tests pass unchanged. These Playwright features do not carry over:
-
-| Feature | Lightpanda | Obscura |
-|---|---|---|
-| `saveScreenshot`, failure screenshots, `screencast` plugin | no | yes |
-| `seeElement`, `waitForVisible` and other visibility checks | yes | yes |
-| `switchTo` (iframes), new tabs, popups | no | no |
-| `dragAndDrop`, `moveCursorTo` | no | no |
-| `clickXY` | no | yes |
-| `scrollTo`, `scrollPageToBottom` | no effect | yes |
-| `grabCssPropertyFrom`, `seeCssPropertiesOnElements` | `display`, `visibility`, `opacity` only | most properties |
-| clipboard actions | no | no |
-| `usePlaywrightTo`, `mockRoute`, downloads | no | no |
-
-Tag the scenarios that need a full browser:
-
-```js
-Scenario('checkout matches the design @visual', ({ I }) => {
-  I.amOnPage('/checkout')
-  I.saveScreenshot('checkout.png')
-})
-```
-
-And skip them on the lightweight engine:
-
-```sh
-ENGINE=lightpanda npx codeceptjs run --grep @visual --invert
-```
-
-## Run in CI
-
-Install the binary in a step before the tests, and point the helper at it with `LIGHTPANDA_PATH` (or `OBSCURA_PATH`) if it is not on `PATH`. Run the lightweight engine as a fast first job and keep Playwright for the full run.
-
-## Connect to a running browser
-
-To use a browser you started yourself (a container, a remote host), set `endpoint`. The helper then only connects and never starts or stops anything:
-
-```js
-Lightpanda: { url, endpoint: 'http://127.0.0.1:9222' }
-```
-
-Start Lightpanda yourself with telemetry turned off:
-
-```sh
-LIGHTPANDA_DISABLE_TELEMETRY=true lightpanda serve --host 127.0.0.1 --port 9222
-```
-
-Start Obscura yourself with access to local apps and files:
+To connect to an Obscura you started yourself, set `endpoint`; the helper then never starts or stops it:
 
 ```sh
 obscura serve --port 9222 --allow-private-network --allow-file-access
 ```
 
-Without `endpoint` and without a binary, the helper attaches to whatever already answers on `http://127.0.0.1:9222`.
+```js
+Obscura: {
+  url: 'http://localhost:3000',
+  endpoint: 'http://127.0.0.1:9222',
+}
+```
 
-## Good to know
+All options: [Obscura helper reference](/helpers/Obscura).
 
-- The helper starts Lightpanda with its telemetry turned off.
-- Lightpanda is AGPL-3.0 and Obscura is Apache-2.0. Both run as separate processes, so neither affects the license of your tests.
-- All options are in the helper references: [Lightpanda](/helpers/Lightpanda), [Obscura](/helpers/Obscura), [Kitesurf](/helpers/Kitesurf).
+## Lightpanda
+
+[Lightpanda](https://lightpanda.io) is an open-source headless browser built from scratch for automation. It runs your app's JavaScript in V8 but never paints anything, which makes it start in milliseconds and use a fraction of Chromium's memory. It computes enough layout for `seeElement`, `waitForVisible` and other visibility checks.
+
+Limitations:
+
+- No screenshots: `saveScreenshot`, failure screenshots and the `screencast` plugin do not work.
+- No scrolling: `scrollTo` and `scrollPageToBottom` have no effect.
+- No coordinate input: `clickXY` does not work.
+- Computed styles cover `display`, `visibility` and `opacity`; other CSS properties are unreliable.
+- Some rich text editors (TinyMCE, Trix, Monaco) never finish loading.
+- Linux and macOS only; on Windows use WSL2.
+- Licensed under AGPL-3.0. It runs as a separate process, so it does not affect the license of your tests.
+
+### Setup
+
+Install Lightpanda following the [official instructions](https://lightpanda.io/docs/open-source/installation) and put `lightpanda` on `PATH`. Then enable the helper:
+
+```js
+// codecept.conf.js
+export const config = {
+  helpers: {
+    Lightpanda: {
+      url: 'http://localhost:3000',
+    },
+  },
+}
+```
+
+If the binary is not on `PATH`, set `binaryPath` in the config or the `LIGHTPANDA_PATH` environment variable.
+
+### Usage
+
+```sh
+npx codeceptjs run
+```
+
+The helper starts `lightpanda serve` on a free port with telemetry turned off, and stops it after the last test. Each worker gets its own instance:
+
+```sh
+npx codeceptjs run-workers 8
+```
+
+To connect to a Lightpanda you started yourself, set `endpoint`; the helper then never starts or stops it:
+
+```sh
+LIGHTPANDA_DISABLE_TELEMETRY=true lightpanda serve --host 127.0.0.1 --port 9222
+```
+
+```js
+Lightpanda: {
+  url: 'http://localhost:3000',
+  endpoint: 'http://127.0.0.1:9222',
+}
+```
+
+All options: [Lightpanda helper reference](/helpers/Lightpanda).
+
+## Kitesurf
+
+[Kitesurf](https://blog.cloudflare.com/kitesurf/) is Cloudflare's browser running on Cloudflare Workers, with a real layout and rendering pipeline. Sessions start in about a second and nothing runs on your machine, so the number of parallel browsers is limited only by how far your suite splits.
+
+Limitations:
+
+- Cloud only, currently a free beta.
+- The browser cannot reach `localhost`: test a deployed environment or expose your app with a tunnel such as `cloudflared tunnel --url http://localhost:3000`.
+- The `screencast` plugin is untested.
+
+### Setup
+
+Enable [Cloudflare Browser Run](https://developers.cloudflare.com/browser-run/) and create an API token with the **Browser Rendering → Edit** permission. Export the credentials:
+
+```sh
+export CF_ACCOUNT_ID=your-account-id
+export CF_API_TOKEN=your-api-token
+```
+
+Then enable the helper:
+
+```js
+// codecept.conf.js
+export const config = {
+  helpers: {
+    Kitesurf: {
+      url: 'https://staging.myapp.com',
+    },
+  },
+}
+```
+
+### Usage
+
+Every worker opens its own cloud session:
+
+```sh
+npx codeceptjs run-workers 16
+```
+
+All options: [Kitesurf helper reference](/helpers/Kitesurf).
