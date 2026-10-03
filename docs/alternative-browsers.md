@@ -26,102 +26,13 @@ All three speak Chrome DevTools Protocol. There is no `npx playwright install` s
 - **Kitesurf**: as many parallel browsers as you have workers, with nothing running on your machine.
 - **Stay on Playwright** for visual checks, iframes, multiple tabs, drag-and-drop, network mocking, and Firefox or WebKit.
 
-## Install Lightpanda
+## Install
 
-Download the binary for your platform. These links always point to the latest release.
+Follow the official instructions, then put the binary on `PATH`:
 
-Linux x64:
-
-```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
-```
-
-Linux ARM64:
-
-```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-aarch64-linux
-```
-
-macOS Apple Silicon:
-
-```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-aarch64-macos
-```
-
-macOS Intel:
-
-```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-macos
-```
-
-Windows has no native build: install it inside WSL2 with the Linux command.
-
-Make it executable and put it on `PATH`:
-
-```sh
-chmod +x lightpanda
-sudo mv lightpanda /usr/local/bin/
-```
-
-Linux builds need glibc, so they do not run on Alpine images.
-
-## Install Obscura
-
-Download and extract the archive for your platform. These links always point to the latest release.
-
-Linux x64:
-
-```sh
-curl -L https://github.com/h4ckf0r0day/obscura/releases/latest/download/obscura-x86_64-linux.tar.gz | tar xz
-```
-
-Linux ARM64:
-
-```sh
-curl -L https://github.com/h4ckf0r0day/obscura/releases/latest/download/obscura-aarch64-linux.tar.gz | tar xz
-```
-
-macOS Apple Silicon:
-
-```sh
-curl -L https://github.com/h4ckf0r0day/obscura/releases/latest/download/obscura-aarch64-macos.tar.gz | tar xz
-```
-
-macOS Intel:
-
-```sh
-curl -L https://github.com/h4ckf0r0day/obscura/releases/latest/download/obscura-x86_64-macos.tar.gz | tar xz
-```
-
-Windows (PowerShell):
-
-```powershell
-Invoke-WebRequest https://github.com/h4ckf0r0day/obscura/releases/latest/download/obscura-x86_64-windows.zip -OutFile obscura.zip
-Expand-Archive obscura.zip -DestinationPath obscura
-```
-
-Put `obscura` (`obscura.exe` on Windows) on `PATH`:
-
-```sh
-sudo mv obscura /usr/local/bin/
-```
-
-Archives ending in `-no-render` skip the rendering engine: no layout, visibility checks or screenshots. Use the default archives above unless you only need DOM checks.
-
-## Set up Kitesurf
-
-Kitesurf needs a Cloudflare account with Browser Run enabled and an API token with the **Browser Rendering → Edit** permission (My Profile → API Tokens → Create Token → Custom token). Export both:
-
-```sh
-export CF_ACCOUNT_ID=your-account-id
-export CF_API_TOKEN=your-api-token
-```
-
-The browser runs in Cloudflare, so it cannot reach `localhost`. Test a deployed environment, or expose your local app with a tunnel:
-
-```sh
-cloudflared tunnel --url http://localhost:3000
-```
+- **Lightpanda**: [lightpanda.io/docs/open-source/installation](https://lightpanda.io/docs/open-source/installation)
+- **Obscura**: [github.com/h4ckf0r0day/obscura](https://github.com/h4ckf0r0day/obscura#installation)
+- **Kitesurf**: [Cloudflare Browser Run](https://developers.cloudflare.com/browser-run/), then export `CF_ACCOUNT_ID` and `CF_API_TOKEN`
 
 ## Configure
 
@@ -212,20 +123,7 @@ ENGINE=lightpanda npx codeceptjs run --grep @visual --invert
 
 ## Run in CI
 
-Use the lightweight engine as a fast first job and keep Playwright for the full run. GitHub Actions:
-
-```yaml
-- name: Install Lightpanda
-  run: |
-    curl -sfL -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
-    chmod +x lightpanda
-
-- name: Run tests on Lightpanda
-  run: npx codeceptjs run --grep @visual --invert
-  env:
-    ENGINE: lightpanda
-    LIGHTPANDA_PATH: ${{ github.workspace }}/lightpanda
-```
+Install the binary in a step before the tests, and point the helper at it with `LIGHTPANDA_PATH` (or `OBSCURA_PATH`) if it is not on `PATH`. Run the lightweight engine as a fast first job and keep Playwright for the full run.
 
 ## Connect to a running browser
 

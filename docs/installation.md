@@ -101,13 +101,7 @@ See [Alternative Browser Engines](/alternative-browsers) for connection modes an
 
 ## Lightpanda (experimental)
 
-Lightpanda is a headless browser built for automation, driven through Chrome DevTools Protocol. It runs your app's JavaScript but paints nothing, so there are no screenshots. Binaries are available for Linux and macOS; on Windows use WSL2.
-
-```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
-chmod +x lightpanda
-sudo mv lightpanda /usr/local/bin/
-```
+Lightpanda is a headless browser built for automation. Install it following the [official instructions](https://lightpanda.io/docs/open-source/installation), then enable the helper:
 
 ```js
 export const config = {
@@ -119,7 +113,7 @@ export const config = {
 }
 ```
 
-See [Alternative Browser Engines](/alternative-browsers) for every platform, running an existing Playwright suite on Lightpanda, and CI setup.
+See [Alternative Browser Engines](/alternative-browsers) for running an existing Playwright suite on Lightpanda.
 
 ## Appium (mobile)
 

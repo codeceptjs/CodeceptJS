@@ -40,25 +40,9 @@ elements works, it only pins the config presets Lightpanda requires and manages 
 
 ## Install
 
-Download a binary from [Lightpanda releases][2].
-CodeceptJS is tested against the latest Lightpanda release. Binaries are available for:
-
-| platform            | binary                     |
-| ------------------- | -------------------------- |
-| Linux x64           | `lightpanda-x86_64-linux`  |
-| Linux ARM64         | `lightpanda-aarch64-linux` |
-| macOS Intel         | `lightpanda-x86_64-macos`  |
-| macOS Apple Silicon | `lightpanda-aarch64-macos` |
-
-There is no native Windows binary; use WSL2. Linux binaries require glibc.
-
-Put `lightpanda` on your `PATH`, or point `binaryPath`/`LIGHTPANDA_PATH` at it. The helper then
-launches and tears it down automatically. For example, on Linux x64:
-
-```sh
-curl -L -o lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
-chmod +x lightpanda
-```
+Follow the [official installation instructions][2],
+then put `lightpanda` on your `PATH`, or point `binaryPath`/`LIGHTPANDA_PATH` at it. The helper
+then launches and tears it down automatically.
 
 Lightpanda sends usage telemetry by default. This helper always spawns it with
 `LIGHTPANDA_DISABLE_TELEMETRY=true`; set that variable yourself when you start the server by hand.
@@ -2312,7 +2296,7 @@ Returns **[Promise][4]<void>**&#x20;
 
 [1]: https://lightpanda.io
 
-[2]: https://github.com/lightpanda-io/browser/releases
+[2]: https://lightpanda.io/docs/open-source/installation
 
 [3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
