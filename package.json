@@ -80,6 +80,7 @@
     "test:unit:webbapi:webDriver:noSeleniumServer": "mocha test/helper/WebDriver.noSeleniumServer_test.js --timeout 10000 --reporter @testomatio/reporter/mocha",
     "test:unit:webbapi:cdpbrowser": "mocha test/helper/CDPBrowser_chrome_test.js --timeout 30000 --reporter @testomatio/reporter/mocha",
     "test:unit:webbapi:obscura": "mocha test/helper/CDPBrowser_obscura_test.js --timeout 30000 --reporter @testomatio/reporter/mocha",
+    "test:unit:webbapi:lightpanda": "mocha test/helper/CDPBrowser_lightpanda_test.js --timeout 30000 --reporter @testomatio/reporter/mocha",
     "test:unit:expect": "mocha test/helper/Expect_test.js --reporter @testomatio/reporter/mocha",
     "test:plugin": "mocha test/plugin/plugin_test.js --reporter @testomatio/reporter/mocha",
     "def": "./runok.cjs def",

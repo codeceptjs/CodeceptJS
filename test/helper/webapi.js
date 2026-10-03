@@ -477,6 +477,7 @@ export function tests() {
   describe('#clickXY', () => {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // coordinate clicks require a real layout engine
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda reports element boxes but paints nothing, so a click dispatched at coordinates is never hit-tested to an element
     })
 
     it('should click at global coordinates', async () => {
@@ -959,6 +960,7 @@ export function tests() {
   describe('#seeInClipboard, #seeClipboardEquals, #grabFromClipboard, #clearClipboard', () => {
     beforeEach(async function () {
       if (isHelper('Obscura')) this.skip() // Obscura's navigator.clipboard is a stub: writeText() resolves but stores nothing, so readText() always returns '' (verified: a write/read round trip inside one evaluate reads back an empty string)
+      if (isHelper('Lightpanda')) this.skip() // navigator.clipboard is unavailable on Lightpanda (verified: the page reports no Clipboard API, even on a loopback origin)
       await I.amOnPage('/form/clipboard')
       await I.clearClipboard()
     })
@@ -1123,11 +1125,11 @@ export function tests() {
       { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor', skip: { Obscura: "the DOM does show the new text and it isn't reverted (confirmed directly), but ProseMirror's own MutationObserver-based DOMObserver reconciliation never updates its internal model (view.state.doc, which the submit handler reads from) from a synthetic mutation on Obscura — tried both a blunt textContent replace and a surgical Range-based delete+insert, neither reaches the model; the same code path updates the model correctly on Chrome" } },
       { name: 'Quill',          page: 'quill',          selector: '#editor' },
       { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate; its beforeinput handler correctly recognizes and preventDefault()s the event but then inserts nothing' } },
-      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' } },
       { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
-      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' } },
       { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
-      { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
+      { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
       { name: 'ACE',            page: 'ace',            selector: '#editor', skipTests: { 'rewrites pre-populated content': { Obscura: "ACE keeps cursor/selection state in its own internal model like Monaco, but reaches it via the browser's real execCommand-driven selection-replace on Chrome; execCommand is a no-op on Obscura, so the fallback's DOM-level select-all doesn't carry the same 'replace selection' semantics into ACE's model and the new text is inserted rather than replacing the old" } } },
       { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor', skip: { CDPBrowser: 'CodeMirror.fromTextArea() adopts and hides the backing <textarea>; its live content lives only in an internal JS model synced to the form via its own getValue() API at submit time, unreachable via DOM mutation or events on the backing element' } },
       { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic TinyMCE architecture) — CDPBrowser has no frame-session support' } },
@@ -2042,6 +2044,7 @@ export function tests() {
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // scrolling requires a real layout engine
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda has no scrollable viewport: scrollX/scrollY stay 0 after scrollTo/scrollIntoView (verified against all four tests in this block)
     })
 
     it('should scroll inside an iframe', async function () {
@@ -2115,6 +2118,7 @@ export function tests() {
 
     it('should grab camelcased css properies', async function () {
       if (isHelper('Obscura')) this.skip() // getComputedStyle(#block).userSelect returns '' on Obscura's CSS engine instead of the ruleset's 'text' (verified directly)
+      if (isHelper('Lightpanda')) this.skip() // getComputedStyle(#block).userSelect returns '' on Lightpanda, which only computes the properties visibility checks need (verified directly)
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'user-select')
       assert.equal(css, 'text')
@@ -2219,6 +2223,7 @@ export function tests() {
     })
 
     it('should check css property for given element', async function () {
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda only computes the properties visibility checks need; font-weight is not resolved, so the first assertion throws before reaching the one this test means to exercise
       try {
         await I.amOnPage('/info')
         await I.seeCssPropertiesOnElements('h4', {
@@ -2240,6 +2245,7 @@ export function tests() {
     it('should check css property for several elements', async function () {
       if (process.env.BROWSER === 'firefox') this.skip()
       if (isHelper('Obscura')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Obscura's CSS engine instead of 'pointer' (verified directly), so the first assertion in this test throws before reaching the one it means to test
+      if (isHelper('Lightpanda')) this.skip() // same root cause as "should check css property for given element" above
 
       try {
         await I.amOnPage('/')
@@ -2265,6 +2271,7 @@ export function tests() {
     })
 
     it('should normalize css color properties for given element', async function () {
+      if (isHelper('Lightpanda')) this.skip() // computed background-color/color are not resolved from the page's rules on Lightpanda (verified: 0 of 1 elements matched)
       await I.amOnPage('/form/css_colors')
       await I.seeCssPropertiesOnElements('#namedColor', {
         'background-color': 'purple',
@@ -2576,6 +2583,7 @@ export function tests() {
   describe('#startScreencast, #stopScreencast', () => {
     beforeEach(function () {
       if (typeof I.startScreencast !== 'function') this.skip() // CDP-family only (CDPBrowser/Obscura/Kitesurf) — Playwright/WebDriver/Puppeteer use their own video APIs
+      if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, there are no frames to record
     })
 
     it('records navigation and a click into a valid APNG', async () => {

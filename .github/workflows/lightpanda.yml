@@ -1,0 +1,63 @@
+name: Lightpanda Helper Tests
+
+on:
+  push:
+    branches:
+      - 4.x
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+  LIGHTPANDA_DISABLE_TELEMETRY: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: npm install
+        run: npm i --force
+      - name: Download Lightpanda
+        run: |
+          mkdir -p ~/lightpanda-bin
+          curl -sfL --retry 3 -o ~/lightpanda-bin/lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
+          chmod +x ~/lightpanda-bin/lightpanda
+          ~/lightpanda-bin/lightpanda version
+      - name: start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 1
+          curl -sf http://127.0.0.1:8000/info > /dev/null
+      - name: run lightpanda helper tests
+        run: |
+          export LIGHTPANDA_PATH="$HOME/lightpanda-bin/lightpanda"
+          npm run test:unit:webbapi:lightpanda
+      - name: run lightpanda acceptance tests
+        run: |
+          export LIGHTPANDA_PATH="$HOME/lightpanda-bin/lightpanda"
+          ./bin/codecept.js run -c test/acceptance/codecept.Lightpanda.js --grep @Lightpanda --debug

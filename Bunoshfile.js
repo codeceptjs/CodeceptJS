@@ -399,6 +399,7 @@ const inheritedHelperDocs = {
     exclude: [/Title/, /Popup/, /Cookie/, /Url/, /^press/, /^refreshPage/, /^resizeWindow/, /Script$/, /cursor/, /Css/, /Tab$/, /^wait/],
   },
   Obscura: { parent: 'CDPBrowser' },
+  Lightpanda: { parent: 'CDPBrowser' },
   Kitesurf: { parent: 'CDPBrowser', excludeConfig: ['endpoint', 'headers'] },
 }
 
@@ -425,11 +426,12 @@ async function docsHelperMarkdown(name, { parent, exclude = [], excludeConfig = 
   const documentation = await import('documentation')
   const buildOptions = { shallow: true, sortOrder: ['alpha'] }
   const doc = await documentation.build([`docs/build/${name}.js`], buildOptions)
+  doc.sort((a, b) => (b.kind === 'class') - (a.kind === 'class'))
   let members = doc[0].members.instance
 
   if (parent) {
     const parentDoc = await documentation.build([`docs/build/${parent}.js`], buildOptions)
-    for (const method of parentDoc[0].members.instance) {
+    for (const method of parentDoc.find(c => c.kind === 'class').members.instance) {
       if (exclude.some(f => method.name.match(f))) continue
       if (members.some(m => m.name === method.name)) continue
       members.push(method)
