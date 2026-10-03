@@ -52,6 +52,12 @@ describe('browser extensions config', () => {
       expect(I.playwrightOptions.userDataDir).to.equal('/tmp/profile')
     })
 
+    it('should apply chromium options when browser is not set explicitly', () => {
+      const I = new Playwright({ url: 'http://localhost', extensions: extension, chromium: { executablePath: '/bin/chrome' } })
+      expect(I.playwrightOptions.executablePath).to.equal('/bin/chrome')
+      expect(I.playwrightOptions.channel).to.be.undefined
+    })
+
     it('should not allow extensions in other browsers', () => {
       expect(() => new Playwright({ url: 'http://localhost', browser: 'firefox', extensions: extension })).to.throw('only in chromium')
     })
