@@ -72,6 +72,7 @@ Type: [object][7]
 *   `manualStart` **[boolean][25]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Playwright"]._startBrowser()`.
 *   `chromium` **[object][7]?** pass additional chromium options
 *   `firefox` **[object][7]?** pass additional firefox options
+*   `initScripts` **([string][6] | [Array][8]<[string][6]> | [Function][19] | [Array][8]<[Function][19]>)?** scripts to run in every page before any of its own scripts: paths to JavaScript files or functions. Use them to mock time or browser APIs, set flags in `localStorage`, add polyfills, etc.
 *   `extensions` **([string][6] | [Array][8]<[string][6]>)?** path (or paths) to unpacked Chromium extensions to load. Chromium only. Launches a persistent context; a temporary `userDataDir` is used unless `chromium.userDataDir` is set. In headless mode the `chromium` channel is used, since the headless shell can't run extensions.
 *   `electron` **[object][7]?** (pass additional electron options
 *   `channel` **any?** (While Playwright can operate against the stock Google Chrome and Microsoft Edge browsers available on the machine. In particular, current Playwright version will support Stable and Beta channels of these browsers. See [Google Chrome & Microsoft Edge][46].

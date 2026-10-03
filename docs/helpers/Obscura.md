@@ -130,6 +130,7 @@ Type: [object][5]
 *   `pollInterval` **[number][7]?** interval in milliseconds between retries while polling for a condition (e.g. page ready state, `waitFor*`). Distinct from `waitForAction`.
 *   `getPageTimeout` **[number][7]?** maximum time in seconds to wait for a page to finish loading after navigation or reload; also used as the CDP command timeout (in ms, x1000).
 *   `waitForNavigation` **[string][3]?** when to consider a navigation finished: `load`, `domcontentloaded`, or `networkidle`. Mirrors the Puppeteer helper's option name. `networkidle` waits for the CDP `networkIdle` lifecycle event, which on a busy page can lag `load` by a second or more — only opt in if the extra wait is actually needed.
+*   `initScripts` **([string][3] | [Array][10]<[string][3]> | [Function][9] | [Array][10]<[Function][9]>)?** scripts to run in every page before any of its own scripts: paths to JavaScript files or functions. Use them to mock time or browser APIs, set flags in `localStorage`, add polyfills, etc.
 
 
 
