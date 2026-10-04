@@ -39,7 +39,7 @@ describe('Decision helper', () => {
   })
 
   it('passes when probability reaches confidence', async () => {
-    decision.fetchImpl = fakeFetch(noul(0.9), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
     const probability = await decision.decide('submit button is present')
 
     expect(probability).to.equal(0.9)
@@ -54,7 +54,7 @@ describe('Decision helper', () => {
   })
 
   it('fails when probability is below confidence', async () => {
-    decision.fetchImpl = fakeFetch(noul(0.4), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.4), calls)
     const err = await decision.decide('cart is empty').catch(e => e)
 
     expect(err).to.be.instanceOf(Error)
@@ -65,14 +65,14 @@ describe('Decision helper', () => {
   it('respects configured confidence', async () => {
     decision = new Decision({ apiKey: 'secret', confidence: 0.95 })
     decision._actingHelper = () => browser
-    decision.fetchImpl = fakeFetch(noul(0.9), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
 
     const err = await decision.decide('cart is empty').catch(e => e)
     expect(err.message).to.include('95%')
   })
 
   it('checks all statements in a single request', async () => {
-    decision.fetchImpl = fakeFetch(noul(0.9, 0.99, 0.8), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9, 0.99, 0.8), calls)
     const probabilities = await decision.decide(['form has fields', 'submit enabled', 'cancel present'])
 
     expect(probabilities).to.eql([0.9, 0.99, 0.8])
@@ -82,7 +82,7 @@ describe('Decision helper', () => {
   })
 
   it('lists only failed statements', async () => {
-    decision.fetchImpl = fakeFetch(noul(0.9, 0.1, 0.2), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9, 0.1, 0.2), calls)
     const err = await decision.decide(['form has fields', 'submit enabled', 'cancel present']).catch(e => e)
 
     expect(err.message).to.include('"submit enabled" (10%)')
@@ -93,7 +93,7 @@ describe('Decision helper', () => {
   it('sends screenshot to visual model', async () => {
     const outputDir = store.outputDir
     store.outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'decision-'))
-    decision.fetchImpl = fakeFetch(noul(0.8), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.8), calls)
     try {
       await decision.decideVisually('sidebar is shown')
       expect(fs.readdirSync(store.outputDir)).to.be.empty
@@ -112,7 +112,7 @@ describe('Decision helper', () => {
 
   it('sends html when aria snapshot is not supported', async () => {
     decision._actingHelper = () => ({ ...browser, grabAriaSnapshot: undefined, grabSource: async () => '<html><body><h1>Checkout</h1></body></html>' })
-    decision.fetchImpl = fakeFetch(noul(0.9), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
     await decision.decide('heading is shown')
 
     expect(calls[0].body.state.aria).to.be.undefined
@@ -122,7 +122,7 @@ describe('Decision helper', () => {
   it('uses typesafe endpoint', async () => {
     decision = new Decision({ apiKey: 'secret', provider: 'typesafe', model: 'jev-latest' })
     decision._actingHelper = () => browser
-    decision.fetchImpl = fakeFetch(noul(0.9), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
     await decision.decide('page is loaded')
 
     expect(calls[0].url).to.equal('https://api.typesafe.ai/v1/systemone')
@@ -130,13 +130,13 @@ describe('Decision helper', () => {
   })
 
   it('reports http errors', async () => {
-    decision.fetchImpl = fakeFetch({}, calls, 402)
+    decision.decisionAI.fetchImpl = fakeFetch({}, calls, 402)
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('402')
   })
 
   it('reports missing answers', async () => {
-    decision.fetchImpl = fakeFetch({}, calls)
+    decision.decisionAI.fetchImpl = fakeFetch({}, calls)
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('returned no answer for "page is loaded"')
   })
@@ -144,7 +144,7 @@ describe('Decision helper', () => {
   it('times out hanging requests', async () => {
     decision = new Decision({ apiKey: 'secret', timeout: 50 })
     decision._actingHelper = () => browser
-    decision.fetchImpl = (url, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted'))))
+    decision.decisionAI.fetchImpl = (url, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted'))))
 
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('did not respond in 50ms')
@@ -152,13 +152,13 @@ describe('Decision helper', () => {
   })
 
   it('marks failed decisions as not retryable', async () => {
-    decision.fetchImpl = fakeFetch(noul(0.1), calls)
+    decision.decisionAI.fetchImpl = fakeFetch(noul(0.1), calls)
     const err = await decision.decide('cart is empty').catch(e => e)
     expect(err.isTerminal).to.equal(true)
   })
 
   it('marks http errors as not retryable', async () => {
-    decision.fetchImpl = fakeFetch({}, calls, 500)
+    decision.decisionAI.fetchImpl = fakeFetch({}, calls, 500)
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.isTerminal).to.equal(true)
   })
@@ -171,7 +171,7 @@ describe('Decision helper', () => {
   })
 
   it('keeps connection errors retryable', async () => {
-    decision.fetchImpl = async () => {
+    decision.decisionAI.fetchImpl = async () => {
       throw new TypeError('fetch failed')
     }
     const err = await decision.decide('page is loaded').catch(e => e)
@@ -190,7 +190,7 @@ describe('Decision helper', () => {
     try {
       decision = new Decision({ provider: 'typesafe' })
       decision._actingHelper = () => browser
-      decision.fetchImpl = fakeFetch(noul(0.9), calls)
+      decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
 
       const err = await decision.decide('page is loaded').catch(e => e)
       expect(err.message).to.include('TYPESAFE_API_KEY')
