@@ -407,17 +407,34 @@ A [decision model](https://openrouter.ai/models?output_modalities=decisions), li
 - **Cost-efficient.** A request costs a fraction of a cent. You can run decision assertions in every CI build.
 - **Reliable.** The answer is a probability, not free text. There is nothing to parse, and you choose how confident the model must be for the step to pass.
 
-Enable the helper next to your browser helper and set `OPENROUTER_API_KEY`:
+Set `OPENROUTER_API_KEY`, configure the decision model in the `ai` section, and enable the helper next to your browser helper:
 
 ```js
-helpers: {
-  Playwright: { url: 'http://localhost' },
-  Decision: {
+ai: {
+  decisionModel: {
     model: 'typesafe/jev-1.13',
     confidence: 0.7,
   },
+},
+helpers: {
+  Playwright: { url: 'http://localhost' },
+  Decision: {},
 }
 ```
+
+`ai.decisionModel` accepts:
+
+| Option | Default | Description |
+|---|---|---|
+| `provider` | `openrouter` | `openrouter` reads `OPENROUTER_API_KEY`, `typesafe` reads `TYPESAFE_API_KEY` |
+| `apiKey` | | API key, overrides the environment variable |
+| `model` | `typesafe/jev-1.13` | model for `I.decide` |
+| `visualModel` | `cloudflare/clef` | model with image input for `I.decideVisually`, OpenRouter only |
+| `confidence` | `0.7` | minimal probability for a statement to pass |
+| `timeout` | `15000` | request timeout in ms |
+| `maxLength` | `12000` | maximal length of ARIA snapshot or HTML sent to the model |
+
+Decisions don't need the `--ai` flag, and `ai.model` is not required.
 
 Then assert statements about the current page:
 

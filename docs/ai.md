@@ -353,7 +353,7 @@ I.decideVisually('sidebar is shown')
 
 It uses a [decision model](https://openrouter.ai/models?output_modalities=decisions) like [Jev](https://openrouter.ai/typesafe/jev-1.13) instead of a chat model. A decision model reads the page and returns the probability that a statement is true. It is fast, costs a fraction of a cent per request, and gives a probability instead of free text, so a step passes or fails on a confidence threshold you set.
 
-The Decision helper calls the decisions API directly and does not use the `ai` config section or the `--ai` flag. See [Decision Assertions](/assertions#decision-assertions) for setup and usage.
+Configure it in `ai.decisionModel`. Decisions call the decisions API directly, so they don't need `ai.model` or the `--ai` flag. See [Decision Assertions](/assertions#decision-assertions) for setup and usage.
 
 ## Advanced Configuration
 

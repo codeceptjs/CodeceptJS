@@ -4,6 +4,12 @@ import os from 'os'
 import path from 'path'
 import Decision from '../../../lib/helper/Decision.js'
 import store from '../../../lib/store.js'
+import Config from '../../../lib/config.js'
+
+function createDecision(decisionModel) {
+  Config.create({ ai: { decisionModel } })
+  return new Decision({})
+}
 
 function fakeFetch(answers, calls, status = 200) {
   return async (url, options) => {
@@ -32,9 +38,11 @@ describe('Decision helper', () => {
   let decision
   let calls
 
+  afterEach(() => Config.reset())
+
   beforeEach(() => {
     calls = []
-    decision = new Decision({ apiKey: 'secret' })
+    decision = createDecision({ apiKey: 'secret' })
     decision._actingHelper = () => browser
   })
 
@@ -63,7 +71,7 @@ describe('Decision helper', () => {
   })
 
   it('respects configured confidence', async () => {
-    decision = new Decision({ apiKey: 'secret', confidence: 0.95 })
+    decision = createDecision({ apiKey: 'secret', confidence: 0.95 })
     decision._actingHelper = () => browser
     decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
 
@@ -120,7 +128,7 @@ describe('Decision helper', () => {
   })
 
   it('uses typesafe endpoint', async () => {
-    decision = new Decision({ apiKey: 'secret', provider: 'typesafe', model: 'jev-latest' })
+    decision = createDecision({ apiKey: 'secret', provider: 'typesafe', model: 'jev-latest' })
     decision._actingHelper = () => browser
     decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
     await decision.decide('page is loaded')
@@ -142,7 +150,7 @@ describe('Decision helper', () => {
   })
 
   it('times out hanging requests', async () => {
-    decision = new Decision({ apiKey: 'secret', timeout: 50 })
+    decision = createDecision({ apiKey: 'secret', timeout: 50 })
     decision._actingHelper = () => browser
     decision.decisionAI.fetchImpl = (url, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted'))))
 
@@ -179,16 +187,23 @@ describe('Decision helper', () => {
     expect(err.isTerminal).to.be.undefined
   })
 
+  it('reads config from ai.decisionModel', () => {
+    decision = createDecision({ apiKey: 'secret', model: 'jev-latest', confidence: 0.9 })
+    expect(decision.options.model).to.equal('jev-latest')
+    expect(decision.options.confidence).to.equal(0.9)
+    expect(decision.options.visualModel).to.equal('cloudflare/clef')
+  })
+
   it('validates config', () => {
-    expect(() => new Decision({ apiKey: 'secret', provider: 'unknown' })).to.throw('Unknown decision provider')
-    expect(() => new Decision({ apiKey: 'secret', confidence: 1.5 })).to.throw('between 0 and 1')
+    expect(() => createDecision({ apiKey: 'secret', provider: 'unknown' })).to.throw('Unknown decision provider')
+    expect(() => createDecision({ apiKey: 'secret', confidence: 1.5 })).to.throw('between 0 and 1')
   })
 
   it('requires api key only when deciding', async () => {
     const key = process.env.TYPESAFE_API_KEY
     delete process.env.TYPESAFE_API_KEY
     try {
-      decision = new Decision({ provider: 'typesafe' })
+      decision = createDecision({ provider: 'typesafe' })
       decision._actingHelper = () => browser
       decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
 
