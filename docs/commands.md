@@ -53,6 +53,14 @@ Run test files in shuffled order
 npx codeceptjs run --shuffle
 ```
 
+Rerun only tests that failed in the previous run
+
+```sh
+npx codeceptjs run --last-failed
+```
+
+See [Last Failed](#last-failed) for details.
+
 Run single test in debug mode (see more in [debugging](#Debugging) section)
 
 ```sh
@@ -157,6 +165,9 @@ npx codeceptjs run-workers 3 --by suite
 
 # Pool mode with filtering
 npx codeceptjs run-workers 4 --by pool --grep "@smoke"
+
+# Rerun only tests that failed in the previous run
+npx codeceptjs run-workers 3 --last-failed
 ```
 
 **Test Distribution Strategies:**
@@ -168,6 +179,25 @@ npx codeceptjs run-workers 4 --by pool --grep "@smoke"
 The pool mode provides the best load balancing by maintaining tests in a shared pool and distributing them dynamically as workers become available. This prevents workers from sitting idle and ensures optimal CPU utilization, especially when tests have varying execution times.
 
 See [Parallel Execution](/parallel) documentation for more details.
+
+## Last Failed
+
+Rerun only the tests that failed in the previous run. Works with `run` and `run-workers`, including all `--by` strategies:
+
+```sh
+npx codeceptjs run --last-failed
+npx codeceptjs run-workers 3 --last-failed
+```
+
+Every `run` and `run-workers` writes a report to `result.json` in the output directory (`output` in config). It lists each executed test with its state. `--last-failed` reads this report and runs only the tests whose state is `failed`:
+
+- Skipped and pending tests are not considered failed.
+- Tests are matched by their title, including the Feature title. A renamed test or Feature is not matched.
+- Combined with `--grep`, only failed tests that also match the pattern are run.
+- The report always reflects the most recent run, including a `--last-failed` run. Tests that pass in a rerun drop out of the next `--last-failed` set; tests that did not run (filtered out by `--grep`, sharding, and so on) are not included.
+- If the report does not exist, the command fails with "No previous run found". If the last run had no failures, it prints "No failed tests in the last run" and exits with code 0.
+
+`--last-failed` is different from [run-rerun](#run-rerun), which repeats whole runs to detect flaky tests.
 
 ## Run Rerun <Badge text="Since 3.3.6" type="warning"/>
 
