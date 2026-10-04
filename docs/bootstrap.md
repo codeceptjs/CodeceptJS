@@ -10,6 +10,8 @@ you can use the `bootstrap` and `teardown` config. Use it to start and stop a we
 
 When using the [parallel execution](/parallel) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [bootstrapAll & teardownAll](#bootstrapall-teardownall) for more information.
 
+> To start and stop the application under test, use the [`webServer`](/configuration#web-server) option instead of writing bootstrap code.
+
 
 ### Example: Bootstrap & Teardown
 

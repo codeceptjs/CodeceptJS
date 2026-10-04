@@ -39,6 +39,7 @@ export const config = {
 
 - `bootstrap` / `teardown` — run code before / after the whole run; an async function or a path to a JS module. See [Bootstrap](/bootstrap).
 - `bootstrapAll` / `teardownAll` — run once around a parallel run (before any worker starts / after all finish). See [bootstrapAll / teardownAll](/bootstrap#bootstrapall-teardownall).
+- `webServer` — start the application under test before the run and stop it after. See [Web Server](#web-server).
 
 **Test runner**
 
@@ -88,6 +89,41 @@ require: ['tsx/esm', 'should', './lib/testSetup']
 ```
 
 The config file itself (`codecept.conf.ts`) and helpers are transpiled automatically — only test files need the loader. See [TypeScript](/typescript) for the full setup.
+
+## Web Server
+
+`webServer` starts your application before tests run and stops it when they finish, so you don't need a `bootstrap` script for it:
+
+```js
+export const config = {
+  webServer: {
+    command: 'npm run start',
+    url: 'http://localhost:3000',
+    timeout: 60000,
+  },
+  // ...
+}
+```
+
+- `command` — shell command that starts the app.
+- `url` — CodeceptJS sends GET requests here until it gets any HTTP response, then starts the tests.
+- `reuseExistingServer` — if `url` already responds, use that server instead of starting a new one. Defaults to `!process.env.CI`: locally a running dev server is reused, on CI a fresh one is always started. When it is `false` and `url` is already taken, the run fails.
+- `timeout` — milliseconds to wait for `url`. Default `60000`.
+- `cwd` — working directory for `command`, relative to the config file. Default is the config directory.
+- `env` — extra environment variables for `command`.
+
+If the server exits early or doesn't respond within `timeout`, the run fails and prints the last 20 lines of its output. Run with `--debug` to see all of its output.
+
+To start several services, pass an array. They start in order and stop in reverse order:
+
+```js
+webServer: [
+  { command: 'npm run api', url: 'http://localhost:4000/health' },
+  { command: 'npm run start', url: 'http://localhost:3000' },
+],
+```
+
+The server starts once in the main process for `run`, `run-workers`, `run-multiple` and `run-rerun`, before `bootstrapAll`/`bootstrap`, and stops after `teardownAll`/`teardown`. Workers and child processes reuse it. `dry-run`, `list`, `check` and `def` don't start it. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
 
 ## Dynamic configuration
 
