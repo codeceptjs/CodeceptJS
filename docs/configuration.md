@@ -123,7 +123,7 @@ webServer: [
 ],
 ```
 
-The server starts once in the main process for `run`, `run-workers`, `run-multiple` and `run-rerun`, before `bootstrapAll`/`bootstrap`, and stops after `teardownAll`/`teardown`. Workers and child processes reuse it. `dry-run`, `list`, `check` and `def` don't start it. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
+The server starts once in the main process for `run`, `run-workers`, `run-multiple` and `run-rerun`, before `bootstrapAll`/`bootstrap`, and stops after `teardownAll`/`teardown`. Workers and child processes reuse it. `dry-run`, `list`, `check`, `def` and `info` don't start it. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
 
 ## Dynamic configuration
 
