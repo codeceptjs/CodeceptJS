@@ -397,6 +397,55 @@ If two checks failed, the scenario fails with a single aggregated message like:
 expected soft assertions '[expected web application to include "You must accept the terms", expected element (.summary-error) to be visible]' to be empty
 ```
 
+## Decision Assertions
+
+Some checks are hard to express with locators: "checkout form has all required fields", "success message is shown", "sidebar is shown". The [Decision helper](/helpers/Decision) asserts such statements in plain language with a decision model.
+
+A [decision model](https://openrouter.ai/models?output_modalities=decisions), like [Jev](https://openrouter.ai/typesafe/jev-1.13), does not generate text. It reads the page and returns the probability that a statement is true. This makes it a good fit for assertions:
+
+- **Fast.** One request returns in a fraction of a second, so a decision step runs about as fast as a regular browser step.
+- **Cost-efficient.** A request costs a fraction of a cent. You can run decision assertions in every CI build.
+- **Reliable.** The answer is a probability, not free text. There is nothing to parse, and you choose how confident the model must be for the step to pass.
+
+Enable the helper next to your browser helper and set `OPENROUTER_API_KEY`:
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost' },
+  Decision: {
+    model: 'typesafe/jev-1.13',
+    confidence: 0.7,
+  },
+}
+```
+
+Then assert statements about the current page:
+
+```js
+I.decide('top level navigation is available')
+
+I.decide([
+  'checkout form has all required fields',
+  'success message is shown',
+  'submit button enabled',
+  'cancel button present',
+])
+
+I.decideVisually('sidebar is shown')
+```
+
+`I.decide` sends the page URL, title and ARIA snapshot to the model. A statement passes when its probability reaches `confidence`. A list of statements is checked in one request, and every statement must pass. The failure message lists the statements that failed, with their probabilities:
+
+```
+expected page to satisfy "success message is shown" (12%) with confidence of 70%
+```
+
+`I.decideVisually` also sends a screenshot, so it needs a model with image input. It uses `visualModel`, which is [Clef](https://openrouter.ai/cloudflare/clef) by default. Visual decisions are experimental.
+
+A failed decision is not retried by the [retryFailedStep](/plugins/retryFailedStep) plugin: asking again would cost another request and return the same answer. Only connection errors and timeouts are retried.
+
+Use decision assertions for what a page means, and built-in assertions for exact values. `I.see('Total: $42.00')` is still the right check for a price.
+
 ## Choosing an Approach
 
 | You want to check… | Use |
@@ -412,4 +461,5 @@ expected soft assertions '[expected web application to include "You must accept 
 | A matcher the above do not cover | `grab*` + `chai` / `jest` / `node:assert` |
 | A **reusable, project-specific** check | [Custom helper](/custom-helpers) with `see*` method using `codeceptjs/assertions` |
 | Many independent checks in one run | `hopeThat` from `codeceptjs/effects` |
+| A statement that is hard to express with locators | [Decision helper](#decision-assertions) — `I.decide`, `I.decideVisually` |
 | Hiding values from logs | `secret()` |

@@ -165,6 +165,21 @@ After a failed run, the agent reads every trace under `output/`, clusters failur
 
 If the fix held, the PR goes green. If it didn't, every edit is rolled back with `git checkout` and the report says which patterns the agent couldn't safely handle. No half-applied fixes left behind, no `retries: 3` masking the problem.
 
+## Assertions in plain language
+
+Some outcomes are hard to pin to a locator: "checkout form has all required fields", "success message is shown". Instead of building a fragile chain of `see*` checks, the agent can write the expected outcome as a statement with the [Decision helper](/assertions#decision-assertions):
+
+```js
+I.decide([
+  'order summary lists the purchased items',
+  'success message is shown',
+])
+```
+
+The agent runs the statement on the live page like any other command and keeps it only if it passes. The test then checks it on every run.
+
+Decision models like [Jev](https://openrouter.ai/typesafe/jev-1.13) are built for this. They answer in a fraction of a second, cost a fraction of a cent per request, and return a probability instead of free text. That makes them fast and cheap enough to run on every CI build, and predictable enough to keep in a test.
+
 ## Skills bundle
 
 Skills teach the agent best practices for using CodeceptJS. Plug them in when you develop tests with agents, and update them regularly to ensure you use CodeceptJS in the most effective way.
