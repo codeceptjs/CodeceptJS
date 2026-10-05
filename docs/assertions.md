@@ -459,6 +459,21 @@ expected page to satisfy "success message is shown" (12%) with confidence of 70%
 
 `I.decideVisually` also sends a screenshot, so it needs a model with image input. It uses `visualModel`, which is [Clef](https://openrouter.ai/cloudflare/clef) by default. Visual decisions are experimental.
 
+To turn decisions off without removing the helper, set its `mode`:
+
+| Mode | Behavior |
+|---|---|
+| `assert` | default, fails the step when a statement is not confirmed |
+| `report` | requests the model but never fails, even on API errors; results and errors are added to the step as a comment |
+| `skip` | does not request the model, every decision passes |
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost' },
+  Decision: { mode: process.env.CI ? 'assert' : 'skip' },
+}
+```
+
 A failed decision is not retried by the [retryFailedStep](/plugins/retryFailedStep) plugin: asking again would cost another request and return the same answer. Only connection errors and timeouts are retried.
 
 Use decision assertions for what a page means, and built-in assertions for exact values. `I.see('Total: $42.00')` is still the right check for a price.

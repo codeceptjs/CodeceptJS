@@ -6,9 +6,9 @@ import Decision from '../../../lib/helper/Decision.js'
 import store from '../../../lib/store.js'
 import Config from '../../../lib/config.js'
 
-function createDecision(decisionModel) {
+function createDecision(decisionModel, config = {}) {
   Config.create({ ai: { decisionModel } })
-  return new Decision({})
+  return new Decision(config)
 }
 
 function fakeFetch(answers, calls, status = 200) {
@@ -159,6 +159,20 @@ describe('Decision helper', () => {
     expect(err.isTerminal).to.be.undefined
   })
 
+  it('times out stalled response body', async () => {
+    decision = createDecision({ apiKey: 'secret', timeout: 50 })
+    decision._actingHelper = () => browser
+    decision.decisionAI.fetchImpl = async (url, { signal }) => ({
+      ok: true,
+      status: 200,
+      json: () => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted')))),
+    })
+
+    const err = await decision.decide('page is loaded').catch(e => e)
+    expect(err.message).to.include('did not respond in 50ms')
+    expect(err.isTerminal).to.be.undefined
+  })
+
   it('marks failed decisions as not retryable', async () => {
     decision.decisionAI.fetchImpl = fakeFetch(noul(0.1), calls)
     const err = await decision.decide('cart is empty').catch(e => e)
@@ -213,5 +227,49 @@ describe('Decision helper', () => {
     } finally {
       if (key) process.env.TYPESAFE_API_KEY = key
     }
+  })
+
+  describe('mode', () => {
+    afterEach(() => {
+      store.currentStep = null
+    })
+
+    it('skips decisions without requests', async () => {
+      decision = createDecision({}, { mode: 'skip' })
+      decision.decisionAI.fetchImpl = fakeFetch(noul(0.1), calls)
+      store.currentStep = { comment: '' }
+
+      expect(await decision.decide('cart is empty')).to.be.undefined
+      expect(await decision.decideVisually('sidebar is shown')).to.be.undefined
+      expect(calls).to.be.empty
+      expect(store.currentStep.comment).to.include('skipped')
+    })
+
+    it('reports results in step comment without failing', async () => {
+      decision = createDecision({ apiKey: 'secret' }, { mode: 'report' })
+      decision._actingHelper = () => browser
+      decision.decisionAI.fetchImpl = fakeFetch(noul(0.9, 0.1), calls)
+      store.currentStep = { comment: '' }
+
+      const probabilities = await decision.decide(['form has fields', 'submit enabled'])
+      expect(probabilities).to.eql([0.9, 0.1])
+      expect(calls).to.have.length(1)
+      expect(store.currentStep.comment).to.include('✔ form has fields (90%)')
+      expect(store.currentStep.comment).to.include('✖ submit enabled (10%)')
+    })
+
+    it('reports api errors in step comment without failing', async () => {
+      decision = createDecision({ apiKey: 'secret' }, { mode: 'report' })
+      decision._actingHelper = () => browser
+      decision.decisionAI.fetchImpl = fakeFetch({}, calls, 500)
+      store.currentStep = { comment: '' }
+
+      expect(await decision.decide('page is loaded')).to.be.undefined
+      expect(store.currentStep.comment).to.include('responded with 500')
+    })
+
+    it('validates mode', () => {
+      expect(() => createDecision({}, { mode: 'soft' })).to.throw('Unknown Decision helper mode')
+    })
   })
 })
