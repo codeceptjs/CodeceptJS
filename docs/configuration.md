@@ -99,15 +99,15 @@ export const config = {
   webServer: {
     command: 'npm run start',
     url: 'http://localhost:3000',
-    timeout: 60000,
+    enabled: !process.env.CI,
   },
   // ...
 }
 ```
 
 - `command` — shell command that starts the app.
-- `url` — CodeceptJS sends GET requests here until it gets any HTTP response, then starts the tests.
-- `reuseExistingServer` — if `url` already responds, use that server instead of starting a new one. Defaults to `!process.env.CI`: locally a running dev server is reused, on CI a fresh one is always started. When it is `false` and `url` is already taken, the run fails.
+- `url` — CodeceptJS sends GET requests here until it gets any HTTP response, then starts the tests. If `url` already responds before `command` is run, the running server is reused.
+- `enabled` — set to `false` to skip starting the server, e.g. `enabled: !process.env.CI` when CI provides its own. Default `true`.
 - `timeout` — milliseconds to wait for `url`. Default `60000`.
 - `cwd` — working directory for `command`, relative to the config file. Default is the config directory.
 - `env` — extra environment variables for `command`.

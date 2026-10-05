@@ -86,8 +86,8 @@ declare namespace CodeceptJS {
     command: string
     /** URL polled with GET until it responds; any HTTP status counts as ready */
     url: string
-    /** Skip starting the command when `url` already responds. Defaults to `!process.env.CI` */
-    reuseExistingServer?: boolean
+    /** Set to `false` to skip starting the server. Defaults to `true` */
+    enabled?: boolean
     /** Milliseconds to wait for `url` to respond. Defaults to `60000` */
     timeout?: number
     /** Working directory for the command, relative to the config directory */

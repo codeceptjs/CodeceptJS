@@ -90,7 +90,6 @@ describe('CodeceptJS webServer', function () {
     try {
       const { err, stdout } = await run('run', {
         WEB_SERVER_PORT: port,
-        WEB_SERVER_REUSE: 'true',
         WEB_SERVER_COMMAND: 'node -e "process.exit(1)"',
       })
       assert(!err, stdout)
@@ -102,18 +101,12 @@ describe('CodeceptJS webServer', function () {
     }
   })
 
-  it('should fail when url is in use and reuse is disabled', async () => {
+  it('should not start server when disabled', async () => {
     const port = 18633
-    const server = http.createServer((req, res) => res.end('web server is up'))
-    await new Promise(resolve => server.listen(port, '127.0.0.1', resolve))
-    try {
-      const { err, stdout } = await run('run', { WEB_SERVER_PORT: port })
-      assert(err, stdout)
-      assert(stdout.includes('is already in use'), stdout)
-      assert.equal(pids().length, 0)
-    } finally {
-      server.close()
-    }
+    const { err, stdout } = await run('run', { WEB_SERVER_PORT: port, WEB_SERVER_ENABLED: 'false' })
+    assert(!stdout.includes('Starting web server'), stdout)
+    assert(!stdout.includes('Reusing web server'), stdout)
+    assert.equal(pids().length, 0)
   })
 
   it('should fail on timeout with tail of server output and kill it', async () => {

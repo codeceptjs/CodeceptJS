@@ -9,7 +9,7 @@ export const config = {
   webServer: {
     command: process.env.WEB_SERVER_COMMAND || 'node server.js',
     url: `http://127.0.0.1:${port}`,
-    reuseExistingServer: process.env.WEB_SERVER_REUSE === 'true',
+    enabled: process.env.WEB_SERVER_ENABLED !== 'false',
     timeout: Number(process.env.WEB_SERVER_TIMEOUT || 10000),
   },
   multiple: {
