@@ -123,7 +123,7 @@ webServer: [
 ],
 ```
 
-The server starts once in the main process for `run`, `run-workers`, `run-multiple` and `run-rerun`, before `bootstrapAll`/`bootstrap`, and stops after `teardownAll`/`teardown`. Workers and child processes reuse it. `dry-run`, `list`, `check`, `def` and `info` don't start it. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
+The server is started as part of bootstrap, right before the `bootstrap` hook (or `bootstrapAll` for `run-workers` and `run-multiple`), and stopped after `teardown` (`teardownAll`). It starts once in the main process; workers and child processes reuse it. The interactive `shell` starts it too, `dry-run` and `check` only with `--bootstrap`. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
 
 ## Dynamic configuration
 
