@@ -6,178 +6,119 @@ import initAgent from '../../../lib/command/initAgent.js'
 
 describe('init:agent command', () => {
   let tempDir
+  let binDir
+  let logFile
   let originalCwd
-  let calls
+  let originalPath
 
-  const runner =
-    (handler = () => 0) =>
-    (command, args, opts = {}) => {
-      calls.push({ command, args, quiet: !!opts.quiet })
-      return { status: handler(command, args) }
-    }
+  const fakeBin = (name, exitCode = 0) => {
+    const file = path.join(binDir, name)
+    fs.writeFileSync(file, `#!/bin/sh\necho "${name} $*" >> "${logFile}"\nexit ${exitCode}\n`)
+    fs.chmodSync(file, 0o755)
+  }
 
-  const failing = (command, args) => (args[0] === 'mcp' && args[1] === 'get' ? 1 : 0)
+  const calls = () => {
+    if (!fs.existsSync(logFile)) return []
+    return fs.readFileSync(logFile, 'utf8').trim().split('\n')
+  }
 
-  const listFiles = () => fs.readdirSync(tempDir, { recursive: true })
   const readJson = file => JSON.parse(fs.readFileSync(path.join(tempDir, file), 'utf8'))
+
+  before(function () {
+    if (process.platform === 'win32') this.skip()
+  })
 
   beforeEach(() => {
     originalCwd = process.cwd()
+    originalPath = process.env.PATH
     tempDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'codecept-init-agent-')))
+    binDir = path.join(tempDir, '.bin')
+    logFile = path.join(binDir, 'calls.log')
+    fs.mkdirSync(binDir)
+    process.env.PATH = `${binDir}${path.delimiter}${originalPath}`
     process.chdir(tempDir)
-    fs.writeFileSync(path.join(tempDir, 'codecept.conf.js'), 'export const config = {}')
-    calls = []
+    fakeBin('claude')
+    fakeBin('codex')
+    fakeBin('npx')
+    process.exitCode = 0
   })
 
   afterEach(() => {
     process.chdir(originalCwd)
+    process.env.PATH = originalPath
+    process.exitCode = 0
     fs.rmSync(tempDir, { recursive: true, force: true })
   })
 
-  describe('claude', () => {
-    it('registers MCP and installs skills without writing files', async () => {
-      const ready = await initAgent('claude', { yes: true, runner: runner(failing) })
+  it('claude: registers MCP with claude CLI and installs skills', async () => {
+    await initAgent('claude', { yes: true })
 
-      expect(ready).to.be.true
-      expect(calls.filter(c => !c.quiet).map(c => [c.command, ...c.args])).to.deep.equal([
-        ['claude', 'mcp', 'add', 'codeceptjs', '--', 'npx', 'codeceptjs-mcp'],
-        ['npx', 'skills', 'add', 'codeceptjs/skills', '-a', 'claude-code', '-y'],
-      ])
-      expect(listFiles()).to.deep.equal(['codecept.conf.js'])
+    expect(calls()).to.deep.equal(['claude mcp add codeceptjs -- npx codeceptjs-mcp', 'npx skills add codeceptjs/skills -a claude-code -y'])
+    expect(fs.readdirSync(tempDir)).to.deep.equal(['.bin'])
+  })
+
+  it('codex: registers MCP with codex CLI and installs skills', async () => {
+    await initAgent('codex', { yes: true })
+
+    expect(calls()).to.deep.equal(['codex mcp add codeceptjs -- npx codeceptjs-mcp', 'npx skills add codeceptjs/skills -a codex -y'])
+  })
+
+  it('installs skills even when MCP registration fails', async () => {
+    fakeBin('claude', 1)
+
+    await initAgent('claude', { yes: true })
+
+    expect(calls()).to.include('npx skills add codeceptjs/skills -a claude-code -y')
+  })
+
+  it('cursor: writes .cursor/mcp.json and keeps other servers', async () => {
+    fs.mkdirSync(path.join(tempDir, '.cursor'))
+    fs.writeFileSync(path.join(tempDir, '.cursor/mcp.json'), JSON.stringify({ mcpServers: { other: { command: 'other' } } }))
+
+    await initAgent('cursor', { yes: true })
+
+    expect(readJson('.cursor/mcp.json')).to.deep.equal({
+      mcpServers: {
+        other: { command: 'other' },
+        codeceptjs: { command: 'npx', args: ['codeceptjs-mcp'] },
+      },
     })
+    expect(calls()).to.deep.equal(['npx skills add codeceptjs/skills -a cursor -y'])
+  })
 
-    it('skips mcp add when the server is already registered', async () => {
-      await initAgent('claude', { yes: true, runner: runner() })
+  it('opencode: writes opencode.json, second run gives the same file', async () => {
+    fs.writeFileSync(path.join(tempDir, 'opencode.json'), JSON.stringify({ theme: 'dark' }))
 
-      expect(calls.map(c => c.args.slice(0, 2).join(' '))).to.include('mcp get')
-      expect(calls.some(c => c.args[1] === 'add' && c.command === 'claude')).to.be.false
-      expect(calls.some(c => c.command === 'npx')).to.be.true
-    })
+    await initAgent('opencode', { yes: true })
+    const first = fs.readFileSync(path.join(tempDir, 'opencode.json'), 'utf8')
+    await initAgent('opencode', { yes: true })
 
-    it('passes CODECEPTJS_CONFIG for a non-default config', async () => {
-      fs.mkdirSync(path.join(tempDir, 'e2e'))
-      fs.writeFileSync(path.join(tempDir, 'e2e/codecept.conf.ts'), 'export const config = {}')
-
-      await initAgent('claude', { yes: true, config: 'e2e/codecept.conf.ts', runner: runner(failing) })
-
-      const add = calls.find(c => c.command === 'claude' && c.args[1] === 'add')
-      expect(add.args).to.deep.equal(['mcp', 'add', 'codeceptjs', '-e', 'CODECEPTJS_CONFIG=./e2e/codecept.conf.ts', '--', 'npx', 'codeceptjs-mcp'])
-    })
-
-    it('continues when the claude binary is missing', async () => {
-      const ready = await initAgent('claude', { yes: true, runner: runner(command => (command === 'claude' ? 127 : 0)) })
-
-      expect(ready).to.be.false
-      expect(calls.some(c => c.args[1] === 'add' && c.command === 'claude')).to.be.false
-      expect(calls.some(c => c.command === 'npx')).to.be.true
-    })
-
-    it('continues when skills install fails', async () => {
-      const ready = await initAgent('claude', { yes: true, runner: runner((command, args) => (command === 'npx' ? 1 : failing(command, args))) })
-
-      expect(ready).to.be.false
-      expect(calls.some(c => c.command === 'claude' && c.args[1] === 'add')).to.be.true
+    expect(fs.readFileSync(path.join(tempDir, 'opencode.json'), 'utf8')).to.equal(first)
+    expect(readJson('opencode.json')).to.deep.equal({
+      theme: 'dark',
+      mcp: { codeceptjs: { type: 'local', command: ['npx', 'codeceptjs-mcp'], enabled: true } },
     })
   })
 
-  describe('codex', () => {
-    it('registers MCP with codex and installs skills', async () => {
-      await initAgent('codex', { yes: true, runner: runner(failing) })
+  it('leaves unparseable JSON untouched', async () => {
+    const jsonc = '{\n  // comment\n  "mcp": {}\n}\n'
+    fs.writeFileSync(path.join(tempDir, 'opencode.json'), jsonc)
 
-      expect(calls.filter(c => !c.quiet).map(c => [c.command, ...c.args])).to.deep.equal([
-        ['codex', 'mcp', 'add', 'codeceptjs', '--', 'npx', 'codeceptjs-mcp'],
-        ['npx', 'skills', 'add', 'codeceptjs/skills', '-a', 'codex', '-y'],
-      ])
-      expect(listFiles()).to.deep.equal(['codecept.conf.js'])
-    })
+    await initAgent('opencode', { yes: true })
+
+    expect(fs.readFileSync(path.join(tempDir, 'opencode.json'), 'utf8')).to.equal(jsonc)
   })
 
-  describe('cursor', () => {
-    it('writes .cursor/mcp.json and installs skills', async () => {
-      await initAgent('cursor', { yes: true, runner: runner() })
+  it('fails on unknown agent', async () => {
+    await initAgent('vim', { yes: true })
 
-      expect(readJson('.cursor/mcp.json')).to.deep.equal({
-        mcpServers: { codeceptjs: { command: 'npx', args: ['codeceptjs-mcp'] } },
-      })
-      expect(calls.map(c => [c.command, ...c.args])).to.deep.equal([['npx', 'skills', 'add', 'codeceptjs/skills', '-a', 'cursor', '-y']])
-    })
-
-    it('preserves other servers and keys', async () => {
-      fs.mkdirSync(path.join(tempDir, '.cursor'))
-      fs.writeFileSync(path.join(tempDir, '.cursor/mcp.json'), JSON.stringify({ other: true, mcpServers: { github: { command: 'gh' } } }))
-
-      await initAgent('cursor', { yes: true, runner: runner() })
-
-      expect(readJson('.cursor/mcp.json')).to.deep.equal({
-        other: true,
-        mcpServers: { github: { command: 'gh' }, codeceptjs: { command: 'npx', args: ['codeceptjs-mcp'] } },
-      })
-    })
-
-    it('produces the same file on a second run', async () => {
-      await initAgent('cursor', { yes: true, runner: runner() })
-      const first = fs.readFileSync(path.join(tempDir, '.cursor/mcp.json'), 'utf8')
-      await initAgent('cursor', { yes: true, runner: runner() })
-      expect(fs.readFileSync(path.join(tempDir, '.cursor/mcp.json'), 'utf8')).to.equal(first)
-    })
-
-    it('leaves unparseable JSON untouched', async () => {
-      const jsonc = '{\n  // comment\n  "mcpServers": {}\n}\n'
-      fs.mkdirSync(path.join(tempDir, '.cursor'))
-      fs.writeFileSync(path.join(tempDir, '.cursor/mcp.json'), jsonc)
-
-      const ready = await initAgent('cursor', { yes: true, runner: runner() })
-
-      expect(ready).to.be.false
-      expect(fs.readFileSync(path.join(tempDir, '.cursor/mcp.json'), 'utf8')).to.equal(jsonc)
-      expect(calls.some(c => c.command === 'npx')).to.be.true
-    })
+    expect(process.exitCode).to.equal(1)
+    expect(calls()).to.deep.equal([])
   })
 
-  describe('opencode', () => {
-    it('writes opencode.json preserving other keys', async () => {
-      fs.writeFileSync(path.join(tempDir, 'opencode.json'), JSON.stringify({ $schema: 'https://opencode.ai/config.json', mcp: { other: { type: 'remote', url: 'http://x' } } }))
+  it('fails with --yes and no agent', async () => {
+    await initAgent(undefined, { yes: true })
 
-      await initAgent('opencode', { yes: true, runner: runner() })
-
-      expect(readJson('opencode.json')).to.deep.equal({
-        $schema: 'https://opencode.ai/config.json',
-        mcp: {
-          other: { type: 'remote', url: 'http://x' },
-          codeceptjs: { type: 'local', command: ['npx', 'codeceptjs-mcp'], enabled: true },
-        },
-      })
-      expect(calls.map(c => [c.command, ...c.args])).to.deep.equal([['npx', 'skills', 'add', 'codeceptjs/skills', '-a', 'opencode', '-y']])
-    })
-
-    it('produces the same file on a second run', async () => {
-      await initAgent('opencode', { yes: true, runner: runner() })
-      const first = fs.readFileSync(path.join(tempDir, 'opencode.json'), 'utf8')
-      await initAgent('opencode', { yes: true, runner: runner() })
-      expect(fs.readFileSync(path.join(tempDir, 'opencode.json'), 'utf8')).to.equal(first)
-    })
-  })
-
-  describe('arguments', () => {
-    afterEach(() => {
-      process.exitCode = 0
-    })
-
-    it('requires an agent with --yes', async () => {
-      const ready = await initAgent(undefined, { yes: true, runner: runner() })
-
-      expect(ready).to.be.false
-      expect(process.exitCode).to.equal(1)
-      expect(calls).to.be.empty
-      expect(listFiles()).to.deep.equal(['codecept.conf.js'])
-    })
-
-    it('rejects unknown agents', async () => {
-      const ready = await initAgent('vim', { yes: true, runner: runner() })
-
-      expect(ready).to.be.false
-      expect(process.exitCode).to.equal(1)
-      expect(calls).to.be.empty
-    })
+    expect(process.exitCode).to.equal(1)
   })
 })

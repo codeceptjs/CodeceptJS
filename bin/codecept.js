@@ -85,7 +85,6 @@ program
   .command('init:agent [agent]')
   .alias('init-agent')
   .description('Set up CodeceptJS MCP server and skills for a coding agent: claude, codex, cursor, opencode')
-  .option(commandFlags.config.flag, commandFlags.config.description)
   .option('-y, --yes', 'skip prompts, requires [agent]')
   .action(commandHandler('../lib/command/initAgent.js'))
 

@@ -270,7 +270,7 @@ Registers the CodeceptJS MCP server and installs CodeceptJS skills for a coding 
 npx codeceptjs init:agent claude
 ```
 
-Omit the agent to pick it from a list. Use `-c` to point the MCP server to a config other than `./codecept.conf.js`. See [Agentic Testing](/agents).
+Omit the agent to pick it from a list. See [Agentic Testing](/agents).
 
 ## Migrate
 
