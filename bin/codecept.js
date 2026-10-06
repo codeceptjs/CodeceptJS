@@ -109,6 +109,14 @@ program
   .action(commandHandler('../lib/command/list.js'))
 
 program
+  .command('lint [paths...]')
+  .description('Checks tests, page objects and helpers for CodeceptJS anti-patterns')
+  .option(commandFlags.config.flag, commandFlags.config.description)
+  .option('--json', 'print findings as JSON')
+  .option('--hook <agent>', 'run as a coding agent pre-write hook reading the payload from stdin (supported: claude)')
+  .action(commandHandler('../lib/command/lint.js'))
+
+program
   .command('def [path]')
   .description('Generates TypeScript definitions for all I actions.')
   .option(commandFlags.config.flag, commandFlags.config.description)

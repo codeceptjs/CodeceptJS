@@ -55,6 +55,8 @@ codex mcp add codeceptjs -- npx codeceptjs-mcp
 
 See [/mcp](/mcp) for full client setup. Now the agent is ready to run the loop.
 
+Optionally, add a lint hook. Skills tell the agent what not to do; `npx codeceptjs lint --hook claude` enforces it. As a Claude Code `PreToolUse` hook, it blocks an edit that adds a fixed `I.wait(5)`, an un-awaited grabber or a plain-text password, and returns the reason so the agent rewrites the edit. Setup and rules are in [/lint](/lint).
+
 ## The loop
 
 Whether the agent is writing a new test or fixing an old one, it follows the same cycle.

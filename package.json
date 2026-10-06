@@ -101,6 +101,7 @@
     "@modelcontextprotocol/sdk": "^1.26.0",
     "@xmldom/xmldom": "0.9.10",
     "acorn": "8.15.0",
+    "acorn-walk": "8.3.5",
     "ai": "^6.0.43",
     "arrify": "3.0.0",
     "axios": "1.16.1",
