@@ -120,7 +120,7 @@ For automated debugging without modifying test code, use the `pause` plugin. It 
 
 ### Pause on Failure
 
-Automatically enters interactive pause when a step fails:
+Automatically enters interactive pause when a test fails. A step that fails inside `tryTo`, `hopeThat` or `retryTo` does not trigger it while the test keeps passing:
 
 ```bash
 npx codeceptjs run -p pause
