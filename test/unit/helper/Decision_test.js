@@ -13,13 +13,9 @@ function createDecision(decisionModel, config = {}) {
 
 function fakeFetch(answers, calls, status = 200) {
   return async (url, options) => {
-    calls.push({ url, body: JSON.parse(options.body), headers: options.headers })
-    return {
-      ok: status === 200,
-      status,
-      text: async () => 'boom',
-      json: async () => ({ answers }),
-    }
+    calls.push({ url, body: JSON.parse(options.body), headers: new Headers(options.headers) })
+    if (status !== 200) return new Response('boom', { status })
+    return Response.json({ answers })
   }
 }
 
@@ -53,7 +49,7 @@ describe('Decision helper', () => {
     expect(probability).to.equal(0.9)
     expect(calls).to.have.length(1)
     expect(calls[0].url).to.equal('https://openrouter.ai/api/alpha/decisions')
-    expect(calls[0].headers.Authorization).to.equal('Bearer secret')
+    expect(calls[0].headers.get('authorization')).to.equal('Bearer secret')
     expect(calls[0].body.model).to.equal('typesafe/jev-1.13')
     expect(calls[0].body.questions).to.eql({ q0: { type: 'noul', instructions: 'submit button is present' } })
     expect(calls[0].body.state.url).to.equal('http://localhost/checkout')
@@ -146,7 +142,7 @@ describe('Decision helper', () => {
   it('reports missing answers', async () => {
     decision.decisionAI.fetchImpl = fakeFetch({}, calls)
     const err = await decision.decide('page is loaded').catch(e => e)
-    expect(err.message).to.include('returned no answer for "page is loaded"')
+    expect(err.message).to.include('Decision must return exactly one answer for every question')
   })
 
   it('times out hanging requests', async () => {
@@ -162,11 +158,10 @@ describe('Decision helper', () => {
   it('times out stalled response body', async () => {
     decision = createDecision({ apiKey: 'secret', timeout: 50 })
     decision._actingHelper = () => browser
-    decision.decisionAI.fetchImpl = async (url, { signal }) => ({
-      ok: true,
-      status: 200,
-      json: () => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted')))),
-    })
+    decision.decisionAI.fetchImpl = async (url, { signal }) => {
+      const body = new ReadableStream({ start: controller => signal.addEventListener('abort', () => controller.error(new Error('aborted'))) })
+      return new Response(body, { headers: { 'content-type': 'application/json' } })
+    }
 
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('did not respond in 50ms')

@@ -93,15 +93,17 @@
     "publish-beta": "./runok.cjs publish:next-beta-version"
   },
   "dependencies": {
+    "@ai-sdk/typesafe-ai": "^3.0.15",
     "@codeceptjs/configure": "^4.0.0-beta.4",
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "18",
     "@cucumber/gherkin": "38.0.0",
     "@cucumber/messages": "32.3.1",
     "@modelcontextprotocol/sdk": "^1.26.0",
+    "@openrouter/ai-sdk-provider": "^3.1.0",
     "@xmldom/xmldom": "0.9.10",
     "acorn": "8.15.0",
-    "ai": "^6.0.43",
+    "ai": "^7.0.131",
     "arrify": "3.0.0",
     "axios": "1.16.1",
     "chalk": "4.1.2",

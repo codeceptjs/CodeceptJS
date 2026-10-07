@@ -325,7 +325,7 @@ describe('DecisionAI', () => {
     const decisionAI = new DecisionAI({ apiKey: 'secret' })
     decisionAI.fetchImpl = async (url, options) => {
       calls.push({ url, body: JSON.parse(options.body) })
-      return { ok: true, json: async () => ({ answers: { q0: { type: 'noul', noul: 0.9 }, q1: { type: 'noul', noul: 0.2 } } }) }
+      return Response.json({ answers: { q0: { type: 'noul', noul: 0.9 }, q1: { type: 'noul', noul: 0.2 } } })
     }
 
     const probabilities = await decisionAI.decide('typesafe/jev-1.13', { url: 'http://localhost' }, ['form is shown', 'cart is empty'])
