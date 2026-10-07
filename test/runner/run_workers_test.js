@@ -645,6 +645,18 @@ describe('CodeceptJS Workers Runner', function () {
       })
     })
 
+    it('should take serial pattern from --serial option', function (done) {
+      exec(`${serial_run} --serial "parallel one"`, (err, stdout) => {
+        expect(stdout).toContain('1 test (serial)')
+        expect(stdout).toContain('OK  | 6 passed')
+        const events = timeline()
+        expect(events).toHaveLength(12)
+        expect(events.slice(-2)).toEqual(['start parallel one', 'end parallel one'])
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
     it('should not start a serial worker when no serial tests match grep', function (done) {
       exec(`${serial_run} --grep "parallel one"`, (err, stdout) => {
         expect(stdout).not.toContain('(serial)')
