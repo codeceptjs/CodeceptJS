@@ -12,6 +12,5 @@ export const config = {
   },
   lint: {
     rules: { 'raw-browser-in-test': 'off' },
-    ignore: ['legacy_test.js'],
   },
 }

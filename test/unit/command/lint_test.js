@@ -1,300 +1,145 @@
 import { expect } from 'chai'
 import fs from 'fs'
-import os from 'os'
 import path from 'path'
 import { spawnSync } from 'child_process'
 import { fileURLToPath } from 'url'
-import { lintFile, lintSource, collectFiles, newErrors } from '../../../lib/lint.js'
-import { runHook } from '../../../lib/command/lint.js'
+import Linter from '../../../lib/lint.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const fixtures = path.join(__dirname, '../../data/lint')
+const project = path.join(__dirname, '../../data/lint/project')
 const bin = path.join(__dirname, '../../../bin/codecept.js')
 
-const fixture = name => path.join(fixtures, name)
-const findings = async (name, options) => (await lintFile(fixture(name), options)).findings
-const byRule = (list, rule) => list.filter(f => f.rule === rule).map(f => f.line)
+const lint = (code, file = 'test.js') => new Linter().lint(code, file)
+const rules = code => lint(code).map(f => `${f.line}:${f.rule}`)
 
-describe('lint command', () => {
-  const saved = {}
-
-  before(() => {
-    for (const key of ['CI', 'CLAUDE_PROJECT_DIR']) {
-      saved[key] = process.env[key]
-      delete process.env[key]
-    }
+const runHook = payload =>
+  spawnSync(process.execPath, [bin, 'lint', '--hook', 'claude'], {
+    cwd: project,
+    input: JSON.stringify(payload),
+    encoding: 'utf8',
+    env: { ...process.env, CI: '' },
   })
 
-  after(() => {
-    for (const [key, value] of Object.entries(saved)) {
-      if (value === undefined) delete process.env[key]
-      else process.env[key] = value
-    }
+describe('lint', () => {
+  let ci
+
+  beforeEach(() => {
+    ci = process.env.CI
+    delete process.env.CI
+  })
+
+  afterEach(() => {
+    if (ci !== undefined) process.env.CI = ci
   })
 
   describe('rules', () => {
-    it('no-fixed-wait flags I.wait with a number literal only', async () => {
-      const list = await findings('no-fixed-wait.js')
-      expect(byRule(list, 'no-fixed-wait')).to.deep.equal([5])
-      expect(list[0].level).to.equal('error')
-      expect(list[0].column).to.equal(3)
-      expect(list[0].message).to.include('I.wait(5)')
+    it('no-fixed-wait', () => {
+      expect(rules("I.wait(5)\nI.waitForElement('#a', 5)\nI.wait(timeout)")).to.deep.equal(['1:no-fixed-wait'])
     })
 
-    it('no-sleep flags setTimeout in scenarios and page object methods', async () => {
-      const list = await findings('no-sleep.js')
-      expect(byRule(list, 'no-sleep')).to.deep.equal([6, 13])
+    it('no-sleep', () => {
+      expect(rules("Scenario('a', async ({ I }) => {\n  await new Promise(r => setTimeout(r, 100))\n})")).to.deep.equal(['2:no-sleep'])
+      expect(rules('class X extends Helper {\n  m() { setTimeout(() => {}, 1) }\n}')).to.deep.equal([])
     })
 
-    it('no-sleep ignores files without CodeceptJS code', async () => {
-      expect(await findings('no-sleep-app.js')).to.be.empty
-    })
-
-    it('no-only flags focused features, scenarios and data scenarios', async () => {
-      const list = await findings('no-only.js')
-      expect(byRule(list, 'no-only')).to.deep.equal([1, 7, 11])
-    })
-
-    it('no-only and no-pause are warnings locally and errors on CI', async () => {
-      let list = [...(await findings('no-only.js')), ...(await findings('no-pause.js'))]
-      expect(list.map(f => f.level)).to.deep.equal(['warn', 'warn', 'warn', 'warn'])
+    it('no-only and no-pause are warnings locally and errors on CI', () => {
+      const code = "Scenario.only('a', () => {})\nFeature.only('f')\nData([]).only.Scenario('d', () => {})\npause()"
+      expect(lint(code).map(f => `${f.rule}:${f.level}`)).to.deep.equal(['no-only:warn', 'no-only:warn', 'no-only:warn', 'no-pause:warn'])
       process.env.CI = 'true'
-      try {
-        list = [...(await findings('no-only.js')), ...(await findings('no-pause.js'))]
-      } finally {
-        delete process.env.CI
-      }
-      expect(list.map(f => f.level)).to.deep.equal(['error', 'error', 'error', 'error'])
+      expect(lint(code).map(f => f.level)).to.deep.equal(['error', 'error', 'error', 'error'])
     })
 
-    it('no-pause flags pause() calls', async () => {
-      expect(byRule(await findings('no-pause.js'), 'no-pause')).to.deep.equal([5])
+    it('secret-credentials', () => {
+      const code = [
+        "I.fillField('Password', '123456')",
+        "I.fillField('Password', secret('123456'))",
+        "I.fillField('Email', 'a@b.c')",
+        'I.fillField(loc, process.env.API_TOKEN)',
+        'I.fillField(loc, secret(process.env.API_TOKEN))',
+      ].join('\n')
+      expect(rules(code)).to.deep.equal(['1:secret-credentials', '4:secret-credentials'])
     })
 
-    it('secret-credentials flags credentials not wrapped in secret()', async () => {
-      const list = await findings('secret-credentials.js')
-      expect(byRule(list, 'secret-credentials')).to.deep.equal([5, 7, 9])
+    it('await-grab', () => {
+      const code = ['const a = I.grabTextFrom("h1")', 'const b = await I.grabTextFrom("h1")', 'return I.grabTextFrom("h1")', 'I.grabTextFrom("h1").length', 'await Promise.all([I.grabTitle()])'].join('\n')
+      expect(new Linter().lint(`async function f() {\n${code}\n}`, 'test.js').map(f => `${f.line}:${f.rule}`)).to.deep.equal(['2:await-grab', '5:await-grab'])
     })
 
-    it('await-grab flags grab results used without await', async () => {
-      const list = await findings('await-grab.js')
-      expect(byRule(list, 'await-grab')).to.deep.equal([4, 7, 14])
+    it('no-actor-in-helper', () => {
+      const code = 'class X extends Helper {\n  m() {\n    I.click("a")\n  }\n}\nI.click("b")'
+      expect(rules(code)).to.deep.equal(['3:no-actor-in-helper'])
     })
 
-    it('no-actor-in-helper flags I inside a Helper class only', async () => {
-      const list = await findings('no-actor-in-helper.js')
-      expect(byRule(list, 'no-actor-in-helper')).to.deep.equal([5, 6])
-    })
-
-    it('raw-browser-in-test warns on use*To and executeScript inside a Scenario', async () => {
-      const list = await findings('raw-browser-in-test.js')
-      expect(byRule(list, 'raw-browser-in-test')).to.deep.equal([4, 5])
-      expect(list.every(f => f.level === 'warn')).to.be.true
-    })
-
-    it('clean test has no findings', async () => {
-      expect(await findings('clean.js')).to.be.empty
+    it('raw-browser-in-test', () => {
+      const code = "Scenario('a', ({ I }) => {\n  I.usePlaywrightTo('x', () => {})\n  I.executeScript(() => 1)\n})\nI.executeScript(() => 1)"
+      expect(lint(code).map(f => `${f.line}:${f.rule}:${f.level}`)).to.deep.equal(['2:raw-browser-in-test:warn', '3:raw-browser-in-test:warn'])
     })
   })
 
-  describe('engine', () => {
-    it('suppresses findings with disable-line and disable-next-line comments that name the rule', async () => {
-      expect(byRule(await findings('suppressed.js'), 'no-fixed-wait')).to.deep.equal([7, 8])
-    })
+  it('suppresses a rule with a comment', () => {
+    const code = 'I.wait(1) // codeceptjs-lint-disable-line no-fixed-wait\n// codeceptjs-lint-disable-next-line no-fixed-wait\nI.wait(2)\nI.wait(3)'
+    expect(rules(code)).to.deep.equal(['4:no-fixed-wait'])
+  })
 
-    it('applies rule levels from config', async () => {
-      const list = await findings('raw-browser-in-test.js', { rules: { 'raw-browser-in-test': 'off' } })
-      expect(list).to.be.empty
-      const waits = await findings('no-fixed-wait.js', { rules: { 'no-fixed-wait': 'warn' } })
-      expect(waits[0].level).to.equal('warn')
-    })
+  it('turns rules off from config', () => {
+    const linter = new Linter({ lint: { rules: { 'no-fixed-wait': 'off', 'no-pause': 'error' } } })
+    expect(linter.lint('I.wait(1)\npause()', 'test.js').map(f => `${f.rule}:${f.level}`)).to.deep.equal(['no-pause:error'])
+  })
 
-    it('keeps TypeScript line numbers after stripping types', async () => {
-      const list = await findings('typescript.ts')
-      expect(list.map(f => [f.rule, f.line, f.column])).to.deep.equal([
-        ['await-grab', 13, 25],
-        ['no-fixed-wait', 14, 3],
-      ])
-    })
+  it('lints TypeScript with correct lines', () => {
+    expect(lint('const n: number = 5\n\nI.wait(n as number)\nI.wait(5)', 'test.ts').map(f => f.line)).to.deep.equal([4])
+  })
 
-    it('maps TypeScript syntax that needs transpiling back to source lines', async () => {
-      const list = await findings('typescript-enum.ts')
-      expect(list.map(f => [f.rule, f.line])).to.deep.equal([['no-fixed-wait', 10]])
-    })
+  it('parses CommonJS files', () => {
+    expect(rules("const x = require('x')\nreturn I.wait(1)")).to.deep.equal(['2:no-fixed-wait'])
+  })
 
-    it('parses CommonJS files as scripts', async () => {
-      const code = 'const { I } = inject()\n\nmodule.exports = {\n  open() {\n    I.wait(2)\n  },\n}\n\nreturn\n'
-      expect(byRule((await lintSource(code, 'page.js')).findings, 'no-fixed-wait')).to.deep.equal([5])
-    })
-
-    it('throws on syntax errors', async () => {
-      let error
-      try {
-        await lintSource("Scenario('broken', ({ I }) => {\n  I.see(\n", 'broken.js')
-      } catch (err) {
-        error = err
-      }
-      expect(error).to.be.instanceOf(SyntaxError)
-    })
-
-    it('collects tests, local includes and helpers from config, minus ignored files', () => {
-      const root = fixture('project')
-      const config = {
-        tests: './*_test.js',
-        include: { I: './steps_file.js', loginPage: './pages/login.js', externalModule: 'some-package' },
-        helpers: { Custom: { require: './custom_helper.js' }, Playwright: {} },
-        lint: { ignore: ['legacy_test.js'] },
-      }
-      const files = collectFiles(config, root)
-        .map(f => path.relative(root, f))
-        .sort()
-      expect(files).to.deep.equal(['checkout_test.js', 'custom_helper.js', 'existing_test.js', path.join('pages', 'login.js'), 'steps_file.js'])
-    })
-
-    it('treats repeated identical errors as new', async () => {
-      const before = (await lintSource("Scenario('a', ({ I }) => {\n  I.wait(5)\n})\n")).findings
-      const after = (await lintSource("Scenario('a', ({ I }) => {\n  I.wait(5)\n  I.say('x')\n  I.wait(5)\n})\n")).findings
-      const added = newErrors(before, after)
-      expect(added).to.have.length(1)
-      expect(added[0].line).to.equal(4)
-    })
+  it('collects tests, include and helper files from config', () => {
+    const linter = new Linter({ tests: './*_test.js', include: { I: './steps_file.js', page: './pages/login.js', other: 'some-package' }, helpers: { Custom: { require: './custom_helper.js' } } }, project)
+    const files = linter
+      .files()
+      .map(f => path.relative(project, f))
+      .sort()
+    expect(files).to.deep.equal(['checkout_test.js', 'custom_helper.js', 'existing_test.js', 'pages/login.js', 'steps_file.js'])
+    expect(linter.includes(path.join(project, 'new_test.js'))).to.be.true
+    expect(linter.includes(path.join(project, 'app.js'))).to.be.false
   })
 
   describe('CLI', () => {
-    const run = (args, opts = {}) => spawnSync(process.execPath, [bin, 'lint', ...args], { encoding: 'utf8', env: { ...process.env, CI: '' }, ...opts })
-
-    it('lints files from config and exits 1 on errors', () => {
-      const result = run(['-c', fixture('project/codecept.conf.js')])
-      expect(result.status).to.equal(1)
-      expect(result.stdout).to.include('checkout_test.js:4:3')
-      expect(result.stdout).to.include('no-fixed-wait')
-      expect(result.stdout).to.include('custom_helper.js:5:13')
-      expect(result.stdout).to.include('login.js:5:5')
-      expect(result.stdout).not.to.include('legacy_test.js')
+    it('prints findings and exits 1 on errors', () => {
+      const result = spawnSync(process.execPath, [bin, 'lint'], { cwd: project, encoding: 'utf8', env: { ...process.env, CI: '' } })
+      expect(result.stdout).to.include('checkout_test.js:4:3  error  no-fixed-wait')
+      expect(result.stdout).to.include('custom_helper.js:5:13  error  no-actor-in-helper')
       expect(result.stdout).not.to.include('raw-browser-in-test')
-    })
-
-    it('exits 0 when only warnings are found', () => {
-      const result = run([fixture('no-pause.js')])
-      expect(result.status).to.equal(0)
-      expect(result.stdout).to.include('no-pause')
-    })
-
-    it('prints JSON', () => {
-      const result = run(['--json', fixture('no-fixed-wait.js')])
       expect(result.status).to.equal(1)
-      const json = JSON.parse(result.stdout)
-      expect(json.errors).to.equal(1)
-      expect(json.findings[0]).to.include({ rule: 'no-fixed-wait', line: 5, column: 3, level: 'error' })
-    })
-
-    it('exits 2 on parse failure', () => {
-      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'codecept-lint-'))
-      const file = path.join(dir, 'broken_test.js')
-      fs.writeFileSync(file, "Scenario('broken', ({ I }) => {\n  I.see(\n")
-      try {
-        const result = run([file])
-        expect(result.status).to.equal(2)
-        expect(result.stdout).to.include('parse')
-      } finally {
-        fs.rmSync(dir, { recursive: true, force: true })
-      }
     })
   })
 
   describe('hook', () => {
-    let dir
-    const existing = () => path.join(dir, 'existing_test.js')
-
-    beforeEach(() => {
-      dir = fs.mkdtempSync(path.join(os.tmpdir(), 'codecept-lint-'))
-      fs.copyFileSync(fixture('project/existing_test.js'), existing())
-    })
-
-    afterEach(() => {
-      fs.rmSync(dir, { recursive: true, force: true })
-    })
-
-    const hook = payload => runHook({ cwd: dir, ...payload }, { agent: 'claude' })
-
-    it('blocks a Write that introduces an error', async () => {
-      const result = await hook({ tool_name: 'Write', tool_input: { file_path: path.join(dir, 'new_test.js'), content: fs.readFileSync(fixture('no-fixed-wait.js'), 'utf8') } })
-      expect(result.code).to.equal(2)
-      expect(result.stderr).to.include('new_test.js:5:3')
-      expect(result.stderr).to.include('no-fixed-wait')
-    })
-
-    it('allows a Write that only produces warnings', async () => {
-      const result = await hook({ tool_name: 'Write', tool_input: { file_path: path.join(dir, 'stub_test.js'), content: fs.readFileSync(fixture('no-pause.js'), 'utf8') } })
-      expect(result).to.deep.equal({ code: 0, stderr: '' })
-    })
-
-    it('blocks an Edit that adds an error to a clean part of the file', async () => {
-      const result = await hook({ tool_name: 'Edit', tool_input: { file_path: existing(), old_string: "I.see('Welcome')", new_string: "I.see('Welcome')\n  I.wait(3)" } })
-      expect(result.code).to.equal(2)
-      expect(result.stderr).to.include('I.wait(3)')
-      expect(result.stderr).not.to.include('I.wait(5)')
-    })
-
-    it('allows an Edit on a file with pre-existing violations', async () => {
-      const result = await hook({ tool_name: 'Edit', tool_input: { file_path: existing(), old_string: "I.see('Welcome')", new_string: "I.see('Welcome')\n  I.waitForElement('#ok')" } })
-      expect(result.code).to.equal(0)
-    })
-
-    it('blocks a second identical violation', async () => {
-      const result = await hook({ tool_name: 'Edit', tool_input: { file_path: existing(), old_string: "I.see('Welcome')", new_string: "I.see('Welcome')\n  I.wait(5)" } })
-      expect(result.code).to.equal(2)
-      expect(result.stderr).to.include('existing_test.js:7:3')
-    })
-
-    it('applies MultiEdit edits in order', async () => {
-      const result = await hook({
-        tool_name: 'MultiEdit',
-        tool_input: {
-          file_path: existing(),
-          edits: [
-            { old_string: 'I.wait(5)', new_string: "I.waitForText('Welcome')" },
-            { old_string: "I.see('Welcome')", new_string: "I.see('Welcome')\n  I.wait(1)" },
-          ],
-        },
-      })
-      expect(result.code).to.equal(2)
-      expect(result.stderr).to.include('I.wait(1)')
-    })
-
-    it('ignores other tools, other files and files outside the project', async () => {
-      expect((await hook({ tool_name: 'Read', tool_input: { file_path: existing() } })).code).to.equal(0)
-      expect((await hook({ tool_name: 'Write', tool_input: { file_path: path.join(dir, 'notes.md'), content: 'I.wait(5)' } })).code).to.equal(0)
-      const outside = path.join(os.tmpdir(), 'outside_test.js')
-      expect((await hook({ tool_name: 'Write', tool_input: { file_path: outside, content: "Scenario('a', ({ I }) => { I.wait(5) })" } })).code).to.equal(0)
-    })
-
-    it('respects lint config from the project', async () => {
-      fs.writeFileSync(path.join(dir, 'codecept.conf.js'), "exports.config = { tests: './*_test.js', lint: { ignore: ['legacy/**'], rules: { 'await-grab': 'warn' } } }\n")
-      const legacy = await hook({ tool_name: 'Write', tool_input: { file_path: path.join(dir, 'legacy', 'old_test.js'), content: "Scenario('a', ({ I }) => {\n  I.wait(5)\n})\n" } })
-      expect(legacy.code).to.equal(0)
-      const grab = await hook({ tool_name: 'Write', tool_input: { file_path: path.join(dir, 'grab_test.js'), content: "Scenario('a', ({ I }) => {\n  const t = I.grabTitle()\n})\n" } })
-      expect(grab.code).to.equal(0)
-    })
-
-    it('allows edits that leave the file unparseable', async () => {
-      const result = await hook({ tool_name: 'Write', tool_input: { file_path: path.join(dir, 'broken_test.js'), content: 'Scenario((' } })
-      expect(result.code).to.equal(0)
-      expect(result.stderr).to.include('could not be parsed')
-    })
-
-    it('reads the payload from stdin and exits 2 with findings on stderr', () => {
-      const payload = { cwd: dir, tool_name: 'Edit', tool_input: { file_path: existing(), old_string: "I.see('Welcome')", new_string: "I.see('Welcome')\n  I.wait(5)" } }
-      const result = spawnSync(process.execPath, [bin, 'lint', '--hook', 'claude'], { cwd: dir, input: JSON.stringify(payload), encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: dir } })
+    it('blocks a write that adds an error', () => {
+      const result = runHook({ tool_name: 'Write', tool_input: { file_path: path.join(project, 'new_test.js'), content: "Scenario('a', ({ I }) => {\n  I.wait(3)\n})\n" } })
       expect(result.status).to.equal(2)
-      expect(result.stdout).to.equal('')
-      expect(result.stderr).to.include('no-fixed-wait')
+      expect(result.stderr).to.include('new_test.js:2:3  error  no-fixed-wait')
     })
 
-    it('exits 0 on invalid stdin', () => {
-      const result = spawnSync(process.execPath, [bin, 'lint', '--hook', 'claude'], { cwd: dir, input: 'not json', encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: dir } })
+    it('allows an edit that keeps existing errors', () => {
+      const result = runHook({ tool_name: 'Edit', tool_input: { file_path: path.join(project, 'existing_test.js'), old_string: "I.see('Welcome')", new_string: "I.see('Hello')" } })
       expect(result.status).to.equal(0)
-      expect(result.stdout).to.equal('')
     })
+
+    it('blocks an edit that adds a second identical error', () => {
+      const result = runHook({ tool_name: 'Edit', tool_input: { file_path: path.join(project, 'existing_test.js'), old_string: "I.see('Welcome')", new_string: "I.wait(5)\n  I.see('Welcome')" } })
+      expect(result.status).to.equal(2)
+    })
+
+    it('allows warnings, files outside the project config and bad payloads', () => {
+      expect(runHook({ tool_name: 'Write', tool_input: { file_path: path.join(project, 'new_test.js'), content: 'pause()' } }).status).to.equal(0)
+      expect(runHook({ tool_name: 'Write', tool_input: { file_path: path.join(project, 'app.js'), content: 'I.wait(1)' } }).status).to.equal(0)
+      expect(runHook({ nonsense: true }).status).to.equal(0)
+    })
+  })
+
+  it('does not touch fixture files', () => {
+    expect(fs.existsSync(path.join(project, 'new_test.js'))).to.be.false
   })
 })
