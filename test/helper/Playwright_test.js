@@ -697,6 +697,39 @@ describe('Playwright', function () {
         .then(res => res.length.should.be.equal(0)))
   })
 
+  describe('#_locate in debug mode', () => {
+    it('should not wait for timeout when element is removed before preview', async () => {
+      await I.amOnPage('/form/field')
+      await I.executeScript(() => {
+        const el = document.createElement('div')
+        el.id = 'removed-element'
+        document.body.append(el)
+      })
+
+      const locatorProto = Object.getPrototypeOf(page.locator('body'))
+      const originalAll = locatorProto.all
+      locatorProto.all = async function () {
+        const els = await originalAll.call(this)
+        await page.evaluate(() => document.getElementById('removed-element')?.remove())
+        return els
+      }
+      const debugMode = store.debugMode
+      store.debugMode = true
+      page.setDefaultTimeout(10000)
+
+      try {
+        const start = Date.now()
+        const els = await I._locate('#removed-element')
+        els.length.should.be.equal(1)
+        expect(Date.now() - start).to.be.below(1000)
+      } finally {
+        locatorProto.all = originalAll
+        store.debugMode = debugMode
+        page.setDefaultTimeout(I.options.timeout)
+      }
+    })
+  })
+
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {
     it('should throw error if field is not empty', () =>
       I.amOnPage('/form/empty')
