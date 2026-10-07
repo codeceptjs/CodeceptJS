@@ -262,6 +262,16 @@ Or in provided path
 npx codecept init test
 ```
 
+## Init Agent
+
+Registers the CodeceptJS MCP server and installs CodeceptJS skills for a coding agent (`claude`, `codex`, `cursor`, `opencode`):
+
+```sh
+npx codeceptjs init:agent claude
+```
+
+Omit the agent to pick it from a list. See [Agentic Testing](/agents).
+
 ## Migrate
 
 Migrate your current `codecept.json` to `codecept.conf.js`

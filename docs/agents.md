@@ -25,7 +25,15 @@ CodeceptJS is token-efficient: it stores HTML, ARIA, logs, and HTTP request data
 
 ## Essential Setup
 
-Two things make agent testing work: the **skills** that teach the agent CodeceptJS, and the **MCP server** that lets it drive the browser. Set both up once, from your project directory.
+Two things make agent testing work: the **skills** that teach the agent CodeceptJS, and the **MCP server** that lets it drive the browser. Set both up once, from your project directory:
+
+```bash
+npx codeceptjs init:agent claude
+```
+
+Use `codex`, `cursor`, or `opencode` instead of `claude` for other agents, or omit the name to pick from a list. `npx codeceptjs init` offers the same step at the end.
+
+### Manual setup
 
 Install the skills:
 
