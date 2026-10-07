@@ -81,6 +81,21 @@ declare namespace CodeceptJS {
     }
   }
 
+  type WebServerConfig = {
+    /** Shell command that starts the application, e.g. `npm run start` */
+    command: string
+    /** URL polled with GET until it responds; any HTTP status counts as ready */
+    url: string
+    /** Set to `false` to skip starting the server. Defaults to `true` */
+    enabled?: boolean
+    /** Milliseconds to wait for `url` to respond. Defaults to `60000` */
+    timeout?: number
+    /** Working directory for the command, relative to the config directory */
+    cwd?: string
+    /** Extra environment variables for the command */
+    env?: Record<string, string>
+  }
+
   type MainConfig = {
     /** Pattern to locate CodeceptJS tests.
      * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
@@ -359,6 +374,17 @@ declare namespace CodeceptJS {
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
      */
     teardownAll?: (() => Promise<void>) | boolean | string
+    /**
+     * [Start the application under test](https://codecept.io/configuration/#web-server) before tests run and stop it after.
+     *
+     * ```js
+     * webServer: {
+     *   command: 'npm run start',
+     *   url: 'http://localhost:3000',
+     * }
+     * ```
+     */
+    webServer?: WebServerConfig | WebServerConfig[]
 
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string
