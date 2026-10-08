@@ -12,7 +12,7 @@ export const config = {
   },
   gherkin: {
     features: './workers-gherkin/*.feature',
-    steps: ['./workers-gherkin/steps.js'],
+    steps: ['./workers-gherkin/steps.js', './workers-gherkin/hooks.js'],
   },
   include: {},
   bootstrap: false,
