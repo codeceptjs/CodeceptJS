@@ -181,7 +181,7 @@ describe('--last-failed', function () {
       'serves requests @smoke': 'failed',
     })
 
-    const { stdout } = await runHooks('run --last-failed')
+    const { stdout } = await runHooks('run --last-failed', { LAST_FAILED_HOOKS_OK: '1' })
     expect(executedTests(stdout)).toEqual(['prepares data', 'serves requests'])
   })
 
@@ -193,7 +193,7 @@ describe('--last-failed', function () {
       'serves requests @smoke': 'failed',
     })
 
-    const { stdout } = await runHooks('run-workers 2 --last-failed')
+    const { stdout } = await runHooks('run-workers 2 --last-failed', { LAST_FAILED_HOOKS_OK: '1' })
     expect(executedTests(stdout)).toEqual(['prepares data', 'serves requests'])
   })
 })
