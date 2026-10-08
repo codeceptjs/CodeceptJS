@@ -13,9 +13,20 @@ const config = `--config ${codecept_dir}/codecept.conf.js`
 const outputDir = path.join(codecept_dir, 'output')
 const resultFile = path.join(outputDir, 'result.json')
 
+const hooks_dir = path.join(__dirname, '/../data/sandbox/configs/last-failed-hooks')
+const hooksConfig = `--config ${hooks_dir}/codecept.conf.js`
+const hooksResultFile = path.join(hooks_dir, 'output', 'result.json')
+
 const run = (command, env = {}) =>
   new Promise(resolve => {
     exec(`${runner} ${command} ${config}`, { env: { ...process.env, LAST_FAILED_FIXED: '', ...env } }, (err, stdout) => {
+      resolve({ code: err ? err.code : 0, stdout })
+    })
+  })
+
+const runHooks = (command, env = {}) =>
+  new Promise(resolve => {
+    exec(`${runner} ${command} ${hooksConfig}`, { env: { ...process.env, LAST_FAILED_HOOKS_OK: '', ...env } }, (err, stdout) => {
       resolve({ code: err ? err.code : 0, stdout })
     })
   })
@@ -37,6 +48,7 @@ describe('--last-failed', function () {
 
   beforeEach(() => {
     fs.rmSync(outputDir, { recursive: true, force: true })
+    fs.rmSync(path.join(hooks_dir, 'output'), { recursive: true, force: true })
   })
 
   it('should save a report with test states after a run', async () => {
@@ -136,5 +148,52 @@ describe('--last-failed', function () {
       expect(stdout).not.toContain('executed:')
       expect(stdout).not.toContain('passed')
     }
+  })
+
+  it('should not wipe result.json when a run executes no tests', async () => {
+    await run('run')
+    expect(reportedTests()['multiplies numbers']).toEqual('failed')
+
+    const { stdout } = await run('run --grep "no such test"')
+    expect(executedTests(stdout)).toEqual([])
+
+    expect(reportedTests()['multiplies numbers']).toEqual('failed')
+    const { stdout: rerun } = await run('run --last-failed')
+    expect(executedTests(rerun)).toEqual(['divides numbers', 'multiplies numbers', 'uppercases strings'])
+  })
+
+  it('should not wipe result.json in workers when a run executes no tests', async () => {
+    await run('run-workers 2')
+    expect(reportedTests()['multiplies numbers']).toEqual('failed')
+
+    const { stdout } = await run('run-workers 2 --grep "no such test"')
+    expect(executedTests(stdout)).toEqual([])
+
+    expect(reportedTests()['multiplies numbers']).toEqual('failed')
+  })
+
+  it('should rerun tests of a suite with a failed BeforeSuite', async () => {
+    const { code } = await runHooks('run')
+    expect(code).toEqual(1)
+    const { tests } = JSON.parse(fs.readFileSync(hooksResultFile, 'utf8'))
+    expect(Object.fromEntries(tests.map(test => [test.title, test.state]))).toEqual({
+      'prepares data': 'failed',
+      'serves requests @smoke': 'failed',
+    })
+
+    const { stdout } = await runHooks('run --last-failed')
+    expect(executedTests(stdout)).toEqual(['prepares data', 'serves requests'])
+  })
+
+  it('should rerun tests of a suite with a failed BeforeSuite in workers', async () => {
+    await runHooks('run-workers 2')
+    const { tests } = JSON.parse(fs.readFileSync(hooksResultFile, 'utf8'))
+    expect(Object.fromEntries(tests.map(test => [test.title, test.state]))).toEqual({
+      'prepares data': 'failed',
+      'serves requests @smoke': 'failed',
+    })
+
+    const { stdout } = await runHooks('run-workers 2 --last-failed')
+    expect(executedTests(stdout)).toEqual(['prepares data', 'serves requests'])
   })
 })
