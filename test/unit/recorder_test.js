@@ -144,6 +144,28 @@ describe('Recorder', () => {
       expect(attempts[1] - attempts[0]).to.be.lessThan(500, 'second retry must use default minTimeout, not leaked 800ms')
     })
 
+    it('should use timing opts of the retry rule matching the error', async function () {
+      this.timeout(5000)
+
+      recorder.retries = []
+      const attempts = []
+      recorder.retry({ retries: 1, minTimeout: 600, factor: 1, when: err => err.message === 'not found' })
+      recorder.retry({ retries: 1, minTimeout: 10, factor: 1, when: err => err.message.includes('context') })
+      recorder.add(
+        () => {
+          attempts.push(Date.now())
+          if (attempts.length < 2) throw new Error('not found')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      await recorder.promise()
+
+      expect(attempts).to.have.length(2)
+      expect(attempts[1] - attempts[0]).to.be.greaterThan(500)
+    })
+
     it('should prefer opts for non-when retry when possible', () => {
       let counter = 0
       const errorText = 'noerror'

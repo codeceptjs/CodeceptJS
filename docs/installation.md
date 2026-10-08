@@ -99,6 +99,22 @@ export const config = {
 
 See [Alternative Browser Engines](/alternative-browsers) for connection modes and limitations, and the [Obscura helper reference](/helpers/Obscura) for every option.
 
+## Lightpanda (experimental)
+
+Lightpanda is a headless browser built for automation. Install it following the [official instructions](https://lightpanda.io/docs/open-source/installation), then enable the helper:
+
+```js
+export const config = {
+  helpers: {
+    Lightpanda: {
+      url: 'http://localhost:3000',
+    },
+  },
+}
+```
+
+See [Alternative Browser Engines](/alternative-browsers) for running an existing Playwright suite on Lightpanda.
+
 ## Appium (mobile)
 
 Native iOS and Android testing. Appium speaks the WebDriver protocol, so CodeceptJS drives it through `webdriverio`:

@@ -95,6 +95,38 @@ describe('CodeceptJS Workers Runner', function () {
     })
   })
 
+  it('should distribute only tests matching grep', function (done) {
+    exec(`${codecept_run} 3 --grep "grep"`, (err, stdout) => {
+      expect(stdout).toContain('Worker 1: 1 test')
+      expect(stdout).toContain('Worker 2: 1 test')
+      expect(stdout).not.toContain('Worker 3:')
+      expect(stdout).not.toContain('No tests found by pattern')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should distribute only tests not matching inverted grep', function (done) {
+    exec(`${codecept_run} 2 --grep "Workers" --invert`, (err, stdout) => {
+      expect(stdout).toContain('Worker 1: 1 test')
+      expect(stdout).toContain('Worker 2: 1 test')
+      expect(stdout).toContain('From worker @1_grep print message 1')
+      expect(stdout).toContain('From worker @2_grep print message 2')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should suggest tests when grep matches nothing', function (done) {
+    exec(`${codecept_run} 2 --grep "nonexistent"`, (err, stdout) => {
+      expect(stdout).toContain('No tests found by pattern: /nonexistent/')
+      expect(stdout).toContain('OK  | 0 passed')
+      done()
+    })
+  })
+
   it('should use suites', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
     exec(`${codecept_run} 2 --suites`, (err, stdout) => {
@@ -557,6 +589,81 @@ describe('CodeceptJS Workers Runner', function () {
       expect(passed).toEqual(2)
       expect(err).toEqual(null)
       done()
+    })
+  })
+
+  describe('serial tests', () => {
+    const timelineFile = path.join(codecept_dir, 'output', 'serial_timeline.log')
+    const serial_run = `${codecept_run_glob('codecept.workers-serial.conf.js')} 2`
+
+    const timeline = () => fs.readFileSync(timelineFile, 'utf8').trim().split('\n')
+
+    const expectSerialAfterParallel = (events, serialTests) => {
+      const serialEvents = serialTests.flatMap(name => [`start ${name}`, `end ${name}`])
+      expect(events.slice(-serialEvents.length)).toEqual(serialEvents)
+      expect(events.slice(0, -serialEvents.length).filter(e => e.includes('serial'))).toEqual([])
+    }
+
+    beforeEach(() => {
+      fs.mkdirSync(path.dirname(timelineFile), { recursive: true })
+      fs.rmSync(timelineFile, { force: true })
+    })
+
+    after(() => fs.rmSync(timelineFile, { force: true }))
+
+    for (const by of ['test', 'suite', 'pool']) {
+      it(`should run serial tests one by one after parallel ones with --by ${by}`, function (done) {
+        exec(`${serial_run} --by ${by}`, (err, stdout) => {
+          expect(stdout).toContain('3 tests (serial)')
+          expect(stdout).toContain('OK  | 6 passed')
+          const events = timeline()
+          expect(events).toHaveLength(12)
+          expectSerialAfterParallel(events, ['serial three', 'serial one', 'serial two'])
+          expect(err).toEqual(null)
+          done()
+        })
+      })
+    }
+
+    it('should apply grep to serial tests', function (done) {
+      exec(`${serial_run} --grep "serial one|parallel"`, (err, stdout) => {
+        expect(stdout).toContain('1 test (serial)')
+        expect(stdout).toContain('OK  | 4 passed')
+        expectSerialAfterParallel(timeline(), ['serial one'])
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
+    it('should run only serial tests when no parallel tests match grep', function (done) {
+      exec(`${serial_run} --grep "@serial"`, (err, stdout) => {
+        expect(stdout).toContain('Worker 1: 3 tests (serial)')
+        expect(stdout).not.toContain('Worker 2:')
+        expect(stdout).toContain('OK  | 3 passed')
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
+    it('should take serial pattern from --serial option', function (done) {
+      exec(`${serial_run} --serial "parallel one"`, (err, stdout) => {
+        expect(stdout).toContain('1 test (serial)')
+        expect(stdout).toContain('OK  | 6 passed')
+        const events = timeline()
+        expect(events).toHaveLength(12)
+        expect(events.slice(-2)).toEqual(['start parallel one', 'end parallel one'])
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
+    it('should not start a serial worker when no serial tests match grep', function (done) {
+      exec(`${serial_run} --grep "parallel one"`, (err, stdout) => {
+        expect(stdout).not.toContain('(serial)')
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toEqual(null)
+        done()
+      })
     })
   })
 })

@@ -168,6 +168,9 @@ npx codeceptjs run-workers 4 --by pool --grep "@smoke"
 
 # Rerun only tests that failed in the previous run
 npx codeceptjs run-workers 3 --last-failed
+
+# Run tests tagged @serial one by one after parallel workers finish
+npx codeceptjs run-workers 3 --serial "@serial"
 ```
 
 **Test Distribution Strategies:**
@@ -175,6 +178,8 @@ npx codeceptjs run-workers 3 --last-failed
 - `--by test` (default): Pre-assigns individual tests to workers
 - `--by suite`: Pre-assigns entire test suites to workers  
 - `--by pool`: Dynamic distribution for optimal load balancing (recommended for best performance)
+
+`--serial <pattern>` keeps tests matching the pattern out of parallel workers and runs them one by one in an extra worker once the others finish, within the same run. It overrides the `serial` config option. See [Serial tests](/parallel#serial-tests).
 
 The pool mode provides the best load balancing by maintaining tests in a shared pool and distributing them dynamically as workers become available. This prevents workers from sitting idle and ensures optimal CPU utilization, especially when tests have varying execution times.
 
@@ -291,6 +296,16 @@ Or in provided path
 ```sh
 npx codecept init test
 ```
+
+## Init Agent
+
+Registers the CodeceptJS MCP server and installs CodeceptJS skills for a coding agent (`claude`, `codex`, `cursor`, `opencode`):
+
+```sh
+npx codeceptjs init:agent claude
+```
+
+Omit the agent to pick it from a list. See [Agentic Testing](/agents).
 
 ## Migrate
 
