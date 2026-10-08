@@ -93,7 +93,6 @@
     "publish-beta": "./runok.cjs publish:next-beta-version"
   },
   "dependencies": {
-    "@ai-sdk/typesafe-ai": "^3.0.15",
     "@codeceptjs/configure": "^4.0.0-beta.4",
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "18",

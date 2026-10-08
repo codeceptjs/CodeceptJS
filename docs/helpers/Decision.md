@@ -41,7 +41,6 @@ Decision model is configured in the `ai.decisionModel` section of the config:
 ```js
 ai: {
   decisionModel: {
-    provider: 'openrouter',
     model: 'typesafe/jev-1.13',
     visualModel: 'cloudflare/clef',
     confidence: 0.7,
@@ -53,10 +52,12 @@ helpers: {
 }
 ```
 
-*   `provider` (default: `openrouter`) - decision API to call: `openrouter` (reads `OPENROUTER_API_KEY`) or `typesafe` (reads `TYPESAFE_API_KEY`).
-*   `apiKey` (optional) - API key, overrides the environment variable.
-*   `model` (default: `typesafe/jev-1.13`) - decision model used by `decide`. Use `jev-latest` with the `typesafe` provider.
-*   `visualModel` (default: `cloudflare/clef`) - decision model with image input used by `decideVisually`. Available on OpenRouter only.
+Decisions are requested through the [OpenRouter Decisions API][3]
+with AI SDK [`experimental_decide`][4]. Set `OPENROUTER_API_KEY` to use it.
+
+*   `apiKey` (optional) - OpenRouter API key, overrides `OPENROUTER_API_KEY` environment variable.
+*   `model` (default: `typesafe/jev-1.13`) - decision model used by `decide`.
+*   `visualModel` (default: `cloudflare/clef`) - decision model with image input used by `decideVisually`.
 *   `confidence` (default: `0.7`) - minimal probability, between 0 and 1, for a statement to pass.
 *   `timeout` (default: `15000`) - request timeout in ms.
 *   `maxLength` (default: `12000`) - maximal length of ARIA snapshot or HTML sent to the model.
@@ -95,9 +96,9 @@ const probability = await I.decide('cart is empty');
 
 #### Parameters
 
-*   `statements` **([string][4] | [Array][5]<[string][4]>)** statement or list of statements to verify.
+*   `statements` **([string][5] | [Array][6]<[string][5]>)** statement or list of statements to verify.
 
-Returns **[Promise][6]<([number][7] | [Array][5]<[number][7]> | [undefined][8])>** probability of each statement, `undefined` in `skip` mode.
+Returns **[Promise][7]<([number][8] | [Array][6]<[number][8]> | [undefined][9])>** probability of each statement, `undefined` in `skip` mode.
 
 ### decideVisually
 
@@ -112,9 +113,9 @@ I.decideVisually(['logo is in the header', 'page uses dark theme']);
 
 #### Parameters
 
-*   `statements` **([string][4] | [Array][5]<[string][4]>)** statement or list of statements to verify.
+*   `statements` **([string][5] | [Array][6]<[string][5]>)** statement or list of statements to verify.
 
-Returns **[Promise][6]<([number][7] | [Array][5]<[number][7]> | [undefined][8])>** probability of each statement, `undefined` in `skip` mode.
+Returns **[Promise][7]<([number][8] | [Array][6]<[number][8]> | [undefined][9])>** probability of each statement, `undefined` in `skip` mode.
 
 [1]: https://openrouter.ai/typesafe/jev-1.13
 
@@ -122,12 +123,14 @@ Returns **[Promise][6]<([number][7] | [Array][5]<[number][7]> | [undefined][8])>
 
 [3]: https://openrouter.ai/models?output_modalities=decisions
 
-[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[4]: https://ai-sdk.dev/docs/ai-sdk-core/decisions
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined

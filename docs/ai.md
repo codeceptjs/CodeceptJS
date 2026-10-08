@@ -353,7 +353,49 @@ I.decideVisually('sidebar is shown')
 
 It uses a [decision model](https://openrouter.ai/models?output_modalities=decisions) like [Jev](https://openrouter.ai/typesafe/jev-1.13) instead of a chat model. A decision model reads the page and returns the probability that a statement is true. It is fast, costs a fraction of a cent per request, and gives a probability instead of free text, so a step passes or fails on a confidence threshold you set.
 
-Configure it in `ai.decisionModel`. Decisions call the decisions API directly, so they don't need `ai.model` or the `--ai` flag. See [Decision Assertions](/assertions#decision-assertions) for setup and usage.
+Decisions are requested through the [OpenRouter Decisions API](https://openrouter.ai/models?output_modalities=decisions) with AI SDK [`experimental_decide`](https://ai-sdk.dev/docs/ai-sdk-core/decisions). Set `OPENROUTER_API_KEY` and configure the model in `ai.decisionModel`. Decisions don't need `ai.model` or the `--ai` flag. See [Decision Assertions](/assertions#decision-assertions) for setup and usage.
+
+### Custom Decisions
+
+`I.decide` asks yes/no questions. AI SDK decisions also support `choice` and `score` questions. Use [`experimental_decide`](https://ai-sdk.dev/docs/ai-sdk-core/decisions) in a [custom helper](/helpers) to ask them about the current page:
+
+```js
+import Helper from '@codeceptjs/helper'
+import { experimental_decide as decide } from 'ai'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+
+class PageDecisions extends Helper {
+  async grabPageKind() {
+    const { Playwright } = this.helpers
+    const openrouter = createOpenRouter()
+
+    const { answers } = await decide({
+      model: openrouter.evaluationModel('typesafe/jev-1.13'),
+      state: {
+        url: await Playwright.grabCurrentUrl(),
+        aria: await Playwright.grabAriaSnapshot(),
+      },
+      questions: {
+        page: {
+          type: 'choice',
+          instructions: 'What kind of page is shown?',
+          criteria: { login: 'sign in form', dashboard: 'user dashboard', error: 'error message' },
+        },
+      },
+    })
+
+    return answers.page.choice
+  }
+}
+
+export default PageDecisions
+```
+
+```js
+const kind = await I.grabPageKind()
+```
+
+`ai` and `@openrouter/ai-sdk-provider` are installed with CodeceptJS. A `score` question returns a fractional position on a list of levels, and a `boolean` question returns a probability. See [AI SDK decisions](https://ai-sdk.dev/docs/ai-sdk-core/decisions) for all question types.
 
 ## Advanced Configuration
 

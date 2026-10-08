@@ -123,16 +123,6 @@ describe('Decision helper', () => {
     expect(calls[0].body.state.html).to.include('<h1>Checkout</h1>')
   })
 
-  it('uses typesafe endpoint', async () => {
-    decision = createDecision({ apiKey: 'secret', provider: 'typesafe', model: 'jev-latest' })
-    decision._actingHelper = () => browser
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
-    await decision.decide('page is loaded')
-
-    expect(calls[0].url).to.equal('https://api.typesafe.ai/v1/systemone')
-    expect(calls[0].body.model).to.equal('jev-latest')
-  })
-
   it('reports http errors', async () => {
     decision.decisionAI.fetchImpl = fakeFetch({}, calls, 402)
     const err = await decision.decide('page is loaded').catch(e => e)
@@ -204,23 +194,22 @@ describe('Decision helper', () => {
   })
 
   it('validates config', () => {
-    expect(() => createDecision({ apiKey: 'secret', provider: 'unknown' })).to.throw('Unknown decision provider')
     expect(() => createDecision({ apiKey: 'secret', confidence: 1.5 })).to.throw('between 0 and 1')
   })
 
   it('requires api key only when deciding', async () => {
-    const key = process.env.TYPESAFE_API_KEY
-    delete process.env.TYPESAFE_API_KEY
+    const key = process.env.OPENROUTER_API_KEY
+    delete process.env.OPENROUTER_API_KEY
     try {
-      decision = createDecision({ provider: 'typesafe' })
+      decision = createDecision({})
       decision._actingHelper = () => browser
       decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
 
       const err = await decision.decide('page is loaded').catch(e => e)
-      expect(err.message).to.include('TYPESAFE_API_KEY')
+      expect(err.message).to.include('OPENROUTER_API_KEY')
       expect(calls).to.be.empty
     } finally {
-      if (key) process.env.TYPESAFE_API_KEY = key
+      if (key) process.env.OPENROUTER_API_KEY = key
     }
   })
 

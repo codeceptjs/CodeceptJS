@@ -300,24 +300,20 @@ describe('AI module with mock provider', () => {
 
 describe('DecisionAI', () => {
   it('guides user to set API key', async () => {
-    const key = process.env.TYPESAFE_API_KEY
-    delete process.env.TYPESAFE_API_KEY
+    const key = process.env.OPENROUTER_API_KEY
+    delete process.env.OPENROUTER_API_KEY
     try {
-      const decisionAI = new DecisionAI({ provider: 'typesafe' })
-      expect(() => decisionAI.checkModel()).to.throw(/TYPESAFE_API_KEY[\s\S]*openrouter\.ai\/settings\/keys/)
-      const err = await decisionAI.decide('jev-latest', 'state', ['page is loaded']).catch(e => e)
+      const decisionAI = new DecisionAI()
+      expect(() => decisionAI.checkModel()).to.throw(/OPENROUTER_API_KEY[\s\S]*openrouter\.ai\/settings\/keys/)
+      const err = await decisionAI.decide('typesafe/jev-1.13', 'state', ['page is loaded']).catch(e => e)
       expect(err.message).to.include('No API key is set for decision model')
     } finally {
-      if (key) process.env.TYPESAFE_API_KEY = key
+      if (key) process.env.OPENROUTER_API_KEY = key
     }
   })
 
   it('accepts API key from config', () => {
-    expect(() => new DecisionAI({ provider: 'typesafe', apiKey: 'secret' }).checkModel()).not.to.throw()
-  })
-
-  it('rejects unknown provider', () => {
-    expect(() => new DecisionAI({ provider: 'unknown' })).to.throw('Unknown decision provider')
+    expect(() => new DecisionAI({ apiKey: 'secret' }).checkModel()).not.to.throw()
   })
 
   it('asks all statements in one request', async () => {

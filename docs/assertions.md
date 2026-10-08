@@ -426,15 +426,14 @@ helpers: {
 
 | Option | Default | Description |
 |---|---|---|
-| `provider` | `openrouter` | `openrouter` reads `OPENROUTER_API_KEY`, `typesafe` reads `TYPESAFE_API_KEY` |
-| `apiKey` | | API key, overrides the environment variable |
+| `apiKey` | | OpenRouter API key, overrides `OPENROUTER_API_KEY` |
 | `model` | `typesafe/jev-1.13` | model for `I.decide` |
-| `visualModel` | `cloudflare/clef` | model with image input for `I.decideVisually`, OpenRouter only |
+| `visualModel` | `cloudflare/clef` | model with image input for `I.decideVisually` |
 | `confidence` | `0.7` | minimal probability for a statement to pass |
 | `timeout` | `15000` | request timeout in ms |
 | `maxLength` | `12000` | maximal length of ARIA snapshot or HTML sent to the model |
 
-Decisions don't need the `--ai` flag, and `ai.model` is not required.
+Any model from the [OpenRouter decision models](https://openrouter.ai/models?output_modalities=decisions) list can be used. Decisions don't need the `--ai` flag, and `ai.model` is not required.
 
 Then assert statements about the current page:
 
