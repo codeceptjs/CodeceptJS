@@ -45,7 +45,8 @@ jobs:
       - name: Download Lightpanda
         run: |
           mkdir -p ~/lightpanda-bin
-          curl -sfL --retry 3 -o ~/lightpanda-bin/lightpanda https://github.com/lightpanda-io/browser/releases/latest/download/lightpanda-x86_64-linux
+          # pinned: releases/latest resolves to a nightly build; the suite is tested against stable releases
+          curl -sfL --retry 3 -o ~/lightpanda-bin/lightpanda https://github.com/lightpanda-io/browser/releases/download/1.0.0/lightpanda-x86_64-linux
           chmod +x ~/lightpanda-bin/lightpanda
           ~/lightpanda-bin/lightpanda version
       - name: start test server
