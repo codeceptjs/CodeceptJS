@@ -353,49 +353,56 @@ I.decideVisually('sidebar is shown')
 
 It uses a [decision model](https://openrouter.ai/models?output_modalities=decisions) like [Jev](https://openrouter.ai/typesafe/jev-1.13) instead of a chat model. A decision model reads the page and returns the probability that a statement is true. It is fast, costs a fraction of a cent per request, and gives a probability instead of free text, so a step passes or fails on a confidence threshold you set.
 
-Decisions are requested through the [OpenRouter Decisions API](https://openrouter.ai/models?output_modalities=decisions) with AI SDK [`experimental_decide`](https://ai-sdk.dev/docs/ai-sdk-core/decisions). Set `OPENROUTER_API_KEY` and configure the model in `ai.decisionModel`. Decisions don't need `ai.model` or the `--ai` flag. See [Decision Assertions](/assertions#decision-assertions) for setup and usage.
+Decision models are separate from `ai.model`: decisions don't need `ai.model` or the `--ai` flag. CodeceptJS calls them with AI SDK [`experimental_decide`](https://ai-sdk.dev/docs/ai-sdk-core/decisions).
 
-### Custom Decisions
+### Configure Decision Models
 
-`I.decide` asks yes/no questions. AI SDK decisions also support `choice` and `score` questions. Use [`experimental_decide`](https://ai-sdk.dev/docs/ai-sdk-core/decisions) in a [custom helper](/helpers) to ask them about the current page:
+Decision models are served by the [OpenRouter Decisions API](https://openrouter.ai/models?output_modalities=decisions). The OpenRouter provider is installed with CodeceptJS, so the quickest setup is a model ID and an API key:
+
+```bash
+export OPENROUTER_API_KEY=sk-or-...
+```
 
 ```js
-import Helper from '@codeceptjs/helper'
-import { experimental_decide as decide } from 'ai'
+export default {
+  ai: {
+    decisionModel: {
+      model: 'typesafe/jev-1.13',
+      visualModel: 'cloudflare/clef',
+    },
+  },
+  helpers: {
+    Playwright: { url: 'http://localhost' },
+    Decision: {},
+  },
+}
+```
+
+To configure the provider yourself, import `createOpenRouter` from `@openrouter/ai-sdk-provider` and pass AI SDK decision models with `evaluationModel()`:
+
+```js
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 
-class PageDecisions extends Helper {
-  async grabPageKind() {
-    const { Playwright } = this.helpers
-    const openrouter = createOpenRouter()
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
 
-    const { answers } = await decide({
+export default {
+  ai: {
+    decisionModel: {
       model: openrouter.evaluationModel('typesafe/jev-1.13'),
-      state: {
-        url: await Playwright.grabCurrentUrl(),
-        aria: await Playwright.grabAriaSnapshot(),
-      },
-      questions: {
-        page: {
-          type: 'choice',
-          instructions: 'What kind of page is shown?',
-          criteria: { login: 'sign in form', dashboard: 'user dashboard', error: 'error message' },
-        },
-      },
-    })
-
-    return answers.page.choice
-  }
+      visualModel: openrouter.evaluationModel('cloudflare/clef'),
+      confidence: 0.8,
+    },
+  },
+  helpers: {
+    Playwright: { url: 'http://localhost' },
+    Decision: {},
+  },
 }
-
-export default PageDecisions
 ```
 
-```js
-const kind = await I.grabPageKind()
-```
-
-`ai` and `@openrouter/ai-sdk-provider` are installed with CodeceptJS. A `score` question returns a fractional position on a list of levels, and a `boolean` question returns a probability. See [AI SDK decisions](https://ai-sdk.dev/docs/ai-sdk-core/decisions) for all question types.
+`model` is used by `I.decide`, and `visualModel` by `I.decideVisually`, so `visualModel` needs a model with image input. Both accept an OpenRouter model ID or an AI SDK decision model. See [Decision Assertions](/assertions#decision-assertions) for all options and usage.
 
 ## Advanced Configuration
 

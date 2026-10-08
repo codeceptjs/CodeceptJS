@@ -304,7 +304,7 @@ describe('DecisionAI', () => {
     delete process.env.OPENROUTER_API_KEY
     try {
       const decisionAI = new DecisionAI()
-      expect(() => decisionAI.checkModel()).to.throw(/OPENROUTER_API_KEY[\s\S]*openrouter\.ai\/settings\/keys/)
+      expect(() => decisionAI.checkModel('typesafe/jev-1.13')).to.throw(/OPENROUTER_API_KEY[\s\S]*openrouter\.ai\/settings\/keys/)
       const err = await decisionAI.decide('typesafe/jev-1.13', 'state', ['page is loaded']).catch(e => e)
       expect(err.message).to.include('No API key is set for decision model')
     } finally {
@@ -313,7 +313,7 @@ describe('DecisionAI', () => {
   })
 
   it('accepts API key from config', () => {
-    expect(() => new DecisionAI({ apiKey: 'secret' }).checkModel()).not.to.throw()
+    expect(() => new DecisionAI({ apiKey: 'secret' }).checkModel('typesafe/jev-1.13')).not.to.throw()
   })
 
   it('asks all statements in one request', async () => {

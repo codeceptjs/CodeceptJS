@@ -5,6 +5,7 @@ import path from 'path'
 import Decision from '../../../lib/helper/Decision.js'
 import store from '../../../lib/store.js'
 import Config from '../../../lib/config.js'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 
 function createDecision(decisionModel, config = {}) {
   Config.create({ ai: { decisionModel } })
@@ -121,6 +122,22 @@ describe('Decision helper', () => {
 
     expect(calls[0].body.state.aria).to.be.undefined
     expect(calls[0].body.state.html).to.include('<h1>Checkout</h1>')
+  })
+
+  it('uses AI SDK decision model from config', async () => {
+    const key = process.env.OPENROUTER_API_KEY
+    delete process.env.OPENROUTER_API_KEY
+    try {
+      const openrouter = createOpenRouter({ apiKey: 'config-key', fetch: fakeFetch(noul(0.9), calls) })
+      decision = createDecision({ model: openrouter.evaluationModel('typesafe/jev-latest') })
+      decision._actingHelper = () => browser
+
+      expect(await decision.decide('page is loaded')).to.equal(0.9)
+      expect(calls[0].body.model).to.equal('typesafe/jev-latest')
+      expect(calls[0].headers.get('authorization')).to.equal('Bearer config-key')
+    } finally {
+      if (key) process.env.OPENROUTER_API_KEY = key
+    }
   })
 
   it('reports http errors', async () => {

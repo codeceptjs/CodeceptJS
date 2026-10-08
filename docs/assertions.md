@@ -426,9 +426,9 @@ helpers: {
 
 | Option | Default | Description |
 |---|---|---|
-| `apiKey` | | OpenRouter API key, overrides `OPENROUTER_API_KEY` |
-| `model` | `typesafe/jev-1.13` | model for `I.decide` |
-| `visualModel` | `cloudflare/clef` | model with image input for `I.decideVisually` |
+| `apiKey` | | OpenRouter API key for model IDs, overrides `OPENROUTER_API_KEY` |
+| `model` | `typesafe/jev-1.13` | model for `I.decide`: an OpenRouter model ID or an [AI SDK decision model](/ai#configure-decision-models) |
+| `visualModel` | `cloudflare/clef` | model with image input for `I.decideVisually`: an OpenRouter model ID or an AI SDK decision model |
 | `confidence` | `0.7` | minimal probability for a statement to pass |
 | `timeout` | `15000` | request timeout in ms |
 | `maxLength` | `12000` | maximal length of ARIA snapshot or HTML sent to the model |
