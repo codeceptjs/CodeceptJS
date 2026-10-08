@@ -1,13 +1,13 @@
 Feature('Form filling')
 
-Scenario('fill a field by label and submit, then see the posted value @Obscura @Playwright @Puppeteer', ({ I }) => {
+Scenario('fill a field by label and submit, then see the posted value @Obscura @Lightpanda @Playwright @Puppeteer', ({ I }) => {
   I.amOnPage('/form/field')
   I.fillField('Name', 'Alice Example')
   I.click('Submit')
   I.see('[name] => Alice Example')
 })
 
-Scenario('check a checkbox by its label and submit @Obscura @Playwright @Puppeteer', ({ I }) => {
+Scenario('check a checkbox by its label and submit @Obscura @Lightpanda @Playwright @Puppeteer', ({ I }) => {
   I.amOnPage('/form/checkbox')
   I.checkOption('I Agree')
   I.seeCheckboxIsChecked('#checkin')
@@ -15,7 +15,7 @@ Scenario('check a checkbox by its label and submit @Obscura @Playwright @Puppete
   I.see('[terms] => agree')
 })
 
-Scenario('select an option, read the value back, then submit @Obscura @Playwright @Puppeteer', async ({ I }) => {
+Scenario('select an option, read the value back, then submit @Obscura @Lightpanda @Playwright @Puppeteer', async ({ I }) => {
   I.amOnPage('/form/select')
   I.selectOption('Select your age', '13-21')
   const value = await I.grabValueFrom('#age')
@@ -24,7 +24,7 @@ Scenario('select an option, read the value back, then submit @Obscura @Playwrigh
   I.see('[age] => teenage')
 })
 
-Scenario('fill several fields on a multi-field form and submit @Obscura @Playwright @Puppeteer', ({ I }) => {
+Scenario('fill several fields on a multi-field form and submit @Obscura @Lightpanda @Playwright @Puppeteer', ({ I }) => {
   I.amOnPage('/form/complex')
   I.fillField('Name', 'Bob Multi')
   I.fillField('Description', 'a multi-field submission')
@@ -35,7 +35,7 @@ Scenario('fill several fields on a multi-field form and submit @Obscura @Playwri
   I.see('[age] => adult')
 })
 
-Scenario('clear and append a pre-filled field @Obscura @Playwright @Puppeteer', ({ I }) => {
+Scenario('clear and append a pre-filled field @Obscura @Lightpanda @Playwright @Puppeteer', ({ I }) => {
   I.amOnPage('/form/field')
   I.seeInField('#name', 'OLD_VALUE')
   I.clearField('#name')
