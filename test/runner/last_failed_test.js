@@ -193,7 +193,13 @@ describe('--last-failed', function () {
       'serves requests @smoke': 'failed',
     })
 
-    const { stdout } = await runHooks('run-workers 2 --last-failed', { LAST_FAILED_HOOKS_OK: '1' })
-    expect(executedTests(stdout)).toEqual(['prepares data', 'serves requests'])
+    const { code, stdout } = await runHooks('run-workers 2 --last-failed', { LAST_FAILED_HOOKS_OK: '1' })
+    expect(code).toEqual(0)
+    expect(stdout).toContain('2 passed')
+    const { tests: rerunTests } = JSON.parse(fs.readFileSync(hooksResultFile, 'utf8'))
+    expect(Object.fromEntries(rerunTests.map(test => [test.title, test.state]))).toEqual({
+      'prepares data': 'passed',
+      'serves requests @smoke': 'passed',
+    })
   })
 })
