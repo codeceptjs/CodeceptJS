@@ -20,7 +20,7 @@ For anything more specific — your own grouping, a config per group, several br
 npx codeceptjs run-workers 4
 ```
 
-Steps are not streamed to the console in this mode — output from separate threads can't be interleaved cleanly. While workers run, CodeceptJS sets `process.env.RUNS_WITH_WORKERS=true`, so plugins and helpers can branch on it. All `run` options work here too: `--grep "@smoke"`, `-c codecept.conf.js`, `--debug`, and the rest.
+Steps are not streamed to the console in this mode — output from separate threads can't be interleaved cleanly. While workers run, CodeceptJS sets `process.env.RUNS_WITH_WORKERS=true`, so plugins and helpers can branch on it. All `run` options work here too: `--grep "@smoke"`, `-c codecept.conf.js`, `--debug`, and the rest. With `--grep`, only matching tests are spread across workers, so a narrow pattern may start fewer workers than requested.
 
 By default, workers are created with a staggered delay of 200ms to prevent CPU spikes and stagger browser initializations. You can adjust this via `workerInitializationDelay` in your configuration.
 
@@ -39,6 +39,40 @@ npx codeceptjs run-workers 4 --by pool
 ```
 
 `--suites` is shorthand for `--by suite`.
+
+### Serial tests
+
+Some tests can't share the stage: they change global settings, reset data, or toggle a feature flag that other tests read. Mark them with a tag and set the `serial` pattern in config or pass it with `--serial`:
+
+```js
+// codecept.conf.js
+export const config = {
+  serial: '@serial',
+}
+```
+
+```js
+Scenario('change account timezone @serial', ({ I }) => {
+  // ...
+})
+```
+
+`run-workers` keeps matching tests out of the parallel workers. When those workers finish, one more worker starts and runs the serial tests one by one. It is still a single run: `bootstrapAll`, `teardownAll` and `event.workers.result` fire once, and the exit code covers both parts.
+
+```
+Test distribution:
+  Worker 1: 14 tests
+  Worker 2: 13 tests
+  Worker 3: 4 tests (serial)
+```
+
+Pass `--serial` to set or override the pattern for a single run:
+
+```sh
+npx codeceptjs run-workers 3 --serial "@serial"
+```
+
+`serial` is matched against the full test title the same way `--grep` is, so a tag on a `Feature` makes all its scenarios serial. It works with every `--by` strategy and combines with `--grep`: only serial tests that also match grep are run. With [multiple browsers](#multiple-browsers) each profile gets its own serial worker, started one after another.
 
 ### Multiple browsers
 

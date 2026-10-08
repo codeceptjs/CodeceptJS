@@ -78,7 +78,15 @@ program
   .command('init [path]')
   .description('Creates dummy config in current dir or [path]')
   .option('-y, --yes', 'skip prompts and use defaults (Playwright + chromium, BASE_URL env for url)')
+  .option('--agent <name>', 'set up an AI coding agent: claude, codex, cursor, opencode')
   .action(commandHandler('../lib/command/init.js'))
+
+program
+  .command('init:agent [agent]')
+  .alias('init-agent')
+  .description('Set up CodeceptJS MCP server and skills for a coding agent: claude, codex, cursor, opencode')
+  .option('-y, --yes', 'skip prompts, requires [agent]')
+  .action(commandHandler('../lib/command/initAgent.js'))
 
 program
   .command('check')
@@ -209,6 +217,7 @@ program
   .option('-i, --invert', 'inverts --grep matches')
   .option('-o, --override [value]', 'override current config options')
   .option('--suites', 'parallel execution of suites not single tests')
+  .option('--serial <pattern>', 'run tests matching <pattern> one by one after parallel workers finish')
   .option('--by <strategy>', 'test distribution strategy: "test" (pre-assign individual tests), "suite" (pre-assign test suites), or "pool" (dynamic distribution for optimal load balancing, recommended)')
   .option(commandFlags.debug.flag, commandFlags.debug.description)
   .option(commandFlags.verbose.flag, commandFlags.verbose.description)

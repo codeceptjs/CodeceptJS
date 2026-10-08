@@ -27,7 +27,13 @@ Two ways to launch the server:
 
 ## Configuration
 
-Set up the MCP server in your client (Claude Desktop, Cursor, Continue, etc.):
+For Claude Code, Codex, Cursor, or OpenCode, one command registers the server and installs the CodeceptJS skills:
+
+```bash
+npx codeceptjs init:agent claude
+```
+
+To set up the MCP server in another client (Claude Desktop, Continue, etc.), add it to the client config:
 
 ### Basic
 

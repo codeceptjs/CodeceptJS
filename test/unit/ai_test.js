@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import AiAssistant from '../../lib/ai.js'
+import AiAssistant, { DecisionAI } from '../../lib/ai.js'
 import config from '../../lib/config.js'
 import { createMockModel, MockResponses } from '../support/mock-ai-provider.js'
 import fs from 'fs'
@@ -295,5 +295,48 @@ describe('AI module with mock provider', () => {
     expect(result3[0]).to.include('#new-locator')
 
     expect(mockModel._getCallCount()).to.equal(3)
+  })
+})
+
+describe('DecisionAI', () => {
+  it('guides user to set API key', async () => {
+    const key = process.env.TYPESAFE_API_KEY
+    delete process.env.TYPESAFE_API_KEY
+    try {
+      const decisionAI = new DecisionAI({ provider: 'typesafe' })
+      expect(() => decisionAI.checkModel()).to.throw(/TYPESAFE_API_KEY[\s\S]*openrouter\.ai\/settings\/keys/)
+      const err = await decisionAI.decide('jev-latest', 'state', ['page is loaded']).catch(e => e)
+      expect(err.message).to.include('No API key is set for decision model')
+    } finally {
+      if (key) process.env.TYPESAFE_API_KEY = key
+    }
+  })
+
+  it('accepts API key from config', () => {
+    expect(() => new DecisionAI({ provider: 'typesafe', apiKey: 'secret' }).checkModel()).not.to.throw()
+  })
+
+  it('rejects unknown provider', () => {
+    expect(() => new DecisionAI({ provider: 'unknown' })).to.throw('Unknown decision provider')
+  })
+
+  it('asks all statements in one request', async () => {
+    const calls = []
+    const decisionAI = new DecisionAI({ apiKey: 'secret' })
+    decisionAI.fetchImpl = async (url, options) => {
+      calls.push({ url, body: JSON.parse(options.body) })
+      return { ok: true, json: async () => ({ answers: { q0: { type: 'noul', noul: 0.9 }, q1: { type: 'noul', noul: 0.2 } } }) }
+    }
+
+    const probabilities = await decisionAI.decide('typesafe/jev-1.13', { url: 'http://localhost' }, ['form is shown', 'cart is empty'])
+
+    expect(probabilities).to.eql([0.9, 0.2])
+    expect(calls).to.have.length(1)
+    expect(calls[0].url).to.equal('https://openrouter.ai/api/alpha/decisions')
+    expect(calls[0].body).to.eql({
+      model: 'typesafe/jev-1.13',
+      state: { url: 'http://localhost' },
+      questions: { q0: { type: 'noul', instructions: 'form is shown' }, q1: { type: 'noul', instructions: 'cart is empty' } },
+    })
   })
 })

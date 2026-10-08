@@ -25,7 +25,15 @@ CodeceptJS is token-efficient: it stores HTML, ARIA, logs, and HTTP request data
 
 ## Essential Setup
 
-Two things make agent testing work: the **skills** that teach the agent CodeceptJS, and the **MCP server** that lets it drive the browser. Set both up once, from your project directory.
+Two things make agent testing work: the **skills** that teach the agent CodeceptJS, and the **MCP server** that lets it drive the browser. Set both up once, from your project directory:
+
+```bash
+npx codeceptjs init:agent claude
+```
+
+Use `codex`, `cursor`, or `opencode` instead of `claude` for other agents, or omit the name to pick from a list. `npx codeceptjs init` offers the same step at the end.
+
+### Manual setup
 
 Install the skills:
 
@@ -164,6 +172,21 @@ The fix lands with a one-line note explaining what changed.
 After a failed run, the agent reads every trace under `output/`, clusters failures by signature, and patches what fits a small set of safe fixes (locator drift, missing waits, raw `I.wait(N)` replacement). It reruns only the failing scenarios, compares against the baseline, and writes a markdown report at `output/ci-fix.md`.
 
 If the fix held, the PR goes green. If it didn't, every edit is rolled back with `git checkout` and the report says which patterns the agent couldn't safely handle. No half-applied fixes left behind, no `retries: 3` masking the problem.
+
+## Assertions in plain language
+
+Some outcomes are hard to pin to a locator: "checkout form has all required fields", "success message is shown". Instead of building a fragile chain of `see*` checks, the agent can write the expected outcome as a statement with the [Decision helper](/assertions#decision-assertions):
+
+```js
+I.decide([
+  'order summary lists the purchased items',
+  'success message is shown',
+])
+```
+
+The agent runs the statement on the live page like any other command and keeps it only if it passes. The test then checks it on every run.
+
+Decision models like [Jev](https://openrouter.ai/typesafe/jev-1.13) are built for this. They answer in a fraction of a second, cost a fraction of a cent per request, and return a probability instead of free text. That makes them fast and cheap enough to run on every CI build, and predictable enough to keep in a test.
 
 ## Skills bundle
 
