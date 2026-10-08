@@ -7,8 +7,15 @@ import store from '../../../lib/store.js'
 import Config from '../../../lib/config.js'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 
-function createDecision(decisionModel, config = {}) {
-  Config.create({ ai: { decisionModel } })
+let fetchImpl
+const openrouter = createOpenRouter({ apiKey: 'secret', fetch: (...args) => fetchImpl(...args) })
+const decisionModels = {
+  model: openrouter.evaluationModel('typesafe/jev-1.13'),
+  visualModel: openrouter.evaluationModel('cloudflare/clef'),
+}
+
+function createDecision(decisionModel = {}, config = {}) {
+  Config.create({ ai: { decisionModel: { ...decisionModels, ...decisionModel } } })
   return new Decision(config)
 }
 
@@ -39,12 +46,12 @@ describe('Decision helper', () => {
 
   beforeEach(() => {
     calls = []
-    decision = createDecision({ apiKey: 'secret' })
+    decision = createDecision()
     decision._actingHelper = () => browser
   })
 
   it('passes when probability reaches confidence', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
+    fetchImpl = fakeFetch(noul(0.9), calls)
     const probability = await decision.decide('submit button is present')
 
     expect(probability).to.equal(0.9)
@@ -59,7 +66,7 @@ describe('Decision helper', () => {
   })
 
   it('fails when probability is below confidence', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.4), calls)
+    fetchImpl = fakeFetch(noul(0.4), calls)
     const err = await decision.decide('cart is empty').catch(e => e)
 
     expect(err).to.be.instanceOf(Error)
@@ -68,16 +75,16 @@ describe('Decision helper', () => {
   })
 
   it('respects configured confidence', async () => {
-    decision = createDecision({ apiKey: 'secret', confidence: 0.95 })
+    decision = createDecision({ confidence: 0.95 })
     decision._actingHelper = () => browser
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
+    fetchImpl = fakeFetch(noul(0.9), calls)
 
     const err = await decision.decide('cart is empty').catch(e => e)
     expect(err.message).to.include('95%')
   })
 
   it('checks all statements in a single request', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9, 0.99, 0.8), calls)
+    fetchImpl = fakeFetch(noul(0.9, 0.99, 0.8), calls)
     const probabilities = await decision.decide(['form has fields', 'submit enabled', 'cancel present'])
 
     expect(probabilities).to.eql([0.9, 0.99, 0.8])
@@ -87,7 +94,7 @@ describe('Decision helper', () => {
   })
 
   it('lists only failed statements', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9, 0.1, 0.2), calls)
+    fetchImpl = fakeFetch(noul(0.9, 0.1, 0.2), calls)
     const err = await decision.decide(['form has fields', 'submit enabled', 'cancel present']).catch(e => e)
 
     expect(err.message).to.include('"submit enabled" (10%)')
@@ -98,7 +105,7 @@ describe('Decision helper', () => {
   it('sends screenshot to visual model', async () => {
     const outputDir = store.outputDir
     store.outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'decision-'))
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.8), calls)
+    fetchImpl = fakeFetch(noul(0.8), calls)
     try {
       await decision.decideVisually('sidebar is shown')
       expect(fs.readdirSync(store.outputDir)).to.be.empty
@@ -117,45 +124,29 @@ describe('Decision helper', () => {
 
   it('sends html when aria snapshot is not supported', async () => {
     decision._actingHelper = () => ({ ...browser, grabAriaSnapshot: undefined, grabSource: async () => '<html><body><h1>Checkout</h1></body></html>' })
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
+    fetchImpl = fakeFetch(noul(0.9), calls)
     await decision.decide('heading is shown')
 
     expect(calls[0].body.state.aria).to.be.undefined
     expect(calls[0].body.state.html).to.include('<h1>Checkout</h1>')
   })
 
-  it('uses AI SDK decision model from config', async () => {
-    const key = process.env.OPENROUTER_API_KEY
-    delete process.env.OPENROUTER_API_KEY
-    try {
-      const openrouter = createOpenRouter({ apiKey: 'config-key', fetch: fakeFetch(noul(0.9), calls) })
-      decision = createDecision({ model: openrouter.evaluationModel('typesafe/jev-latest') })
-      decision._actingHelper = () => browser
-
-      expect(await decision.decide('page is loaded')).to.equal(0.9)
-      expect(calls[0].body.model).to.equal('typesafe/jev-latest')
-      expect(calls[0].headers.get('authorization')).to.equal('Bearer config-key')
-    } finally {
-      if (key) process.env.OPENROUTER_API_KEY = key
-    }
-  })
-
   it('reports http errors', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch({}, calls, 402)
+    fetchImpl = fakeFetch({}, calls, 402)
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('402')
   })
 
   it('reports missing answers', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch({}, calls)
+    fetchImpl = fakeFetch({}, calls)
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('Decision must return exactly one answer for every question')
   })
 
   it('times out hanging requests', async () => {
-    decision = createDecision({ apiKey: 'secret', timeout: 50 })
+    decision = createDecision({ timeout: 50 })
     decision._actingHelper = () => browser
-    decision.decisionAI.fetchImpl = (url, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted'))))
+    fetchImpl = (url, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted'))))
 
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.message).to.include('did not respond in 50ms')
@@ -163,9 +154,9 @@ describe('Decision helper', () => {
   })
 
   it('times out stalled response body', async () => {
-    decision = createDecision({ apiKey: 'secret', timeout: 50 })
+    decision = createDecision({ timeout: 50 })
     decision._actingHelper = () => browser
-    decision.decisionAI.fetchImpl = async (url, { signal }) => {
+    fetchImpl = async (url, { signal }) => {
       const body = new ReadableStream({ start: controller => signal.addEventListener('abort', () => controller.error(new Error('aborted'))) })
       return new Response(body, { headers: { 'content-type': 'application/json' } })
     }
@@ -176,13 +167,13 @@ describe('Decision helper', () => {
   })
 
   it('marks failed decisions as not retryable', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch(noul(0.1), calls)
+    fetchImpl = fakeFetch(noul(0.1), calls)
     const err = await decision.decide('cart is empty').catch(e => e)
     expect(err.isTerminal).to.equal(true)
   })
 
   it('marks http errors as not retryable', async () => {
-    decision.decisionAI.fetchImpl = fakeFetch({}, calls, 500)
+    fetchImpl = fakeFetch({}, calls, 500)
     const err = await decision.decide('page is loaded').catch(e => e)
     expect(err.isTerminal).to.equal(true)
   })
@@ -195,39 +186,46 @@ describe('Decision helper', () => {
   })
 
   it('keeps connection errors retryable', async () => {
-    decision.decisionAI.fetchImpl = async () => {
-      throw new TypeError('fetch failed')
+    fetchImpl = async () => {
+      throw new TypeError('fetch failed', { cause: new Error('connect ECONNREFUSED') })
     }
     const err = await decision.decide('page is loaded').catch(e => e)
-    expect(err.message).to.include('request failed: fetch failed')
+    expect(err.message).to.include('request failed: Cannot connect to API: connect ECONNREFUSED')
     expect(err.isTerminal).to.be.undefined
   })
 
   it('reads config from ai.decisionModel', () => {
-    decision = createDecision({ apiKey: 'secret', model: 'jev-latest', confidence: 0.9 })
-    expect(decision.options.model).to.equal('jev-latest')
+    decision = createDecision({ confidence: 0.9 })
+    expect(decision.options.model.modelId).to.equal('typesafe/jev-1.13')
+    expect(decision.options.visualModel.modelId).to.equal('cloudflare/clef')
     expect(decision.options.confidence).to.equal(0.9)
-    expect(decision.options.visualModel).to.equal('cloudflare/clef')
   })
 
   it('validates config', () => {
-    expect(() => createDecision({ apiKey: 'secret', confidence: 1.5 })).to.throw('between 0 and 1')
+    expect(() => createDecision({ confidence: 1.5 })).to.throw('between 0 and 1')
   })
 
-  it('requires api key only when deciding', async () => {
-    const key = process.env.OPENROUTER_API_KEY
-    delete process.env.OPENROUTER_API_KEY
-    try {
-      decision = createDecision({})
-      decision._actingHelper = () => browser
-      decision.decisionAI.fetchImpl = fakeFetch(noul(0.9), calls)
+  it('requires decision model only when deciding', async () => {
+    decision = createDecision({ model: undefined })
+    decision._actingHelper = () => browser
+    fetchImpl = fakeFetch(noul(0.9), calls)
 
-      const err = await decision.decide('page is loaded').catch(e => e)
-      expect(err.message).to.include('OPENROUTER_API_KEY')
-      expect(calls).to.be.empty
-    } finally {
-      if (key) process.env.OPENROUTER_API_KEY = key
-    }
+    const err = await decision.decide('page is loaded').catch(e => e)
+    expect(err.message).to.include('No decision model is set in ai.decisionModel.model')
+    expect(err.message).to.include("openrouter.evaluationModel('typesafe/jev-1.13')")
+    expect(calls).to.be.empty
+  })
+
+  it('requires visual model for visual decisions', async () => {
+    decision = createDecision({ visualModel: undefined })
+    decision._actingHelper = () => browser
+    const outputDir = store.outputDir
+    store.outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'decision-'))
+
+    const err = await decision.decideVisually('sidebar is shown').catch(e => e)
+    fs.rmSync(store.outputDir, { recursive: true, force: true })
+    store.outputDir = outputDir
+    expect(err.message).to.include('No decision model is set in ai.decisionModel.visualModel')
   })
 
   describe('mode', () => {
@@ -237,7 +235,7 @@ describe('Decision helper', () => {
 
     it('skips decisions without requests', async () => {
       decision = createDecision({}, { mode: 'skip' })
-      decision.decisionAI.fetchImpl = fakeFetch(noul(0.1), calls)
+      fetchImpl = fakeFetch(noul(0.1), calls)
       store.currentStep = { comment: '' }
 
       expect(await decision.decide('cart is empty')).to.be.undefined
@@ -247,9 +245,9 @@ describe('Decision helper', () => {
     })
 
     it('reports results in step comment without failing', async () => {
-      decision = createDecision({ apiKey: 'secret' }, { mode: 'report' })
+      decision = createDecision({}, { mode: 'report' })
       decision._actingHelper = () => browser
-      decision.decisionAI.fetchImpl = fakeFetch(noul(0.9, 0.1), calls)
+      fetchImpl = fakeFetch(noul(0.9, 0.1), calls)
       store.currentStep = { comment: '' }
 
       const probabilities = await decision.decide(['form has fields', 'submit enabled'])
@@ -260,9 +258,9 @@ describe('Decision helper', () => {
     })
 
     it('reports api errors in step comment without failing', async () => {
-      decision = createDecision({ apiKey: 'secret' }, { mode: 'report' })
+      decision = createDecision({}, { mode: 'report' })
       decision._actingHelper = () => browser
-      decision.decisionAI.fetchImpl = fakeFetch({}, calls, 500)
+      fetchImpl = fakeFetch({}, calls, 500)
       store.currentStep = { comment: '' }
 
       expect(await decision.decide('page is loaded')).to.be.undefined

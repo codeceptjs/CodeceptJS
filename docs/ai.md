@@ -357,28 +357,7 @@ Decision models are separate from `ai.model`: decisions don't need `ai.model` or
 
 ### Configure Decision Models
 
-Decision models are served by the [OpenRouter Decisions API](https://openrouter.ai/models?output_modalities=decisions). The OpenRouter provider is installed with CodeceptJS, so the quickest setup is a model ID and an API key:
-
-```bash
-export OPENROUTER_API_KEY=sk-or-...
-```
-
-```js
-export default {
-  ai: {
-    decisionModel: {
-      model: 'typesafe/jev-1.13',
-      visualModel: 'cloudflare/clef',
-    },
-  },
-  helpers: {
-    Playwright: { url: 'http://localhost' },
-    Decision: {},
-  },
-}
-```
-
-To configure the provider yourself, import `createOpenRouter` from `@openrouter/ai-sdk-provider` and pass AI SDK decision models with `evaluationModel()`:
+Decision models are served by the [OpenRouter Decisions API](https://openrouter.ai/models?output_modalities=decisions). Install the [OpenRouter provider](https://ai-sdk.dev/providers/community-providers/openrouter) `@openrouter/ai-sdk-provider`, set `OPENROUTER_API_KEY`, and create the decision model with `evaluationModel()` in `codecept.conf.js`:
 
 ```js
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
@@ -391,7 +370,6 @@ export default {
   ai: {
     decisionModel: {
       model: openrouter.evaluationModel('typesafe/jev-1.13'),
-      visualModel: openrouter.evaluationModel('cloudflare/clef'),
       confidence: 0.8,
     },
   },
@@ -402,7 +380,20 @@ export default {
 }
 ```
 
-`model` is used by `I.decide`, and `visualModel` by `I.decideVisually`, so `visualModel` needs a model with image input. Both accept an OpenRouter model ID or an AI SDK decision model. See [Decision Assertions](/assertions#decision-assertions) for all options and usage.
+`model` is used by `I.decide`.
+
+### Visual Decision Model
+
+`I.decideVisually` sends a screenshot, so it needs a separate decision model with image input. Set it as `visualModel`:
+
+```js
+decisionModel: {
+  model: openrouter.evaluationModel('typesafe/jev-1.13'),
+  visualModel: openrouter.evaluationModel('cloudflare/clef'),
+},
+```
+
+See [Decision Assertions](/assertions#decision-assertions) for all options and usage.
 
 ## Advanced Configuration
 

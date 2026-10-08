@@ -36,47 +36,43 @@ This helper must be enabled together with a web helper (Playwright, Puppeteer, W
 
 ## Configuration
 
-Decision model is configured in the `ai.decisionModel` section of the config:
-
-```js
-ai: {
-  decisionModel: {
-    model: 'typesafe/jev-1.13',
-    visualModel: 'cloudflare/clef',
-    confidence: 0.7,
-  },
-},
-helpers: {
-  Playwright: { url: 'http://localhost', browser: 'chromium' },
-  Decision: {},
-}
-```
-
-Decisions are requested through the [OpenRouter Decisions API][3]
-with AI SDK [`experimental_decide`][4]. Set `OPENROUTER_API_KEY` to use it.
-
-*   `apiKey` (optional) - OpenRouter API key for model IDs, overrides `OPENROUTER_API_KEY` environment variable.
-*   `model` (default: `typesafe/jev-1.13`) - decision model used by `decide`: OpenRouter model ID or AI SDK decision model.
-*   `visualModel` (default: `cloudflare/clef`) - decision model with image input used by `decideVisually`: OpenRouter model ID or AI SDK decision model.
-
-AI SDK decision models are created with `@openrouter/ai-sdk-provider`:
+Decision model is created with the OpenRouter provider from `@openrouter/ai-sdk-provider`
+and configured in the `ai.decisionModel` section of the config:
 
 ```js
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 
-const openrouter = createOpenRouter({ apiKey: process.env.OPENROUTER_API_KEY })
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
 
-ai: {
-  decisionModel: {
-    model: openrouter.evaluationModel('typesafe/jev-1.13'),
-    visualModel: openrouter.evaluationModel('cloudflare/clef'),
+export default {
+  ai: {
+    decisionModel: {
+      model: openrouter.evaluationModel('typesafe/jev-1.13'),
+      confidence: 0.8,
+    },
   },
-},
+  helpers: {
+    Playwright: { url: 'http://localhost' },
+    Decision: {},
+  },
+}
 ```
 
+*   `model` - decision model used by `decide`.
 *   `confidence` (default: `0.7`) - minimal probability, between 0 and 1, for a statement to pass.
 *   `timeout` (default: `15000`) - request timeout in ms.
 *   `maxLength` (default: `12000`) - maximal length of ARIA snapshot or HTML sent to the model.
+
+`decideVisually` uses a separate decision model with image input, configured as `visualModel`:
+
+```js
+decisionModel: {
+  model: openrouter.evaluationModel('typesafe/jev-1.13'),
+  visualModel: openrouter.evaluationModel('cloudflare/clef'),
+},
+```
 
 The helper has one option:
 
@@ -112,9 +108,9 @@ const probability = await I.decide('cart is empty');
 
 #### Parameters
 
-*   `statements` **([string][5] | [Array][6]<[string][5]>)** statement or list of statements to verify.
+*   `statements` **([string][4] | [Array][5]<[string][4]>)** statement or list of statements to verify.
 
-Returns **[Promise][7]<([number][8] | [Array][6]<[number][8]> | [undefined][9])>** probability of each statement, `undefined` in `skip` mode.
+Returns **[Promise][6]<([number][7] | [Array][5]<[number][7]> | [undefined][8])>** probability of each statement, `undefined` in `skip` mode.
 
 ### decideVisually
 
@@ -129,9 +125,9 @@ I.decideVisually(['logo is in the header', 'page uses dark theme']);
 
 #### Parameters
 
-*   `statements` **([string][5] | [Array][6]<[string][5]>)** statement or list of statements to verify.
+*   `statements` **([string][4] | [Array][5]<[string][4]>)** statement or list of statements to verify.
 
-Returns **[Promise][7]<([number][8] | [Array][6]<[number][8]> | [undefined][9])>** probability of each statement, `undefined` in `skip` mode.
+Returns **[Promise][6]<([number][7] | [Array][5]<[number][7]> | [undefined][8])>** probability of each statement, `undefined` in `skip` mode.
 
 [1]: https://openrouter.ai/typesafe/jev-1.13
 
@@ -139,14 +135,12 @@ Returns **[Promise][7]<([number][8] | [Array][6]<[number][8]> | [undefined][9])>
 
 [3]: https://openrouter.ai/models?output_modalities=decisions
 
-[4]: https://ai-sdk.dev/docs/ai-sdk-core/decisions
+[4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
