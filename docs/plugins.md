@@ -81,6 +81,10 @@ Saves screenshots from the browser at points triggered by `on=`.
 
 Saves a screenshot when a test fails.
 
+## [sitemap](/plugins/sitemap)
+
+Collects all pages visited while tests are running and saves them as a [sitemap][1] XML file.
+
 ## [stepTimeout](/plugins/stepTimeout)
 
 Set timeout for test steps globally.
