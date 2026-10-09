@@ -353,7 +353,47 @@ I.decideVisually('sidebar is shown')
 
 It uses a [decision model](https://openrouter.ai/models?output_modalities=decisions) like [Jev](https://openrouter.ai/typesafe/jev-1.13) instead of a chat model. A decision model reads the page and returns the probability that a statement is true. It is fast, costs a fraction of a cent per request, and gives a probability instead of free text, so a step passes or fails on a confidence threshold you set.
 
-Configure it in `ai.decisionModel`. Decisions call the decisions API directly, so they don't need `ai.model` or the `--ai` flag. See [Decision Assertions](/assertions#decision-assertions) for setup and usage.
+Decision models are separate from `ai.model`: decisions don't need `ai.model` or the `--ai` flag. CodeceptJS calls them with AI SDK [`experimental_decide`](https://ai-sdk.dev/docs/ai-sdk-core/decisions).
+
+### Configure Decision Models
+
+Decision models are served by the [OpenRouter Decisions API](https://openrouter.ai/models?output_modalities=decisions). Install the [OpenRouter provider](https://ai-sdk.dev/providers/community-providers/openrouter) `@openrouter/ai-sdk-provider`, set `OPENROUTER_API_KEY`, and create the decision model with `evaluationModel()` in `codecept.conf.js`:
+
+```js
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
+
+export default {
+  ai: {
+    decisionModel: {
+      model: openrouter.evaluationModel('typesafe/jev-1.13'),
+      confidence: 0.8,
+    },
+  },
+  helpers: {
+    Playwright: { url: 'http://localhost' },
+    Decision: {},
+  },
+}
+```
+
+`model` is used by `I.decide`.
+
+### Visual Decision Model
+
+`I.decideVisually` sends a screenshot, so it needs a separate decision model with image input. Set it as `visualModel`:
+
+```js
+decisionModel: {
+  model: openrouter.evaluationModel('typesafe/jev-1.13'),
+  visualModel: openrouter.evaluationModel('cloudflare/clef'),
+},
+```
+
+See [Decision Assertions](/assertions#decision-assertions) for all options and usage.
 
 ## Advanced Configuration
 

@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import AiAssistant, { DecisionAI } from '../../lib/ai.js'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import config from '../../lib/config.js'
 import { createMockModel, MockResponses } from '../support/mock-ai-provider.js'
 import fs from 'fs'
@@ -299,36 +300,25 @@ describe('AI module with mock provider', () => {
 })
 
 describe('DecisionAI', () => {
-  it('guides user to set API key', async () => {
-    const key = process.env.TYPESAFE_API_KEY
-    delete process.env.TYPESAFE_API_KEY
-    try {
-      const decisionAI = new DecisionAI({ provider: 'typesafe' })
-      expect(() => decisionAI.checkModel()).to.throw(/TYPESAFE_API_KEY[\s\S]*openrouter\.ai\/settings\/keys/)
-      const err = await decisionAI.decide('jev-latest', 'state', ['page is loaded']).catch(e => e)
-      expect(err.message).to.include('No API key is set for decision model')
-    } finally {
-      if (key) process.env.TYPESAFE_API_KEY = key
-    }
-  })
-
-  it('accepts API key from config', () => {
-    expect(() => new DecisionAI({ provider: 'typesafe', apiKey: 'secret' }).checkModel()).not.to.throw()
-  })
-
-  it('rejects unknown provider', () => {
-    expect(() => new DecisionAI({ provider: 'unknown' })).to.throw('Unknown decision provider')
+  it('guides user to configure decision model', async () => {
+    const decisionAI = new DecisionAI()
+    expect(() => decisionAI.checkModel('model')).to.throw(/ai\.decisionModel\.model[\s\S]*@openrouter\/ai-sdk-provider/)
+    const err = await decisionAI.decide('model', 'state', ['page is loaded']).catch(e => e)
+    expect(err.message).to.include('No decision model is set')
   })
 
   it('asks all statements in one request', async () => {
     const calls = []
-    const decisionAI = new DecisionAI({ apiKey: 'secret' })
-    decisionAI.fetchImpl = async (url, options) => {
-      calls.push({ url, body: JSON.parse(options.body) })
-      return { ok: true, json: async () => ({ answers: { q0: { type: 'noul', noul: 0.9 }, q1: { type: 'noul', noul: 0.2 } } }) }
-    }
+    const openrouter = createOpenRouter({
+      apiKey: 'secret',
+      fetch: async (url, options) => {
+        calls.push({ url, body: JSON.parse(options.body) })
+        return Response.json({ answers: { q0: { type: 'noul', noul: 0.9 }, q1: { type: 'noul', noul: 0.2 } } })
+      },
+    })
+    const decisionAI = new DecisionAI({ model: openrouter.evaluationModel('typesafe/jev-1.13') })
 
-    const probabilities = await decisionAI.decide('typesafe/jev-1.13', { url: 'http://localhost' }, ['form is shown', 'cart is empty'])
+    const probabilities = await decisionAI.decide('model', { url: 'http://localhost' }, ['form is shown', 'cart is empty'])
 
     expect(probabilities).to.eql([0.9, 0.2])
     expect(calls).to.have.length(1)

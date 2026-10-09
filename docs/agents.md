@@ -186,6 +186,8 @@ I.decide([
 
 The agent runs the statement on the live page like any other command and keeps it only if it passes. The test then checks it on every run.
 
+To let the agent use decisions, [configure a decision model](/ai#configure-decision-models) and enable the Decision helper.
+
 Decision models like [Jev](https://openrouter.ai/typesafe/jev-1.13) are built for this. They answer in a fraction of a second, cost a fraction of a cent per request, and return a probability instead of free text. That makes them fast and cheap enough to run on every CI build, and predictable enough to keep in a test.
 
 ## Skills bundle

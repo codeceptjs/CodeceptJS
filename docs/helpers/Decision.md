@@ -36,30 +36,43 @@ This helper must be enabled together with a web helper (Playwright, Puppeteer, W
 
 ## Configuration
 
-Decision model is configured in the `ai.decisionModel` section of the config:
+Decision model is created with the OpenRouter provider from `@openrouter/ai-sdk-provider`
+and configured in the `ai.decisionModel` section of the config:
 
 ```js
-ai: {
-  decisionModel: {
-    provider: 'openrouter',
-    model: 'typesafe/jev-1.13',
-    visualModel: 'cloudflare/clef',
-    confidence: 0.7,
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
+
+export default {
+  ai: {
+    decisionModel: {
+      model: openrouter.evaluationModel('typesafe/jev-1.13'),
+      confidence: 0.8,
+    },
   },
-},
-helpers: {
-  Playwright: { url: 'http://localhost', browser: 'chromium' },
-  Decision: {},
+  helpers: {
+    Playwright: { url: 'http://localhost' },
+    Decision: {},
+  },
 }
 ```
 
-*   `provider` (default: `openrouter`) - decision API to call: `openrouter` (reads `OPENROUTER_API_KEY`) or `typesafe` (reads `TYPESAFE_API_KEY`).
-*   `apiKey` (optional) - API key, overrides the environment variable.
-*   `model` (default: `typesafe/jev-1.13`) - decision model used by `decide`. Use `jev-latest` with the `typesafe` provider.
-*   `visualModel` (default: `cloudflare/clef`) - decision model with image input used by `decideVisually`. Available on OpenRouter only.
+*   `model` - decision model used by `decide`.
 *   `confidence` (default: `0.7`) - minimal probability, between 0 and 1, for a statement to pass.
 *   `timeout` (default: `15000`) - request timeout in ms.
 *   `maxLength` (default: `12000`) - maximal length of ARIA snapshot or HTML sent to the model.
+
+`decideVisually` uses a separate decision model with image input, configured as `visualModel`:
+
+```js
+decisionModel: {
+  model: openrouter.evaluationModel('typesafe/jev-1.13'),
+  visualModel: openrouter.evaluationModel('cloudflare/clef'),
+},
+```
 
 The helper has one option:
 

@@ -407,15 +407,9 @@ A [decision model](https://openrouter.ai/models?output_modalities=decisions), li
 - **Cost-efficient.** A request costs a fraction of a cent. You can run decision assertions in every CI build.
 - **Reliable.** The answer is a probability, not free text. There is nothing to parse, and you choose how confident the model must be for the step to pass.
 
-Set `OPENROUTER_API_KEY`, configure the decision model in the `ai` section, and enable the helper next to your browser helper:
+Configure the decision model in `ai.decisionModel` as described in [Configure Decision Models](/ai#configure-decision-models), and enable the helper next to your browser helper:
 
 ```js
-ai: {
-  decisionModel: {
-    model: 'typesafe/jev-1.13',
-    confidence: 0.7,
-  },
-},
 helpers: {
   Playwright: { url: 'http://localhost' },
   Decision: {},
@@ -426,15 +420,13 @@ helpers: {
 
 | Option | Default | Description |
 |---|---|---|
-| `provider` | `openrouter` | `openrouter` reads `OPENROUTER_API_KEY`, `typesafe` reads `TYPESAFE_API_KEY` |
-| `apiKey` | | API key, overrides the environment variable |
-| `model` | `typesafe/jev-1.13` | model for `I.decide` |
-| `visualModel` | `cloudflare/clef` | model with image input for `I.decideVisually`, OpenRouter only |
+| `model` | | decision model for `I.decide` |
+| `visualModel` | | decision model with image input for `I.decideVisually` |
 | `confidence` | `0.7` | minimal probability for a statement to pass |
 | `timeout` | `15000` | request timeout in ms |
 | `maxLength` | `12000` | maximal length of ARIA snapshot or HTML sent to the model |
 
-Decisions don't need the `--ai` flag, and `ai.model` is not required.
+Any model from the [OpenRouter decision models](https://openrouter.ai/models?output_modalities=decisions) list can be used with `openrouter.evaluationModel()`. Decisions don't need the `--ai` flag, and `ai.model` is not required.
 
 Then assert statements about the current page:
 
@@ -457,7 +449,7 @@ I.decideVisually('sidebar is shown')
 expected page to satisfy "success message is shown" (12%) with confidence of 70%
 ```
 
-`I.decideVisually` also sends a screenshot, so it needs a model with image input. It uses `visualModel`, which is [Clef](https://openrouter.ai/cloudflare/clef) by default. Visual decisions are experimental.
+`I.decideVisually` also sends a screenshot, so it needs a [visual decision model](/ai#visual-decision-model) with image input, like [Clef](https://openrouter.ai/cloudflare/clef), set as `visualModel`. Visual decisions are experimental.
 
 To turn decisions off without removing the helper, set its `mode`:
 
