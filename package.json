@@ -101,7 +101,7 @@
     "@modelcontextprotocol/sdk": "^1.26.0",
     "@xmldom/xmldom": "0.9.10",
     "acorn": "8.15.0",
-    "ai": "^7.0.131",
+    "ai": "7.0.132",
     "arrify": "3.0.0",
     "axios": "1.16.1",
     "chalk": "4.1.2",
