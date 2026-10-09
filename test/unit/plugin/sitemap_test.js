@@ -13,11 +13,21 @@ let page
 let outputDir
 let originalOutputDir
 
-const mainFrame = url => ({ url: () => url, parentFrame: () => null })
+const createPage = () => {
+  const p = new EventEmitter()
+  p.currentUrl = 'about:blank'
+  p.url = () => p.currentUrl
+  return p
+}
+
+const startTest = async () => {
+  event.dispatcher.emit(event.test.started, {})
+  await recorder.promise()
+}
 
 const visit = async url => {
-  event.dispatcher.emit(event.step.started, {})
-  page.emit('framenavigated', mainFrame(url))
+  page.currentUrl = url
+  page.emit('load', page)
 }
 
 describe('sitemap plugin', () => {
@@ -27,18 +37,18 @@ describe('sitemap plugin', () => {
     outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sitemap-'))
     originalOutputDir = store.outputDir
     store.outputDir = outputDir
-    page = new EventEmitter()
-    page.url = () => 'about:blank'
+    page = createPage()
+    const browser = new EventEmitter()
+    browser.pages = async () => [page]
     container.clear({
       Puppeteer: {
         options: {},
-        page,
+        browser,
       },
     })
   })
 
   afterEach(() => {
-    event.dispatcher.removeAllListeners(event.step.started)
     event.dispatcher.removeAllListeners(event.test.started)
     event.dispatcher.removeAllListeners(event.all.result)
     event.dispatcher.removeAllListeners(event.workers.before)
@@ -49,6 +59,7 @@ describe('sitemap plugin', () => {
 
   it('writes unique visited pages to sitemap.xml', async () => {
     sitemap({})
+    await startTest()
     await visit('http://localhost:8000/')
     await visit('http://localhost:8000/form/field#top')
     await visit('http://localhost:8000/form/field')
@@ -65,18 +76,64 @@ describe('sitemap plugin', () => {
     expect(xml).not.to.include('about:blank')
   })
 
-  it('ignores iframe navigations and attaches to a page once', async () => {
+  it('records SPA route changes and ignores iframe navigations', async () => {
     sitemap({})
-    event.dispatcher.emit(event.step.started, {})
-    event.dispatcher.emit(event.step.started, {})
-    expect(page.listenerCount('framenavigated')).to.equal(1)
+    await startTest()
+    await startTest()
+    expect(page.listenerCount('load')).to.equal(1)
     page.emit('framenavigated', { url: () => 'http://localhost:8000/frame', parentFrame: () => ({}) })
-    page.emit('framenavigated', mainFrame('http://localhost:8000/spa-route'))
+    page.emit('framenavigated', { url: () => 'http://localhost:8000/spa-route', parentFrame: () => null })
     event.dispatcher.emit(event.all.result, {})
 
     const xml = fs.readFileSync(path.join(outputDir, 'sitemap.xml'), 'utf8')
     expect(xml.match(/<loc>/g).length).to.equal(1)
     expect(xml).to.include('<loc>http://localhost:8000/spa-route</loc>')
+  })
+
+  it('attaches to Puppeteer pages opened later', async () => {
+    sitemap({})
+    await startTest()
+    const newTab = createPage()
+    newTab.currentUrl = 'http://localhost:8000/new-tab'
+    const browser = container.helpers('Puppeteer').browser
+    browser.emit('targetcreated', { type: () => 'page', page: async () => newTab })
+    browser.emit('targetcreated', { type: () => 'service_worker', page: async () => null })
+    await new Promise(resolve => setImmediate(resolve))
+    newTab.currentUrl = 'http://localhost:8000/new-tab/next'
+    newTab.emit('load', newTab)
+    event.dispatcher.emit(event.all.result, {})
+
+    const xml = fs.readFileSync(path.join(outputDir, 'sitemap.xml'), 'utf8')
+    expect(xml).to.include('<loc>http://localhost:8000/new-tab</loc>')
+    expect(xml).to.include('<loc>http://localhost:8000/new-tab/next</loc>')
+  })
+
+  it('attaches to Playwright contexts and pages once per browser', async () => {
+    const context = new EventEmitter()
+    context.pages = () => [page]
+    const browser = new EventEmitter()
+    browser.contexts = () => [context]
+    container.clear({ Playwright: { options: {}, browser } })
+
+    sitemap({})
+    await startTest()
+    await startTest()
+    expect(browser.listenerCount('context')).to.equal(1)
+    expect(page.listenerCount('load')).to.equal(1)
+
+    await visit('http://localhost:8000/')
+    const sessionContext = new EventEmitter()
+    sessionContext.pages = () => []
+    browser.emit('context', sessionContext)
+    const sessionPage = createPage()
+    sessionContext.emit('page', sessionPage)
+    sessionPage.currentUrl = 'http://localhost:8000/session'
+    sessionPage.emit('load', sessionPage)
+    event.dispatcher.emit(event.all.result, {})
+
+    const xml = fs.readFileSync(path.join(outputDir, 'sitemap.xml'), 'utf8')
+    expect(xml.match(/<loc>/g).length).to.equal(2)
+    expect(xml).to.include('<loc>http://localhost:8000/session</loc>')
   })
 
   it('collects pages from WebDriver BiDi events', async () => {
@@ -104,6 +161,7 @@ describe('sitemap plugin', () => {
 
   it('strips query strings when configured', async () => {
     sitemap({ stripQuery: true, outputName: 'pages.xml' })
+    await startTest()
     await visit('http://localhost:8000/posts?page=1')
     await visit('http://localhost:8000/posts?page=2')
     event.dispatcher.emit(event.all.result, {})
