@@ -58,7 +58,7 @@ describe('sitemap plugin', () => {
   })
 
   it('writes unique visited pages to sitemap.xml', async () => {
-    sitemap({})
+    sitemap({ stripQuery: false })
     await startTest()
     await visit('http://localhost:8000/')
     await visit('http://localhost:8000/form/field#top')
@@ -159,16 +159,27 @@ describe('sitemap plugin', () => {
     expect(xml).not.to.include('/frame')
   })
 
-  it('strips query strings when configured', async () => {
-    sitemap({ stripQuery: true, outputName: 'pages.xml' })
+  it('strips query strings by default and saves to custom file', async () => {
+    sitemap({ file: 'reports/pages.xml' })
     await startTest()
     await visit('http://localhost:8000/posts?page=1')
     await visit('http://localhost:8000/posts?page=2')
     event.dispatcher.emit(event.all.result, {})
 
-    const xml = fs.readFileSync(path.join(outputDir, 'pages.xml'), 'utf8')
+    const xml = fs.readFileSync(path.join(outputDir, 'reports', 'pages.xml'), 'utf8')
     expect(xml.match(/<loc>/g).length).to.equal(1)
     expect(xml).to.include('<loc>http://localhost:8000/posts</loc>')
+  })
+
+  it('keeps query strings when stripQuery=false is passed from CLI', async () => {
+    sitemap({ _args: ['stripQuery=false'] })
+    await startTest()
+    await visit('http://localhost:8000/posts?page=1')
+    await visit('http://localhost:8000/posts?page=2')
+    event.dispatcher.emit(event.all.result, {})
+
+    const xml = fs.readFileSync(path.join(outputDir, 'sitemap.xml'), 'utf8')
+    expect(xml.match(/<loc>/g).length).to.equal(2)
   })
 
   it('merges worker partials on workers.result', async () => {

@@ -30,14 +30,14 @@ The sitemap is written once all tests finish.
 
 Possible config options:
 
-*   `outputName`: file name for the sitemap. Default: `sitemap.xml`.
-*   `output`: directory where the sitemap is stored, relative to the project root. Default: the `output` directory.
-*   `stripQuery`: remove query strings so `/posts?page=1` and `/posts?page=2` become one `/posts` entry. Default: false.
+*   `file`: path to the sitemap file, relative to the output directory. Default: `sitemap.xml`, saved as `output/sitemap.xml`.
+*   `stripQuery`: remove query strings so `/posts?page=1` and `/posts?page=2` become one `/posts` entry. Set to `false` to keep them. Default: true.
 
 CLI examples:
 
     npx codeceptjs run -p sitemap
-    npx codeceptjs run -p sitemap:outputName=visited.xml
+    npx codeceptjs run -p sitemap:file=visited.xml
+    npx codeceptjs run -p sitemap:stripQuery=false
 
 Works with `run-workers`: URLs from all workers are merged into a single sitemap.
 
