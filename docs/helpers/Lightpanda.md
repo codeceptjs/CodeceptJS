@@ -62,7 +62,7 @@ These are set automatically and only need overriding for unusual setups:
 
 ## Limitations
 
-*   No screenshots and no screencast: `saveScreenshot` throws.
+*   No screenshots and no screencast: `saveScreenshot` and `saveElementScreenshot` do nothing (a debug message is printed).
 *   No frames or popups.
 *   No scrolling: scroll positions always stay at 0.
 *   Computed styles cover what visibility checks need (`display`, `visibility`, `opacity`,
