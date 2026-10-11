@@ -1550,6 +1550,27 @@ export function tests() {
     })
   })
 
+  describe('#grabAriaSnapshot', () => {
+    beforeEach(function () {
+      if (!I.grabAriaSnapshot || I.capabilities?.aria === false) this.skip()
+    })
+
+    it('should grab the ARIA snapshot of the page', async () => {
+      await I.amOnPage('/form/field')
+      const snapshot = await I.grabAriaSnapshot()
+      assert.match(snapshot, /^- /m)
+      assert.ok(snapshot.includes('textbox'), snapshot)
+      assert.ok(snapshot.includes('button'), snapshot)
+    })
+
+    it('should grab the ARIA snapshot of an element', async () => {
+      await I.amOnPage('/info')
+      const snapshot = await I.grabAriaSnapshot('form')
+      assert.ok(snapshot.includes('textbox'), snapshot)
+      assert.ok(!snapshot.includes('Information'), snapshot)
+    })
+  })
+
   describe('#saveScreenshot', () => {
     beforeEach(function () {
       if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported
