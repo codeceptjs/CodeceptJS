@@ -748,6 +748,7 @@ describe('Playwright', function () {
       locatorProto = Object.getPrototypeOf(page.locator('body'))
       originalAll = locatorProto.all
       locatorProto.all = async function () {
+        locatorProto.all = originalAll
         const els = await originalAll.call(this)
         await page.evaluate(() => document.querySelector('.toast')?.remove())
         return els
@@ -770,6 +771,42 @@ describe('Playwright', function () {
       const start = Date.now()
       await I.dontSee('old toast', '.toast')
       expect(Date.now() - start).to.be.below(1000)
+    })
+
+    it('should fail text equality check when every matched element is removed', async () => {
+      await I.executeScript(() => document.querySelectorAll('.toast')[1].remove())
+      const start = Date.now()
+      let error
+      try {
+        await I.seeTextEquals('old toast', '.toast')
+      } catch (err) {
+        error = err
+      }
+      expect(error?.message).to.include('was not found')
+      expect(Date.now() - start).to.be.below(1000)
+    })
+  })
+
+  describe('#see with context matching a non-HTML element', () => {
+    beforeEach(async () => {
+      await I.amOnPage('/form/field')
+      await I.executeScript(() => {
+        document.body.insertAdjacentHTML('beforeend', '<svg width="200" height="50"><text class="chart-label" x="5" y="20">chart label</text></svg>')
+      })
+    })
+
+    it('should see text of an SVG element', async () => {
+      await I.see('chart label', '.chart-label')
+    })
+
+    it('should fail to not see text of an SVG element', async () => {
+      let error
+      try {
+        await I.dontSee('chart label', '.chart-label')
+      } catch (err) {
+        error = err
+      }
+      expect(error).to.be.instanceOf(AssertionFailedError)
     })
   })
 
