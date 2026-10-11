@@ -79,7 +79,7 @@ Type: [object][4]
 *   `apiBase` **[string][3]?** Cloudflare API base URL
 *   `input` **[string][3]?** how actions are dispatched: `cdp` (real mouse and keyboard events) or `synthetic` (DOM events).
 *   `capabilities` **[object][4]?** browser capabilities; Kitesurf sets `{ layout: 'real', screenshot: true }`.
-*   `xpathPolyfill` **([string][3] | [boolean][17])?** inject an XPath polyfill for browsers with incomplete XPath support. `auto` detects when it is needed.
+*   `xpathPolyfill` **([string][3] | [boolean][18])?** inject an XPath polyfill for browsers with incomplete XPath support. `auto` detects when it is needed.
 *   `waitForTimeout` **[number][8]?** default timeout for wait* actions, in seconds.
 *   `waitForAction` **[number][8]?** fixed delay after each action, in milliseconds. When unset, actions wait only for the navigation they trigger.
 *   `pollInterval` **[number][8]?** interval between checks while waiting, in milliseconds.
@@ -189,6 +189,10 @@ I.dontSee('#add-to-cart-btn');
 *   `options` **any?** Playwright only: [Additional options][6] for available options object as 2nd argument.
 
 Returns **void** automatically synchronized promise through #recorder
+
+### capabilities
+
+Type: CodeceptJS.HelperCapabilities
 
 ### checkOption
 
@@ -683,6 +687,22 @@ I.forceClick({css: 'nav a.login'});
 
 Returns **void** automatically synchronized promise through #recorder
 
+### grabAriaSnapshot
+
+Retrieves the ARIA snapshot of the page, or of an element, built from the browser accessibility tree.
+The format matches Playwright's [ARIA snapshots][14].
+
+```js
+const snapshot = await I.grabAriaSnapshot();
+const formSnapshot = await I.grabAriaSnapshot('#login-form');
+```
+
+#### Parameters
+
+*   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator. Defaults to body element. 
+
+Returns **[Promise][12]<[string][3]>** YAML representation of the accessibility tree
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -714,7 +734,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 *   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 *   `attr` **[string][3]** attribute name.
 
-Returns **[Promise][12]<[Array][14]<[string][3]>>** attribute value
+Returns **[Promise][12]<[Array][15]<[string][3]>>** attribute value
 
 ### grabCookie
 
@@ -742,7 +762,7 @@ Resumes test execution, so **should be used inside async function with `await`**
 let cookies = await I.grabCookies();
 ```
 
-Returns **[Promise][12]<[Array][14]<CodeceptJS.Cookie>>** array of cookie objects.
+Returns **[Promise][12]<[Array][15]<CodeceptJS.Cookie>>** array of cookie objects.
 
 ### grabCssPropertyFrom
 
@@ -775,7 +795,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 *   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 *   `cssProperty` **[string][3]** CSS property name.
 
-Returns **[Promise][12]<[Array][14]<[string][3]>>** CSS value
+Returns **[Promise][12]<[Array][15]<[string][3]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -835,7 +855,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 *   `locator` &#x20;
 *   `element` **([string][3] | [object][4])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][12]<[Array][14]<[string][3]>>** HTML code for an element
+Returns **[Promise][12]<[Array][15]<[string][3]>>** HTML code for an element
 
 ### grabNumberOfElements
 
@@ -889,7 +909,7 @@ expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][14]** recorded network traffics
+Returns **[Array][15]** recorded network traffics
 
 ### grabSource
 
@@ -932,7 +952,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 *   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][12]<[Array][14]<[string][3]>>** attribute value
+Returns **[Promise][12]<[Array][15]<[string][3]>>** attribute value
 
 ### grabTitle
 
@@ -974,7 +994,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 *   `locator` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][12]<[Array][14]<[string][3]>>** attribute value
+Returns **[Promise][12]<[Array][15]<[string][3]>>** attribute value
 
 ### grabWebElement
 
@@ -1017,7 +1037,7 @@ I.pressKey(['Control', 'a']);
 
 #### Parameters
 
-*   `key` **([string][3] | [Array][14]<[string][3]>)** a key or an array of keys to combine (modifiers first).
+*   `key` **([string][3] | [Array][15]<[string][3]>)** a key or an array of keys to combine (modifiers first).
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1471,7 +1491,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 *   `select` **([string][3] | [object][4])** field located by label|name|CSS|XPath|strict locator.
-*   `option` **([string][3] | [Array][14]<any>)** visible text or value of option.
+*   `option` **([string][3] | [Array][15]<any>)** visible text or value of option.
 *   `context` **([string][3]? | [object][4])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
@@ -1494,7 +1514,7 @@ I.setCookie([
 
 #### Parameters
 
-*   `cookie` **(Cookie | [Array][14]<Cookie>)** a cookie object or array of cookie objects.
+*   `cookie` **(Cookie | [Array][15]<Cookie>)** a cookie object or array of cookie objects.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1544,13 +1564,13 @@ const video = await I.stopScreencast();
 
 *   `options` **[object][4]?** `{ lastFrameDelayMs }`: how long the last frame is shown, in milliseconds (1000 by default). 
 
-Returns **[Promise][12]<([Buffer][15] | null)>** APNG data, or `null` if no frames were recorded.
+Returns **[Promise][12]<([Buffer][16] | null)>** APNG data, or `null` if no frames were recorded.
 
 ### type
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-*Note:* Should be used when [`fillField`][16] is not an option.
+*Note:* Should be used when [`fillField`][17] is not an option.
 
 ```js
 // passing in a string
@@ -1570,7 +1590,7 @@ I.type(secret('123456'));
 
 *   `keys` &#x20;
 *   `delay` **[number][8]?** (optional) delay in ms between key presses 
-*   `key` **([string][3] | [Array][14]<[string][3]>)** or array of keys to type.
+*   `key` **([string][3] | [Array][15]<[string][3]>)** or array of keys to type.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1690,7 +1710,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 *   `fn` **([string][3] | [function][11])** to be executed in browser context.
-*   `argsOrSec` **([Array][14]<any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
+*   `argsOrSec` **([Array][15]<any> | [number][8])?** (optional, `1` by default) arguments for function or seconds. 
 *   `sec` **[number][8]?** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
@@ -1835,7 +1855,7 @@ Probes a `/json/version`-style URL with a short timeout, used for the courtesy-a
 
 *   `url` **[string][3]**&#x20;
 
-Returns **[Promise][12]<[boolean][17]>** true if the URL answered.
+Returns **[Promise][12]<[boolean][18]>** true if the URL answered.
 
 ### _resolveBinary
 
@@ -1892,10 +1912,12 @@ per run and counts directly toward real-world startup latency.
 
 [13]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[14]: https://playwright.dev/docs/aria-snapshots
 
-[15]: https://nodejs.org/api/buffer.html
+[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[16]: #fillfield
+[16]: https://nodejs.org/api/buffer.html
 
-[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[17]: #fillfield
+
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean

@@ -519,6 +519,10 @@ Returns **void** automatically synchronized promise through #recorder
 
 Dismisses the active JavaScript popup, as created by `window.alert|window.confirm|window.prompt`.
 
+### capabilities
+
+Type: CodeceptJS.HelperCapabilities
+
 ### checkOption
 
 Appium: not tested

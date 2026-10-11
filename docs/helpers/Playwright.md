@@ -440,6 +440,10 @@ Returns **void** automatically synchronized promise through #recorder
 
 Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
 
+### capabilities
+
+Type: CodeceptJS.HelperCapabilities
+
 ### checkOption
 
 [Additional options][14] for check available as 3rd argument.

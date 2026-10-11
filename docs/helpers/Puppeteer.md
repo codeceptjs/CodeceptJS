@@ -39,26 +39,26 @@ Type: [object][6]
 
 *   `url` **[string][5]** base url of website to be tested
 *   `basicAuth` **[object][6]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
-*   `show` **[boolean][24]?** show Google Chrome window for debug.
-*   `restart` **[boolean][24]?** restart browser between tests.
-*   `disableScreenshots` **[boolean][24]?** don't save screenshot on failure.
-*   `fullPageScreenshots` **[boolean][24]?** make full page screenshots on failure.
-*   `uniqueScreenshotNames` **[boolean][24]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
-*   `trace` **[boolean][24]?** record [tracing information][28] with screenshots.
-*   `keepTraceForPassedTests` **[boolean][24]?** save trace for passed tests.
-*   `keepBrowserState` **[boolean][24]?** keep browser state between tests when `restart` is set to false.
-*   `keepCookies` **[boolean][24]?** keep cookies between tests when `restart` is set to false.
+*   `show` **[boolean][25]?** show Google Chrome window for debug.
+*   `restart` **[boolean][25]?** restart browser between tests.
+*   `disableScreenshots` **[boolean][25]?** don't save screenshot on failure.
+*   `fullPageScreenshots` **[boolean][25]?** make full page screenshots on failure.
+*   `uniqueScreenshotNames` **[boolean][25]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+*   `trace` **[boolean][25]?** record [tracing information][29] with screenshots.
+*   `keepTraceForPassedTests` **[boolean][25]?** save trace for passed tests.
+*   `keepBrowserState` **[boolean][25]?** keep browser state between tests when `restart` is set to false.
+*   `keepCookies` **[boolean][25]?** keep cookies between tests when `restart` is set to false.
 *   `waitForAction` **[number][11]?** how long to wait after click, doubleClick or PressKey actions in ms. Default: 100.
-*   `waitForNavigation` **([string][5] | [Array][17]<[string][5]>)?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][29]. Array values are accepted as well.
+*   `waitForNavigation` **([string][5] | [Array][18]<[string][5]>)?** when to consider navigation succeeded. Possible options: `load`, `domcontentloaded`, `networkidle0`, `networkidle2`. See [Puppeteer API][30]. Array values are accepted as well.
 *   `pressKeyDelay` **[number][11]?** delay between key presses in ms. Used when calling Puppeteers page.type(...) in fillField/appendField
 *   `getPageTimeout` **[number][11]?** config option to set maximum navigation time in milliseconds. If the timeout is set to 0, then timeout will be disabled.
 *   `waitForTimeout` **[number][11]?** default wait* timeout in ms.
 *   `windowSize` **[string][5]?** default window size. Set a dimension in format WIDTHxHEIGHT like `640x480`.
 *   `userAgent` **[string][5]?** user-agent string.
-*   `manualStart` **[boolean][24]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
+*   `manualStart` **[boolean][25]?** do not start browser before a test, start it manually inside a helper with `this.helpers["Puppeteer"]._startBrowser()`.
 *   `browser` **[string][5]?** can be changed to `firefox` when using [puppeteer-firefox][2].
-*   `chrome` **[object][6]?** pass additional [Puppeteer run options][30].
-*   `highlightElement` **[boolean][24]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+*   `chrome` **[object][6]?** pass additional [Puppeteer run options][31].
+*   `highlightElement` **[boolean][25]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 
 ## findElement
 
@@ -82,7 +82,7 @@ Note: Unlike Playwright, Puppeteer's Locator API doesn't have .all() method for 
 *   `matcher` **[Object][6]** Puppeteer context to search within
 *   `locator` **([Object][6] | [string][5])** Locator specification
 
-Returns **[Promise][12]<[Array][17]>** Array of ElementHandle objects
+Returns **[Promise][12]<[Array][18]>** Array of ElementHandle objects
 
 ## wrapError
 
@@ -339,6 +339,10 @@ Returns **void** automatically synchronized promise through #recorder
 ### cancelPopup
 
 Dismisses the active JavaScript popup, as created by window.alert|window.confirm|window.prompt.
+
+### capabilities
+
+Type: CodeceptJS.HelperCapabilities
 
 ### checkOption
 
@@ -917,6 +921,22 @@ I.forceClick({css: 'nav a.login'});
 
 Returns **void** automatically synchronized promise through #recorder
 
+### grabAriaSnapshot
+
+Retrieves the ARIA snapshot of the page, or of an element, built from the browser accessibility tree.
+The format matches Playwright's [ARIA snapshots][17].
+
+```js
+const snapshot = await I.grabAriaSnapshot();
+const formSnapshot = await I.grabAriaSnapshot('#login-form');
+```
+
+#### Parameters
+
+*   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator. Defaults to body element. 
+
+Returns **[Promise][12]<[string][5]>** YAML representation of the accessibility tree
+
 ### grabAttributeFrom
 
 Retrieves an attribute from an element located by CSS or XPath and returns it to test.
@@ -948,7 +968,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 *   `attr` **[string][5]** attribute name.
 
-Returns **[Promise][12]<[Array][17]<[string][5]>>** attribute value
+Returns **[Promise][12]<[Array][18]<[string][5]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -959,7 +979,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **[Promise][12]<[Array][17]<any>>**&#x20;
+Returns **[Promise][12]<[Array][18]<any>>**&#x20;
 
 ### grabCookie
 
@@ -1009,7 +1029,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 *   `cssProperty` **[string][5]** CSS property name.
 
-Returns **[Promise][12]<[Array][17]<[string][5]>>** CSS value
+Returns **[Promise][12]<[Array][18]<[string][5]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1122,7 +1142,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 *   `locator` &#x20;
 *   `element` **([string][5] | [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][12]<[Array][17]<[string][5]>>** HTML code for an element
+Returns **[Promise][12]<[Array][18]<[string][5]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1182,7 +1202,7 @@ expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][17]** recorded network traffics
+Returns **[Array][18]** recorded network traffics
 
 ### grabSource
 
@@ -1225,7 +1245,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][12]<[Array][17]<[string][5]>>** attribute value
+Returns **[Promise][12]<[Array][18]<[string][5]>>** attribute value
 
 ### grabTitle
 
@@ -1267,7 +1287,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 *   `locator` **([string][5] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][12]<[Array][17]<[string][5]>>** attribute value
+Returns **[Promise][12]<[Array][18]<[string][5]>>** attribute value
 
 ### grabWebElement
 
@@ -1303,12 +1323,12 @@ Returns **[Promise][12]<any>** WebElement of being used Web helper
 
 Grab the recording WS messages
 
-Returns **([Array][17]<any> | [undefined][18])**&#x20;
+Returns **([Array][18]<any> | [undefined][19])**&#x20;
 
 ### handleDownloads
 
 Sets a directory to where save files. Allows to test file downloads.
-Should be used with [FileSystem helper][19] to check that file were downloaded correctly.
+Should be used with [FileSystem helper][20] to check that file were downloaded correctly.
 
 By default, files are saved to `output/downloads`.
 This directory is cleaned on every `handleDownloads` call, to ensure no old files are kept.
@@ -1327,13 +1347,13 @@ I.seeFile('avatar.jpg');
 
 ### mockRoute
 
-Mocks network request using [`Request Interception`][20]
+Mocks network request using [`Request Interception`][21]
 
 ```js
 I.mockRoute(/(.png$)|(.jpg$)/, route => route.abort());
 ```
 
-This method allows intercepting and mocking requests & responses. [Learn more about it][20]
+This method allows intercepting and mocking requests & responses. [Learn more about it][21]
 
 #### Parameters
 
@@ -1372,11 +1392,11 @@ I.openNewTab();
 
 ### pressKey
 
-*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([puppeteer/puppeteer#1313][21]).
+*Note:* Shortcuts like `'Meta'` + `'A'` do not work on macOS ([puppeteer/puppeteer#1313][22]).
 
 Presses a key in the browser (on a focused element).
 
-*Hint:* For populating text field or textarea, it is recommended to use [`fillField`][22].
+*Hint:* For populating text field or textarea, it is recommended to use [`fillField`][23].
 
 ```js
 I.pressKey('Backspace');
@@ -1435,7 +1455,7 @@ Some of the supported key names are:
 
 #### Parameters
 
-*   `key` **([string][5] | [Array][17]<[string][5]>)** key or array of keys to press.
+*   `key` **([string][5] | [Array][18]<[string][5]>)** key or array of keys to press.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1443,7 +1463,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][23]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][24]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1461,7 +1481,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][23]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][24]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1551,7 +1571,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 *   `fileName` **[string][5]** file name to save.
-*   `fullPage` **[boolean][24]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+*   `fullPage` **[boolean][25]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -1991,7 +2011,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 *   `select` **([string][5] | [object][6])** field located by label|name|CSS|XPath|strict locator.
-*   `option` **([string][5] | [Array][17]<any>)** visible text or value of option.
+*   `option` **([string][5] | [Array][18]<any>)** visible text or value of option.
 *   `context` **([string][5]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **void** automatically synchronized promise through #recorder
@@ -2014,7 +2034,7 @@ I.setCookie([
 
 #### Parameters
 
-*   `cookie` **(Cookie | [Array][17]<Cookie>)** a cookie object or array of cookie objects.
+*   `cookie` **(Cookie | [Array][18]<Cookie>)** a cookie object or array of cookie objects.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2129,7 +2149,7 @@ I.switchToPreviousTab(2);
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-*Note:* Should be used when [`fillField`][22] is not an option.
+*Note:* Should be used when [`fillField`][23] is not an option.
 
 ```js
 // passing in a string
@@ -2149,7 +2169,7 @@ I.type(secret('123456'));
 
 *   `keys` &#x20;
 *   `delay` **[number][11]?** (optional) delay in ms between key presses 
-*   `key` **([string][5] | [Array][17]<[string][5]>)** or array of keys to type.
+*   `key` **([string][5] | [Array][18]<[string][5]>)** or array of keys to type.
 
 Returns **void** automatically synchronized promise through #recorder
 
@@ -2180,7 +2200,7 @@ Use Puppeteer API inside a test.
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`page`][25], [`browser`][26] } from Puppeteer API are available.
+{ [`page`][26], [`browser`][27] } from Puppeteer API are available.
 
 ```js
 I.usePuppeteerTo('emulate offline mode', async ({ page }) {
@@ -2312,7 +2332,7 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 #### Parameters
 
 *   `fn` **([string][5] | [function][15])** to be executed in browser context.
-*   `argsOrSec` **([Array][17]<any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
+*   `argsOrSec` **([Array][18]<any> | [number][11])?** (optional, `1` by default) arguments for function or seconds. 
 *   `sec` **[number][11]?** (optional, `1` by default) time in seconds to wait 
 
 Returns **void** automatically synchronized promise through #recorder
@@ -2337,7 +2357,7 @@ Returns **void** automatically synchronized promise through #recorder
 
 Waits for navigation to finish. By default, takes configured `waitForNavigation` option.
 
-See [Puppeteer's reference][27]
+See [Puppeteer's reference][28]
 
 #### Parameters
 
@@ -2616,30 +2636,32 @@ Set current page
 
 [16]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[17]: https://playwright.dev/docs/aria-snapshots
 
-[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[19]: https://codecept.io/helpers/FileSystem
+[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[20]: https://pptr.dev/guides/network-interception
+[20]: https://codecept.io/helpers/FileSystem
 
-[21]: https://github.com/puppeteer/puppeteer/issues/1313
+[21]: https://pptr.dev/guides/network-interception
 
-[22]: #fillfield
+[22]: https://github.com/puppeteer/puppeteer/issues/1313
 
-[23]: #click
+[23]: #fillfield
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[24]: #click
 
-[25]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[26]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
+[26]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-page
 
-[27]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.waitfornavigation.md
+[27]: https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#class-browser
 
-[28]: https://pptr.dev/api/puppeteer.tracing
+[28]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.page.waitfornavigation.md
 
-[29]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.waitforoptions.md
+[29]: https://pptr.dev/api/puppeteer.tracing
 
-[30]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.launchoptions.md
+[30]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.waitforoptions.md
+
+[31]: https://github.com/puppeteer/puppeteer/blob/main/docs/api/puppeteer.launchoptions.md

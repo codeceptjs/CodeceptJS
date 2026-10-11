@@ -256,6 +256,10 @@ I.dontSee('#add-to-cart-btn');
 
 Returns **void** automatically synchronized promise through #recorder
 
+### capabilities
+
+Type: CodeceptJS.HelperCapabilities
+
 ### checkIfAppIsInstalled
 
 Returns app installation status.
