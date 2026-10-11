@@ -66,14 +66,10 @@ describe('Lightpanda helper (self-managed lightpanda serve)', function () {
     await I.dontSeeElement('#does-not-exist')
   })
 
-  it('rejects screenshots with a clear message', async () => {
+  it('skips screenshots without failing', async () => {
     await I.amOnPage('/')
-    try {
-      await I.saveScreenshot('nope.png')
-      throw new Error('should have thrown')
-    } catch (err) {
-      expect(err.message).to.include('no rendering engine')
-    }
+    await I.saveScreenshot('nope.png')
+    expect(fs.existsSync(path.join(global.output_dir || '.', 'nope.png'))).to.be.false
   })
 
   webApiTests.tests()
