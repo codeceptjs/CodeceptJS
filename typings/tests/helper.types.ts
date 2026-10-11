@@ -50,3 +50,25 @@ expectType<void>(customClass._afterStep())
 expectType<void>(customClass._afterSuite())
 
 expectType<void>(customClass._useTo())
+
+class CapableHelper extends Helper {
+  capabilities: CodeceptJS.HelperCapabilities = { screenshot: true, video: false, trace: false, aria: true }
+}
+
+expectType<CodeceptJS.HelperCapabilities>(new CapableHelper({}).capabilities)
+
+class DetectingHelper extends Helper {
+  capabilities: CodeceptJS.HelperCapabilities = { screenshot: null, video: null, trace: false, aria: false, layout: null }
+}
+
+expectType<CodeceptJS.HelperCapabilities>(new DetectingHelper({}).capabilities)
+
+class IncompleteHelper extends Helper {
+  // @ts-expect-error
+  capabilities: CodeceptJS.HelperCapabilities = { screenshot: true }
+}
+
+class WrongValueHelper extends Helper {
+  // @ts-expect-error
+  capabilities: CodeceptJS.HelperCapabilities = { screenshot: true, video: false, trace: false, aria: false, layout: 'partial' }
+}
