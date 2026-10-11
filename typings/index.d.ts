@@ -468,7 +468,12 @@ declare namespace CodeceptJS {
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}
-  interface IHook {}
+  interface IHook {
+    (callback: HookCallback): HookConfig
+  }
+  interface IHookSuite {
+    (callback: HookSuiteCallback): HookConfig
+  }
   interface IScenario {}
   interface IFeature {
     (title: string, opts?: { [key: string]: any }): FeatureConfig
@@ -508,8 +513,22 @@ declare namespace CodeceptJS {
 
   type StringOrSecret = string | CodeceptJS.Secret
 
+  interface GherkinCallback {
+    (test: Test): void | Promise<void>
+  }
+  interface GherkinEventEmitter {}
+  interface GherkinHook {
+    (callback: GherkinCallback): GherkinEventEmitter
+  }
   interface HookCallback {
-    (args: SupportObject): void | Promise<void>
+    // `suite` has type Mocha.Suite if hook (Background/Before/After) is called before `Feature()`
+    // `suite` has type CodeceptJS.Suite if hook is called after `Feature()`
+    (args: SupportObject & { suite: Mocha.Suite; test: Test }): void | Promise<void>
+  }
+  interface HookSuiteCallback {
+    // `suite` has type Mocha.Suite if hook (BeforeSuite/AfterSuite) is called before `Feature()`
+    // `suite` has type CodeceptJS.Suite if hook is called after `Feature()`
+    (args: SupportObject & { suite: Mocha.Suite }): void | Promise<void>
   }
   interface Scenario extends IScenario {
     only: IScenario
@@ -529,9 +548,6 @@ declare namespace CodeceptJS {
     // Scenario.todo can be called only with a title.
     (title: string, callback?: HookCallback): ScenarioConfig
     (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig
-  }
-  interface IHook {
-    (callback: HookCallback): HookConfig
   }
 
   interface Globals {
@@ -580,11 +596,13 @@ declare function xData(data: any): CodeceptJS.IData
 declare function DefineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
 
 // Hooks
-declare const BeforeSuite: CodeceptJS.IHook
-declare const AfterSuite: CodeceptJS.IHook
+declare const BeforeSuite: CodeceptJS.IHookSuite
+declare const AfterSuite: CodeceptJS.IHookSuite
 declare const Background: CodeceptJS.IHook
 declare const Before: CodeceptJS.IHook
 declare const After: CodeceptJS.IHook
+declare const GherkinBefore: CodeceptJS.GherkinHook
+declare const GherkinAfter: CodeceptJS.GherkinHook
 
 // Plugins
 declare const __: any
