@@ -2618,7 +2618,8 @@ export function tests() {
   })
 
   describe('role locators', () => {
-    it('should locate elements by role', async () => {
+    it('should locate elements by role', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/role_elements')
 
       // Test basic role locators
@@ -2634,7 +2635,8 @@ export function tests() {
       await I.seeNumberOfVisibleElements({ role: 'checkbox' }, 2)
     })
 
-    it('should locate elements by role with text filter', async () => {
+    it('should locate elements by role with text filter', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/role_elements')
 
       // Test role with text (exact match)
