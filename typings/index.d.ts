@@ -465,6 +465,20 @@ declare namespace CodeceptJS {
     y: number
   }
 
+  /**
+   * Features an acting helper supports. Plugins read them to decide what to capture.
+   * `null` means the value is detected at runtime.
+   */
+  interface HelperCapabilities {
+    screenshot: boolean | null
+    video: boolean | null
+    trace: boolean
+    aria: boolean
+    layout?: 'real' | 'none' | null
+    xpath?: 'native' | 'polyfill' | null
+    innerText?: 'native' | 'computed' | null
+  }
+
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}
