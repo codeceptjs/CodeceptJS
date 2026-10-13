@@ -59,7 +59,7 @@ jobs:
           SELENIUM_HOST: localhost
           SELENIUM_PORT: 4444
       - name: run unit tests
-        run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit --reporter @testomatio/reporter/mocha
+        run: ./node_modules/.bin/mocha test/helper/WebDriver_test.js --exit
         timeout-minutes: 10
         env:
           SELENIUM_HOST: localhost
