@@ -6,7 +6,7 @@ title: Alternative Browser Engines
 # Alternative Browser Engines
 
 ::: warning Experimental
-The `Obscura`, `Lightpanda` and `Kitesurf` helpers are experimental. Keep a Playwright or WebDriver job for compatibility-critical tests.
+The `Obscura`, `Lightpanda`, `Moli` and `Kitesurf` helpers are experimental. Keep a Playwright or WebDriver job for compatibility-critical tests.
 :::
 
 Playwright drives full Chromium, Firefox and WebKit: the most accurate way to test what users see, at the cost of a heavy browser per worker. Alternative engines trade part of that accuracy for speed, a small footprint, or cloud scale. They are a good fit for functional tests (text appears, form submits, redirect happens, cookie is set) and a poor one for anything visual.
@@ -142,6 +142,61 @@ Lightpanda: {
 ```
 
 All options: [Lightpanda helper reference](/helpers/Lightpanda).
+
+## Moli
+
+[Moli](https://github.com/lexmount/moli) is an open-source headless browser built in Rust for automation. It runs your app's JavaScript in V8 and computes real CSS, but skips layout and painting, so it starts fast and stays small. Visibility checks such as `seeElement` and `waitForVisible` work.
+
+Limitations:
+
+- No screenshots: `saveScreenshot`, failure screenshots and the `screencast` plugin do not work.
+- `clickXY` does not work.
+- `attachFile` uploads files without a MIME type; the server receives `application/octet-stream`.
+- Links have no default color: `a` computes `color: rgb(0, 0, 0)`.
+
+### Setup
+
+Install Moli following the [official instructions](https://github.com/lexmount/moli#direct-installation) and put `moli` on `PATH`. Then enable the helper:
+
+```js
+// codecept.conf.js
+export const config = {
+  helpers: {
+    Moli: {
+      url: 'http://localhost:3000',
+    },
+  },
+}
+```
+
+If the binary is not on `PATH`, set `binaryPath` in the config or the `MOLI_PATH` environment variable.
+
+### Usage
+
+```sh
+npx codeceptjs run
+```
+
+The helper starts `moli serve` on a free port before the first test and stops it after the last one. Each worker gets its own instance:
+
+```sh
+npx codeceptjs run-workers 8
+```
+
+To connect to a Moli you started yourself, set `endpoint`; the helper then never starts or stops it:
+
+```sh
+moli serve --host 127.0.0.1 --port 9222
+```
+
+```js
+Moli: {
+  url: 'http://localhost:3000',
+  endpoint: 'http://127.0.0.1:9222',
+}
+```
+
+All options: [Moli helper reference](/helpers/Moli).
 
 ## Kitesurf
 

@@ -478,6 +478,7 @@ export function tests() {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // coordinate clicks require a real layout engine
       if (isHelper('Lightpanda')) this.skip() // Lightpanda reports element boxes but paints nothing, so a click dispatched at coordinates is never hit-tested to an element
+      if (isHelper('Moli')) this.skip() // without --layout Moli rejects Input.dispatchMouseEvent: coordinate input requires layout hit testing
     })
 
     it('should click at global coordinates', async () => {
@@ -1516,6 +1517,7 @@ export function tests() {
       // consistent with the already-documented family of Obscura form-serializer defects
       // (the <select multiple> collapse bug from the selectOption work).
       if (isHelper('Obscura')) this.skip()
+      if (isHelper('Moli')) this.skip() // DOM.setFileInputFiles on Moli creates a File with an empty type (verified: files[0].type === ''), so the form posts it as application/octet-stream
       await I.amOnPage('/form/file')
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -1527,6 +1529,7 @@ export function tests() {
 
     it('should upload file located by label', async function () {
       if (isHelper('Obscura')) this.skip() // same root cause as "should upload file located by CSS" above
+      if (isHelper('Moli')) this.skip() // same root cause as "should upload file located by CSS" above
       await I.amOnPage('/form/file')
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -2267,6 +2270,7 @@ export function tests() {
       if (process.env.BROWSER === 'firefox') this.skip()
       if (isHelper('Obscura')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Obscura's CSS engine instead of 'pointer' (verified directly), so the first assertion in this test throws before reaching the one it means to test
       if (isHelper('Lightpanda')) this.skip() // same root cause as "should check css property for given element" above
+      if (isHelper('Moli')) this.skip() // Moli's default stylesheet does not color links: getComputedStyle(a).color is rgb(0, 0, 0) (verified directly), so the first assertion throws before reaching the one this test means to test
 
       try {
         await I.amOnPage('/')

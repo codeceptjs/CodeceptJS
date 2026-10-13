@@ -400,6 +400,7 @@ const inheritedHelperDocs = {
   },
   Obscura: { parent: 'CDPBrowser' },
   Lightpanda: { parent: 'CDPBrowser' },
+  Moli: { parent: 'CDPBrowser' },
   Kitesurf: { parent: 'CDPBrowser', excludeConfig: ['endpoint', 'headers'] },
 }
 
