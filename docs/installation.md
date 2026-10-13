@@ -115,6 +115,22 @@ export const config = {
 
 See [Alternative Browser Engines](/alternative-browsers) for running an existing Playwright suite on Lightpanda.
 
+## Moli (experimental)
+
+Moli is a headless browser for automation that runs your app's JavaScript in V8 and skips layout and painting. Install it following the [official instructions](https://github.com/lexmount/moli#direct-installation), then enable the helper:
+
+```js
+export const config = {
+  helpers: {
+    Moli: {
+      url: 'http://localhost:3000',
+    },
+  },
+}
+```
+
+See [Alternative Browser Engines](/alternative-browsers) for running an existing Playwright suite on Moli.
+
 ## Appium (mobile)
 
 Native iOS and Android testing. Appium speaks the WebDriver protocol, so CodeceptJS drives it through `webdriverio`:

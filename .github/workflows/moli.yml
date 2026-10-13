@@ -1,0 +1,72 @@
+name: Moli Helper Tests
+
+on:
+  push:
+    branches:
+      - 4.x
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+  MOLI_VERSION: v1.1.17
+  MOLI_SHA256: e338cdd2ab6e3e6262117e56aba625bf6c71c44fd72ac3870bbd9c0e6c1ec351
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: npm install
+        run: npm i --force
+      - name: Cache Moli tarball
+        uses: actions/cache@v6
+        with:
+          path: ~/moli-bin/moli.tar.gz
+          key: moli-${{ env.MOLI_VERSION }}-x86_64-linux
+      - name: Download Moli
+        run: |
+          mkdir -p ~/moli-bin
+          if [ ! -f ~/moli-bin/moli.tar.gz ]; then
+            curl -sfL --retry 3 -o ~/moli-bin/moli.tar.gz https://github.com/lexmount/moli/releases/download/${MOLI_VERSION}/moli-x86_64-unknown-linux-gnu.tar.gz
+          fi
+          echo "${MOLI_SHA256}  $HOME/moli-bin/moli.tar.gz" | sha256sum -c -
+          tar xzf ~/moli-bin/moli.tar.gz -C ~/moli-bin --strip-components=1
+          ~/moli-bin/moli --version
+      - name: start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 1
+          curl -sf http://127.0.0.1:8000/info > /dev/null
+      - name: run moli helper tests
+        run: |
+          export MOLI_PATH="$HOME/moli-bin/moli"
+          npm run test:unit:webbapi:moli
+      - name: run moli acceptance tests
+        run: |
+          export MOLI_PATH="$HOME/moli-bin/moli"
+          ./bin/codecept.js run -c test/acceptance/codecept.Moli.js --grep @Moli --debug
