@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Check Tests
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
     - uses: testomatio/check-tests@stable
