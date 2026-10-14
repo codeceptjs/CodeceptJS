@@ -715,21 +715,21 @@ export async function prettier() {
  * Run unit tests.
  */
 export async function testUnit() {
-  await shell`mocha test/unit --recursive --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/unit --recursive --timeout 10000`
 }
 
 /**
  * Run REST tests.
  */
 export async function testRest() {
-  await shell`mocha test/rest --recursive --timeout 20000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/rest --recursive --timeout 20000`
 }
 
 /**
  * Run runner tests.
  */
 export async function testRunner() {
-  await shell`mocha test/runner --recursive --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/runner --recursive --timeout 10000`
 }
 
 /**
@@ -755,28 +755,28 @@ export async function testWithMockServer() {
  * Run quick Appium tests.
  */
 export async function testAppiumQuick() {
-  await shell`mocha test/helper/Appium_test.js --grep 'quick' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_test.js --grep 'quick'`
 }
 
 /**
  * Run the remaining (second) Appium tests.
  */
 export async function testAppiumOther() {
-  await shell`mocha test/helper/Appium_test.js --grep 'second' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_test.js --grep 'second'`
 }
 
 /**
  * Run quick iOS Appium tests.
  */
 export async function testIosAppiumQuick() {
-  await shell`mocha test/helper/Appium_ios_test.js --grep 'quick' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_ios_test.js --grep 'quick'`
 }
 
 /**
  * Run the remaining (second) iOS Appium tests.
  */
 export async function testIosAppiumOther() {
-  await shell`mocha test/helper/Appium_ios_test.js --grep 'second' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_ios_test.js --grep 'second'`
 }
 
 /**
@@ -797,42 +797,42 @@ export async function testAppStop() {
  * Run Playwright helper unit tests.
  */
 export async function testWebapiPlaywright() {
-  await shell`mocha test/helper/Playwright_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Playwright_test.js`
 }
 
 /**
  * Run Puppeteer helper unit tests.
  */
 export async function testWebapiPuppeteer() {
-  await shell`mocha test/helper/Puppeteer_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Puppeteer_test.js`
 }
 
 /**
  * Run WebDriver helper unit tests.
  */
 export async function testWebapiWebdriver() {
-  await shell`mocha test/helper/WebDriver_test.js --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/WebDriver_test.js --timeout 10000`
 }
 
 /**
  * Run WebDriver helper unit tests without a Selenium server.
  */
 export async function testWebapiWebdriverNoSelenium() {
-  await shell`mocha test/helper/WebDriver.noSeleniumServer_test.js --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/WebDriver.noSeleniumServer_test.js --timeout 10000`
 }
 
 /**
  * Run Expect helper unit tests.
  */
 export async function testExpect() {
-  await shell`mocha test/helper/Expect_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Expect_test.js`
 }
 
 /**
  * Run plugin tests.
  */
 export async function testPlugin() {
-  await shell`mocha test/plugin/plugin_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/plugin/plugin_test.js`
 }
 
 /**
