@@ -1,8 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { execSync } from 'node:child_process'
 import axios from 'axios'
-import semver from 'semver'
 
 const { shell, writeToFile, copyFile, task } = global.bunosh
 const { say, yell } = global.bunosh
@@ -47,7 +45,7 @@ export async function docsPlugins() {
   task.stopOnFailures()
   ensureDir('docs/plugins')
 
-  const files = fs.readdirSync('lib/plugin').filter(f => path.extname(f) === '.js')
+  const files = fs.readdirSync('lib/plugin').filter(f => path.extname(f) === '.js').sort()
 
   const sharedPartials = fs.readdirSync('docs/shared').filter(f => path.extname(f) === '.mustache')
   const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`)
@@ -90,7 +88,6 @@ editLink: false
 sidebar: auto
 title: ${name}
 ---
-
 `
       line.fromFile(pluginMarkDownFile(name))
     })
@@ -140,6 +137,14 @@ export async function docsExternalHelpers() {
     cfg.replace(/string \| object/g, 'LocatorOrString')
   })
 
+  say('Building @codeceptjs/mock-request')
+  helper = 'MockRequest'
+  replaceInFile('node_modules/@codeceptjs/mock-request/index.js', cfg => {
+    cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object')
+    cfg.replace(/LocatorOrString/g, 'string | object')
+  })
+  await shell`npx documentation build node_modules/@codeceptjs/mock-request/index.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`
+
   await writeToFile(helperMarkDownFile(helper), line => {
     line`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
     line.fromFile(helperMarkDownFile(helper))
@@ -170,7 +175,7 @@ export async function docsExternalPlugins() {
  */
 export async function buildLibWithDocs(forTypings = false) {
   task.stopOnFailures()
-  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js')
+  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js').sort()
   ensureDir('docs/build')
 
   const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache')
@@ -229,7 +234,7 @@ export async function buildLibWithDocs(forTypings = false) {
  */
 export async function docsHelpers() {
   task.stopOnFailures()
-  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js')
+  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js').sort()
   ensureDir('docs/build')
 
   const ignoreList = ['Polly', 'MockRequest']
@@ -321,76 +326,10 @@ editLink: false
 sidebar: auto
 title: ${name}
 ---
-
 `
       line.fromFile(helperMarkDownFile(name))
     })
   }
-}
-
-/**
- * Sync wiki pages from the CodeceptJS.wiki repo into website docs.
- */
-export async function wiki() {
-  task.stopOnFailures()
-  if (!fs.existsSync('docs/wiki/Home.md')) {
-    await shell`git clone git@github.com:codeceptjs/CodeceptJS.wiki.git docs/wiki`
-  }
-  await shell`git pull origin master`.cwd('docs/wiki')
-
-  await writeToFile('docs/community-helpers.md', line => {
-    line`---`
-    line`permalink: /community-helpers`
-    line`title: Community Helpers`
-    line`editLink: false`
-    line`---`
-    line``
-    line`# Community Helpers`
-    line`> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)`
-    line``
-    line.fromFile('docs/wiki/Community-Helpers-&-Plugins.md')
-  })
-
-  await writeToFile('docs/examples.md', line => {
-    line`---`
-    line`permalink: /examples`
-    line`layout: Section`
-    line`sidebar: false`
-    line`title: Examples`
-    line`editLink: false`
-    line`---`
-    line``
-    line`# Examples`
-    line`> Add your own examples to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Examples)`
-    line.fromFile('docs/wiki/Examples.md')
-  })
-
-  await writeToFile('docs/books.md', line => {
-    line`---`
-    line`permalink: /books`
-    line`layout: Section`
-    line`sidebar: false`
-    line`title: Books & Posts`
-    line`editLink: false`
-    line`---`
-    line``
-    line`# Books & Posts`
-    line`> Add your own books or posts to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Books-&-Posts)`
-    line.fromFile('docs/wiki/Books-&-Posts.md')
-  })
-
-  await writeToFile('docs/videos.md', line => {
-    line`---`
-    line`permalink: /videos`
-    line`layout: Section`
-    line`sidebar: false`
-    line`title: Videos`
-    line`editLink: false`
-    line`---`
-    line``
-    line`> Add your own videos to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Videos)`
-    line.fromFile('docs/wiki/Videos.md')
-  })
 }
 
 const inheritedHelperDocs = {
@@ -458,59 +397,11 @@ async function docsHelperMarkdown(name, { parent, exclude = [], excludeConfig = 
 }
 
 /**
- * Update the codecept.io website: regenerate changelog, sync wiki, push docs and publish.
- */
-export async function publishSite() {
-  await processChangelog()
-  await wiki()
-
-  const dir = 'website'
-  if (fs.existsSync(dir)) {
-    await shell`rm -rf ${dir}`
-  }
-
-  await shell`git clone git@github.com:codeceptjs/website.git ${dir}`
-  copyFile('docs', 'website/docs')
-
-  await shell`git add -A`.cwd(dir)
-  await shell`git commit -m "synchronized with docs"`.cwd(dir)
-  await shell`git pull`.cwd(dir)
-  await shell`git push`.cwd(dir)
-  await shell`./runok.js publish`.cwd(dir)
-}
-
-/**
  * Run the PHP test app and the REST test server together. Warning! PHP required!
  */
 export async function server() {
   await Promise.all([shell`php -S 127.0.0.1:8000 -t test/data/app`, testServer()])
 }
-
-/**
- * Release CodeceptJS to npm. Optionally bump package.json version first.
- * @param {string} [releaseType] - "patch", "minor" or "major" to bump before releasing.
- */
-export async function release(releaseType = null) {
-  task.stopOnFailures()
-  const packageInfo = JSON.parse(fs.readFileSync('package.json'))
-  if (releaseType) {
-    packageInfo.version = semver.inc(packageInfo.version, releaseType)
-    fs.writeFileSync('package.json', JSON.stringify(packageInfo))
-    await shell`git add package.json`
-    await shell`git commit -m "version bump"`
-  }
-  const version = packageInfo.version
-  await docs()
-  await def()
-  await publishSite()
-  await shell`git pull`
-  await shell`git tag ${version}`
-  await shell`git push origin 3.x --tags`
-  await shell`rm -rf docs/wiki/.git`
-  await shell`npm publish`
-  say('-- RELEASED --')
-}
-
 
 /**
  * Update the contributors table in README.md from the GitHub API.
@@ -569,7 +460,6 @@ export async function contributorFaces() {
     yell(`Error fetching contributors: ${error.message}`)
   }
 }
-
 
 /**
  * Scaffold a config, feature test and runner test for a new feature.
@@ -634,28 +524,6 @@ describe('CodeceptJS ${featureName}', function () {
   say(`npx mocha test/runner --grep ${featureName}`)
 }
 
-async function processChangelog() {
-  const file = 'CHANGELOG.md'
-  let changelog = fs.readFileSync(file).toString()
-
-  changelog = changelog.replace(/\s@([\w-]+)/gm, ' **[$1](https://github.com/$1)**')
-  changelog = changelog.replace(/#(\d+)/gm, '[#$1](https://github.com/codeceptjs/CodeceptJS/issues/$1)')
-  changelog = changelog.replace(/\s\[(\w+)\]\s/gm, ' **[$1]** ')
-
-  await writeToFile('docs/changelog.md', line => {
-    line`---`
-    line`permalink: /changelog`
-    line`title: Releases`
-    line`sidebar: false`
-    line`layout: Section`
-    line`---`
-    line``
-    line`# Releases`
-    line``
-    line`${changelog}`
-  })
-}
-
 /**
  * Run the read-only REST test server on port 8010.
  */
@@ -695,21 +563,21 @@ export async function graphql() {
  * Lint the codebase with ESLint.
  */
 export async function lint() {
-  await shell`eslint bin/ examples/ lib/ test/ translations/ runok.cjs`
+  await shell`eslint bin/ examples/ lib/ test/ translations/ Bunoshfile.js`
 }
 
 /**
  * Lint and auto-fix the codebase with ESLint.
  */
 export async function lintFix() {
-  await shell`eslint bin/ examples/ lib/ test/ translations/ runok.cjs --fix`
+  await shell`eslint bin/ examples/ lib/ test/ translations/ Bunoshfile.js --fix`
 }
 
 /**
  * Format the codebase with Prettier.
  */
 export async function prettier() {
-  await shell`prettier --config prettier.config.js --write bin/**/*.js lib/**/*.js test/**/*.js translations/**/*.js runok.cjs`
+  await shell`prettier --config prettier.config.js --write bin/**/*.js lib/**/*.js test/**/*.js translations/**/*.js Bunoshfile.js`
 }
 
 /**
@@ -858,7 +726,6 @@ export async function dtslint() {
 export async function prepare() {
   await shell`husky install`
 }
-
 
 function replaceInFile(file, fn) {
   let text = fs.readFileSync(file).toString()
