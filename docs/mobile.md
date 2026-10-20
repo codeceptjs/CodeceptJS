@@ -231,6 +231,7 @@ Accessibility id is recommended to use for locating element, as it rarely change
 * For [React Native for Android see our special guide](mobile-react-native-locators.md).
 
 > If you test React Native application, consider using [Detox helper](/detox) for faster tests.
+> If you want mobile tests without an Appium server at all, consider the experimental [Mobilewright helper](/mobilewright).
 
 Add `~` prefix to search for element by its accessibility id:
 
