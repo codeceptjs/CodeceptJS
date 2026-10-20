@@ -150,6 +150,8 @@ appium
 
 You'll also need the Android SDK and an emulator or device, or Xcode and a simulator or device (or a device-cloud account). Set `platformName`, `deviceName`, and `app` in the helper config — see [Mobile Testing](/mobile).
 
+For mobile tests without an Appium server, see the experimental [Mobilewright helper](/mobilewright): it drives devices directly via adb/mobilecli and reads the accessibility tree.
+
 ## API testing
 
 REST and GraphQL tests need no browser — the helpers are built in (they use `axios`, already a dependency):
