@@ -35,4 +35,11 @@ describe('aria', () => {
     expect(compactAriaSnapshot(before)).to.include('textbox "Promo code"')
     expect(diffAriaSnapshots(before, after)).to.include('removed: 1 interactive elements')
   })
+
+  it('keeps plain text nodes when compacting', () => {
+    const snapshot = ['- list:', '  - listitem:', '    - checkbox', '    - text: buy milk', '- text: 1 item left!'].join('\n')
+    const compacted = compactAriaSnapshot(snapshot)
+    expect(compacted).to.include('text: buy milk')
+    expect(compacted).to.include('text: 1 item left!')
+  })
 })
