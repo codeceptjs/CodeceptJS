@@ -613,7 +613,9 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toMatch(/OK\s+\|\s+8 passed/)
       expect(err).toEqual(null)
 
-      const html = fs.readFileSync(path.join(htmlDir, 'testomatio-report.html'), 'utf8')
+      const reports = fs.readdirSync(outputDir, { recursive: true }).filter(file => file.endsWith('testomatio-report.html'))
+      expect(reports).toHaveLength(1)
+      const html = fs.readFileSync(path.join(outputDir, reports[0]), 'utf8')
       const entries = new Set([...html.matchAll(/"rid":"[^"]*@(dev_\w+)"[^{}]*?"title":"([^"]*)","suite_title":"([^"]*)"/g)].map(([, run, title, suite]) => `${run} ${suite}: ${title}`))
       const expected = []
       for (const run of ['dev_chromium1', 'dev_webkit1']) {
