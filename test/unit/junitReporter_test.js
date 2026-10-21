@@ -253,4 +253,40 @@ describe('JUnit Reporter Plugin', () => {
     expect(suiteEl.testcase[0].$.name).to.contain('"after all" hook: AfterSuite')
     expect(suiteEl.testcase[0].failure[0].$.message).to.contain('AfterSuite failed')
   })
+
+  it('writes one report per run output folder when tests carry outputDir', async () => {
+    const chromiumDir = path.join(tmpDir, 'dev_chromium1')
+    const webkitDir = path.join(tmpDir, 'dev_webkit1')
+    const result = makeResult()
+    const [passed, failed, skipped] = result.tests
+    result.tests = [
+      { ...passed, uid: 'pass-1@dev_chromium1', outputDir: chromiumDir },
+      { ...failed, uid: 'fail-1@dev_chromium1', outputDir: chromiumDir },
+      { ...passed, uid: 'pass-1@dev_webkit1', outputDir: webkitDir },
+      { ...skipped, uid: 'skip-1@dev_webkit1', outputDir: webkitDir },
+    ]
+
+    junitReporter({})
+    event.dispatcher.emit(event.hook.failed, {
+      hookName: 'AfterSuite',
+      title: '"after all" hook: AfterSuite for "logs in successfully"',
+      error: { message: 'AfterSuite failed', stack: 'Error: AfterSuite failed' },
+      outputDir: webkitDir,
+    })
+    event.dispatcher.emit(event.workers.result, result)
+
+    assert.isFalse(fs.existsSync(path.join(tmpDir, 'report.xml')), 'no combined report should be written')
+
+    const chromium = await parseReport(chromiumDir)
+    expect(chromium.testsuites.$.tests).to.equal('2')
+    expect(chromium.testsuites.$.failures).to.equal('1')
+    expect(chromium.testsuites.$.skipped).to.equal('0')
+
+    const webkit = await parseReport(webkitDir)
+    expect(webkit.testsuites.$.tests).to.equal('3')
+    expect(webkit.testsuites.$.failures).to.equal('1')
+    expect(webkit.testsuites.$.skipped).to.equal('1')
+    const names = webkit.testsuites.testsuite.flatMap(s => s.testcase.map(tc => tc.$.name))
+    expect(names.some(n => n.includes('AfterSuite'))).to.equal(true)
+  })
 })
