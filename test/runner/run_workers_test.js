@@ -3,6 +3,7 @@ chai.should()
 import { expect } from 'expect'
 import path from 'path'
 import fs from 'fs'
+import os from 'os'
 import semver from 'semver'
 import { exec } from 'child_process'
 import { fileURLToPath } from 'url'
@@ -570,6 +571,60 @@ describe('CodeceptJS Workers Runner', function () {
         expect(names.some(n => n.includes('BeforeSuite'))).toEqual(true)
         expect(names.some(n => n.includes('AfterSuite'))).toEqual(true)
       })().then(done, done)
+    })
+  })
+
+  it('should write one JUnit report per browser with all suites of that browser in multi-run --by suite', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const outputDir = path.join(codecept_dir, 'output', 'junit-multiple')
+    fs.rmSync(outputDir, { recursive: true, force: true })
+
+    exec(`${codecept_run_glob('codecept.workers-junit-multiple.conf.js')} 2 dev --by suite`, (err, stdout) => {
+      ;(async () => {
+        expect(stdout).toContain('Worker 4: 2 tests')
+        expect(stdout).toMatch(/OK\s+\|\s+8 passed/)
+        expect(err).toEqual(null)
+
+        expect(fs.existsSync(path.join(outputDir, 'report.xml'))).toEqual(false)
+        for (const run of ['dev_chromium1', 'dev_webkit1']) {
+          const reportFile = path.join(outputDir, run, 'report.xml')
+          expect(fs.existsSync(reportFile)).toEqual(true)
+          const parsed = await new xml2js.Parser().parseStringPromise(fs.readFileSync(reportFile, 'utf8'))
+          expect(parsed.testsuites.$.tests).toEqual('4')
+          const testcases = parsed.testsuites.testsuite.flatMap(s => s.testcase.map(tc => `${s.$.name}: ${tc.$.name}`)).sort()
+          expect(testcases).toEqual(['MultipleBrowsersSuiteA: scenario 1', 'MultipleBrowsersSuiteA: scenario 2', 'MultipleBrowsersSuiteB: scenario 1', 'MultipleBrowsersSuiteB: scenario 2'])
+        }
+      })().then(done, done)
+    })
+  })
+
+  it('should keep results of all browsers and suites in the Testomatio HTML report in multi-run --by suite', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const outputDir = path.join(codecept_dir, 'output', 'testomatio-multiple')
+    fs.rmSync(outputDir, { recursive: true, force: true })
+    const htmlDir = path.join(outputDir, 'html')
+    const nodePath = fs.mkdtempSync(path.join(os.tmpdir(), 'cjs-node-path-'))
+    fs.symlinkSync(path.join(__dirname, '../..'), path.join(nodePath, 'codeceptjs'), 'dir')
+    const env = { ...process.env, NODE_PATH: nodePath, TESTOMATIO_HTML_REPORT_SAVE: '1', TESTOMATIO_HTML_REPORT_FOLDER: htmlDir }
+    delete env.TESTOMATIO
+
+    exec(`${codecept_run_glob('codecept.workers-testomatio-multiple.conf.js')} 2 dev --by suite`, { env }, (err, stdout) => {
+      fs.rmSync(nodePath, { recursive: true, force: true })
+      expect(stdout).toMatch(/OK\s+\|\s+8 passed/)
+      expect(err).toEqual(null)
+
+      const reports = fs.readdirSync(outputDir, { recursive: true }).filter(file => file.endsWith('testomatio-report.html'))
+      expect(reports).toHaveLength(1)
+      const html = fs.readFileSync(path.join(outputDir, reports[0]), 'utf8')
+      const entries = new Set([...html.matchAll(/"rid":"[^"]*@(dev_\w+)"[^{}]*?"title":"([^"]*)","suite_title":"([^"]*)"/g)].map(([, run, title, suite]) => `${run} ${suite}: ${title}`))
+      const expected = []
+      for (const run of ['dev_chromium1', 'dev_webkit1']) {
+        for (const suite of ['MultipleBrowsersSuiteA', 'MultipleBrowsersSuiteB']) {
+          expected.push(`${run} ${suite}: scenario 1`, `${run} ${suite}: scenario 2`)
+        }
+      }
+      expect([...entries].sort()).toEqual(expected)
+      done()
     })
   })
 

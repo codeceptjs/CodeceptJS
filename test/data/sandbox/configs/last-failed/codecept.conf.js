@@ -5,5 +5,10 @@ export const config = {
   include: {},
   bootstrap: null,
   mocha: {},
+  multiple: {
+    dev: {
+      browsers: ['chromium', 'webkit'],
+    },
+  },
   name: 'last-failed',
 }

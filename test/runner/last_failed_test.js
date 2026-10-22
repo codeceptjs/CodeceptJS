@@ -119,6 +119,17 @@ describe('--last-failed', function () {
     expect(stdout).not.toContain('multiplies numbers')
   })
 
+  it('should rerun only failed tests in workers with multiple browsers', async () => {
+    const fullRun = await run('run-workers 2 dev')
+    expect(fullRun.stdout).toContain('4 passed, 6 failed')
+
+    const { code, stdout } = await run('run-workers 2 dev --last-failed')
+    expect(code).toEqual(1)
+    expect(stdout).toContain('0 passed, 6 failed')
+    expect(stdout).not.toContain('adds numbers')
+    expect(stdout).not.toContain('concats strings')
+  })
+
   it('should rerun only failed tests in workers by pool', async () => {
     await run('run')
     const { stdout } = await run('run-workers 2 --by pool --last-failed')
