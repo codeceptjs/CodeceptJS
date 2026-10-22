@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Puppeteer
+permalink: /helpers/puppeteer
 editLink: false
 sidebar: auto
 title: Puppeteer
@@ -2606,7 +2606,7 @@ Set current page
 
 [1]: https://github.com/puppeteer/puppeteer
 
-[2]: https://codecept.io/helpers/Puppeteer-firefox
+[2]: https://codecept.io/helpers/puppeteer-firefox
 
 [3]: https://chromedevtools.github.io/devtools-protocol/#how-do-i-access-the-browser-target
 
@@ -2642,7 +2642,7 @@ Set current page
 
 [19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[20]: https://codecept.io/helpers/FileSystem
+[20]: https://codecept.io/helpers/file-system
 
 [21]: https://pptr.dev/guides/network-interception
 

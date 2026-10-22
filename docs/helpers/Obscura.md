@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Obscura
+permalink: /helpers/obscura
 editLink: false
 sidebar: auto
 title: Obscura

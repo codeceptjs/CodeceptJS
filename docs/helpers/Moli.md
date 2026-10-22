@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Moli
+permalink: /helpers/moli
 editLink: false
 sidebar: auto
 title: Moli

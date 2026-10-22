@@ -10,7 +10,7 @@ CodeceptJS ships with **browser assertions built into the `I` object** — `I.se
 When the built-ins are not enough — sort order, business math, JSON shapes, domain rules — you have three ways to assert, in order of preference:
 
 1. **Reusable custom assertions** in a helper: `I.seeTableIsOrdered('Price', 'desc')`
-2. **Quick assertions with [ExpectHelper](/helpers/ExpectHelper)** on grabbed data: `I.expectDeepEqualExcluding(order, expected, ['id'])`
+2. **Quick assertions with [ExpectHelper](/helpers/expect-helper)** on grabbed data: `I.expectDeepEqualExcluding(order, expected, ['id'])`
 3. **Bring your own library** — `chai`, `jest`, or Node's `assert`
 
 This page also covers [element assertions via WebElement](/WebElement), [soft assertions](#soft-assertions) for running many checks in one scenario, and [masking secrets](#masking-secrets) in assertion logs.
@@ -84,7 +84,7 @@ Four options, from least setup to most:
 
 ### Quick Assertions with Expect Helper
 
-[`ExpectHelper`](/helpers/ExpectHelper) exposes chai's assertions as methods on the `I` object. Use it for one-off checks on data you have already grabbed — no helper class, no boilerplate.
+[`ExpectHelper`](/helpers/expect-helper) exposes chai's assertions as methods on the `I` object. Use it for one-off checks on data you have already grabbed — no helper class, no boilerplate.
 
 **Install separately:**
 
@@ -145,7 +145,7 @@ Common methods:
 | `expectHasProperty` / `expectEmpty` | Object shape |
 | `expectJsonSchema` / `expectJsonSchemaUsingAJV` | Full schema validation |
 
-ExpectHelper calls appear in the step log next to browser steps, so failures read in order with the rest of the scenario. See the [full reference](/helpers/ExpectHelper).
+ExpectHelper calls appear in the step log next to browser steps, so failures read in order with the rest of the scenario. See the [full reference](/helpers/expect-helper).
 
 ### Built-in Assertion Library
 
@@ -399,7 +399,7 @@ expected soft assertions '[expected web application to include "You must accept 
 
 ## Decision Assertions
 
-Some checks are hard to express with locators: "checkout form has all required fields", "success message is shown", "sidebar is shown". The [Decision helper](/helpers/Decision) asserts such statements in plain language with a decision model.
+Some checks are hard to express with locators: "checkout form has all required fields", "success message is shown", "sidebar is shown". The [Decision helper](/helpers/decision) asserts such statements in plain language with a decision model.
 
 A [decision model](https://openrouter.ai/models?output_modalities=decisions), like [Jev](https://openrouter.ai/typesafe/jev-1.13), does not generate text. It reads the page and returns the probability that a statement is true. This makes it a good fit for assertions:
 
@@ -479,7 +479,7 @@ Use decision assertions for what a page means, and built-in assertions for exact
 | A form field's current value | `I.seeInField` / `I.seeCheckboxIsChecked` |
 | URL or page title | `I.seeInCurrentUrl` / `I.seeInTitle` |
 | A count of matching elements | `I.seeNumberOfElements` |
-| Business logic / JSON shape on grabbed data | [ExpectHelper](/helpers/ExpectHelper) — `expectEqual`, `expectDeepEqualExcluding`, `expectJsonSchema` |
+| Business logic / JSON shape on grabbed data | [ExpectHelper](/helpers/expect-helper) — `expectEqual`, `expectDeepEqualExcluding`, `expectJsonSchema` |
 | A lightweight, dependency-free assertion in a scenario | `equals`, `includes`, `empty`, `truth` from `codeceptjs/assertions` |
 | Per-element state in a loop | `grabWebElements` + [WebElement API](/WebElement) |
 | A matcher the above do not cover | `grab*` + `chai` / `jest` / `node:assert` |

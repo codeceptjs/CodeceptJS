@@ -341,7 +341,7 @@ npx codeceptjs run --ai
 
 ## Decision Assertions
 
-Some checks are hard to express with locators: "checkout form has all required fields", "success message is shown". The [Decision helper](/helpers/Decision) asserts them in plain language:
+Some checks are hard to express with locators: "checkout form has all required fields", "success message is shown". The [Decision helper](/helpers/decision) asserts them in plain language:
 
 ```js
 I.decide([

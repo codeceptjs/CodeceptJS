@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Playwright
+permalink: /helpers/playwright
 editLink: false
 sidebar: auto
 title: Playwright
@@ -2992,7 +2992,7 @@ Set current page
 
 [27]: https://playwright.dev/docs/api/class-locator#locator-is-disabled
 
-[28]: https://codecept.io/helpers/FileSystem
+[28]: https://codecept.io/helpers/file-system
 
 [29]: https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get
 

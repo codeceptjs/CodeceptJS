@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Lightpanda
+permalink: /helpers/lightpanda
 editLink: false
 sidebar: auto
 title: Lightpanda

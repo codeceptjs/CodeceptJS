@@ -225,7 +225,7 @@ share({ tmpFile: '/tmp/run-1' }, { local: true })
 ## Scaling beyond one machine
 
 Worker threads split the suite, but every Playwright worker still runs a full local browser.
-With the [Kitesurf helper](/helpers/Kitesurf) each worker drives a cloud browser on Cloudflare
+With the [Kitesurf helper](/helpers/kitesurf) each worker drives a cloud browser on Cloudflare
 instead — `run-workers 16` means sixteen browsers spawned in about a second, none of them
 competing for your runner's CPU. See [Alternative Browser Engines](/alternative-browsers) for
 the full setup.

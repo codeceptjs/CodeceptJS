@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/GraphQLDataFactory
+permalink: /helpers/graph-ql-data-factory
 editLink: false
 sidebar: auto
 title: GraphQLDataFactory
@@ -219,7 +219,7 @@ Can be replaced from a custom helper.
 
 [2]: https://www.npmjs.com/package/faker
 
-[3]: http://codecept.io/helpers/GraphQL/
+[3]: http://codecept.io/helpers/graph-ql/
 
 [4]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

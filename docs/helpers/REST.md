@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/REST
+permalink: /helpers/rest
 editLink: false
 sidebar: auto
 title: REST

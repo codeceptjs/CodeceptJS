@@ -85,11 +85,11 @@ Each helper (Playwright, Puppeteer, WebDriver, Appium, REST) has its own timeout
 
 Refer to helper-specific documentation for timeout configuration:
 
-- [Playwright Helper](/helpers/Playwright) — `timeout`, `waitForTimeout`, `getPageTimeout`
-- [Puppeteer Helper](/helpers/Puppeteer) — `waitForTimeout`, `getPageTimeout`
-- [WebDriver Helper](/helpers/WebDriver) — `waitForTimeout`, `smartWait`, `timeouts` object
-- [Appium Helper](/helpers/Appium) — `timeouts` object
-- [REST Helper](/helpers/REST) — `timeout`
+- [Playwright Helper](/helpers/playwright) — `timeout`, `waitForTimeout`, `getPageTimeout`
+- [Puppeteer Helper](/helpers/puppeteer) — `waitForTimeout`, `getPageTimeout`
+- [WebDriver Helper](/helpers/web-driver) — `waitForTimeout`, `smartWait`, `timeouts` object
+- [Appium Helper](/helpers/appium) — `timeouts` object
+- [REST Helper](/helpers/rest) — `timeout`
 
 ## stepTimeout Plugin
 

@@ -97,7 +97,7 @@ export const config = {
 }
 ```
 
-See [Alternative Browser Engines](/alternative-browsers) for connection modes and limitations, and the [Obscura helper reference](/helpers/Obscura) for every option.
+See [Alternative Browser Engines](/alternative-browsers) for connection modes and limitations, and the [Obscura helper reference](/helpers/obscura) for every option.
 
 ## Lightpanda (experimental)
 
