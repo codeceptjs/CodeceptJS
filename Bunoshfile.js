@@ -10,6 +10,7 @@ const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alp
 const helperSlug = name => name.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 const helperMarkDownFile = name => `docs/helpers/${name}.md`
 const pluginMarkDownFile = name => `docs/plugins/${name}.md`
+const pluginSlug = name => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 
 /**
  * Generate all documentation (helpers, plugins and external helpers in parallel).
@@ -84,7 +85,7 @@ export async function docsPlugins() {
 
     await writeToFile(pluginMarkDownFile(name), line => {
       line`---
-permalink: /plugins/${name}
+permalink: /plugins/${pluginSlug(name)}
 editLink: false
 sidebar: auto
 title: ${name}
@@ -107,7 +108,7 @@ title: ${name}
     line`CodeceptJS bundles the following plugins. Each plugin has its own page with full configuration reference.`
     line``
     for (const { name, summary } of index) {
-      line`## [${name}](/plugins/${name})`
+      line`## [${name}](/plugins/${pluginSlug(name)})`
       line``
       if (summary) line`${summary}`
       line``

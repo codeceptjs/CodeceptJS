@@ -466,7 +466,7 @@ helpers: {
 }
 ```
 
-A failed decision is not retried by the [retryFailedStep](/plugins/retryFailedStep) plugin: asking again would cost another request and return the same answer. Only connection errors and timeouts are retried.
+A failed decision is not retried by the [retryFailedStep](/plugins/retry-failed-step) plugin: asking again would cost another request and return the same answer. Only connection errors and timeouts are retried.
 
 Use decision assertions for what a page means, and built-in assertions for exact values. `I.see('Total: $42.00')` is still the right check for a price.
 

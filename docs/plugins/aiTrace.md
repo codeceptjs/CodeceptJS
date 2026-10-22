@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/aiTrace
+permalink: /plugins/ai-trace
 editLink: false
 sidebar: auto
 title: aiTrace
