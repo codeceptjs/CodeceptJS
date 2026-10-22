@@ -7,6 +7,7 @@ const { say, yell } = global.bunosh
 
 const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alpha'
 
+const helperSlug = name => name.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 const helperMarkDownFile = name => `docs/helpers/${name}.md`
 const pluginMarkDownFile = name => `docs/plugins/${name}.md`
 
@@ -128,7 +129,7 @@ export async function docsExternalHelpers() {
   await shell`npx documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`
 
   await writeToFile(helperMarkDownFile(helper), line => {
-    line`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
+    line`---\npermalink: /helpers/${helperSlug(helper)}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
     line.fromFile(helperMarkDownFile(helper))
   })
 
@@ -146,7 +147,7 @@ export async function docsExternalHelpers() {
   await shell`npx documentation build node_modules/@codeceptjs/mock-request/index.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`
 
   await writeToFile(helperMarkDownFile(helper), line => {
-    line`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
+    line`---\npermalink: /helpers/${helperSlug(helper)}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
     line.fromFile(helperMarkDownFile(helper))
   })
 
@@ -321,7 +322,7 @@ export async function docsHelpers() {
 
     await writeToFile(helperMarkDownFile(name), line => {
       line`---
-permalink: /helpers/${name}
+permalink: /helpers/${helperSlug(name)}
 editLink: false
 sidebar: auto
 title: ${name}

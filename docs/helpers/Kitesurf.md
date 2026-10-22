@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Kitesurf
+permalink: /helpers/kitesurf
 editLink: false
 sidebar: auto
 title: Kitesurf

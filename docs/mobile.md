@@ -114,7 +114,7 @@ Initialize CodeceptJS with `init` command:
 npx codeceptjs init
 ```
 
-Select [Appium helper](https://codecept.io/helpers/Appium/) when asked.
+Select [Appium helper](https://codecept.io/helpers/appium/) when asked.
 
 ```sh
 ? What helpers do you want to use?
@@ -207,7 +207,7 @@ There are mobile-only methods like:
 * `hideDeviceKeyboard`,
 * `seeAppIsInstalled`, `installApp`, `removeApp`, `seeAppIsNotInstalled` - Android only
 
-and [others](https://codecept.io/helpers/Appium/).
+and [others](https://codecept.io/helpers/appium/).
 
 ## Locating Elements
 

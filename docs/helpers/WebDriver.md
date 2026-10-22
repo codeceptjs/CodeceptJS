@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/WebDriver
+permalink: /helpers/web-driver
 editLink: false
 sidebar: auto
 title: WebDriver

@@ -45,9 +45,9 @@ CodeceptJS uses **Helper** modules to provide actions to `I` object. Currently, 
 - [**Playwright**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Playwright.md) - is a Node library to automate the Chromium, WebKit and Firefox browsers with a single API.
 - [**Puppeteer**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Puppeteer.md) - uses Google Chrome's Puppeteer for fast headless testing.
 - [**WebDriver**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/WebDriver.md) - uses [webdriverio](http://webdriver.io/) to run tests via WebDriver or Devtools protocol.
-- [**Obscura**](https://codecept.io/helpers/Obscura) - drives the lightweight Obscura browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
-- [**Lightpanda**](https://codecept.io/helpers/Lightpanda) - drives the Lightpanda headless browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
-- [**Moli**](https://codecept.io/helpers/Moli) - drives the Moli headless browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
+- [**Obscura**](https://codecept.io/helpers/obscura) - drives the lightweight Obscura browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
+- [**Lightpanda**](https://codecept.io/helpers/lightpanda) - drives the Lightpanda headless browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
+- [**Moli**](https://codecept.io/helpers/moli) - drives the Moli headless browser through Chrome DevTools Protocol. See [Alternative Browser Engines](https://codecept.io/alternative-browsers).
 - [**Appium**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Appium.md) - for **mobile testing** with Appium
 - [**Detox**](https://github.com/codeceptjs/CodeceptJS/blob/master/docs/helpers/Detox.md) - This is a wrapper on top of Detox library, aimed to unify testing experience for CodeceptJS framework. Detox provides a grey box testing for mobile applications, playing especially well for React Native apps.
 
@@ -208,7 +208,7 @@ Feature('CodeceptJS Demonstration')
 Scenario('test page title', async ({ I }) => {
   I.amOnPage('http://simple-form-bootstrap.plataformatec.com.br/documentation')
   const title = await I.grabTitle()
-  I.expectEqual(title, 'Example application with SimpleForm and Twitter Bootstrap') // Avaiable with Expect helper. -> https://codecept.io/helpers/Expect/
+  I.expectEqual(title, 'Example application with SimpleForm and Twitter Bootstrap') // Avaiable with Expect helper. -> https://codecept.io/helpers/expect/
 })
 ```
 

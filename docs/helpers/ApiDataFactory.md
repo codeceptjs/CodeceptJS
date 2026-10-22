@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/ApiDataFactory
+permalink: /helpers/api-data-factory
 editLink: false
 sidebar: auto
 title: ApiDataFactory
@@ -260,7 +260,7 @@ Can be replaced from a custom helper.
 
 [2]: https://www.npmjs.com/package/faker
 
-[3]: http://codecept.io/helpers/REST/
+[3]: http://codecept.io/helpers/rest/
 
 [4]: https://github.com/axios/axios#request-config
 

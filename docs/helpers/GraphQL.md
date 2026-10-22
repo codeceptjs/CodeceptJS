@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/GraphQL
+permalink: /helpers/graph-ql
 editLink: false
 sidebar: auto
 title: GraphQL

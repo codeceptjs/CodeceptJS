@@ -82,7 +82,7 @@ Obscura: {
 }
 ```
 
-All options: [Obscura helper reference](/helpers/Obscura).
+All options: [Obscura helper reference](/helpers/obscura).
 
 ## Lightpanda
 
@@ -141,7 +141,7 @@ Lightpanda: {
 }
 ```
 
-All options: [Lightpanda helper reference](/helpers/Lightpanda).
+All options: [Lightpanda helper reference](/helpers/lightpanda).
 
 ## Moli
 
@@ -196,7 +196,7 @@ Moli: {
 }
 ```
 
-All options: [Moli helper reference](/helpers/Moli).
+All options: [Moli helper reference](/helpers/moli).
 
 ## Kitesurf
 
@@ -237,4 +237,4 @@ Every worker opens its own cloud session:
 npx codeceptjs run-workers 16
 ```
 
-All options: [Kitesurf helper reference](/helpers/Kitesurf).
+All options: [Kitesurf helper reference](/helpers/kitesurf).

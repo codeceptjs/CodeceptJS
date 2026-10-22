@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Decision
+permalink: /helpers/decision
 editLink: false
 sidebar: auto
 title: Decision
