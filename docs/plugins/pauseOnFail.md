@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/pauseOnFail
+permalink: /plugins/pause-on-fail
 editLink: false
 sidebar: auto
 title: pauseOnFail

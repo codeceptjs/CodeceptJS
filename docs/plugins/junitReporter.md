@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/junitReporter
+permalink: /plugins/junit-reporter
 editLink: false
 sidebar: auto
 title: junitReporter
