@@ -1,2 +1,0 @@
-[    1932ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://codecept.io/helpers/Playwright#makeApiRequest:0
-[    1979ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://codecept.io/helpers/Playwright#makeApiRequest:0
