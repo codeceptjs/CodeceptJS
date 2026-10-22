@@ -231,6 +231,45 @@ describe('JUnit Reporter Plugin', () => {
     expect(tagsProp.$.value).to.equal('@smoke')
   })
 
+  it('groups worker tests with separately deserialized parents into one testsuite per suite', async () => {
+    junitReporter({})
+
+    const workerTest = (suiteTitle, title) => ({ title, state: 'passed', duration: 10, parent: { title: suiteTitle }, meta: {}, steps: [] })
+
+    event.dispatcher.emit(event.workers.result, {
+      tests: [workerTest('SuiteB', 'scenario 1'), workerTest('SuiteB', 'scenario 2'), workerTest('SuiteA', 'scenario 1'), workerTest('SuiteA', 'scenario 2')],
+      stats: { start: new Date(), passes: 4, failures: 0, pending: 0, tests: 4 },
+    })
+
+    const parsed = await parseReport(tmpDir)
+    const suites = parsed.testsuites.testsuite
+    expect(suites.map(s => s.$.name)).to.deep.equal(['SuiteB', 'SuiteA'])
+    expect(suites.map(s => s.$.tests)).to.deep.equal(['2', '2'])
+  })
+
+  it('groups a worker suite hook failure with the tests of the same suite', async () => {
+    junitReporter({})
+
+    event.dispatcher.emit(event.hook.failed, {
+      hookName: 'AfterSuite',
+      title: '"after all" hook: AfterSuite for "scenario 1"',
+      suiteTitle: 'SuiteC',
+      suiteFile: '/tests/suite_c_test.js',
+      error: { message: 'AfterSuite failed' },
+    })
+
+    event.dispatcher.emit(event.workers.result, {
+      tests: [{ title: 'scenario 1', state: 'passed', duration: 10, parent: { title: 'SuiteC', file: '/tests/suite_c_test.js' }, meta: {}, steps: [] }],
+      stats: { start: new Date(), passes: 1, failures: 0, pending: 0, tests: 1 },
+    })
+
+    const parsed = await parseReport(tmpDir)
+    const suites = parsed.testsuites.testsuite
+    expect(suites).to.have.length(1)
+    expect(suites[0].$.name).to.equal('SuiteC')
+    expect(suites[0].$.tests).to.equal('2')
+  })
+
   it('adds suite hook failures forwarded from workers as failed testcases', async () => {
     junitReporter({})
 
