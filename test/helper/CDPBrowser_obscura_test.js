@@ -80,6 +80,71 @@ describe('Obscura helper (self-managed obscura serve)', function () {
     }
   })
 
+  it('sees an inline link that wraps only block children', async function () {
+    await I.amOnPage('/')
+    if (I.capabilities.layout !== 'real') this.skip()
+    await I.executeScript(() => {
+      const wrapper = document.createElement('div')
+      wrapper.innerHTML = '<a id="card-link" href="#"><div style="height:20px">card</div></a><a id="empty-link" href="#"></a><span id="hidden-card" style="display:contents"><div style="display:none">x</div></span>'
+      document.body.appendChild(wrapper)
+    })
+    await I.seeElement('#card-link')
+    await I.waitForVisible('#card-link', 1)
+    await I.dontSeeElement('#empty-link')
+    await I.dontSeeElement('#hidden-card')
+  })
+
+  it('clicks with the pointer and mouse events a real click fires', async () => {
+    await I.amOnPage('/')
+    await I.executeScript(() => {
+      const wrapper = document.createElement('div')
+      wrapper.innerHTML = '<div id="mousedown-trigger" tabindex="0" style="height:20px">open</div><div id="mousedown-menu" style="display:none">menu</div><button id="disabled-btn" disabled>off</button>'
+      document.body.appendChild(wrapper)
+      window.__clickEvents = []
+      const trigger = document.getElementById('mousedown-trigger')
+      for (const type of ['pointerdown', 'mousedown', 'focus', 'pointerup', 'mouseup', 'click']) {
+        trigger.addEventListener(type, () => window.__clickEvents.push(type))
+      }
+      trigger.addEventListener('mousedown', () => {
+        document.getElementById('mousedown-menu').style.display = 'block'
+      })
+      document.getElementById('disabled-btn').addEventListener('mousedown', () => window.__clickEvents.push('disabled-mousedown'))
+    })
+    await I.click('#mousedown-trigger')
+    await I.forceClick('#disabled-btn')
+    const events = await I.executeScript(() => window.__clickEvents)
+    expect(events.filter(e => e !== 'pointerdown' && e !== 'pointerup')).to.deep.equal(['mousedown', 'focus', 'mouseup', 'click'])
+    await I.seeElement('#mousedown-menu')
+  })
+
+  it('clicks the control a wrapper element covers, like a real click lands', async function () {
+    await I.amOnPage('/')
+    if (I.capabilities.layout !== 'real') this.skip()
+    await I.executeScript(() => {
+      const wrapper = document.createElement('div')
+      wrapper.innerHTML =
+        '<ul><li id="menu-item"><button type="button" id="menu-button" style="display:block;width:100%;height:30px"><span>New suite</span></button></li></ul><div id="opened" style="display:none">opened</div>'
+      document.body.prepend(wrapper)
+      document.getElementById('menu-button').addEventListener('click', e => {
+        if (e.target.closest('#menu-button')) document.getElementById('opened').style.display = 'block'
+      })
+    })
+    await I.click('#menu-item')
+    await I.seeElement('#opened')
+  })
+
+  it('records traffic after the response finished loading', async () => {
+    await I.amOnPage('/')
+    await I.startRecordingTraffic()
+    await I.amOnPage('/info')
+    await I.seeTraffic({ name: 'info page', url: '/info', timeout: 5 })
+    const traffic = await I.grabRecordedNetworkTraffics()
+    const info = traffic.find(t => t.url.endsWith('/info'))
+    expect(info && info.response.status).to.equal(200)
+    I.stopRecordingTraffic()
+    I.recordedAtLeastOnce = false
+  })
+
   it('skips screenshots without failing when there is no rendering engine', async function () {
     await I.amOnPage('/')
     if (I.capabilities.screenshot !== false) this.skip() // this binary can render; saveScreenshot writes a file instead

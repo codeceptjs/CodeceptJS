@@ -130,6 +130,38 @@ describe('aiTrace plugin', () => {
     expect(test.artifacts.aiTrace).to.be.ok
   })
 
+  it('should keep the trace of the running test when a Before hook fails the whole suite', async () => {
+    aiTrace({
+      enabled: true,
+      output: testsDir,
+    })
+
+    const runningTest = createTest('running test')
+    const skippedTest = createTest('never started test')
+    runningTest.art = { message: 'hook failed', stack: 'Error' }
+    skippedTest.art = { message: 'hook failed', stack: 'Error' }
+
+    event.dispatcher.emit(event.test.before, runningTest)
+    await recorder.promise()
+
+    event.dispatcher.emit(event.step.after, {
+      title: 'click',
+      toString: () => 'I click button',
+      status: 'failed',
+      startTime: Date.now(),
+      endTime: Date.now() + 100,
+    })
+    await recorder.promise()
+
+    event.dispatcher.emit(event.test.failed, runningTest, new Error('hook failed'), 'Before')
+    event.dispatcher.emit(event.test.failed, skippedTest, new Error('hook failed'), 'Before')
+    await recorder.promise()
+
+    expect(runningTest.artifacts.aiTrace).to.be.ok
+    expect(skippedTest.artifacts?.aiTrace).to.be.undefined
+    expect(fs.readFileSync(runningTest.artifacts.aiTrace, 'utf8')).to.include('name: running test')
+  })
+
   it('should ignore steps matching ignoreSteps pattern', async () => {
     aiTrace({
       enabled: true,

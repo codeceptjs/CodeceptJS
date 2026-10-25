@@ -53,6 +53,20 @@ describe('CDPBrowser (against Chrome)', function () {
     expect(await I.grabSource()).to.include('<html')
   })
 
+  it('records each redirect hop once its response arrived', async () => {
+    await I.amOnPage('/')
+    await I.startRecordingTraffic()
+    await I.amOnPage('/redirect')
+    await I.seeTraffic({ name: 'redirected page', url: '/info', timeout: 5 })
+    const traffic = await I.grabRecordedNetworkTraffics()
+    const redirect = traffic.find(t => t.url.endsWith('/redirect'))
+    const info = traffic.find(t => t.url.endsWith('/info'))
+    expect(redirect && redirect.response.status).to.equal(302)
+    expect(info && info.response.status).to.equal(200)
+    I.stopRecordingTraffic()
+    I.recordedAtLeastOnce = false
+  })
+
   it('executes scripts with arguments', async () => {
     await I.amOnPage('/')
     const val = await I.executeScript((a, b) => a + b, 2, 3)
