@@ -80,6 +80,43 @@ describe('Obscura helper (self-managed obscura serve)', function () {
     }
   })
 
+  it('sees an inline link that wraps only block children', async function () {
+    await I.amOnPage('/form/inline_wrapper')
+    if (I.capabilities.layout !== 'real') this.skip()
+    await I.seeElement('#card-link')
+    await I.waitForVisible('#card-link', 1)
+    await I.dontSeeElement('#empty-link')
+    await I.dontSeeElement('#hidden-card')
+  })
+
+  it('clicks with the pointer and mouse events a real click fires', async () => {
+    await I.amOnPage('/form/mousedown_trigger')
+    await I.click('#mousedown-trigger')
+    await I.forceClick('#disabled-btn')
+    const events = await I.executeScript(() => window.__clickEvents)
+    expect(events.filter(e => e !== 'pointerdown' && e !== 'pointerup')).to.deep.equal(['mousedown', 'focus', 'mouseup', 'click'])
+    await I.seeElement('#mousedown-menu')
+  })
+
+  it('clicks the control a wrapper element covers, like a real click lands', async function () {
+    await I.amOnPage('/form/wrapped_button')
+    if (I.capabilities.layout !== 'real') this.skip()
+    await I.click('#menu-item')
+    await I.seeElement('#opened')
+  })
+
+  it('records traffic after the response finished loading', async () => {
+    await I.amOnPage('/')
+    await I.startRecordingTraffic()
+    await I.amOnPage('/info')
+    await I.seeTraffic({ name: 'info page', url: '/info', timeout: 5 })
+    const traffic = await I.grabRecordedNetworkTraffics()
+    const info = traffic.find(t => t.url.endsWith('/info'))
+    expect(info && info.response.status).to.equal(200)
+    I.stopRecordingTraffic()
+    I.recordedAtLeastOnce = false
+  })
+
   it('skips screenshots without failing when there is no rendering engine', async function () {
     await I.amOnPage('/')
     if (I.capabilities.screenshot !== false) this.skip() // this binary can render; saveScreenshot writes a file instead
