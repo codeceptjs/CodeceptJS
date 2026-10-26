@@ -27,6 +27,12 @@ jobs:
 
     steps:
       - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.27
+      - name: Wait for Selenium to be ready
+        run: |
+          for i in {1..30}; do
+            curl -sSf http://localhost:4444/status && break
+            sleep 1
+          done
       - uses: actions/checkout@v6
       - name: Read .nvmrc
         id: nvmrc
