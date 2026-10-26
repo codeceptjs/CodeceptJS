@@ -30,10 +30,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: ${{ steps.nvmrc.outputs.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm install --ignore-scripts

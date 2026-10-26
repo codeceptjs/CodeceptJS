@@ -34,10 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Read .nvmrc
+        id: nvmrc
+        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+      - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ steps.nvmrc.outputs.NODE_VERSION }}
 
       - run: npm i
         env:
