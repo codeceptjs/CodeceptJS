@@ -40,7 +40,7 @@ jobs:
           php-version: 7.4
       - name: npm install
         run: |
-          npm i --force && npm i puppeteer --force
+          npm i --force && npm i puppeteer --force && npx puppeteer browsers install chrome
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
       - name: Start mock server
