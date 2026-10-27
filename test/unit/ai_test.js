@@ -1,5 +1,6 @@
 import { expect } from 'chai'
-import AiAssistant from '../../lib/ai.js'
+import AiAssistant, { DecisionAI } from '../../lib/ai.js'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import config from '../../lib/config.js'
 import { createMockModel, MockResponses } from '../support/mock-ai-provider.js'
 import fs from 'fs'
@@ -295,5 +296,37 @@ describe('AI module with mock provider', () => {
     expect(result3[0]).to.include('#new-locator')
 
     expect(mockModel._getCallCount()).to.equal(3)
+  })
+})
+
+describe('DecisionAI', () => {
+  it('guides user to configure decision model', async () => {
+    const decisionAI = new DecisionAI()
+    expect(() => decisionAI.checkModel('model')).to.throw(/ai\.decisionModel\.model[\s\S]*@openrouter\/ai-sdk-provider/)
+    const err = await decisionAI.decide('model', 'state', ['page is loaded']).catch(e => e)
+    expect(err.message).to.include('No decision model is set')
+  })
+
+  it('asks all statements in one request', async () => {
+    const calls = []
+    const openrouter = createOpenRouter({
+      apiKey: 'secret',
+      fetch: async (url, options) => {
+        calls.push({ url, body: JSON.parse(options.body) })
+        return Response.json({ answers: { q0: { type: 'noul', noul: 0.9 }, q1: { type: 'noul', noul: 0.2 } } })
+      },
+    })
+    const decisionAI = new DecisionAI({ model: openrouter.evaluationModel('typesafe/jev-1.13') })
+
+    const probabilities = await decisionAI.decide('model', { url: 'http://localhost' }, ['form is shown', 'cart is empty'])
+
+    expect(probabilities).to.eql([0.9, 0.2])
+    expect(calls).to.have.length(1)
+    expect(calls[0].url).to.equal('https://openrouter.ai/api/alpha/decisions')
+    expect(calls[0].body).to.eql({
+      model: 'typesafe/jev-1.13',
+      state: { url: 'http://localhost' },
+      questions: { q0: { type: 'noul', instructions: 'form is shown' }, q1: { type: 'noul', instructions: 'cart is empty' } },
+    })
   })
 })

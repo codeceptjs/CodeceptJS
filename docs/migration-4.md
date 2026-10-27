@@ -35,7 +35,7 @@ The rest of this guide documents every change the skill makes — read it if you
 
 ## 1. Update Node and Package
 
-CodeceptJS 4.x supports Node 16+, but Node 20 or newer is recommended.
+CodeceptJS 4.2 requires Node 22.12 or newer. This matches the minimum supported version of its current runtime dependencies. Upgrade Node before installing CodeceptJS 4.2.
 
 ```bash
 npm install codeceptjs@4
@@ -614,7 +614,7 @@ Test files written for 3.x keep working until you flip the flag.
 
 ### `wait*` Methods Resolve Relative URLs
 
-`waitInUrl`, `waitUrlEquals`, and `waitCurrentPathEquals` now resolve a relative path against the helper's configured `url` before comparing. In 3.x a literal substring match against `window.location.href` would fail for relative paths.
+`waitUrlEquals` and `waitCurrentPathEquals` now resolve a relative path against the helper's configured `url` before comparing. In 3.x a literal comparison against `window.location.href` would fail for relative paths.
 
 ```js
 // helpers: { Playwright: { url: 'https://app.example.com' } }
@@ -622,6 +622,8 @@ Test files written for 3.x keep working until you flip the flag.
 I.waitUrlEquals('/dashboard')   // matches https://app.example.com/dashboard
 I.waitInUrl('/users')           // matches any URL containing /users
 ```
+
+`waitInUrl` is unchanged from 3.x — it stays a plain substring match against the current URL and never resolves its argument.
 
 `waitUrlEquals` error messages now include the actual URL the page was on when the wait timed out — easier to diagnose `/dashboard` vs `/dashboard?session=expired`.
 
@@ -764,4 +766,4 @@ You don't need these to upgrade, but they unlock new workflows:
 4. TypeScript users: run with `tsx` installed and confirm error stack traces point at `.ts` files.
 5. If you removed `autoLogin`: confirm sessions restore under the `auth` plugin.
 6. If you used `tryTo` / `retryTo` / `eachElement` plugins: grep your tests for the old globals and switch to subpath imports.
-7. CI: bump the Node version to 20+ if you were on 18 or below.
+7. CI: bump the Node version to 22.12+.

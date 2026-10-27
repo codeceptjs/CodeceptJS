@@ -19,6 +19,8 @@ import * as webApiTests from './webapi.js'
 import FileSystem from '../../lib/helper/FileSystem.js'
 import { deleteDir } from '../../lib/utils.js'
 import Secret from '../../lib/secret.js'
+import storeModule from '../../lib/store.js'
+const store = storeModule.default || storeModule
 import codeceptjsModule from '../../lib/index.js'
 global.codeceptjs = codeceptjsModule.default || codeceptjsModule
 
@@ -132,6 +134,149 @@ describe('Playwright', function () {
     it('should not try to click on invisible elements', async () => {
       await I.amOnPage('/invisible_elements')
       await I.click('Hello World')
+    })
+  })
+
+  describe('#visibleLocator', () => {
+    const step = (helperMethod, opts = {}) => I._beforeStep({ helperMethod, opts })
+
+    afterEach(() => {
+      store.visibleLocator = false
+      I.options.visibleLocator = false
+      I.options.strict = false
+    })
+
+    it('should match hidden elements when disabled', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.strict = true
+      step('click')
+      let err
+      try {
+        await I.click({ css: 'button' })
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should match only visible elements when enabled in config', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      I.options.strict = true
+      step('click')
+      await I.click({ css: 'button' })
+    })
+
+    it('should be enabled for a single step', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.strict = true
+      step('click', { visibleLocator: true })
+      await I.click({ css: 'button' })
+    })
+
+    it('should be disabled for a single step', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      I.options.strict = true
+      step('click', { visibleLocator: false })
+      let err
+      try {
+        await I.click({ css: 'button' })
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should not find elements which are all hidden', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      step('click')
+      let err
+      try {
+        await I.click({ css: 'button[style]' })
+      } catch (e) {
+        err = e
+      }
+      expect(err).to.exist
+      expect(err.message).to.include('Clickable element')
+      expect(err.message).to.include('was not found')
+    })
+
+    it('should keep DOM assertions unaffected', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+
+      step('seeElementInDOM')
+      await I.seeElementInDOM({ css: 'button[style]' })
+
+      step('seeNumberOfElements')
+      await I.seeNumberOfElements('button', 3)
+
+      step('dontSeeElementInDOM')
+      await I.dontSeeElementInDOM({ css: 'button[data-missing]' })
+    })
+
+    it('should scroll to elements revealed by scrolling', async () => {
+      await I.amOnPage('/form/scroll')
+      await I.resizeWindow(500, 700)
+      I.options.visibleLocator = true
+      step('scrollTo')
+
+      await I.scrollTo('#reveal_on_scroll')
+      const { y } = await I.grabPageScrollPosition()
+      assert.notEqual(y, 0)
+
+      await I.scrollPageToTop()
+      await I.scrollTo('#scroll_anchor')
+      const { y: anchorY } = await I.grabPageScrollPosition()
+      assert.notEqual(anchorY, 0)
+    })
+
+    it('should grab from hidden elements', async () => {
+      I.options.visibleLocator = true
+
+      await I.amOnPage('/form/hidden')
+      step('grabValueFrom')
+      expect(await I.grabValueFrom('#action')).to.equal('kill_people')
+      step('grabAttributeFrom')
+      expect(await I.grabAttributeFrom('#action', 'name')).to.equal('action')
+
+      await I.amOnPage('/invisible_elements')
+      step('grabHTMLFrom')
+      expect(await I.grabHTMLFrom('button[style]')).to.equal('Hello World')
+    })
+
+    it('should apply to playwright locators', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      I.options.strict = true
+      step('click')
+      await I.click({ pw: 'button' })
+    })
+
+    it('should select from a custom combobox', async () => {
+      await I.amOnPage('/form/custom_select')
+      I.options.visibleLocator = true
+      step('selectOption')
+      await I.selectOption('Country', 'Porto')
+      step('see')
+      await I.see('country: pt', '#result')
+    })
+
+    it('should interact with fields and checkboxes', async () => {
+      await I.amOnPage('/invisible_elements')
+      I.options.visibleLocator = true
+      step('checkOption')
+      await I.checkOption('#ts')
+      step('seeCheckboxIsChecked')
+      await I.seeCheckboxIsChecked('#ts')
+      step('fillField')
+      await I.fillField('#basic', 'Pascal')
+      step('seeInField')
+      await I.seeInField('#basic', 'Pascal')
     })
   })
   describe('#grabCheckedElementStatus', () => {
@@ -280,6 +425,18 @@ describe('Playwright', function () {
       I.amOnPage('/form/hover')
         .then(() => I.moveCursorTo('#hover', 'body'))
         .then(() => I.see('Hovered', '#show')))
+
+    it('should scroll element into view before hovering', async () => {
+      await I.amOnPage('/form/hover')
+      await I.moveCursorTo('#offscreen_hover')
+      await I.see('Hovered offscreen', '#offscreen_show')
+    })
+
+    it('should scroll element into view before hovering within a context', async () => {
+      await I.amOnPage('/form/hover')
+      await I.moveCursorTo('#offscreen_hover', 'body')
+      await I.see('Hovered offscreen', '#offscreen_show')
+    })
   })
 
   describe('#switchToNextTab, #switchToPreviousTab, #openNewTab, #closeCurrentTab, #closeOtherTabs, #grabNumberOfOpenTabs, #waitForNumberOfTabs', () => {
@@ -538,6 +695,119 @@ describe('Playwright', function () {
       I.amOnPage('/form/field')
         .then(() => I._locateFields('Mother-in-law'))
         .then(res => res.length.should.be.equal(0)))
+  })
+
+  describe('#_locate in debug mode', () => {
+    it('should not wait for timeout when element is removed before preview', async () => {
+      await I.amOnPage('/form/field')
+      await I.executeScript(() => {
+        const el = document.createElement('div')
+        el.id = 'removed-element'
+        document.body.append(el)
+      })
+
+      const locatorProto = Object.getPrototypeOf(page.locator('body'))
+      const originalAll = locatorProto.all
+      locatorProto.all = async function () {
+        const els = await originalAll.call(this)
+        await page.evaluate(() => document.getElementById('removed-element')?.remove())
+        return els
+      }
+      const debugMode = store.debugMode
+      store.debugMode = true
+      page.setDefaultTimeout(10000)
+
+      try {
+        const start = Date.now()
+        const els = await I._locate('#removed-element')
+        els.length.should.be.equal(1)
+        expect(Date.now() - start).to.be.below(1000)
+      } finally {
+        locatorProto.all = originalAll
+        store.debugMode = debugMode
+        page.setDefaultTimeout(I.options.timeout)
+      }
+    })
+  })
+
+  describe('#see with context when a matched element is removed', () => {
+    let locatorProto
+    let originalAll
+
+    beforeEach(async () => {
+      await I.amOnPage('/form/field')
+      await I.executeScript(() => {
+        for (const text of ['old toast', 'new toast']) {
+          const el = document.createElement('div')
+          el.className = 'toast'
+          el.textContent = text
+          document.body.append(el)
+        }
+      })
+
+      locatorProto = Object.getPrototypeOf(page.locator('body'))
+      originalAll = locatorProto.all
+      locatorProto.all = async function () {
+        locatorProto.all = originalAll
+        const els = await originalAll.call(this)
+        await page.evaluate(() => document.querySelector('.toast')?.remove())
+        return els
+      }
+      page.setDefaultTimeout(10000)
+    })
+
+    afterEach(() => {
+      locatorProto.all = originalAll
+      page.setDefaultTimeout(I.options.timeout)
+    })
+
+    it('should see text in a remaining element without waiting for timeout', async () => {
+      const start = Date.now()
+      await I.see('new toast', '.toast')
+      expect(Date.now() - start).to.be.below(1000)
+    })
+
+    it('should not see text of the removed element without waiting for timeout', async () => {
+      const start = Date.now()
+      await I.dontSee('old toast', '.toast')
+      expect(Date.now() - start).to.be.below(1000)
+    })
+
+    it('should fail text equality check when every matched element is removed', async () => {
+      await I.executeScript(() => document.querySelectorAll('.toast')[1].remove())
+      const start = Date.now()
+      let error
+      try {
+        await I.seeTextEquals('old toast', '.toast')
+      } catch (err) {
+        error = err
+      }
+      expect(error?.message).to.include('was not found')
+      expect(Date.now() - start).to.be.below(1000)
+    })
+  })
+
+  describe('#see with context matching a non-HTML element', () => {
+    beforeEach(async () => {
+      await I.amOnPage('/form/field')
+      await I.executeScript(() => {
+        document.body.insertAdjacentHTML('beforeend', '<svg width="200" height="50"><text class="chart-label" x="5" y="20">chart label</text></svg>')
+      })
+    })
+
+    it('should see text of an SVG element', async () => {
+      await I.see('chart label', '.chart-label')
+    })
+
+    it('should fail to not see text of an SVG element', async () => {
+      let error
+      try {
+        await I.dontSee('chart label', '.chart-label')
+      } catch (err) {
+        error = err
+      }
+      expect(error).to.be.instanceOf(AssertionFailedError)
+    })
   })
 
   describe('check fields: #seeInField, #seeCheckboxIsChecked, ...', () => {

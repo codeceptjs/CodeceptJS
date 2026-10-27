@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/customReporter
+permalink: /plugins/custom-reporter
 editLink: false
 sidebar: auto
 title: customReporter

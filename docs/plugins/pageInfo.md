@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/pageInfo
+permalink: /plugins/page-info
 editLink: false
 sidebar: auto
 title: pageInfo

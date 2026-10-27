@@ -7,6 +7,12 @@ title: Installation
 
 For the quickest start (CodeceptJS + Playwright) follow the [Quickstart](/quickstart). This page covers every browser, mobile, and API helper and what each one needs installed.
 
+CodeceptJS 4.2 requires **Node.js 22.12 or newer**. Check your installed version before continuing:
+
+```sh
+node --version
+```
+
 ## Set up a project
 
 ```sh
@@ -64,6 +70,67 @@ WebdriverIO 9 downloads and starts the matching driver automatically — no Sele
 
 To run against a cloud grid (Sauce Labs, BrowserStack, LambdaTest, and so on) instead, set the grid's `host`, `port`, `user`, and `key` (or `protocol` / `path`) in the helper config. For running this on CI, see [Continuous Integration](/continuous-integration).
 
+## Obscura (experimental)
+
+Obscura is a lightweight browser driven through Chrome DevTools Protocol. CodeceptJS 4.2 is tested with Obscura 0.2.2. Obscura 0.2.x is the recommended version; older 0.1.x and `-no-render` builds have no layout, visibility assertions, or screenshots.
+
+Download the archive for your platform from the [Obscura releases](https://github.com/h4ckf0r0day/obscura/releases):
+
+| Platform | Rendering archive |
+| --- | --- |
+| Linux x64 | `obscura-x86_64-linux.tar.gz` |
+| Linux ARM64 | `obscura-aarch64-linux.tar.gz` |
+| macOS Intel | `obscura-x86_64-macos.tar.gz` |
+| macOS Apple Silicon | `obscura-aarch64-macos.tar.gz` |
+| Windows x64 | `obscura-x86_64-windows.zip` |
+
+Extract the archive and either put `obscura` (`obscura.exe` on Windows) on `PATH`, set `OBSCURA_PATH`, or configure `binaryPath`. The helper then starts and stops `obscura serve` automatically:
+
+```js
+export const config = {
+  helpers: {
+    Obscura: {
+      url: 'http://localhost:3000',
+      // binaryPath: '/absolute/path/to/obscura', // optional
+    },
+  },
+}
+```
+
+See [Alternative Browser Engines](/alternative-browsers) for connection modes and limitations, and the [Obscura helper reference](/helpers/obscura) for every option.
+
+## Lightpanda (experimental)
+
+Lightpanda is a headless browser built for automation. Install it following the [official instructions](https://lightpanda.io/docs/open-source/installation), then enable the helper:
+
+```js
+export const config = {
+  helpers: {
+    Lightpanda: {
+      url: 'http://localhost:3000',
+    },
+  },
+}
+```
+
+See [Alternative Browser Engines](/alternative-browsers) for running an existing Playwright suite on Lightpanda.
+
+## Moli (experimental)
+
+Moli is a headless browser for automation that runs your app's JavaScript in V8 and skips layout and painting. Install it following the [official instructions](https://github.com/lexmount/moli#direct-installation), then enable the helper:
+
+```js
+export const config = {
+  helpers: {
+    Moli: {
+      url: 'http://localhost:3000',
+    },
+  },
+}
+```
+
+See [Alternative Browser Engines](/alternative-browsers) for running an existing Playwright suite on Moli.
+
 ## Appium (mobile)
 
 Native iOS and Android testing. Appium speaks the WebDriver protocol, so CodeceptJS drives it through `webdriverio`:
@@ -82,6 +149,8 @@ appium
 ```
 
 You'll also need the Android SDK and an emulator or device, or Xcode and a simulator or device (or a device-cloud account). Set `platformName`, `deviceName`, and `app` in the helper config — see [Mobile Testing](/mobile).
+
+For mobile tests without an Appium server, see the experimental [Mobilewright helper](/mobilewright): it drives devices directly via adb/mobilecli and reads the accessibility tree.
 
 ## API testing
 

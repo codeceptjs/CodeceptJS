@@ -3,9 +3,11 @@ chai.should()
 import { expect } from 'expect'
 import path from 'path'
 import fs from 'fs'
+import os from 'os'
 import semver from 'semver'
 import { exec } from 'child_process'
 import { fileURLToPath } from 'url'
+import xml2js from 'xml2js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -90,6 +92,38 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).not.toContain('failed')
       expect(stdout).not.toContain('File notafile not found')
       expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should distribute only tests matching grep', function (done) {
+    exec(`${codecept_run} 3 --grep "grep"`, (err, stdout) => {
+      expect(stdout).toContain('Worker 1: 1 test')
+      expect(stdout).toContain('Worker 2: 1 test')
+      expect(stdout).not.toContain('Worker 3:')
+      expect(stdout).not.toContain('No tests found by pattern')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should distribute only tests not matching inverted grep', function (done) {
+    exec(`${codecept_run} 2 --grep "Workers" --invert`, (err, stdout) => {
+      expect(stdout).toContain('Worker 1: 1 test')
+      expect(stdout).toContain('Worker 2: 1 test')
+      expect(stdout).toContain('From worker @1_grep print message 1')
+      expect(stdout).toContain('From worker @2_grep print message 2')
+      expect(stdout).toContain('OK  | 2 passed')
+      expect(err).toEqual(null)
+      done()
+    })
+  })
+
+  it('should suggest tests when grep matches nothing', function (done) {
+    exec(`${codecept_run} 2 --grep "nonexistent"`, (err, stdout) => {
+      expect(stdout).toContain('No tests found by pattern: /nonexistent/')
+      expect(stdout).toContain('OK  | 0 passed')
       done()
     })
   })
@@ -512,6 +546,88 @@ describe('CodeceptJS Workers Runner', function () {
     })
   })
 
+  it('should preserve suite identity for BeforeSuite/AfterSuite hook failures in the JUnit report', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const reportFile = path.join(codecept_dir, 'output', 'report.xml')
+    if (fs.existsSync(reportFile)) fs.rmSync(reportFile)
+
+    exec(`${codecept_run_glob('codecept.workers-junit.conf.js')} 1`, (err, stdout) => {
+      ;(async () => {
+        expect(stdout).toContain('BeforeSuite worker failure')
+        expect(stdout).toContain('AfterSuite worker failure')
+        expect(err.code).toEqual(1)
+
+        expect(fs.existsSync(reportFile)).toEqual(true)
+        const parsed = await new xml2js.Parser().parseStringPromise(fs.readFileSync(reportFile, 'utf8'))
+
+        // Both hook failures must land under the real suite name, grouped into a
+        // single <testsuite>, not split across two <testsuite name="Tests"> elements.
+        expect(parsed.testsuites.testsuite).toHaveLength(1)
+        const suiteEl = parsed.testsuites.testsuite[0]
+        expect(suiteEl.$.name).toEqual('JunitWorkerSuiteHooks')
+        expect(suiteEl.testcase).toHaveLength(2)
+
+        const names = suiteEl.testcase.map(tc => tc.$.name)
+        expect(names.some(n => n.includes('BeforeSuite'))).toEqual(true)
+        expect(names.some(n => n.includes('AfterSuite'))).toEqual(true)
+      })().then(done, done)
+    })
+  })
+
+  it('should write one JUnit report per browser with all suites of that browser in multi-run --by suite', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const outputDir = path.join(codecept_dir, 'output', 'junit-multiple')
+    fs.rmSync(outputDir, { recursive: true, force: true })
+
+    exec(`${codecept_run_glob('codecept.workers-junit-multiple.conf.js')} 2 dev --by suite`, (err, stdout) => {
+      ;(async () => {
+        expect(stdout).toContain('Worker 4: 2 tests')
+        expect(stdout).toMatch(/OK\s+\|\s+8 passed/)
+        expect(err).toEqual(null)
+
+        expect(fs.existsSync(path.join(outputDir, 'report.xml'))).toEqual(false)
+        for (const run of ['dev_chromium1', 'dev_webkit1']) {
+          const reportFile = path.join(outputDir, run, 'report.xml')
+          expect(fs.existsSync(reportFile)).toEqual(true)
+          const parsed = await new xml2js.Parser().parseStringPromise(fs.readFileSync(reportFile, 'utf8'))
+          expect(parsed.testsuites.$.tests).toEqual('4')
+          const testcases = parsed.testsuites.testsuite.flatMap(s => s.testcase.map(tc => `${s.$.name}: ${tc.$.name}`)).sort()
+          expect(testcases).toEqual(['MultipleBrowsersSuiteA: scenario 1', 'MultipleBrowsersSuiteA: scenario 2', 'MultipleBrowsersSuiteB: scenario 1', 'MultipleBrowsersSuiteB: scenario 2'])
+        }
+      })().then(done, done)
+    })
+  })
+
+  it('should keep results of all browsers and suites in the Testomatio HTML report in multi-run --by suite', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const outputDir = path.join(codecept_dir, 'output', 'testomatio-multiple')
+    fs.rmSync(outputDir, { recursive: true, force: true })
+    const htmlDir = path.join(outputDir, 'html')
+    const nodePath = fs.mkdtempSync(path.join(os.tmpdir(), 'cjs-node-path-'))
+    fs.symlinkSync(path.join(__dirname, '../..'), path.join(nodePath, 'codeceptjs'), 'dir')
+    const env = { ...process.env, NODE_PATH: nodePath, TESTOMATIO_HTML_REPORT_SAVE: '1', TESTOMATIO_HTML_REPORT_FOLDER: htmlDir }
+    delete env.TESTOMATIO
+
+    exec(`${codecept_run_glob('codecept.workers-testomatio-multiple.conf.js')} 2 dev --by suite`, { env }, (err, stdout) => {
+      fs.rmSync(nodePath, { recursive: true, force: true })
+      expect(stdout).toMatch(/OK\s+\|\s+8 passed/)
+      expect(err).toEqual(null)
+
+      const reports = fs.readdirSync(outputDir, { recursive: true }).filter(file => file.endsWith('testomatio-report.html'))
+      expect(reports).toHaveLength(1)
+      const html = fs.readFileSync(path.join(outputDir, reports[0]), 'utf8')
+      const entries = new Set([...html.matchAll(/"rid":"[^"]*@(dev_\w+)"[^{}]*?"title":"([^"]*)","suite_title":"([^"]*)"/g)].map(([, run, title, suite]) => `${run} ${suite}: ${title}`))
+      const expected = []
+      for (const run of ['dev_chromium1', 'dev_webkit1']) {
+        for (const suite of ['MultipleBrowsersSuiteA', 'MultipleBrowsersSuiteB']) {
+          expected.push(`${run} ${suite}: scenario 1`, `${run} ${suite}: scenario 2`)
+        }
+      }
+      expect([...entries].sort()).toEqual(expected)
+      done()
+    })
+  })
+
   it('should handle large worker count without inflating statistics', function (done) {
     if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
     // Test with more workers than tests to ensure no inflation
@@ -528,6 +644,81 @@ describe('CodeceptJS Workers Runner', function () {
       expect(passed).toEqual(2)
       expect(err).toEqual(null)
       done()
+    })
+  })
+
+  describe('serial tests', () => {
+    const timelineFile = path.join(codecept_dir, 'output', 'serial_timeline.log')
+    const serial_run = `${codecept_run_glob('codecept.workers-serial.conf.js')} 2`
+
+    const timeline = () => fs.readFileSync(timelineFile, 'utf8').trim().split('\n')
+
+    const expectSerialAfterParallel = (events, serialTests) => {
+      const serialEvents = serialTests.flatMap(name => [`start ${name}`, `end ${name}`])
+      expect(events.slice(-serialEvents.length)).toEqual(serialEvents)
+      expect(events.slice(0, -serialEvents.length).filter(e => e.includes('serial'))).toEqual([])
+    }
+
+    beforeEach(() => {
+      fs.mkdirSync(path.dirname(timelineFile), { recursive: true })
+      fs.rmSync(timelineFile, { force: true })
+    })
+
+    after(() => fs.rmSync(timelineFile, { force: true }))
+
+    for (const by of ['test', 'suite', 'pool']) {
+      it(`should run serial tests one by one after parallel ones with --by ${by}`, function (done) {
+        exec(`${serial_run} --by ${by}`, (err, stdout) => {
+          expect(stdout).toContain('3 tests (serial)')
+          expect(stdout).toContain('OK  | 6 passed')
+          const events = timeline()
+          expect(events).toHaveLength(12)
+          expectSerialAfterParallel(events, ['serial three', 'serial one', 'serial two'])
+          expect(err).toEqual(null)
+          done()
+        })
+      })
+    }
+
+    it('should apply grep to serial tests', function (done) {
+      exec(`${serial_run} --grep "serial one|parallel"`, (err, stdout) => {
+        expect(stdout).toContain('1 test (serial)')
+        expect(stdout).toContain('OK  | 4 passed')
+        expectSerialAfterParallel(timeline(), ['serial one'])
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
+    it('should run only serial tests when no parallel tests match grep', function (done) {
+      exec(`${serial_run} --grep "@serial"`, (err, stdout) => {
+        expect(stdout).toContain('Worker 1: 3 tests (serial)')
+        expect(stdout).not.toContain('Worker 2:')
+        expect(stdout).toContain('OK  | 3 passed')
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
+    it('should take serial pattern from --serial option', function (done) {
+      exec(`${serial_run} --serial "parallel one"`, (err, stdout) => {
+        expect(stdout).toContain('1 test (serial)')
+        expect(stdout).toContain('OK  | 6 passed')
+        const events = timeline()
+        expect(events).toHaveLength(12)
+        expect(events.slice(-2)).toEqual(['start parallel one', 'end parallel one'])
+        expect(err).toEqual(null)
+        done()
+      })
+    })
+
+    it('should not start a serial worker when no serial tests match grep', function (done) {
+      exec(`${serial_run} --grep "parallel one"`, (err, stdout) => {
+        expect(stdout).not.toContain('(serial)')
+        expect(stdout).toContain('OK  | 1 passed')
+        expect(err).toEqual(null)
+        done()
+      })
     })
   })
 })

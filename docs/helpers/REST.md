@@ -276,6 +276,25 @@ I.setRequestTimeout(10000); // In milliseconds
 *   `newTimeout` **[number][4]** timeout in milliseconds
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+### _executeRequest
+
+Executes axios request
+
+#### Parameters
+
+*   `request` **any**&#x20;
+
+Returns **[Promise][4]<any>** response
+
+### _url
+
+Generates url based on format sent (takes endpoint + url if latter lacks 'http')
+
+#### Parameters
+
+*   `url` **any**&#x20;
+
+[1]: https://github.com/axios/axios
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 

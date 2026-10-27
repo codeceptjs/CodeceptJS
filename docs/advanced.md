@@ -79,7 +79,7 @@ Data(function*() {
 }).Scenario() // ...
 ```
 
-*HINT: If you don't use DataTable. add `toString()` method to each object added to data set, so the data could be pretty printed in a test name*
+Objects in a data set are serialized as JSON in the test name.
 
 
 ## Debug

@@ -9,16 +9,21 @@ title: screencast
 
 ## screencast
 
-Records WebM video of tests using Playwright's screencast API.
+Records a video of tests. Uses Playwright's `page.screencast` API (WebM) when the active
+helper is Playwright, or raw CDP `Page.startScreencast` (APNG, assembled in-process) when the
+active helper is `CDPBrowser` or a subclass (`Obscura`, `Kitesurf`, ...). Which path is used is
+detected automatically per test run; nothing in the config changes between them.
 
-When `captions` is enabled, action annotations are burned into the video;
-when `subtitles` is enabled, a standalone `.srt` is also produced. Default
-`on=fail` keeps videos for failed tests only; `on=test` keeps every test's
-video.
+When `captions` is enabled, action annotations are burned into the video — Playwright only,
+via `page.screencast.showActions()`/`showChapter()`; silently absent on the CDP path, since CDP
+screencast frames are raw, uncomposited page captures with no overlay mechanism. `subtitles`
+(a standalone `.srt`) works identically on both paths, since it's driven by step events, not by
+the video API. Default `on=fail` keeps videos for failed tests only; `on=test` keeps every
+test's video.
 
-Note: enabling Playwright's helper-level `video: true` together with this
-plugin produces two independent recordings (`output/videos/*.webm` from the
-helper, `output/screencast/*.webm` from this plugin).
+Note: enabling Playwright's helper-level `video: true` together with this plugin produces two
+independent recordings (`output/videos/*.webm` from the helper, `output/screencast/*.webm` from
+this plugin).
 
 #### Configuration
 
@@ -38,11 +43,11 @@ plugins: {
 
 Other config options:
 
-*   `captions`: burn-in action overlays via `page.screencast.showActions()`. Default: true.
+*   `captions`: burn-in action overlays via `page.screencast.showActions()`. Playwright only. Default: true.
 *   `subtitles`: also write a standalone `.srt` file alongside the video. Default: false.
 *   `video`: record a video. With `video=false, subtitles=true`, only the `.srt` is produced. Default: true.
-*   `size`: pass-through `{ width, height }` for `screencast.start`.
-*   `quality`: pass-through 0–100 for `screencast.start`.
+*   `size`: pass-through `{ width, height }` — `screencast.start`'s `size` on Playwright, `maxWidth`/`maxHeight` on the CDP path.
+*   `quality`: pass-through 0–100 for `screencast.start` (Playwright) or CDP `Page.startScreencast` (CDPBrowser family).
 
 CLI examples:
 

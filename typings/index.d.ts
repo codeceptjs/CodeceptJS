@@ -81,6 +81,21 @@ declare namespace CodeceptJS {
     }
   }
 
+  type WebServerConfig = {
+    /** Shell command that starts the application, e.g. `npm run start` */
+    command: string
+    /** URL polled with GET until it responds; any HTTP status counts as ready */
+    url: string
+    /** Set to `false` to skip starting the server. Defaults to `true` */
+    enabled?: boolean
+    /** Milliseconds to wait for `url` to respond. Defaults to `60000` */
+    timeout?: number
+    /** Working directory for the command, relative to the config directory */
+    cwd?: string
+    /** Extra environment variables for the command */
+    env?: Record<string, string>
+  }
+
   type MainConfig = {
     /** Pattern to locate CodeceptJS tests.
      * Allows to enter glob pattern or an Array<string> of patterns to match tests / test file names.
@@ -132,6 +147,15 @@ declare namespace CodeceptJS {
      * ```
      */
     grep?: string
+    /**
+     * Pattern for tests that must not run in parallel.
+     * In `run-workers` matching tests run one by one after all parallel workers finish.
+     *
+     * ```js
+     * serial: '@serial'
+     * ```
+     */
+    serial?: string | RegExp
     /**
      * Enable and configure helpers:
      *
@@ -359,6 +383,17 @@ declare namespace CodeceptJS {
      * [Execute JS code after finishing tests in parallel mode](https://codecept.io/bootstrap/#bootstrapall-teardownall)
      */
     teardownAll?: (() => Promise<void>) | boolean | string
+    /**
+     * [Start the application under test](https://codecept.io/configuration/#web-server) before tests run and stop it after.
+     *
+     * ```js
+     * webServer: {
+     *   command: 'npm run start',
+     *   url: 'http://localhost:3000',
+     * }
+     * ```
+     */
+    webServer?: WebServerConfig | WebServerConfig[]
 
     /** Enable [localized test commands](https://codecept.io/translation/) */
     translation?: string
@@ -430,10 +465,29 @@ declare namespace CodeceptJS {
     y: number
   }
 
+  /**
+   * Features an acting helper supports. Plugins read them to decide what to capture.
+   * `null` means the value is detected at runtime.
+   */
+  interface HelperCapabilities {
+    screenshot: boolean | null
+    video: boolean | null
+    trace: boolean
+    aria: boolean
+    layout?: 'real' | 'none' | null
+    xpath?: 'native' | 'polyfill' | null
+    innerText?: 'native' | 'computed' | null
+  }
+
   // Could get extended by user generated typings
   interface Methods extends ActorStatic {}
   interface I {}
-  interface IHook {}
+  interface IHook {
+    (callback: HookCallback): HookConfig
+  }
+  interface IHookSuite {
+    (callback: HookSuiteCallback): HookConfig
+  }
   interface IScenario {}
   interface IFeature {
     (title: string, opts?: { [key: string]: any }): FeatureConfig
@@ -473,8 +527,22 @@ declare namespace CodeceptJS {
 
   type StringOrSecret = string | CodeceptJS.Secret
 
+  interface GherkinCallback {
+    (test: Test): void | Promise<void>
+  }
+  interface GherkinEventEmitter {}
+  interface GherkinHook {
+    (callback: GherkinCallback): GherkinEventEmitter
+  }
   interface HookCallback {
-    (args: SupportObject): void | Promise<void>
+    // `suite` has type Mocha.Suite if hook (Background/Before/After) is called before `Feature()`
+    // `suite` has type CodeceptJS.Suite if hook is called after `Feature()`
+    (args: SupportObject & { suite: Mocha.Suite; test: Test }): void | Promise<void>
+  }
+  interface HookSuiteCallback {
+    // `suite` has type Mocha.Suite if hook (BeforeSuite/AfterSuite) is called before `Feature()`
+    // `suite` has type CodeceptJS.Suite if hook is called after `Feature()`
+    (args: SupportObject & { suite: Mocha.Suite }): void | Promise<void>
   }
   interface Scenario extends IScenario {
     only: IScenario
@@ -494,9 +562,6 @@ declare namespace CodeceptJS {
     // Scenario.todo can be called only with a title.
     (title: string, callback?: HookCallback): ScenarioConfig
     (title: string, opts: { [key: string]: any }, callback: HookCallback): ScenarioConfig
-  }
-  interface IHook {
-    (callback: HookCallback): HookConfig
   }
 
   interface Globals {
@@ -545,11 +610,13 @@ declare function xData(data: any): CodeceptJS.IData
 declare function DefineParameterType(options: CodeceptJS.IParameterTypeDefinition<any>): void
 
 // Hooks
-declare const BeforeSuite: CodeceptJS.IHook
-declare const AfterSuite: CodeceptJS.IHook
+declare const BeforeSuite: CodeceptJS.IHookSuite
+declare const AfterSuite: CodeceptJS.IHookSuite
 declare const Background: CodeceptJS.IHook
 declare const Before: CodeceptJS.IHook
 declare const After: CodeceptJS.IHook
+declare const GherkinBefore: CodeceptJS.GherkinHook
+declare const GherkinAfter: CodeceptJS.GherkinHook
 
 // Plugins
 declare const __: any

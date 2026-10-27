@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/GraphQL
+permalink: /helpers/graph-ql
 editLink: false
 sidebar: auto
 title: GraphQL
@@ -87,7 +87,7 @@ Sets request headers for all requests of this test
 
 #### Parameters
 
-*   `headers` **[object][1]** headers list
+*   `headers` **[object][3]** headers list
 
 ### sendMutation
 
@@ -142,9 +142,36 @@ const user = response.data.data;
 *   `variables` **[object][1]?** that may go along with the query
 *   `options` **[object][1]?** are additional query options 
 *   `headers` **[object][1]?**  
+*   `query` **[String][2]**&#x20;
+*   `variables` **[object][3]?** that may go along with the query
+*   `options` **[object][3]?** are additional query options 
+*   `headers` **[object][3]?**  
 
 Returns **any** Promise<any>
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+### _executeQuery
+
+Executes query via axios call
+
+#### Parameters
+
+*   `request` **[object][3]**&#x20;
+
+### _prepareGraphQLRequest
+
+Prepares request for axios call
+
+#### Parameters
+
+*   `operation` **[object][3]**&#x20;
+*   `headers` **[object][3]**&#x20;
+
+Returns **[object][3]** graphQLRequest
+
+[1]: https://github.com/axios/axios
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[3]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object

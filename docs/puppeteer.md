@@ -43,7 +43,7 @@ npx codeceptjs init
 
 You will be asked for a Helper to use, you should select Puppeteer and provide url of a website you are testing.
 
-> Puppeteer can also work with Firefox. [Learn how to set it up](/helpers/Puppeteer-firefox)
+> Puppeteer can also work with Firefox. [Learn how to set it up](/helpers/puppeteer-firefox)
 
 ## Configuring
 
@@ -80,7 +80,7 @@ By default it is set to `domcontentloaded` which waits for `DOMContentLoaded` ev
 When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
-> ▶ More options are listed in [helper reference](https://codecept.io/helpers/Puppeteer/).
+> ▶ More options are listed in [helper reference](https://codecept.io/helpers/puppeteer/).
 
 ## Writing Tests
 
@@ -105,7 +105,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 - `see`, `dontSee` - to check for a text on a page
 - `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ All actions are listed in [Puppeteer helper reference](https://codecept.io/helpers/Puppeteer/).\*
+> ℹ All actions are listed in [Puppeteer helper reference](https://codecept.io/helpers/puppeteer/).\*
 
 All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
@@ -241,7 +241,7 @@ To master request intercepting [use `HTTPRequest` object](https://pptr.dev/next/
 
 ## Accessing Puppeteer API
 
-To get Puppeteer API inside a test use [`I.usePupepteerTo`](/helpers/Puppeteer/#usepuppeteerto) method with a callback.
+To get Puppeteer API inside a test use [`I.usePupepteerTo`](/helpers/puppeteer/#usepuppeteerto) method with a callback.
 To keep test readable provide a description of a callback inside the first parameter.
 
 ```js

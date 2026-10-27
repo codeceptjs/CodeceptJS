@@ -10,7 +10,7 @@ filePath.forEach(file => {
       return
     }
 
-    const modifiedContent = modifyContent(data)
+    const modifiedContent = modifyContent(file.endsWith('promiseBasedTypes.d.ts') ? removeConfigTypes(data) : data)
 
     // Write the modified content back to the file
     fs.writeFile(file, modifiedContent, 'utf8', err => {
@@ -24,6 +24,12 @@ filePath.forEach(file => {
   })
 })
 
+// Helper config types are emitted into both files; TypeScript stops honouring `@ts-ignore` once
+// eight or more identifiers conflict between two files, so keep them in types.d.ts only.
+function removeConfigTypes(content) {
+  return content.replace(/(?: {4}\/\*\*(?:(?!\*\/)[\s\S])*?\*\/\n)? {4}type \w+Config = \{\n[\s\S]*?\n {4}\};\n/g, '')
+}
+
 function modifyContent(content) {
   const modifiedContent = content
     .replace(/    class MockServer {/, '    // @ts-ignore\n' + '    class MockServer {')
@@ -33,5 +39,10 @@ function modifyContent(content) {
     .replace(/    type PuppeteerConfig = {/, '    // @ts-ignore\n' + '    type PuppeteerConfig = {')
     .replace(/    type RESTConfig = {/, '    // @ts-ignore\n' + '    type RESTConfig = {')
     .replace(/    type WebDriverConfig = {/, '    // @ts-ignore\n' + '    type WebDriverConfig = {')
+    .replace(/    type CDPBrowserConfig = {/, '    // @ts-ignore\n' + '    type CDPBrowserConfig = {')
+    .replace(/    type ObscuraConfig = {/, '    // @ts-ignore\n' + '    type ObscuraConfig = {')
+    .replace(/    type LightpandaConfig = {/, '    // @ts-ignore\n' + '    type LightpandaConfig = {')
+    .replace(/    type MoliConfig = {/, '    // @ts-ignore\n' + '    type MoliConfig = {')
+    .replace(/    type KitesurfConfig = {/, '    // @ts-ignore\n' + '    type KitesurfConfig = {')
   return modifiedContent
 }

@@ -25,7 +25,8 @@ plugins: {
 
 #### `on=` modes
 
-*   **fail** — pause when a step fails (default)
+*   **fail** — pause when a step fails (default). Failures inside `tryTo` and
+    non-final `retryTo` attempts are ignored
 *   **test** — pause after each test
 *   **step** — pause before the first step (interactive walk-through)
 *   **file** — pause when execution reaches `path=...[;line=...]`

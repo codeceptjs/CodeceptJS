@@ -3,7 +3,7 @@ import path from 'path'
 import { expect } from 'chai'
 import { fileURLToPath } from 'url'
 import * as cheerio from 'cheerio'
-import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks, cleanHtml, formatHtml, isTrashClass } from '../../lib/html.js'
+import { scanForErrorMessages, removeNonInteractiveElements, minifyHtml, splitByChunks, cleanHtml, formatHtml, isTrashClass, simplifyHtmlElement } from '../../lib/html.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -222,6 +222,37 @@ describe('HTML module', () => {
       expect(out).not.to.include('<style')
       // structure preserved
       expect(out).to.include('<span>hi</span>')
+    })
+  })
+
+  describe('#simplifyHtmlElement', () => {
+    const button = label =>
+      '<button type="button"><span class="content inline-flex items-center gap-3 w-full">' +
+      '<span class="badge badge-type manual"><svg class="md-icon md-icon-file-document-outline"></svg></span>' +
+      `<span>${label}</span></span></button>`
+
+    it('keeps the visible label when it is nested in non-interactive elements', () => {
+      const out = simplifyHtmlElement(button('New test'))
+      expect(out).to.include('New test')
+      expect(out).to.include('<button type="button">')
+    })
+
+    it('keeps elements with different labels distinguishable', () => {
+      expect(simplifyHtmlElement(button('New test'))).not.to.equal(simplifyHtmlElement(button('New tests from requirement')))
+    })
+
+    it('drops nested elements without text', () => {
+      expect(simplifyHtmlElement(button('New test'))).not.to.include('<svg')
+    })
+
+    it('truncates to maxLength', () => {
+      const out = simplifyHtmlElement(button('New test'), 50)
+      expect(out).to.have.length(53)
+      expect(out.endsWith('...')).to.be.true
+    })
+
+    it('does not change removeNonInteractiveElements by default', () => {
+      expect(removeNonInteractiveElements(button('New test'))).not.to.include('New test')
     })
   })
 })

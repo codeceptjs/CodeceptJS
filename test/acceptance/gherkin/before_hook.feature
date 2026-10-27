@@ -1,4 +1,4 @@
-@Playwright @Puppeteer @WebDriverIO @bdd @hookCapture
+@Playwright @Puppeteer @WebDriverIO @bdd @hookCapture @Obscura @Moli
 Feature: Before hooks receive the real scenario
 
   Background:

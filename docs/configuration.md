@@ -39,11 +39,13 @@ export const config = {
 
 - `bootstrap` / `teardown` — run code before / after the whole run; an async function or a path to a JS module. See [Bootstrap](/bootstrap).
 - `bootstrapAll` / `teardownAll` — run once around a parallel run (before any worker starts / after all finish). See [bootstrapAll / teardownAll](/bootstrap#bootstrapall-teardownall).
+- `webServer` — start the application under test before the run and stop it after. See [Web Server](#web-server).
 
 **Test runner**
 
 - `timeout` — default per-test timeout in seconds; a test is killed if it stops responding.
 - `mocha` — [Mocha options](https://mochajs.org/#configuring-mocha-nodejs), including extra reporters. See [Reporters](/reports).
+- `serial` — pattern for tests that must not run in parallel, e.g. `serial: '@serial'`. With `run-workers` they run one by one after all parallel workers finish. `--serial` overrides it. See [Serial tests](/parallel#serial-tests).
 - `workerInitializationDelay` — delay in milliseconds between spinning up parallel workers to prevent CPU spikes and stagger browser startup. Defaults to `200`. Set to `0` to disable.
 - `workerInitializationMaxDelay` — maximum total delay (in milliseconds) for worker initialization staggering. Defaults to `10000` (10 s). Set to `0` to disable capping.
 
@@ -88,6 +90,41 @@ require: ['tsx/esm', 'should', './lib/testSetup']
 ```
 
 The config file itself (`codecept.conf.ts`) and helpers are transpiled automatically — only test files need the loader. See [TypeScript](/typescript) for the full setup.
+
+## Web Server
+
+`webServer` starts your application before tests run and stops it when they finish, so you don't need a `bootstrap` script for it:
+
+```js
+export const config = {
+  webServer: {
+    command: 'npm run start',
+    url: 'http://localhost:3000',
+    enabled: !process.env.CI,
+  },
+  // ...
+}
+```
+
+- `command` — shell command that starts the app.
+- `url` — CodeceptJS sends GET requests here until it gets any HTTP response, then starts the tests. If `url` already responds before `command` is run, the running server is reused.
+- `enabled` — set to `false` to skip starting the server, e.g. `enabled: !process.env.CI` when CI provides its own. Default `true`.
+- `timeout` — milliseconds to wait for `url`. Default `60000`.
+- `cwd` — working directory for `command`, relative to the config file. Default is the config directory.
+- `env` — extra environment variables for `command`.
+
+If the server exits early or doesn't respond within `timeout`, the run fails and prints the last 20 lines of its output. Run with `--debug` to see all of its output.
+
+To start several services, pass an array. They start in order and stop in reverse order:
+
+```js
+webServer: [
+  { command: 'npm run api', url: 'http://localhost:4000/health' },
+  { command: 'npm run start', url: 'http://localhost:3000' },
+],
+```
+
+The server is started as part of bootstrap, right before the `bootstrap` hook (or `bootstrapAll` for `run-workers` and `run-multiple`), and stopped after `teardown` (`teardownAll`). It starts once in the main process; workers and child processes reuse it. The interactive `shell` starts it too, `dry-run` and `check` only with `--bootstrap`. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
 
 ## Dynamic configuration
 

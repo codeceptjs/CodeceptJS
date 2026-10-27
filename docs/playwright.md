@@ -104,7 +104,7 @@ When to consider navigation succeeded, defaults to `load`. Given an array of eve
 When a test runs faster than application it is recommended to increase `waitForAction` config value.
 It will wait for a small amount of time (100ms) by default after each user action is taken.
 
-> ▶ More options are listed in [helper reference](https://codecept.io/helpers/Playwright/).
+> ▶ More options are listed in [helper reference](https://codecept.io/helpers/playwright/).
 
 ## Writing Tests
 
@@ -129,7 +129,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 - `see`, `dontSee` - to check for a text on a page
 - `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ All actions are listed in [Playwright helper reference](https://codecept.io/helpers/Playwright/).\*
+> ℹ All actions are listed in [Playwright helper reference](https://codecept.io/helpers/playwright/).\*
 
 All actions which interact with elements can use **[CSS or XPath locators](https://codecept.io/locators/#css-and-xpath)**. Actions like `click` or `fillField` can locate elements by their name or value on a page:
 
@@ -377,15 +377,15 @@ Scenario('website looks nice on iPhone', () => {
 
 ## API Requests
 
-CodeceptJS has [REST](/helpers/REST) and [GraphQL](<(/helpers/GraphQL)>) helpers to perform requests to external APIs. This may be helpful to implement [data management](https://codecept.io/data/) strategy.
+CodeceptJS has [REST](/helpers/rest) and [GraphQL](/helpers/graph-ql) helpers to perform requests to external APIs. This may be helpful to implement [data management](https://codecept.io/data/) strategy.
 
-However, Playwright since 1.18 has its own [API for making request](https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get). It uses cookies from browser session to authenticate requests. So you can use it via [`makeApiRequest`](/helpers/Playwright#makeApiRequest) method:
+However, Playwright since 1.18 has its own [API for making request](https://playwright.dev/docs/api/class-apirequestcontext#api-request-context-get). It uses cookies from browser session to authenticate requests. So you can use it via [`makeApiRequest`](/helpers/playwright#makeapirequest) method:
 
 ```js
 I.makeApiRequest('GET', '/users')
 ```
 
-It is also possible to test JSON responses by adding [`JSONResponse`](/helpers/JSONResponse) and connecting it to Playwright:
+It is also possible to test JSON responses by adding [`JSONResponse`](/helpers/json-response) and connecting it to Playwright:
 
 ```js
 // inside codecept.conf.js

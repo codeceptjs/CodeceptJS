@@ -30,6 +30,12 @@ describe('Steps', () => {
       expect(step.title).eql('doSomething')
     })
 
+    it('has name as alias of title', () => {
+      expect(step.name).eql('doSomething')
+      step.name = 'doOther'
+      expect(step.title).eql('doOther')
+    })
+
     it('should convert method names for output', () => {
       expect(step.humanize()).eql('do something')
     })

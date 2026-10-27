@@ -8,8 +8,10 @@ const { say, yell } = global.bunosh
 
 const documentjsCliArgs = '-f md --shallow --markdown-toc=false --sort-order=alpha'
 
+const helperSlug = name => name.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 const helperMarkDownFile = name => `docs/helpers/${name}.md`
 const pluginMarkDownFile = name => `docs/plugins/${name}.md`
+const pluginSlug = name => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 
 /**
  * Generate all documentation (helpers, plugins and external helpers in parallel).
@@ -46,7 +48,7 @@ export async function docsPlugins() {
   task.stopOnFailures()
   ensureDir('docs/plugins')
 
-  const files = fs.readdirSync('lib/plugin').filter(f => path.extname(f) === '.js')
+  const files = fs.readdirSync('lib/plugin').filter(f => path.extname(f) === '.js').sort()
 
   const sharedPartials = fs.readdirSync('docs/shared').filter(f => path.extname(f) === '.mustache')
   const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`)
@@ -84,12 +86,11 @@ export async function docsPlugins() {
 
     await writeToFile(pluginMarkDownFile(name), line => {
       line`---
-permalink: /plugins/${name}
+permalink: /plugins/${pluginSlug(name)}
 editLink: false
 sidebar: auto
 title: ${name}
 ---
-
 `
       line.fromFile(pluginMarkDownFile(name))
     })
@@ -108,7 +109,7 @@ title: ${name}
     line`CodeceptJS bundles the following plugins. Each plugin has its own page with full configuration reference.`
     line``
     for (const { name, summary } of index) {
-      line`## [${name}](/plugins/${name})`
+      line`## [${name}](/plugins/${pluginSlug(name)})`
       line``
       if (summary) line`${summary}`
       line``
@@ -130,7 +131,7 @@ export async function docsExternalHelpers() {
   await shell`npx documentation build node_modules/@codeceptjs/detox-helper/${helper}.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`
 
   await writeToFile(helperMarkDownFile(helper), line => {
-    line`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
+    line`---\npermalink: /helpers/${helperSlug(helper)}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
     line.fromFile(helperMarkDownFile(helper))
   })
 
@@ -139,8 +140,16 @@ export async function docsExternalHelpers() {
     cfg.replace(/string \| object/g, 'LocatorOrString')
   })
 
+  say('Building @codeceptjs/mock-request')
+  helper = 'MockRequest'
+  replaceInFile('node_modules/@codeceptjs/mock-request/index.js', cfg => {
+    cfg.replace(/CodeceptJS.LocatorOrString/g, 'string | object')
+    cfg.replace(/LocatorOrString/g, 'string | object')
+  })
+  await shell`npx documentation build node_modules/@codeceptjs/mock-request/index.js -o ${helperMarkDownFile(helper)} ${documentjsCliArgs}`
+
   await writeToFile(helperMarkDownFile(helper), line => {
-    line`---\npermalink: /helpers/${helper}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
+    line`---\npermalink: /helpers/${helperSlug(helper)}\nsidebar: auto\ntitle: ${helper}\n---\n\n# ${helper}\n\n`
     line.fromFile(helperMarkDownFile(helper))
   })
 
@@ -177,7 +186,7 @@ title: Testing Vue Apps
  */
 export async function buildLibWithDocs(forTypings = false) {
   task.stopOnFailures()
-  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js')
+  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js').sort()
   ensureDir('docs/build')
 
   const partials = fs.readdirSync('docs/webapi').filter(f => path.extname(f) === '.mustache')
@@ -236,7 +245,7 @@ export async function buildLibWithDocs(forTypings = false) {
  */
 export async function docsHelpers() {
   task.stopOnFailures()
-  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js')
+  const files = fs.readdirSync('lib/helper').filter(f => path.extname(f) === '.js').sort()
   ensureDir('docs/build')
 
   const ignoreList = ['Polly', 'MockRequest']
@@ -256,10 +265,9 @@ export async function docsHelpers() {
   const sharedPlaceholders = sharedPartials.map(file => `{{ ${path.basename(file, '.mustache')} }}`)
   const sharedTemplates = sharedPartials.map(file => fs.readFileSync(`docs/shared/${file}`).toString()).map(template => `\n\n\n${template}`)
 
-  for (const file of files) {
-    const name = path.basename(file, '.js')
-    if (ignoreList.indexOf(name) >= 0) continue
-    say(`Writing documentation for ${name}`)
+  const helperFiles = files.filter(file => ignoreList.indexOf(path.basename(file, '.js')) < 0)
+
+  for (const file of helperFiles) {
     copyFile(`lib/helper/${file}`, `docs/build/${file}`)
     replaceInFile(`docs/build/${file}`, cfg => {
       for (const i in placeholders) {
@@ -293,8 +301,14 @@ export async function docsHelpers() {
       cfg.replace(/^export\s*\{\s*([^}]+)\s*\}/gm, 'module.exports = { $1 }')
       cfg.replace(/^export\s+(class|function|const|let|var)\s+([^\s=]+)/gm, '$1 $2')
     })
+  }
 
-    await shell`npx documentation build docs/build/${file} -o docs/helpers/${name}.md ${documentjsCliArgs}`
+  for (const file of helperFiles) {
+    const name = path.basename(file, '.js')
+    if (abstractHelpers.includes(name)) continue
+    say(`Writing documentation for ${name}`)
+
+    await docsHelperMarkdown(name, inheritedHelperDocs[name])
     replaceInFile(helperMarkDownFile(name), cfg => {
       cfg.replace(/\(optional, default.*?\)/gm, '')
       cfg.replace(/\\*/gm, '')
@@ -316,13 +330,9 @@ export async function docsHelpers() {
       cfg.replace(regex, '[1]')
     })
 
-    if (name === 'Appium') {
-      await docsAppium()
-    }
-
     await writeToFile(helperMarkDownFile(name), line => {
       line`---
-permalink: /helpers/${name}
+permalink: /helpers/${helperSlug(name)}
 editLink: false
 sidebar: auto
 title: ${name}
@@ -334,115 +344,68 @@ title: ${name}
   }
 }
 
-/**
- * Sync wiki pages from the CodeceptJS.wiki repo into website docs.
- */
-export async function wiki() {
-  task.stopOnFailures()
-  if (!fs.existsSync('docs/wiki/Home.md')) {
-    await shell`git clone git@github.com:codeceptjs/CodeceptJS.wiki.git docs/wiki`
-  }
-  await shell`git pull origin master`.cwd('docs/wiki')
-
-  await writeToFile('docs/community-helpers.md', line => {
-    line`---`
-    line`permalink: /community-helpers`
-    line`title: Community Helpers`
-    line`editLink: false`
-    line`---`
-    line``
-    line`# Community Helpers`
-    line`> Share your helpers at our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Community-Helpers)`
-    line``
-    line.fromFile('docs/wiki/Community-Helpers-&-Plugins.md')
-  })
-
-  await writeToFile('docs/examples.md', line => {
-    line`---`
-    line`permalink: /examples`
-    line`layout: Section`
-    line`sidebar: false`
-    line`title: Examples`
-    line`editLink: false`
-    line`---`
-    line``
-    line`# Examples`
-    line`> Add your own examples to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Examples)`
-    line.fromFile('docs/wiki/Examples.md')
-  })
-
-  await writeToFile('docs/books.md', line => {
-    line`---`
-    line`permalink: /books`
-    line`layout: Section`
-    line`sidebar: false`
-    line`title: Books & Posts`
-    line`editLink: false`
-    line`---`
-    line``
-    line`# Books & Posts`
-    line`> Add your own books or posts to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Books-&-Posts)`
-    line.fromFile('docs/wiki/Books-&-Posts.md')
-  })
-
-  await writeToFile('docs/videos.md', line => {
-    line`---`
-    line`permalink: /videos`
-    line`layout: Section`
-    line`sidebar: false`
-    line`title: Videos`
-    line`editLink: false`
-    line`---`
-    line``
-    line`> Add your own videos to our [Wiki Page](https://github.com/codeceptjs/CodeceptJS/wiki/Videos)`
-    line.fromFile('docs/wiki/Videos.md')
-  })
+const inheritedHelperDocs = {
+  Appium: {
+    parent: 'WebDriver',
+    exclude: [/Title/, /Popup/, /Cookie/, /Url/, /^press/, /^refreshPage/, /^resizeWindow/, /Script$/, /cursor/, /Css/, /Tab$/, /^wait/],
+  },
+  Obscura: { parent: 'CDPBrowser' },
+  Lightpanda: { parent: 'CDPBrowser' },
+  Moli: { parent: 'CDPBrowser' },
+  Kitesurf: { parent: 'CDPBrowser', excludeConfig: ['endpoint', 'headers'] },
 }
 
-/**
- * Generate docs for Appium by merging in public WebDriver methods.
- */
-export async function docsAppium() {
+const abstractHelpers = ['CDPBrowser']
+
+const helperHooks = [
+  '_init',
+  '_before',
+  '_after',
+  '_beforeStep',
+  '_afterStep',
+  '_beforeSuite',
+  '_afterSuite',
+  '_passed',
+  '_failed',
+  '_finishTest',
+  '_setConfig',
+  '_validateConfig',
+  '_test',
+  '_useTo',
+]
+
+async function docsHelperMarkdown(name, { parent, exclude = [], excludeConfig = [] } = {}) {
   const documentation = await import('documentation')
-  const onlyWeb = [/Title/, /Popup/, /Cookie/, /Url/, /^press/, /^refreshPage/, /^resizeWindow/, /Script$/, /cursor/, /Css/, /Tab$/, /^wait/]
-  const webdriverDoc = await documentation.build(['docs/build/WebDriver.js'], {
-    shallow: true,
-    order: 'asc',
-  })
-  const doc = await documentation.build(['docs/build/Appium.js'], {
-    shallow: true,
-    order: 'asc',
-  })
+  const buildOptions = { shallow: true, sortOrder: ['alpha'] }
+  const doc = await documentation.build([`docs/build/${name}.js`], buildOptions)
+  doc.sort((a, b) => (b.kind === 'class') - (a.kind === 'class'))
+  let members = doc[0].members.instance
 
-  for (const method of webdriverDoc[0].members.instance) {
-    if (onlyWeb.filter(f => method.name.match(f)).length) continue
-    if (doc[0].members.instance.filter(m => m.name === method.name).length) continue
-    doc[0].members.instance.push(method)
-  }
-  const output = await documentation.formats.md(doc)
-  fs.writeFileSync('docs/helpers/Appium.md', output)
-}
+  if (parent) {
+    const parentDoc = await documentation.build([`docs/build/${parent}.js`], buildOptions)
+    for (const method of parentDoc.find(c => c.kind === 'class').members.instance) {
+      if (exclude.some(f => method.name.match(f))) continue
+      if (members.some(m => m.name === method.name)) continue
+      members.push(method)
+    }
 
-/**
- * Update the codecept.io website: regenerate changelog, sync wiki, push docs and publish.
- */
-export async function publishSite() {
-  await processChangelog()
-  await wiki()
-
-  const dir = 'website'
-  if (fs.existsSync(dir)) {
-    await shell`rm -rf ${dir}`
+    const config = doc.find(c => c.name === 'config')
+    const parentConfig = parentDoc.find(c => c.name === 'config')
+    if (config && parentConfig) {
+      for (const prop of parentConfig.properties) {
+        if (excludeConfig.includes(prop.name)) continue
+        if (config.properties.some(p => p.name === prop.name)) continue
+        config.properties.push(prop)
+      }
+    }
   }
 
-  await shell`git clone git@github.com:codeceptjs/website.git ${dir}`
-  copyFile('docs', 'website/docs')
+  members = members.filter(m => !helperHooks.includes(m.name))
+  members.sort((a, b) => a.name.startsWith('_') - b.name.startsWith('_') || a.name.localeCompare(b.name))
+  doc[0].members.instance = members
 
-  await shell`git add -A`.cwd(dir)
-  await shell`git commit -m "synchronized with docs"`.cwd(dir)
-  await shell`git pull`.cwd(dir)
-  await shell`git push`.cwd(dir)
-  await shell`./runok.js publish`.cwd(dir)
+  const output = await documentation.formats.md(doc, { markdownToc: false })
+  fs.writeFileSync(helperMarkDownFile(name), output)
 }
 
 /**
@@ -451,32 +414,6 @@ export async function publishSite() {
 export async function server() {
   await Promise.all([shell`php -S 127.0.0.1:8000 -t test/data/app`, testServer()])
 }
-
-/**
- * Release CodeceptJS to npm. Optionally bump package.json version first.
- * @param {string} [releaseType] - "patch", "minor" or "major" to bump before releasing.
- */
-export async function release(releaseType = null) {
-  task.stopOnFailures()
-  const packageInfo = JSON.parse(fs.readFileSync('package.json'))
-  if (releaseType) {
-    packageInfo.version = semver.inc(packageInfo.version, releaseType)
-    fs.writeFileSync('package.json', JSON.stringify(packageInfo))
-    await shell`git add package.json`
-    await shell`git commit -m "version bump"`
-  }
-  const version = packageInfo.version
-  await docs()
-  await def()
-  await publishSite()
-  await shell`git pull`
-  await shell`git tag ${version}`
-  await shell`git push origin 3.x --tags`
-  await shell`rm -rf docs/wiki/.git`
-  await shell`npm publish`
-  say('-- RELEASED --')
-}
-
 
 /**
  * Update the contributors table in README.md from the GitHub API.
@@ -542,7 +479,6 @@ export async function contributorFaces() {
   }
 }
 
-
 /**
  * Scaffold a config, feature test and runner test for a new feature.
  * @param {string} featureName - Name of the feature to scaffold tests for.
@@ -606,28 +542,6 @@ describe('CodeceptJS ${featureName}', function () {
   say(`npx mocha test/runner --grep ${featureName}`)
 }
 
-async function processChangelog() {
-  const file = 'CHANGELOG.md'
-  let changelog = fs.readFileSync(file).toString()
-
-  changelog = changelog.replace(/\s@([\w-]+)/gm, ' **[$1](https://github.com/$1)**')
-  changelog = changelog.replace(/#(\d+)/gm, '[#$1](https://github.com/codeceptjs/CodeceptJS/issues/$1)')
-  changelog = changelog.replace(/\s\[(\w+)\]\s/gm, ' **[$1]** ')
-
-  await writeToFile('docs/changelog.md', line => {
-    line`---`
-    line`permalink: /changelog`
-    line`title: Releases`
-    line`sidebar: false`
-    line`layout: Section`
-    line`---`
-    line``
-    line`# Releases`
-    line``
-    line`${changelog}`
-  })
-}
-
 /**
  * Run the read-only REST test server on port 8010.
  */
@@ -667,42 +581,42 @@ export async function graphql() {
  * Lint the codebase with ESLint.
  */
 export async function lint() {
-  await shell`eslint bin/ examples/ lib/ test/ translations/ runok.cjs`
+  await shell`eslint bin/ examples/ lib/ test/ translations/ Bunoshfile.js`
 }
 
 /**
  * Lint and auto-fix the codebase with ESLint.
  */
 export async function lintFix() {
-  await shell`eslint bin/ examples/ lib/ test/ translations/ runok.cjs --fix`
+  await shell`eslint bin/ examples/ lib/ test/ translations/ Bunoshfile.js --fix`
 }
 
 /**
  * Format the codebase with Prettier.
  */
 export async function prettier() {
-  await shell`prettier --config prettier.config.js --write bin/**/*.js lib/**/*.js test/**/*.js translations/**/*.js runok.cjs`
+  await shell`prettier --config prettier.config.js --write bin/**/*.js lib/**/*.js test/**/*.js translations/**/*.js Bunoshfile.js`
 }
 
 /**
  * Run unit tests.
  */
 export async function testUnit() {
-  await shell`mocha test/unit --recursive --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/unit --recursive --timeout 10000`
 }
 
 /**
  * Run REST tests.
  */
 export async function testRest() {
-  await shell`mocha test/rest --recursive --timeout 20000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/rest --recursive --timeout 20000`
 }
 
 /**
  * Run runner tests.
  */
 export async function testRunner() {
-  await shell`mocha test/runner --recursive --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/runner --recursive --timeout 10000`
 }
 
 /**
@@ -728,28 +642,28 @@ export async function testWithMockServer() {
  * Run quick Appium tests.
  */
 export async function testAppiumQuick() {
-  await shell`mocha test/helper/Appium_test.js --grep 'quick' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_test.js --grep 'quick'`
 }
 
 /**
  * Run the remaining (second) Appium tests.
  */
 export async function testAppiumOther() {
-  await shell`mocha test/helper/Appium_test.js --grep 'second' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_test.js --grep 'second'`
 }
 
 /**
  * Run quick iOS Appium tests.
  */
 export async function testIosAppiumQuick() {
-  await shell`mocha test/helper/Appium_ios_test.js --grep 'quick' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_ios_test.js --grep 'quick'`
 }
 
 /**
  * Run the remaining (second) iOS Appium tests.
  */
 export async function testIosAppiumOther() {
-  await shell`mocha test/helper/Appium_ios_test.js --grep 'second' --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Appium_ios_test.js --grep 'second'`
 }
 
 /**
@@ -770,42 +684,42 @@ export async function testAppStop() {
  * Run Playwright helper unit tests.
  */
 export async function testWebapiPlaywright() {
-  await shell`mocha test/helper/Playwright_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Playwright_test.js`
 }
 
 /**
  * Run Puppeteer helper unit tests.
  */
 export async function testWebapiPuppeteer() {
-  await shell`mocha test/helper/Puppeteer_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Puppeteer_test.js`
 }
 
 /**
  * Run WebDriver helper unit tests.
  */
 export async function testWebapiWebdriver() {
-  await shell`mocha test/helper/WebDriver_test.js --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/WebDriver_test.js --timeout 10000`
 }
 
 /**
  * Run WebDriver helper unit tests without a Selenium server.
  */
 export async function testWebapiWebdriverNoSelenium() {
-  await shell`mocha test/helper/WebDriver.noSeleniumServer_test.js --timeout 10000 --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/WebDriver.noSeleniumServer_test.js --timeout 10000`
 }
 
 /**
  * Run Expect helper unit tests.
  */
 export async function testExpect() {
-  await shell`mocha test/helper/Expect_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/helper/Expect_test.js`
 }
 
 /**
  * Run plugin tests.
  */
 export async function testPlugin() {
-  await shell`mocha test/plugin/plugin_test.js --reporter @testomatio/reporter/mocha`
+  await shell`mocha test/plugin/plugin_test.js`
 }
 
 /**
@@ -830,7 +744,6 @@ export async function dtslint() {
 export async function prepare() {
   await shell`husky install`
 }
-
 
 function replaceInFile(file, fn) {
   let text = fs.readFileSync(file).toString()

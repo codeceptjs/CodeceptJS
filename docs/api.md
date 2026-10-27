@@ -82,9 +82,9 @@ Ensure that inside `codecept.conf.js` in helpers section `REST` or `GraphQL` hel
 Originally, REST and GraphQL helpers were not designed for API testing. 
 They were used to perform API requests for browser tests. As so, they lack assertion methods to API responses.
 
-[`JSONResponse`](/helpers/JSONResponse/) helper adds response assertions. 
+[`JSONResponse`](/helpers/json-response/) helper adds response assertions. 
 
-> 💡 In CodeceptJS assertions start with `see` prefix. Learn more about assertions by [opening reference for JSONResponse](/helpers/JSONResponse/) helper.
+> 💡 In CodeceptJS assertions start with `see` prefix. Learn more about assertions by [opening reference for JSONResponse](/helpers/json-response/) helper.
 
 Generate TypeScript definitions to get auto-completions for JSONResponse:
 
@@ -98,7 +98,7 @@ After helpers were configured and typings were generated, you can start writing 
 
 ## Requests
 
-[REST](/helpers/REST/) or [GraphQL](/helpers/GraphQL/) helpers implement methods for making API requests.
+[REST](/helpers/rest/) or [GraphQL](/helpers/graph-ql/) helpers implement methods for making API requests.
 Both helpers send requests via HTTP protocol from CodeceptJS process. 
 For most cases, you will need to have authentication. It can be passed via headers, which can be added to helper's configuration in `codecept.conf.js`. 
 
@@ -143,15 +143,15 @@ export const config = {
 
 REST helper can send GET/POST/PATCH/etc requests to REST API endpoint:
 
-* [`I.sendGetRequest()`](/helpers/REST#sendGetRequest)
-* [`I.sendPostRequest()`](/helpers/REST#sendPostRequest)
-* [`I.sendPutRequest()`](/helpers/REST#sendPutRequest)
-* [`I.sendPatchRequest()`](/helpers/REST#sendPatchRequest)
-* [`I.sendDeleteRequest()`](/helpers/REST#sendDeleteRequest)
-* [`I.sendDeleteRequestWithPayload()`](/helpers/REST#sendDeleteRequestWithPayload)
+* [`I.sendGetRequest()`](/helpers/rest#sendgetrequest)
+* [`I.sendPostRequest()`](/helpers/rest#sendpostrequest)
+* [`I.sendPutRequest()`](/helpers/rest#sendputrequest)
+* [`I.sendPatchRequest()`](/helpers/rest#sendpatchrequest)
+* [`I.sendDeleteRequest()`](/helpers/rest#senddeleterequest)
+* [`I.sendDeleteRequestWithPayload()`](/helpers/rest#senddeleterequestwithpayload)
 * ...
 
-Authentication headers can be set in [helper's config](https://codecept.io/helpers/REST/#configuration) or per test with headers or special methods like `I.amBearerAuthenticated`.
+Authentication headers can be set in [helper's config](https://codecept.io/helpers/rest/#configuration) or per test with headers or special methods like `I.amBearerAuthenticated`.
 
 Example:
 
@@ -209,8 +209,8 @@ Scenario('get user by query', ({ I }) => {
 
 GraphQL helper has two methods available:
 
-* [`I.sendQuery()`](/helpers/GraphQL#sendQuery)
-* [`I.sendMutation()`](/helpers/GraphQL#sendMutation)
+* [`I.sendQuery()`](/helpers/graph-ql#sendquery)
+* [`I.sendMutation()`](/helpers/graph-ql#sendmutation)
 
 ## Assertions
 
@@ -257,7 +257,7 @@ I.seeResponseCodeIsServerError();
 
 ### Structure
 
-The most basic thing to check in response is existence of keys in JSON object. Use [`I.seeResponseContainsKeys()`](/helpers/JSONResponse#seeResponseContainsKeys) method for it:
+The most basic thing to check in response is existence of keys in JSON object. Use [`I.seeResponseContainsKeys()`](/helpers/json-response#seeresponsecontainskeys) method for it:
 
 ```js
 // response is { "name": "joe", "email": "joe@joe.com" }

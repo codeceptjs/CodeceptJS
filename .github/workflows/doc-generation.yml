@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
 
     steps:
       - name: Check out the repo
@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+
+      - uses: oven-sh/setup-bun@v2
 
       - name: Install Dependencies
         run: npm i --force
