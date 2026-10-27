@@ -21,9 +21,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    strategy:
-      matrix:
-        node-version: [22.x]
 
     steps:
       - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.25
@@ -39,13 +36,10 @@ jobs:
           done
           sleep 2
       - uses: actions/checkout@v6
-      - name: Read .nvmrc
-        id: nvmrc
-        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-      - name: Use Node.js from .nvmrc
+      - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ steps.nvmrc.outputs.NODE_VERSION }}
+          node-version-file: '.nvmrc'
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0

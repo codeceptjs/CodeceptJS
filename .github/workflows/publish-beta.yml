@@ -17,12 +17,9 @@ jobs:
         with:
           ref: ${{ github.event.release.target_commitish }}
 
-      - name: Read .nvmrc
-        id: nvmrc
-        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       - uses: actions/setup-node@v6
         with:
-          node-version: ${{ steps.nvmrc.outputs.NODE_VERSION }}
+          node-version-file: '.nvmrc'
           registry-url: 'https://registry.npmjs.org'
 
       - uses: oven-sh/setup-bun@v2

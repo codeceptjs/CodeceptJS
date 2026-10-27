@@ -28,19 +28,15 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
         test-suite: ['other', 'quick']
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Read .nvmrc
-        id: nvmrc
-        run: echo "NODE_VERSION=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-      - name: Use Node.js from .nvmrc
+      - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ steps.nvmrc.outputs.NODE_VERSION }}
+          node-version-file: '.nvmrc'
 
       - run: npm i
         env:
