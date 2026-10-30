@@ -1,5 +1,5 @@
 import sinon from 'sinon'
-import Step, { MetaStep } from '../../lib/step.js'
+import Step, { MetaStep, FuncStep } from '../../lib/step.js'
 import event from '../../lib/event.js'
 import { secret } from '../../lib/secret.js'
 import { expect } from 'chai'
@@ -90,6 +90,22 @@ describe('Steps', () => {
         expect(action.called)
         expect(step.status).is.equal('success')
       })
+
+      it('should keep start time of the first attempt when retried', () => {
+        step.startTime = 1000
+        step.run()
+        expect(step.startTime).is.equal(1000)
+      })
+    })
+  })
+
+  describe('FuncStep', () => {
+    it('should keep start time of the first attempt when retried', () => {
+      const funcStep = new FuncStep('doSomething')
+      funcStep.setCallable(() => 'done')
+      funcStep.startTime = 1000
+      expect(funcStep.run()).is.equal('done')
+      expect(funcStep.startTime).is.equal(1000)
     })
   })
 

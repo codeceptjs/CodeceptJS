@@ -163,6 +163,22 @@ describe('Actor', () => {
     return I.failAfter(2)
   })
 
+  it('should measure duration of a retried step from its first attempt', () => {
+    recorder.start()
+    recorder.retry({
+      retries: 2,
+      minTimeout: 100,
+      factor: 1,
+      when: () => true,
+    })
+    let duration
+    event.dispatcher.addListener(event.step.finished, step => (duration = step.duration))
+
+    return I.failAfter(2).then(() => {
+      expect(duration).toBeGreaterThanOrEqual(190)
+    })
+  })
+
   it('should print handle failed steps', () => {
     recorder.start()
     let listeners = 0
