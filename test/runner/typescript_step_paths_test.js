@@ -19,7 +19,8 @@ describe('TypeScript step paths', () => {
           try {
             expect(err).toBeTruthy()
             expect(stdout).toContain('Scenario Steps:')
-            expect(stdout).toMatch(/at Object\.open \(\.\/pages\/fooPage\.ts:\d+:\d+\)/)
+            expect(stdout).toContain('at Object.open (./pages/fooPage.ts:6:5)')
+            expect(stdout).toContain('at Test.<anonymous> (./tests/fooTest.ts:5:5)')
             expect(stdout).not.toContain('.temp.mjs')
             expect(stdout).not.toContain('file://./pages/fooPage.ts')
             done()
