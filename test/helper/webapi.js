@@ -1678,6 +1678,11 @@ export function tests() {
       await I.see('Dynamic text')
     })
 
+    it('should wait for text in context with locator.at', async () => {
+      await I.amOnPage('/dynamic')
+      await I.waitForText('Dynamic text', 2, new Locator('#text').at(1))
+    })
+
     it('should fail if no context', async function () {
       let failed = false
       await I.amOnPage('/dynamic')
