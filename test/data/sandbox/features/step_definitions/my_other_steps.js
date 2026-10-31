@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { actor } from '../../../../../lib/index.js'
 import { Given, Then } from '../../../../../lib/mocha/bdd.js'
 
@@ -28,24 +27,54 @@ Given(/I have simple product/, async () => {
 
 const sendRequest = async requestConfig => {
   if (!requestConfig) throw JSON.stringify({ error: 'Request config is null or undefined.' });
-  return axios({
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), requestConfig.timeout || 3000);
+  
+  const fetchOptions = {
     method: requestConfig.method || 'GET',
-    timeout: requestConfig.timeout || 3000,
-    ...requestConfig,
-  }).catch(error => {
+    headers: requestConfig.headers || {},
+    signal: controller.signal,
+  };
+
+  if (requestConfig.data) {
+    fetchOptions.body = typeof requestConfig.data === 'object' ? JSON.stringify(requestConfig.data) : requestConfig.data;
+  }
+
+  try {
+    const response = await fetch(requestConfig.url, fetchOptions);
+    clearTimeout(timeoutId);
+
+    const headers = {};
+    response.headers.forEach((v, k) => headers[k] = v);
+
+    const data = await response.json().catch(() => response.text());
+
+    if (!response.ok) {
+        throw {
+            response: {
+                status: response.status,
+                data,
+                headers,
+                config: requestConfig
+            }
+        };
+    }
+    return { data, status: response.status, headers };
+  } catch (error) {
+    clearTimeout(timeoutId);
     if (error.response) {
       error = {
         message: 'The request was made and the server responded with a status code.',
         status: error.response.status,
         data: error.response.data,
         headers: error.response.headers,
-        request: error.config.data,
+        request: error.response.config.data,
         url: error.response.config.url,
       };
-    } else if (error.request) {
+    } else if (error.name === 'AbortError') {
       error = {
-        message: 'The request was made but no response was received.',
-        request: error.request,
+        message: 'The request was made but no response was received (timeout).',
       };
     } else {
       error = {
@@ -53,7 +82,7 @@ const sendRequest = async requestConfig => {
       };
     }
     throw error;
-  });
+  }
 };
 
 Given(/^I make a request \(and it fails\)$/, async () => {

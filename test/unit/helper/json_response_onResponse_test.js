@@ -2,7 +2,6 @@ import assert from 'assert'
 import REST from '../../../lib/helper/REST.js'
 import Container from '../../../lib/container.js'
 import TestHelper from '../../support/TestHelper.js'
-import axios from 'axios'
 
 const fallBackURL = 'https://jsonplaceholder.typicode.com'
 //start the server using npm run test-server as in the package.json
@@ -14,7 +13,10 @@ describe('REST onResponse Hook Wrapper', () => {
   beforeEach(async () => {
     Container.helpers({})
     try {
-      await axios.get(`${api_url}`, { timeout: 1000 }) // Check if the server is reachable
+      const controller = new AbortController()
+      const id = setTimeout(() => controller.abort(), 1000)
+      await fetch(`${api_url}`, { signal: controller.signal }) // Check if the server is reachable
+      clearTimeout(id)
     } catch (e) {
       api_url = fallBackURL // Fallback to alternative endpoint
     }

@@ -154,7 +154,7 @@ For mobile tests without an Appium server, see the experimental [Mobilewright he
 
 ## API testing
 
-REST and GraphQL tests need no browser — the helpers are built in (they use `axios`, already a dependency):
+REST and GraphQL tests need no browser — the helpers are built in (they use native `fetch`):
 
 ```sh
 npm i codeceptjs --save-dev
