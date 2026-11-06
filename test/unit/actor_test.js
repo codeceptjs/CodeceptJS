@@ -191,4 +191,52 @@ describe('Actor', () => {
         expect(listeners).toEqual(3)
       })
   })
+
+  describe('element selection chain', () => {
+    let startedOpts
+
+    beforeEach(() => {
+      startedOpts = undefined
+      event.dispatcher.on(event.step.started, step => (startedOpts = step.opts))
+      recorder.start()
+    })
+
+    it('should select first element and keep the step result', async () => {
+      const val = await I.hello().first()
+      expect(val).toEqual('hello world')
+      expect(startedOpts.elementIndex).toEqual('first')
+    })
+
+    it('should select last element', async () => {
+      await I.hello().last()
+      expect(startedOpts.elementIndex).toEqual('last')
+    })
+
+    it('should select element by position', async () => {
+      await I.hello().at(2)
+      expect(startedOpts.elementIndex).toEqual(2)
+    })
+
+    it('should keep options passed with step.opts', async () => {
+      await I.hello(step.opts({ exact: true })).last()
+      expect(startedOpts).toEqual({ exact: true, elementIndex: 'last' })
+    })
+
+    it('should not change the options object shared between steps', async () => {
+      const config = step.opts({ exact: true })
+      await I.hello(config).first()
+      expect(config.getConfig().opts).toEqual({ exact: true })
+    })
+
+    it('should use the option of the last selection in the chain', async () => {
+      await I.hello().first().at(3)
+      expect(startedOpts.elementIndex).toEqual(3)
+    })
+
+    it('should fail when selection is applied after the step was executed', async () => {
+      const promise = I.hello()
+      await promise
+      expect(() => promise.first()).toThrow('already')
+    })
+  })
 })

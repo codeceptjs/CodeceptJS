@@ -527,6 +527,12 @@ declare namespace CodeceptJS {
 
   type StringOrSecret = string | CodeceptJS.Secret
 
+  interface StepPromise extends Promise<any> {
+    first(): StepPromise
+    last(): StepPromise
+    at(position: number): StepPromise
+  }
+
   interface GherkinCallback {
     (test: Test): void | Promise<void>
   }

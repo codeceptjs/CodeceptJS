@@ -648,10 +648,12 @@ The error includes a `fetchDetails()` method that prints XPaths and HTML for eve
 Pick a specific match without writing a more specific locator:
 
 ```js
-I.click('a', step.opts({ elementIndex: 2 }))
-I.click('a', step.opts({ elementIndex: 'last' }))
-I.fillField('input', 'x', step.opts({ elementIndex: -1 }))
+I.click('a').at(2)
+I.click('a').last()
+I.fillField('input', 'x').first()
 ```
+
+`step.opts({ elementIndex: 2 })` does the same.
 
 ### Unfocused Element Detection
 
