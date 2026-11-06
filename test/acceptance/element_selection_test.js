@@ -20,6 +20,14 @@ const buttons = '.duplicate-btn'
 const fields = 'input[name="duplicate-field"]'
 const checkboxes = 'input[name="terms"]'
 
+function seeOnlyFieldFilled(I, position) {
+  for (const current of [1, 2, 3]) {
+    const field = { css: `${fields}:nth-of-type(${current})` }
+    if (current === position) I.seeInField(field, 'chained')
+    else I.dontSeeInField(field, 'chained')
+  }
+}
+
 const actions = [
   ['click', allHelpers, strictPage, I => I.click(buttons)],
   ['forceClick', allHelpers, strictPage, I => I.forceClick(buttons)],
@@ -67,33 +75,29 @@ for (const [name, helpers, page, action] of actions) {
 Scenario(`first() selects the first match ${allHelpers}`, async ({ I }) => {
   I.amOnPage(strictPage)
   await I.fillField(fields, 'chained').first()
-  const values = await I.grabValueFromAll(fields)
-  assert.deepEqual(values, ['chained', '', ''])
+  seeOnlyFieldFilled(I, 1)
 })
 
 Scenario(`last() selects the last match ${allHelpers}`, async ({ I }) => {
   I.amOnPage(strictPage)
   await I.fillField(fields, 'chained').last()
-  const values = await I.grabValueFromAll(fields)
-  assert.deepEqual(values, ['', '', 'chained'])
+  seeOnlyFieldFilled(I, 3)
 })
 
 Scenario(`at() selects a match by position ${allHelpers}`, async ({ I }) => {
   I.amOnPage(strictPage)
   await I.fillField(fields, 'chained').at(2)
-  const values = await I.grabValueFromAll(fields)
-  assert.deepEqual(values, ['', 'chained', ''])
+  seeOnlyFieldFilled(I, 2)
 })
 
 Scenario(`at() counts from the end with a negative position ${allHelpers}`, async ({ I }) => {
   I.amOnPage(strictPage)
   await I.fillField(fields, 'chained').at(-2)
-  const values = await I.grabValueFromAll(fields)
-  assert.deepEqual(values, ['', 'chained', ''])
+  seeOnlyFieldFilled(I, 2)
 })
 
 Scenario(`selection works without await ${allHelpers}`, ({ I }) => {
   I.amOnPage(strictPage)
   I.fillField(fields, 'chained').last()
-  I.seeInField({ css: 'input[name="duplicate-field"]:last-of-type' }, 'chained')
+  seeOnlyFieldFilled(I, 3)
 })
