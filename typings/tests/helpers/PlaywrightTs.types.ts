@@ -74,6 +74,8 @@ expectType<Promise<any>>(playwright.dontSeeInField(str, str));
 expectType<Promise<any>>(playwright.attachFile(str, str));
 expectType<Promise<any>>(playwright.selectOption(str, str));
 expectType<Promise<number>>(playwright.grabNumberOfVisibleElements(str));
+expectType<Promise<CodeceptJS.WebElement[]>>(playwright.grabWebElements(str));
+expectType<Promise<CodeceptJS.WebElement>>(playwright.grabWebElement(str));
 expectType<Promise<any>>(playwright.seeInCurrentUrl(str));
 expectType<Promise<any>>(playwright.dontSeeInCurrentUrl(str));
 expectType<Promise<any>>(playwright.seeCurrentUrlEquals(str));
