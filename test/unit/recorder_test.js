@@ -60,6 +60,44 @@ describe('Recorder', () => {
         process.removeListener('unhandledRejection', onUnhandled)
       }
     })
+
+    it('does not report unhandled rejections for chains abandoned on session re-start', async () => {
+      const unhandled = []
+      const onUnhandled = e => unhandled.push(e)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        recorder.add('failing step', () => {
+          throw new Error('boom')
+        })
+        recorder.session.start('teardown')
+        recorder.session.start('teardown') // abandons the chain holding the failing step
+        recorder.add(() => 'recovered')
+        await recorder.promise()
+        await new Promise(r => setTimeout(r, 20))
+        expect(unhandled).to.have.length(0)
+      } finally {
+        process.removeListener('unhandledRejection', onUnhandled)
+      }
+    })
+
+    it('does not report unhandled rejections for chains discarded by reset', async () => {
+      const unhandled = []
+      const onUnhandled = e => unhandled.push(e)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        recorder.add('failing step', () => {
+          throw new Error('boom')
+        })
+        recorder.stop()
+        recorder.start()
+        recorder.add(() => 'fresh')
+        await recorder.promise()
+        await new Promise(r => setTimeout(r, 20))
+        expect(unhandled).to.have.length(0)
+      } finally {
+        process.removeListener('unhandledRejection', onUnhandled)
+      }
+    })
   })
 
   describe('#add', () => {
