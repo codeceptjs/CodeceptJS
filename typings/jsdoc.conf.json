@@ -10,6 +10,7 @@
       "./lib/data/table.js",
       "./lib/data/dataTableArgument.js",
       "./lib/effects.js",
+      "./lib/element/WebElement.js",
       "./lib/event.js",
       "./lib/index.js",
       "./lib/locator.js",

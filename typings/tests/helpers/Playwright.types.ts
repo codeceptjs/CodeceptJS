@@ -76,6 +76,8 @@ expectType<void>(playwright.dontSeeInField(str, str));
 expectType<void>(playwright.attachFile(str, str));
 expectType<void>(playwright.selectOption(str, str));
 expectType<Promise<number>>(playwright.grabNumberOfVisibleElements(str));
+expectType<Promise<CodeceptJS.WebElement[]>>(playwright.grabWebElements(str));
+expectType<Promise<CodeceptJS.WebElement>>(playwright.grabWebElement(str));
 expectType<void>(playwright.seeInCurrentUrl(str));
 expectType<void>(playwright.dontSeeInCurrentUrl(str));
 expectType<void>(playwright.seeCurrentUrlEquals(str));
@@ -148,3 +150,14 @@ expectType<void>(playwright.dontSeeTraffic({ name: str, url: str }));
 expectType<void>(playwright.dontSeeTraffic({ name: str, url: /hello/ }));
 expectError(playwright.dontSeeTraffic({ name: str }));
 expectError(playwright.dontSeeTraffic({ url: str }));
+
+async function webElementTypes(el: CodeceptJS.WebElement) {
+  expectType<string>(await el.getText());
+  expectType<string | null>(await el.getAttribute(str));
+  expectType<boolean>(await el.isVisible());
+  expectType<void>(await el.click());
+  expectType<CodeceptJS.WebElement | null>(await el.$(str));
+  expectType<CodeceptJS.WebElement[]>(await el.$$(str));
+  expectError(el.getAtribute(str));
+  expectError(el.getAttribute(num));
+}
