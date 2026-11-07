@@ -77,4 +77,33 @@ describe('FileSystem', () => {
     fs.seeFile(outputFilePath)
     fs.seeInThisFile(text)
   })
+
+  describe('#waitForFile', () => {
+    const waitDir = path.join('data', 'output', 'wait_for_file')
+
+    beforeEach(() => {
+      nodeFs.rmSync(path.join(global.codecept_dir, waitDir), { recursive: true, force: true })
+      fs.amInPath(waitDir)
+    })
+
+    it('should wait for a file in a directory that does not exist yet', async () => {
+      setTimeout(() => {
+        nodeFs.mkdirSync(fs.dir, { recursive: true })
+        nodeFs.writeFileSync(path.join(fs.dir, 'file.txt'), 'content')
+      }, 300)
+      await fs.waitForFile('file.txt', 3)
+    })
+
+    it('should fail after the timeout if the directory does not exist', async () => {
+      const start = Date.now()
+      let error
+      try {
+        await fs.waitForFile('file.txt', 1)
+      } catch (err) {
+        error = err
+      }
+      expect(error?.message).to.include('file (file.txt) still not present')
+      expect(Date.now() - start).to.be.at.least(1000)
+    })
+  })
 })
