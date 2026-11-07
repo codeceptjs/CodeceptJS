@@ -528,9 +528,15 @@ declare namespace CodeceptJS {
   type StringOrSecret = string | CodeceptJS.Secret
 
   interface StepPromise extends Promise<any> {
-    first(): StepPromise
-    last(): StepPromise
-    at(position: number): StepPromise
+    stepConfig(config: CodeceptJS.StepConfig): this
+    timeout(seconds: number): this
+    retry(retry: number | object): this
+  }
+
+  interface ElementStepPromise extends StepPromise {
+    first(): this
+    last(): this
+    at(position: number): this
   }
 
   interface GherkinCallback {

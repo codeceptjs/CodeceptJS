@@ -2,7 +2,7 @@ import assert from 'assert'
 import { container, event } from '../../lib/index.js'
 import { tryTo } from '../../lib/effects.js'
 
-Feature('element selection chain')
+Feature('step config chain')
 
 function setStrict(value) {
   Object.values(container.helpers()).forEach(helper => {
@@ -99,5 +99,33 @@ Scenario(`at() counts from the end with a negative position ${allHelpers}`, asyn
 Scenario(`selection works without await ${allHelpers}`, ({ I }) => {
   I.amOnPage(strictPage)
   I.fillField(fields, 'chained').last()
+  seeOnlyFieldFilled(I, 3)
+})
+
+Scenario(`timeout() interrupts a step ${allHelpers}`, async ({ I }) => {
+  I.amOnPage(strictPage)
+  let error
+  event.dispatcher.once(event.step.failed, (step, err) => (error = err))
+  const startedAt = Date.now()
+  await tryTo(() => I.wait(2).timeout(0.1))
+  assert.match(error?.name || '', /TimeoutError/)
+  assert.ok(Date.now() - startedAt < 1500)
+})
+
+Scenario(`retry() repeats a step until it passes ${allHelpers}`, async ({ I }) => {
+  I.amOnPage(strictPage)
+  I.executeScript(() => {
+    setTimeout(() => {
+      const element = document.createElement('div')
+      element.id = 'appeared-later'
+      document.body.appendChild(element)
+    }, 500)
+  })
+  await I.seeElementInDOM('#appeared-later').retry({ retries: 10, minTimeout: 200, factor: 1 })
+})
+
+Scenario(`options can be combined in a chain ${allHelpers}`, async ({ I }) => {
+  I.amOnPage(strictPage)
+  await I.fillField(fields, 'chained').last().timeout(5).retry(1)
   seeOnlyFieldFilled(I, 3)
 })

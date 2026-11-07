@@ -28,6 +28,7 @@ describe('Actor', () => {
             throw new Error('ups')
           },
           _hidden: () => 'hidden',
+          slow: () => new Promise(resolve => setTimeout(resolve, 200)),
           failAfter: (i = 1) => {
             counter++
             if (counter <= i) throw new Error('ups')
@@ -237,6 +238,94 @@ describe('Actor', () => {
       const promise = I.hello()
       await promise
       expect(() => promise.first()).toThrow('already')
+    })
+  })
+
+  describe('step config chain', () => {
+    const noDelay = retries => ({ retries, minTimeout: 0 })
+
+    beforeEach(() => {
+      recorder.retries = []
+      recorder.start()
+    })
+
+    afterEach(() => {
+      recorder.stop()
+      recorder.reset()
+      recorder.retries = []
+    })
+
+    it('should interrupt a step with a chained timeout', async () => {
+      await expect(I.slow().timeout(0.01)).rejects.toThrow('interrupted on timeout')
+    })
+
+    it('should keep the step running within a chained timeout', async () => {
+      await expect(I.hello().timeout(5)).resolves.toEqual('hello world')
+    })
+
+    it('should retry a step with a chained retry', async () => {
+      await I.failAfter(2).retry(noDelay(2))
+      expect(counter).toEqual(0)
+    })
+
+    it('should accept a number of retries', async () => {
+      I.failAfter(1).retry(1)
+      expect(recorder.retries).toEqual([{ retries: 1 }])
+      await recorder.promise()
+    })
+
+    it('should remove a chained retry when the step passes', async () => {
+      await I.failAfter(1).retry(noDelay(1))
+      await recorder.promise()
+      expect(recorder.retries).toEqual([])
+    })
+
+    it('should remove a chained retry when the step fails', async () => {
+      await expect(I.die().retry(noDelay(1))).rejects.toThrow('ups')
+      expect(recorder.retries).toEqual([])
+    })
+
+    it('should not retry the next step after a chained retry', async () => {
+      await I.hello().retry(noDelay(3))
+      await recorder.promise()
+      await expect(I.failAfter(1)).rejects.toThrow('ups')
+    })
+
+    it('should keep a global retry rule', async () => {
+      const globalRule = { retries: 2, minTimeout: 0, when: () => true }
+      recorder.retry(globalRule)
+      await I.failAfter(1).retry(noDelay(1))
+      await recorder.promise()
+      expect(recorder.retries).toEqual([globalRule])
+    })
+
+    it('should replace a retry chained twice', async () => {
+      await I.failAfter(1).retry(noDelay(0)).retry(noDelay(1))
+      await recorder.promise()
+      expect(recorder.retries).toEqual([])
+    })
+
+    it('should apply every option of a step config', async () => {
+      let startedOpts
+      event.dispatcher.on(event.step.started, started => (startedOpts = started.opts))
+      const config = step.opts({ exact: true }).timeout(0.01)
+      await expect(I.slow().stepConfig(config)).rejects.toThrow('interrupted on timeout')
+      expect(startedOpts).toEqual({ exact: true })
+    })
+
+    it('should combine selection with timeout and retry', async () => {
+      let startedOpts
+      event.dispatcher.on(event.step.started, started => (startedOpts = started.opts))
+      const val = await I.hello().first().timeout(5).retry(noDelay(1))
+      expect(val).toEqual('hello world')
+      expect(startedOpts.elementIndex).toEqual('first')
+    })
+
+    it('should fail when a config is applied after the step was executed', async () => {
+      const promise = I.hello()
+      await promise
+      expect(() => promise.timeout(1)).toThrow('already')
+      expect(() => promise.retry(1)).toThrow('already')
     })
   })
 })
