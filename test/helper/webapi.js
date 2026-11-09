@@ -1469,6 +1469,12 @@ export function tests() {
       assert.equal(val, 'oldfag')
     })
 
+    it('should grab full style attribute', async () => {
+      await I.amOnPage('/form/example1')
+      const style = await I.grabAttributeFrom('#LoginForm_username_em_', 'style')
+      assert.equal(style, 'display:none')
+    })
+
     it('should grab attribute from element', async () => {
       await I.amOnPage('/search')
       const val = await I.grabAttributeFrom(
