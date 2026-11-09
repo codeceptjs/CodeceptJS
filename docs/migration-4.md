@@ -534,6 +534,8 @@ I.retry(3).click('Submit')  //  I.click('Submit', step.retry(3))
 I.limitTime(10).fillField('Email', 'a@b.c') // I.fillField('Email', 'a@b.c', step.timeout(10))
 ```
 
+You can also chain them to the action: `I.click('Submit').retry(3)`, `I.fillField('Email', 'a@b.c').timeout(10)`. Pass a whole config with `I.click('Submit').stepConfig(step.retry(3).timeout(10))`.
+
 `step.*` configs are also composable with the other step options:
 
 ```js
@@ -648,10 +650,12 @@ The error includes a `fetchDetails()` method that prints XPaths and HTML for eve
 Pick a specific match without writing a more specific locator:
 
 ```js
-I.click('a', step.opts({ elementIndex: 2 }))
-I.click('a', step.opts({ elementIndex: 'last' }))
-I.fillField('input', 'x', step.opts({ elementIndex: -1 }))
+I.click('a').at(2)
+I.click('a').last()
+I.fillField('input', 'x').first()
 ```
+
+`step.opts({ elementIndex: 2 })` does the same.
 
 ### Unfocused Element Detection
 

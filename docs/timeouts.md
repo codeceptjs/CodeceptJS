@@ -9,14 +9,14 @@ CodeceptJS provides multiple timeout configurations to control test execution ti
 
 ## Step Timeout
 
-Set timeout for individual steps using `step.timeout()`:
+Set timeout for individual steps by chaining `timeout()` to the action, or by passing `step.timeout()`:
 
 ```js
 import step from 'codeceptjs/steps'
 
 Scenario('test with step timeouts', ({ I }) => {
   I.amOnPage('/')
-  I.click('Slow Button', step.timeout(30))
+  I.click('Slow Button').timeout(30)
   I.fillField('Email', 'user@example.com', step.timeout(10))
 })
 ```
