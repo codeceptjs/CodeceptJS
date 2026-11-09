@@ -2731,7 +2731,6 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder. **Note:** Text matching is case-sensitive. For case-insensitive matching, use XPath or CSS locators with normalized text.
 
-
 ### waitForURL
 
 Waits for page navigates to a new URL or reloads. By default, it takes configured `waitForNavigation` option.
