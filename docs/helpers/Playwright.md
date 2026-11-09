@@ -2729,7 +2729,7 @@ I.waitForText('Thank you, form has been submitted', 5, '#modal');
 *   `sec` **[number][17]** (optional, `1` by default) time in seconds to wait 
 *   `context` **([string][7] | [object][8])?** (optional) element located by CSS|XPath|strict locator. 
 
-Returns **void** automatically synchronized promise through #recorder
+Returns **void** automatically synchronized promise through #recorder. **Note:** Text matching is case-sensitive. For case-insensitive matching, use XPath or CSS locators with normalized text.
 
 ### waitForURL
 
