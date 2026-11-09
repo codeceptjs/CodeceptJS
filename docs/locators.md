@@ -158,17 +158,15 @@ I.tap('~submit')   // mobile
 
 ## Picking a specific element
 
-When a locator matches several elements on the page, CodeceptJS acts on the first one by default. To target a different match, pass `elementIndex` via `step.opts()`:
+When a locator matches several elements on the page, CodeceptJS acts on the first one by default. To target a different match, chain `first()`, `last()` or `at()` to the action:
 
 ```js
-import step from 'codeceptjs/steps'
-
-I.click('a', step.opts({ elementIndex: 2 }))       // the 2nd link
-I.click('a', step.opts({ elementIndex: 'last' }))  // the last link
-I.fillField('.email-input', 'u@t.com', step.opts({ elementIndex: -1 }))
+I.click('a').at(2)   // the 2nd link
+I.click('a').last()  // the last link
+I.fillField('.email-input', 'u@t.com').at(-1)
 ```
 
-`elementIndex` accepts positive numbers (1-based), negative numbers (`-1` is last), or the aliases `'first'` and `'last'`. It works with `click`, `fillField`, `selectOption`, `checkOption`, and other single-element actions.
+`at()` accepts positive numbers (1-based) and negative numbers (`-1` is last). It works with `click`, `fillField`, `selectOption`, `checkOption`, and other single-element actions. The same selection is available as `step.opts({ elementIndex: 2 })`.
 
 To catch ambiguous locators during development rather than silently using the first match, enable `strict: true` in the helper config, or pass `step.opts({ exact: true })` on a single step:
 

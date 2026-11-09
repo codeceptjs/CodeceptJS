@@ -11,7 +11,28 @@ But what happens when it's not?
 
 ## Picking a Specific Element
 
-Say you have a list of items and you want to click the second one. You could write a more specific CSS selector, but sometimes the simplest approach is to tell CodeceptJS which element you want by position:
+Say you have a list of items and you want to click the second one. You could write a more specific CSS selector, but sometimes the simplest approach is to tell CodeceptJS which element you want by position. Chain `first()`, `last()` or `at()` to the action:
+
+```js
+I.click('a').first()
+
+// click the last link
+I.click('a').last()
+
+// click the 2nd link
+I.click('a').at(2)
+
+// fill the second-to-last matching input
+I.fillField('.email-input', 'test@example.com').at(-2)
+```
+
+Chain the selection directly to the action, in the same expression. `await I.click('a').last()` works too. Calling it after the step has run throws an error.
+
+These methods exist on helper actions only. They are not available on custom steps and page object methods.
+
+They differ from `locate('a').first()`, which builds a position into the locator. A chained selection picks from whatever the action matched, including fuzzy matches like `I.click('Submit').last()`.
+
+The same selection is available as a step option:
 
 ```js
 import step from 'codeceptjs/steps'
@@ -108,10 +129,12 @@ It works the other way too. If your helper has `strict: true` globally but you n
 I.click('a', step.opts({ exact: false }))
 ```
 
-And when you know there are multiple matches and want a specific one, `elementIndex` also overrides the strict check — no error is thrown because you've explicitly chosen which element to use:
+And when you know there are multiple matches and want a specific one, `first()`, `last()`, `at()` and `elementIndex` override the strict check — no error is thrown because you've explicitly chosen which element to use:
 
 ```js
-// strict: true in config, but this works without error
+// strict: true in config, but these work without error
+I.click('a').first()
+I.click('a').at(2)
 I.click('a', step.opts({ elementIndex: 2 }))
 ```
 
@@ -120,6 +143,6 @@ I.click('a', step.opts({ elementIndex: 2 }))
 | Situation | Approach |
 |-----------|----------|
 | You want to catch ambiguous locators early | Enable `strict: true` in helper config |
-| You need a specific element from a known list | Use `step.opts({ elementIndex: N })` |
+| You need a specific element from a known list | Chain `.first()`, `.last()` or `.at(N)` to the action |
 | You want to iterate over all matching elements | Use [`eachElement`](/els) from the `els` module |
 | You need full control over element inspection | Use [`grabWebElements`](/WebElement) to get all matches |
