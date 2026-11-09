@@ -2744,7 +2744,7 @@ export function tests() {
       // Test grabbing specific element
       if (!isHelper('WebDriver')) {
         const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit' })
-        assert.ok(submitButton)
+        assert.match(await submitButton.toOuterHTML(), /id="submitBtn"/)
       }
 
       // Test grabbing text from role elements

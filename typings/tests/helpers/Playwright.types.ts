@@ -76,6 +76,8 @@ expectType<CodeceptJS.StepPromise>(playwright.dontSeeInField(str, str));
 expectType<CodeceptJS.ElementStepPromise>(playwright.attachFile(str, str));
 expectType<CodeceptJS.ElementStepPromise>(playwright.selectOption(str, str));
 expectType<Promise<number>>(playwright.grabNumberOfVisibleElements(str));
+expectType<Promise<CodeceptJS.WebElement[]>>(playwright.grabWebElements(str));
+expectType<Promise<CodeceptJS.WebElement>>(playwright.grabWebElement(str));
 expectType<CodeceptJS.StepPromise>(playwright.seeInCurrentUrl(str));
 expectType<CodeceptJS.StepPromise>(playwright.dontSeeInCurrentUrl(str));
 expectType<CodeceptJS.StepPromise>(playwright.seeCurrentUrlEquals(str));
@@ -156,3 +158,14 @@ expectType<CodeceptJS.ElementStepPromise>(playwright.checkOption(str).at(2))
 expectType<CodeceptJS.StepPromise>(playwright.see(str).timeout(5))
 expectType<CodeceptJS.StepPromise>(playwright.see(str).retry(3))
 expectType<CodeceptJS.ElementStepPromise>(playwright.click(str).first().timeout(5).retry(3))
+
+async function webElementTypes(el: CodeceptJS.WebElement) {
+  expectType<string>(await el.getText());
+  expectType<string | null>(await el.getAttribute(str));
+  expectType<boolean>(await el.isVisible());
+  expectType<void>(await el.click());
+  expectType<CodeceptJS.WebElement | null>(await el.$(str));
+  expectType<CodeceptJS.WebElement[]>(await el.$$(str));
+  expectError(el.getAtribute(str));
+  expectError(el.getAttribute(num));
+}
