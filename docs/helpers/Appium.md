@@ -1032,7 +1032,7 @@ const webElement = await I.grabWebElement('#button');
 
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]<any>** WebElement of being used Web helper
+Returns **[Promise][9]<CodeceptJS.WebElement>** WebElement of being used Web helper
 
 ### grabWebElements
 
@@ -1047,7 +1047,7 @@ const webElements = await I.grabWebElements('#button');
 
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]<any>** WebElement of being used Web helper
+Returns **[Promise][9]<[Array][15]<CodeceptJS.WebElement>>** WebElements of being used Web helper
 
 ### hideDeviceKeyboard
 

@@ -1009,7 +1009,7 @@ const webElement = await I.grabWebElement('#button');
 
 *   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][12]<any>** WebElement of being used Web helper
+Returns **[Promise][12]<CodeceptJS.WebElement>** WebElement of being used Web helper
 
 ### grabWebElements
 
@@ -1024,7 +1024,7 @@ const webElements = await I.grabWebElements('#button');
 
 *   `locator` **([string][3] | [object][4])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][12]<any>** WebElement of being used Web helper
+Returns **[Promise][12]<[Array][15]<CodeceptJS.WebElement>>** WebElements of being used Web helper
 
 ### pressKey
 

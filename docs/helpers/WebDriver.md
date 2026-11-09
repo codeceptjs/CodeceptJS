@@ -1436,7 +1436,7 @@ const webElement = await I.grabWebElement('#button');
 
 *   `locator` **([string][18] | [object][19])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]<any>** WebElement of being used Web helper
+Returns **[Promise][24]<CodeceptJS.WebElement>** WebElement of being used Web helper
 
 ### grabWebElements
 
@@ -1451,7 +1451,7 @@ const webElements = await I.grabWebElements('#button');
 
 *   `locator` **([string][18] | [object][19])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]<any>** WebElement of being used Web helper
+Returns **[Promise][24]<[Array][30]<CodeceptJS.WebElement>>** WebElements of being used Web helper
 
 ### moveCursorTo
 
