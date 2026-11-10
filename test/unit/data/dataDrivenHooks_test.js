@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import DataTable from '../../../lib/data/table.js'
+import addDataContext from '../../../lib/data/context.js'
 
 describe('Data-driven Before/After hooks - data structure', () => {
   it('should create DataTable with correct structure', () => {
@@ -79,5 +80,140 @@ describe('Data-driven Before/After hooks - data structure', () => {
 
     const firstRow = accounts.rows[0]
     expect(firstRow.skip).to.be.false
+  })
+})
+
+describe('Data-driven Before/After hooks - hook methods', () => {
+  it('should have Before and After methods on Data object', () => {
+    const credentials = new DataTable(['username', 'password'])
+    credentials.add(['alice', 'pass123'])
+
+    const mockContext = {}
+    addDataContext(mockContext)
+
+    const data = mockContext.Data(credentials)
+    expect(data).to.have.property('Before')
+    expect(data).to.have.property('After')
+    expect(data.Before).to.be.a('function')
+    expect(data.After).to.be.a('function')
+  })
+
+  it('should register one Before hook per non-skipped data row', () => {
+    const credentials = new DataTable(['username', 'password'])
+    credentials.add(['alice', 'pass123'])
+    credentials.add(['bob', 'pass456'])
+
+    let hookCount = 0
+    const mockContext = {
+      Before: (fn) => {
+        hookCount++
+      },
+    }
+
+    addDataContext(mockContext)
+
+    const data = mockContext.Data(credentials)
+    data.Before(() => {})
+
+    expect(hookCount).to.equal(2)
+  })
+
+  it('should skip rows marked as skipped when registering Before hooks', () => {
+    const credentials = new DataTable(['username', 'password'])
+    credentials.add(['alice', 'pass123'])
+
+    credentials.rows[0].skip = true
+
+    let hookCount = 0
+    const mockContext = {
+      Before: (fn) => {
+        hookCount++
+      },
+    }
+
+    addDataContext(mockContext)
+
+    const data = mockContext.Data(credentials)
+    data.Before(() => {})
+
+    expect(hookCount).to.equal(0)
+  })
+
+  it('should pass current data to Before hook when test matches data row', async () => {
+    const credentials = new DataTable(['username', 'password'])
+    credentials.add(['alice', 'pass123'])
+
+    const hookCalls = []
+    const mockContext = {
+      Before: (fn) => {
+        hookCalls.push(fn)
+      },
+    }
+
+    addDataContext(mockContext)
+
+    const data = mockContext.Data(credentials)
+    data.Before(({ current }) => {
+      return current
+    })
+
+    const aliceData = credentials.rows[0].data
+    const testWithMatchingData = {
+      inject: {
+        current: aliceData,
+      },
+    }
+
+    const result = await hookCalls[0]({ test: testWithMatchingData })
+    expect(result).to.have.property('username', 'alice')
+    expect(result).to.have.property('password', 'pass123')
+  })
+
+  it('should not execute Before hook when test data does not match data row', async () => {
+    const credentials = new DataTable(['username', 'password'])
+    credentials.add(['alice', 'pass123'])
+
+    const hookCalls = []
+    const mockContext = {
+      Before: (fn) => {
+        hookCalls.push(fn)
+      },
+    }
+
+    addDataContext(mockContext)
+
+    const data = mockContext.Data(credentials)
+    data.Before(({ current }) => {
+      return current
+    })
+
+    const testWithDifferentData = {
+      inject: {
+        current: { username: 'bob', password: 'pass456' },
+      },
+    }
+
+    const result = await hookCalls[0]({ test: testWithDifferentData })
+    expect(result).to.be.undefined
+  })
+
+  it('should register one After hook per non-skipped data row', () => {
+    const credentials = new DataTable(['username', 'password'])
+    credentials.add(['alice', 'pass123'])
+    credentials.add(['bob', 'pass456'])
+
+    let hookCount = 0
+    const mockContext = {
+      After: (fn) => {
+        hookCount++
+      },
+    }
+
+    addDataContext(mockContext)
+
+    const data = mockContext.Data(credentials)
+    data.After(() => {})
+
+    expect(hookCount).to.equal(2)
   })
 })
