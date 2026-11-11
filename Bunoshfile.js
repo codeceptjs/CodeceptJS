@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import axios from 'axios'
+import { execSync } from 'node:child_process'
+import semver from 'semver'
 
 const { shell, writeToFile, copyFile, task } = global.bunosh
 const { say, yell } = global.bunosh
@@ -163,11 +164,19 @@ export async function docsExternalHelpers() {
  */
 export async function docsExternalPlugins() {
   say('Building Vue plugin docs')
-  const resp = await axios.get('https://raw.githubusercontent.com/codecept-js/vue-cli-plugin-codeceptjs-puppeteer/master/README.md')
+  const resp = await fetch('https://raw.githubusercontent.com/codecept-js/vue-cli-plugin-codeceptjs-puppeteer/master/README.md')
+  const body = await resp.text()
 
   await writeToFile('docs/vue.md', line => {
-    line`---\npermalink: /vue\nlayout: Section\nsidebar: false\ntitle: Testing Vue Apps\n---\n\n`
-    line`${resp.data}`
+    line`---
+permalink: /vue
+layout: Section
+sidebar: false
+title: Testing Vue Apps
+---
+
+`
+    line`${body}`
   })
 }
 
@@ -328,6 +337,7 @@ editLink: false
 sidebar: auto
 title: ${name}
 ---
+
 `
       line.fromFile(helperMarkDownFile(name))
     })
@@ -414,12 +424,18 @@ export async function contributorFaces() {
   const token = process.env.GH_TOKEN
 
   try {
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contributors`, {
       headers: { Authorization: `token ${token}` },
     })
 
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+
     const excludeUsers = ['dependabot[bot]', 'actions-user']
-    const filteredContributors = response.data.filter(contributor => !excludeUsers.includes(contributor.login))
+    const filteredContributors = data.filter(contributor => !excludeUsers.includes(contributor.login))
 
     const contributors = filteredContributors.map(contributor => {
       return `

@@ -1,29 +1,32 @@
-import axios from 'axios';
-
 import TestHelper from '../../support/TestHelper.js';
 
 class User {
   constructor() {
-    const url = `http://localhost:${TestHelper.graphQLServerPort()}`;
-    this.api = axios.create({
-      baseURL: url,
+    this.baseURL = `http://localhost:${TestHelper.graphQLServerPort()}`;
+  }
+
+  async list() {
+    const res = await fetch(`${this.baseURL}/users`);
+    return res.json();
+  }
+
+  async find(id) {
+    const res = await fetch(`${this.baseURL}/users/${id}`);
+    return res.json();
+  }
+
+  async create(data) {
+    const res = await fetch(`${this.baseURL}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
+    return res.json();
   }
 
-  list() {
-    return this.api.get('/users').then(res => res.data);
-  }
-
-  find(id) {
-    return this.api.get(`/users/${id}`).then(res => res.data);
-  }
-
-  create(data) {
-    return this.api.post('/users', data).then(res => res.data);
-  }
-
-  delete(id) {
-    return this.api.delete(`/users/${id}`).then(() => id);
+  async delete(id) {
+    await fetch(`${this.baseURL}/users/${id}`, { method: 'DELETE' });
+    return id;
   }
 }
 
