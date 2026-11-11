@@ -1469,6 +1469,12 @@ export function tests() {
       assert.equal(val, 'oldfag')
     })
 
+    it('should grab full style attribute', async () => {
+      await I.amOnPage('/form/example1')
+      const style = await I.grabAttributeFrom('#LoginForm_username_em_', 'style')
+      assert.equal(style, 'display:none')
+    })
+
     it('should grab attribute from element', async () => {
       await I.amOnPage('/search')
       const val = await I.grabAttributeFrom(
@@ -1676,6 +1682,11 @@ export function tests() {
       await I.dontSee('Dynamic text')
       await I.waitForText('Dynamic text', 2, '#text')
       await I.see('Dynamic text')
+    })
+
+    it('should wait for text in context with locator.at', async () => {
+      await I.amOnPage('/dynamic')
+      await I.waitForText('Dynamic text', 2, new Locator('#text').at(1))
     })
 
     it('should fail if no context', async function () {
@@ -2738,7 +2749,7 @@ export function tests() {
       // Test grabbing specific element
       if (!isHelper('WebDriver')) {
         const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit' })
-        assert.ok(submitButton)
+        assert.match(await submitButton.toOuterHTML(), /id="submitBtn"/)
       }
 
       // Test grabbing text from role elements
