@@ -47,6 +47,25 @@ describe('utils', () => {
     })
   })
 
+  describe('#appendBaseUrl', () => {
+    it('should join base url and path with a single slash', () => {
+      expect(utils.appendBaseUrl('http://localhost', '/login')).equal('http://localhost/login')
+      expect(utils.appendBaseUrl('http://localhost', 'login')).equal('http://localhost/login')
+      expect(utils.appendBaseUrl('http://localhost/', '/login')).equal('http://localhost/login')
+      expect(utils.appendBaseUrl('http://localhost/', 'login')).equal('http://localhost/login')
+    })
+
+    it('should keep the path of the base url', () => {
+      expect(utils.appendBaseUrl('http://localhost/app/', '/')).equal('http://localhost/app/')
+      expect(utils.appendBaseUrl('http://localhost/app/', '/login')).equal('http://localhost/app/login')
+      expect(utils.appendBaseUrl('http://localhost/app', '?q=1')).equal('http://localhost/app/?q=1')
+    })
+
+    it('should not touch absolute urls', () => {
+      expect(utils.appendBaseUrl('http://localhost', 'https://example.com/a')).equal('https://example.com/a')
+    })
+  })
+
   describe('#beautify', () => {
     it('should beautify JS code', () => {
       expect(utils.beautify('module.exports = function(a, b) { a++; b = a; if (a == b) { return 2 }};')).eql(`module.exports = function(a, b) {

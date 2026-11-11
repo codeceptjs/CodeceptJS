@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/Detox
+permalink: /helpers/detox
 sidebar: auto
 title: Detox
 ---

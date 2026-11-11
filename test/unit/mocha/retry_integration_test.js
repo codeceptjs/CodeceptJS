@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { createTest } from '../../../lib/mocha/test.js'
 import { createSuite } from '../../../lib/mocha/suite.js'
-import MochaSuite from 'mocha/lib/suite.js'
+import { Suite as MochaSuite } from 'mocha'
 import retryEnhancer from '../../../lib/listener/retryEnhancer.js'
 import event from '../../../lib/event.js'
 

@@ -1,4 +1,4 @@
-@Puppeteer @WebDriverIO @bdd @Obscura
+@Puppeteer @WebDriverIO @bdd @Obscura @Moli
 Feature: Business examples
   In order to achieve my goals
   As a persona

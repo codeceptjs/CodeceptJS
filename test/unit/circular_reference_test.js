@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { safeStringify, truncateString } from '../../lib/utils.js'
 import { createTest } from '../../lib/mocha/test.js'
 import { createSuite } from '../../lib/mocha/suite.js'
-import MochaSuite from 'mocha/lib/suite.js'
+import { Suite as MochaSuite } from 'mocha'
 
 describe('Circular Reference Handling', function () {
   describe('safeStringify utility', function () {

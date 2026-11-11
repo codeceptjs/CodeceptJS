@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/JSONResponse
+permalink: /helpers/json-response
 editLink: false
 sidebar: auto
 title: JSONResponse

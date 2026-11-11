@@ -477,6 +477,8 @@ export function tests() {
   describe('#clickXY', () => {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // coordinate clicks require a real layout engine
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda reports element boxes but paints nothing, so a click dispatched at coordinates is never hit-tested to an element
+      if (isHelper('Moli')) this.skip() // without --layout Moli rejects Input.dispatchMouseEvent: coordinate input requires layout hit testing
     })
 
     it('should click at global coordinates', async () => {
@@ -588,7 +590,8 @@ export function tests() {
           await I.seeCheckboxIsChecked('Airplane mode')
         })
 
-        it('checks a radio by its label', async () => {
+        it('checks a radio by its label', async function () {
+          if (page === 'baseui' && isHelper('Obscura')) this.skip()
           await open(page)
           await I.dontSeeCheckboxIsChecked('Comfortable')
 
@@ -772,6 +775,10 @@ export function tests() {
 
     for (const page of Object.keys(pages)) {
       describe(page, () => {
+        beforeEach(function () {
+          if (page === 'baseui' && isHelper('Obscura')) this.skip()
+        })
+
         it('checks the radio matching the option and unchecks its siblings', async () => {
           await open(page)
           await I.selectOption('Density', 'Compact')
@@ -970,6 +977,51 @@ export function tests() {
     })
   })
 
+  describe('#seeInClipboard, #seeClipboardEquals, #grabFromClipboard, #clearClipboard', () => {
+    beforeEach(async function () {
+      if (isHelper('Obscura')) this.skip() // Obscura's navigator.clipboard is a stub: writeText() resolves but stores nothing, so readText() always returns '' (verified: a write/read round trip inside one evaluate reads back an empty string)
+      if (isHelper('Lightpanda')) this.skip() // navigator.clipboard is unavailable on Lightpanda (verified: the page reports no Clipboard API, even on a loopback origin)
+      await I.amOnPage('/form/clipboard')
+      await I.clearClipboard()
+    })
+
+    it('should see text copied to the clipboard', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      await I.seeInClipboard('Copy')
+      await I.seeClipboardEquals('Copy me')
+    })
+
+    it('should grab text from the clipboard', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      const clipboard = await I.grabFromClipboard()
+      assert.equal(clipboard, 'Copy me')
+    })
+
+    it('should not see text which was not copied', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      let err
+      try {
+        await I.seeInClipboard('Paste me')
+      } catch (e) {
+        err = e
+      }
+      assert.ok(err, 'seeInClipboard should have failed')
+      assert.include(err.inspect ? err.inspect() : err.message, 'expected clipboard to include "Paste me"')
+    })
+
+    it('should clear the clipboard', async () => {
+      await I.click('#copy')
+      await I.see('copied')
+      await I.seeClipboardEquals('Copy me')
+      await I.clearClipboard()
+      await I.seeClipboardEquals('')
+      assert.equal(await I.grabFromClipboard(), '')
+    })
+  })
+
   describe('#fillField, #appendField', () => {
     it('should fill input fields', async () => {
       await I.amOnPage('/form/field')
@@ -1093,11 +1145,11 @@ export function tests() {
       { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor', skip: { Obscura: "the DOM does show the new text and it isn't reverted (confirmed directly), but ProseMirror's own MutationObserver-based DOMObserver reconciliation never updates its internal model (view.state.doc, which the submit handler reads from) from a synthetic mutation on Obscura — tried both a blunt textContent replace and a surgical Range-based delete+insert, neither reaches the model; the same code path updates the model correctly on Chrome" } },
       { name: 'Quill',          page: 'quill',          selector: '#editor' },
       { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate; its beforeinput handler correctly recognizes and preventDefault()s the event but then inserts nothing' } },
-      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' } },
       { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
-      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' } },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' } },
       { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
-      { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
+      { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
       { name: 'ACE',            page: 'ace',            selector: '#editor', skipTests: { 'rewrites pre-populated content': { Obscura: "ACE keeps cursor/selection state in its own internal model like Monaco, but reaches it via the browser's real execCommand-driven selection-replace on Chrome; execCommand is a no-op on Obscura, so the fallback's DOM-level select-all doesn't carry the same 'replace selection' semantics into ACE's model and the new text is inserted rather than replacing the old" } } },
       { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor', skip: { CDPBrowser: 'CodeMirror.fromTextArea() adopts and hides the backing <textarea>; its live content lives only in an internal JS model synced to the form via its own getValue() API at submit time, unreachable via DOM mutation or events on the backing element' } },
       { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic TinyMCE architecture) — CDPBrowser has no frame-session support' } },
@@ -1447,6 +1499,12 @@ export function tests() {
       assert.equal(val, 'oldfag')
     })
 
+    it('should grab full style attribute', async () => {
+      await I.amOnPage('/form/example1')
+      const style = await I.grabAttributeFrom('#LoginForm_username_em_', 'style')
+      assert.equal(style, 'display:none')
+    })
+
     it('should grab attribute from element', async () => {
       await I.amOnPage('/search')
       const val = await I.grabAttributeFrom(
@@ -1495,6 +1553,7 @@ export function tests() {
       // consistent with the already-documented family of Obscura form-serializer defects
       // (the <select multiple> collapse bug from the selectOption work).
       if (isHelper('Obscura')) this.skip()
+      if (isHelper('Moli')) this.skip() // DOM.setFileInputFiles on Moli creates a File with an empty type (verified: files[0].type === ''), so the form posts it as application/octet-stream
       await I.amOnPage('/form/file')
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -1506,6 +1565,7 @@ export function tests() {
 
     it('should upload file located by label', async function () {
       if (isHelper('Obscura')) this.skip() // same root cause as "should upload file located by CSS" above
+      if (isHelper('Moli')) this.skip() // same root cause as "should upload file located by CSS" above
       await I.amOnPage('/form/file')
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -1526,6 +1586,27 @@ export function tests() {
       await I.amOnPage('/form/dropzone')
       await I.attachFile('#droparea', 'app/avatar.jpg')
       await I.see('image/jpeg')
+    })
+  })
+
+  describe('#grabAriaSnapshot', () => {
+    beforeEach(function () {
+      if (!I.grabAriaSnapshot || I.capabilities?.aria === false) this.skip()
+    })
+
+    it('should grab the ARIA snapshot of the page', async () => {
+      await I.amOnPage('/form/field')
+      const snapshot = await I.grabAriaSnapshot()
+      assert.match(snapshot, /^- /m)
+      assert.ok(snapshot.includes('textbox'), snapshot)
+      assert.ok(snapshot.includes('button'), snapshot)
+    })
+
+    it('should grab the ARIA snapshot of an element', async () => {
+      await I.amOnPage('/info')
+      const snapshot = await I.grabAriaSnapshot('form')
+      assert.ok(snapshot.includes('textbox'), snapshot)
+      assert.ok(!snapshot.includes('Information'), snapshot)
     })
   })
 
@@ -1631,6 +1712,11 @@ export function tests() {
       await I.dontSee('Dynamic text')
       await I.waitForText('Dynamic text', 2, '#text')
       await I.see('Dynamic text')
+    })
+
+    it('should wait for text in context with locator.at', async () => {
+      await I.amOnPage('/dynamic')
+      await I.waitForText('Dynamic text', 2, new Locator('#text').at(1))
     })
 
     it('should fail if no context', async function () {
@@ -1988,9 +2074,42 @@ export function tests() {
     })
   })
 
+  describe('#switchTo', () => {
+    beforeEach(function () {
+      if (isHelper('CDPBrowser')) this.skip() // switchTo/iframes are not implemented in CDPBrowser
+    })
+
+    it('should switch to nested iframes one by one', async () => {
+      await I.amOnPage('/iframe_nested')
+      await I.switchTo('[name=wrapper]')
+      await I.see('Iframe test')
+      await I.switchTo('[name=content]')
+      await I.see('Information')
+      await I.see('Lots of valuable data here')
+    })
+
+    it('should return to the top level context from a nested iframe', async () => {
+      await I.amOnPage('/iframe_nested')
+      await I.switchTo('[name=wrapper]')
+      await I.switchTo('[name=content]')
+      await I.see('Information')
+      await I.switchTo(null)
+      await I.see('Nested Iframe test')
+    })
+
+    it('should not find a nested iframe from the top level context', async () => {
+      await I.amOnPage('/iframe_nested')
+      await I.switchTo('[name=content]').then(
+        () => assert.fail('switched to an iframe which is not in the current context'),
+        err => assert.include(err.message, 'was not found'),
+      )
+    })
+  })
+
   describe('scroll: #scrollTo, #scrollPageToTop, #scrollPageToBottom', () => {
     beforeEach(function () {
       if (I.capabilities?.layout === 'none') this.skip() // scrolling requires a real layout engine
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda has no scrollable viewport: scrollX/scrollY stay 0 after scrollTo/scrollIntoView (verified against all four tests in this block)
     })
 
     it('should scroll inside an iframe', async function () {
@@ -2064,6 +2183,7 @@ export function tests() {
 
     it('should grab camelcased css properies', async function () {
       if (isHelper('Obscura')) this.skip() // getComputedStyle(#block).userSelect returns '' on Obscura's CSS engine instead of the ruleset's 'text' (verified directly)
+      if (isHelper('Lightpanda')) this.skip() // getComputedStyle(#block).userSelect returns '' on Lightpanda, which only computes the properties visibility checks need (verified directly)
       await I.amOnPage('/form/doubleclick')
       const css = await I.grabCssPropertyFrom('#block', 'user-select')
       assert.equal(css, 'text')
@@ -2168,6 +2288,7 @@ export function tests() {
     })
 
     it('should check css property for given element', async function () {
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda only computes the properties visibility checks need; font-weight is not resolved, so the first assertion throws before reaching the one this test means to exercise
       try {
         await I.amOnPage('/info')
         await I.seeCssPropertiesOnElements('h4', {
@@ -2189,6 +2310,8 @@ export function tests() {
     it('should check css property for several elements', async function () {
       if (process.env.BROWSER === 'firefox') this.skip()
       if (isHelper('Obscura')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Obscura's CSS engine instead of 'pointer' (verified directly), so the first assertion in this test throws before reaching the one it means to test
+      if (isHelper('Lightpanda')) this.skip() // same root cause as "should check css property for given element" above
+      if (isHelper('Moli')) this.skip() // Moli's default stylesheet does not color links: getComputedStyle(a).color is rgb(0, 0, 0) (verified directly), so the first assertion throws before reaching the one this test means to test
 
       try {
         await I.amOnPage('/')
@@ -2214,6 +2337,7 @@ export function tests() {
     })
 
     it('should normalize css color properties for given element', async function () {
+      if (isHelper('Lightpanda')) this.skip() // computed background-color/color are not resolved from the page's rules on Lightpanda (verified: 0 of 1 elements matched)
       await I.amOnPage('/form/css_colors')
       await I.seeCssPropertiesOnElements('#namedColor', {
         'background-color': 'purple',
@@ -2525,6 +2649,7 @@ export function tests() {
   describe('#startScreencast, #stopScreencast', () => {
     beforeEach(function () {
       if (typeof I.startScreencast !== 'function') this.skip() // CDP-family only (CDPBrowser/Obscura/Kitesurf) — Playwright/WebDriver/Puppeteer use their own video APIs
+      if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, there are no frames to record
     })
 
     it('records navigation and a click into a valid APNG', async () => {
@@ -2559,7 +2684,8 @@ export function tests() {
   })
 
   describe('role locators', () => {
-    it('should locate elements by role', async () => {
+    it('should locate elements by role', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/role_elements')
 
       // Test basic role locators
@@ -2575,7 +2701,8 @@ export function tests() {
       await I.seeNumberOfVisibleElements({ role: 'checkbox' }, 2)
     })
 
-    it('should locate elements by role with text filter', async () => {
+    it('should locate elements by role with text filter', async function () {
+      if (I.capabilities?.layout === 'none') this.skip() // visibility requires a real layout engine
       await I.amOnPage('/form/role_elements')
 
       // Test role with text (exact match)
@@ -2652,7 +2779,7 @@ export function tests() {
       // Test grabbing specific element
       if (!isHelper('WebDriver')) {
         const submitButton = await I.grabWebElement({ role: 'button', text: 'Submit' })
-        assert.ok(submitButton)
+        assert.match(await submitButton.toOuterHTML(), /id="submitBtn"/)
       }
 
       // Test grabbing text from role elements

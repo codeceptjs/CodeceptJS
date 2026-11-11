@@ -66,4 +66,20 @@ describe('CodeceptJS Retry Hooks', function () {
       done()
     })
   })
+
+  it('should prevent retry config accumulation across tests', done => {
+    exec(config_run_config('codecept.retry.accumulation.conf.js', ''), (err, stdout) => {
+      debug_this_test && console.log(stdout)
+      expect(stdout).toContain('2 passed')
+      done()
+    })
+  })
+
+  it('should retryFailedStep on multiple consequent scenarios', done => {
+    exec(config_run_config('codecept.retry.multipleScenarios.conf.js', ''), (err, stdout) => {
+      debug_this_test && console.log(stdout)
+      expect(stdout).toContain('3 passed')
+      done()
+    })
+  })
 })

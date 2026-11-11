@@ -91,7 +91,7 @@ keepBrowserState: true,
 keepCookies: true,
 ```
 
-> ▶ More config options available on [WebDriver helper reference](/helpers/WebDriver#configuration)
+> ▶ More config options available on [WebDriver helper reference](/helpers/web-driver#configuration)
 
 ### Headless Mode
 
@@ -138,7 +138,7 @@ desiredCapabilities: {
 
 ### Cloud Providers
 
-By default, WebdriverIO starts a local driver automatically, so no connection parameters are needed. To run tests via [Cloud Providers](/helpers/WebDriver#cloud-providers) instead, specify `host`, `port`, `protocol`, and `path` parameters pointing to the service. You may also need `user` and `key` parameters to authenticate on the cloud service.
+By default, WebdriverIO starts a local driver automatically, so no connection parameters are needed. To run tests via [Cloud Providers](/helpers/web-driver#cloud-providers) instead, specify `host`, `port`, `protocol`, and `path` parameters pointing to the service. You may also need `user` and `key` parameters to authenticate on the cloud service.
 
 There are also [browser and platform specific capabilities](https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities). Services like SauceLabs, BrowserStack or browser vendors can provide their own specific capabilities for more tuning.
 
@@ -208,7 +208,7 @@ Tests consist with a scenario of user's action taken on a page. The most widely 
 * `see`, `dontSee` - to check for a text on a page
 * `seeElement`, `dontSeeElement` - to check for elements on a page
 
-> ℹ  All actions are listed in [WebDriver helper reference](https://codecept.io/helpers/WebDriver/).*
+> ℹ  All actions are listed in [WebDriver helper reference](https://codecept.io/helpers/web-driver/).*
 
 All actions which interact with elements **support CSS and XPath locators**. Actions like `click` or `fillField` by locate elements by their name or value on a page:
 
@@ -252,7 +252,7 @@ npx codeceptjs run --steps
 
 After a page is opened a full control of a browser is given to a terminal. Type in different commands such as `click`, `see`, `fillField` to write the test. A successful commands will be saved to `./output/cli-history` file and can be copied into a test.
 
-> ℹ  All actions are listed in [WebDriver helper reference](/helpers/WebDriver).
+> ℹ  All actions are listed in [WebDriver helper reference](/helpers/web-driver).
 
 An interactive shell output may look like this:
 
@@ -420,7 +420,7 @@ There are following options available:
 
 * Use headless Chrome or Firefox.
 * Use [Selenoid](/plugins/selenoid) to run browsers inside Docker containers.
-* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](/helpers/WebDriver#cloud-providers).
+* Use paid [cloud services (SauceLabs, BrowserStack, TestingBot)](/helpers/web-driver#cloud-providers).
 
 ## Video Recording
 
@@ -494,7 +494,7 @@ This is useful when you want to isolate application testing from a backend. For 
 
   > **WebDriver has limited ability to mock requests**, so you can only mock only requests performed after page is loaded. This means that you can't block Google Analytics, or CDN calls, but you can mock API requests performed on user action.
 
-To mock requests enable additional helper [MockRequest](/helpers/MockRequest) (which is based on Polly.js).
+To mock requests enable additional helper [MockRequest](/helpers/mock-request) (which is based on Polly.js).
 
 ```js
 helpers: {
@@ -529,7 +529,7 @@ I.click('Go to Next Page');
 // in WebDriver as we can't detect that the page was reloaded, so no mocking :(
 ```
 
-> See [`mockRequest` API](/helpers/MockRequest#mockrequest)
+> See [`mockRequest` API](/helpers/mock-request#mockrequest)
 
 To see `mockRequest` method in intellisense auto completion don't forget to run `codeceptjs def` command:
 
@@ -542,7 +542,7 @@ Mocking rules will be kept while a test is running. To stop mocking use `I.stopM
 
 ## Accessing webdriverio API
 
-To get [webdriverio browser API](https://webdriver.io/docs/api.html) inside a test use [`I.useWebDriverTo`](/helpers/WebDriver/#usewebdriverto) method with a callback.
+To get [webdriverio browser API](https://webdriver.io/docs/api.html) inside a test use [`I.useWebDriverTo`](/helpers/web-driver/#usewebdriverto) method with a callback.
 To keep test readable provide a description of a callback inside the first parameter.
 
 ```js

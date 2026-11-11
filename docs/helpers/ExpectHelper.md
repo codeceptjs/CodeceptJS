@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/ExpectHelper
+permalink: /helpers/expect-helper
 editLink: false
 sidebar: auto
 title: ExpectHelper

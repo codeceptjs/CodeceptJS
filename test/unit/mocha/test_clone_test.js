@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import { createTest, cloneTest } from '../../../lib/mocha/test.js'
 import { createSuite } from '../../../lib/mocha/suite.js'
-import MochaSuite from 'mocha/lib/suite.js'
-import Test from 'mocha/lib/test.js'
+import { Suite as MochaSuite } from 'mocha'
+import { Test } from 'mocha'
 import retryEnhancer from '../../../lib/listener/retryEnhancer.js'
 import event from '../../../lib/event.js'
 

@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/autoDelay
+permalink: /plugins/auto-delay
 editLink: false
 sidebar: auto
 title: autoDelay

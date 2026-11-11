@@ -54,7 +54,7 @@ expectType<CodeceptJS.ScenarioConfig>(
 expectType<CodeceptJS.ScenarioConfig>(
   Scenario('scenario', args => {
     // @ts-ignore
-    expectType<CodeceptJS.SupportObject>(args)
+    expectType<CodeceptJS.SupportObject & { suite: Mocha.Suite; test: CodeceptJS.Test }>(args)
     // @ts-ignore
     expectType<CodeceptJS.I>(args.I) // $ExpectType I
   }),
@@ -72,7 +72,7 @@ expectType<CodeceptJS.ScenarioConfig>(
 expectType<CodeceptJS.HookConfig>(
   Before(args => {
     // @ts-ignore
-    expectType<CodeceptJS.SupportObject>(args)
+    expectType<CodeceptJS.SupportObject & { suite: Mocha.Suite; test: CodeceptJS.Test }>(args)
     // @ts-ignore
     expectType<CodeceptJS.I>(args.I)
   }),
@@ -82,7 +82,7 @@ expectType<CodeceptJS.HookConfig>(
 expectType<CodeceptJS.HookConfig>(
   BeforeSuite(args => {
     // @ts-ignore
-    expectType<CodeceptJS.SupportObject>(args)
+    expectType<CodeceptJS.SupportObject & { suite: Mocha.Suite }>(args)
     // @ts-ignore
     expectType<CodeceptJS.I>(args.I)
   }),
@@ -92,7 +92,7 @@ expectType<CodeceptJS.HookConfig>(
 expectType<CodeceptJS.HookConfig>(
   After(args => {
     // @ts-ignore
-    expectType<CodeceptJS.SupportObject>(args)
+    expectType<CodeceptJS.SupportObject & { suite: Mocha.Suite; test: CodeceptJS.Test }>(args)
     // @ts-ignore
     expectType<CodeceptJS.I>(args.I)
   }),
@@ -102,7 +102,7 @@ expectType<CodeceptJS.HookConfig>(
 expectType<CodeceptJS.HookConfig>(
   AfterSuite(args => {
     // @ts-ignore
-    expectType<CodeceptJS.SupportObject>(args)
+    expectType<CodeceptJS.SupportObject & { suite: Mocha.Suite }>(args)
     // @ts-ignore
     expectType<CodeceptJS.I>(args.I)
   }),

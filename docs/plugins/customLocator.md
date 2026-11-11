@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/customLocator
+permalink: /plugins/custom-locator
 editLink: false
 sidebar: auto
 title: customLocator

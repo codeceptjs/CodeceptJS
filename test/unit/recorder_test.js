@@ -28,6 +28,76 @@ describe('Recorder', () => {
       recorder.add(() => (order += 'b'))
       return recorder.promise().then(() => expect(order).is.equal('acdb'))
     })
+
+    it('re-starting the same session name does not pollute the session stack', () => {
+      let order = ''
+      recorder.add(() => (order += 'a'))
+      recorder.add(() => {
+        recorder.session.start('teardown')
+        recorder.add(() => (order += 'c'))
+        recorder.session.start('teardown') // leaked teardown re-start: no sessionStack/oldPromises push
+        recorder.add(() => (order += 'd'))
+      })
+      recorder.add(() => recorder.session.restore('teardown'))
+      recorder.add(() => (order += 'b'))
+      // steps already attached to the live chain still run; a broken one would be abandoned
+      return recorder.promise().then(() => expect(order).is.equal('acdb'))
+    })
+
+    it('does not chain a promise onto itself when restoring an unbalanced stack', async () => {
+      const unhandled = []
+      const onUnhandled = e => unhandled.push(e)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        recorder.session.start('s1')
+        recorder.add(() => 'step')
+        recorder.session.restore('s1')
+        recorder.session.restore('extra') // nothing left to pop, must not create a cycle
+        await recorder.promise()
+        await new Promise(r => setTimeout(r, 20))
+        expect(unhandled).to.have.length(0)
+      } finally {
+        process.removeListener('unhandledRejection', onUnhandled)
+      }
+    })
+
+    it('does not report unhandled rejections for chains abandoned on session re-start', async () => {
+      const unhandled = []
+      const onUnhandled = e => unhandled.push(e)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        recorder.add('failing step', () => {
+          throw new Error('boom')
+        })
+        recorder.session.start('teardown')
+        recorder.session.start('teardown') // abandons the chain holding the failing step
+        recorder.add(() => 'recovered')
+        await recorder.promise()
+        await new Promise(r => setTimeout(r, 20))
+        expect(unhandled).to.have.length(0)
+      } finally {
+        process.removeListener('unhandledRejection', onUnhandled)
+      }
+    })
+
+    it('does not report unhandled rejections for chains discarded by reset', async () => {
+      const unhandled = []
+      const onUnhandled = e => unhandled.push(e)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        recorder.add('failing step', () => {
+          throw new Error('boom')
+        })
+        recorder.stop()
+        recorder.start()
+        recorder.add(() => 'fresh')
+        await recorder.promise()
+        await new Promise(r => setTimeout(r, 20))
+        expect(unhandled).to.have.length(0)
+      } finally {
+        process.removeListener('unhandledRejection', onUnhandled)
+      }
+    })
   })
 
   describe('#add', () => {
@@ -142,6 +212,28 @@ describe('Recorder', () => {
       }
 
       expect(attempts[1] - attempts[0]).to.be.lessThan(500, 'second retry must use default minTimeout, not leaked 800ms')
+    })
+
+    it('should use timing opts of the retry rule matching the error', async function () {
+      this.timeout(5000)
+
+      recorder.retries = []
+      const attempts = []
+      recorder.retry({ retries: 1, minTimeout: 600, factor: 1, when: err => err.message === 'not found' })
+      recorder.retry({ retries: 1, minTimeout: 10, factor: 1, when: err => err.message.includes('context') })
+      recorder.add(
+        () => {
+          attempts.push(Date.now())
+          if (attempts.length < 2) throw new Error('not found')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      await recorder.promise()
+
+      expect(attempts).to.have.length(2)
+      expect(attempts[1] - attempts[0]).to.be.greaterThan(500)
     })
 
     it('should prefer opts for non-when retry when possible', () => {

@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/junitReporter
+permalink: /plugins/junit-reporter
 editLink: false
 sidebar: auto
 title: junitReporter
@@ -33,7 +33,7 @@ The produced file is consumable by Jenkins, GitLab CI, CircleCI, GitHub Actions 
 Possible config options:
 
 *   `outputName`: file name for the report. Default: `report.xml`.
-*   `output`: directory where the report is stored, relative to the project root. Default: the `output` directory.
+*   `output`: directory where the report is stored, relative to the project root. Default: the `output` directory. With `run-workers` and `multiple` runs, each run writes its own report into its run folder (e.g. `output/dev_chromium1`) and this option is ignored.
 *   `testGroupName`: value of the `name` attribute on the root `<testsuites>` element. Default: `CodeceptJS`.
 *   `attachMeta`: add the test's meta information (`meta` keys, `tags`, `retries`) as `<properties>`. Default: true.
 *   `attachSteps`: add the step/substep log as `<system-out>`. Default: true.

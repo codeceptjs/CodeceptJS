@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import Mocha from 'mocha/lib/mocha.js'
-import Suite from 'mocha/lib/suite.js'
+import Mocha from 'mocha'
+import { Suite } from 'mocha'
 import makeUI from '../../../lib/mocha/ui.js'
 import addData from '../../../lib/data/context.js'
 import DataTable from '../../../lib/data/table.js'

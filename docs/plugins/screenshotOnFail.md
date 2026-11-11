@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/screenshotOnFail
+permalink: /plugins/screenshot-on-fail
 editLink: false
 sidebar: auto
 title: screenshotOnFail

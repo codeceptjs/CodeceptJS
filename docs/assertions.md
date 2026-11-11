@@ -10,7 +10,7 @@ CodeceptJS ships with **browser assertions built into the `I` object** — `I.se
 When the built-ins are not enough — sort order, business math, JSON shapes, domain rules — you have three ways to assert, in order of preference:
 
 1. **Reusable custom assertions** in a helper: `I.seeTableIsOrdered('Price', 'desc')`
-2. **Quick assertions with [ExpectHelper](/helpers/ExpectHelper)** on grabbed data: `I.expectDeepEqualExcluding(order, expected, ['id'])`
+2. **Quick assertions with [ExpectHelper](/helpers/expect-helper)** on grabbed data: `I.expectDeepEqualExcluding(order, expected, ['id'])`
 3. **Bring your own library** — `chai`, `jest`, or Node's `assert`
 
 This page also covers [element assertions via WebElement](/WebElement), [soft assertions](#soft-assertions) for running many checks in one scenario, and [masking secrets](#masking-secrets) in assertion logs.
@@ -84,7 +84,7 @@ Four options, from least setup to most:
 
 ### Quick Assertions with Expect Helper
 
-[`ExpectHelper`](/helpers/ExpectHelper) exposes chai's assertions as methods on the `I` object. Use it for one-off checks on data you have already grabbed — no helper class, no boilerplate.
+[`ExpectHelper`](/helpers/expect-helper) exposes chai's assertions as methods on the `I` object. Use it for one-off checks on data you have already grabbed — no helper class, no boilerplate.
 
 **Install separately:**
 
@@ -145,7 +145,7 @@ Common methods:
 | `expectHasProperty` / `expectEmpty` | Object shape |
 | `expectJsonSchema` / `expectJsonSchemaUsingAJV` | Full schema validation |
 
-ExpectHelper calls appear in the step log next to browser steps, so failures read in order with the rest of the scenario. See the [full reference](/helpers/ExpectHelper).
+ExpectHelper calls appear in the step log next to browser steps, so failures read in order with the rest of the scenario. See the [full reference](/helpers/expect-helper).
 
 ### Built-in Assertion Library
 
@@ -397,6 +397,79 @@ If two checks failed, the scenario fails with a single aggregated message like:
 expected soft assertions '[expected web application to include "You must accept the terms", expected element (.summary-error) to be visible]' to be empty
 ```
 
+## Decision Assertions
+
+Some checks are hard to express with locators: "checkout form has all required fields", "success message is shown", "sidebar is shown". The [Decision helper](/helpers/decision) asserts such statements in plain language with a decision model.
+
+A [decision model](https://openrouter.ai/models?output_modalities=decisions), like [Jev](https://openrouter.ai/typesafe/jev-1.13), does not generate text. It reads the page and returns the probability that a statement is true. This makes it a good fit for assertions:
+
+- **Fast.** One request returns in a fraction of a second, so a decision step runs about as fast as a regular browser step.
+- **Cost-efficient.** A request costs a fraction of a cent. You can run decision assertions in every CI build.
+- **Reliable.** The answer is a probability, not free text. There is nothing to parse, and you choose how confident the model must be for the step to pass.
+
+Configure the decision model in `ai.decisionModel` as described in [Configure Decision Models](/ai#configure-decision-models), and enable the helper next to your browser helper:
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost' },
+  Decision: {},
+}
+```
+
+`ai.decisionModel` accepts:
+
+| Option | Default | Description |
+|---|---|---|
+| `model` | | decision model for `I.decide` |
+| `visualModel` | | decision model with image input for `I.decideVisually` |
+| `confidence` | `0.7` | minimal probability for a statement to pass |
+| `timeout` | `15000` | request timeout in ms |
+| `maxLength` | `12000` | maximal length of ARIA snapshot or HTML sent to the model |
+
+Any model from the [OpenRouter decision models](https://openrouter.ai/models?output_modalities=decisions) list can be used with `openrouter.evaluationModel()`. Decisions don't need the `--ai` flag, and `ai.model` is not required.
+
+Then assert statements about the current page:
+
+```js
+I.decide('top level navigation is available')
+
+I.decide([
+  'checkout form has all required fields',
+  'success message is shown',
+  'submit button enabled',
+  'cancel button present',
+])
+
+I.decideVisually('sidebar is shown')
+```
+
+`I.decide` sends the page URL, title and ARIA snapshot to the model. A statement passes when its probability reaches `confidence`. A list of statements is checked in one request, and every statement must pass. The failure message lists the statements that failed, with their probabilities:
+
+```
+expected page to satisfy "success message is shown" (12%) with confidence of 70%
+```
+
+`I.decideVisually` also sends a screenshot, so it needs a [visual decision model](/ai#visual-decision-model) with image input, like [Clef](https://openrouter.ai/cloudflare/clef), set as `visualModel`. Visual decisions are experimental.
+
+To turn decisions off without removing the helper, set its `mode`:
+
+| Mode | Behavior |
+|---|---|
+| `assert` | default, fails the step when a statement is not confirmed |
+| `report` | requests the model but never fails, even on API errors; results and errors are added to the step as a comment |
+| `skip` | does not request the model, every decision passes |
+
+```js
+helpers: {
+  Playwright: { url: 'http://localhost' },
+  Decision: { mode: process.env.CI ? 'assert' : 'skip' },
+}
+```
+
+A failed decision is not retried by the [retryFailedStep](/plugins/retry-failed-step) plugin: asking again would cost another request and return the same answer. Only connection errors and timeouts are retried.
+
+Use decision assertions for what a page means, and built-in assertions for exact values. `I.see('Total: $42.00')` is still the right check for a price.
+
 ## Choosing an Approach
 
 | You want to check… | Use |
@@ -406,10 +479,11 @@ expected soft assertions '[expected web application to include "You must accept 
 | A form field's current value | `I.seeInField` / `I.seeCheckboxIsChecked` |
 | URL or page title | `I.seeInCurrentUrl` / `I.seeInTitle` |
 | A count of matching elements | `I.seeNumberOfElements` |
-| Business logic / JSON shape on grabbed data | [ExpectHelper](/helpers/ExpectHelper) — `expectEqual`, `expectDeepEqualExcluding`, `expectJsonSchema` |
+| Business logic / JSON shape on grabbed data | [ExpectHelper](/helpers/expect-helper) — `expectEqual`, `expectDeepEqualExcluding`, `expectJsonSchema` |
 | A lightweight, dependency-free assertion in a scenario | `equals`, `includes`, `empty`, `truth` from `codeceptjs/assertions` |
 | Per-element state in a loop | `grabWebElements` + [WebElement API](/WebElement) |
 | A matcher the above do not cover | `grab*` + `chai` / `jest` / `node:assert` |
 | A **reusable, project-specific** check | [Custom helper](/custom-helpers) with `see*` method using `codeceptjs/assertions` |
 | Many independent checks in one run | `hopeThat` from `codeceptjs/effects` |
+| A statement that is hard to express with locators | [Decision helper](#decision-assertions) — `I.decide`, `I.decideVisually` |
 | Hiding values from logs | `secret()` |

@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/MockRequest
+permalink: /helpers/mock-request
 sidebar: auto
 title: MockRequest
 ---

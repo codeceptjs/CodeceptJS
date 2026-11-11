@@ -38,7 +38,7 @@ To write simpler and effective tests we encourage to use short cuts.
 Make test be focused on one feature and try to simplify everything that is not related directly to test.
 
 * If data is required for a test, try to create that data via API. See how to do it in [Data Management](/data) chapter.
-* If user login is required, use [autoLogin plugin](/plugins#autoLogin) instead of putting login steps inside a test.
+* If user login is required, use [auth plugin](/plugins#auth) instead of putting login steps inside a test.
 * Break a long test into few. Long test can be fragile and complicated to follow and update.
 * Use [custom steps and page objects](/pageobjects) to hide steps which are not relevant to current test.
 

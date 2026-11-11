@@ -35,7 +35,7 @@ The rest of this guide documents every change the skill makes — read it if you
 
 ## 1. Update Node and Package
 
-CodeceptJS 4.x supports Node 16+, but Node 20 or newer is recommended.
+CodeceptJS 4.2 requires Node 22.12 or newer. This matches the minimum supported version of its current runtime dependencies. Upgrade Node before installing CodeceptJS 4.2.
 
 ```bash
 npm install codeceptjs@4
@@ -534,6 +534,8 @@ I.retry(3).click('Submit')  //  I.click('Submit', step.retry(3))
 I.limitTime(10).fillField('Email', 'a@b.c') // I.fillField('Email', 'a@b.c', step.timeout(10))
 ```
 
+You can also chain them to the action: `I.click('Submit').retry(3)`, `I.fillField('Email', 'a@b.c').timeout(10)`. Pass a whole config with `I.click('Submit').stepConfig(step.retry(3).timeout(10))`.
+
 `step.*` configs are also composable with the other step options:
 
 ```js
@@ -648,10 +650,12 @@ The error includes a `fetchDetails()` method that prints XPaths and HTML for eve
 Pick a specific match without writing a more specific locator:
 
 ```js
-I.click('a', step.opts({ elementIndex: 2 }))
-I.click('a', step.opts({ elementIndex: 'last' }))
-I.fillField('input', 'x', step.opts({ elementIndex: -1 }))
+I.click('a').at(2)
+I.click('a').last()
+I.fillField('input', 'x').first()
 ```
+
+`step.opts({ elementIndex: 2 })` does the same.
 
 ### Unfocused Element Detection
 
@@ -766,4 +770,4 @@ You don't need these to upgrade, but they unlock new workflows:
 4. TypeScript users: run with `tsx` installed and confirm error stack traces point at `.ts` files.
 5. If you removed `autoLogin`: confirm sessions restore under the `auth` plugin.
 6. If you used `tryTo` / `retryTo` / `eachElement` plugins: grep your tests for the old globals and switch to subpath imports.
-7. CI: bump the Node version to 20+ if you were on 18 or below.
+7. CI: bump the Node version to 22.12+.

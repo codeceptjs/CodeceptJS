@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { parsePlaywrightBrowsers, getRuntimeInfo } from '../../../lib/command/info.js'
+import { parsePlaywrightBrowsers, getRuntimeInfo, getPackageRunner } from '../../../lib/command/info.js'
 
 describe('info command', () => {
   describe('getRuntimeInfo', () => {
@@ -39,6 +39,32 @@ describe('info command', () => {
       expect(nodeInfo).to.be.an('array')
       expect(nodeInfo.length).to.be.at.least(2)
       expect(nodeInfo[1]).to.be.a('string')
+    })
+  })
+
+  describe('getPackageRunner', () => {
+    let originalBunVersion
+
+    beforeEach(() => {
+      originalBunVersion = process.versions.bun
+    })
+
+    afterEach(() => {
+      if (originalBunVersion === undefined) {
+        delete process.versions.bun
+      } else {
+        process.versions.bun = originalBunVersion
+      }
+    })
+
+    it('should use bunx when running under Bun', () => {
+      process.versions.bun = '1.4.2'
+      expect(getPackageRunner()).to.equal('bunx')
+    })
+
+    it('should use npx when not running under Bun', () => {
+      delete process.versions.bun
+      expect(getPackageRunner()).to.equal('npx')
     })
   })
 

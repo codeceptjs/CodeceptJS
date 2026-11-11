@@ -10,6 +10,8 @@ you can use the `bootstrap` and `teardown` config. Use it to start and stop a we
 
 When using the [parallel execution](/parallel) mode, there are two additional hooks available; `bootstrapAll` and `teardownAll`. See [bootstrapAll & teardownAll](#bootstrapall-teardownall) for more information.
 
+> To start and stop the application under test, use the [`webServer`](/configuration#web-server) option instead of writing bootstrap code.
+
 
 ### Example: Bootstrap & Teardown
 
@@ -53,7 +55,7 @@ First, `bootstrapAll` is called. Then two `bootstrap` runs in each of workers. T
 
 The `bootstrapAll` and `teardownAll` hooks are preferred to use for setting up common logic of tested project: to start the application server or database or to start webdriver's grid.
 
-The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](/helpers/WebDriver#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
+The `bootstrap` and `teardown` hooks are used for setting up each testing browser: to create unique [cloud testing server](/helpers/web-driver#cloud-providers) connection or to create specific browser-related test data in database (like users with names with browsername in it).
 
 ### Example: BootstrapAll & TeardownAll Inside Config
 

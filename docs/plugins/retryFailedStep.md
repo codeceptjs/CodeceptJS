@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/retryFailedStep
+permalink: /plugins/retry-failed-step
 editLink: false
 sidebar: auto
 title: retryFailedStep

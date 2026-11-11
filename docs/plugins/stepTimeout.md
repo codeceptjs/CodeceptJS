@@ -1,5 +1,5 @@
 ---
-permalink: /plugins/stepTimeout
+permalink: /plugins/step-timeout
 editLink: false
 sidebar: auto
 title: stepTimeout

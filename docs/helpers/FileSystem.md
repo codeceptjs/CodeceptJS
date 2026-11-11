@@ -1,5 +1,5 @@
 ---
-permalink: /helpers/FileSystem
+permalink: /helpers/file-system
 editLink: false
 sidebar: auto
 title: FileSystem

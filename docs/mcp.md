@@ -27,7 +27,13 @@ Two ways to launch the server:
 
 ## Configuration
 
-Set up the MCP server in your client (Claude Desktop, Cursor, Continue, etc.):
+For Claude Code, Codex, Cursor, or OpenCode, one command registers the server and installs the CodeceptJS skills:
+
+```bash
+npx codeceptjs init:agent claude
+```
+
+To set up the MCP server in another client (Claude Desktop, Continue, etc.), add it to the client config:
 
 ### Basic
 
@@ -441,7 +447,7 @@ Storage capture is **enabled** for `run_code`, `snapshot`, `run_step_by_step` fa
 
 ### Server doesn't start
 
-- Node 18+ recommended.
+- Node 22.12+ is required by CodeceptJS 4.2.
 - Verify the path / `npx` resolution in your client config.
 
 ### Config not found

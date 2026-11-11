@@ -80,15 +80,11 @@ describe('Obscura helper (self-managed obscura serve)', function () {
     }
   })
 
-  it('rejects screenshots with a clear message when there is no rendering engine', async function () {
+  it('skips screenshots without failing when there is no rendering engine', async function () {
     await I.amOnPage('/')
-    if (I.capabilities.screenshot !== false) this.skip() // this binary can render; saveScreenshot works instead of throwing
-    try {
-      await I.saveScreenshot('nope.png')
-      throw new Error('should have thrown')
-    } catch (err) {
-      expect(err.message).to.include('no rendering engine')
-    }
+    if (I.capabilities.screenshot !== false) this.skip() // this binary can render; saveScreenshot writes a file instead
+    await I.saveScreenshot('nope.png')
+    expect(fs.existsSync(path.join(global.output_dir || '.', 'nope.png'))).to.be.false
   })
 
   webApiTests.tests()
