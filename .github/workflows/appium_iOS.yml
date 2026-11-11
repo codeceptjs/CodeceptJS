@@ -24,15 +24,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
         test-suite: ['other', 'quick']
 
     steps:
       - uses: actions/checkout@v6
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.nvmrc'
       - run: npm i --force
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true

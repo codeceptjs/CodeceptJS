@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [26.x]
+        node-version: [22.x, 26.x]
 
     steps:
       - uses: actions/checkout@v6
@@ -60,7 +60,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 22.x ]
+        node-version: [22.x]
 
     steps:
       - uses: actions/checkout@v6
