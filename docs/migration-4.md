@@ -669,7 +669,7 @@ I.fillField('input', 'x').first()
 
 - `I.seeCurrentPathEquals(path)` / `I.dontSeeCurrentPathEquals(path)` — compare the path ignoring query strings.
 - `I.waitCurrentPathEquals(path, sec?)` — wait until the path matches.
-- `I.seeFileDownloaded(name)`
+- `I.seeFileDownloaded(fileName?, sec?)` / `I.dontSeeFileDownloaded(fileName?)` / `I.grabDownloadedFileNames()` — check downloads started during the test by exact name, glob (`'*.pdf'`) or `RegExp`. No `handleDownloads()` call needed (Playwright, Puppeteer, WebDriver with BiDi).
 - `I.clickXY(locator?, x, y)` — click at coordinates, either page-relative or element-relative.
 - `I.grabAriaSnapshot(locator?)` — capture an accessibility-tree snapshot for the page or a region (Playwright).
 - `I.grabWebElement(locator)` / `I.grabWebElements(locator)` — return helper-agnostic `WebElement` wrappers.

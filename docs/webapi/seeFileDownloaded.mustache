@@ -1,0 +1,15 @@
+Checks that a file download has started during the current test.
+Waits for the download to begin, so it can be called right after the action that triggers it.
+
+```js
+I.click('Export');
+I.seeFileDownloaded(); // any file
+I.seeFileDownloaded('export.pdf'); // exact file name
+I.seeFileDownloaded('*.pdf'); // glob
+I.seeFileDownloaded(/^report-\d+\.csv$/); // regular expression
+I.seeFileDownloaded('export.pdf', 10); // wait up to 10 seconds
+```
+
+@param {string|RegExp} [fileName] file name, glob pattern or regular expression. Matches any file when omitted.
+@param {number} [sec] seconds to wait for the download to start. Defaults to `waitForTimeout`.
+@returns {void} automatically synchronized promise through #recorder
