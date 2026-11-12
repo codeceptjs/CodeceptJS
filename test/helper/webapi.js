@@ -44,6 +44,60 @@ export function tests() {
     if (fileExists(dataFile)) fs.unlinkSync(dataFile)
   })
 
+  describe('#seeFileDownloaded', () => {
+    before(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output')
+    })
+
+    beforeEach(function () {
+      if (!isHelper('Playwright') && !isHelper('Puppeteer') && !isHelper('WebDriver')) this.skip()
+    })
+
+    it('should detect a started download by name, glob and regexp', async () => {
+      await I.amOnPage('/form/download')
+      await I.dontSeeFileDownloaded()
+      await I.click('Download file')
+      await I.seeFileDownloaded()
+      await I.seeFileDownloaded('avatar.jpg')
+      await I.seeFileDownloaded('*.jpg')
+      await I.seeFileDownloaded(/^avatar\.\w+$/)
+      await I.dontSeeFileDownloaded('*.pdf')
+      expect(await I.grabDownloadedFileNames()).to.eql(['avatar.jpg'])
+    })
+
+    it('should fail when no matching file was downloaded', async () => {
+      await I.amOnPage('/form/download')
+      await I.click('Download file')
+      await I.seeFileDownloaded('avatar.jpg')
+      let error
+      try {
+        await I.seeFileDownloaded('report.pdf', 0.5)
+      } catch (err) {
+        error = err
+      }
+      expect(error.message).to.include('report.pdf')
+      expect(error.message).to.include('avatar.jpg')
+      error = null
+      try {
+        await I.dontSeeFileDownloaded('*.jpg')
+      } catch (err) {
+        error = err
+      }
+      expect(error.message).to.include('avatar.jpg')
+    })
+
+    it('should save the downloaded file into output/downloads', async function () {
+      if (isHelper('WebDriver')) this.skip()
+      await I.amOnPage('/form/download')
+      await I.click('Download file')
+      await I.seeFileDownloaded('avatar.jpg')
+      const file = path.join(global.output_dir, 'downloads', 'avatar.jpg')
+      const deadline = Date.now() + 5000
+      while (!fileExists(file) && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 100))
+      assert.ok(fileExists(file), `${file} was not saved`)
+    })
+  })
+
   describe('#saveElementScreenshot', () => {
     beforeEach(function () {
       if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported

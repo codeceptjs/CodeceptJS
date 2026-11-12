@@ -1,0 +1,10 @@
+Checks that no file matching the name was downloaded during the current test.
+
+```js
+I.click('Cancel');
+I.dontSeeFileDownloaded(); // no files at all
+I.dontSeeFileDownloaded('*.pdf');
+```
+
+@param {string|RegExp} [fileName] file name, glob pattern or regular expression. Matches any file when omitted.
+@returns {void} automatically synchronized promise through #recorder
