@@ -2633,6 +2633,7 @@ export function tests() {
 
     it('should not load blocked resource types', async function () {
       if (isHelper('Lightpanda')) this.skip() // Lightpanda never fetches images (verified: naturalWidth is 0 with no blocking), so blocking can't be observed
+      if (isHelper('WebDriver') && parseInt(I.browser.capabilities.browserVersion, 10) < 140) this.skip() // Chrome's BiDi before 140 sends no request.destination, so the resource type can't be matched (verified: Chrome 130 and 131 omit it, Chrome 140 sends 'image')
       if (isHelper('Obscura')) this.skip() // Obscura emits Fetch.requestPaused for every request, ignoring resourceType patterns, and Fetch.failRequest doesn't stop the load (verified: the image still loads with naturalWidth 333)
       await I.amOnPage('/image')
       await I.waitForFunction(() => document.getElementById('logo').complete, 5)

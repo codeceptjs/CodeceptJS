@@ -146,7 +146,7 @@ Allowed values are `image`, `media`, `font` and `stylesheet`. Any other value fa
 | Playwright | context route on every page, tab and session | Routing disables Playwright's HTTP cache. A `mockRoute` for a blocked URL still serves the mock. |
 | Puppeteer | request interception on every page | Request interception disables Puppeteer's page cache. A `mockRoute` for a blocked URL still serves the mock. |
 | CDPBrowser | CDP `Fetch` domain | Works in Chrome. Lightpanda doesn't load images in the first place. Obscura doesn't block: it ignores `Fetch.failRequest`. |
-| WebDriver | WebDriver BiDi network interception, matching the request destination | Needs BiDi, which is on by default. Every request makes a round trip to the test process. Ignored when BiDi is off. Appium ignores the option. |
+| WebDriver | WebDriver BiDi network interception, matching the request destination | Needs BiDi, which is on by default, and a browser that reports the request destination: Chrome 140 does, Chrome 131 and older don't, so nothing is blocked there. Every request makes a round trip to the test process. Ignored when BiDi is off. Appium ignores the option. |
 
 ## Dynamic configuration
 
