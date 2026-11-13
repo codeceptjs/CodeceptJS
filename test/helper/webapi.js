@@ -2616,6 +2616,61 @@ export function tests() {
     })
   })
 
+  describe('#blockResources', () => {
+    const logo = /codeceptjs\.png$/
+
+    beforeEach(async () => {
+      await I._after()
+      I.options.blockResources = ['image']
+      await I._before()
+    })
+
+    afterEach(async () => {
+      await I._after()
+      I.options.blockResources = []
+      await I._before()
+    })
+
+    it('should not load blocked resource types', async function () {
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda never fetches images (verified: naturalWidth is 0 with no blocking), so blocking can't be observed
+      if (isHelper('WebDriver') && parseInt(I.browser.capabilities.browserVersion, 10) < 140) this.skip() // Chrome's BiDi before 140 sends no request.destination, so the resource type can't be matched (verified: Chrome 130 and 131 omit it, Chrome 140 sends 'image')
+      if (isHelper('Obscura')) this.skip() // Obscura emits Fetch.requestPaused for every request, ignoring resourceType patterns, and Fetch.failRequest doesn't stop the load (verified: the image still loads with naturalWidth 333)
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 5)
+      const width = await I.executeScript(() => document.getElementById('logo').naturalWidth)
+      assert.equal(width, 0)
+    })
+
+    it('should serve a blocked resource mocked with mockRoute', async function () {
+      if (!I.mockRoute) this.skip()
+      const png = path.join(__dirname, '/../data/app/codeceptjs.png')
+      if (isHelper('Puppeteer')) {
+        await I.mockRoute(logo, request => request.respond({ status: 200, contentType: 'image/png', body: fs.readFileSync(png) }))
+      } else {
+        await I.mockRoute(logo, route => route.fulfill({ path: png, contentType: 'image/png' }))
+      }
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 5)
+      const width = await I.executeScript(() => document.getElementById('logo').naturalWidth)
+      assert.isAbove(width, 0)
+      await I.stopMockingRoute(logo)
+    })
+
+    it('should keep blocking after stopMockingRoute', async function () {
+      if (!I.mockRoute) this.skip()
+      await I.mockRoute(logo, route => route.continue())
+      await I.stopMockingRoute(logo)
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 5)
+      const width = await I.executeScript(() => document.getElementById('logo').naturalWidth)
+      assert.equal(width, 0)
+    })
+
+    it('should reject resource types that are not allowed', () => {
+      expect(() => new I.constructor({ url: siteUrl, browser: I.options.browser, blockResources: ['script'] })).to.throw('Accepted values: image, media, font, stylesheet')
+    })
+  })
+
   describe('#startScreencast, #stopScreencast', () => {
     beforeEach(function () {
       if (typeof I.startScreencast !== 'function') this.skip() // CDP-family only (CDPBrowser/Obscura/Kitesurf) — Playwright/WebDriver/Puppeteer use their own video APIs

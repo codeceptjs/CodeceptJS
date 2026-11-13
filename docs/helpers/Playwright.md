@@ -79,6 +79,7 @@ Type: [object][8]
 *   `bypassCSP` **[boolean][26]?** bypass Content Security Policy or CSP
 *   `highlightElement` **[boolean][26]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 *   `visibleLocator` **[boolean][26]?** append [`visible()`][49] to locators, so only visible elements are matched. Requires Playwright 1.63 or newer. Switch it off for a single step with `stepOpts({ visibleLocator: false })`. Not applied to `dragAndDrop`, which passes selectors to Playwright directly, nor to steps that must reach hidden elements: `grab*` methods, `scrollTo`, `seeElementInDOM`, `dontSeeElementInDOM` and `seeNumberOfElements`. When enabled, a locator matching only hidden elements fails as "element not found" instead of timing out on actionability, `strict` mode ignores hidden duplicates, and elements hidden by CSS (like a custom checkbox built on a visually hidden `input`) are no longer found.
+*   `blockResources` **[Array][9]<[string][7]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
 *   `recordHar` **[object][8]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
 *   `testIdAttribute` **[string][7]?** locate elements based on the testIdAttribute. See more of [locate by test id][50].
 *   `storageState` **([string][7] | [object][8])?** Playwright storage state (path to JSON file or object)

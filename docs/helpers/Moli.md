@@ -91,6 +91,7 @@ Type: [object][4]
 *   `pollInterval` **[number][8]?** interval between checks while waiting, in milliseconds.
 *   `getPageTimeout` **[number][8]?** maximum time to wait for a page to load, in seconds.
 *   `waitForNavigation` **[string][3]?** when a navigation is considered finished: `load`, `domcontentloaded`, or `networkidle`.
+*   `blockResources` **[Array][15]<[string][3]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
 
 
 
