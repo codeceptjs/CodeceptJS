@@ -1687,6 +1687,86 @@ describe('Playwright - Emulation', () => {
   })
 })
 
+describe('Playwright - instantAnimations', function () {
+  this.timeout(35000)
+
+  describe('#instantAnimations', () => {
+    before(async () => {
+      global.codecept_dir = path.join(__dirname, '/../data')
+      I = new Playwright({
+        url: siteUrl,
+        browser: 'chromium',
+        show: false,
+        restart: false,
+        waitForAction: 0,
+        instantAnimations: true,
+        chrome: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
+      })
+      await I._init()
+      return I._beforeSuite()
+    })
+
+    beforeEach(() => I._before())
+
+    afterEach(() => I._after())
+
+    after(() => I._afterSuite())
+
+    it('should click an element in a 3s transition without waiting for it', async () => {
+      await I.amOnPage('/form/animations')
+      const start = Date.now()
+      await I.click('#moving')
+      expect(Date.now() - start).to.be.below(1000)
+      expect(await I.executeScript(() => window.clicked)).to.equal(true)
+      await I.waitForFunction(() => window.ev.length === 2, 2)
+      const events = await I.executeScript(() => window.ev)
+      expect(events).to.have.members(['transitionend', 'animationend'])
+    })
+
+    it('should speed up animations in a new tab', async () => {
+      await I.openNewTab()
+      await I.amOnPage('/form/animations')
+      const start = Date.now()
+      await I.click('#moving')
+      expect(Date.now() - start).to.be.below(1000)
+    })
+  })
+
+  describe('#instantAnimations disabled', () => {
+    before(async () => {
+      global.codecept_dir = path.join(__dirname, '/../data')
+      I = new Playwright({
+        url: siteUrl,
+        browser: 'chromium',
+        show: false,
+        restart: false,
+        waitForAction: 0,
+        chrome: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
+      })
+      await I._init()
+      return I._beforeSuite()
+    })
+
+    beforeEach(() => I._before())
+
+    afterEach(() => I._after())
+
+    after(() => I._afterSuite())
+
+    it('should keep animations at normal speed', async () => {
+      await I.amOnPage('/form/animations')
+      await I.wait(0.5)
+      const margin = await I.executeScript(() => parseFloat(getComputedStyle(document.getElementById('moving')).marginLeft))
+      expect(margin).to.be.below(300)
+      expect(await I.executeScript(() => window.ev)).to.eql([])
+    })
+  })
+})
+
 describe('Playwright - PERSISTENT', () => {
   before(async () => {
     global.codecept_dir = path.join(__dirname, '/../data')
