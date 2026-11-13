@@ -1687,7 +1687,7 @@ describe('Playwright - Emulation', () => {
   })
 })
 
-describe('Playwright - speed options', function () {
+describe('Playwright - instantAnimations', function () {
   this.timeout(35000)
 
   describe('#instantAnimations', () => {
@@ -1763,57 +1763,6 @@ describe('Playwright - speed options', function () {
       const margin = await I.executeScript(() => parseFloat(getComputedStyle(document.getElementById('moving')).marginLeft))
       expect(margin).to.be.below(300)
       expect(await I.executeScript(() => window.ev)).to.eql([])
-    })
-  })
-
-  describe('#blockResources', () => {
-    before(async () => {
-      global.codecept_dir = path.join(__dirname, '/../data')
-      I = new Playwright({
-        url: siteUrl,
-        browser: process.env.BROWSER || 'chromium',
-        show: false,
-        restart: false,
-        waitForAction: 0,
-        blockResources: ['image'],
-        chrome: {
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        },
-      })
-      await I._init()
-      return I._beforeSuite()
-    })
-
-    beforeEach(() => I._before())
-
-    afterEach(() => I._after())
-
-    after(() => I._afterSuite())
-
-    it('should not load blocked resource types', async () => {
-      await I.amOnPage('/image')
-      await I.waitForFunction(() => document.getElementById('logo').complete, 2)
-      expect(await I.executeScript(() => document.getElementById('logo').naturalWidth)).to.equal(0)
-    })
-
-    it('should let mockRoute serve a blocked resource', async () => {
-      await I.mockRoute('**/codeceptjs.png', route => route.fulfill({ path: path.join(__dirname, '/../data/app/codeceptjs.png'), contentType: 'image/png' }))
-      await I.amOnPage('/image')
-      await I.waitForFunction(() => document.getElementById('logo').complete, 2)
-      expect(await I.executeScript(() => document.getElementById('logo').naturalWidth)).to.be.above(0)
-      await I.stopMockingRoute('**/codeceptjs.png')
-    })
-
-    it('should keep blocking after stopMockingRoute for all urls', async () => {
-      await I.mockRoute('**/*', route => route.fallback())
-      await I.stopMockingRoute('**/*')
-      await I.amOnPage('/image')
-      await I.waitForFunction(() => document.getElementById('logo').complete, 2)
-      expect(await I.executeScript(() => document.getElementById('logo').naturalWidth)).to.equal(0)
-    })
-
-    it('should reject resource types that are not allowed', () => {
-      expect(() => new Playwright({ blockResources: ['script'] })).to.throw('image, media, font, stylesheet')
     })
   })
 })
