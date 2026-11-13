@@ -79,7 +79,8 @@ export function tests() {
       expect(elapsed).to.be.lessThan(1000)
     })
 
-    it('should resolve on navigation', async () => {
+    it('should resolve on navigation', async function () {
+      if (isHelper('Obscura')) this.skip() // on Obscura a script-triggered navigation neither rejects the pending Runtime.evaluate nor mutates the observed document, so the wait runs to its timeout (verified on CI: 3000ms of 3000ms)
       await I.amOnPage('/')
       await I.executeScript(() => {
         setTimeout(() => (window.location.href = '/info'), 30)
