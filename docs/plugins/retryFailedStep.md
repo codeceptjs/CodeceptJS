@@ -43,7 +43,7 @@ Run tests with plugin enabled:
     You can use step names or step prefixes ending with `*`. As such, `wait*` will match all steps starting with `wait`.
     To append your own steps to ignore list - copy and paste a default steps list. Regexp values are accepted as well.
 *   `deferToScenarioRetries` - when enabled (default), step retries are automatically disabled if scenario retries are configured to avoid excessive total retries.
-*   `wakeOnChange` - when enabled, a failed step is retried as soon as the page changes (DOM mutation or navigation) instead of sleeping through the whole backoff. The backoff delay is still the upper bound. Requires a helper that implements `_waitForChange` (Playwright); other helpers sleep for the backoff delay. Default is false.
+*   `wakeOnChange` - when enabled, a failed step is retried as soon as the page changes (DOM mutation or navigation) instead of sleeping through the whole backoff. The backoff delay is still the upper bound. Default is false.
 
 #### Example
 

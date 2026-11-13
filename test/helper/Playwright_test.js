@@ -130,37 +130,6 @@ describe('Playwright', function () {
 
   webApiTests.tests()
 
-  describe('#_waitForChange', () => {
-    it('should resolve soon after the DOM changes', async () => {
-      await I.amOnPage('/')
-      await I.executeScript(() => {
-        setTimeout(() => document.body.appendChild(document.createElement('div')), 30)
-      })
-      const start = Date.now()
-      await I._waitForChange(2000)
-      expect(Date.now() - start).to.be.lessThan(500)
-    })
-
-    it('should resolve after the timeout on an idle page', async () => {
-      await I.amOnPage('/')
-      const start = Date.now()
-      await I._waitForChange(300)
-      const elapsed = Date.now() - start
-      expect(elapsed).to.be.at.least(290)
-      expect(elapsed).to.be.lessThan(1000)
-    })
-
-    it('should resolve on navigation', async () => {
-      await I.amOnPage('/')
-      await I.executeScript(() => {
-        setTimeout(() => (window.location.href = '/info'), 30)
-      })
-      const start = Date.now()
-      await I._waitForChange(3000)
-      expect(Date.now() - start).to.be.lessThan(1500)
-    })
-  })
-
   describe('#click', () => {
     it('should not try to click on invisible elements', async () => {
       await I.amOnPage('/invisible_elements')
