@@ -20,6 +20,7 @@ import FileSystem from '../../lib/helper/FileSystem.js'
 import { deleteDir } from '../../lib/utils.js'
 import Secret from '../../lib/secret.js'
 import storeModule from '../../lib/store.js'
+import Container from '../../lib/container.js'
 const store = storeModule.default || storeModule
 import codeceptjsModule from '../../lib/index.js'
 global.codeceptjs = codeceptjsModule.default || codeceptjsModule
@@ -158,6 +159,21 @@ describe('Playwright', function () {
       }
       expect(err).to.exist
       expect(err.constructor.name).to.equal('MultipleElementsFound')
+    })
+
+    it('should explain hidden-only matches when not found', async () => {
+      await I.amOnPage('/invisible_elements')
+      Container.append({ helpers: { Playwright: I } })
+      I.options.visibleLocator = true
+      step('click')
+      let err
+      try {
+        await I.click({ css: 'button[style]' })
+      } catch (e) {
+        err = e
+      }
+      await err.explain()
+      expect(err.message).to.include('2 elements match but hidden')
     })
 
     it('should match only visible elements when enabled in config', async () => {
