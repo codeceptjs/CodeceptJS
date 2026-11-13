@@ -109,6 +109,21 @@ element not found => 0 + (1s+1s)    = 2s
 element found but not interactable  => 3×5s + (1s+1s) = 17s
 ```
 
+### Retry on Page Change
+
+With `wakeOnChange`, a failed step is retried as soon as the page changes (a DOM mutation or a navigation) instead of sleeping through the whole gap. The gap above stays the upper bound, so on a page that doesn't change the timing is the same:
+
+```js
+plugins: {
+  retryFailedStep: {
+    enabled: true,
+    wakeOnChange: true,
+  }
+}
+```
+
+A step waiting for content that shows up 400ms later passes on that change instead of on the next scheduled retry. A retry can fire in the middle of a render and fail again, which uses up a retry sooner. The option is disabled by default.
+
 ## Manual Step Retries
 
 Retry a specific step known to be flaky:

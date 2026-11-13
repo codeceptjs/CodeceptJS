@@ -59,6 +59,38 @@ export function tests() {
     })
   })
 
+  describe('#_waitForChange', () => {
+    it('should resolve soon after the DOM changes', async () => {
+      await I.amOnPage('/')
+      await I.executeScript(() => {
+        setTimeout(() => document.body.appendChild(document.createElement('div')), 30)
+      })
+      const start = Date.now()
+      await I._waitForChange(2000)
+      expect(Date.now() - start).to.be.lessThan(500)
+    })
+
+    it('should resolve after the timeout on an idle page', async () => {
+      await I.amOnPage('/')
+      const start = Date.now()
+      await I._waitForChange(300)
+      const elapsed = Date.now() - start
+      expect(elapsed).to.be.at.least(290)
+      expect(elapsed).to.be.lessThan(1000)
+    })
+
+    it('should resolve on navigation', async function () {
+      if (isHelper('Obscura')) this.skip() // on Obscura a script-triggered navigation neither rejects the pending Runtime.evaluate nor mutates the observed document, so the wait runs to its timeout (verified on CI: 3000ms of 3000ms)
+      await I.amOnPage('/')
+      await I.executeScript(() => {
+        setTimeout(() => (window.location.href = '/info'), 30)
+      })
+      const start = Date.now()
+      await I._waitForChange(3000)
+      expect(Date.now() - start).to.be.lessThan(1500)
+    })
+  })
+
   describe('current url : #seeInCurrentUrl, #seeCurrentUrlEquals, #grabCurrentUrl, ...', () => {
     it('should check for url fragment', async () => {
       await I.amOnPage('/form/checkbox')
