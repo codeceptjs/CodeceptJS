@@ -1933,7 +1933,8 @@ export function tests() {
 
     afterEach(() => I._withinEnd())
 
-    it('should point to a match inside an iframe', async () => {
+    it('should point to a match inside an iframe', async function () {
+      if (isHelper('Lightpanda')) this.skip() // iframe.contentDocument is null on Lightpanda (verified on /iframe: 1 iframe, no document), so frames can't be scanned
       await I.amOnPage('/iframe')
       const message = await failureOf(() => I.click('#first-link'))
       expect(message.split('\n')[0]).to.include('"#first-link" was not found')
@@ -2981,7 +2982,7 @@ export function tests() {
         err = e
       }
       expect(err).to.exist
-      await err.explain()
+      await err.fetchDetails()
       expect(err.message).to.include('/html')
       expect(err.message).to.include('Use a more specific locator')
     })
