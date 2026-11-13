@@ -3,6 +3,8 @@ Grab the recording network traffics
 ```js
 const traffics = await I.grabRecordedNetworkTraffics();
 expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].request.method).to.equal('GET');
+expect(traffics[0].request.headers['user-agent']).to.contain('Mozilla');
 expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```

@@ -2469,6 +2469,30 @@ export function tests() {
       expect(traffics.length).to.equal(0)
     })
 
+    it('should grab the request of recorded traffics', async () => {
+      await I.startRecordingTraffic()
+      await I.amOnPage('https://codecept.io/')
+      const traffics = await I.grabRecordedNetworkTraffics()
+      expect(traffics.length).to.be.above(0)
+      expect(traffics[0].request.method).to.equal('GET')
+      const headerNames = Object.keys(traffics[0].request.headers).map(name => name.toLowerCase())
+      expect(headerNames).to.include('user-agent')
+    })
+
+    it('should grab JSON post data of recorded traffics as an object', async () => {
+      await I.amOnPage('https://codecept.io/')
+      await I.startRecordingTraffic()
+      await I.executeScript(() =>
+        fetch('https://codecept.io/traffic-post-data', { method: 'POST', body: JSON.stringify({ name: 'codecept' }) })
+          .then(res => res.status)
+          .catch(() => 0),
+      )
+      await I.seeTraffic({ name: 'post', url: 'https://codecept.io/traffic-post-data' })
+      const traffics = await I.grabRecordedNetworkTraffics()
+      const post = traffics.find(t => t.request.method === 'POST')
+      expect(post.request.postData).to.deep.equal({ name: 'codecept' })
+    })
+
     it('should stop the network recording', async () => {
       await I.startRecordingTraffic()
       await I.amOnPage('https://codecept.io/')
