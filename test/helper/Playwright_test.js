@@ -1792,7 +1792,7 @@ describe('Playwright - speed options', function () {
 
     it('should not load blocked resource types', async () => {
       await I.amOnPage('/image')
-      expect(await I.executeScript(() => document.getElementById('logo').complete)).to.equal(true)
+      await I.waitForFunction(() => document.getElementById('logo').complete, 2)
       expect(await I.executeScript(() => document.getElementById('logo').naturalWidth)).to.equal(0)
     })
 
@@ -1802,6 +1802,14 @@ describe('Playwright - speed options', function () {
       await I.waitForFunction(() => document.getElementById('logo').complete, 2)
       expect(await I.executeScript(() => document.getElementById('logo').naturalWidth)).to.be.above(0)
       await I.stopMockingRoute('**/codeceptjs.png')
+    })
+
+    it('should keep blocking after stopMockingRoute for all urls', async () => {
+      await I.mockRoute('**/*', route => route.fallback())
+      await I.stopMockingRoute('**/*')
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 2)
+      expect(await I.executeScript(() => document.getElementById('logo').naturalWidth)).to.equal(0)
     })
 
     it('should reject resource types that are not allowed', () => {
