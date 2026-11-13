@@ -2469,12 +2469,13 @@ export function tests() {
       expect(traffics.length).to.equal(0)
     })
 
-    it('should grab request headers of recorded traffics', async () => {
+    it('should grab the request of recorded traffics', async () => {
       await I.startRecordingTraffic()
       await I.amOnPage('https://codecept.io/')
       const traffics = await I.grabRecordedNetworkTraffics()
       expect(traffics.length).to.be.above(0)
-      const headerNames = Object.keys(traffics[0].requestHeaders).map(name => name.toLowerCase())
+      expect(traffics[0].request.method).to.equal('GET')
+      const headerNames = Object.keys(traffics[0].request.headers).map(name => name.toLowerCase())
       expect(headerNames).to.include('user-agent')
     })
 
