@@ -126,6 +126,28 @@ webServer: [
 
 The server is started as part of bootstrap, right before the `bootstrap` hook (or `bootstrapAll` for `run-workers` and `run-multiple`), and stopped after `teardown` (`teardownAll`). It starts once in the main process; workers and child processes reuse it. The interactive `shell` starts it too, `dry-run` and `check` only with `--bootstrap`. CodeceptJS stops the command and every process it spawned, including when the run is interrupted with Ctrl+C.
 
+## Blocking Resources
+
+Web helpers can skip loading resources a test doesn't check. Set `blockResources` in the helper config:
+
+```js
+helpers: {
+  Playwright: {
+    url: 'http://localhost:3000',
+    blockResources: ['image', 'font', 'media'],
+  },
+}
+```
+
+Allowed values are `image`, `media`, `font` and `stylesheet`. Any other value fails on startup. Matching requests are aborted before they reach the network, so tests no longer exercise those resources.
+
+| Helper | How it blocks | Notes |
+| --- | --- | --- |
+| Playwright | context route on every page, tab and session | Routing disables Playwright's HTTP cache. A `mockRoute` for a blocked URL still serves the mock. |
+| Puppeteer | request interception on every page | Request interception disables Puppeteer's page cache. A `mockRoute` for a blocked URL still serves the mock. |
+| CDPBrowser | CDP `Fetch` domain | Works in Chrome. Lightpanda doesn't load images in the first place. Obscura doesn't block: it ignores `Fetch.failRequest`. |
+| WebDriver | WebDriver BiDi network interception, matching the request destination | Needs BiDi, which is on by default. Every request makes a round trip to the test process. Ignored when BiDi is off. Appium ignores the option. |
+
 ## Dynamic configuration
 
 A JS/TS config file is plain code, so you can read environment variables and build the config at runtime:
