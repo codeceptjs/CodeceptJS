@@ -2479,6 +2479,20 @@ export function tests() {
       expect(headerNames).to.include('user-agent')
     })
 
+    it('should grab JSON post data of recorded traffics as an object', async () => {
+      await I.amOnPage('https://codecept.io/')
+      await I.startRecordingTraffic()
+      await I.executeScript(() =>
+        fetch('https://codecept.io/traffic-post-data', { method: 'POST', body: JSON.stringify({ name: 'codecept' }) })
+          .then(res => res.status)
+          .catch(() => 0),
+      )
+      await I.seeTraffic({ name: 'post', url: 'https://codecept.io/traffic-post-data' })
+      const traffics = await I.grabRecordedNetworkTraffics()
+      const post = traffics.find(t => t.request.method === 'POST')
+      expect(post.request.postData).to.deep.equal({ name: 'codecept' })
+    })
+
     it('should stop the network recording', async () => {
       await I.startRecordingTraffic()
       await I.amOnPage('https://codecept.io/')
