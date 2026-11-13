@@ -18,6 +18,7 @@ import { secret } from '../../lib/secret.js'
 
 import Locator from '../../lib/locator.js'
 import customLocators from '../../lib/plugin/customLocator.js'
+import Container from '../../lib/container.js'
 
 let originalLocators
 let I
@@ -1914,6 +1915,50 @@ export function tests() {
       await I.waitForDetached('//div[@id="step_2"]')
       await I.dontSeeElement('//div[@id="step_2"]')
       await I.dontSeeElementInDOM('//div[@id="step_2"]')
+    })
+  })
+
+  describe('#explainNotFound', () => {
+    const failureOf = async action => {
+      try {
+        await action()
+      } catch (err) {
+        if (err.explain) await err.explain()
+        return err.message
+      }
+      throw new Error('step was expected to fail')
+    }
+
+    beforeEach(() => Container.append({ helpers: { explainNotFound: I } }))
+
+    afterEach(() => I._withinEnd())
+
+    it('should point to a match inside an iframe', async function () {
+      if (isHelper('Lightpanda')) this.skip() // iframe.contentDocument is null on Lightpanda (verified on /iframe: 1 iframe, no document), so frames can't be scanned
+      await I.amOnPage('/iframe')
+      const message = await failureOf(() => I.click('#first-link'))
+      expect(message.split('\n')[0]).to.include('"#first-link" was not found')
+      expect(message).to.include(`found 1 match inside iframe [name="content"], use within({ frame: '[name="content"]' })`)
+    })
+
+    it('should suggest similar ids', async () => {
+      await I.amOnPage('/login')
+      const message = await failureOf(() => I.fillField('#emial', 'davert'))
+      expect(message.split('\n')[0]).to.include('"#emial" was not found')
+      expect(message).to.match(/similar on page: #email(,|$)/m)
+    })
+
+    it('should suggest similar element names', async () => {
+      await I.amOnPage('/info')
+      const message = await failureOf(() => I.click('Sign im'))
+      expect(message).to.include('link "Sign in!"')
+    })
+
+    it('should report matches outside of within', async () => {
+      await I.amOnPage('/login')
+      await I._withinBegin('#email-wrapper')
+      const message = await failureOf(() => I.fillField('#password', '123456'))
+      expect(message).to.include('1 element matches on the page: check the within() context')
     })
   })
 

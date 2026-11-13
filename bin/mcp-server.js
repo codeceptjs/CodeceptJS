@@ -906,6 +906,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           result.status = 'success'
           result.output = 'Code executed successfully'
         } catch (error) {
+          if (typeof error.explain === 'function') await error.explain()
           result.status = 'failed'
           result.error = error.message
           result.output = error.stack || error.message
