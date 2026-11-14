@@ -211,6 +211,7 @@ Limitations:
 - A click can hit the wrong element when a child overflows a container with `overflow: hidden`.
 - Rich text editors Quill, Trix and ACE do not work; TinyMCE does not start on a pre-filled element.
 - A Base UI radio group does not uncheck the previously selected radio.
+- Links compute `cursor: auto` instead of `pointer`.
 
 ### Local engine
 

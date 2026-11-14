@@ -2276,6 +2276,7 @@ export function tests() {
       if (isHelper('Obscura')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Obscura's CSS engine instead of 'pointer' (verified directly), so the first assertion in this test throws before reaching the one it means to test
       if (isHelper('Lightpanda')) this.skip() // same root cause as "should check css property for given element" above
       if (isHelper('Moli')) this.skip() // Moli's default stylesheet does not color links: getComputedStyle(a).color is rgb(0, 0, 0) (verified directly), so the first assertion throws before reaching the one this test means to test
+      if (isHelper('Kitesurf')) this.skip() // getComputedStyle(a).cursor returns 'auto' on Kitesurf instead of 'pointer' (verified directly), so the first assertion throws before reaching the one this test means to test
 
       try {
         await I.amOnPage('/')
