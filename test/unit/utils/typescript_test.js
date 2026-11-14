@@ -1,8 +1,10 @@
 import { expect } from 'chai'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 import path from 'path'
+import fs from 'fs'
+import os from 'os'
 import { createRequire } from 'module'
-import { transpileTypeScript, cleanupTempFiles } from '../../../lib/utils/typescript.js'
+import { transpileTypeScript, mapTranspiledStackFrame, cleanupTempFiles } from '../../../lib/utils/typescript.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const require = createRequire(import.meta.url)
@@ -32,5 +34,45 @@ describe('TypeScript transpilation', () => {
       cleanupTempFiles(first.allTempFiles)
       cleanupTempFiles(second.allTempFiles)
     }
+  })
+
+  it('maps transpiled stack frames back to the original .ts positions (#5772)', async () => {
+    const pageObject = path.resolve(__dirname, '../../data/sandbox/typescript-step-paths/pages/fooPage.ts')
+    const { tempFile, allTempFiles } = await transpileTypeScript(pageObject, typescript)
+
+    try {
+      // I.doThing('from page') is on line 7 of fooPage.ts; the transpiled
+      // .temp.mjs reports it at 4:11
+      const frame = `at Object.open (${tempFile}:4:11)`
+      expect(mapTranspiledStackFrame(frame)).to.equal(`at Object.open (${pageObject}:7:7)`)
+    } finally {
+      cleanupTempFiles(allTempFiles)
+    }
+  })
+
+  it('accounts for injected CommonJS shims when mapping positions', async () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'codecept-ts-'))
+    const tsFile = path.join(tmpDir, 'shimmed.ts')
+    fs.writeFileSync(tsFile, 'const path = require("path");\nexport default {\n  open() {\n    const p = path.join("a", "b");\n    return p;\n  },\n};\n')
+
+    const { tempFile, allTempFiles } = await transpileTypeScript(tsFile, typescript)
+    try {
+      const tempPath = fileURLToPath(tempFile)
+      const tempLines = fs.readFileSync(tempPath, 'utf8').split('\n')
+      const tempLine = tempLines.findIndex(l => l.includes('path.join')) + 1
+      expect(tempLine).to.be.greaterThan(4) // shim injection shifted lines down
+
+      const frame = `at Object.open (${tempFile}:${tempLine}:15)`
+      const mapped = mapTranspiledStackFrame(frame)
+      expect(mapped).to.match(/\(.*shimmed\.ts:4:\d+\)/)
+    } finally {
+      cleanupTempFiles(allTempFiles)
+      fs.rmSync(tmpDir, { recursive: true, force: true })
+    }
+  })
+
+  it('returns null for frames that cannot be mapped', () => {
+    expect(mapTranspiledStackFrame('at Object.open (/some/file.js:1:1)')).to.be.null
+    expect(mapTranspiledStackFrame('at Object.open (file:///does/not/exist.123.temp.mjs:1:1)')).to.be.null
   })
 })

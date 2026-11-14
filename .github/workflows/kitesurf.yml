@@ -26,10 +26,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
 
-    strategy:
-      matrix:
-        node-version: [22.x]
-
     steps:
       - uses: actions/checkout@v6
         with:
@@ -41,10 +37,10 @@ jobs:
           ref: ${{ env.KITESURF_VERSION }}
           path: kitesurf
           persist-credentials: false
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.nvmrc'
       - uses: pnpm/action-setup@v4
         with:
           version: 9.15.4

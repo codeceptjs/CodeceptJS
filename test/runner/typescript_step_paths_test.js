@@ -20,6 +20,9 @@ describe('TypeScript step paths', () => {
             expect(err).toBeTruthy()
             expect(stdout).toContain('Scenario Steps:')
             expect(stdout).toMatch(/at Object\.open \(\.\/pages\/fooPage\.ts:\d+:\d+\)/)
+            // #5772: line/column must come from the .ts source, not the transpiled .temp.mjs
+            // (I.doThing is on line 7 of pages/fooPage.ts)
+            expect(stdout).toMatch(/at Object\.open \(\.\/pages\/fooPage\.ts:7:7\)/)
             expect(stdout).not.toContain('.temp.mjs')
             expect(stdout).not.toContain('file://./pages/fooPage.ts')
             done()

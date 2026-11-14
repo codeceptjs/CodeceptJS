@@ -30,6 +30,7 @@ Please **add your own** by editing this page.
 * [codeceptjs-saucehelper](https://github.com/puneet0191/codeceptjs-saucehelper/) - a helper which updates `Test Names` & `Test Results` on Saucelabs 
 * [codeceptjs-bshelper](https://github.com/PeterNgTr/codeceptjs-bshelper) - a helper which updates `Test Names` & `Test Results` on Browserstack 
 * [codeceptjs-tbhelper](https://github.com/testingbot/codeceptjs-tbhelper) - a helper which updates `Test Names` & `Test Results` on TestingBot 
+* [codeceptjs-lambdatest-service](https://github.com/LambdaTest/codeceptjs-lambdatest-service) - a helper which updates `Test Names` & `Test Results` on TestMu AI (formerly LambdaTest)
 
 ## Visual-Testing
 * [codeceptjs-resemblehelper](https://github.com/puneet0191/codeceptjs-resemblehelper) - a helper which helps with visual testing using resemble.js. 

@@ -119,7 +119,7 @@ import step from 'codeceptjs/steps'
 Scenario('checkout', ({ I }) => {
   I.amOnPage('/cart')
   I.click('Proceed to Checkout', step.retry(5))  // retry up to 5 times
-  I.see('Payment')
+  I.see('Payment').retry(3)                      // same, chained to the action
 })
 ```
 
