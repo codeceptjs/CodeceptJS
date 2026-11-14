@@ -1,0 +1,33 @@
+import TestHelper from '../support/TestHelper.js'
+import installCodeceptjs from '../support/install-codeceptjs.js'
+
+export const config = {
+  tests: './*_test.js',
+  timeout: 10,
+  output: './output',
+  grep: '@Kitesurf',
+  helpers: {
+    Kitesurf: {
+      url: TestHelper.siteUrl(),
+      endpoint: process.env.KITESURF_ENDPOINT || 'http://127.0.0.1:8787',
+    },
+    ScreenshotSessionHelper: {
+      require: '../support/ScreenshotSessionHelper.js',
+      outputPath: 'test/acceptance/output',
+    },
+    '@codeceptjs/expect-helper': {},
+  },
+  include: {},
+  bootstrap: installCodeceptjs,
+  mocha: {},
+  plugins: {
+    retryFailedStep: {
+      enabled: true,
+    },
+  },
+  name: 'acceptance',
+  gherkin: {
+    features: './gherkin/*.feature',
+    steps: ['./gherkin/steps.js'],
+  },
+}

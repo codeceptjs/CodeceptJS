@@ -1,0 +1,96 @@
+name: Kitesurf Helper Tests
+
+on:
+  push:
+    branches:
+      - 4.x
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  FORCE_COLOR: 1
+  KITESURF_VERSION: 2026.11.9
+  KITESURF_ENDPOINT: http://127.0.0.1:8787
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Checkout Kitesurf
+        uses: actions/checkout@v6
+        with:
+          repository: cloudflare/kitesurf
+          ref: ${{ env.KITESURF_VERSION }}
+          path: kitesurf
+          persist-credentials: false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+          run_install: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - name: npm install
+        run: npm i --force
+      - name: Install Kitesurf dependencies
+        working-directory: kitesurf
+        run: pnpm install --frozen-lockfile
+      - name: Cache Kitesurf build
+        id: kitesurf-build
+        uses: actions/cache@v6
+        with:
+          path: |
+            kitesurf/packages/core/pkg
+            kitesurf/packages/renderer-core/pkg
+            kitesurf/packages/engine/public/rbi
+            kitesurf/packages/dom-shim/dist
+            kitesurf/packages/page-script/dist
+            kitesurf/packages/page-renderer/dist
+            kitesurf/packages/worker-script/dist
+          key: kitesurf-build-${{ env.KITESURF_VERSION }}-x86_64-linux
+      - name: Build Kitesurf
+        if: steps.kitesurf-build.outputs.cache-hit != 'true'
+        working-directory: kitesurf
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+          bazel run //packages/engine:dev_build
+      - name: start Kitesurf
+        working-directory: kitesurf/packages/engine
+        run: |
+          npx wrangler dev --env local -c wrangler.jsonc -c test/fixtures-worker/wrangler.jsonc --port 8787 > ~/kitesurf.log 2>&1 &
+          for i in $(seq 1 90); do curl -sf http://127.0.0.1:8787/health && break; sleep 2; done
+          curl -sf http://127.0.0.1:8787/json/version
+      - name: start test server
+        run: |
+          php -S 127.0.0.1:8000 -t test/data/app &
+          sleep 1
+          curl -sf http://127.0.0.1:8000/info > /dev/null
+      - name: run kitesurf helper tests
+        run: npm run test:unit:webbapi:kitesurf
+      - name: run kitesurf acceptance tests
+        run: ./bin/codecept.js run -c test/acceptance/codecept.Kitesurf.js --grep @Kitesurf --debug
+      - name: Kitesurf log
+        if: failure()
+        run: tail -200 ~/kitesurf.log

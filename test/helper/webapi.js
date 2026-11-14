@@ -592,6 +592,7 @@ export function tests() {
 
         it('checks a radio by its label', async function () {
           if (page === 'baseui' && isHelper('Obscura')) this.skip()
+          if (page === 'baseui' && isHelper('Kitesurf')) this.skip() // Base UI's radio group never unchecks the previous radio on Kitesurf (verified: after checking Comfortable, Default still reports aria-checked="true")
           await open(page)
           await I.dontSeeCheckboxIsChecked('Comfortable')
 
@@ -863,7 +864,8 @@ export function tests() {
       await I.seeInField('#name1', 'old1')
     })
 
-    it('should attach file within context', async () => {
+    it('should attach file within context', async function () {
+      if (isHelper('Kitesurf')) this.skip() // Kitesurf does not implement DOM.setFileInputFiles (verified: input.files.length stays 0 after attachFile)
       await I.amOnPage('/form/context')
       await I.attachFile('Avatar', 'app/avatar.jpg', '#area2')
       const val2 = await I.executeScript(() => document.getElementById('file2').files.length)
@@ -962,6 +964,7 @@ export function tests() {
     beforeEach(async function () {
       if (isHelper('Obscura')) this.skip() // Obscura's navigator.clipboard is a stub: writeText() resolves but stores nothing, so readText() always returns '' (verified: a write/read round trip inside one evaluate reads back an empty string)
       if (isHelper('Lightpanda')) this.skip() // navigator.clipboard is unavailable on Lightpanda (verified: the page reports no Clipboard API, even on a loopback origin)
+      if (isHelper('Kitesurf')) this.skip() // Kitesurf hardcodes window.isSecureContext to false, so navigator.clipboard is undefined even on a loopback origin (verified)
       await I.amOnPage('/form/clipboard')
       await I.clearClipboard()
     })
@@ -1124,14 +1127,14 @@ export function tests() {
     //   reason above, this isn't listed separately.
     const editors = [
       { name: 'ProseMirror',    page: 'prosemirror',    selector: '#editor', skip: { Obscura: "the DOM does show the new text and it isn't reverted (confirmed directly), but ProseMirror's own MutationObserver-based DOMObserver reconciliation never updates its internal model (view.state.doc, which the submit handler reads from) from a synthetic mutation on Obscura — tried both a blunt textContent replace and a surgical Range-based delete+insert, neither reaches the model; the same code path updates the model correctly on Chrome" } },
-      { name: 'Quill',          page: 'quill',          selector: '#editor' },
+      { name: 'Quill',          page: 'quill',          selector: '#editor', skip: { Kitesurf: 'new Quill() throws "TypeError: I.import is not a function", so the editor never signals ready (verified)' } },
       { name: 'CKEditor 5',     page: 'ckeditor5',      selector: '#editor', skip: { CDPBrowser: 'needs event.getTargetRanges() to place the insertion — a native, non-forgeable API a synthetic InputEvent cannot populate; its beforeinput handler correctly recognizes and preventDefault()s the event but then inserts nothing' } },
-      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' } },
+      { name: 'TinyMCE inline', page: 'tinymce-modern', selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' }, skipTests: { 'rewrites pre-populated content': { Kitesurf: 'when the editable div already holds text, TinyMCE registers the editor but its init event never fires (verified: the content stays raw instead of being wrapped in <p>; an empty div inits normally)' } } },
       { name: 'CodeMirror 6',   page: 'codemirror6',    selector: '#editor' },
-      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' } },
+      { name: 'Trix',           page: 'trix',           selector: 'trix-editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s', Kitesurf: '<trix-editor> is defined but never gets its .editor: the custom element is not upgraded' } },
       { name: 'Summernote',     page: 'summernote',     selector: '#editor' },
       { name: 'Monaco',         page: 'monaco',         selector: '#editor', skip: { Obscura: 'editor never signals ready (bundle loads, init never completes, no console error)', Lightpanda: 'editor never signals ready within 30s' }, skipTests: { 'rewrites pre-populated content': { CDPBrowser: 'Monaco keeps cursor/selection state in its own internal model, not reflected in its hidden input-capture <textarea> (which stays empty even with pre-populated content) — a DOM-level select-all has nothing to select, so new text is inserted into the model rather than replacing it' } } },
-      { name: 'ACE',            page: 'ace',            selector: '#editor', skipTests: { 'rewrites pre-populated content': { Obscura: "ACE keeps cursor/selection state in its own internal model like Monaco, but reaches it via the browser's real execCommand-driven selection-replace on Chrome; execCommand is a no-op on Obscura, so the fallback's DOM-level select-all doesn't carry the same 'replace selection' semantics into ACE's model and the new text is inserted rather than replacing the old" } } },
+      { name: 'ACE',            page: 'ace',            selector: '#editor', skip: { Kitesurf: "the submit button below the editor is unclickable: Kitesurf's hit testing does not clip ACE's gutter layer to the editor's overflow:hidden box (verified: elementFromPoint at the button's center returns .ace_gutter-layer)" }, skipTests: { 'rewrites pre-populated content': { Obscura: "ACE keeps cursor/selection state in its own internal model like Monaco, but reaches it via the browser's real execCommand-driven selection-replace on Chrome; execCommand is a no-op on Obscura, so the fallback's DOM-level select-all doesn't carry the same 'replace selection' semantics into ACE's model and the new text is inserted rather than replacing the old" } } },
       { name: 'CodeMirror 5',   page: 'codemirror5',    selector: '#editor', skip: { CDPBrowser: 'CodeMirror.fromTextArea() adopts and hides the backing <textarea>; its live content lives only in an internal JS model synced to the form via its own getValue() API at submit time, unreachable via DOM mutation or events on the backing element' } },
       { name: 'TinyMCE legacy', page: 'tinymce-legacy', selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic TinyMCE architecture) — CDPBrowser has no frame-session support' } },
       { name: 'CKEditor 4',     page: 'ckeditor4',      selector: '#editor', skip: { CDPBrowser: 'renders its editing surface inside an <iframe> (classic CKEditor 4 architecture) — CDPBrowser has no frame-session support' } },
@@ -1518,6 +1521,7 @@ export function tests() {
       // (the <select multiple> collapse bug from the selectOption work).
       if (isHelper('Obscura')) this.skip()
       if (isHelper('Moli')) this.skip() // DOM.setFileInputFiles on Moli creates a File with an empty type (verified: files[0].type === ''), so the form posts it as application/octet-stream
+      if (isHelper('Kitesurf')) this.skip() // same root cause as "should attach file within context" above
       await I.amOnPage('/form/file')
       await I.attachFile('#avatar', 'app/avatar.jpg')
       await I.click('Submit')
@@ -1530,6 +1534,7 @@ export function tests() {
     it('should upload file located by label', async function () {
       if (isHelper('Obscura')) this.skip() // same root cause as "should upload file located by CSS" above
       if (isHelper('Moli')) this.skip() // same root cause as "should upload file located by CSS" above
+      if (isHelper('Kitesurf')) this.skip() // same root cause as "should attach file within context" above
       await I.amOnPage('/form/file')
       await I.attachFile('Avatar', 'app/avatar.jpg')
       await I.click('Submit')
