@@ -204,6 +204,8 @@ All options: [Moli helper reference](/helpers/moli).
 
 Page JavaScript runs in Boa, a JavaScript engine written in Rust, not V8, so some libraries fail to start.
 
+Kitesurf starts a fresh isolated worker for every page, so each navigation costs about 200 ms on a local engine. A suite runs about 4 times slower than on Lightpanda, Moli or Obscura, close to Playwright. In exchange, it is the only engine here with real layout and screenshots.
+
 Limitations:
 
 - `attachFile` does not upload files.
