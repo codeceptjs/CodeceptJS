@@ -95,7 +95,8 @@ expectType<CodeceptJS.StepPromise>(playwright.seeNumberOfVisibleElements(str, nu
 expectType<CodeceptJS.StepPromise>(playwright.setCookie({ name: str, value: str }));
 expectType<CodeceptJS.StepPromise>(playwright.seeCookie(str));
 expectType<CodeceptJS.StepPromise>(playwright.dontSeeCookie(str));
-expectType<any>(playwright.grabCookie());
+expectType<Promise<any>>(playwright.grabCookie());
+expectType<Promise<object>>(playwright.grabStorageState());
 expectType<void>(playwright.clearCookie());
 expectType<Promise<any>>(playwright.executeScript(() => {}));
 expectType<Promise<string>>(playwright.grabTextFrom(str));
@@ -132,12 +133,14 @@ expectType<CodeceptJS.StepPromise>(playwright.switchTo());
 expectType<CodeceptJS.StepPromise>(playwright.waitForFunction(() => { }));
 expectType<void>(playwright.waitForNavigation(str));
 expectType<CodeceptJS.StepPromise>(playwright.waitForDetached(str));
-expectType<CodeceptJS.StepPromise>(playwright.grabDataFromPerformanceTiming());
+expectType<Promise<{ responseEnd: number; domInteractive: number; domContentLoadedEventEnd: number; loadEventEnd: number }>>(playwright.grabDataFromPerformanceTiming());
 //expectType<Promise<number>>(playwright.grabElementBoundingRect(str));
 expectType<void>(playwright.mockRoute(str));
 expectType<void>(playwright.stopMockingRoute(str));
 
 expectType<CodeceptJS.StepPromise>(playwright.startRecordingTraffic());
+expectType<Promise<string>>(playwright.grabTrafficUrl(str));
+expectType<Promise<any[]>>(playwright.grabRecordedNetworkTraffics());
 expectType<void>(playwright.stopRecordingTraffic());
 expectError(playwright.seeTraffic());
 expectError(playwright.seeTraffic(str));
