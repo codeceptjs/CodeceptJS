@@ -1,4 +1,4 @@
-import { expectError, expectType } from 'tsd';
+import { expectAssignable, expectError, expectType } from 'tsd';
 
 // @ts-ignore
 const playwright = new CodeceptJS.Playwright();
@@ -158,6 +158,13 @@ expectType<CodeceptJS.ElementStepPromise>(playwright.checkOption(str).at(2))
 expectType<CodeceptJS.StepPromise>(playwright.see(str).timeout(5))
 expectType<CodeceptJS.StepPromise>(playwright.see(str).retry(3))
 expectType<CodeceptJS.ElementStepPromise>(playwright.click(str).first().timeout(5).retry(3))
+
+async function stepPromiseTypes(step: CodeceptJS.StepPromise<string>, elementStep: CodeceptJS.ElementStepPromise<number>) {
+  expectType<string>(await step);
+  expectType<CodeceptJS.StepPromise<string>>(step.timeout(5).retry(3));
+  expectType<number>(await elementStep.first().timeout(5));
+  expectAssignable<CodeceptJS.StepPromise>(step);
+}
 
 async function webElementTypes(el: CodeceptJS.WebElement) {
   expectType<string>(await el.getText());
