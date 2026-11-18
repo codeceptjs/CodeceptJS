@@ -8,4 +8,4 @@ assert(cookie.value, '123456');
 ```
 
 @param {?string} [name=null] cookie name.
-@returns {any} attribute value
+@returns {Promise<any>} cookie object, or all cookies if no name is given
