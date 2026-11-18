@@ -775,7 +775,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][5]?** cookie name. 
 
-Returns **[Promise][12]<any>** cookie object, or all cookies if no name is given
+Returns **[Promise][14]<any>** cookie object, or all cookies if no name is given
 
 ### grabCookies
 
