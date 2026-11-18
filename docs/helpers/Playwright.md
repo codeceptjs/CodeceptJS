@@ -80,6 +80,7 @@ Type: [object][8]
 *   `highlightElement` **[boolean][26]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
 *   `visibleLocator` **[boolean][26]?** append [`visible()`][49] to locators, so only visible elements are matched. Requires Playwright 1.63 or newer. Switch it off for a single step with `stepOpts({ visibleLocator: false })`. Not applied to `dragAndDrop`, which passes selectors to Playwright directly, nor to steps that must reach hidden elements: `grab*` methods, `scrollTo`, `seeElementInDOM`, `dontSeeElementInDOM` and `seeNumberOfElements`. When enabled, a locator matching only hidden elements fails as "element not found" instead of timing out on actionability, `strict` mode ignores hidden duplicates, and elements hidden by CSS (like a custom checkbox built on a visually hidden `input`) are no longer found.
 *   `blockResources` **[Array][9]<[string][7]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
+*   `instantAnimations` **[boolean][26]?** run CSS transitions, CSS animations and Web Animations 1000 times faster, so a click waits for a moving element for one frame instead of the whole animation. `transitionend` and `animationend` still fire. Chromium only. Timers and JS-driven animations keep their speed. Not applied inside cross-origin iframes that Chromium runs in a separate process.
 *   `recordHar` **[object][8]?** record HAR and will be saved to `output/har`. See more of [HAR options][3].
 *   `testIdAttribute` **[string][7]?** locate elements based on the testIdAttribute. See more of [locate by test id][50].
 *   `storageState` **([string][7] | [object][8])?** Playwright storage state (path to JSON file or object)
@@ -726,6 +727,22 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
+### dontSeeFileDownloaded
+
+Checks that no file matching the name was downloaded during the current test.
+
+```js
+I.click('Cancel');
+I.dontSeeFileDownloaded(); // no files at all
+I.dontSeeFileDownloaded('*.pdf');
+```
+
+#### Parameters
+
+*   `fileName` **([string][7] | [RegExp][10])?** file name, glob pattern or regular expression. Matches any file when omitted.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### dontSeeInCurrentUrl
 
 Checks that current url does not contain a provided fragment.
@@ -1090,7 +1107,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][7]?** cookie name. 
 
-Returns **any** attribute value
+Returns **[Promise][20]<any>** cookie object, or all cookies if no name is given
 
 ### grabCssPropertyFrom
 
@@ -1160,7 +1177,7 @@ let data = await I.grabDataFromPerformanceTiming();
 }
 ```
 
-Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
+Returns **[Promise][20]<{responseEnd: [number][17], domInteractive: [number][17], domContentLoadedEventEnd: [number][17], loadEventEnd: [number][17]}>** performance timing data in ms
 
 ### grabDisabledElementStatus
 
@@ -1172,6 +1189,16 @@ Return the disabled status of given element.
 *   `options` **[object][8]?** See [https://playwright.dev/docs/api/class-locator#locator-is-disabled][27] 
 
 Returns **[Promise][20]<[boolean][26]>**&#x20;
+
+### grabDownloadedFileNames
+
+Returns names of files downloaded during the current test.
+
+```js
+const files = await I.grabDownloadedFileNames();
+```
+
+Returns **[Promise][20]<[Array][9]<[string][7]>>** file names
 
 ### grabElementBoundingRect
 
@@ -1358,11 +1385,13 @@ Grab the recording network traffics
 ```js
 const traffics = await I.grabRecordedNetworkTraffics();
 expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].request.method).to.equal('GET');
+expect(traffics[0].request.headers['user-agent']).to.contain('Mozilla');
 expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][9]** recorded network traffics
+Returns **[Promise][20]<[Array][9]<any>>** recorded network traffics
 
 ### grabSource
 
@@ -1396,6 +1425,8 @@ Avoid committing it to source control and prefer storing it in a protected secre
         // include IndexedDB when using Firebase Auth, etc.
         const stateWithIDB = await I.grabStorageState({ indexedDB: true });
         ```
+
+Returns **[Promise][20]<[object][8]>** storage state
 
 ### grabTextFrom
 
@@ -1455,7 +1486,7 @@ I.grabTrafficUrl(/session.*start/);
 
 *   `urlMatch` **([string][7] | [RegExp][10])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
-Returns **[Promise][20]<any>**&#x20;
+Returns **[Promise][20]<[string][7]>**&#x20;
 
 ### grabValueFrom
 
@@ -2058,6 +2089,27 @@ I.seeElementInDOM('#modal');
 *   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
+
+### seeFileDownloaded
+
+Checks that a file download has started during the current test.
+Waits for the download to begin, so it can be called right after the action that triggers it.
+
+```js
+I.click('Export');
+I.seeFileDownloaded(); // any file
+I.seeFileDownloaded('export.pdf'); // exact file name
+I.seeFileDownloaded('*.pdf'); // glob
+I.seeFileDownloaded(/^report-d+.csv$/); // regular expression
+I.seeFileDownloaded('export.pdf', 10); // wait up to 10 seconds
+```
+
+#### Parameters
+
+*   `fileName` **([string][7] | [RegExp][10])?** file name, glob pattern or regular expression. Matches any file when omitted.
+*   `sec` **[number][17]?** seconds to wait for the download to start. Defaults to `waitForTimeout`. 
+
+Returns **void** automatically synchronized promise through #recorderDownloaded files are saved into `output/downloads` and removed before the next test.
 
 ### seeInClipboard
 

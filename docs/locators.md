@@ -350,4 +350,26 @@ After registration, `{ data: 'user-login' }` is a valid strict locator:
 I.click({ data: 'user-login' })
 ```
 
+## When an element is not found
+
+When a locator matches nothing, the error explains what the page has instead. This works the same in every web helper: Playwright, Puppeteer, WebDriver and CDPBrowser.
+
+```
+Field "#emial" was not found by text|CSS|XPath
+  similar on page: #email, #email-label, #email-wrapper
+```
+
+```
+Clickable element "#first-link" was not found by text|CSS|XPath
+  found 1 match inside iframe [name="content"], use within({ frame: '[name="content"]' })
+```
+
+Hints can point to:
+
+- a match inside a same-origin iframe, with the `within({ frame })` call to use
+- matching elements elsewhere on the page or hidden ones, when the current `within()` context or visibility filtering excluded them
+- up to 3 similar ids, classes or element names
+
+The first line of the error stays the same. Hints come from one script run in the page right after the lookup fails, and take a few milliseconds.
+
 Further reading: Mozilla's [Writing reliable locators for Selenium and WebDriver tests](https://blog.mozilla.org/webqa/2013/09/26/writing-reliable-locators-for-selenium-and-webdriver-tests/) and the [Locator Advicer](https://davertmik.github.io/locator/).

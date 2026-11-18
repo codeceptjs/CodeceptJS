@@ -450,15 +450,15 @@ expectType<Promise<string>>(wd.grabTitle())
 
 expectType<Promise<string>>(wd.grabSource())
 
-wd.grabBrowserLogs() // $ExpectType Promise<object[]> | undefined
+expectType<Promise<any[]>>(wd.grabBrowserLogs())
 
 expectType<Promise<string>>(wd.grabCurrentUrl())
 
 expectError(wd.grabNumberOfVisibleElements())
 expectType<Promise<number>>(wd.grabNumberOfVisibleElements('div'))
 
-wd.grabCookie() // $ExpectType any
-wd.grabCookie('name') // $ExpectType any
+expectType<Promise<any>>(wd.grabCookie())
+expectType<Promise<any>>(wd.grabCookie('name'))
 
 expectType<Promise<string>>(wd.grabPopupText())
 

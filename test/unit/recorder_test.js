@@ -260,6 +260,79 @@ describe('Recorder', () => {
       )
       return recorder.promise()
     })
+
+    it('should await beforeRetry with attempt numbers instead of sleeping', async function () {
+      this.timeout(5000)
+
+      recorder.retries = []
+      const calls = []
+      let counter = 0
+      recorder.retry({ retries: 3, minTimeout: 1000, maxTimeout: 1000, factor: 1, beforeRetry: async number => calls.push(number) })
+      const start = Date.now()
+      recorder.add(
+        () => {
+          counter++
+          if (counter < 4) throw new Error('not yet')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      await recorder.promise()
+
+      expect(counter).to.equal(4)
+      expect(calls).to.deep.equal([2, 3, 4])
+      expect(Date.now() - start).to.be.lessThan(500)
+    })
+
+    it('should run the task after beforeRetry resolves', async function () {
+      this.timeout(5000)
+
+      recorder.retries = []
+      const order = []
+      let counter = 0
+      recorder.retry({
+        retries: 1,
+        beforeRetry: () => new Promise(resolve => setTimeout(() => {
+          order.push('beforeRetry')
+          resolve()
+        }, 50)),
+      })
+      recorder.add(
+        () => {
+          counter++
+          order.push(`attempt ${counter}`)
+          if (counter < 2) throw new Error('not yet')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      await recorder.promise()
+
+      expect(order).to.deep.equal(['attempt 1', 'beforeRetry', 'attempt 2'])
+    })
+
+    it('should keep sleeping between retries without beforeRetry', async function () {
+      this.timeout(5000)
+
+      recorder.retries = []
+      const attempts = []
+      recorder.retry({ retries: 1, minTimeout: 300, maxTimeout: 1000, factor: 1 })
+      recorder.add(
+        () => {
+          attempts.push(Date.now())
+          if (attempts.length < 2) throw new Error('not yet')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      await recorder.promise()
+
+      expect(attempts).to.have.length(2)
+      expect(attempts[1] - attempts[0]).to.be.greaterThan(250)
+    })
   })
 
   describe('#error paths (characterization)', () => {
