@@ -725,6 +725,22 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
+### dontSeeFileDownloaded
+
+Checks that no file matching the name was downloaded during the current test.
+
+```js
+I.click('Cancel');
+I.dontSeeFileDownloaded(); // no files at all
+I.dontSeeFileDownloaded('*.pdf');
+```
+
+#### Parameters
+
+*   `fileName` **([string][7] | [RegExp][10])?** file name, glob pattern or regular expression. Matches any file when omitted.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### dontSeeInCurrentUrl
 
 Checks that current url does not contain a provided fragment.
@@ -1171,6 +1187,16 @@ Return the disabled status of given element.
 *   `options` **[object][8]?** See [https://playwright.dev/docs/api/class-locator#locator-is-disabled][27] 
 
 Returns **[Promise][20]<[boolean][26]>**&#x20;
+
+### grabDownloadedFileNames
+
+Returns names of files downloaded during the current test.
+
+```js
+const files = await I.grabDownloadedFileNames();
+```
+
+Returns **[Promise][20]<[Array][9]<[string][7]>>** file names
 
 ### grabElementBoundingRect
 
@@ -2057,6 +2083,27 @@ I.seeElementInDOM('#modal');
 *   `locator` **([string][7] | [object][8])** element located by CSS|XPath|strict locator.
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
+
+### seeFileDownloaded
+
+Checks that a file download has started during the current test.
+Waits for the download to begin, so it can be called right after the action that triggers it.
+
+```js
+I.click('Export');
+I.seeFileDownloaded(); // any file
+I.seeFileDownloaded('export.pdf'); // exact file name
+I.seeFileDownloaded('*.pdf'); // glob
+I.seeFileDownloaded(/^report-d+.csv$/); // regular expression
+I.seeFileDownloaded('export.pdf', 10); // wait up to 10 seconds
+```
+
+#### Parameters
+
+*   `fileName` **([string][7] | [RegExp][10])?** file name, glob pattern or regular expression. Matches any file when omitted.
+*   `sec` **[number][17]?** seconds to wait for the download to start. Defaults to `waitForTimeout`. 
+
+Returns **void** automatically synchronized promise through #recorderDownloaded files are saved into `output/downloads` and removed before the next test.
 
 ### seeInClipboard
 

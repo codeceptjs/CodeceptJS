@@ -504,6 +504,22 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
+### dontSeeFileDownloaded
+
+Checks that no file matching the name was downloaded during the current test.
+
+```js
+I.click('Cancel');
+I.dontSeeFileDownloaded(); // no files at all
+I.dontSeeFileDownloaded('*.pdf');
+```
+
+#### Parameters
+
+*   `fileName` **([string][5] | [RegExp][14])?** file name, glob pattern or regular expression. Matches any file when omitted.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### dontSeeInField
 
 Checks that value of input field or textarea doesn't equal to given value
@@ -640,7 +656,7 @@ I.see('#add-to-cart-bnt');
 #### Parameters
 
 *   `locator` **([string][5] | [object][6])** field located by label|name|CSS|XPath|strict locator.
-*   `options` **any?** Playwright only: [Additional options][14] for available options object as 2nd argument.
+*   `options` **any?** Playwright only: [Additional options][15] for available options object as 2nd argument.
 
 Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise through #recorder
 
@@ -708,7 +724,7 @@ Get list of all available contexts
 
     let contexts = await I.grabAllContexts();
 
-Returns **[Promise][9]<[Array][15]<[string][5]>>** Appium: support Android and iOS
+Returns **[Promise][9]<[Array][16]<[string][5]>>** Appium: support Android and iOS
 
 ### grabAllWindowHandles
 
@@ -719,7 +735,7 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
-Returns **[Promise][9]<[Array][15]<[string][5]>>**&#x20;
+Returns **[Promise][9]<[Array][16]<[string][5]>>**&#x20;
 
 ### grabAttributeFrom
 
@@ -755,7 +771,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 *   `attr` **[string][5]** attribute name.
 
-Returns **[Promise][9]<[Array][15]<[string][5]>>** attribute value
+Returns **[Promise][9]<[Array][16]<[string][5]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -767,7 +783,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][9]<[Array][15]<[object][6]>> | [undefined][16])** all browser logs
+Returns **([Promise][9]<[Array][16]<[object][6]>> | [undefined][17])** all browser logs
 
 ### grabContext
 
@@ -799,6 +815,16 @@ const window = await I.grabCurrentWindowHandle();
 ```
 
 Returns **[Promise][9]<[string][5]>**&#x20;
+
+### grabDownloadedFileNames
+
+Returns names of files downloaded during the current test.
+
+```js
+const files = await I.grabDownloadedFileNames();
+```
+
+Returns **[Promise][9]<[Array][16]<[string][5]>>** file names
 
 ### grabElementBoundingRect
 
@@ -874,7 +900,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 *   `locator` &#x20;
 *   `element` **([string][5] | [object][6])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]<[Array][15]<[string][5]>>** HTML code for an element
+Returns **[Promise][9]<[Array][16]<[string][5]>>** HTML code for an element
 
 ### grabNetworkConnection
 
@@ -986,7 +1012,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]<[Array][15]<[string][5]>>** attribute value
+Returns **[Promise][9]<[Array][16]<[string][5]>>** attribute value
 
 ### grabValueFrom
 
@@ -1017,7 +1043,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 *   `locator` **([string][5] | [object][6])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][9]<[Array][15]<[string][5]>>** attribute value
+Returns **[Promise][9]<[Array][16]<[string][5]>>** attribute value
 
 ### grabWebElement
 
@@ -1047,7 +1073,7 @@ const webElements = await I.grabWebElements('#button');
 
 *   `locator` **([string][5] | [object][6])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][9]<[Array][15]<CodeceptJS.WebElement>>** WebElements of being used Web helper
+Returns **[Promise][9]<[Array][16]<CodeceptJS.WebElement>>** WebElements of being used Web helper
 
 ### hideDeviceKeyboard
 
@@ -1080,7 +1106,7 @@ The Touch Action API provides the basis of all gestures that can be
 automated in Appium. At its core is the ability to chain together ad hoc
 individual actions, which will then be applied to an element in the
 application on the device.
-[See complete documentation][17]
+[See complete documentation][18]
 
 ```js
 I.makeTouchAction("~buttonStartWebviewCD", 'tap');
@@ -1208,7 +1234,7 @@ Perform a rotation gesture centered on the specified element.
 I.rotate(120, 120)
 ```
 
-See corresponding [webdriverio reference][18].
+See corresponding [webdriverio reference][19].
 
 #### Parameters
 
@@ -1348,7 +1374,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 *   `locator` **([string][5] | [object][6])** located by CSS|XPath|strict locator.
-*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][10])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][19].
+*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][10])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][20].
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorderSupported only for web testing
 
@@ -1573,6 +1599,28 @@ I.seeElementInDOM('#modal');
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
+### seeFileDownloaded
+
+Checks that a file download has started during the current test.
+Waits for the download to begin, so it can be called right after the action that triggers it.
+
+```js
+I.click('Export');
+I.seeFileDownloaded(); // any file
+I.seeFileDownloaded('export.pdf'); // exact file name
+I.seeFileDownloaded('*.pdf'); // glob
+I.seeFileDownloaded(/^report-d+.csv$/); // regular expression
+I.seeFileDownloaded('export.pdf', 10); // wait up to 10 seconds
+```
+
+#### Parameters
+
+*   `fileName` **([string][5] | [RegExp][14])?** file name, glob pattern or regular expression. Matches any file when omitted.
+*   `sec` **[number][12]?** seconds to wait for the download to start. Defaults to `waitForTimeout`. 
+
+Returns **void** automatically synchronized promise through #recorderRequires `bidiProtocol` enabled and a browser that emits BiDi `browsingContext.downloadWillBegin` (verified on Chrome 140; Chrome 131 does not emit it).
+Files are saved by the browser into its own download directory.
+
 ### seeInClipboard
 
 Checks that the system clipboard contains the given text.
@@ -1719,7 +1767,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 *   `select` **([string][5] | [object][6])** field located by label|name|CSS|XPath|strict locator.
-*   `option` **([string][5] | [Array][15]<any>)** visible text or value of option.
+*   `option` **([string][5] | [Array][16]<any>)** visible text or value of option.
 *   `context` **([string][5]? | [object][6])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise through #recorderSupported only for web testing
@@ -1727,7 +1775,7 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 ### sendDeviceKeyEvent
 
 Send a key event to the device.
-List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][20]
+List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][21]
 
 ```js
 I.sendDeviceKeyEvent(3);
@@ -1743,7 +1791,7 @@ Returns **[Promise][9]<void>** Appium: support only Android
 
 Set immediate value in app.
 
-See corresponding [webdriverio reference][21].
+See corresponding [webdriverio reference][22].
 
 #### Parameters
 
@@ -1768,7 +1816,7 @@ I.setNetworkConnection(4) // airplane mode off, wifi off, data on
 I.setNetworkConnection(6) // airplane mode off, wifi on, data on
 ```
 
-See corresponding [webdriverio reference][22].
+See corresponding [webdriverio reference][23].
 
 Appium: support only Android
 
@@ -1856,7 +1904,7 @@ let locator = "#io.selendroid.testapp:id/LinearLayout1";
 I.swipe(locator, 800, 1200, 1000);
 ```
 
-[See complete reference][23]
+[See complete reference][24]
 
 #### Parameters
 
@@ -2091,13 +2139,13 @@ Appium: support Android and iOS
 
 #### Parameters
 
-*   `actions` **[Array][15]** Array of touch actions
+*   `actions` **[Array][16]** Array of touch actions
 
 ### type
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-*Note:* Should be used when [`fillField`][24] is not an option.
+*Note:* Should be used when [`fillField`][25] is not an option.
 
 ```js
 // passing in a string
@@ -2117,7 +2165,7 @@ I.type(secret('123456'));
 
 *   `keys` &#x20;
 *   `delay` **[number][12]?** (optional) delay in ms between key presses 
-*   `key` **([string][5] | [Array][15]<[string][5]>)** or array of keys to type.
+*   `key` **([string][5] | [Array][16]<[string][5]>)** or array of keys to type.
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
@@ -2144,12 +2192,12 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 
 ### useWebDriverTo
 
-Use [webdriverio][25] API inside a test.
+Use [webdriverio][26] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][25]) } object from WebDriver API is available.
+{ [`browser`][26]) } object from WebDriver API is available.
 
 ```js
 I.useWebDriverTo('open multiple windows', async ({ browser }) {
@@ -2161,7 +2209,7 @@ I.useWebDriverTo('open multiple windows', async ({ browser }) {
 #### Parameters
 
 *   `description` **[string][5]** used to show in logs.
-*   `fn` **[function][26]** async functuion that executed with WebDriver helper as argument
+*   `fn` **[function][27]** async functuion that executed with WebDriver helper as argument
 
 ### waitForElement
 
@@ -2341,28 +2389,30 @@ Smart Wait to locate an element
 
 [13]: https://webdriver.io/docs/timeouts.html
 
-[14]: https://playwright.dev/docs/api/class-locator#locator-focus
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[15]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[17]: http://webdriver.io/api/mobile/touchAction.html
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[18]: http://webdriver.io/api/mobile/rotate.html
+[18]: http://webdriver.io/api/mobile/touchAction.html
 
-[19]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[19]: http://webdriver.io/api/mobile/rotate.html
 
-[20]: https://developer.android.com/reference/android/view/KeyEvent.html
+[20]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[21]: http://webdriver.io/api/mobile/setImmediateValue.html
+[21]: https://developer.android.com/reference/android/view/KeyEvent.html
 
-[22]: https://webdriver.io/docs/api/chromium/#setnetworkconnection
+[22]: http://webdriver.io/api/mobile/setImmediateValue.html
 
-[23]: http://webdriver.io/api/mobile/swipe.html
+[23]: https://webdriver.io/docs/api/chromium/#setnetworkconnection
 
-[24]: #fillfield
+[24]: http://webdriver.io/api/mobile/swipe.html
 
-[25]: https://webdriver.io/docs/api.html
+[25]: #fillfield
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[26]: https://webdriver.io/docs/api.html
+
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
