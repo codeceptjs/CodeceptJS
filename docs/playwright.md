@@ -464,6 +464,25 @@ I.stopMockingRoute('**/*.{png,jpg,jpeg}'
 
 To master request intercepting [use `route` object](https://playwright.dev/docs/api/class-route) object passed into mock request handler.
 
+## Instant Animations
+
+Enable `instantAnimations` to cut the time a test spends waiting for animations:
+
+```js
+helpers: {
+  Playwright: {
+    url: 'http://localhost:3000',
+    instantAnimations: true,
+  },
+}
+```
+
+`instantAnimations` runs CSS transitions, CSS animations and Web Animations 1000 times faster on every page and tab. Playwright waits for an element to stop moving before clicking it, so a click on an element inside a 3 second transition takes about 100ms instead of 3 seconds. `transitionend` and `animationend` events still fire.
+
+* Chromium only. Firefox and WebKit ignore the option.
+* `setTimeout`, `setInterval` and JavaScript-driven animations (like jQuery `animate`) keep their speed.
+* Not applied inside cross-origin iframes that Chromium runs in a separate process (site isolation).
+
 ## Video <Badge text="Since 3.1" type="warning"/>
 
 Playwright may record videos for failed tests. This can be enabled in a config with `video: true` option:
