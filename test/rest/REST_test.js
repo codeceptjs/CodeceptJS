@@ -129,10 +129,24 @@ describe('REST', () => {
       response.data.name.should.eql('Vasya')
     })
 
-    it('should set timeout for the request', async () => {
-      await I.setRequestTimeout(2000)
-      const response = await I.sendGetRequest('/posts')
-      response.config.timeout.should.eql(2000)
+    it('should throw error when request times out', async () => {
+      await I.setRequestTimeout(100)
+      try {
+        await I.sendGetRequest('/timeout?ms=500')
+        throw new Error('Should have timed out')
+      } catch (e) {
+        e.message.should.contain('Request timed out after 100ms')
+      }
+    })
+
+    it('should throw error when status code is 4xx or 5xx and rejectOnErrorCode is true', async () => {
+      I.options.rejectOnErrorCode = true
+      try {
+        await I.sendGetRequest('/not-existing-endpoint')
+        throw new Error('Should have thrown error')
+      } catch (e) {
+        e.message.should.contain('Response error. Status code: 404')
+      }
     })
   })
 
@@ -338,7 +352,7 @@ describe('REST - Form upload', () => {
       }
     })
 
-    it('should not show error when file size doesnt exceedes the permit', async () => {
+    it('should not show error when file size doesnt exceeds the permit', async () => {
       const form = new FormData()
       form.append('file', fs.createReadStream(testFile))
 
