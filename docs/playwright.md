@@ -259,8 +259,8 @@ Scenario('I try to open this site as anonymous user', ({ I }) => {
 
 ## Electron Testing
 
-CodeceptJS allows you to make use of [Playwright's Electron flavor](https://github.com/microsoft/playwright/blob/master/packages/playwright-electron/README.md).
-To use this functionality, all you need to do is set the browser to `electron` in the CodeceptJS configuration file and, according to the [Playwright BrowserType API](https://playwright.dev/docs/api/class-browsertype/#browsertypelaunchoptions), set the launch options to point to your Electron application.
+CodeceptJS allows you to make use of [Playwright's Electron flavor](https://playwright.dev/docs/api/class-electron).
+To use this functionality, all you need to do is set the browser to `electron` in the CodeceptJS configuration file and, according to the [Playwright BrowserType API](https://playwright.dev/docs/api/class-browsertype#browser-type-launch), set the launch options to point to your Electron application.
 
 `main.js` - main Electron application file
 
@@ -337,7 +337,7 @@ Playwright can emulate browsers of mobile devices. Instead of paying for expensi
 
 Device emulation can be enabled in CodeceptJS globally in a config or per session.
 
-Playwright contains a [list of predefined devices](https://github.com/microsoft/playwright/blob/master/src/server/deviceDescriptors.js) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
+Playwright contains a [list of predefined devices](https://playwright.dev/docs/emulation#devices) to emulate, for instance this is how you can enable iPhone 6 emulation for all tests:
 
 ```js
 import { devices } from 'playwright';
@@ -558,7 +558,7 @@ The recording is attached to the test as `test.artifacts.screencast`; the `.srt`
 
 ## Trace 
 
-If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer/) can be recorded.
+If video is not enough to descover why a test failed a [trace](https://playwright.dev/docs/trace-viewer) can be recorded.
 
 ![](https://user-images.githubusercontent.com/220264/128403246-7e1b9b33-9ce2-42d5-b87b-b8749d5d7a78.png)
 
