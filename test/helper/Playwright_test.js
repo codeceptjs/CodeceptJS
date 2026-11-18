@@ -317,6 +317,25 @@ describe('Playwright', function () {
     })
   })
 
+  describe('#waitForVisible #waitForInvisible - role locators', () => {
+    it('should wait for a native button by its role and accessible name', async () => {
+      await I.amOnPage('/form/example1')
+      await I.waitForVisible({ role: 'button', text: 'Login', exact: true }, 2)
+      await I.waitForElement({ role: 'button', text: 'Log' }, 2)
+      await I.waitForInvisible({ role: 'button', text: 'Logout' }, 2)
+    })
+
+    it('should not match a partial name when exact is set', async () => {
+      await I.amOnPage('/form/example1')
+      try {
+        await I.waitForVisible({ role: 'button', text: 'Log', exact: true }, 1)
+        throw new Error('should have thrown')
+      } catch (err) {
+        expect(err.message).to.include('still not visible')
+      }
+    })
+  })
+
   describe('#waitForVisible #waitForInvisible - within block', () => {
     it('should wait for visible element', async () => {
       await I.amOnPage('/iframe')
