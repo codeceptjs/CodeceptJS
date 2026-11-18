@@ -1012,7 +1012,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][5]?** cookie name. 
 
-Returns **any** attribute valueReturns cookie in JSON format. If name not passed returns all cookies for this domain.
+Returns **[Promise][12]<any>** cookie object, or all cookies if no name is givenReturns cookie in JSON format. If name not passed returns all cookies for this domain.
 
 ### grabCssPropertyFrom
 
@@ -1082,7 +1082,7 @@ let data = await I.grabDataFromPerformanceTiming();
 }
 ```
 
-Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
+Returns **[Promise][12]<{responseEnd: [number][11], domInteractive: [number][11], domContentLoadedEventEnd: [number][11], loadEventEnd: [number][11]}>** performance timing data in ms
 
 ### grabDownloadedFileNames
 
@@ -1224,11 +1224,13 @@ Grab the recording network traffics
 ```js
 const traffics = await I.grabRecordedNetworkTraffics();
 expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].request.method).to.equal('GET');
+expect(traffics[0].request.headers['user-agent']).to.contain('Mozilla');
 expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][18]** recorded network traffics
+Returns **[Promise][12]<[Array][18]<any>>** recorded network traffics
 
 ### grabSource
 

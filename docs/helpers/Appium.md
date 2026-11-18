@@ -783,7 +783,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][9]<[Array][16]<[object][6]>> | [undefined][17])** all browser logs
+Returns **[Promise][9]<[Array][16]<any>>** all browser logs
 
 ### grabContext
 
@@ -1106,7 +1106,7 @@ The Touch Action API provides the basis of all gestures that can be
 automated in Appium. At its core is the ability to chain together ad hoc
 individual actions, which will then be applied to an element in the
 application on the device.
-[See complete documentation][18]
+[See complete documentation][17]
 
 ```js
 I.makeTouchAction("~buttonStartWebviewCD", 'tap');
@@ -1234,7 +1234,7 @@ Perform a rotation gesture centered on the specified element.
 I.rotate(120, 120)
 ```
 
-See corresponding [webdriverio reference][19].
+See corresponding [webdriverio reference][18].
 
 #### Parameters
 
@@ -1374,7 +1374,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 *   `locator` **([string][5] | [object][6])** located by CSS|XPath|strict locator.
-*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][10])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][20].
+*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][10])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][19].
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorderSupported only for web testing
 
@@ -1775,7 +1775,7 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 ### sendDeviceKeyEvent
 
 Send a key event to the device.
-List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][21]
+List of keys: [https://developer.android.com/reference/android/view/KeyEvent.html][20]
 
 ```js
 I.sendDeviceKeyEvent(3);
@@ -1791,7 +1791,7 @@ Returns **[Promise][9]<void>** Appium: support only Android
 
 Set immediate value in app.
 
-See corresponding [webdriverio reference][22].
+See corresponding [webdriverio reference][21].
 
 #### Parameters
 
@@ -1816,7 +1816,7 @@ I.setNetworkConnection(4) // airplane mode off, wifi off, data on
 I.setNetworkConnection(6) // airplane mode off, wifi on, data on
 ```
 
-See corresponding [webdriverio reference][23].
+See corresponding [webdriverio reference][22].
 
 Appium: support only Android
 
@@ -1904,7 +1904,7 @@ let locator = "#io.selendroid.testapp:id/LinearLayout1";
 I.swipe(locator, 800, 1200, 1000);
 ```
 
-[See complete reference][24]
+[See complete reference][23]
 
 #### Parameters
 
@@ -2145,7 +2145,7 @@ Appium: support Android and iOS
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-*Note:* Should be used when [`fillField`][25] is not an option.
+*Note:* Should be used when [`fillField`][24] is not an option.
 
 ```js
 // passing in a string
@@ -2192,12 +2192,12 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 
 ### useWebDriverTo
 
-Use [webdriverio][26] API inside a test.
+Use [webdriverio][25] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][26]) } object from WebDriver API is available.
+{ [`browser`][25]) } object from WebDriver API is available.
 
 ```js
 I.useWebDriverTo('open multiple windows', async ({ browser }) {
@@ -2209,7 +2209,7 @@ I.useWebDriverTo('open multiple windows', async ({ browser }) {
 #### Parameters
 
 *   `description` **[string][5]** used to show in logs.
-*   `fn` **[function][27]** async functuion that executed with WebDriver helper as argument
+*   `fn` **[function][26]** async functuion that executed with WebDriver helper as argument
 
 ### waitForElement
 
@@ -2395,24 +2395,22 @@ Smart Wait to locate an element
 
 [16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[17]: http://webdriver.io/api/mobile/touchAction.html
 
-[18]: http://webdriver.io/api/mobile/touchAction.html
+[18]: http://webdriver.io/api/mobile/rotate.html
 
-[19]: http://webdriver.io/api/mobile/rotate.html
+[19]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[20]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[20]: https://developer.android.com/reference/android/view/KeyEvent.html
 
-[21]: https://developer.android.com/reference/android/view/KeyEvent.html
+[21]: http://webdriver.io/api/mobile/setImmediateValue.html
 
-[22]: http://webdriver.io/api/mobile/setImmediateValue.html
+[22]: https://webdriver.io/docs/api/chromium/#setnetworkconnection
 
-[23]: https://webdriver.io/docs/api/chromium/#setnetworkconnection
+[23]: http://webdriver.io/api/mobile/swipe.html
 
-[24]: http://webdriver.io/api/mobile/swipe.html
+[24]: #fillfield
 
-[25]: #fillfield
+[25]: https://webdriver.io/docs/api.html
 
-[26]: https://webdriver.io/docs/api.html
-
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

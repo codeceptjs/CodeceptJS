@@ -31,26 +31,26 @@ Type: [object][19]
 
 *   `url` **[string][18]** base url of website to be tested.
 *   `browser` **[string][18]** Browser in which to perform testing.
-*   `bidiProtocol` **[boolean][35]?** WebDriver Bidi Protocol. Default: false. More info: [https://webdriver.io/docs/api/webdriverBidi/][39]
+*   `bidiProtocol` **[boolean][34]?** WebDriver Bidi Protocol. Default: false. More info: [https://webdriver.io/docs/api/webdriverBidi/][38]
 *   `basicAuth` **[string][18]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 *   `host` **[string][18]?** WebDriver host to connect.
 *   `port` **[number][23]?** WebDriver port to connect.
 *   `protocol` **[string][18]?** protocol for WebDriver server.
 *   `path` **[string][18]?** path to WebDriver server.
-*   `restart` **[boolean][35]?** restart browser between tests.
-*   `smartWait` **([boolean][35] | [number][23])?** **enables [SmartWait][40]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
-*   `disableScreenshots` **[boolean][35]?** don't save screenshots on failure.
-*   `fullPageScreenshots` **[boolean][35]?** (optional - make full page screenshots on failure.
-*   `uniqueScreenshotNames` **[boolean][35]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
-*   `keepBrowserState` **[boolean][35]?** keep browser state between tests when `restart` is set to false.
-*   `keepCookies` **[boolean][35]?** keep cookies between tests when `restart` set to false.
+*   `restart` **[boolean][34]?** restart browser between tests.
+*   `smartWait` **([boolean][34] | [number][23])?** **enables [SmartWait][39]**; wait for additional milliseconds for element to appear. Enable for 5 secs: "smartWait": 5000.
+*   `disableScreenshots` **[boolean][34]?** don't save screenshots on failure.
+*   `fullPageScreenshots` **[boolean][34]?** (optional - make full page screenshots on failure.
+*   `uniqueScreenshotNames` **[boolean][34]?** option to prevent screenshot override if you have scenarios with the same name in different suites.
+*   `keepBrowserState` **[boolean][34]?** keep browser state between tests when `restart` is set to false.
+*   `keepCookies` **[boolean][34]?** keep cookies between tests when `restart` set to false.
 *   `windowSize` **[string][18]?** default window size. Set to `maximize` or a dimension in the format `640x480`.
 *   `waitForTimeout` **[number][23]?** sets default wait time in *ms* for all `wait*` functions.
 *   `desiredCapabilities` **[object][19]?** Selenium's [desired capabilities][7].
-*   `manualStart` **[boolean][35]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
-*   `timeouts` **[object][19]?** [WebDriver timeouts][41] defined as hash.
-*   `highlightElement` **[boolean][35]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
-*   `logLevel` **[string][18]?** level of logging verbosity. Default: silent. Options: trace | debug | info | warn | error | silent. More info: [https://webdriver.io/docs/configuration/#loglevel][42]
+*   `manualStart` **[boolean][34]?** do not start browser before a test, start it manually inside a helper with `this.helpers["WebDriver"]._startBrowser()`.
+*   `timeouts` **[object][19]?** [WebDriver timeouts][40] defined as hash.
+*   `highlightElement` **[boolean][34]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+*   `logLevel` **[string][18]?** level of logging verbosity. Default: silent. Options: trace | debug | info | warn | error | silent. More info: [https://webdriver.io/docs/configuration/#loglevel][41]
 
 ## wrapError
 
@@ -1156,7 +1156,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][24]<[Array][31]<[object][19]>> | [undefined][32])** all browser logs
+Returns **[Promise][24]<[Array][31]<any>>** all browser logs
 
 ### grabCookie
 
@@ -1173,7 +1173,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][18]?** cookie name. 
 
-Returns **any** attribute value
+Returns **[Promise][24]<any>** cookie object, or all cookies if no name is given
 
 ### grabCssPropertyFrom
 
@@ -1524,7 +1524,7 @@ Returns **CodeceptJS.StepPromise** automatically synchronized promise through #r
 
 Presses a key in the browser (on a focused element).
 
-*Hint:* For populating text field or textarea, it is recommended to use [`fillField`][33].
+*Hint:* For populating text field or textarea, it is recommended to use [`fillField`][32].
 
 ```js
 I.pressKey('Backspace');
@@ -1591,7 +1591,7 @@ Returns **CodeceptJS.StepPromise** automatically synchronized promise through #r
 
 Presses a key in the browser and leaves it in a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][34]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][33]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1609,7 +1609,7 @@ Returns **CodeceptJS.StepPromise** automatically synchronized promise through #r
 
 Releases a key in the browser which was previously set to a down state.
 
-To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][34]).
+To make combinations with modifier key and user operation (e.g. `'Control'` + [`click`][33]).
 
 ```js
 I.pressKeyDown('Control');
@@ -1723,7 +1723,7 @@ I.saveScreenshot('debug.png', true) //resizes to available scrollHeight and scro
 #### Parameters
 
 *   `fileName` **[string][18]** file name to save.
-*   `fullPage` **[boolean][35]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
+*   `fullPage` **[boolean][34]** (optional, `false` by default) flag to enable fullscreen screenshot mode. 
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
@@ -1740,7 +1740,7 @@ I.scrollIntoView('#submit', { behavior: "smooth", block: "center", inline: "cent
 #### Parameters
 
 *   `locator` **([string][18] | [object][19])** located by CSS|XPath|strict locator.
-*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][35])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][36].
+*   `scrollIntoViewOptions` **(ScrollIntoViewOptions | [boolean][34])** either alignToTop=true|false or scrollIntoViewOptions. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView][35].
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
@@ -2161,7 +2161,7 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 
 ### setCookie
 
-Uses Selenium's JSON [cookie format][37].
+Uses Selenium's JSON [cookie format][36].
 Sets cookie(s).
 
 Can be a single cookie object or an array of cookies:
@@ -2251,7 +2251,7 @@ await I.switchToWindow( window );
 
 Types out the given text into an active field.
 To slow down typing use a second parameter, to set interval between key presses.
-*Note:* Should be used when [`fillField`][33] is not an option.
+*Note:* Should be used when [`fillField`][32] is not an option.
 
 ```js
 // passing in a string
@@ -2298,12 +2298,12 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 
 ### useWebDriverTo
 
-Use [webdriverio][38] API inside a test.
+Use [webdriverio][37] API inside a test.
 
 First argument is a description of an action.
 Second argument is async function that gets this helper as parameter.
 
-{ [`browser`][38]) } object from WebDriver API is available.
+{ [`browser`][37]) } object from WebDriver API is available.
 
 ```js
 I.useWebDriverTo('open multiple windows', async ({ browser }) {
@@ -2732,24 +2732,22 @@ Smart Wait to locate an element
 
 [31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[32]: #fillfield
 
-[33]: #fillfield
+[33]: #click
 
-[34]: #click
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[35]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 
-[36]: https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+[36]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
 
-[37]: https://code.google.com/p/selenium/wiki/JsonWireProtocol#Cookie_JSON_Object
+[37]: https://webdriver.io/docs/api.html
 
-[38]: https://webdriver.io/docs/api.html
+[38]: https://webdriver.io/docs/api/webdriverBidi/
 
-[39]: https://webdriver.io/docs/api/webdriverBidi/
+[39]: http://codecept.io/acceptance/#smartwait
 
-[40]: http://codecept.io/acceptance/#smartwait
+[40]: http://webdriver.io/docs/timeouts.html
 
-[41]: http://webdriver.io/docs/timeouts.html
-
-[42]: https://webdriver.io/docs/configuration/#loglevel
+[41]: https://webdriver.io/docs/configuration/#loglevel

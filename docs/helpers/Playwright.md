@@ -1106,7 +1106,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][7]?** cookie name. 
 
-Returns **any** attribute value
+Returns **[Promise][20]<any>** cookie object, or all cookies if no name is given
 
 ### grabCssPropertyFrom
 
@@ -1176,7 +1176,7 @@ let data = await I.grabDataFromPerformanceTiming();
 }
 ```
 
-Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
+Returns **[Promise][20]<{responseEnd: [number][17], domInteractive: [number][17], domContentLoadedEventEnd: [number][17], loadEventEnd: [number][17]}>** performance timing data in ms
 
 ### grabDisabledElementStatus
 
@@ -1384,11 +1384,13 @@ Grab the recording network traffics
 ```js
 const traffics = await I.grabRecordedNetworkTraffics();
 expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].request.method).to.equal('GET');
+expect(traffics[0].request.headers['user-agent']).to.contain('Mozilla');
 expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][9]** recorded network traffics
+Returns **[Promise][20]<[Array][9]<any>>** recorded network traffics
 
 ### grabSource
 
@@ -1422,6 +1424,8 @@ Avoid committing it to source control and prefer storing it in a protected secre
         // include IndexedDB when using Firebase Auth, etc.
         const stateWithIDB = await I.grabStorageState({ indexedDB: true });
         ```
+
+Returns **[Promise][20]<[object][8]>** storage state
 
 ### grabTextFrom
 
@@ -1481,7 +1485,7 @@ I.grabTrafficUrl(/session.*start/);
 
 *   `urlMatch` **([string][7] | [RegExp][10])** Expected URL of request in network traffic. Can be a string or a regular expression.
 
-Returns **[Promise][20]<any>**&#x20;
+Returns **[Promise][20]<[string][7]>**&#x20;
 
 ### grabValueFrom
 
