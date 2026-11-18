@@ -225,6 +225,7 @@ describe('CodeceptJS Workers Runner', function () {
       expect(stdout).toContain(customName)
       if (fs.existsSync(outputDir)) {
         createdOutput = true
+        fs.rmSync(outputDir, { recursive: true, force: true })
       }
       expect(createdOutput).toEqual(true)
       expect(err).toEqual(null)
@@ -571,6 +572,21 @@ describe('CodeceptJS Workers Runner', function () {
         expect(names.some(n => n.includes('BeforeSuite'))).toEqual(true)
         expect(names.some(n => n.includes('AfterSuite'))).toEqual(true)
       })().then(done, done)
+    })
+  })
+
+  it('should create output directory of each run in multi-run', function (done) {
+    if (!semver.satisfies(process.version, '>=11.7.0')) this.skip('not for node version')
+    const outputDir = path.join(codecept_dir, 'output', 'workers-multiple-output')
+    fs.rmSync(outputDir, { recursive: true, force: true })
+
+    exec(`${codecept_run_glob('codecept.workers-multiple-output.conf.js')} 2 dev`, (err, stdout) => {
+      expect(stdout).toMatch(/OK\s+\|\s+8 passed/)
+      expect(err).toEqual(null)
+      for (const run of ['dev_chromium1', 'dev_webkit1']) {
+        expect(fs.existsSync(path.join(outputDir, run))).toEqual(true)
+      }
+      done()
     })
   })
 
