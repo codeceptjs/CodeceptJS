@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Runs the bench_test.js scenario suite N times against each engine's config, timing the whole
+// Runs the bench_test.js scenario suite N times against each engine's config (BENCH_ENGINES=Moli,Kitesurf to pick), timing the whole
 // `codecept run` process wall-clock (helper/browser startup included, since that is part of
 // real-world speed) and reporting the median per engine plus the ratio between them.
 import { spawnSync } from 'child_process'
@@ -13,10 +13,15 @@ const codeceptBin = join(repoRoot, 'bin', 'codecept.js')
 const RUNS = Number(process.env.BENCH_RUNS || 3)
 const SITE_URL = process.env.SITE_URL || 'http://127.0.0.1:8000'
 
-const engines = [
-  { name: 'Obscura', config: 'codecept.obscura.bench.js' },
+const allEngines = [
   { name: 'Playwright', config: 'codecept.playwright.bench.js' },
+  { name: 'Obscura', config: 'codecept.obscura.bench.js' },
+  { name: 'Lightpanda', config: 'codecept.lightpanda.bench.js' },
+  { name: 'Moli', config: 'codecept.moli.bench.js' },
+  { name: 'Kitesurf', config: 'codecept.kitesurf.bench.js' },
 ]
+const selected = (process.env.BENCH_ENGINES || '').split(',').filter(Boolean)
+const engines = allEngines.filter(e => !selected.length || selected.includes(e.name))
 
 function median(nums) {
   const sorted = [...nums].sort((a, b) => a - b)
@@ -65,24 +70,21 @@ async function main() {
       console.log(`  run ${i}: ${elapsed}ms`)
       times.push(elapsed)
     }
-    if (!times.length) {
-      console.error(`  no successful runs for ${engine.name}`)
-      process.exit(1)
-    }
-    results[engine.name] = { times, median: median(times) }
+    if (times.length) results[engine.name] = { times, median: median(times) }
   }
 
   console.log('\n=== Summary ===')
+  const baseline = results.Playwright && results.Playwright.median
   for (const engine of engines) {
     const r = results[engine.name]
-    console.log(`${engine.name}: median ${r.median}ms  (runs: ${r.times.join(', ')}ms)`)
+    if (!r) {
+      console.log(`${engine.name}: no successful runs`)
+      continue
+    }
+    let line = `${engine.name}: median ${r.median}ms  (runs: ${r.times.join(', ')}ms)`
+    if (baseline) line += `  ${(baseline / r.median).toFixed(2)}x vs Playwright`
+    console.log(line)
   }
-
-  const playwrightMedian = results.Playwright.median
-  const obscuraMedian = results.Obscura.median
-  const ratio = playwrightMedian / obscuraMedian
-  console.log(`\nRatio (Playwright median / Obscura median): ${ratio.toFixed(2)}x`)
-  console.log(ratio >= 2 ? 'GATE MET: Obscura is at least 2x faster than Playwright.' : 'GATE NOT MET: Obscura is less than 2x faster than Playwright.')
 }
 
 main()

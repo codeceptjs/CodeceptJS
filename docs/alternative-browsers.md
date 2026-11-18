@@ -9,7 +9,7 @@ title: Alternative Browser Engines
 The `Obscura`, `Lightpanda`, `Moli` and `Kitesurf` helpers are experimental. Keep a Playwright or WebDriver job for compatibility-critical tests.
 :::
 
-Playwright drives full Chromium, Firefox and WebKit: the most accurate way to test what users see, at the cost of a heavy browser per worker. Alternative engines trade part of that accuracy for speed, a small footprint, or cloud scale. They are a good fit for functional tests (text appears, form submits, redirect happens, cookie is set) and a poor one for anything visual.
+Playwright drives full Chromium, Firefox and WebKit: the most accurate way to test what users see, at the cost of a heavy browser per worker. Alternative engines trade part of that accuracy for speed, a small footprint, or cloud scale. Obscura, Lightpanda, Moli and Kitesurf are open source and run on your machine; Kitesurf also runs in Cloudflare's cloud. They are a good fit for functional tests (text appears, form submits, redirect happens, cookie is set) and a poor one for anything visual.
 
 Your tests do not change. `I.amOnPage`, `I.click`, `I.fillField`, `I.see`, `I.seeElement` and the rest of the `I.*` web API work the same; you only swap the helper in the config. All engines below speak Chrome DevTools Protocol, so there is no `npx playwright install` step.
 
@@ -200,14 +200,53 @@ All options: [Moli helper reference](/helpers/moli).
 
 ## Kitesurf
 
-[Kitesurf](https://blog.cloudflare.com/kitesurf/) is Cloudflare's browser running on Cloudflare Workers, with a real layout and rendering pipeline. Sessions start in about a second and nothing runs on your machine, so the number of parallel browsers is limited only by how far your suite splits.
+[Kitesurf](https://github.com/cloudflare/kitesurf) is Cloudflare's open-source browser engine built on Cloudflare Workers, with real layout and rendering: screenshots and the `screencast` plugin work. Run it locally for development and CI, or use it in the cloud through Cloudflare Browser Run, where sessions start in about a second and the number of parallel browsers is limited only by how far your suite splits.
+
+Page JavaScript runs in Boa, a JavaScript engine written in Rust, not V8, so some libraries fail to start.
+
+Kitesurf starts a fresh isolated worker for every page, so each navigation costs about 200 ms on a local engine. A suite runs about 4 times slower than on Lightpanda, Moli or Obscura, close to Playwright. In exchange, it is the only engine here with real layout and screenshots.
 
 Limitations:
 
-- Cloud only, currently a free beta.
-- The browser cannot reach `localhost`: test a deployed environment or expose your app with a tunnel such as `cloudflared tunnel --url http://localhost:3000`.
+- `attachFile` does not upload files.
+- Clipboard actions do not work: pages are never a secure context, even on `localhost`.
+- A click can hit the wrong element when a child overflows a container with `overflow: hidden`.
+- Rich text editors Quill, Trix and ACE do not work; TinyMCE does not start on a pre-filled element.
+- A Base UI radio group does not uncheck the previously selected radio.
+- Links compute `cursor: auto` instead of `pointer`.
 
-### Setup
+### Local engine
+
+Build and start the engine following the [Kitesurf README](https://github.com/cloudflare/kitesurf#run-locally). It listens on `http://127.0.0.1:8787`. Point the helper at it with `endpoint`; the helper connects but never starts or stops the engine:
+
+```js
+// codecept.conf.js
+export const config = {
+  helpers: {
+    Kitesurf: {
+      url: 'http://localhost:3000',
+      endpoint: 'http://127.0.0.1:8787',
+    },
+  },
+}
+```
+
+The same `endpoint` works for an engine you deploy to your own Cloudflare account. If it sits behind Cloudflare Access, pass the service token in `headers`:
+
+```js
+Kitesurf: {
+  url: 'https://staging.myapp.com',
+  endpoint: 'https://kitesurf.example.com',
+  headers: {
+    'CF-Access-Client-Id': process.env.CF_ACCESS_CLIENT_ID,
+    'CF-Access-Client-Secret': process.env.CF_ACCESS_CLIENT_SECRET,
+  },
+}
+```
+
+### Cloudflare Browser Run
+
+Without `endpoint`, the helper opens a Kitesurf session in Cloudflare Browser Run, currently a free beta. A cloud browser cannot reach `localhost`: test a deployed environment or expose your app with a tunnel such as `cloudflared tunnel --url http://localhost:3000`.
 
 Enable [Cloudflare Browser Run](https://developers.cloudflare.com/browser-run/) and create an API token with the **Browser Rendering → Edit** permission. Export the credentials:
 
@@ -228,8 +267,6 @@ export const config = {
   },
 }
 ```
-
-### Usage
 
 Every worker opens its own cloud session:
 
