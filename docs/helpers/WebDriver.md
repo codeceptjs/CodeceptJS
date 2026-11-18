@@ -32,6 +32,7 @@ Type: [object][19]
 *   `url` **[string][18]** base url of website to be tested.
 *   `browser` **[string][18]** Browser in which to perform testing.
 *   `bidiProtocol` **[boolean][34]?** WebDriver Bidi Protocol. Default: false. More info: [https://webdriver.io/docs/api/webdriverBidi/][38]
+*   `blockResources` **[Array][30]<[string][18]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
 *   `basicAuth` **[string][18]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 *   `host` **[string][18]?** WebDriver host to connect.
 *   `port` **[number][23]?** WebDriver port to connect.

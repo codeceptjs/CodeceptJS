@@ -59,6 +59,7 @@ Type: [object][6]
 *   `browser` **[string][5]?** can be changed to `firefox` when using [puppeteer-firefox][2].
 *   `chrome` **[object][6]?** pass additional [Puppeteer run options][31].
 *   `highlightElement` **[boolean][25]?** highlight the interacting elements. Default: false. Note: only activate under verbose mode (--verbose).
+*   `blockResources` **[Array][18]<[string][5]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
 
 ## findElement
 
