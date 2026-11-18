@@ -32,6 +32,7 @@ Type: [object][19]
 *   `url` **[string][18]** base url of website to be tested.
 *   `browser` **[string][18]** Browser in which to perform testing.
 *   `bidiProtocol` **[boolean][34]?** WebDriver Bidi Protocol. Default: false. More info: [https://webdriver.io/docs/api/webdriverBidi/][38]
+*   `blockResources` **[Array][31]<[string][18]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
 *   `basicAuth` **[string][18]?** (optional) the basic authentication to pass to base url. Example: {username: 'username', password: 'password'}
 *   `host` **[string][18]?** WebDriver host to connect.
 *   `port` **[number][23]?** WebDriver port to connect.
@@ -799,6 +800,22 @@ I.dontSeeElementInDOM('.nav'); // checks that element is not on page visible or 
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
+### dontSeeFileDownloaded
+
+Checks that no file matching the name was downloaded during the current test.
+
+```js
+I.click('Cancel');
+I.dontSeeFileDownloaded(); // no files at all
+I.dontSeeFileDownloaded('*.pdf');
+```
+
+#### Parameters
+
+*   `fileName` **([string][18] | [RegExp][26])?** file name, glob pattern or regular expression. Matches any file when omitted.
+
+Returns **void** automatically synchronized promise through #recorder
+
 ### dontSeeInCurrentUrl
 
 Checks that current url does not contain a provided fragment.
@@ -917,7 +934,7 @@ Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise thr
 Executes async script on page.
 Provided function should execute a passed callback (as first argument) to signal it is finished.
 
-Example: In Vue.js to make components completely rendered we are waiting for [nextTick][26].
+Example: In Vue.js to make components completely rendered we are waiting for [nextTick][27].
 
 ```js
 I.executeAsyncScript(function(done) {
@@ -938,13 +955,13 @@ let val = await I.executeAsyncScript(function(url, done) {
 #### Parameters
 
 *   `args` **...any** to be passed to function.
-*   `fn` **([string][18] | [function][27])** function to be executed in browser context.
+*   `fn` **([string][18] | [function][28])** function to be executed in browser context.
 
 Returns **[Promise][24]<any>** script return value
 
 ### executeScript
 
-Wraps [execute][28] command.
+Wraps [execute][29] command.
 
 Executes sync script on a page.
 Pass arguments to function as additional parameters.
@@ -973,7 +990,7 @@ let date = await I.executeScript(function(el) {
 #### Parameters
 
 *   `args` **...any** to be passed to function.
-*   `fn` **([string][18] | [function][27])** function to be executed in browser context.
+*   `fn` **([string][18] | [function][28])** function to be executed in browser context.
 
 Returns **[Promise][24]<any>** script return value
 
@@ -1024,7 +1041,7 @@ I.see('#add-to-cart-bnt');
 #### Parameters
 
 *   `locator` **([string][18] | [object][19])** field located by label|name|CSS|XPath|strict locator.
-*   `options` **any?** Playwright only: [Additional options][29] for available options object as 2nd argument.
+*   `options` **any?** Playwright only: [Additional options][30] for available options object as 2nd argument.
 
 Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise through #recorder
 
@@ -1095,7 +1112,7 @@ Useful for referencing a specific handle when calling `I.switchToWindow(handle)`
 const windows = await I.grabAllWindowHandles();
 ```
 
-Returns **[Promise][24]<[Array][30]<[string][18]>>**&#x20;
+Returns **[Promise][24]<[Array][31]<[string][18]>>**&#x20;
 
 ### grabAttributeFrom
 
@@ -1128,7 +1145,7 @@ let hints = await I.grabAttributeFromAll('.tooltip', 'title');
 *   `locator` **([string][18] | [object][19])** element located by CSS|XPath|strict locator.
 *   `attr` **[string][18]** attribute name.
 
-Returns **[Promise][24]<[Array][30]<[string][18]>>** attribute value
+Returns **[Promise][24]<[Array][31]<[string][18]>>** attribute value
 
 ### grabBrowserLogs
 
@@ -1140,7 +1157,7 @@ let logs = await I.grabBrowserLogs();
 console.log(JSON.stringify(logs))
 ```
 
-Returns **([Promise][24]<[Array][30]<[object][19]>> | [undefined][31])** all browser logs
+Returns **[Promise][24]<[Array][31]<any>>** all browser logs
 
 ### grabCookie
 
@@ -1157,7 +1174,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][18]?** cookie name. 
 
-Returns **any** attribute value
+Returns **[Promise][24]<any>** cookie object, or all cookies if no name is given
 
 ### grabCssPropertyFrom
 
@@ -1190,7 +1207,7 @@ const values = await I.grabCssPropertyFromAll('h3', 'font-weight');
 *   `locator` **([string][18] | [object][19])** element located by CSS|XPath|strict locator.
 *   `cssProperty` **[string][18]** CSS property name.
 
-Returns **[Promise][24]<[Array][30]<[string][18]>>** CSS value
+Returns **[Promise][24]<[Array][31]<[string][18]>>** CSS value
 
 ### grabCurrentUrl
 
@@ -1214,6 +1231,16 @@ const window = await I.grabCurrentWindowHandle();
 ```
 
 Returns **[Promise][24]<[string][18]>**&#x20;
+
+### grabDownloadedFileNames
+
+Returns names of files downloaded during the current test.
+
+```js
+const files = await I.grabDownloadedFileNames();
+```
+
+Returns **[Promise][24]<[Array][31]<[string][18]>>** file names
 
 ### grabElementBoundingRect
 
@@ -1289,7 +1316,7 @@ let postHTMLs = await I.grabHTMLFromAll('.post');
 *   `locator` &#x20;
 *   `element` **([string][18] | [object][19])** located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]<[Array][30]<[string][18]>>** HTML code for an element
+Returns **[Promise][24]<[Array][31]<[string][18]>>** HTML code for an element
 
 ### grabNumberOfOpenTabs
 
@@ -1379,7 +1406,7 @@ let pins = await I.grabTextFromAll('#pin li');
 
 *   `locator` **([string][18] | [object][19])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]<[Array][30]<[string][18]>>** attribute value
+Returns **[Promise][24]<[Array][31]<[string][18]>>** attribute value
 
 ### grabTitle
 
@@ -1421,7 +1448,7 @@ let inputs = await I.grabValueFromAll('//form/input');
 
 *   `locator` **([string][18] | [object][19])** field located by label|name|CSS|XPath|strict locator.
 
-Returns **[Promise][24]<[Array][30]<[string][18]>>** attribute value
+Returns **[Promise][24]<[Array][31]<[string][18]>>** attribute value
 
 ### grabWebElement
 
@@ -1451,7 +1478,7 @@ const webElements = await I.grabWebElements('#button');
 
 *   `locator` **([string][18] | [object][19])** element located by CSS|XPath|strict locator.
 
-Returns **[Promise][24]<[Array][30]<CodeceptJS.WebElement>>** WebElements of being used Web helper
+Returns **[Promise][24]<[Array][31]<CodeceptJS.WebElement>>** WebElements of being used Web helper
 
 ### moveCursorTo
 
@@ -1557,7 +1584,7 @@ Some of the supported key names are:
 
 #### Parameters
 
-*   `key` **([string][18] | [Array][30]<[string][18]>)** key or array of keys to press.
+*   `key` **([string][18] | [Array][31]<[string][18]>)** key or array of keys to press.
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
@@ -1924,6 +1951,28 @@ I.seeElementInDOM('#modal');
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
+### seeFileDownloaded
+
+Checks that a file download has started during the current test.
+Waits for the download to begin, so it can be called right after the action that triggers it.
+
+```js
+I.click('Export');
+I.seeFileDownloaded(); // any file
+I.seeFileDownloaded('export.pdf'); // exact file name
+I.seeFileDownloaded('*.pdf'); // glob
+I.seeFileDownloaded(/^report-d+.csv$/); // regular expression
+I.seeFileDownloaded('export.pdf', 10); // wait up to 10 seconds
+```
+
+#### Parameters
+
+*   `fileName` **([string][18] | [RegExp][26])?** file name, glob pattern or regular expression. Matches any file when omitted.
+*   `sec` **[number][23]?** seconds to wait for the download to start. Defaults to `waitForTimeout`. 
+
+Returns **void** automatically synchronized promise through #recorderRequires `bidiProtocol` enabled and a browser that emits BiDi `browsingContext.downloadWillBegin` (verified on Chrome 140; Chrome 131 does not emit it).
+Files are saved by the browser into its own download directory.
+
 ### seeInClipboard
 
 Checks that the system clipboard contains the given text.
@@ -2106,7 +2155,7 @@ I.selectOption('Which OS do you use?', ['Android', 'iOS']);
 #### Parameters
 
 *   `select` **([string][18] | [object][19])** field located by label|name|CSS|XPath|strict locator.
-*   `option` **([string][18] | [Array][30]<any>)** visible text or value of option.
+*   `option` **([string][18] | [Array][31]<any>)** visible text or value of option.
 *   `context` **([string][18]? | [object][19])** (optional, `null` by default) element located by CSS | XPath | strict locator. 
 
 Returns **CodeceptJS.ElementStepPromise** automatically synchronized promise through #recorder
@@ -2130,7 +2179,7 @@ I.setCookie([
 
 #### Parameters
 
-*   `cookie` **(Cookie | [Array][30]<Cookie>)** a cookie object or array of cookie objects.
+*   `cookie` **(Cookie | [Array][31]<Cookie>)** a cookie object or array of cookie objects.
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
@@ -2223,7 +2272,7 @@ I.type(secret('123456'));
 
 *   `keys` &#x20;
 *   `delay` **[number][23]?** (optional) delay in ms between key presses 
-*   `key` **([string][18] | [Array][30]<[string][18]>)** or array of keys to type.
+*   `key` **([string][18] | [Array][31]<[string][18]>)** or array of keys to type.
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
 
@@ -2267,7 +2316,7 @@ I.useWebDriverTo('open multiple windows', async ({ browser }) {
 #### Parameters
 
 *   `description` **[string][18]** used to show in logs.
-*   `fn` **[function][27]** async functuion that executed with WebDriver helper as argument
+*   `fn` **[function][28]** async functuion that executed with WebDriver helper as argument
 
 ### wait
 
@@ -2387,8 +2436,8 @@ I.waitForFunction((count) => window.requests == count, [3], 5) // pass args and 
 
 #### Parameters
 
-*   `fn` **([string][18] | [function][27])** to be executed in browser context.
-*   `argsOrSec` **([Array][30]<any> | [number][23])?** (optional, `1` by default) arguments for function or seconds. 
+*   `fn` **([string][18] | [function][28])** to be executed in browser context.
+*   `argsOrSec` **([Array][31]<any> | [number][23])?** (optional, `1` by default) arguments for function or seconds. 
 *   `sec` **[number][23]?** (optional, `1` by default) time in seconds to wait 
 
 Returns **CodeceptJS.StepPromise** automatically synchronized promise through #recorder
@@ -2672,17 +2721,17 @@ Smart Wait to locate an element
 
 [25]: https://webdriver.io/docs/timeouts.html
 
-[26]: https://vuejs.org/v2/api/#Vue-nextTick
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RegExp
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[27]: https://vuejs.org/v2/api/#Vue-nextTick
 
-[28]: http://webdriver.io/api/protocol/execute.html
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[29]: https://playwright.dev/docs/api/class-locator#locator-focus
+[29]: http://webdriver.io/api/protocol/execute.html
 
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[30]: https://playwright.dev/docs/api/class-locator#locator-focus
 
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [32]: #fillfield
 

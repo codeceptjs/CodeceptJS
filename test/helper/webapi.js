@@ -18,6 +18,7 @@ import { secret } from '../../lib/secret.js'
 
 import Locator from '../../lib/locator.js'
 import customLocators from '../../lib/plugin/customLocator.js'
+import Container from '../../lib/container.js'
 
 let originalLocators
 let I
@@ -44,6 +45,60 @@ export function tests() {
     if (fileExists(dataFile)) fs.unlinkSync(dataFile)
   })
 
+  describe('#seeFileDownloaded', () => {
+    before(() => {
+      global.output_dir = path.join(global.codecept_dir, 'output')
+    })
+
+    beforeEach(function () {
+      if (!isHelper('Playwright') && !isHelper('Puppeteer') && !isHelper('WebDriver')) this.skip()
+    })
+
+    it('should detect a started download by name, glob and regexp', async () => {
+      await I.amOnPage('/form/download')
+      await I.dontSeeFileDownloaded()
+      await I.click('Download file')
+      await I.seeFileDownloaded()
+      await I.seeFileDownloaded('avatar.jpg')
+      await I.seeFileDownloaded('*.jpg')
+      await I.seeFileDownloaded(/^avatar\.\w+$/)
+      await I.dontSeeFileDownloaded('*.pdf')
+      expect(await I.grabDownloadedFileNames()).to.eql(['avatar.jpg'])
+    })
+
+    it('should fail when no matching file was downloaded', async () => {
+      await I.amOnPage('/form/download')
+      await I.click('Download file')
+      await I.seeFileDownloaded('avatar.jpg')
+      let error
+      try {
+        await I.seeFileDownloaded('report.pdf', 0.5)
+      } catch (err) {
+        error = err
+      }
+      expect(error.message).to.include('report.pdf')
+      expect(error.message).to.include('avatar.jpg')
+      error = null
+      try {
+        await I.dontSeeFileDownloaded('*.jpg')
+      } catch (err) {
+        error = err
+      }
+      expect(error.message).to.include('avatar.jpg')
+    })
+
+    it('should save the downloaded file into output/downloads', async function () {
+      if (isHelper('WebDriver')) this.skip()
+      await I.amOnPage('/form/download')
+      await I.click('Download file')
+      await I.seeFileDownloaded('avatar.jpg')
+      const file = path.join(global.output_dir, 'downloads', 'avatar.jpg')
+      const deadline = Date.now() + 5000
+      while (!fileExists(file) && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 100))
+      assert.ok(fileExists(file), `${file} was not saved`)
+    })
+  })
+
   describe('#saveElementScreenshot', () => {
     beforeEach(function () {
       if (I.capabilities?.screenshot === false) this.skip() // no rendering engine, screenshots are unsupported
@@ -56,6 +111,38 @@ export function tests() {
       const sec = new Date().getUTCMilliseconds()
       await I.saveElementScreenshot("input[name='name']", `element_screenshot_${sec}.png`)
       assert.ok(fileExists(path.join(global.output_dir, `element_screenshot_${sec}.png`)), null, 'file does not exists')
+    })
+  })
+
+  describe('#_waitForChange', () => {
+    it('should resolve soon after the DOM changes', async () => {
+      await I.amOnPage('/')
+      await I.executeScript(() => {
+        setTimeout(() => document.body.appendChild(document.createElement('div')), 30)
+      })
+      const start = Date.now()
+      await I._waitForChange(2000)
+      expect(Date.now() - start).to.be.lessThan(500)
+    })
+
+    it('should resolve after the timeout on an idle page', async () => {
+      await I.amOnPage('/')
+      const start = Date.now()
+      await I._waitForChange(300)
+      const elapsed = Date.now() - start
+      expect(elapsed).to.be.at.least(290)
+      expect(elapsed).to.be.lessThan(1000)
+    })
+
+    it('should resolve on navigation', async function () {
+      if (isHelper('Obscura')) this.skip() // on Obscura a script-triggered navigation neither rejects the pending Runtime.evaluate nor mutates the observed document, so the wait runs to its timeout (verified on CI: 3000ms of 3000ms)
+      await I.amOnPage('/')
+      await I.executeScript(() => {
+        setTimeout(() => (window.location.href = '/info'), 30)
+      })
+      const start = Date.now()
+      await I._waitForChange(3000)
+      expect(Date.now() - start).to.be.lessThan(1500)
     })
   })
 
@@ -1922,6 +2009,50 @@ export function tests() {
     })
   })
 
+  describe('#explainNotFound', () => {
+    const failureOf = async action => {
+      try {
+        await action()
+      } catch (err) {
+        if (err.explain) await err.explain()
+        return err.message
+      }
+      throw new Error('step was expected to fail')
+    }
+
+    beforeEach(() => Container.append({ helpers: { explainNotFound: I } }))
+
+    afterEach(() => I._withinEnd())
+
+    it('should point to a match inside an iframe', async function () {
+      if (isHelper('Lightpanda')) this.skip() // iframe.contentDocument is null on Lightpanda (verified on /iframe: 1 iframe, no document), so frames can't be scanned
+      await I.amOnPage('/iframe')
+      const message = await failureOf(() => I.click('#first-link'))
+      expect(message.split('\n')[0]).to.include('"#first-link" was not found')
+      expect(message).to.include(`found 1 match inside iframe [name="content"], use within({ frame: '[name="content"]' })`)
+    })
+
+    it('should suggest similar ids', async () => {
+      await I.amOnPage('/login')
+      const message = await failureOf(() => I.fillField('#emial', 'davert'))
+      expect(message.split('\n')[0]).to.include('"#emial" was not found')
+      expect(message).to.match(/similar on page: #email(,|$)/m)
+    })
+
+    it('should suggest similar element names', async () => {
+      await I.amOnPage('/info')
+      const message = await failureOf(() => I.click('Sign im'))
+      expect(message).to.include('link "Sign in!"')
+    })
+
+    it('should report matches outside of within', async () => {
+      await I.amOnPage('/login')
+      await I._withinBegin('#email-wrapper')
+      const message = await failureOf(() => I.fillField('#password', '123456'))
+      expect(message).to.include('1 element matches on the page: check the within() context')
+    })
+  })
+
   describe('within tests', () => {
     afterEach(() => I._withinEnd())
 
@@ -2475,6 +2606,30 @@ export function tests() {
       expect(traffics.length).to.equal(0)
     })
 
+    it('should grab the request of recorded traffics', async () => {
+      await I.startRecordingTraffic()
+      await I.amOnPage('https://codecept.io/')
+      const traffics = await I.grabRecordedNetworkTraffics()
+      expect(traffics.length).to.be.above(0)
+      expect(traffics[0].request.method).to.equal('GET')
+      const headerNames = Object.keys(traffics[0].request.headers).map(name => name.toLowerCase())
+      expect(headerNames).to.include('user-agent')
+    })
+
+    it('should grab JSON post data of recorded traffics as an object', async () => {
+      await I.amOnPage('https://codecept.io/')
+      await I.startRecordingTraffic()
+      await I.executeScript(() =>
+        fetch('https://codecept.io/traffic-post-data', { method: 'POST', body: JSON.stringify({ name: 'codecept' }) })
+          .then(res => res.status)
+          .catch(() => 0),
+      )
+      await I.seeTraffic({ name: 'post', url: 'https://codecept.io/traffic-post-data' })
+      const traffics = await I.grabRecordedNetworkTraffics()
+      const post = traffics.find(t => t.request.method === 'POST')
+      expect(post.request.postData).to.deep.equal({ name: 'codecept' })
+    })
+
     it('should stop the network recording', async () => {
       await I.startRecordingTraffic()
       await I.amOnPage('https://codecept.io/')
@@ -2619,6 +2774,61 @@ export function tests() {
       I.waitForText('Work for You!')
       const afterWsMessages = I.grabWebSocketMessages()
       expect(wsMessages.length).to.equal(afterWsMessages.length)
+    })
+  })
+
+  describe('#blockResources', () => {
+    const logo = /codeceptjs\.png$/
+
+    beforeEach(async () => {
+      await I._after()
+      I.options.blockResources = ['image']
+      await I._before()
+    })
+
+    afterEach(async () => {
+      await I._after()
+      I.options.blockResources = []
+      await I._before()
+    })
+
+    it('should not load blocked resource types', async function () {
+      if (isHelper('Lightpanda')) this.skip() // Lightpanda never fetches images (verified: naturalWidth is 0 with no blocking), so blocking can't be observed
+      if (isHelper('WebDriver') && parseInt(I.browser.capabilities.browserVersion, 10) < 140) this.skip() // Chrome's BiDi before 140 sends no request.destination, so the resource type can't be matched (verified: Chrome 130 and 131 omit it, Chrome 140 sends 'image')
+      if (isHelper('Obscura')) this.skip() // Obscura emits Fetch.requestPaused for every request, ignoring resourceType patterns, and Fetch.failRequest doesn't stop the load (verified: the image still loads with naturalWidth 333)
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 5)
+      const width = await I.executeScript(() => document.getElementById('logo').naturalWidth)
+      assert.equal(width, 0)
+    })
+
+    it('should serve a blocked resource mocked with mockRoute', async function () {
+      if (!I.mockRoute) this.skip()
+      const png = path.join(__dirname, '/../data/app/codeceptjs.png')
+      if (isHelper('Puppeteer')) {
+        await I.mockRoute(logo, request => request.respond({ status: 200, contentType: 'image/png', body: fs.readFileSync(png) }))
+      } else {
+        await I.mockRoute(logo, route => route.fulfill({ path: png, contentType: 'image/png' }))
+      }
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 5)
+      const width = await I.executeScript(() => document.getElementById('logo').naturalWidth)
+      assert.isAbove(width, 0)
+      await I.stopMockingRoute(logo)
+    })
+
+    it('should keep blocking after stopMockingRoute', async function () {
+      if (!I.mockRoute) this.skip()
+      await I.mockRoute(logo, route => route.continue())
+      await I.stopMockingRoute(logo)
+      await I.amOnPage('/image')
+      await I.waitForFunction(() => document.getElementById('logo').complete, 5)
+      const width = await I.executeScript(() => document.getElementById('logo').naturalWidth)
+      assert.equal(width, 0)
+    })
+
+    it('should reject resource types that are not allowed', () => {
+      expect(() => new I.constructor({ url: siteUrl, browser: I.options.browser, blockResources: ['script'] })).to.throw('Accepted values: image, media, font, stylesheet')
     })
   })
 

@@ -105,6 +105,72 @@ describe('retryFailedStep', () => {
     })
   })
 
+  describe('wakeOnChange', () => {
+    it('does not set beforeRetry by default', () => {
+      retryFailedStep({})
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      expect(cfg.wakeOnChange).to.equal(false)
+      expect(cfg.beforeRetry).to.be.undefined
+    })
+
+    it('waits for change on helper with backoff delays', async () => {
+      const calls = []
+      await container.clear({
+        mock: { _session: () => {} },
+        watcher: { _waitForChange: async ms => calls.push(ms) },
+      })
+      retryFailedStep({ wakeOnChange: true })
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      await cfg.beforeRetry(2)
+      await cfg.beforeRetry(3)
+      await cfg.beforeRetry(4)
+      expect(calls).to.deep.equal([150, 225, 337.5])
+    })
+
+    it('caps delay by maxTimeout', async () => {
+      const calls = []
+      await container.clear({ watcher: { _waitForChange: async ms => calls.push(ms) } })
+      retryFailedStep({ wakeOnChange: true, minTimeout: 100, factor: 10, maxTimeout: 500 })
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      await cfg.beforeRetry(2)
+      await cfg.beforeRetry(4)
+      expect(calls).to.deep.equal([100, 500])
+    })
+
+    it('sleeps for the delay when no helper can wait for change', async () => {
+      await container.clear({ mock: { _session: () => {} } })
+      retryFailedStep({ wakeOnChange: true, minTimeout: 100 })
+      const cfg = recorder.retries.find(r => r.deferToScenarioRetries !== undefined)
+      const start = Date.now()
+      await cfg.beforeRetry(2)
+      expect(Date.now() - start).to.be.within(90, 300)
+    })
+
+    it('retries failed step through recorder without backoff sleep', async () => {
+      const calls = []
+      await container.clear({ watcher: { _waitForChange: async ms => calls.push(ms) } })
+      retryFailedStep({ retries: 2, minTimeout: 1000, wakeOnChange: true })
+      event.dispatcher.emit(event.test.before, createTest('test'))
+      event.dispatcher.emit(event.step.started, { title: 'click' })
+
+      let counter = 0
+      const start = Date.now()
+      recorder.add(
+        () => {
+          counter++
+          if (counter < 3) throw new Error('not yet')
+        },
+        undefined,
+        undefined,
+        true,
+      )
+      await recorder.promise()
+      expect(counter).to.equal(3)
+      expect(calls).to.deep.equal([1000, 1500])
+      expect(Date.now() - start).to.be.lessThan(500)
+    })
+  })
+
   it('should not retry steps with wait*', async () => {
     retryFailedStep({ retries: 2, minTimeout: 1 })
     event.dispatcher.emit(event.test.before, createTest('test'))

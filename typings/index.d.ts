@@ -527,13 +527,13 @@ declare namespace CodeceptJS {
 
   type StringOrSecret = string | CodeceptJS.Secret
 
-  interface StepPromise extends Promise<any> {
+  interface StepPromise<T = any> extends Promise<T> {
     stepConfig(config: CodeceptJS.StepConfig): this
     timeout(seconds: number): this
     retry(retry: number | object): this
   }
 
-  interface ElementStepPromise extends StepPromise {
+  interface ElementStepPromise<T = any> extends StepPromise<T> {
     first(): this
     last(): this
     at(position: number): this

@@ -108,6 +108,7 @@ Type: [object][6]
 *   `pollInterval` **[number][10]?** interval between checks while waiting, in milliseconds.
 *   `getPageTimeout` **[number][10]?** maximum time to wait for a page to load, in seconds.
 *   `waitForNavigation` **[string][5]?** when a navigation is considered finished: `load`, `domcontentloaded`, or `networkidle`.
+*   `blockResources` **[Array][17]<[string][5]>?** resource types to skip loading: `'image'`, `'media'`, `'font'`, `'stylesheet'`. Matching requests are aborted before they reach the network.
 
 
 
@@ -774,7 +775,7 @@ assert(cookie.value, '123456');
 
 *   `name` **[string][5]?** cookie name. 
 
-Returns **any** attribute value
+Returns **[Promise][12]<any>** cookie object, or all cookies if no name is given
 
 ### grabCookies
 
@@ -928,11 +929,13 @@ Grab the recording network traffics
 ```js
 const traffics = await I.grabRecordedNetworkTraffics();
 expect(traffics[0].url).to.equal('https://reqres.in/api/comments/1');
+expect(traffics[0].request.method).to.equal('GET');
+expect(traffics[0].request.headers['user-agent']).to.contain('Mozilla');
 expect(traffics[0].response.status).to.equal(200);
 expect(traffics[0].response.body).to.contain({ name: 'this was mocked' });
 ```
 
-Returns **[Array][17]** recorded network traffics
+Returns **[Promise][14]<[Array][17]<any>>** recorded network traffics
 
 ### grabSource
 

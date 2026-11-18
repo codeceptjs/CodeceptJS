@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 25
 
     steps:
-      - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.25
+      - run: docker run -d --net=host --shm-size=2g selenium/standalone-chrome:4.35
       - name: Wait for Selenium to be ready
         run: |
           for i in {1..60}; do
