@@ -49,6 +49,15 @@ describe('ElementNotFound error', () => {
     expect(err.stack).to.include('similar on page: #email')
   })
 
+  it('should not run the page script in a native app context', async () => {
+    let called = false
+    Container.append({ helpers: { Appium: { isWeb: false, executeScript: async () => { called = true } } } })
+    const err = new ElementNotFound('Sign in')
+    await err.explain()
+    expect(called).to.equal(false)
+    expect(err.message).to.equal('Element "Sign in" was not found by text|CSS|XPath')
+  })
+
   it('should keep the message when the page script fails', async () => {
     Container.append({ helpers: { web: { executeScript: async () => { throw new Error('page closed') } } } })
     const err = new ElementNotFound('Sign in')
