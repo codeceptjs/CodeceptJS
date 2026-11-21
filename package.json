@@ -96,7 +96,7 @@
     "@codeceptjs/configure": "^4.0.0-beta.4",
     "@codeceptjs/helper": "2.0.4",
     "@cucumber/cucumber-expressions": "18",
-    "@cucumber/gherkin": "38.0.0",
+    "@cucumber/gherkin": "43.0.0",
     "@cucumber/messages": "32.3.1",
     "@jridgewell/trace-mapping": "^0.3.31",
     "@modelcontextprotocol/sdk": "^1.26.0",
