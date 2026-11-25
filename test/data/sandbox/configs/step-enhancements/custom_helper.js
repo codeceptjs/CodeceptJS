@@ -10,6 +10,10 @@ class MyHelper {
     }
   }
 
+  failWithDetails() {
+    throw new Error('element (#checkout) still not visible\nwaited 1 sec')
+  }
+
   wait(timeout) {
     return new Promise(resolve => setTimeout(resolve, timeout))
   }

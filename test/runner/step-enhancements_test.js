@@ -38,6 +38,25 @@ describe('CodeceptJS step-enhancements', function () {
     })
   })
 
+  it('should print a step custom message above the error', done => {
+    exec(config_run_config('codecept.conf.js', 'step custom message'), (err, stdout) => {
+      debug(stdout)
+      expect(err).toBeTruthy()
+      expect(stdout).toContain('Checkout never loaded\n    element (#checkout) still not visible\n    waited 1 sec')
+      done()
+    })
+  })
+
+  it('should print a step custom message above an assertion error', done => {
+    exec(config_run_config('codecept.conf.js', 'assertion custom message'), (err, stdout) => {
+      debug(stdout)
+      expect(err).toBeTruthy()
+      expect(stdout).toContain('Order never reached paid\n  expected file')
+      expect(stdout.match(/Order never reached paid/g)).toHaveLength(1)
+      done()
+    })
+  })
+
   it('should apply step retry', done => {
     exec(config_run_config('codecept.conf.js', 'retry', true), (err, stdout) => {
       debug(stdout)

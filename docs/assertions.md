@@ -64,6 +64,24 @@ I.seeInTitle('Admin — Orders')
 I.seeCookie('session')
 ```
 
+### Custom Failure Messages
+
+A failing step reports the helper's own error, which says what was missing but not why the test needed it. Pass `step.customMessage()` as the step's last argument, or chain `.customMessage()` on the step, and the message is printed above the original error:
+
+```js
+import step from 'codeceptjs/steps'
+
+I.waitForVisible('#checkout', 10, step.customMessage('Checkout never loaded after login'))
+I.see('Paid', '.order-status').customMessage('Order never reached the paid state')
+```
+
+```
+Checkout never loaded after login
+  element (#checkout) still not visible after 10 sec
+```
+
+It works for any step, not only assertions, and combines with other step options: `step.timeout(5).customMessage('...')`.
+
 ## Custom Assertions
 
 ### When You Need Custom Assertions

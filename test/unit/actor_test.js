@@ -8,6 +8,7 @@ import recorder from '../../lib/recorder.js'
 import step from '../../lib/steps.js'
 import event from '../../lib/event.js'
 import store from '../../lib/store.js'
+import AssertionFailedError from '../../lib/assert/error.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -29,6 +30,12 @@ describe('Actor', () => {
           },
           _hidden: () => 'hidden',
           slow: () => new Promise(resolve => setTimeout(resolve, 200)),
+          dieWithDetails: () => {
+            throw new Error('ups\nwaited 5 sec')
+          },
+          failAssertion: () => {
+            throw new AssertionFailedError({ subject: 'web page', customMessage: '' }, '{{customMessage}}expected {{subject}} to include "Paid"')
+          },
           failAfter: (i = 1) => {
             counter++
             if (counter <= i) throw new Error('ups')
@@ -326,6 +333,71 @@ describe('Actor', () => {
       await promise
       expect(() => promise.timeout(1)).toThrow('already')
       expect(() => promise.retry(1)).toThrow('already')
+    })
+  })
+
+  describe('step custom message', () => {
+    beforeEach(() => {
+      recorder.retries = []
+      recorder.start()
+    })
+
+    afterEach(() => {
+      recorder.stop()
+      recorder.reset()
+      recorder.retries = []
+    })
+
+    const failure = promise => promise.then(
+      () => {
+        throw new Error('step passed')
+      },
+      err => err,
+    )
+
+    it('should put a custom message above the error of a failed step', async () => {
+      const err = await failure(I.die(step.customMessage('Login never finished')))
+      expect(err.message).toEqual('Login never finished\n  ups')
+    })
+
+    it('should accept a chained custom message', async () => {
+      const err = await failure(I.die().customMessage('Login never finished'))
+      expect(err.message).toEqual('Login never finished\n  ups')
+    })
+
+    it('should combine a custom message with other step options in any order', async () => {
+      let startedOpts
+      event.dispatcher.on(event.step.started, started => (startedOpts = started.opts))
+      const err = await failure(I.die(step.customMessage('Login never finished').opts({ exact: true }).timeout(5)))
+      expect(err.message).toEqual('Login never finished\n  ups')
+      expect(startedOpts).toEqual({ exact: true })
+    })
+
+    it('should indent every line of a multi-line error', async () => {
+      const err = await failure(I.dieWithDetails(step.customMessage('Login never finished')))
+      expect(err.message).toEqual('Login never finished\n  ups\n  waited 5 sec')
+    })
+
+    it('should show the custom message once at the top of the stack', async () => {
+      const err = await failure(I.die(step.customMessage('Login never finished')))
+      expect(err.stack.split('\n')[0]).toEqual('Error: Login never finished')
+      expect(err.stack.match(/Login never finished/g)).toHaveLength(1)
+    })
+
+    it('should put a custom message above a failed assertion', async () => {
+      const err = await failure(I.failAssertion(step.customMessage('Order never reached paid')))
+      expect(err.inspect()).toEqual('Order never reached paid\n  expected web page to include "Paid"')
+    })
+
+    it('should not add a custom message to a step that never ran', async () => {
+      I.die()
+      const err = await failure(I.hello(step.customMessage('Hello never ran')))
+      expect(err.message).toEqual('ups')
+    })
+
+    it('should leave the error of a step without a custom message unchanged', async () => {
+      const err = await failure(I.die())
+      expect(err.message).toEqual('ups')
     })
   })
 })
