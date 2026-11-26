@@ -18,8 +18,8 @@ permissions:
 env:
   CI: true
   FORCE_COLOR: 1
-  MOLI_VERSION: v1.1.17
-  MOLI_SHA256: e338cdd2ab6e3e6262117e56aba625bf6c71c44fd72ac3870bbd9c0e6c1ec351
+  MOLI_VERSION: v1.1.27
+  MOLI_SHA256: 2ede138ca107f16313183be06ef137c0760eaeb83598570d7f4a4263595cd1a6
 
 jobs:
   build:
