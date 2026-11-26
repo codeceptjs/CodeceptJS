@@ -531,6 +531,7 @@ declare namespace CodeceptJS {
     stepConfig(config: CodeceptJS.StepConfig): this
     timeout(seconds: number): this
     retry(retry: number | object): this
+    customMessage(message: string): this
   }
 
   interface ElementStepPromise<T = any> extends StepPromise<T> {
@@ -806,9 +807,11 @@ declare module 'codeceptjs/steps' {
     opts(opts: CodeceptJS.StepOptions): CodeceptJS.StepConfig;
     timeout(timeout: number): CodeceptJS.StepConfig;
     retry(retry: number): CodeceptJS.StepConfig;
+    customMessage(message: string): CodeceptJS.StepConfig;
     stepOpts(opts: CodeceptJS.StepOptions): CodeceptJS.StepConfig;
     stepTimeout(timeout: number): CodeceptJS.StepConfig;
     stepRetry(retry: number): CodeceptJS.StepConfig;
+    stepCustomMessage(message: string): CodeceptJS.StepConfig;
     section(name: string): any;
     endSection(): any;
     Section(name: string): any;
