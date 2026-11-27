@@ -19,6 +19,25 @@ describe('Step serialization across workers', () => {
     expect(restored.args).to.deep.equal(['{xpath: //button}', '*****', 'text'])
   })
 
+  it('masks secrets nested in object arguments', () => {
+    const step = new Step({}, 'sendPostRequest')
+    step.setArguments(['/login', { user: 'john', password: new Secret('hunter2') }])
+
+    expect(transfer(step).args).to.deep.equal(['/login', '{"user":"john","password":"*****"}'])
+  })
+
+  it('drops the parent of a reused meta step when it no longer has one', () => {
+    const outer = new MetaStep('outerPage', 'open')
+    const inner = new MetaStep('innerPage', 'login')
+    inner.metaStep = outer
+    const step = new Step({}, 'click')
+    step.metaStep = inner
+
+    expect(transfer(step).metaStep.metaStep).to.be.instanceOf(MetaStep)
+    inner.metaStep = null
+    expect(transfer(step).metaStep.metaStep).to.be.undefined
+  })
+
   it('restores the meta step chain', () => {
     const section = new MetaStep(null, 'Login')
     const pageObject = new MetaStep('loginPage', 'login')
